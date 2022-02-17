@@ -1,0 +1,2154 @@
+﻿<FTL>
+
+
+<!--PROMO EVENTS-->
+<eventList name="BOSS_WARNING_NODE">
+	<event load="BOSS_FLEETS_REBEL"/>
+	<event load="BOSS_FLEETS_BOTH_FIGHT"/>
+</eventList>
+
+<event name="FEDERATION_BASE">
+	<text>이 현실의 연방 본부도 제0 우주에 있는 것 만큼이나 인상적입니다. 함선 밑으로 보이는 도시 상당수는 이미 대피를 마친 상태지만, 연방 정부의 중심인 의사당은 여전히 불이 켜져 있었습니다. 기함이 의사당을 파괴한다면 연방은 힘을 잃을 것이고 이 현실에서 패배하게 될 것입니다.</text>
+	<img back="BACK_EVENT_FEDBASE" planet="PLANET_INVISIBLE"/>
+	<customFleet right="false" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<customFleet right="true" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<text>운 좋게도 기함보다 먼저 본부에 도착했습니다. 몇 안 남아있는 연방의 지원선 중 한 척이 선체를 수리해주고 보급품을 제공했습니다.</text>
+			<damage amount="-7"/>
+			<autoReward level="LOW">stuff</autoReward>
+			<choice>
+				<text>함선에서 무언가를 한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!-- the first time you arrive at the base, before the rebel fleet arrives -->
+<event name="LAST_STAND_START">
+	<text load="TEXT_LIGHTSPEED"/>
+	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE"/>
+	<choice hidden="true" req="MARKER_LASTSTAND" lvl="0" max_group="0" blue="false">
+		<text>계속...</text>
+		<event load="ATLAS_MENU"/>
+	</choice>
+</event>
+<event name="LASTSTAND_WARP">
+	<text>명칭: 연방 수도
+	유형: 우호적
+	고유성: 있음
+	통치 세력: 연방
+	반군 위협 수준: !치명적으로 높음!
+
+	연방 수도는 당신의 마지막 목적지입니다. 이 현실을 반군의 포위로부터 구하려면 연방 본부가 파괴되기 전에 반군 기함을 격침해야 합니다.</text>
+	<hiddenAug>MARKER_LASTSTAND</hiddenAug>
+	<choice hidden="true" req="MARKER_LASTSTAND" lvl="1" max_group="0" blue="false">
+		<text>계속...</text>
+		<event load="TRUE_LAST_STAND_START_EMERGENCY"/>
+	</choice>
+	<choice hidden="true" blue="false" req="DIFFICULTY_EXTREME" lvl="0" max_group="0">
+		<text>한계속도 항해를 마친다.</text>
+		<event load="TRUE_LAST_STAND_START"/>
+	</choice>
+	<choice hidden="true" blue="false" req="DIFFICULTY_EXTREME" lvl="1" max_group="0">
+		<text>한계속도 항해를 마친다.</text>
+		<event load="TRUE_LAST_STAND_START_EXTREME"/>
+	</choice>
+	<choice hidden="true" req="COORDS" blue="false">
+		<text>경로를 바꾼다.</text>
+		<event load="REROUTE_MENU_LASTSTAND"/>
+	</choice>
+</event>
+<ship name="SHIP_LAST_STAND_START_EXTREME" auto_blueprint="MU_REBEL_PICKET_SELITE">
+	<destroyed load="LAST_STAND_START_EXTREME_FINISH"/>
+	<deadCrew load="LAST_STAND_START_EXTREME_FINISH"/>
+	<crew>
+		<crewMember type="soldier" prop="0.5"/>
+		<crewMember type="mfk" prop="0.5"/>
+	</crew>
+</ship>
+<event name="TRUE_LAST_STAND_START_EMERGENCY">
+	<changeBackground>BACK_EVENT_LASTSTAND</changeBackground>
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<playSound>lightspeed</playSound>
+	<text>계획 없이 17번 노드를 이탈했던 게 연방에 재앙을 불러온 것 같습니다. 기함은 이미 본부에 도착했고 연방군은 압도당했습니다. 지체할 시간이 없습니다, 당장 본부로 가야 합니다!</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<goToFlagship atBase="true" allFleet="true"/>
+		</event>
+	</choice>
+</event>
+<event name="TRUE_LAST_STAND_START_EXTREME">
+	<text>광속을 벗어나는 순간 무언가 잘못됐음을 알아챘습니다. 입구 송신소가 MFK 에이스의 공격을 받고 있는 것 같습니다!</text>
+	<changeBackground>BACK_EVENT_LASTSTAND</changeBackground>
+	<playSound>lightspeed</playSound>
+	<customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<ship load="SHIP_LAST_STAND_START_EXTREME" hostile="true"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="LAST_STAND_START_EXTREME_FINISH">
+	<text>당신은 MFK 에이스를 물리치고 잔해를 수거한 다음 툴리 제독을 포함한 연방 함대의 생존자들과 접촉했습니다.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="TRUE_LAST_STAND_START"/>
+	</choice>
+</event>
+<event name="TRUE_LAST_STAND_START">
+	<text>마침내 연방의 수도인 17번 노드에 도착했습니다. 당신은 멀티버스 기술이 발견된 제0 우주에서도 벌어졌던 이 전투에 대해 들어봤습니다. 지금부터 그 전투에 직접 참가하게 될 것입니다. 여기서 당신이 취할 행동은 이 현실을 구원할 수도 파멸로 이끌 수도 있습니다.</text>
+	<customFleet right="false" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<changeBackground>BACK_EVENT_LASTSTAND</changeBackground>
+	<playSound>lightspeed</playSound>
+	<choice hidden="true" req="MORALITY_CRIME" lvl="0" max_lvl="7" max_group="0" blue="false">
+		<text>계속...</text>
+		<event>
+			<text>신속한 신분증 감별을 통해 문제 없이 송신소를 통과할 수 있었습니다.</text>
+			<choice hidden="true" max_group="1" req="SHIP_MULTIVERSE" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "So you're the Multiverse ship I've heard about? You've come a long way, and I can only hope its all paid off. You're the Federation's last stand against the Flagship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_FLAGSHIP" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Oh dear god, the Rebellion's sent ANOTHER Flagship? We're screwed... wait, you aren't with the Rebels. Universe 0 sent the Rebel's super weapon to destroy the super weapon? I guess it's about freaking time we fight fire with fire."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_PIRATE" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "A... pirate? I didn't know we hired mercenaries... Not that it's an issue, you're here now and you're probably the best chance we've got."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_TUCO" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Is that... Tuco? Which one of you hired Tuco as a mercenary? Well, I appreciate your... dedication to the Federation. Let us just hope that it pays off."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_GAMBLING" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "A gambling vessel. I'm not certain where these ships are coming from, but if you're the key to defeating the Flagship, then I'm not going to complain."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_TUCO_GOLD" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "That's a very bright ship you have. I'm sure a fascinating story stands behind it. I'd love to hear it some day, assuming we aren't all dead at the end of this."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_PLEASURE" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "In all my years, I never thought the Federation's last chance, our saving grace, would fall upon... a Slug Pleasure Cruiser. I can't imagine how you stand piloting that thing. At least, it looks like you've made it combat ready enough to face the Flagship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_GHOST" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Woah, your ship has taken quite the beating. If I didn't know better, I would have assumed you showed up already dead. Let's hope that isn't the fate you await."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_DYNASTY" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "I thought the Dynasty was determined to avoid the Federation and let us battle to extinction with the Rebels? Has the Prime Reaper finally changed his mind and given us a second chance? Well, I'm grateful. We need all the help we can get against the Flagship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_GHOSTHUNTER" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "I can't seem to explain it, but witnessing your ship gives me the urge to make an Old-Earth reference, but I'm afraid it would be too outdated."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_AUGMENTED" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center "A Lanius vessel? Or... whatever that is. Not sure where you got that paintjob from, but let's hope your ship is as deadly as it looks."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_ANCIENT" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Your ship looks like the holograms I've seen of the original Multiverse drive. I hope that means you've brought the best tech you could, because you're our last line of defense."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_ENGI" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "I wasn't told we were receiving more reinforcements from the Engi. I'm glad, because our forces are almost dried up."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_ZOLTAN" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "I didn't think the Zoltan would ever show up. Glad to know they had the dedication to bring exactly one ship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_ZOLTAN_OLD" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "What in god's name are you? I've never seen a Zoltan ship or a creature like you before... But it seems you're a better ally than the Ministry if you've actually come to help us."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_DUSKBRINGER" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "I didn't know the Federation had access to Duskbringer tech. I'm not sure how to think about this, but we have more pressing matters."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_HIVE" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Support from the Hive? I can't say this was expected. Not that I'm complaining, we need all the help we can get against the Flagship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_GYGES" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Is that the Gyges? I thought that ship was destroyed in the Federation-Mantis war... I'll never get used to this Multiverse stuff."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_FREEMANTIS" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Oh, I did not realise your ship was of Free Mantis origins. I didn't predict what valuable allies they would be, but I suppose it makes sense, with Mantis being such excellent fighters."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_ROCK" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "The Rock Elders sent a cruiser to fight for us? I can't imagine their reasoning, but you're our last chance if we want to win this fight."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_OUTCAST" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "I thought the Outcasts were indifferent to the war. Well, I'm not one to turn down the help. We need every ship we can get to take down this Flagship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_LOSTSUN" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "I'm surprised the Lost Suns took the effort to provide any assistance. Perhaps I underestimated them as allies. I'm glad you've arrived, we're on our last leg and need all the help we can get."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_CULTIST" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "A cult? I... sure, not the strangest thing I've seen. Let's hope that massive ship of yours is ready for the Flagship, yes?"</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_CRYSTAL" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Assistance from the Crystalline people? Not the last thing I expected, but certainly not the first either. Let us both hope your Crystal tech will stand against the Rebellion's Flagship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_SLUG" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Slugs? Why did it have to be Slugs... I'm sure you're here looking for a reward, and perhaps we can work out a deal afterwards. But first, we need to take out the Flagship. The Federation can't stand much more of this attack, and if you came all this way I'm certain you mean business."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_LEECH" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "I didn't realize the Eargen Republic had the ressources to send in a ship to help the Federation. No less, I'm glad you're here. Let's hope those tales of the once mighty Leech military were true and we're about to see a resurgence, because we sure as hell need it."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_COALITION" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. He recoils in shock at the sight of your ship. "A Coalition vessel? This must be some joke... the only reason I can fathom receiving support from the Coalition would be our mutual enemy in the Rebellion. If so, then we can use all the help we can get, even from unlikely allies."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_ORCHID" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. He recoils in shock at the sight of your ship. "Orchids, hmmm? I didn't think your kind would take it upon yourselves to assist in this battle. I'm grateful for the reinforcements, we're running thin on soldiers and ships and every ounce of help is worth millions."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_VAMPWEED" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Vampweeds? I cannot say I expected any support from the Confederacy. Is all of that drama from the Federation-Mantis War finally water under the bridge? Well, I suspect not... but we can discuss this later. Right now there's a Flagship that needs killing."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_SHELL" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "A Shell cruiser, huh? I heard your kind was rather reclusive... well, I appreciate your assistance. Let's hope that your efforts not go in vain, yes?"</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_LANIUS" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. He recoils, in shock at the sight of your ship. "A Lanius warship, how interesting. I've never been certain of the Lanius's loyalties or motivation, but if you've come this far I have no doubt you've come to aid us in our fight."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_CIVILIAN" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. He recoils in shock at the sight of your ship. "I can't say I expected the ship that the Federation would have to bet their survival on to be operated by Civilians... Still, your loyalty to our cause is noted and we need all of the help we can get."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_FEDERATION" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Good, looks like you've brought a well-armed Federation ship. Welcome to the Last Stand, captain."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_STEALTH" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Ah, a Stealth ship, no wonder I never got any clear readings on the details of your vessel. No matter, let us both hope that your ship will be strong enough to take down the Flagship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_REBEL" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. He recoils in shock at the sight of your ship. "I never believed in a million years the ship who would be saving the Federation would be a Rebel vessel. I'm sure you have your reasons for betraying the Rebellion, and I'd love to hear them, but we have more pressing matters to deal with, such as the Flagship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_CURA" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. He takes a step back as he takes in your ship. "That W... um... I don't know what you are, or why Universe 0 hired an automated ship as a Renegade, but if whatever you are is the solution to our problem then... be my guest? But I'll be keeping my eye on you..."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_KESTREL" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "A Kestrel? Don't see many of those outside of salvage fleets. Looks like your ship has come full circle... I can only hope it'll pay off."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_PROPHET" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "That is quite the colorful ship you have there. The Monks are pacifists, yes? Well, let's both hope you have a plan for dealing with that Flagship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_SYLVAN" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Hmm, you're that merchant I've heard so much about. Sylvan, wasn't it? Odd, I swear you already arrived here a while ago... I may never wrap my head around this Multiverse stuff. Regardless, I'm glad to have you here. Let's hope you're prepared for that Flagship."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_MONK" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Monks? I... I don't mean to be disrespectful, but aren't monks, you know, normally pacifists? I guess you're the exception then. As long as you deal with the Flagship, I don't care who you are."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_SALT" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "I swear, every day another race comes popping out of the Multiverse. This time it's... Salt? I think I've heard a legend or two about you. Let's hope you stay true to your legacy, yeah?"</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_SPIDER" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Ack! Spiders?! I hate spiders! God damn it, just looking at your ship gives me shivers."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_ALPHA" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "Your ship there, well, it strikes a strong resemblance to a vessel I knew from a long, long, long time ago. Never matter, that's far in the past. Let's focus on the present right now, we don't have time to reminisce."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_TULLY" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. "You'd probably expect me to be surprised to see my own ship here, but this is actually the 7th iteration of myself I've met so far. Now go get that Flagship, you beautiful bastard."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_LIMIT" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. As soon as he sees your ship, he hangs up immediately, but reconnects not long after. "No. You can't be serious. They sent THIS ship to save us? Is this some sick stupid joke?" Tully sighs. "Well unfortunately, you're the Federation's last hope. Try not to throw it all away, okay? We're all counting on you now."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" max_group="1" req="SHIP_PONY" blue="false">
+				<text>연방 사령부와 접촉한다.</text>
+				<event>
+					<text>On the vidscreen appears several Federation and Engi officers, as well as Admiral Tully in the center. As soon as he sees your ship, he hangs up immediately, but reconnects not long after. "Horse? Horse friend!" Tully pauses and corrects his posture. "Er- sorry about that. I don't know what came over me. But, if you take down that Flagship, please let me pet a horse."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="LAST_STAND_START_2"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="MORALITY_CRIME" lvl="8" max_lvl="999" max_group="0" blue="false">
+		<text>계속...</text>
+		<event>
+			<text>당신은 신분증을 제출했지만, 뭔가 문제가 생긴 것 같습니다. 근처에 있던 연방 함선이 무기를 장전한 채로 다가왔습니다. 그 함선이 교신을 보냈습니다. "이곳에 오다니 꽤 무모하시군요. 유감스럽게도 연방은 범죄자를 지원할 수 없습니다. 용서를 구하고 싶다면 기함을 제거하는 것이 좋은 출발점일 것입니다." 그들은 말을 마치고 통신을 끊었습니다.</text>
+		</event>
+	</choice>
+	<fleet>fed</fleet>
+</event>
+<event name="LAST_STAND_START_2">
+	<text>유감스럽지만 더 이상 수다나 떨 시간은 없네. 기함을 맞이하기 전에 필요한 건 없나?" 툴리는 대기 중이던 지원함대를 부르며 당신의 요청을 기다렸습니다.</text>
+	<choice hidden="true">
+		<text>수리를 요청한다.</text>
+		<event>
+			<text>툴리가 연방의 지원함을 시켜 선체를 고치도록 했습니다.</text>
+			<damage amount="-30"/>
+			<choice>
+				<text>계속...</text>
+				<event load="LASTSTAND_EMPTY_BEACON"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>연료와 성도를 요청한다.</text>
+		<event>
+			<text>툴리가 보급 드론을 보내 연료를 비축해주고, 이 구역의 지도 데이터를 전송해줬습니다.</text>
+			<item_modify>
+				<item type="fuel" min="15" max="15"/>
+			</item_modify>
+			<reveal_map/>
+			<choice>
+				<text>계속...</text>
+				<event load="LASTSTAND_EMPTY_BEACON"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>탄약과 드론 부품을 요청한다.</text>
+		<event>
+			<text>툴리가 재보급 드론을 보내 보급품을 비축해 줬습니다.</text>
+			<item_modify>
+				<item type="missiles" min="7" max="7"/>
+				<item type="drones" min="7" max="7"/>
+			</item_modify>
+			<choice>
+				<text>계속...</text>
+				<event load="LASTSTAND_EMPTY_BEACON"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>선원을 요청한다.</text>
+		<event>
+			<text>툴리가 훈련받은 연방군 병사를 보내 당신의 함선에서 근무하게 했습니다.</text>
+			<crewMember amount="1" class="soldier"/>
+			<choice>
+				<text>계속...</text>
+				<event load="LASTSTAND_EMPTY_BEACON"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" max_group="1" req="SHIP_PROPHET">
+		<text>여러분의 지원은 필요 없습니다. 위대한 눈께서 우리를 이끌어 줄 것입니다.</text>
+		<event>
+			<text>당신은 순항을 기원하며 위대한 눈에 기도했습니다. 기도를 마치자 함선에 위대한 눈이 깃들어 보급품이 비축됐고 떠날 준비가 돼 있었습니다.</text>
+			<reveal_map/>
+			<damage amount="-30"/>
+			<item_modify>
+				<item type="scrap" min="30" max="30"/>
+				<item type="fuel" min="10" max="10"/>
+				<item type="missiles" min="10" max="10"/>
+				<item type="drones" min="10" max="10"/>
+			</item_modify>
+			<choice>
+				<text>계속...</text>
+				<event load="LASTSTAND_EMPTY_BEACON"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="TULLY_PRESENT">
+		<text>툴리에게 보급 상자를 보여준다.</text>
+		<event>
+			<text>상자를 보자 툴리의 태도가 돌변했습니다. 그가 당신을 연방 사령부에 들어오도록 허락했습니다.</text>
+			<remove name="TULLY_PRESENT"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="TULLY_CONTACT"/>
+			</choice>
+		</event>
+	</choice>
+	<!--<choice hidden="true" req="turzil">
+		<text>The Engi wishes to speak with Tully.</text>
+		<event>
+			<text>The Engi fugitive transmits a secret code to Federation command that authorizes you to enter the control room! Tully shakes the Engi by the hand, welcoming him. "Turzil! I wondered what had happened to you! You went silent and the Engi brigade never showed up to assist us."</text>
+			<choice hidden="true">
+				<text>Wait, you're Turzil?</text>
+				<event>
+					<text>Turzil turns to face you. "Apologies. Concealing truth was necessary for secrecy. I am General Turzil of the Engi Brigade. Correction: once was General of Engi Brigade. Harmony scanned recordings of Universe 0 Massacre of Node 17, found my soldiers breaking Engi-Rebel non-aggression pact. Harmony declared me as fugitive, banished from territory and hunted."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="TURZIL_TRUTH"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>-->
+</event>
+<event name="TURZIL_TRUTH">
+	<text>Tully dispatches one of the largest support ships in the Federation fleet to fix up your hull and provide as much assistance as possible. Turzil pulls you aside, "Your assistance was: necessary for continued survival. It is understood common methods of showing gratitude involve transmission of items of high personal value. I desire to give you: old cruiser. No longer in use, but Federation can fix it up."</text>
+	<unlockCustomShip silent="false">PLAYER_SHIP_ENGI</unlockCustomShip>
+	<hiddenAug>ACH_CREW_TURZIL</hiddenAug>
+	<damage amount="-20"/>
+	<reveal_map/>
+	<item_modify>
+		<item type="fuel" min="7" max="7"/>
+		<item type="missiles" min="5" max="5"/>
+		<item type="drones" min="4" max="4"/>
+	</item_modify>
+	<choice>
+		<text>계속...</text>
+		<event load="LASTSTAND_EMPTY_BEACON"/>
+	</choice>
+</event>
+<event name="TULLY_CONTACT">
+	<text>툴리가 당신과 함께 앉아 상자를 당신 앞에 있는 테이블 위에 놓았습니다. "보급 상자 안에 뭐가 있는지 알고 있나?" 당신을 고개를 가로저었습니다. "그렇다면 말해주겠네. 아무것도 없어." 당신이 혼란스러운 모습을 보이자 툴리가 낄낄댔습니다. "몇몇 주요 연방 간부들에게 보급 상자를 나눠줬네. 믿을 만한 사람에게 주어 내게 전달시키도록 했지. 그건 자네가 이 마지막 싸움을 할 자격이 있다는 증거야. 이제 출발하는 게 좋겠군, 기함은 결코 자멸하지 않을 테니."</text>
+	<hiddenAug>ACH_CREW_TULLY</hiddenAug>
+	<crewMember amount="1" class="tully">Tully</crewMember>
+	<damage amount="-15"/>
+	<autoReward level="MED">standard</autoReward>
+	<choice>
+		<text>계속...</text>
+		<event load="LASTSTAND_EMPTY_BEACON"/>
+	</choice>
+</event>
+<event name="LASTSTAND_EMPTY_BEACON">
+	<text>출발할 준비를 마치고 나니 함선에서 무언가를 할 시간이 있었습니다. 이 구역에서는 지금 같은 여유가 별로 없을 테니 이번 기회를 최대한 활용하십시오. 선원들에게 말도 걸어보고, 마지막으로 임무 보고서도 확인해 보세요!</text>
+	<choice>
+		<text>함선에서 무언가를 한다.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice hidden="true">
+		<text>아무것도 하지 않는다.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="BOSS_AUTOMATED">
+	<text>이 함선은 선진 AI 시스템도 갖추고 있는 것으로 보입니다. 선원이 모두 죽자 AI가 통제권을 얻었습니다! 또한 기함의 산소실 출력이 떨어지는 것도 감지됐습니다...</text>
+	<status type="limit" target="enemy" system="oxygen" amount="0"/>
+</event>
+
+<event name="BOSS_DESTROYED">
+	<text>기함의 폭발이 당신의 함선을 뒤흔들고, 당신은 안도감에 떨었습니다. 당신이 해냈습니다. 연방은 구원받았습니다...</text>
+	<choice>
+		<text>계속...</text>
+		<event>
+			<text>즐겨주셔서 감사합니다! 이 게임이 아직 베타이며, 우리가 아직 만족스러운 결말을 만들지 않았다는 점을 명심해 주세요. 우리의 포럼에 오셔서 피드백을 남겨주시고, 당신이 이 게임을 깼다는 걸 알려주세요. 감사합니다!</text>
+		</event>
+	</choice>
+	<status type="clear" target="player" system="sensors" amount="100"/>
+</event>
+
+<event name="BOSS_ESCAPED">
+	<text>당신이 겨우 우위를 점하자마자 적 기함은 초광속 도약을 사용해버렸습니다. 계속해서 공격해야 합니다!</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<status type="clear" target="player" system="sensors" amount="100"/>
+</event>
+
+<event name="BOSS_TEXT_1">
+	<text>마침내... 반군 기함입니다. 만일 당신이 이 괴물을 물리칠 수 있다면, 연방 함대는 살아남을 기회를 얻게 될 것입니다. 물러설 곳은 없습니다!</text>
+	<hiddenAug>MARKER_FLAGSHIP</hiddenAug>
+	<status type="clear" target="player" system="sensors" amount="100"/>
+	<choice hidden="true" req="MARKER_PEACEQUEST">
+		<text>Perhaps there could be a reconciliation of our ideals without war?</text>
+		<event>
+			<text>The Flagship's commander blinks, confused. "Hah, spoken like a foolish, peace loving monk! You would not know the importance of this movement! Your loyalties to the Federation blind you from the importance of the rebellion! When have YOU ever gone up against oppression?"</text>
+			<choice hidden="true" req="ACH_BOSS_ROCKCRUISER">
+				<text>We inspired a rebellion within the Rock Homeworlds to overthrow Stonewall.</text>
+				<event load="BOSS_NEGOTIATE_1"/>
+			</choice>
+			<choice hidden="true" req="ACH_BOSS_ZONE">
+				<text>We defied the Ministry and saved an entire planet from their oppression.</text>
+				<event load="BOSS_NEGOTIATE_1"/>
+			</choice>
+			<choice hidden="true" req="ACH_BOSS_SUZZY">
+				<text>We went up against the Hive and raided their private hatcheries.</text>
+				<event load="BOSS_NEGOTIATE_1"/>
+			</choice>
+			<choice hidden="true" req="ACH_BOSS_LEECHDREAD">
+				<text>We overthrew Tyrdeo and brought about a new era to the Eargen Republic.</text>
+				<event load="BOSS_NEGOTIATE_1"/>
+			</choice>
+			<choice hidden="true" req="MARKER_SLUGDEMOCRACY">
+				<text>We dethroned Nights and convinced the Kleptocracy to turn to democracy.</text>
+				<event load="BOSS_NEGOTIATE_1"/>
+			</choice>
+			<choice hidden="true">
+				<text>Uhm, well... uh...</text>
+				<event>
+					<text>The commander scoffs. "Oh, how pitiful. I tire of this conversation. There will be no peaceful resolution to this confrontation." He cuts comms, and the Flagship continues to charge its weapons.</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK_FLAGSHIP"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="jerry">
+		<text>(제리) 기함에 연락한다.</text>
+		<event>
+			<text>기함이 당신을 알아채는 데는 오래 걸리지 않았습니다. 기함이 당신을 겨냥하기 전에 제리가 반군의 통신 채널을 이용해 공격을 멈추고 밴스에게 연결해 달라고 요구했습니다.</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="FLAGSHIP_JERRY"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" blue="false" max_group="1" req="MARKER_JERRYKILL" lvl="0">
+		<text>계속...</text>
+		<event>
+			<text>기함이 당신을 알아채는 데는 오래 걸리지 않았습니다. 당신을 그저 지나가는 길에 마주친 평범한 연방군이라 생각한 기함이 함포를 가동하고 접근해 왔습니다.</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK_FLAGSHIP"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" blue="false" max_group="1" req="MARKER_JERRYKILL" lvl="1">
+		<text>계속...</text>
+		<event>
+			<text>기함에 접근하자 그 거대한 함선이 교신을 보내 왔습니다. "네놈이 제리를 죽인 개자식이군! 그 사람은 내 결혼식의 가장 멋진 하객이었어! 제리의 복수로 널 죽여주마!" 멀리서 수십척의 함선이 교전을 벗어나 당신에게 접근하며 ASB 사격을 퍼부었습니다!</text>
+			<environment type="PDS" target="player"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK_FLAGSHIP"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="FLAGSHIP_JERRY">
+	<text>Not too long later, Vance appears on your screen, his bright orange uniform and massive, muscular figure standing out from the faded white of the officers around him. You aren't sure where Vance is, but that no longer matters.</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<text>Vance stares down to look at his star nephew, a look of confusion upon his face. "Jerome? Have you been taken by this scum to be used as a mere trading good with me? How pathetic of the Federation. Do not worry nephew, I will send my finest strike force to rescue you." Jerry shakes his head. "N-no sir. I'm no hostage. I've come to bargain."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<text>"Bargain? You aren't making any sense boy. Spit it out already. How much are the Feds demanding for your release?" Jerry shakes his head again. "I'm not a hostage Uncle. I joined these men and women on my own volition. I... I hope to end this war. Can't you see how pointless this is? We fight this endless war for what? When does it end? Ever? There's infinite universes, surely you can see how pointless this is!"</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event>
+							<text>Jerry tries to continue, but Vance cuts him off. "You.. you left the protectorate? Then Cyra... Cyra... no. No, this can't be... A-and my nephew? A traitor? My own... nephew?" A tear comes to Vance's eye, but he wipes it away immediately, then turns his back to the screen. "Enough of this. If this is your decision, then so be it. You will die a short sighted fool, just as the Renegade. Goodbye, Jerome."</text>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event>
+									<text>Jerry collapses to his knees, shocked and speechless as how easily he was betrayed. "I should have known..." Jerry chokes up a sob, and holds his head in his hands while tears form puddles on the ground.</text>
+									<removeCrew class="jerry">
+										<clone>false</clone>
+										<text>Jerry sits in the corner, crying. The Flagship approaches, weapons charging. You want to console him, but you have to get going.</text>
+									</removeCrew>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event>
+											<text>Suddenly, Jerry gets back up to his feet, wiping away the tears. "Well, there's only one thing left to do now." He draws out a massive Gatling gun. You aren't sure where he got it from, but you don't have the time to question it.</text>
+											<crewMember amount="1" class="jerryg">Jerry</crewMember>
+											<choice hidden="true" blue="false" lvl="0" max_group="0" req="ponyt">
+												<text>계속...</text>
+												<event load="COMBAT_CHECK"/>
+											</choice>
+											<choice hidden="true" blue="false" lvl="1" max_group="0" req="ponyc">
+												<text>계속...</text>
+												<event>
+													<text>Before you can proceed on to the Flagship, Jerry pauses, and walks out of the room.</text>
+													<removeCrew class="jerryg">
+														<clone>false</clone>
+														<text>You have no idea where Jerry is going, but you follow him.</text>
+													</removeCrew>
+													<choice hidden="true">
+														<text>계속...</text>
+														<event>
+															<text>Jerry enters the room where the Equinoid is sleeping...</text>
+															<removeCrew class="ponyc">
+																<clone>false</clone>
+																<text>You have no idea what Jerry is doing, and watch in confusion.</text>
+															</removeCrew>
+															<choice hidden="true">
+																<text>계속...</text>
+																<event>
+																	<text>Then, Jerry proceeds to mount the pony! "Alright. Now I'm ready."</text>
+																	<unlockCustomShip silent="false">PLAYER_SHIP_PONY_3</unlockCustomShip>
+																	<crewMember amount="1" class="ponycj">Jerry</crewMember>
+																	<choice hidden="true">
+																		<text>계속...</text>
+																		<event load="COMBAT_CHECK_FLAGSHIP"/>
+																	</choice>
+																</event>
+															</choice>
+														</event>
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true" blue="false" lvl="1" max_group="0" req="ponyt">
+												<text>계속...</text>
+												<event>
+													<text>Before you can proceed on to the Flagship, Jerry pauses, and walks out of the room.</text>
+													<removeCrew class="jerryg">
+														<clone>false</clone>
+														<text>You have no idea where Jerry is going, but you follow him.</text>
+													</removeCrew>
+													<choice hidden="true">
+														<text>계속...</text>
+														<event>
+															<text>Jerry enters the room where the Equinoid is sleeping...</text>
+															<removeCrew class="ponyt">
+																<clone>false</clone>
+																<text>You have no idea what Jerry is doing, and watch in confusion.</text>
+															</removeCrew>
+															<choice hidden="true">
+																<text>계속...</text>
+																<event>
+																	<text>Then, Jerry proceeds to mount the pony! "Alright. Now I'm ready."</text>
+																	<unlockCustomShip silent="false">PLAYER_SHIP_PONY_3</unlockCustomShip>
+																	<crewMember amount="1" class="ponyj">Jerry</crewMember>
+																	<choice hidden="true">
+																		<text>계속...</text>
+																		<event load="COMBAT_CHECK_FLAGSHIP"/>
+																	</choice>
+																</event>
+															</choice>
+														</event>
+													</choice>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="BOSS_TEXT_2">
+	<text>당신은 적 기함을 추격하였고, 기함이 이전 전투에서 크게 손상되었다는 것을 발견했습니다. 스캔으로 기함이 상당한 양의 동력을 드론 시스템으로 전환했음을 발견했습니다. 전투 준비를 하십시오.</text>
+	<status type="clear" target="player" system="sensors" amount="100"/>
+	<choice hidden="true" req="MARKER_NEGOTIATION" lvl="0" blue="false" max_group="0">
+		<text>계속...</text>
+		<event>
+			<text>기함이 약해졌을지 모르지만 여전히 만만찬은 상대입니다. 전투를 계속하십시오!</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK_FLAGSHIP"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="MARKER_NEGOTIATION" lvl="1" blue="false" max_group="0">
+		<text>계속...</text>
+		<event>
+			<text>Suddenly, a small automated vessel breaks off from the fleet in the distance. You receive a hail from the shuttle. "Hello. This is an automated message sent from Admiral Vance of the Rebel fleet. We have taken into consideration your past victories, and the considerable damage you have already dealt to the Flagship. With this in mind, the Rebellion no longer holds interest in this reality. We offer our surrender."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<text>Congratulations captain, you have completed the negotiation ending! Accept this payment to boost your score.</text>
+					<item_modify>
+						<item type="scrap" min="2000" max="2000"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="WIN_PEACEFUL"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="BOSS_TEXT_3">
+	<text>어떻게 적이 그 만큼의 손상을 입고도 계속 싸울 수 있는지 모르겠습니다. 기함은 동력을 방어 시스템으로 돌리는 것 뿐 아니라 숨겨둔 강력한 무기도 준비하고 있습니다. 대비하십시오... 이제 시작입니다!</text>
+	<status type="clear" target="player" system="sensors" amount="100"/>
+	<choice hidden="true" req="MARKER_VANCE_BETRAYAL" lvl="0" blue="false" max_group="0">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK_FLAGSHIP"/>
+	</choice>
+	<choice hidden="true" req="MARKER_VANCE_BETRAYAL" lvl="1" blue="false" max_group="0">
+		<text>계속...</text>
+		<event>
+			<text>As you approach the Flagship for a third time, an ASB shot flies past your ship and nearly collides with the Flagship. In the distance, the Rebel forces have turned amongst each other. It appears as though word of Vance's betrayal has caught on, and it's created a schism in their forces. Expect additional fire support during this final stretch!</text>
+			<environment type="PDS" target="enemy"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK_FLAGSHIP"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+	
+<event name="BOSS_NEGOTIATE_1">
+	<text>"So, you can invade the homeworlds of some barbaric aliens and convince them to turn against themselves. That is nothing compared to the mission of our movement! We seek to bring peace to galaxy. I doubt you know anything of peace."</text>
+	<choice hidden="true" req="MARKER_ORCHIDQUEST">
+		<text>We saved the Orchid Gardenworlds from a pirate siege.</text>
+		<event load="BOSS_NEGOTIATE_2"/>
+	</choice>
+	<choice hidden="true" req="MARKER_FEDQUEST">
+		<text>We saved an entire city and memorial from a siege put on by the Rebellion.</text>
+		<event load="BOSS_NEGOTIATE_2"/>
+	</choice>
+	<choice hidden="true" req="ACH_BOSS_AUTODREAD">
+		<text>We saved the Spectral Dynasty from one of your own Auto-Dreadnaughts.</text>
+		<event load="BOSS_NEGOTIATE_2"/>
+	</choice>
+	<choice hidden="true" req="ACH_BOSS_CLAN">
+		<text>We saved the last of an endangered alien species from the EHG.</text>
+		<event load="BOSS_NEGOTIATE_2"/>
+	</choice>
+	<choice hidden="true" req="ACH_BOSS_HACKER">
+		<text>We liberated an entire civilian sector from the hacker clan.</text>
+		<event load="BOSS_NEGOTIATE_2"/>
+	</choice>
+	<choice hidden="true" req="ACH_CREW_DIANESH">
+		<text>We managed to convince the Crystalline Empress herself to be open to the rest of the galaxy.</text>
+		<event load="BOSS_NEGOTIATE_2"/>
+	</choice>
+	<choice hidden="true">
+		<text>The Rebellion is not peaceful! The Federation is what's bringing peace to the galaxy.</text>
+		<event>
+			<text>The commander laughs. "Oh, how pitiful. To bring peace, there must first be war! The Rebellion will rid of the dangerous xenos of each reality. I tire of this conversation. There will be no peaceful resolution to this confrontation." He cuts comms, and the Flagship continues to charge its weapons.</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK_FLAGSHIP"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="BOSS_NEGOTIATE_2">
+	<text>"And how might have you accomplished those? Through killing? As to be expected. The Federation and Rebellion are not any different when it comes to war, but where the Federation is weak, the Rebellion will stand strong! You have delayed this fight for too long. I doubt you would be capable of taking on a ship as powerful as this!"</text>
+	<choice hidden="true" req="ACH_BOSS_CONSTRUCTION">
+		<text>We destroyed one of your Flagships back in the Rebel Stronghold. If we did it once, we can do it again.</text>
+		<event load="BOSS_NEGOTIATE_3"/>
+	</choice>
+	<choice hidden="true" req="ACH_BOSS_GHOSTFLAG">
+		<text>We destroyed the original Flagship in the Spectral Wastelands. If we did it once, we can do it again.</text>
+		<event load="BOSS_NEGOTIATE_3"/>
+	</choice>
+	<choice hidden="true" req="ACH_BOSS_MFKCRUISER">
+		<text>It's no Flagship, but we destroyed an MFK Cruiser. We can handle anything the Rebellion throws at us.</text>
+		<event load="BOSS_NEGOTIATE_3"/>
+	</choice>
+	<choice hidden="true" req="ACH_BOSS_GUNBOAT">
+		<text>It's no Flagship, but we destroyed an MFK Gunboat. We can handle anything the Rebellion throws at us.</text>
+		<event load="BOSS_NEGOTIATE_3"/>
+	</choice>
+	<choice hidden="true" req="ACH_BOSS_SMUGGUN">
+		<text>It's no Flagship, but we destroyed a stolen Rebel Gunboat. We can handle anything the Rebellion throws at us.</text>
+		<event load="BOSS_NEGOTIATE_3"/>
+	</choice>
+	<choice hidden="true">
+		<text>We will see about that.</text>
+		<event>
+			<text>The commander chuckles. "Indeed we will. There will be no peaceful resolution to this confrontation, let us prepare for battle." He cuts comms, and the Flagship continues to charge its weapons.</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK_FLAGSHIP"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="BOSS_NEGOTIATE_3">
+	<text>"So you are the one responsible for that? Mighty impressive, but that ship was nothing compared to what you're about to face! You will find this ship is far better prepared for a tiny cruiser like yours. Enough delay, you will not escape this fight."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK_FLAGSHIP"/>
+	</choice>
+</event>
+
+<event name="WIN_PEACEFUL">
+	<event/>
+</event>
+	
+<event name="BOSS_REPAIR_STATION">  <!-- the various stations that heal you around the map-->
+	<text>You jump into the system, noticing the repair station signal from nearby.</text>
+	<repair/>
+	<choice hidden="true" blue="false" req="DIFFICULTY_CASUAL" lvl="1" max_group="1">
+		<text>계속...</text>
+		<event load="BOSS_REPAIR_STATION_NORMAL"/>
+	</choice>
+	<choice hidden="true" blue="false" req="DIFFICULTY_NORMAL" lvl="1" max_group="1">
+		<text>계속...</text>
+		<event load="BOSS_REPAIR_STATION_NORMAL"/>
+	</choice>
+	<choice hidden="true" blue="false" req="DIFFICULTY_CHALLENGE" lvl="1" max_group="1">
+		<text>계속...</text>
+		<event>
+			<text>반군 엘리트가 수리 정거장을 향해 포격하고 있는 것 같습니다! 도움을 받으려면 우선 이 자들을 처리해야 합니다.</text>
+			<ship load="SHIP_LAST_STAND_REPAIR_ELITE" hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" blue="false" req="DIFFICULTY_EXTREME" lvl="1" max_group="1">
+		<text>계속...</text>
+		<event>
+			<text>MFK 에이스가 수리 정거장을 향해 포격하고 있는 것 같습니다! 도움을 받으려면 우선 이 자들을 처리해야 합니다.</text>
+			<ship load="SHIP_LAST_STAND_REPAIR_ACE" hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_LAST_STAND_REPAIR_ELITE" auto_blueprint="LIST_SHIPS_REBEL_ELITE_FIGHT">
+	<destroyed load="BOSS_REPAIR_STATION_FIGHT"/>
+	<deadCrew load="BOSS_REPAIR_STATION_FIGHT"/>
+</ship>
+<ship name="SHIP_LAST_STAND_REPAIR_ACE" auto_blueprint="LIST_SHIPS_REBEL_SELITE_FIGHT">
+	<destroyed load="BOSS_REPAIR_STATION_FIGHT"/>
+	<deadCrew load="BOSS_REPAIR_STATION_FIGHT"/>
+	<crew>
+		<crewMember type="soldier" prop="0.5"/>
+		<crewMember type="mfk" prop="0.5"/>
+	</crew>
+</ship>
+<event name="BOSS_REPAIR_STATION_FIGHT">
+	<text>다행히도 반군을 없애니 정거장을 이용할 수 있었습니다. 다소 타격을 입었지만, 여전히 당신에게 필요한 것을 공급해줄 수 있었습니다.</text>
+	<damage amount="-7"/>
+	<item_modify>
+		<item type="missiles" min="2" max="2"/>
+		<item type="fuel" min="1" max="1"/>
+		<item type="drones" min="3" max="3"/>
+		<item type="scrap" min="15" max="30"/>
+	</item_modify>
+	<choice>
+		<text>함선에서 무언가를 한다.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice>
+		<text>아무것도 하지 않는다.</text>
+		<event/>
+	</choice>
+</event>
+<event name="BOSS_REPAIR_STATION_NORMAL">
+	<text load="BOSS_REPAIR_STATION"/>
+	<damage amount="-15"/>
+	<item_modify>
+		<item type="missiles" min="4" max="4"/>
+		<item type="fuel" min="5" max="5"/>
+		<item type="drones" min="5" max="5"/>
+		<item type="scrap" min="22" max="44"/>
+	</item_modify>
+	<choice>
+		<text>함선에서 무언가를 한다.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice>
+		<text>아무것도 하지 않는다.</text>
+		<event/>
+	</choice>
+</event>
+<textList name="BOSS_REPAIR_STATION">
+	<text>There is a a mobile ship construction platform stationed at this beacon. After a brief exchange they give you clearance to receive emergency repairs and military supplies.</text>
+	<text>An Engi civilian ship-yard has been converted into a military refueling station. They offer you the chance to patch up your ship and refresh some supplies.</text>
+	<text>Chatter on the comm suggests the nearby Federation base is outfitted with a repair station. When you forward your mission priority they quickly help repair your ship and give you some supplies.</text>
+	<text>A forward construction station is in the process of repairing damaged warships. Your command codes convince them to do a quick patch job on your ship.</text>
+	<text>A trade station was abandoned nearby. Some Federation engineers repurposed their shipyard to perform military repairs. They offer to help fix your ship.</text>
+</textList>
+
+<!--
+		FATE!!!
+	Events that judge your actions
+-->
+<!--<eventList name="BOSS_FATES"> REMOVED IN 5.0
+	<event load="BOSS_FATE_SYSTEMS"/>
+	<event load="BOSS_FATE_CREW"/>
+	<event load="BOSS_FATE_WEAPONS"/>
+</eventList>
+
+<event name="BOSS_FATE_CREW" unique="true">
+	<text>A Zoltan ship, here to aid the Federation, hails you. "You are the ship who has come to end this war? Your mission has been all about getting here, the destination. But what you may not realize is the journey here matters so much more. The friends you've made, the alliances you've formed, the people you've saved, together means so much more than this final battle. Tell me, what can you show for your mission after all this time?"</text>
+	<ship load="SHIP_ZOLTAN_FIGHT" hostile="false"/>
+	<choice hidden="true" req="LIST_CREW_ENGI">
+		<text>(Engi) We have befriended the Engi.</text>
+		<event>
+			<text>"The Engi's static emotions means they evaluate all trust on data. You have provided an environment that the Engi has deemed satisfactory, a noble effort. Perhaps this shall aid you, I'm sure your Engi will know how to use it."</text>
+			<weapon name="LIST_WEAPONS_ENGI_BOSS"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_MANTIS">
+		<text>(Mantis) We have befriended the Mantis.</text>
+		<event>
+			<text>"Mantis are not known for their generosity. To have convinced one to work along side you is no easy feat. Perhaps this shall aid you, I'm sure your Mantis will know how to use it."</text>
+			<weapon name="LIST_WEAPONS_MANTIS_BOSS"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ROCK">
+		<text>(Rockman) We have befriended the Rockmen.</text>
+		<event>
+			<text>"Rockmen are not friendly nor forgiving. To have one working on your ship willingly speaks volumes. Perhaps this shall aid you, I'm sure your Rockman will know how to use it."</text>
+			<weapon name="LIST_WEAPONS_ROCK_BOSS"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="commando">
+		<text>(Lost Sun Commando) We have befriended the Lost Suns.</text>
+		<event>
+			<text>"The Lost Suns and Federation have always have a thin alliance, and you have helped strengthen it. Perhaps this shall aid you, I'm sure your Commando will know how to use it."</text>
+			<weapon name="LIST_WEAPONS_COMMANDO_BOSS"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(Slugman) We have befriended the Slugs.</text>
+		<event>
+			<text>"The Slugs, known for their thievery and shifty tactics. You have proven that this stereotype need not stand. Perhaps this shall aid you, I'm sure your Slug will know how to use it."</text>
+			<weapon name="LIST_WEAPONS_SLUG_BOSS"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="symbiote">
+		<text>(Symbiote) We have befriended whatever the hell this thing is.</text>
+		<event>
+			<text>"Ah, I see you have found a way to achieve symbiosis between a Rockman and a Zoltan. How... curious... Er... have this, for achieving something of such a scientific curiosity."</text>
+			<weapon name="MISSILES_ENERGY"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>I'm afraid we have nothing to show.</text>
+		<event>
+			<text>"Then you do not deserve to reach your destination. You shall perish in this sector regardless, and so we shall put you out of your misery."</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="BOSS_FATE_WEAPONS" unique="true">
+	<text>A Lost Sun ship, here to aid the Federation, hails you. "You are the ship who has come to end this war? We have heard legends of your travels. You, of all people, must understand the importance of a weapon. What weapons have the hands of fate bestowed upon your arsenal?"</text>
+	<ship load="SHIP_LOSTSUN_FIGHT" hostile="false"/>
+	<choice hidden="true" req="LIST_WEAPONS_PACIFIST_BOSS">
+		<text>(Pacifist Weapon) Show them your weapons.</text>
+		<event>
+			<text>"I'm afraid that measly thing will not aid you much in the final fight. Have this, in hopes it will be able to carry you to victory. Best of luck against the Flagship, captain."</text>
+			<weapon name="LIST_WEAPONS_POWERFUL_BOSS"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_LASER_BOSS">
+		<text>(Laser Weapon) Show them your weapons.</text>
+		<event>
+			<text>"Though common, and rather boring, a laser is a staple weapon in any arsenal. Have this, in hopes it will increase the capabilities of your laser barrage. Best of luck against the Flagship, captain."</text>
+			<augment name="SUPER_AUTO_COOLDOWN"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_ION_BOSS">
+		<text>(Ion Weapon) Show them your weapons.</text>
+		<event>
+			<text>"Ions are very much a utility weapon. Now that you are capable of ionizing the enemy defenses, all that's left is to make sure they cannot ionize yours. Best of luck against the Flagship, captain."</text>
+			<augment name="EX_ION_ARMOR"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_BEAM_BOSS">
+		<text>(Beam Weapon) Show them your weapons.</text>
+		<event>
+			<text>"Any beam is capable of massive damage to an enemy ship. The only thing that could stand in your way is enemy shields, and this may help with that. Best of luck against the Flagship, captain."</text>
+			<augment name="COMBAT_SHIELDS_JAMMER"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_AMMUNITION_BOSS">
+		<text>(Ammunition Weapon) Show them your weapons.</text>
+		<event>
+			<text>"The enemy defenses will stand no chance while you wield a powerful ballistic weapon. This may help soothe your hunger for more ammunition. Best of luck against the Flagship, captain."</text>
+			<augment name="EX_EXPLOSIVE_REPLICATOR"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_RECYCLER_BOSS">
+		<text>(Recycler Weapon) Show them your weapons.</text>
+		<event>
+			<text>"A recycler weapon, a powerful utility. I see you won't be needing your missiles, so this will help convert them to other, more useful materials. Best of luck against the Flagship, captain."</text>
+			<augment name="RECYCLER_REVERSE"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_CRYSTAL_BOSS">
+		<text>(Crystal Weapon) Show them your weapons.</text>
+		<event>
+			<text>"Crystal weapons, belonging to our ancient decendants. Very useful in large quantities, perhaps an extra layer of armor that can provide additional firepower will be of assistance? Best of luck against the Flagship, captain."</text>
+			<augment name="CRYSTAL_SHARDS"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_FIRE_BOSS">
+		<text>(Fire Weapon) Show them your weapons.</text>
+		<event>
+			<text>"Ah, a fire weapon. The weapon of choice for the Lost Suns! Glad to see you have embraced the holy fire. You are worthy of this. Best of luck against the Flagship, captain."</text>
+			<augment name="REGEN_ARMOR"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_BIO_BOSS">
+		<text>(Anti-Bio Weapon) Show them your weapons.</text>
+		<event>
+			<text>"Deadly and effective, anti-bio weapons are no ample threat. Still, you'll need something to get through their defenses. Best of luck against the Flagship, captain."</text>
+			<weapon name="LIST_WEAPONS_POWERFUL_BOSS"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_FLAK_BOSS">
+		<text>(Flak Weapon) Show them your weapons.</text>
+		<event>
+			<text>"Flak cannons excel at taking down shields, but they're worthless if the enemy can evade the projectiles. This should help. Best of luck against the Flagship, captain."</text>
+			<augment name="COMBAT_ENGINE_JAMMER"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_ANCIENTS_BOSS">
+		<text>(Ancient Weapon) Show them your weapons.</text>
+		<event>
+			<text>"How... curious. I have never seen a weapon like this, and I have seen many weapons. Surely, with this, the Flagship will stand no chance. Let me repair your hull, to ensure you can make it there to use this gun. Best of luck against the Flagship, captain."</text>
+			<damage amount="-30"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_WEAPONS_LOOT_BOSS">
+		<text>(Loot Weapon) Show them your weapons.</text>
+		<event>
+			<text>"Ah, a special weapon with a special modifier, how interesting. The way you obtained this is likely very questionable, but we won't ask questions. We too happen to have one of these guns, and I'd like you to have it. Best of luck against the Flagship, captain."</text>
+			<weapon name="LIST_WEAPONS_LOOT_BOSS"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>I'm afraid we have nothing to show.</text>
+		<event>
+			<text>"If you cannot scrounge up a single weapon, then you are already doomed! Consider this a mercy kill."</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="BOSS_FATE_SYSTEMS" unique="true">
+	<text>An Engi ship, here to aid the Federation, hails you. "Technology: the most important tool in combat. Hypothesis: in travels, Federation ship has collected wide variety of systems and invested heavily in them. Submit evidence to support hypothesis and reward will be given."</text>
+	<ship load="SHIP_ENGI_FIGHT" hostile="false"/>
+	<choice hidden="true" req="weapons" lvl="6">
+		<text>(Upg. Weapons) Show them your weapons.</text>
+		<event>
+			<text>"Weapon system: advanced. Suggests: excellent arsenal. Augment will aid in weapon system capabilities."</text>
+			<augment name="SUPER_AUTO_COOLDOWN"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="drones" lvl="6">
+		<text>(Upg. Drone Control) Show them your drone control.</text>
+		<event>
+			<text>"Drone Control system: advanced. Suggests: excellent drone arsenal. Augment will aid in drone control system capabilities."</text>
+			<augment name="DRONE_RECOVERY"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="shields" lvl="8">
+		<text>(Upg. Shields) Show them your shields.</text>
+		<event>
+			<text>"Shield system: advanced. Suggests: excellent defense. Augment will aid in shield system capabilities."</text>
+			<augment name="SUPER_SHIELD_RECHARGE"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Upg. Engines) Show them your engines.</text>
+		<event>
+			<text>"Engine system: advanced. Suggests: excellent evasion. Augment will aid in engine system capabilities."</text>
+			<augment name="ENGINE_PREIGNITER"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="cloaking" lvl="5">
+		<text>(Upg. Cloaking) Show them your cloaking.</text>
+		<event>
+			<text>"Cloaking system: advanced. Suggests: excellent stealth. Augment will aid in cloaking system capabilities."</text>
+			<augment name="EX_CLOAK_FIRE"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="teleporter" lvl="3">
+		<text>(Upg. Teleporter) Show them your teleporter.</text>
+		<event>
+			<text>"Teleporter system: advanced. Suggests: excellent boarding tactics. Augment will aid in teleporter system capabilities."</text>
+			<augment name="EX_TELEPORT_HEAL"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="hacking" lvl="3">
+		<text>(Upg. Hacking) Show them your hacking.</text>
+		<event>
+			<text>"Hacking system: advanced. Suggests: excellent ability in enemy system disruption. Augment will aid in hacking system capabilities."</text>
+			<augment name="EX_HACKING_STUN"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="oxygen" lvl="3">
+		<text>(Upg. Oxygen) Show them your life support.</text>
+		<event>
+			<text>"Oxygen system: advanced. Suggests: excellent life support. Augment will aid in oxygen system capabilities."</text>
+			<augment name="EX_O2_MASKS"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="medbay" lvl="3">
+		<text>(Upg. Medbay) Show them your medbay.</text>
+		<event>
+			<text>"Medbay system: advanced. Suggests: excellent medical attention. Augment will aid in medbay system capabilities."</text>
+			<augment name="SUPER_MEDBAY"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="clonebay" lvl="3">
+		<text>(Upg. Clone Bay) Show them your Clone Bay.</text>
+		<event>
+			<text>"Clone Bay system: advanced. Suggests: excellent medical attention. Augment will aid in Clone Bay system capabilities."</text>
+			<augment name="EX_BACKUP_DNA"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="battery" lvl="2">
+		<text>(Upg. Battery) Show them your battery.</text>
+		<event>
+			<text>"Battery subsystem: advanced. Suggests: excellent attention to power. Augment will aid in battery subsystem capabilities."</text>
+			<augment name="EX_BATTERY_BOOSTER"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="sensors" lvl="3">
+		<text>(Upg. Sensors) Show them your sensors.</text>
+		<event>
+			<text>"Sensor subsystem: advanced. Suggests: excellent recon abilities. Augment will aid in sensor subsystem capabilities."</text>
+			<augment name="EX_LIFE_SCANNER"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="doors" lvl="3">
+		<text>(Upg. Doors) Show them your doors.</text>
+		<event>
+			<text>"Door subsystem: advanced. Suggests: excellent boarder and hazard deterrence. Augment will aid in door subsystem capabilities."</text>
+			<augment name="EX_FIRE_EXTINGUISHERS"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>I'm afraid we have nothing to show.</text>
+		<event>
+			<text>"Disappointment: 75%. Chances of success for Federation ship against Flagship are low." The Engi jump away.</text>
+		</event>
+	</choice>
+</event>-->
+
+<!--
+		NEUTRAL!!!
+	Events that could have a fight
+-->
+<eventList name="BOSS_NEUTRAL">
+	<event load="BOSS_PANDORAS_BOX"/>
+	<event load="BOSS_MILITIA_REPAIRS"/>
+	<event load="BOSS_REBEL_DISGUISE"/>
+	<event load="BOSS_REBEL_DEPOT"/>
+	<event load="BOSS_GROUND_FIGHT"/>
+	<event load="BOSS_CIVILIANS"/>
+	<event load="BOSS_EVACUATIONS"/>
+	<event load="BOSS_FLEETSHIP_ARGUE"/>
+	<event load="BOSS_EGGMAN"/>
+	
+	<event load="BOSS_SCOUT_RESCUE"/>
+	<event load="BOSS_FLEETS_BOTH_FIGHT"/>
+	<event load="BOSS_FLEETS_FED"/>
+	<event load="REBEL_REFUEL_STATION"/>
+</eventList>
+
+<event name="BOSS_CIVILIANS" unique="true">
+	<text>A civilian ship is desperately trying to escape from the advancing Rebel fleet, but they've run out of fuel. "Oh thank goodness, we thought all of the Federation ships were busy fighting the Rebels. Please, you know how horrible this sector has become. We need to evacuate while we still can, do you have any fuel to spare?"</text>
+	<ship load="SHIP_CIVILIAN_ALL" hostile="false"/>
+	<choice>
+		<text>Give them some fuel.</text>
+		<event>
+			<text>You transfer your fuel to the Civilians.</text>
+			<item_modify>
+				<item type="fuel" min="-5" max="-5"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<text>"Oh thank you Captain. This is why we've always supported the Federation. Just make sure you kill that Flagship so it doesn't all go to waste." The Civilians give you some scrap.</text>
+					<autoReward level="MED">scrap_only</autoReward>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>We have no need for this fuel anymore. Give them as much as we can.</text>
+		<event>
+			<text>You transfer your fuel to the Civilians.</text>
+			<item_modify>
+				<item type="fuel" min="-15" max="-15"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<text>"Oh my... This is so much more than we could ever need. We'll certainly be able to escape with all of this! This is why I've always supported the Federation. Just make sure you kill that Flagship so it doesn't all go to waste." The Civilians are so grateful, they give you a military grade weapon that they no longer need on their ship, as well as some scrap.</text>
+					<autoReward level="HIGH">scrap_only</autoReward>
+					<weapon name="RANDOM"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>Unfortunately, you cannot risk letting go of your fuel reserves at that point. You fly away from the civilian ship and mute their call.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="BOSS_FLEETSHIP_ARGUE" unique="true"> <!--should have a better option?-->
+	<text>This beacon is under attack by a squadron of Rebel fleet ships! They're targeting a populated planet with several large cities.</text>
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<img planet="PLANET_POPULATED"/>
+	<choice hidden="true">
+		<text>Hail the Rebels and demand they cease firing on civilians.</text>
+		<event>
+			<text>The leader of the Rebel squadron responds, glaring at you with a smirk. "You want us to stop our attack? Are you daft, thinking we would take orders from some random Federation vessel?"</text>
+			<choice hidden="true">
+				<text>"Think of how many human lives are on that planet! Your attack will kill them as well as the aliens you seek to rid this galaxy of."</text>
+				<event>
+					<text>"You think we are not aware? If billions of humans must die so that the galaxy can see a new era of peace, then so be it!" They cut comms, and a Rebel ship is dispatched to chase you away!</text>
+					<ship load="SHIP_REBEL_FIGHT" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>"Those are innocent civilians down there. They have done nothing to you, why do they deserve this?"</text>
+				<event>
+					<text>"They deserved this fate from the moment they backed the Federation. All who oppose the Rebellion will be destroyed!" They cut comms, and a Rebel ship is dispatched to chase you away!</text>
+					<ship load="SHIP_REBEL_FIGHT" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>"The Rebellion has better things to do than attacking innocent civilians."</text>
+				<event>
+					<text>The Rebel captain pauses. "You're right! There are Federation ships that need killing. Like yours!"</text>
+					<ship load="SHIP_REBEL_FIGHT" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>There's no way that we can help.</text>
+		<event>
+			<text>A tragic fate awaits the innocent lives on that planet, but there's nothing you can do.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="BOSS_EGGMAN" unique="true">
+    <text>A Rebel fleet has gathered around a planet with a rather largely populated Federation metropolis built upon it. It appears the leader of the fleet, an overly rotund and almost egg shaped man aboard an Engineer vessel, is shouting at a crowd that has gathered in response.</text>
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+    <img planet="PLANET_MOON"/>
+    <choice hidden="true">
+        <text>Listen to his rant.</text>
+        <event>
+            <text>The engineer frantically gestures while he speaks. "-I've come to make an announcement: Colonel Hedge is a bitch ass idiot. He slept with my wife. That's right, he-" there's some fumbling with the mic, but the speech promptly resumes, "was "THIS BIG", and I said 'That's disgusting!' So I'm making a call-out to all of you! Hedge, you've-" again, the mic cuts out momentarily. "It's the size of this ship, except way smaller! And guess what? Here's what mine looks like!"</text>
+            <choice hidden="true">
+                <text>계속...</text>
+                <event>
+                    <text>The crowd screams as a massive ASB cannon extends out of one of the nearby fleet ships. "That's right baby! He slept with my wife, so guess what, I'm gonna... uh... sleep with this planet!" The humongous ASB cannon fires, but the shot travels much higher, missing the planet and striking the moon instead, causing the giant rock to shatter as if it were made of glass. "That's right, this is what you get, my SUPER LASER CANNON! HOW DO YOU LIKE THAT, HEDGE? I SLEPT WITH THE MOON, YOU IDIOT! You have 23 minutes before I get bored of waiting and destroy this entire city. You will surrender yourself immediately. Now get out of my sight, before I sleep with all of you too!" The transmission ends.</text>
+                    <choice hidden="true">
+                        <text>Take out the Engineer vessel.</text>
+                        <event>
+                            <text>You move to attack the Engineer ship. Unfortunately, the fleet is also firing upon you from a distance.</text>
+                            <environment type="PDS" target="player"/>
+                            <ship load="SHIP_ENGINEER_EGGMAN" hostile="true"/>
+                            <choice hidden="true">
+                                <text>계속...</text>
+                                <event load="COMBAT_CHECK"/>
+                            </choice>
+                        </event>
+                    </choice>
+                    <choice hidden="true">
+                        <text>Hunt down Hedge and force him to surrender.</text>
+                        <event>
+                            <text>It seems many people in the crowd had the same ideas as you, and people have begun to gather around Hedge's ship, but he's already begun the climb into the atmosphere by the time you arrive. Fortunately for you, you have a ship to follow him with, and you rocket off in his direction. In the distance, it appears the fleet is firing at both of you!</text>
+                            <environment type="PDS" target="all"/>
+                            <ship load="SHIP_FED_EGGMAN" hostile="true"/>
+                            <choice hidden="true">
+                                <text>계속...</text>
+                                <event load="COMBAT_CHECK"/>
+                            </choice>
+                        </event>
+                    </choice>
+                    <choice hidden="true">
+                        <text>Leave before you get slept with.</text>
+                        <event/>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Ignore the fleet.</text>
+        <event>
+            <text>Nothing good can await the crowd below, but there's nothing you can do about it now.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>아무것도 하지 않는다.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="BOSS_EVACUATIONS" unique="true">
+    <text>A Federation city at this beacon is underway with evacuations. A few Rebel ships are skirmishing with the border patrol, but the real threat lies at a distant but quickly approaching Rebel squadron. A few massive Federation Heavy Carryships are collecting civilians, but they won't arrive in time before the Rebels can begin their full attack.</text>
+    <img back="BACK_EVENT_EVACCITY" planet="PLANET_INVISIBLE"/>
+    <choice hidden="true">
+        <text>Pick up as many civilians as possible and bring them to the Carryships.</text>
+        <event>
+            <text>You manage to rescue a few dozen civilians. It's extremely cramped in the cargobay, but it's all worth it. Most of the civilians hurry out of your storage into the safety of the Carryship, except for one, who offers to stay behind and aid you in your mission.</text>
+            <crewMember amount="1" class="human"/>
+            <choice hidden="true">
+                <text>계속...</text>
+                <event>
+                    <text>As you're leaving, you notice an Elite Rebel ship tailing you. A fight is unavoidable.</text>
+                    <ship load="SHIP_REBEL_ELITE_FIGHT" hostile="true"/>
+                    <choice hidden="true">
+                        <text>계속...</text>
+                        <event load="COMBAT_CHECK"/>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>We can't risk it.</text>
+        <event>
+            <text>It's too risky to endanger your ship in such a way when you're so close to the final battle. You hope most of the civilians can make it out alive.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>아무것도 하지 않는다.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="BOSS_PANDORAS_BOX" unique="true">
+	<text>A very strangely colored pirate ship is already here. They hail you. "We are the keepers of the box. Only he who is truly worthy may wield the box's power."</text>
+	<ship load="SHIP_PANDORAS_BOX" hostile="false"/>
+	<choice hidden="true">
+		<text>Are we worthy?</text>
+		<event>
+			<text>The pirate moves closer to the screen, staring deep into your eyes for a minute or two. "Yeah sure, why the hell not. Have fun."</text>
+			<choice>
+				<text>Store the augment for later.</text>
+				<event>
+					<augment name="PANDORA_BOX"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Open it now!</text>
+				<event load="STORAGE_CHECK_AUG_PANDORA_OPEN"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Uh, ok...</text>
+		<event>
+			<text>The pirate says nothing more. You fly away until you can no longer see them.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="BOSS_GROUND_FIGHT" unique="true">
+	<text>On the nearby planet, a massive battle between the Federation and Rebel invaders is raging on. You receive a hail from a Federation Dropship still trying to make its way through the atmosphere.</text>
+	<img back="BACK_EVENT_CITYATTACK" planet="PLANET_INVISIBLE"/>
+	<choice hidden="true">
+		<text>Respond.</text>
+		<event>
+			<text>"How'd you get down there so quickly? Eh, doesn't matter. We're supposed to be bringing reinforcements, but we can't get past the Rebel blockade. Since you're already down there, do you think you could help our troops? It could be the difference between victory and defeat."</text>
+			<choice hidden="true">
+				<text>Seek out the Federation soldiers.</text>
+				<event>
+					<text>You find the Federation battalion. They're in bad shape, and are cornered in the city's center. Their commander, a young man by the name of Conrad, gratefully receives you. "We don't have much time until the Rebels find us and rain all hell on our forces. We need to be as prepared as we can be. If you can help in any way, it would be greatly appreciated.</text>
+					<choice>
+						<text>Give them some scrap.</text>
+						<event>
+							<text>"Perfect, this'll help us greatly. Thank you so much Captain."</text>
+							<item_modify>
+								<item type="scrap" min="-40" max="-40"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="BOSS_GROUND_FIGHT_HELP"/>
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>Give them some ammunition.</text>
+						<event>
+							<text>"Perfect, this'll help us greatly. Thank you so much Captain."</text>
+							<item_modify>
+								<item type="missiles" min="-7" max="-7"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="BOSS_GROUND_FIGHT_HELP"/>
+							</choice>
+						</event>
+					</choice>
+					<choice req="medbay" lvl="2">
+						<text>(Upg. Medbay) Provide medical attention to the soldiers.</text>
+						<event>
+							<text>"Perfect, this'll help us greatly. Thank you so much Captain."</text>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="BOSS_GROUND_FIGHT_HELP"/>
+							</choice>
+						</event>
+					</choice>
+					<choice req="NANO_MEDBAY" lvl="2">
+						<text>(Medbots) Provide medical attention to the soldiers.</text>
+						<event>
+							<text>"Perfect, this'll help us greatly. Thank you so much Captain."</text>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="BOSS_GROUND_FIGHT_HELP"/>
+							</choice>
+						</event>
+					</choice>
+					<choice req="REPAIR">
+						<text>(Repair Drone) Dispatch the drone to fix up their equipment.</text>
+						<event>
+							<text>"Perfect, this'll help us greatly. Thank you so much Captain."</text>
+							<item_modify>
+								<item type="drones" min="-1" max="-1"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="BOSS_GROUND_FIGHT_HELP"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>We can't help.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>We can't help.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the hail and leave.</text>
+		<event/>
+	</choice>
+</event>
+<eventList name="BOSS_GROUND_FIGHT_HELP">
+	<event>
+		<text>While the soldiers are gathering to prepare, Conrad pulls you aside with another soldier. "I'm going to be totally honest here, this mission is doomed. I have a duty to serve here, and I cannot abandon my men. However, this man is my brother. I can't let him die here with me. He will serve faithfully on your ship."</text>
+		<crewMember amount="1" class="soldier"/>
+	</event>
+	<event>
+		<text>"We have no use for this. It's a ship mounted weapon that fell off a Rebel ship we shot down, but as you can see we have no ship to mount it to. I hope it serves you well."</text>
+		<weapon name="RANDOM"/> <!--maybe mention the ship they shot was an MFK Ace?-->
+	</event>
+	<event>
+		<text>"I can't say whether this will help or not, but the Federation supplied us with maps of the sector. I'm sure you have more use for it than us. And in case it doesn't, here's an augment we no longer need."</text>
+		<reveal_map/>
+		<augment name="RANDOM"/>
+	</event>
+</eventList>
+
+<event name="BOSS_REBEL_DEPOT" unique="true">
+	<text>This beacon is home to a makeshift Rebel drop point, a place for transport ships to deliver supplies. It's protected by a well armed MFK guard, but if you can destroy it any supplies currently kept at the platform will be yours.</text>
+	<ship load="SHIP_REBEL_BOSS_DEPOT_GUARD" hostile="false"/>
+	<choice hidden="true">
+		<text>Attack the guard.</text>
+		<event>
+			<text>You raise your weapons and attack the guard.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the drop point.</text>
+		<event>
+			<text>You move past the platform and continue on your mission.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="BOSS_REBEL_DEPOT_WIN">
+	<text>You've defeated the guard. You scrap the remains before investigating the platform.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>Raid the drop point.</text>
+		<event>
+			<text>The platform appears to completely unmanned. You steal as many supplies as you can, and a military grade weapon.</text>
+			<weapon name="RANDOM"/>
+			<autoReward level="HIGH">stuff</autoReward>
+		</event>
+	</choice>
+</event>
+
+<event name="BOSS_REBEL_DISGUISE" unique="true">
+	<text>The ship nearby is broadcasting a call on Federation channels. "This is Captain Boggs of the Federation fleet. We are requesting support from any nearby ships in the local system."</text>
+	<ship load="SHIP_REBEL_FEDERATION" hostile="false"/>
+	<choice hidden="true">
+		<text>Do they think we're stupid? Attack!</text>
+		<event>
+			<text>You catch the captain of the ship saying, "Crap, they're onto us. Ready the weapons!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Give them supplies.</text>
+		<event>
+			<text>The ship is surprised that you're helping them, but they gleefully accept the supplies.</text>
+			<item_modify>
+				<item type="fuel" min="-3" max="-3"/>
+				<item type="scrap" min="-20" max="-20"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="BOSS_REBEL_DISGUISE_GIFT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>You fly away from the strange ship and mute their call.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="BOSS_REBEL_DISGUISE_GIFT">
+	<event>
+		<text>The ship's crew thanks you. "I know the ship may be a bit suspicious, but our original was destroyed. We were forced to board this one, and hastily painted over it. Here, have this as thanks."</text>
+		<autoReward level="MED">missiles_only</autoReward>
+		<weapon name="RANDOM"/>
+	</event>
+	<event>
+		<text>"Hahahah! You absolute idiot! You moron! You complete nincompoop! You dunce! You walnut-brained incompetent bufoon! I can't believe you fell for it! Now you shall die!"</text>
+		<ship hostile="true"/>	
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+
+<event name="BOSS_MILITIA_REPAIRS" unique="true">
+	<text>"Greetings captain! It is a great honor to serve beside the Federation. We know how vital your mission is, so allow us to repair your hull. Good luck against the Flagship, sir!"</text>
+	<ship load="SHIP_MILITIA_FIGHT" hostile="false"/>
+	<damage amount="-7"/>
+	<choice>
+		<text>함선에서 무언가를 한다.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice>
+		<text>아무것도 하지 않는다.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="BOSS_SCOUT_RESCUE" unique="true">
+	<text load="BOSS_SCOUT_RESCUE"/>
+	<choice>
+		<text>Prepare to fight the Rebel ship!</text>
+		<event>
+			<text>You move in to intercept.</text>
+			<ship load="BOSS_SCOUT_RESCUE" hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>There's no time, get ready to jump.</text>
+		<event>
+			<text>You try to block out the horrors of war and focus on your mission.</text>
+		</event>
+	</choice>
+</event>
+<textList name="BOSS_SCOUT_RESCUE">
+	<text>Shots fly by your port windows followed by a Rebel scout in pursuit of a damaged cruiser. Should we move in to engage?</text>
+	<text>There seems to be a small Federation colony under attack by a Rebel forward scout. Will you protect them?</text>
+	<text>A number of large transports are being pursued by a Rebel bombing squadron. One bomber has managed to slip through the defensive fire, and is poised to wreak havoc among the enormous yet vulnerable transports. There's time for you to advance and take it out!</text>
+	<text>A battle rages nearby between small fighters; apparently fighting over a space station. The Federation appears to be losing ships fast. Shall we assist them?</text>
+	<text>A civilian ship is broadcasting a request for assistance on a secure Federation channel. They are being harassed by Rebel scouts. Will you respond?</text>
+	<text>A number of large transports are being pursued by a Rebel bombing squadron. One bomber has managed to slip through the defensive fire, and is poised to wreak havoc among the enormous yet vulnerable transports. There's time for you to advance and take it out!</text>
+	<text>A battle rages nearby between small fighters; apparently fighting over a space station. The Federation appears to be losing ships fast. Shall we assist them?</text>
+	<text>A civilian ship is broadcasting a request for assistance on a secure Federation channel. They are being harassed by Rebel scouts. Will you respond?</text>
+</textList>
+<eventList name="BOSS_SCOUT_RESCUE_LIST">
+	<event>
+		<text>The people you rescued were primarily refugees fleeing the conflict. They offer you their sincere gratitude.</text>
+	</event>
+	<event>
+		<text>You are hailed, "Thank you! It's not much but we can repair a bit of damage before you jump off into the war. Good luck!"</text>
+		<damage amount="-8"/>
+	</event>
+	<event>
+		<text>The survivors send a message, "Thanks for the support, I don't know how much longer we could have held on. Take some supplies, we probably won't need them at this point."</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<!--<event> DOESNT WORK
+		<text>You receive a message on encrypted Federation channels. It says, "Thanks for helping us, Captain. We're in the process of setting up another emergency repairs station. Transmitting coordinates now."</text>
+		<quest event="BOSS_REPAIR_STATION"/>
+	</event>-->
+</eventList>
+
+<!--
+		HOSTILE!!!
+	Events that have a fight
+-->
+<eventList name="BOSS_HOSTILE">
+	<event load="BOSS_SCOUT"/>
+	<event load="BOSS_SCOUT"/>
+	
+	<event load="BOSS_ENGINEER"/>
+	<event load="BOSS_REBEL_STATION"/>
+	
+	<event load="BOSS_PIRATE"/>
+	
+	<event load="BOSS_SLUG_SPECTATOR"/>
+</eventList>
+
+<event name="BOSS_REBEL_STATION" unique="true">
+	<text>A quickly assembled Rebel outpost protects this beacon. They aren't going to let you go without a fight!</text>
+	<ship load="SHIP_REBEL_STATION" hostile="true"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="BOSS_ENGINEER" unique="true">
+	<text>A Rebel engineer vessel, likely stationed here to repair any damaged auto-ships, is armed well enough to feel confident in their ability to destroy you!</text>
+	<ship load="SHIP_ENGINEER" hostile="true"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="BOSS_SLUG_SPECTATOR" unique="true">
+	<text>A Slug ship is at this beacon. Their captain appears to be eating some alien version of popcorn. "Oh, well if it isn't the sssship everyone'sss been looking for. I wondered if I'd ssssee you here. Thiss really is ssssuch an interesssssting experience. We have no part to play here, but ssssometimesss you just want to see a good ssshow, you know?"</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<text>"Aw crap!-" the Slug is cut off by a Rebel ship flying by. A shot pierces the Slug hull, and the Rebel locks onto you.</text>
+			<ship load="SHIP_REBEL_SLUG_SPECTATOR" hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="BOSS_SLUG_SPECTATOR_WIN">
+	<event>
+		<text>It appears the Slug captain is still alive, though his ship and crew are barely holding together. The Slug doesn't seem fazed by the imminent destruction of his ship. "Hah! You sssshowed that Rebel what for. That'ssss what I call entertainment. Though, you can ssssee my ssship won't hold together long, and my crew isss doomed. Perhapsss I will ssstick with you, ssso I can sssssee this ssspectacle all the way to the end."</text>
+		<crewMember amount="1" class="sabo">Rygel</crewMember> <!--used to be Slotz, but that was moved to the slug casino event-->
+	</event>
+	<event>
+		<text>It seems none of the Slugs survived. Disappointed, you take what remains from their ship.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+</eventList>
+
+<event name="BOSS_PIRATE" unique="true">
+	<text>A pirate ship comes careening towards you. "God damn it, god damn it, god DAMN IT! We need to get away from this bloody sector! Get out of our way!"</text> 
+	<ship load="SHIP_PIRATE_ALL" hostile="true"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="BOSS_SCOUT" unique="false">
+	<text load="BOSS_SCOUT"/>
+	<ship load="SHIP_REBEL_AND_AUTO" hostile="true"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="BOSS_SCOUT">
+	<text>Although this sector is still under Federation control, a small scout has slipped by the fleet. You move in to engage.</text>  <!--image- Fleet background-->
+	<text>Long range scanners show this system is empty of any capital ships. Clearly it is not of strategic value. Wait... FTL signatures show a Rebel scout just jumped nearby!</text> <!--image-no fleets-->
+	<text>Sensors indicate that the Rebels are setting up a forward Jump Beacon behind the nearby planet's moon. More importantly, a number of ships are passing by; prepare for a fight!</text> <!-- image- no fleet, empty planet-->
+	<text>Federation ships are scarce in this region of space despite a number of civilian space stations. You see a small bomber squadron engaged with some Federation scouts and quickly move in to assist.</text>
+	<text>As soon as you arrive at the beacon, a Rebel scout turns to engage. Power up the weapons!</text>
+	<text>You scan the area, finding signatures for only a small trade vessel. However, as it approaches you see the silhouette of a Rebel scout! You run the scanners again and discover their registration is fake. You move in to attack.</text>
+</textList>
+
+
+<!--
+Fleets - some with minor fights
+-->
+
+<event name="BOSS_FLEETS_FED">  <!-- empty nodes that the Rebels have not reached yet.-->
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<text load="BOSS_FLEETS_FED"/>
+	<choice>
+		<text>Do something onboard the ship.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice>
+		<text>아무것도 하지 않는다.</text>
+		<event/>
+	</choice>
+</event>
+<textList name="BOSS_FLEETS_FED">
+	<text>You arrive to see a number of Federation forward-carriers and dreadnaughts. This must be a system of high importance to warrant such a fleet.</text> <!-- large fed fleet-->
+	<text>There are a few Federation fleets in the nearby area as well as a lot of wreckage. There must have been minor skirmishes in the area.</text> <!-- small fed fleet - debris-->
+	<text>A few scattered heavy vessels are left to defend the nearby Federation settlement. They seem to be in the process of evacuation.</text> <!-- small fed fleet - populated planet-->
+	<text>A large host of Federation heavy vessels are in formation around the beacon. Sensors run hot with missile locks, but once you transmit your ship signature they leave you alone.</text> <!--large fed fleet-->
+	<text>A battalion of Federation fighters are fighting around a nearby moon with their carriers waiting in the distance. They must have encountered a Rebel scout squadron.</text><!-- small fed fleet - planet-->
+	
+	<text>You arrive to see a number of Federation forward-carriers and dreadnaughts. This must be a system of high importance to warrant such a fleet.</text> <!-- large fed fleet-->
+	<text>There are a few Federation fleets in the nearby area as well as a lot of wreckage. There must have been minor skirmishes in the area.</text> <!-- small fed fleet - debris-->
+	<text>A few scattered heavy vessels are left to defend the nearby Federation settlement. They seem to be in the process of evacuation.</text> <!-- small fed fleet - populated planet-->
+	<text>A large host of Federation heavy vessels are in formation around the beacon. Sensors run hot with missile locks, but once you transmit your ship signature they leave you alone.</text> <!--large fed fleet-->
+	<text>A battalion of Federation fighters are fighting around a nearby moon with their carriers waiting in the distance. They must have encountered a Rebel scout squadron.</text><!-- small fed fleet - planet-->
+</textList>
+
+
+
+<event name="BOSS_FLEETS_BOTH">  <!-- nodes that have ships fighting  -  unique background -->
+	<customFleet right="false" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<customFleet right="true" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text load="BOSS_FLEETS_BOTH"/>
+	<choice>
+		<text>Do something onboard the ship.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice>
+		<text>아무것도 하지 않는다.</text>
+		<event/>
+	</choice>
+</event>
+<textList name="BOSS_FLEETS_BOTH">
+	<text>Sensors indicate evidence of a huge battle nearby, but the immediate vicinity seems quiet. You try to lay low and keep out of the fighting.</text>
+	<text>You arrive to find two fleets crashing against each other. Sensors are tracking the extent of the carnage. You quietly wait for the FTL drive to charge, knowing that the only way you can help is by completing your mission.</text>
+	<text>A battle rages in the distance. Sensors suggest the presence of many vulnerable escape pods, but you know you cannot stop to help. The mission is paramount.</text>
+	<text>A battle rages on in the distance. As much as you would like to help in the fight, you know the importance of your mission.</text>
+	<text>You don't need advanced Sensors to tell there is a battle going on. You look out of the window quietly, waiting to jump. There's no way you can help in this fight.</text>
+	<text>Two fleets are volleying shots at each other. Luckily no one seems interested in your ship. You prepare to make another jump.</text>
+	
+	<text>Sensors indicate evidence of a huge battle nearby, but the immediate vicinity seems quiet. You try to lay low and keep out of the fighting.</text>
+	<text>You arrive to find two fleets crashing against each other. Sensors are tracking the extent of the carnage. You quietly wait for the FTL drive to charge, knowing that the only way you can help is by completing your mission.</text>
+	<text>A battle rages in the distance. Sensors suggest the presence of many vulnerable escape pods, but you know you cannot stop to help. The mission is paramount.</text>
+	<text>A battle rages on in the distance. As much as you would like to help in the fight, you know the importance of your mission.</text>
+	<text>You don't need advanced Sensors to tell there is a battle going on. You look out of the window quietly, waiting to jump. There's no way you can help in this fight.</text>
+	<text>Two fleets are volleying shots at each other. Luckily no one seems interested in your ship. You prepare to make another jump.</text>
+</textList>
+
+ 
+<event name="BOSS_FLEETS_BOTH_FIGHT">  <!-- nodes that have ships fighting  -  also inside the /!\ symbol but can be elsewhere too. -->
+	<customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text load="BOSS_FLEETS_BOTH"/>
+	<ship load="BOSS_FLEETS_REBEL" hostile="true"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="BOSS_FLEETS_BOTH">
+	<text>You arrive in the middle of a raging battle. Both sides are taking heavy losses. A small squadron flies past and a fighter breaks off, moving toward your position.</text>
+	<text>Two fleets fight nearby. You try to skirt around the edges of the battle and keep out of weapons range, but a Rebel scout spots you and moves in.</text>
+	<text>It's hard to tell who is winning the nearby battle. Before you have a chance to figure it out, a fighter moves in to attack.</text>
+	<text>The sheer scale of the destruction in the distance is almost breath-taking. Unfortunately, your position as an independent observer doesn't last for long!</text>
+	<text>The destruction in the distance is almost awe-inspiring. However you're dragged back to reality as Sensors indicate you are under attack.</text>
+	<text>You don't have any time to worry about the battle in the distance. The fight is coming to you really quickly!</text>
+	
+	<text>You arrive in the middle of a raging battle. Both sides are taking heavy losses. A small squadron flies past and a fighter breaks off, moving toward your position.</text>
+	<text>Two fleets fight nearby. You try to skirt around the edges of the battle and keep out of weapons range, but a Rebel scout spots you and moves in.</text>
+	<text>It's hard to tell who is winning the nearby battle. Before you have a chance to figure it out, a fighter moves in to attack.</text>
+	<text>The sheer scale of the destruction in the distance is almost breath-taking. Unfortunately, your position as an independent observer doesn't last for long!</text>
+	<text>The destruction in the distance is almost awe-inspiring. However you're dragged back to reality as Sensors indicate you are under attack.</text>
+	<text>You don't have any time to worry about the battle in the distance. The fight is coming to you really quickly!</text>
+</textList>
+ 
+
+<event name="BOSS_FLEETS_REBEL"> <!-- areas that the fleet took over (or will take over soon) have the /!\ symbol on the map-->
+	<fleet>rebel</fleet>
+	<text load="BOSS_FLEETS_REBEL"/>
+	<ship load="BOSS_FLEETS_REBEL" hostile="true"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="BOSS_FLEETS_REBEL">
+	<text>Although you were expecting the Rebels, you never imagined their fleet could have grown so fast. Your scanners can hardly register them all before a fighter stationed nearby moves in to attack.</text>
+	<text>This system is flooded with Rebel warships. Luckily your ship's signature is disguised as a civilian transport. Most heavy vessels ignore you but a small fighter is approaching with weapons hot!</text> <!-- no environment?--> 
+	<text planet="PLANET_POPULATED">You arrive to find a Rebel battalion encircling a nearby planet, launching landing parties. A small scout moves toward your position. Prepare for a fight!</text>
+	<text>As soon as you arrive you find yourself in the debris of a fierce battle. However, only Rebel warships remain and you find yourself immediately under attack.</text>
+	<text>Shots fly by and your computer registers multiple weapon locks as soon as you arrive. Evasive action!</text>
+	<text planet="PLANET_POPULATED">What was once a great series of space stations is now nothing but a small ring of debris around the nearby moon. There's no time to mourn the dead; an enemy approaches!</text>
+	<text>The Federation seems to have put up a good fight. A number of Rebel ships lie broken or wounded. However their overwhelming numbers force the remaining Federation forces to retreat. Hopefully you can get away in time as well.</text>
+	
+	<text>Although you were expecting the Rebels, you never imagined their fleet could have grown so fast. Your scanners can hardly register them all before a fighter stationed nearby moves in to attack.</text>
+	<text>This system is flooded with Rebel warships. Luckily your ship's signature is disguised as a civilian transport. Most heavy vessels ignore you but a small fighter is approaching with weapons hot!</text> <!-- no environment?--> 
+	<text planet="PLANET_POPULATED">You arrive to find a Rebel battalion encircling a nearby planet, launching landing parties. A small scout moves toward your position. Prepare for a fight!</text>
+	<text>As soon as you arrive you find yourself in the debris of a fierce battle. However, only Rebel warships remain and you find yourself immediately under attack.</text>
+	<text>Shots fly by and your computer registers multiple weapon locks as soon as you arrive. Evasive action!</text>
+	<text planet="PLANET_POPULATED">What was once a great series of space stations is now nothing but a small ring of debris around the nearby moon. There's no time to mourn the dead; an enemy approaches!</text>
+	<text>The Federation seems to have put up a good fight. A number of Rebel ships lie broken or wounded. However their overwhelming numbers force the remaining Federation forces to retreat. Hopefully you can get away in time as well.</text>
+</textList>
+</FTL>
