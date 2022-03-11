@@ -17,6 +17,7 @@
 
 <event name="SALVAGE_FAIL">
 	<text>선원들은 가치 있는 것을 거의 찾지 못했고, 실망한 채로 함선에 돌아왔습니다.</text>
+	<variable name="loc_has_salvaged" op="set" val="1"/>
 </event>
 
 <!--ARM-->
@@ -33,35 +34,40 @@
 <event name="SALVAGE_DEFAULT_LOW">
 	<text>당신의 선원들은 얼마 안되는 자원을 찾았지만 그래도 무언가 건지긴 했습니다. 그들은 수확물을 가지고 함선으로 돌아왔습니다.</text>
 	<autoReward level="LOW">stuff</autoReward>
+	<variable name="loc_has_salvaged" op="set" val="1"/>
 </event>
 <event name="SALVAGE_DEFAULT_MED">
 	<text>당신의 선원들은 적당한 양의 인양물을 찾았습니다. 그들은 수확물을 가지고 함선으로 돌아왔습니다.</text>
 	<autoReward level="MED">stuff</autoReward>
+	<variable name="loc_has_salvaged" op="set" val="1"/>
 </event>
 <event name="SALVAGE_DEFAULT_HIGH">
 	<text>당신의 선원들은 많은 양의 인양물을 찾았습니다. 그들은 수확물을 가지고 함선으로 돌아왔습니다.</text>
 	<autoReward level="HIGH">stuff</autoReward>
+	<variable name="loc_has_salvaged" op="set" val="1"/>
 </event>
 
 <event name="SALVAGE_DEFAULT_FUEL">
 	<text>당신의 선원들은 출처가 불확실한 수많은 연료 전지를 찾았습니다. 그들은 수확물을 가지고 함선으로 돌아왔습니다.</text>
 	<autoReward level="MED">fuel_only</autoReward>
+	<variable name="loc_has_salvaged" op="set" val="1"/>
 </event>
 
 <event name="SALVAGE_DEFAULT_MINEFIELD">
 	<text>당신의 선원들은 우연히 버려진 지뢰밭을 발견했습니다. 확실히 좋다고 할 순 없는 곳이지만, 많은 양의 탄약과 스크랩을 얻을 수 있는 곳이기도 합니다. 다만 이곳을 탐색하는 건 위험한 일입니다.</text>
+	<variable name="loc_has_salvaged" op="set" val="1"/>
 	<choice hidden="true">
 		<text>위험을 감수한다.</text>
 		<event load="SALVAGE_DEFAULT_MINEFIELD_RISK"/>
 	</choice>
-	<choice hidden="true" req="crusader">
+	<choice hidden="true" req="rock_crusader">
 		<text>크루세이더는 폭발물에 대해 해박한 데다 한 방 맞아도 끄떡없다.</text>
 		<event>
 			<text>크루세이더가 폭발물을 잘 아는 것도 있지만, 그를 택하는 게 탁월한 진짜 이유는 그의 두꺼운 피부 때문입니다. 신체에 별 위협이 없기 때문에 그는 인상적인 수확을 가지고 돌아왔지만, 더 큰 팀으로 가서 얻을 수 있었던 것만큼은 아닙니다.</text>
 			<autoReward level="MED">missiles</autoReward>
 		</event>
 	</choice>
-	<choice hidden="true" req="paladin"> <!-- same outcome as crusader, but alt text -->
+	<choice hidden="true" req="rock_paladin"> <!-- same outcome as crusader, but alt text -->
 		<text>성기사는 폭발물에 대해 해박한 데다 한 방 맞아도 끄떡없다.</text>
 		<event>
 			<text>크루세이더가 폭발물을 잘 아는 것도 있지만, 그를 택하는 게 탁월한 진짜 이유는 그의 놀라운 회복력 때문입니다. 신체에 별 위협이 없기 때문에 그는 인상적인 수확을 가지고 돌아왔지만, 느린 움직임 때문에 반군의 추격이 걱정되어 더 많은 것을 가져오진 못했습니다.</text>
@@ -114,7 +120,8 @@
 </eventList>
 
 <event name="SALVAGE_DEFAULT_DRONE">
-	<text>이상하게도 강습 드론 한쌍이 이곳의 심연에 버려진 것 같습니다. 당신은 간단하게 그것들을 드론 부품으로 분해할 수도 있지만 도식을 얻기 위해 스캔한다면 그것들을 작동시키는 위험을 감수하게 될 것입니다.</text>
+	<text>이상하게도 강습 드론 한쌍이 이곳의 심연에 버려져 있는 것 같습니다. 간단하게 그것들을 드론 부품으로 분해할 수도 있지만, 그것들이 작동될 위험을 감수하고 도식을 얻기 위해 스캔할 수도 있습니다.</text>
+	<variable name="loc_has_salvaged" op="set" val="1"/>
 	<choice hidden="false">
 		<text>드론들을 드론 부품으로 분해한다.</text>
 		<event>
@@ -126,7 +133,7 @@
 		<text>드론들을 스캔한다.</text>
 		<event>
 			<text>스캔을 시도했지만 거리가 멀어 데이터를 볼 수가 없었습니다. 가까이 다가가다 실수로 너무 가까이 움직여 드론이 작동했습니다! 다행히도 도식은 복구했지만 그것들이 함선으로 들어왔습니다!</text>
-			<boarders min="2" max="2" class="battle"/>
+			<boarders min="2" max="2" class="drone_battle"/>
 			<damage amount="0" system="random" effect="breach"/>
 			<damage amount="0" system="random" effect="breach"/>
 			<drone name="BATTLETOG_DEFEND"/>
@@ -150,6 +157,7 @@
 
 <event name="SALVAGE_DEFAULT_PIRATES">
 	<text>송신소 바로 주변은 별게 없었지만, 시스템의 훨씬 더 깊은 곳으로 나아가자 우연히 스캔에 나타나지 않던 비활동 해적선을 발견했습니다.</text>
+	<variable name="loc_has_salvaged" op="set" val="1"/>
 	<choice hidden="true">
 		<text>팀을 보내 그 안에 무엇이 있는지 확인한다.</text>
 		<event load="SALVAGE_DEFAULT_PIRATES_LOOT"/>

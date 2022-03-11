@@ -34,7 +34,7 @@
 <event name="LAST_STAND_START">
 	<text load="TEXT_LIGHTSPEED"/>
 	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE"/>
-	<choice hidden="true" req="MARKER_LASTSTAND" lvl="0" max_group="0" blue="false">
+	<choice hidden="true" req="loc_laststand" lvl="0" max_group="0" blue="false">
 		<text>계속...</text>
 		<event load="ATLAS_MENU"/>
 	</choice>
@@ -47,18 +47,18 @@
 	반군 위협 수준: !치명적으로 높음!
 
 	연방 수도는 당신의 마지막 목적지입니다. 이 현실을 반군의 포위로부터 구하려면 연방 본부가 파괴되기 전에 반군 기함을 격침해야 합니다.</text>
-	<hiddenAug>MARKER_LASTSTAND</hiddenAug>
-	<choice hidden="true" req="MARKER_LASTSTAND" lvl="1" max_group="0" blue="false">
+	<variable name="loc_laststand" op="add" val="1"/>
+	<choice hidden="true" req="loc_laststand" lvl="1" max_group="0" blue="false">
 		<text>계속...</text>
 		<event load="TRUE_LAST_STAND_START_EMERGENCY"/>
 	</choice>
-	<choice hidden="true" blue="false" req="DIFFICULTY_EXTREME" lvl="0" max_group="0">
-		<text>한계속도 항해를 마친다.</text>
-		<event load="TRUE_LAST_STAND_START"/>
-	</choice>
-	<choice hidden="true" blue="false" req="DIFFICULTY_EXTREME" lvl="1" max_group="0">
+	<choice hidden="true" blue="false" req="challenge_level" lvl="3" max_group="0">
 		<text>한계속도 항해를 마친다.</text>
 		<event load="TRUE_LAST_STAND_START_EXTREME"/>
+	</choice>
+	<choice hidden="true" blue="false" req="pilot" lvl="1" max_group="0">
+		<text>한계속도 항해를 마친다.</text>
+		<event load="TRUE_LAST_STAND_START"/>
 	</choice>
 	<choice hidden="true" req="COORDS" blue="false">
 		<text>경로를 바꾼다.</text>
@@ -69,8 +69,8 @@
 	<destroyed load="LAST_STAND_START_EXTREME_FINISH"/>
 	<deadCrew load="LAST_STAND_START_EXTREME_FINISH"/>
 	<crew>
-		<crewMember type="soldier" prop="0.5"/>
-		<crewMember type="mfk" prop="0.5"/>
+		<crewMember type="human_soldier" prop="0.5"/>
+		<crewMember type="human_mfk" prop="0.5"/>
 	</crew>
 </ship>
 <event name="TRUE_LAST_STAND_START_EMERGENCY">
@@ -91,6 +91,7 @@
 	<playSound>lightspeed</playSound>
 	<customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
 	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<metaVariable name="prof_finalsector" op="add" val="1"/>
 	<ship load="SHIP_LAST_STAND_START_EXTREME" hostile="true"/>
 	<choice hidden="true">
 		<text>계속...</text>
@@ -107,10 +108,11 @@
 </event>
 <event name="TRUE_LAST_STAND_START">
 	<text>마침내 연방의 수도인 17번 노드에 도착했습니다. 당신은 멀티버스 기술이 발견된 제0 우주에서도 벌어졌던 이 전투에 대해 들어봤습니다. 지금부터 그 전투에 직접 참가하게 될 것입니다. 여기서 당신이 취할 행동은 이 현실을 구원할 수도 파멸로 이끌 수도 있습니다.</text>
+	<metaVariable name="prof_finalsector" op="add" val="1"/>
 	<customFleet right="false" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
 	<changeBackground>BACK_EVENT_LASTSTAND</changeBackground>
 	<playSound>lightspeed</playSound>
-	<choice hidden="true" req="MORALITY_CRIME" lvl="0" max_lvl="7" max_group="0" blue="false">
+	<choice hidden="true" req="rep_general" lvl="0" max_lvl="7" max_group="0" blue="false">
 		<text>계속...</text>
 		<event>
 			<text>신속한 신분증 감별을 통해 문제 없이 송신소를 통과할 수 있었습니다.</text>
@@ -576,7 +578,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="MORALITY_CRIME" lvl="8" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_general" lvl="8" max_lvl="999" max_group="0" blue="false">
 		<text>계속...</text>
 		<event>
 			<text>당신은 신분증을 제출했지만, 뭔가 문제가 생긴 것 같습니다. 근처에 있던 연방 함선이 무기를 장전한 채로 다가왔습니다. 그 함선이 교신을 보냈습니다. "이곳에 오다니 꽤 무모하시군요. 유감스럽게도 연방은 범죄자를 지원할 수 없습니다. 용서를 구하고 싶다면 기함을 제거하는 것이 좋은 출발점일 것입니다." 그들은 말을 마치고 통신을 끊었습니다.</text>
@@ -629,7 +631,7 @@
 		<text>선원을 요청한다.</text>
 		<event>
 			<text>툴리가 훈련받은 연방군 병사를 보내 당신의 함선에서 근무하게 했습니다.</text>
-			<crewMember amount="1" class="soldier"/>
+			<crewMember amount="1" class="human_soldier"/>
 			<choice>
 				<text>계속...</text>
 				<event load="LASTSTAND_EMPTY_BEACON"/>
@@ -637,7 +639,7 @@
 		</event>
 	</choice>
 	<choice hidden="true" max_group="1" req="SHIP_PROPHET">
-		<text>여러분의 지원은 필요 없습니다. 위대한 눈께서 우리를 이끌어 줄 것입니다.</text>
+		<text>여러분의 지원은 필요 없습니다. 위대한 눈께서 우리를 이끌어 주실 겁니다.</text>
 		<event>
 			<text>당신은 순항을 기원하며 위대한 눈에 기도했습니다. 기도를 마치자 함선에 위대한 눈이 깃들어 보급품이 비축됐고 떠날 준비가 돼 있었습니다.</text>
 			<reveal_map/>
@@ -665,7 +667,7 @@
 			</choice>
 		</event>
 	</choice>
-	<!--<choice hidden="true" req="turzil">
+	<!--<choice hidden="true" req="unique_turzil">
 		<text>The Engi wishes to speak with Tully.</text>
 		<event>
 			<text>The Engi fugitive transmits a secret code to Federation command that authorizes you to enter the control room! Tully shakes the Engi by the hand, welcoming him. "Turzil! I wondered what had happened to you! You went silent and the Engi brigade never showed up to assist us."</text>
@@ -685,7 +687,7 @@
 <event name="TURZIL_TRUTH">
 	<text>Tully dispatches one of the largest support ships in the Federation fleet to fix up your hull and provide as much assistance as possible. Turzil pulls you aside, "Your assistance was: necessary for continued survival. It is understood common methods of showing gratitude involve transmission of items of high personal value. I desire to give you: old cruiser. No longer in use, but Federation can fix it up."</text>
 	<unlockCustomShip silent="false">PLAYER_SHIP_ENGI</unlockCustomShip>
-	<hiddenAug>ACH_CREW_TURZIL</hiddenAug>
+	<variable name="ach_crew_unique_turzil" op="set" val="1"/>
 	<damage amount="-20"/>
 	<reveal_map/>
 	<item_modify>
@@ -700,8 +702,8 @@
 </event>
 <event name="TULLY_CONTACT">
 	<text>툴리가 당신과 함께 앉아 상자를 당신 앞에 있는 테이블 위에 놓았습니다. "보급 상자 안에 뭐가 있는지 알고 있나?" 당신을 고개를 가로저었습니다. "그렇다면 말해주겠네. 아무것도 없어." 당신이 혼란스러운 모습을 보이자 툴리가 낄낄댔습니다. "몇몇 주요 연방 간부들에게 보급 상자를 나눠줬네. 믿을 만한 사람에게 주어 내게 전달시키도록 했지. 그건 자네가 이 마지막 싸움을 할 자격이 있다는 증거야. 이제 출발하는 게 좋겠군, 기함은 결코 자멸하지 않을 테니."</text>
-	<hiddenAug>ACH_CREW_TULLY</hiddenAug>
-	<crewMember amount="1" class="tully">Tully</crewMember>
+	<variable name="ach_crew_unique_tully" op="set" val="1"/>
+	<crewMember amount="1" class="unique_tully">Tully</crewMember>
 	<damage amount="-15"/>
 	<autoReward level="MED">standard</autoReward>
 	<choice>
@@ -744,30 +746,30 @@
 </event>
 
 <event name="BOSS_TEXT_1">
-	<text>마침내... 반군 기함입니다. 만일 당신이 이 괴물을 물리칠 수 있다면, 연방 함대는 살아남을 기회를 얻게 될 것입니다. 물러설 곳은 없습니다!</text>
-	<hiddenAug>MARKER_FLAGSHIP</hiddenAug>
+	<text>마침내... 반군 기함과의 결전입니다. 만일 당신이 이 괴물을 물리칠 수 있다면, 연방 함대는 살아남을 기회를 얻게 될 것입니다. 물러설 곳은 없습니다!</text>
+	<variable name="loc_flagship" op="set" val="1"/>
 	<status type="clear" target="player" system="sensors" amount="100"/>
-	<choice hidden="true" req="MARKER_PEACEQUEST">
+	<choice hidden="true" req="loc_peacequest">
 		<text>Perhaps there could be a reconciliation of our ideals without war?</text>
 		<event>
 			<text>The Flagship's commander blinks, confused. "Hah, spoken like a foolish, peace loving monk! You would not know the importance of this movement! Your loyalties to the Federation blind you from the importance of the rebellion! When have YOU ever gone up against oppression?"</text>
-			<choice hidden="true" req="ACH_BOSS_ROCKCRUISER">
+			<choice hidden="true" req="ach_boss_rockcruiser">
 				<text>We inspired a rebellion within the Rock Homeworlds to overthrow Stonewall.</text>
 				<event load="BOSS_NEGOTIATE_1"/>
 			</choice>
-			<choice hidden="true" req="ACH_BOSS_ZONE">
+			<choice hidden="true" req="ach_boss_zone">
 				<text>We defied the Ministry and saved an entire planet from their oppression.</text>
 				<event load="BOSS_NEGOTIATE_1"/>
 			</choice>
-			<choice hidden="true" req="ACH_BOSS_SUZZY">
+			<choice hidden="true" req="ach_boss_suzzycruiser">
 				<text>We went up against the Hive and raided their private hatcheries.</text>
 				<event load="BOSS_NEGOTIATE_1"/>
 			</choice>
-			<choice hidden="true" req="ACH_BOSS_LEECHDREAD">
+			<choice hidden="true" req="ach_boss_leechdread">
 				<text>We overthrew Tyrdeo and brought about a new era to the Eargen Republic.</text>
 				<event load="BOSS_NEGOTIATE_1"/>
 			</choice>
-			<choice hidden="true" req="MARKER_SLUGDEMOCRACY">
+			<choice hidden="true" req="loc_slugdemocracy">
 				<text>We dethroned Nights and convinced the Kleptocracy to turn to democracy.</text>
 				<event load="BOSS_NEGOTIATE_1"/>
 			</choice>
@@ -783,7 +785,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="jerry">
+	<choice hidden="true" req="unique_jerry">
 		<text>(제리) 기함에 연락한다.</text>
 		<event>
 			<text>기함이 당신을 알아채는 데는 오래 걸리지 않았습니다. 기함이 당신을 겨냥하기 전에 제리가 반군의 통신 채널을 이용해 공격을 멈추고 밴스에게 연결해 달라고 요구했습니다.</text>
@@ -793,7 +795,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" blue="false" max_group="1" req="MARKER_JERRYKILL" lvl="0">
+	<choice hidden="true" blue="false" max_group="1" req="loc_jerrykill" lvl="0">
 		<text>계속...</text>
 		<event>
 			<text>기함이 당신을 알아채는 데는 오래 걸리지 않았습니다. 당신을 그저 지나가는 길에 마주친 평범한 연방군이라 생각한 기함이 함포를 가동하고 접근해 왔습니다.</text>
@@ -803,10 +805,10 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" blue="false" max_group="1" req="MARKER_JERRYKILL" lvl="1">
+	<choice hidden="true" blue="false" max_group="1" req="loc_jerrykill" lvl="1">
 		<text>계속...</text>
 		<event>
-			<text>기함에 접근하자 그 거대한 함선이 교신을 보내 왔습니다. "네놈이 제리를 죽인 개자식이군! 그 사람은 내 결혼식의 가장 멋진 하객이었어! 제리의 복수로 널 죽여주마!" 멀리서 수십척의 함선이 교전을 벗어나 당신에게 접근하며 ASB 사격을 퍼부었습니다!</text>
+			<text>As you approach the Flagship, you receive a hail from its captain. "You... you're the monster who murdered Jerome Wentworth. You hideous, repulsive, vile scum. You claim we're villains, yet you murder the kindest spirit in the whole galaxy in cold blood? Vance gave us direct orders to see to it your mission ends here, but frankly? I don't need those orders. I'm going to enjoy watching you die, as will all the rest of the galaxy."</text>
 			<environment type="PDS" target="player"/>
 			<choice hidden="true">
 				<text>계속...</text>
@@ -818,6 +820,7 @@
 
 <event name="FLAGSHIP_JERRY">
 	<text>Not too long later, Vance appears on your screen, his bright orange uniform and massive, muscular figure standing out from the faded white of the officers around him. You aren't sure where Vance is, but that no longer matters.</text>
+	<variable name="loc_vance_betrayal" op="set" val="1"/>
 	<choice hidden="true">
 		<text>계속...</text>
 		<event>
@@ -834,7 +837,7 @@
 								<text>계속...</text>
 								<event>
 									<text>Jerry collapses to his knees, shocked and speechless as how easily he was betrayed. "I should have known..." Jerry chokes up a sob, and holds his head in his hands while tears form puddles on the ground.</text>
-									<removeCrew class="jerry">
+									<removeCrew class="unique_jerry">
 										<clone>false</clone>
 										<text>Jerry sits in the corner, crying. The Flagship approaches, weapons charging. You want to console him, but you have to get going.</text>
 									</removeCrew>
@@ -842,8 +845,8 @@
 										<text>계속...</text>
 										<event>
 											<text>Suddenly, Jerry gets back up to his feet, wiping away the tears. "Well, there's only one thing left to do now." He draws out a massive Gatling gun. You aren't sure where he got it from, but you don't have the time to question it.</text>
-											<crewMember amount="1" class="jerryg">Jerry</crewMember>
-											<choice hidden="true" blue="false" lvl="0" max_group="0" req="ponyt">
+											<crewMember amount="1" class="unique_jerry_gun">Jerry</crewMember>
+											<choice hidden="true" blue="false" lvl="0" max_group="0" req="pony_tamed">
 												<text>계속...</text>
 												<event load="COMBAT_CHECK"/>
 											</choice>
@@ -851,7 +854,7 @@
 												<text>계속...</text>
 												<event>
 													<text>Before you can proceed on to the Flagship, Jerry pauses, and walks out of the room.</text>
-													<removeCrew class="jerryg">
+													<removeCrew class="unique_jerry_gun">
 														<clone>false</clone>
 														<text>You have no idea where Jerry is going, but you follow him.</text>
 													</removeCrew>
@@ -868,7 +871,7 @@
 																<event>
 																	<text>Then, Jerry proceeds to mount the pony! "Alright. Now I'm ready."</text>
 																	<unlockCustomShip silent="false">PLAYER_SHIP_PONY_3</unlockCustomShip>
-																	<crewMember amount="1" class="ponycj">Jerry</crewMember>
+																	<crewMember amount="1" class="unique_jerry_pony_crystal">Jerry</crewMember>
 																	<choice hidden="true">
 																		<text>계속...</text>
 																		<event load="COMBAT_CHECK_FLAGSHIP"/>
@@ -879,11 +882,11 @@
 													</choice>
 												</event>
 											</choice>
-											<choice hidden="true" blue="false" lvl="1" max_group="0" req="ponyt">
+											<choice hidden="true" blue="false" lvl="1" max_group="0" req="pony_tamed">
 												<text>계속...</text>
 												<event>
 													<text>Before you can proceed on to the Flagship, Jerry pauses, and walks out of the room.</text>
-													<removeCrew class="jerryg">
+													<removeCrew class="unique_jerry_gun">
 														<clone>false</clone>
 														<text>You have no idea where Jerry is going, but you follow him.</text>
 													</removeCrew>
@@ -891,7 +894,7 @@
 														<text>계속...</text>
 														<event>
 															<text>Jerry enters the room where the Equinoid is sleeping...</text>
-															<removeCrew class="ponyt">
+															<removeCrew class="pony_tamed">
 																<clone>false</clone>
 																<text>You have no idea what Jerry is doing, and watch in confusion.</text>
 															</removeCrew>
@@ -900,7 +903,7 @@
 																<event>
 																	<text>Then, Jerry proceeds to mount the pony! "Alright. Now I'm ready."</text>
 																	<unlockCustomShip silent="false">PLAYER_SHIP_PONY_3</unlockCustomShip>
-																	<crewMember amount="1" class="ponyj">Jerry</crewMember>
+																	<crewMember amount="1" class="unique_jerry_pony">Jerry</crewMember>
 																	<choice hidden="true">
 																		<text>계속...</text>
 																		<event load="COMBAT_CHECK_FLAGSHIP"/>
@@ -926,7 +929,7 @@
 <event name="BOSS_TEXT_2">
 	<text>당신은 적 기함을 추격하였고, 기함이 이전 전투에서 크게 손상되었다는 것을 발견했습니다. 스캔으로 기함이 상당한 양의 동력을 드론 시스템으로 전환했음을 발견했습니다. 전투 준비를 하십시오.</text>
 	<status type="clear" target="player" system="sensors" amount="100"/>
-	<choice hidden="true" req="MARKER_NEGOTIATION" lvl="0" blue="false" max_group="0">
+	<choice hidden="true" req="loc_negotiation" lvl="0" blue="false" max_group="0">
 		<text>계속...</text>
 		<event>
 			<text>기함이 약해졌을지 모르지만 여전히 만만찬은 상대입니다. 전투를 계속하십시오!</text>
@@ -936,21 +939,17 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="MARKER_NEGOTIATION" lvl="1" blue="false" max_group="0">
+	<choice hidden="true" req="loc_negotiation" lvl="1" blue="false" max_group="0">
 		<text>계속...</text>
 		<event>
 			<text>Suddenly, a small automated vessel breaks off from the fleet in the distance. You receive a hail from the shuttle. "Hello. This is an automated message sent from Admiral Vance of the Rebel fleet. We have taken into consideration your past victories, and the considerable damage you have already dealt to the Flagship. With this in mind, the Rebellion no longer holds interest in this reality. We offer our surrender."</text>
 			<choice hidden="true">
 				<text>계속...</text>
 				<event>
-					<text>Congratulations captain, you have completed the negotiation ending! Accept this payment to boost your score.</text>
 					<item_modify>
 						<item type="scrap" min="2000" max="2000"/>
 					</item_modify>
-					<choice hidden="true">
-						<text>계속...</text>
-						<event load="WIN_PEACEFUL"/>
-					</choice>
+					<win ach="zoltan_peacekeeper" creditsText="credit_victory_peace" text="" creditsBackground="VICTORY_PEACE"/>
 				</event>
 			</choice>
 		</event>
@@ -960,11 +959,11 @@
 <event name="BOSS_TEXT_3">
 	<text>어떻게 적이 그 만큼의 손상을 입고도 계속 싸울 수 있는지 모르겠습니다. 기함은 동력을 방어 시스템으로 돌리는 것 뿐 아니라 숨겨둔 강력한 무기도 준비하고 있습니다. 대비하십시오... 이제 시작입니다!</text>
 	<status type="clear" target="player" system="sensors" amount="100"/>
-	<choice hidden="true" req="MARKER_VANCE_BETRAYAL" lvl="0" blue="false" max_group="0">
+	<choice hidden="true" req="loc_vance_betrayal" lvl="0" blue="false" max_group="0">
 		<text>계속...</text>
 		<event load="COMBAT_CHECK_FLAGSHIP"/>
 	</choice>
-	<choice hidden="true" req="MARKER_VANCE_BETRAYAL" lvl="1" blue="false" max_group="0">
+	<choice hidden="true" req="loc_vance_betrayal" lvl="1" blue="false" max_group="0">
 		<text>계속...</text>
 		<event>
 			<text>As you approach the Flagship for a third time, an ASB shot flies past your ship and nearly collides with the Flagship. In the distance, the Rebel forces have turned amongst each other. It appears as though word of Vance's betrayal has caught on, and it's created a schism in their forces. Expect additional fire support during this final stretch!</text>
@@ -979,27 +978,27 @@
 	
 <event name="BOSS_NEGOTIATE_1">
 	<text>"So, you can invade the homeworlds of some barbaric aliens and convince them to turn against themselves. That is nothing compared to the mission of our movement! We seek to bring peace to galaxy. I doubt you know anything of peace."</text>
-	<choice hidden="true" req="MARKER_ORCHIDQUEST">
+	<choice hidden="true" req="ach_boss_orchidcruiser">
 		<text>We saved the Orchid Gardenworlds from a pirate siege.</text>
 		<event load="BOSS_NEGOTIATE_2"/>
 	</choice>
-	<choice hidden="true" req="MARKER_FEDQUEST">
+	<choice hidden="true" req="ach_boss_mfkgunboat">
 		<text>We saved an entire city and memorial from a siege put on by the Rebellion.</text>
 		<event load="BOSS_NEGOTIATE_2"/>
 	</choice>
-	<choice hidden="true" req="ACH_BOSS_AUTODREAD">
+	<choice hidden="true" req="ach_boss_autodread">
 		<text>We saved the Spectral Dynasty from one of your own Auto-Dreadnaughts.</text>
 		<event load="BOSS_NEGOTIATE_2"/>
 	</choice>
-	<choice hidden="true" req="ACH_BOSS_CLAN">
+	<choice hidden="true" req="ach_boss_clancruiser">
 		<text>We saved the last of an endangered alien species from the EHG.</text>
 		<event load="BOSS_NEGOTIATE_2"/>
 	</choice>
-	<choice hidden="true" req="ACH_BOSS_HACKER">
+	<choice hidden="true" req="ach_boss_hacker">
 		<text>We liberated an entire civilian sector from the hacker clan.</text>
 		<event load="BOSS_NEGOTIATE_2"/>
 	</choice>
-	<choice hidden="true" req="ACH_CREW_DIANESH">
+	<choice hidden="true" req="ach_crew_dianesh">
 		<text>We managed to convince the Crystalline Empress herself to be open to the rest of the galaxy.</text>
 		<event load="BOSS_NEGOTIATE_2"/>
 	</choice>
@@ -1016,23 +1015,23 @@
 </event>
 <event name="BOSS_NEGOTIATE_2">
 	<text>"And how might have you accomplished those? Through killing? As to be expected. The Federation and Rebellion are not any different when it comes to war, but where the Federation is weak, the Rebellion will stand strong! You have delayed this fight for too long. I doubt you would be capable of taking on a ship as powerful as this!"</text>
-	<choice hidden="true" req="ACH_BOSS_CONSTRUCTION">
+	<choice hidden="true" req="ach_boss_construction">
 		<text>We destroyed one of your Flagships back in the Rebel Stronghold. If we did it once, we can do it again.</text>
 		<event load="BOSS_NEGOTIATE_3"/>
 	</choice>
-	<choice hidden="true" req="ACH_BOSS_GHOSTFLAG">
+	<choice hidden="true" req="ach_boss_ghostflag">
 		<text>We destroyed the original Flagship in the Spectral Wastelands. If we did it once, we can do it again.</text>
 		<event load="BOSS_NEGOTIATE_3"/>
 	</choice>
-	<choice hidden="true" req="ACH_BOSS_MFKCRUISER">
+	<choice hidden="true" req="ach_boss_mfkcruiser">
 		<text>It's no Flagship, but we destroyed an MFK Cruiser. We can handle anything the Rebellion throws at us.</text>
 		<event load="BOSS_NEGOTIATE_3"/>
 	</choice>
-	<choice hidden="true" req="ACH_BOSS_GUNBOAT">
+	<choice hidden="true" req="ach_boss_mfkgunboat">
 		<text>It's no Flagship, but we destroyed an MFK Gunboat. We can handle anything the Rebellion throws at us.</text>
 		<event load="BOSS_NEGOTIATE_3"/>
 	</choice>
-	<choice hidden="true" req="ACH_BOSS_SMUGGUN">
+	<choice hidden="true" req="ach_boss_smugglergun">
 		<text>It's no Flagship, but we destroyed a stolen Rebel Gunboat. We can handle anything the Rebellion throws at us.</text>
 		<event load="BOSS_NEGOTIATE_3"/>
 	</choice>
@@ -1049,28 +1048,25 @@
 </event>
 <event name="BOSS_NEGOTIATE_3">
 	<text>"So you are the one responsible for that? Mighty impressive, but that ship was nothing compared to what you're about to face! You will find this ship is far better prepared for a tiny cruiser like yours. Enough delay, you will not escape this fight."</text>
+	<variable name="loc_negotiation" op="set" val="1"/>
 	<choice hidden="true">
 		<text>계속...</text>
 		<event load="COMBAT_CHECK_FLAGSHIP"/>
 	</choice>
 </event>
-
-<event name="WIN_PEACEFUL">
-	<event/>
-</event>
 	
 <event name="BOSS_REPAIR_STATION">  <!-- the various stations that heal you around the map-->
 	<text>You jump into the system, noticing the repair station signal from nearby.</text>
 	<repair/>
-	<choice hidden="true" blue="false" req="DIFFICULTY_CASUAL" lvl="1" max_group="1">
+	<choice hidden="true" blue="false" req="challenge_level" lvl="0" max_group="1">
 		<text>계속...</text>
 		<event load="BOSS_REPAIR_STATION_NORMAL"/>
 	</choice>
-	<choice hidden="true" blue="false" req="DIFFICULTY_NORMAL" lvl="1" max_group="1">
+	<choice hidden="true" blue="false" req="challenge_level" lvl="1" max_group="1">
 		<text>계속...</text>
 		<event load="BOSS_REPAIR_STATION_NORMAL"/>
 	</choice>
-	<choice hidden="true" blue="false" req="DIFFICULTY_CHALLENGE" lvl="1" max_group="1">
+	<choice hidden="true" blue="false" req="challenge_level" lvl="2" max_group="1">
 		<text>계속...</text>
 		<event>
 			<text>반군 엘리트가 수리 정거장을 향해 포격하고 있는 것 같습니다! 도움을 받으려면 우선 이 자들을 처리해야 합니다.</text>
@@ -1081,7 +1077,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" blue="false" req="DIFFICULTY_EXTREME" lvl="1" max_group="1">
+	<choice hidden="true" blue="false" req="challenge_level" lvl="3" max_group="1">
 		<text>계속...</text>
 		<event>
 			<text>MFK 에이스가 수리 정거장을 향해 포격하고 있는 것 같습니다! 도움을 받으려면 우선 이 자들을 처리해야 합니다.</text>
@@ -1101,8 +1097,8 @@
 	<destroyed load="BOSS_REPAIR_STATION_FIGHT"/>
 	<deadCrew load="BOSS_REPAIR_STATION_FIGHT"/>
 	<crew>
-		<crewMember type="soldier" prop="0.5"/>
-		<crewMember type="mfk" prop="0.5"/>
+		<crewMember type="human_soldier" prop="0.5"/>
+		<crewMember type="human_mfk" prop="0.5"/>
 	</crew>
 </ship>
 <event name="BOSS_REPAIR_STATION_FIGHT">
@@ -1183,7 +1179,7 @@
 			<weapon name="LIST_WEAPONS_ROCK_BOSS"/>
 		</event>
 	</choice>
-	<choice hidden="true" req="commando">
+	<choice hidden="true" req="rock_commando">
 		<text>(Lost Sun Commando) We have befriended the Lost Suns.</text>
 		<event>
 			<text>"The Lost Suns and Federation have always have a thin alliance, and you have helped strengthen it. Perhaps this shall aid you, I'm sure your Commando will know how to use it."</text>
@@ -1485,7 +1481,7 @@
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
-				<text>아무것도 하지 않는다.</text>
+				<text>Do nothing.</text>
 				<event/>
 			</choice>
 		</event>
@@ -1544,7 +1540,7 @@
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
-				<text>아무것도 하지 않는다.</text>
+				<text>Do nothing.</text>
 				<event/>
 			</choice>
 		</event>
@@ -1604,7 +1600,7 @@
                 <event load="STORAGE_CHECK"/>
             </choice>
             <choice>
-                <text>아무것도 하지 않는다.</text>
+                <text>Do nothing.</text>
                 <event/>
             </choice>
         </event>
@@ -1641,7 +1637,7 @@
                 <event load="STORAGE_CHECK"/>
             </choice>
             <choice>
-                <text>아무것도 하지 않는다.</text>
+                <text>Do nothing.</text>
                 <event/>
             </choice>
         </event>
@@ -1676,7 +1672,7 @@
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
-				<text>아무것도 하지 않는다.</text>
+				<text>Do nothing.</text>
 				<event/>
 			</choice>
 		</event>
@@ -1773,7 +1769,7 @@
 <eventList name="BOSS_GROUND_FIGHT_HELP">
 	<event>
 		<text>While the soldiers are gathering to prepare, Conrad pulls you aside with another soldier. "I'm going to be totally honest here, this mission is doomed. I have a duty to serve here, and I cannot abandon my men. However, this man is my brother. I can't let him die here with me. He will serve faithfully on your ship."</text>
-		<crewMember amount="1" class="soldier"/>
+		<crewMember amount="1" class="human_soldier"/>
 	</event>
 	<event>
 		<text>"We have no use for this. It's a ship mounted weapon that fell off a Rebel ship we shot down, but as you can see we have no ship to mount it to. I hope it serves you well."</text>
@@ -1809,7 +1805,7 @@
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
-				<text>아무것도 하지 않는다.</text>
+				<text>Do nothing.</text>
 				<event/>
 			</choice>
 		</event>
@@ -1865,7 +1861,7 @@
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
-				<text>아무것도 하지 않는다.</text>
+				<text>Do nothing.</text>
 				<event/>
 			</choice>
 		</event>
@@ -1893,11 +1889,11 @@
 	<ship load="SHIP_MILITIA_FIGHT" hostile="false"/>
 	<damage amount="-7"/>
 	<choice>
-		<text>함선에서 무언가를 한다.</text>
+		<text>Do something on-board the ship.</text>
 		<event load="STORAGE_CHECK"/>
 	</choice>
 	<choice>
-		<text>아무것도 하지 않는다.</text>
+		<text>Do nothing.</text>
 		<event/>
 	</choice>
 </event>
@@ -2001,7 +1997,7 @@
 <eventList name="BOSS_SLUG_SPECTATOR_WIN">
 	<event>
 		<text>It appears the Slug captain is still alive, though his ship and crew are barely holding together. The Slug doesn't seem fazed by the imminent destruction of his ship. "Hah! You sssshowed that Rebel what for. That'ssss what I call entertainment. Though, you can ssssee my ssship won't hold together long, and my crew isss doomed. Perhapsss I will ssstick with you, ssso I can sssssee this ssspectacle all the way to the end."</text>
-		<crewMember amount="1" class="sabo">Rygel</crewMember> <!--used to be Slotz, but that was moved to the slug casino event-->
+		<crewMember amount="1" class="slug_saboteur">Rygel</crewMember> <!--used to be Slotz, but that was moved to the slug casino event-->
 	</event>
 	<event>
 		<text>It seems none of the Slugs survived. Disappointed, you take what remains from their ship.</text>
@@ -2048,7 +2044,7 @@ Fleets - some with minor fights
 		<event load="STORAGE_CHECK"/>
 	</choice>
 	<choice>
-		<text>아무것도 하지 않는다.</text>
+		<text>Do nothing.</text>
 		<event/>
 	</choice>
 </event>
@@ -2077,7 +2073,7 @@ Fleets - some with minor fights
 		<event load="STORAGE_CHECK"/>
 	</choice>
 	<choice>
-		<text>아무것도 하지 않는다.</text>
+		<text>Do nothing.</text>
 		<event/>
 	</choice>
 </event>

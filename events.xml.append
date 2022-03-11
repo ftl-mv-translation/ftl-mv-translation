@@ -299,7 +299,7 @@
 				<event>
 					<text>외장 보조장비
 					외장 보조장비는 앞서 언급한 내장 보조장비와 직접 연관된 종류입니다. 기능적으로 대응되는 본편 보조장비와 동일한 효과를 가지지만, 빈 송신소에서 무료로 내부 업그레이드로 바꿀 수 있습니다. 초기 장비로 지급되는 것 외에는 자주 등장하지 않지만, 확정으로 얻을 수 있는 이벤트가 몇 개 있습니다.</text>
-					<drone name="EX_ION_ARMOR"/>
+					<augment name="EX_ION_ARMOR"/>
 					<choice hidden="true">
 						<text>계속...</text>
 						<event>
@@ -418,14 +418,16 @@
 </event>
 
 <event name="START_GAME">
-	<text>당신은 쏜살같이 지나가는 별과 일렁거리는 우주를 바라봅니다. 당신이 쓸 새로운 대장정의 시작에 걸맞다 할 수 있겠습니다. 다음에는 어떤 일이 일어날까요?</text>
+	<text>당신은 쏜살같이 지나가는 별과 일렁거리는 우주를 바라봤습니다. 당신이 쓸 새로운 대장정의 시작에 걸맞다 할 수 있겠습니다. 다음에는 어떤 일이 일어날까요?</text>
 </event>
 
 <event name="START_BEACON_RELOAD">
-	<event/>
+	<loadEvent>START_BEACON_PRESELECT</loadEvent>
 </event>
 <event name="START_BEACON">
-	<text>You shouldn't see this.</text>
+	<text>당신은 쏜살같이 지나가는 별과 일렁거리는 우주를 바라봤습니다. 당신이 쓸 새로운 대장정의 시작에 걸맞다 할 수 있겠습니다. 다음에는 어떤 일이 일어날까요?</text>
+	<queueEvent seeded="true">THE_JUDGES_VARIABLE_CLEAR</queueEvent>
+	<deathEvent>DEATH</deathEvent>
 	<removeNebula/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -435,19 +437,93 @@
 		<item type="fuel" min="12" max="12"/>
 		<item type="scrap" min="20" max="20"/>
 	</item_modify>
-	<choice hidden="true" req="FOR_MULTIVERSE" lvl="1" max_group="0" blue="false">
+	<choice hidden="true">
 		<text>계속...</text>
-		<event load="START_BEACON_PRESELECT"/>
+		<event load="START_BEACON_CONFIGURE"/>
 	</choice>
-	<choice hidden="true" req="FOR_MULTIVERSE" lvl="0" max_group="0" blue="false">
+</event>
+<event name="START_BEACON_CONFIGURE">
+	<item_modify steal="true">
+		<item type="fuel" min="-999" max="-999"/>
+		<item type="scrap" min="-999" max="-999"/>
+	</item_modify>
+	<disableScrapScore/>
+	<loadEventList first="true" generate="true">
+		<event name="EXTREME_ALIAS" req="challenge_level" lvl="3"/>
+		<event name="CHALLENGE_ALIAS" req="challenge_level" lvl="2"/>
+		<event name="NORMAL_ALIAS" req="challenge_level" lvl="1"/>
+		<event name="CASUAL_ALIAS" req="challenge_level" lvl="0"/>
+		<!--<event name="START_BEACON_CONFIGURE_2" req="challenge_level" lvl="0" max_lvl="2"/>-->
+	</loadEventList>
+</event>
+<event name="CASUAL_ALIAS">
+	<text>현재 도전 레밸: 캐주얼.</text>
+	<item_modify>
+		<item type="fuel" min="25" max="25"/>
+		<item type="scrap" min="50" max="50"/>
+	</item_modify>
+	<disableScrapScore/>
+	<choice hidden="true">
 		<text>계속...</text>
-		<event load="START_BEACON_COMPATIBILITY"/>
+		<event>
+			<loadEvent>START_BEACON_CONFIGURE_2</loadEvent>
+		</event>
 	</choice>
+</event>
+<event name="NORMAL_ALIAS">
+	<text>현재 도전 레밸 보통.</text>
+	<item_modify>
+		<item type="fuel" min="12" max="12"/>
+		<item type="scrap" min="20" max="20"/>
+	</item_modify>
+	<disableScrapScore/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<loadEvent>START_BEACON_CONFIGURE_2</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="CHALLENGE_ALIAS">
+	<text>현재 도전 레밸 도전.</text>
+	<item_modify>
+		<item type="fuel" min="10" max="10"/>
+	</item_modify>
+	<modifyPursuit amount="1"/>
+	<disableScrapScore/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<loadEvent>START_BEACON_CONFIGURE_2</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="EXTREME_ALIAS">
+	<text>현재 도전 레밸 극한.</text>
+	<item_modify>
+		<item type="fuel" min="8" max="8"/>
+	</item_modify>
+	<modifyPursuit amount="1"/>
+	<disableScrapScore/>
+	<!--<eventAlias name="START_BEACON_PREP" jumpClear="false" once="false">START_BEACON_PREP_SKIP</eventAlias>-->
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<loadEvent>START_BEACON_CONFIGURE_2</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="START_BEACON_CONFIGURE_2">
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="START_BEACON_PRESELECT" req="FOR_MULTIVERSE" lvl="1"/>
+		<event name="START_BEACON_COMPATIBILITY" req="FOR_MULTIVERSE" max_lvl="0"/>
+	</loadEventList>
 </event>
 <event name="START_BEACON_COMPATIBILITY">
 	<text>멀티버스 호환 함선이 아닌 것 같습니다! 설치하기 전 이 모드의 멀티버스 호환성을 제대로 살펴보셨나요? 호환되는 모드임에도 문제가 발생했다면 포럼에 신고하여 저희나 담당 개발자가 고칠 수 있게 해 주십시오!
 	멀티버스와 호환되는 함선 또는 모드 함선을 사용하는 것을 추천합니다. 일단은 호환성 충돌을 피하기 위한 몇 가지 마커를 설정했습니다. 이로써 몇몇 오류를 방지할 수 있지만 예상치 못한 문제가 발생할 수 있음을 알아두시길 바랍니다.
 	이 함선의 멀티버스 호환에 대해 문의하고 싶으시다면 언제든지 FTL 멀티버스 포럼이나 디스코드 서버에 문의 바랍니다.</text>
+	<hiddenAug>SHIP_MULTIVERSE</hiddenAug>
 	<choice hidden="true">
 		<text>계속...</text>
 		<event load="START_BEACON_PRESELECT"/>
@@ -455,8 +531,12 @@
 </event>
 <event name="START_BEACON_PRESELECT">
 	<text>워프 정박소에 도착하기 전 잠시 시간을 낼 수 있을 것 같습니다. 임무를 개시하기 전 무엇을 하시겠습니까?</text>
-	<choice hidden="true">
-		<text>Configure your challenge level.</text>
+	<choice hidden="true" req="prof_finalsector" max_lvl="0" blue="false">
+		<text>도전 레밸 설정 잠김. 8섹터에 도달해 해금 가능!</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="prof_finalsector" lvl="1" blue="false">
+		<text>도전 레밸을 설정한다.</text>
 		<event load="START_DIFFICULT_MENU"/>
 	</choice>
 	<choice hidden="true">
@@ -473,14 +553,9 @@
 			반군 위협 수준: 보통 (중립 함대)
 
 			당신은 곧 연방 워프 정박소에 도착합니다. 이 격납고 기지는 여러 멀티버스를 드나드는 송신소 역할을 겸하고 있습니다. 화난 반군이나 해적 함대 대신 연방의 따뜻한 환영을 받을 수 있을 겁니다. 아마도요.</text>
-			<remove name="HIDDEN DEST_CIVILIAN"/>
-			<choice hidden="true" req="DIFFICULTY_EXTREME" lvl="0" max_group="0" blue="false">
-				<text>Exit Hyperspeed.</text>
-				<event load="START_BEACON_PREP"/>
-			</choice>
-			<choice hidden="true" req="DIFFICULTY_EXTREME" lvl="1" max_group="0" blue="false">
-				<text>Exit Hyperspeed.</text>
-				<event load="START_BEACON_PREP_SKIP"/>
+			<choice hidden="true" req="pilot" lvl="1" max_group="0" blue="false">
+				<text>한계속도를 마친다.</text>
+				<event load="START_BEACON_PREP_LOAD"/>
 			</choice>
 		</event>
 	</choice>
@@ -497,12 +572,10 @@
 		<text>캐주얼.</text>
 		<event>
 			<text>[캐주얼 난이도: 게임플레이를 느긋하게 즐기고 싶은 사람들을 위한 난이도]
-			시작 스크랩: 50
-			시작 연료: 25
+			시작 스크랩: 50~
+			시작 연료: 25{
 			첫 구역의 출구에 있는 엘리트 함선의 난이도가 감소합니다.
-			멀티버스 배회자 미니보스가 등장하지 않습니다.
-			방랑하는 행상인이 항상 상당한 양의 공짜 선물을 줍니다.
-			연방 전초기지에서 공짜로 함선을 수리해줍니다.
+			멀티버스 배회자 미니보스가 등장하지 않습니다. 방랑하는 행상인이 항상 상당한 양의 공짜 선물을 줍니다 연방 전초기지에서 공짜로 함선을 수리해줍니다.
 			진 엔딩의 난이도가 감소합니다.</text>
 			<choice hidden="true">
 				<text>계속...</text>
@@ -511,14 +584,13 @@
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>보통 난이도. [첫 플레이에 어울리는 난이도!]</text>
+		<text>보통. [첫 플레이에 어울리는 난이도!]</text>
 		<event>
 			<text>[보통 난이도: 통상 난이도이며, 모드의 플레이와 밸런스 기준이 되는 난이도]
-			시작 스크랩: 20
-			시작 연료: 12
+			시작 스크랩: 20~
+			시작 연료: 12{
 			첫 구역의 출구에 있는 엘리트 함선의 난이도가 감소합니다.
-			배회자 보스들의 난이도가 낮아지고 스크랩으로 전투를 회피할 수 있습니다.
-			방랑하는 행상인은 강하 지점과 마지막 승부 지역에서 소소한 양의 선물을 줍니다.</text>
+			배회자 보스들의 난이도가 낮아지고 스크랩으로 전투를 회피할 수 있습니다. 방랑하는 행상인은 강하 지점과 마지막 승부 지역에서 소소한 양의 선물을 줍니다.</text>
 			<choice hidden="true">
 				<text>계속...</text>
 				<event load="SET_DIFFICULTY_NORMAL"/>
@@ -526,16 +598,13 @@
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>도전자 모드.</text>
+		<text>도전자.</text>
 		<event>
 			<text>[도전자 모드: 좀 더 어려운 도전을 원하지만, 과도한 난이도 증가를 원하지 않는 사람들을 위한 난이도]
 			시작 스크랩: 없음
-			시작 연료: 10
-			반군 함대의 도약이 한 번 빨라집니다.
-			첫 구역의 출구에 있는 엘리트 함선의 난이도가 증가합니다.
-			배회자 보스들의 난이도가 증가하고 전투를 회피하려면 선원을 바쳐야 합니다.
-			방랑하는 행상인은 절대로 선물을 주지 않습니다.
-			마지막 승부의 수리 송신소는 항상 반군의 공격을 받습니다.
+			시작 연료: 10{
+			반군 함대의 도약이 한 번 빨라집니다. 첫 구역의 출구에 있는 엘리트 함선의 난이도가 증가합니다.
+			배회자 보스들의 난이도가 증가하고 전투를 회피하려면 선원을 바쳐야 합니다. 방랑하는 행상인은 절대로 선물을 주지 않습니다. 마지막 승부의 수리 송신소는 항상 반군의 공격을 받습니다.
 			진 엔딩의 난이도가 증가합니다.</text>
 			<choice hidden="true">
 				<text>계속...</text>
@@ -548,12 +617,9 @@
 		<event>
 			<text>[극한 난이도: 만사가 너무 쉬워서 지루하시다고요? 인생에 고통이 필요하십니까? 그렇다면 이 난이도를 하세요.]
 			시작 스크랩: 없음
-			시작 스크랩: 8
-			반군 함대의 도약이 한 번 빨라집니다.
-			첫 구역의 출구에 있는 엘리트 함선의 난이도가 증가합니다.
-			배회자 보스들의 난이도가 증가하고 회피를 위해 선원을 희생해야 합니다.
-			방랑하는 행상인이 주는 스크랩의 양이 크게 감소합니다.
-			마지막 승부의 시작 송신소와 수리 송신소는 항상 MFK 에이스함의 공격을 받습니다.
+			시작 연료: 8{
+			반군 함대의 도약이 한 번 빨라집니다. 첫 구역의 출구에 있는 엘리트 함선의 난이도가 증가합니다.
+			배회자 보스들의 난이도가 증가하고 회피를 할 수 없습니다. 방랑하는 행상인이 주는 스크랩의 양이 크게 감소합니다. 마지막 승부의 시작 송신소와 수리 송신소는 항상 MFK 에이스함의 공격을 받습니다.
 			게임 시작 전 추가 준비 선택지가 비활성화됩니다.
 			진 엔딩의 난이도가 크게 증가합니다.</text>
 			<choice hidden="true">
@@ -566,8 +632,8 @@
 		<text>Sandbox.</text>
 		<event>
 			<text>[SANBOX MODE: Gives the player many resources. Will use normal difficulty settings for events.]
-			Starting scrap: 9999999
-			Starting fuel: 99
+			시작 스크랩: 9999999
+			시작 연료: 99
 			Starting missiles: 9999
 			Starting drone parts: 9999</text>
 			<choice hidden="true">
@@ -587,7 +653,9 @@
 		<item type="fuel" min="25" max="25"/>
 		<item type="scrap" min="50" max="50"/>
 	</item_modify>
+	<metaVariable name="challenge_level" op="set" val="0"/>
 	<disableScrapScore/>
+	<!--<eventAlias name="START_BEACON_PREP" jumpClear="false" once="false"/>-->
 	<choice hidden="true">
 		<text>계속...</text>
 		<event load="START_BEACON_RELOAD"/>
@@ -599,7 +667,9 @@
 		<item type="fuel" min="12" max="12"/>
 		<item type="scrap" min="20" max="20"/>
 	</item_modify>
+	<metaVariable name="challenge_level" op="set" val="1"/>
 	<disableScrapScore/>
+	<!--<eventAlias name="START_BEACON_PREP" jumpClear="false" once="false"/>-->
 	<choice hidden="true">
 		<text>계속...</text>
 		<event load="START_BEACON_RELOAD"/>
@@ -610,8 +680,10 @@
 	<item_modify>
 		<item type="fuel" min="10" max="10"/>
 	</item_modify>
+	<metaVariable name="challenge_level" op="set" val="2"/>
 	<modifyPursuit amount="1"/>
 	<disableScrapScore/>
+	<!--<eventAlias name="START_BEACON_PREP" jumpClear="false" once="false"/>-->
 	<choice hidden="true">
 		<text>계속...</text>
 		<event load="START_BEACON_RELOAD"/>
@@ -622,8 +694,10 @@
 	<item_modify>
 		<item type="fuel" min="8" max="8"/>
 	</item_modify>
+	<metaVariable name="challenge_level" op="set" val="3"/>
 	<modifyPursuit amount="1"/>
 	<disableScrapScore/>
+	<!--<eventAlias name="START_BEACON_PREP" jumpClear="false" once="false">START_BEACON_PREP_SKIP</eventAlias>-->
 	<choice hidden="true">
 		<text>계속...</text>
 		<event load="START_BEACON_RELOAD"/>
@@ -644,7 +718,8 @@
 	</choice>
 </event>
 <event name="GIVE_DATABASE">
-	<text>당신은 데이터베이스를 받았습니다. 현재 지역이나, 다양한 세력, 인물에 대해 확인할 수 있습니다. 실제 플레이에 도움을 주진 않습니다만, 여정 중에 올바른 선택을 내릴 수 있도록 도와줄 것입니다.</text>
+	<text>데이터베이스를 다운로드했습니다. 현재 지역이나, 다양한 세력, 인물에 대해 확인할 수 있습니다. 실제 플레이에 도움을 주진 않습니다만, 여정 중에 올바른 선택을 내릴 수 있도록 도와줄 것입니다. 또한 아틀라스나 내부 업그레이드와 같은 신규 요소에 대한 자세한 튜토리얼도 제공합니다.</text>
+	<hiddenAug>FEDERATION_DATABASE</hiddenAug>
 	<choice hidden="true" req="pilot">
 		<text>[연방 데이터베이스] 이 임무에서 당신의 역할을 떠올려본다.</text>
 		<event>
@@ -710,108 +785,58 @@
 		<event load="START_BEACON_RELOAD"/>
 	</choice>
 </event>
+<event name="START_BEACON_PREP_LOAD">
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="START_BEACON_PREP_SKIP" req="challenge_level" lvl="3"/>
+		<event name="START_BEACON_PREP" req="challenge_level" lvl="0" max_lvl="2"/>
+	</loadEventList>
+</event>
 <event name="START_BEACON_PREP">
-	<text>당신은 천천히 한계속도에서 빠져나와, 속도를 늦춰 격납고에 진입합니다. 당신의 부대와 함선은 새로운 은하를 항해하기 전 정비를 받고 준비를 마쳤습니다.</text>
+	<text>당신은 천천히 한계속도에서 빠져나와, 속도를 늦춰 격납고에 진입했습니다. 당신의 부대와 함선은 새로운 은하를 항해하기 전 정비를 받고 준비를 마쳤습니다.</text>
 	<changeBackground>BACK_SECTOR_START</changeBackground>
 	<playSound>lightspeed</playSound>
 	<choice hidden="true">
 		<text>계속...</text>
+		<event load="START_BEACON_PREP_OPTIONS"/>
+	</choice>
+	<choice hidden="true" req="ANY_BOON">
+		<text>격납고 관리자가 당신을 부르고 있습니다.</text>
+		<event load="START_BOON_MENU"/>
+	</choice>
+</event>
+<event name="START_BEACON_PREP_OPTIONS">
+	<text>당신은 서둘러 함선으로 돌아갔습니다. 아직 출발하기 전까지 시간이 좀 남은것 같습니다. 마지막으로 장비 하나 정돈 챙길 수 있을 것 같습니다.</text>
+	<choice hidden="true" lvl="0" max_group="0" req="NO_WEAPON" blue="false">
+		<text>무기를 챙긴다.</text>
 		<event>
-			<text>당신은 서둘러 함선으로 돌아갔습니다. 아직 출발하기 전까지 시간이 좀 남은것 같습니다. 마지막으로 장비 하나 정돈 챙길 수 있을 것 같습니다.</text>
-			<choice hidden="true" lvl="0" max_group="0" req="NO_WEAPON" blue="false">
-				<text>무기를 챙긴다.</text>
+			<text>몇 가지 선택지가 있습니다.</text>
+			<choice>
+				<text>기본적인 레이저를 챙긴다.</text>
 				<event>
-					<text>몇 가지 선택지가 있습니다.</text>
-					<choice>
-						<text>기본적인 레이저를 챙긴다.</text>
-						<event>
-							<text>새로운 무기에 자신감을 가지고 임무를 계속 준비합니다.</text>
-							<weapon name="LASER_BURST_1"/>
-							<choice hidden="true">
-								<text>계속...</text>
-								<event load="START_BEACON_EXPLAIN_LOAD"/>
-							</choice>
-						</event>
-					</choice>
-					<choice>
-						<text>단순한 이온을 챙긴다.</text>
-						<event>
-							<text>새로운 무기에 자신감을 가지고 임무를 계속 준비합니다.</text>
-							<weapon name="ION_1"/>
-							<choice hidden="true">
-								<text>계속...</text>
-								<event load="START_BEACON_EXPLAIN_LOAD"/>
-							</choice>
-						</event>
-					</choice>
-					<choice>
-						<text>레토 미사일 발사기를 챙긴다.</text>
-						<event>
-							<text>새로운 무기에 자신감을 가지고 임무를 계속 준비합니다.</text>
-							<weapon name="MISSILES_1"/>
-							<choice hidden="true">
-								<text>계속...</text>
-								<event load="START_BEACON_EXPLAIN_LOAD"/>
-							</choice>
-						</event>
-					</choice>
-				</event>
-			</choice>
-			<choice hidden="true" lvl="1" max_group="0" req="NO_WEAPON" blue="false">
-				<text>무료 무기를 챙겨갈 수 없습니다.</text>
-				<event>
-					<text>이봐요 사기꾼 씨, 이 메세지는 볼 수 없다구요???????</text>
-					<item_modify>
-						<item type="fuel" min="-9999" max="-9999"/>
-						<item type="scrap" min="-9999" max="-9999"/>
-						<item type="missiles" min="-9999" max="-9999"/>
-						<item type="drones" min="-9999" max="-9999"/>
-					</item_modify>
-				</event>
-			</choice>
-			<!--<choice hidden="true" req="drones" blue="false" max_group="1">
-				<text>Grab a drone.</text>
-				<event>
-					<text>Confident with your stash of drones, you prepare to continue on your mission.</text>
-					<drone name="REPAIR"/>
-					<choice hidden="true">
-						<text>계속...</text>
-						<event load="START_BEACON_EXPLAIN"/>
-					</choice>
-				</event>
-			</choice>-->
-			<choice hidden="true" req="pilot" lvl="1" max_group="2" blue="false">
-				<text>선원을 구한다.</text>
-				<event>
-					<text>새로운 선원에 만족하며, 당신은 임무를 계속 준비합니다.</text>
-					<crewMember amount="1" class="human"/>
+					<text>새로운 무기에 자신감을 가지고 임무를 계속 준비합니다.</text>
+					<weapon name="LASER_BURST_1"/>
 					<choice hidden="true">
 						<text>계속...</text>
 						<event load="START_BEACON_EXPLAIN_LOAD"/>
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true" req="pilot" lvl="1" max_group="3" blue="false">
-				<text>추가 물자를 구한다.</text>
+			<choice>
+				<text>단순한 이온을 챙긴다.</text>
 				<event>
-					<text>창고에 물자를 채워 넣은 후, 당신은 임무를 계속 준비합니다.</text>
-					<item_modify>
-						<item type="fuel" min="2" max="2"/>
-						<item type="scrap" min="7" max="7"/>
-						<item type="missiles" min="2" max="2"/>
-						<item type="drones" min="1" max="1"/>
-					</item_modify>
+					<text>새로운 무기에 자신감을 가지고 임무를 계속 준비합니다.</text>
+					<weapon name="ION_1"/>
 					<choice hidden="true">
 						<text>계속...</text>
 						<event load="START_BEACON_EXPLAIN_LOAD"/>
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true" req="pilot" lvl="1" max_group="4" blue="false">
-				<text>지금 있는 것만으로 충분한 것 같군. 반군 함대에 따라잡히기 전에 어서 출발한다!</text>
+			<choice>
+				<text>레토 미사일 발사기를 챙긴다.</text>
 				<event>
-					<text>당신은 추가 장비를 챙기지 않고 바로 출발했습니다.</text>
-					<modifyPursuit amount="-2"/>
+					<text>새로운 무기에 자신감을 가지고 임무를 계속 준비합니다.</text>
+					<weapon name="MISSILES_1"/>
 					<choice hidden="true">
 						<text>계속...</text>
 						<event load="START_BEACON_EXPLAIN_LOAD"/>
@@ -820,16 +845,165 @@
 			</choice>
 		</event>
 	</choice>
+	<choice hidden="true" lvl="1" max_group="0" req="NO_WEAPON" blue="false">
+		<text>무료 무기를 챙겨갈 수 없습니다.</text>
+		<event>
+			<text>이봐요 사기꾼 씨, 이 메세지는 볼 수 없다구요???????</text>
+			<item_modify>
+				<item type="fuel" min="-9999" max="-9999"/>
+				<item type="scrap" min="-9999" max="-9999"/>
+				<item type="missiles" min="-9999" max="-9999"/>
+				<item type="drones" min="-9999" max="-9999"/>
+			</item_modify>
+		</event>
+	</choice>
+	<!--<choice hidden="true" req="drones" blue="false" max_group="1">
+		<text>Grab a drone.</text>
+		<event>
+			<text>Confident with your stash of drones, you prepare to continue on your mission.</text>
+			<drone name="REPAIR"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="START_BEACON_EXPLAIN"/>
+			</choice>
+		</event>
+	</choice>-->
+	<choice hidden="true" req="pilot" lvl="1" max_group="2" blue="false">
+		<text>선원을 구한다.</text>
+		<event>
+			<text>새로운 선원에 만족하며, 당신은 임무를 계속 준비합니다.</text>
+			<crewMember amount="1" class="human"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="pilot" lvl="1" max_group="3" blue="false">
+		<text>추가 물자를 구한다.</text>
+		<event>
+			<text>창고에 물자를 채워 넣은 후, 당신은 임무를 계속 준비합니다.</text>
+			<item_modify>
+				<item type="fuel" min="2" max="2"/>
+				<item type="scrap" min="7" max="7"/>
+				<item type="missiles" min="2" max="2"/>
+				<item type="drones" min="1" max="1"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="pilot" lvl="1" max_group="4" blue="false">
+		<text>지금 있는 것만으로 충분한 것 같군. 반군 함대에 따라잡히기 전에 어서 출발한다!</text>
+		<event>
+			<text>당신은 추가 장비를 챙기지 않고 바로 출발했습니다.</text>
+			<modifyPursuit amount="-2"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD"/>
+			</choice>
+		</event>
+	</choice>
 </event>
 <event name="START_BEACON_PREP_SKIP">
-    <text>당신은 천천히 한계속도에서 빠져나와, 속도를 늦춰 격납고에 진입합니다. 당신의 부대와 함선은 새로운 은하를 항해하기 전 정비를 받고 준비를 마칩니다.</text>
+    <text>당신은 천천히 한계속도에서 빠져나와, 속도를 늦춰 격납고에 진입했습니다. 당신의 부대와 함선은 새로운 은하를 항해하기 전 정비를 받고 준비를 마쳤습니다.</text>
 	<changeBackground>BACK_SECTOR_START</changeBackground>
 	<playSound>lightspeed</playSound>
 	<choice hidden="true">
-        <text>계속...</text>
+       <text>계속...</text>
        <event load="START_BEACON_EXPLAIN_LOAD"/>
     </choice>
+	<choice hidden="true" req="ANY_BOON">
+		<text>격납고 관리자가 당신을 부르고 있습니다.</text>
+		<event load="START_BOON_MENU"/>
+	</choice>
 </event>
+<!--BOON SELECT-->
+<event name="START_BOON_MENU">
+	<text>누군가가 선물을 보낸 것 같습니다. 그 선물에는 출처가 불분명한 라벨과 함께 이상한 필체로 다음과 같은 메시지가 써져 있었습니다. "우리 관측자들을 발견한 마지막 도전자를 대신하여 선물을 보냅니다. 당신을 만나기를 진심으로 기다리겠습니다. 아마 곧 볼 수 있겠지요?"</text>
+	<choice hidden="true">
+		<text>선물을 받는다.</text>
+		<event load="BOON_SELECT"/>
+	</choice>
+	<choice hidden="true">
+		<text>선물을 받지 않는다.</text>
+		<event>
+			<loadEvent>BOON_SELECT_CONTINUE</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="BOON_SELECT_CONTINUE">
+	<loadEventList seeded="false">
+		<event name="START_BEACON_PREP_OPTIONS" req="challenge_level" lvl="0" max_lvl="2"/>
+		<event name="START_BEACON_EXPLAIN_LOAD" req="challenge_level" lvl="3"/>
+	</loadEventList>
+</event>
+<event name="BOON_SELECT">
+	<loadEventList seeded="false">
+		<event name="BOON_SELECT_HUMAN" req="prof_z_boon_human"/>
+		<event name="BOON_SELECT_HUMAN_2" req="prof_z_boon_human_2"/>
+		<event name="BOON_SELECT_ENGI" req="prof_z_boon_engi"/>
+		<event name="BOON_SELECT_ZOLTAN" req="prof_z_boon_zoltan"/>
+		<event name="BOON_SELECT_ORCHID" req="prof_z_boon_orchid"/>
+		<event name="BOON_SELECT_MANTIS" req="prof_z_boon_mantis"/>
+		<event name="BOON_SELECT_MANTIS_2" req="prof_z_boon_mantis_2"/>
+		<event name="BOON_SELECT_ROCK" req="prof_z_boon_rock"/>
+		<event name="BOON_SELECT_ROCK_2" req="prof_z_boon_rock_2"/>
+		<event name="BOON_SELECT_CRYSTAL" req="prof_z_boon_crystal"/>
+		<event name="BOON_SELECT_SLUG" req="prof_z_boon_slug"/>
+		<event name="BOON_SELECT_SLUG_2" req="prof_z_boon_slug_2"/>
+		<event name="BOON_SELECT_SHELL" req="prof_z_boon_shell"/>
+		<event name="BOON_SELECT_LEECH" req="prof_z_boon_leech"/>
+		<event name="BOON_SELECT_GHOST" req="prof_z_boon_ghost"/>
+		<event name="BOON_SELECT_LANIUS" req="prof_z_boon_lanius"/>
+		<event name="BOON_SELECT_MORPH" req="prof_z_boon_morph"/>
+		<event name="BOON_SELECT_LIZARD" req="prof_z_boon_lizard"/>
+		<event name="BOON_SELECT_SPIDER" req="prof_z_boon_spider"/>
+		<event name="BOON_SELECT_PONY" req="prof_z_boon_horse"/>
+		<event name="BOON_SELECT_OBELISK" req="prof_z_boon_obelisk"/>
+		<event name="BOON_SELECT_SIREN" req="prof_z_boon_siren"/>
+		<event name="BOON_SELECT_UNIQUE" req="prof_z_boon_unique"/>
+		<event name="BOON_SELECT_UNIQUEMECH" req="prof_z_boon_unique_m"/>
+		<event name="BOON_SELECT_KIDS" req="prof_z_boon_kids"/>
+		
+		<event name="BOON_SELECT_WEAPONS" req="prof_e_boon_weapons"/>
+		<event name="BOON_SELECT_SHIELDS" req="prof_e_boon_shields"/>
+		<event name="BOON_SELECT_ENGINES" req="prof_e_boon_engines"/>
+		<event name="BOON_SELECT_MEDBAY" req="prof_e_boon_medbay"/>
+		<event name="BOON_SELECT_CLONEBAY" req="prof_e_boon_clonebay"/>
+		<event name="BOON_SELECT_OXYGEN" req="prof_e_boon_oxygen"/>
+		<event name="BOON_SELECT_TELEPORTER" req="prof_e_boon_teleporter"/>
+		<event name="BOON_SELECT_MIND" req="prof_e_boon_mind"/>
+		<event name="BOON_SELECT_HACKING" req="prof_e_boon_hacking"/>
+		<event name="BOON_SELECT_TEMPORAL" req="prof_e_boon_temporal"/>
+		<event name="BOON_SELECT_DRONES" req="prof_e_boon_drones"/>
+		<event name="BOON_SELECT_SENSORS" req="prof_e_boon_sensors"/>
+		<event name="BOON_SELECT_DOORS" req="prof_e_boon_doors"/>
+		<event name="BOON_SELECT_PILOT" req="prof_e_boon_pilot"/>
+		<event name="BOON_SELECT_BATTERY" req="prof_e_boon_battery"/>
+		<event name="BOON_SELECT_REACTOR" req="prof_e_boon_reactor"/>
+		
+		<event name="BOON_SELECT_STARTER" req="prof_r_boon_starter"/>
+		<event name="BOON_SELECT_KERNELELITE" req="prof_r_boon_kernel"/>
+		<event name="BOON_SELECT_CRYSTALELITE" req="prof_r_boon_crystal"/>
+		<event name="BOON_SELECT_MINELAUNCHER" req="prof_r_boon_minelauncher"/>
+		<event name="BOON_SELECT_NEWGEN" req="prof_r_boon_newgen"/>
+		<event name="BOON_SELECT_AETHER" req="prof_r_boon_obelisk"/>
+		<event name="BOON_SELECT_MERCHANTS" req="prof_r_boon_nexus"/>
+		<event name="BOON_SELECT_SPECIAL" req="prof_r_boon_special"/>
+		<event name="BOON_SELECT_TRANSPORT" req="prof_r_boon_transport"/>
+		<event name="BOON_SELECT_MATH" req="prof_r_boon_math"/>
+		<event name="BOON_SELECT_RENEGADE" req="prof_r_boon_renegade"/>
+		<event name="BOON_SELECT_CURA" req="prof_r_boon_cura"/>
+		<event name="BOON_SELECT_CLONECANNON" req="prof_r_boon_clonecannon"/>
+		<event name="BOON_SELECT_MODULAR" req="prof_r_boon_modular"/>
+		<event name="BOON_SELECT_GATLING" req="prof_r_boon_gatling"/>
+		<event name="BOON_SELECT_MERCHANTS" req="prof_r_boon_rift"/>
+	</loadEventList>
+</event>
+
 <event name="START_BEACON_EXPLAIN_LOAD">
 	<loadEventList seeded="false" default="START_BEACON_EXPLAIN">
 		<event name="START_BEACON_EXPLAIN_POWERS2" req="STAGE_2"/>
@@ -840,7 +1014,20 @@
 	</loadEventList>
 </event>
 <event name="START_BEACON_EXPLAIN">
-	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
+	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에서 무언가를 할 수 있을 것 같습니다.</text>
+	<choice hidden="true" req="prof_beacon_active" blue="true">
+		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
+		<event>
+			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
+			<variable name="loc_beacon_active" op="set" val="1"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<loadEvent>STORAGE_CHECK</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
 	<choice>
 		<text>함선에서 무언가를 한다.</text>
 		<event load="STORAGE_CHECK"/>
@@ -853,6 +1040,19 @@
 <event name="START_BEACON_EXPLAIN_POWERS2">
 	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
 	<triggeredEvent event="FLAGSHIP_STAGE2_TRACKER" seeded="false" loops="999999999" jumps="1"/>
+	<choice hidden="true" req="prof_beacon_active" blue="true">
+		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
+		<event>
+			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
+			<variable name="loc_beacon_active" op="set" val="1"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<loadEvent>STORAGE_CHECK</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
 	<choice>
 		<text>함선에서 무언가를 한다.</text>
 		<event load="STORAGE_CHECK"/>
@@ -865,6 +1065,19 @@
 <event name="START_BEACON_EXPLAIN_POWERS3">
 	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
 	<triggeredEvent event="FLAGSHIP_STAGE3_TRACKER" seeded="false" loops="999999999" jumps="1"/>
+	<choice hidden="true" req="prof_beacon_active" blue="true">
+		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
+		<event>
+			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
+			<variable name="loc_beacon_active" op="set" val="1"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<loadEvent>STORAGE_CHECK</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
 	<choice>
 		<text>함선에서 무언가를 한다.</text>
 		<event load="STORAGE_CHECK"/>
@@ -875,8 +1088,21 @@
 	</choice>
 </event>
 <event name="START_BEACON_EXPLAIN_EXTRALIFE">
-	<text>Finally suited up and ready to go, you take a look at your beacon map. Looks like you still have a while until the fleet becomes an immediate threat, so you can spare some time to do something on the ship if you wish.</text>
+	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
 	<triggeredEvent event="EXTRA_LIFE_HEAL" playerHull="3" clearOnJump="false"/>
+	<choice hidden="true" req="prof_beacon_active" blue="true">
+		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
+		<event>
+			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
+			<variable name="loc_beacon_active" op="set" val="1"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<loadEvent>STORAGE_CHECK</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
 	<choice>
 		<text>함선에서 무언가를 한다.</text>
 		<event load="STORAGE_CHECK"/>
@@ -887,10 +1113,23 @@
 	</choice>
 </event>
 <event name="START_BEACON_EXPLAIN_MVDRIVE">
-	<text>Finally suited up and ready to go, you take a look at your beacon map. Looks like you still have a while until the fleet becomes an immediate threat, so you can spare some time to do something on the ship if you wish.</text>
+	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
 	<triggeredEvent event="MV_DRIVE_EXPLODE" loops="999999999">
 	  <jumps amount="1" type="1"/>
 	</triggeredEvent>
+	<choice hidden="true" req="prof_beacon_active" blue="true">
+		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
+		<event>
+			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
+			<variable name="loc_beacon_active" op="set" val="1"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<loadEvent>STORAGE_CHECK</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
 	<choice>
 		<text>함선에서 무언가를 한다.</text>
 		<event load="STORAGE_CHECK"/>
@@ -901,8 +1140,21 @@
 	</choice>
 </event>
 <event name="START_BEACON_EXPLAIN_UNSTABLE">
-	<text>Finally suited up and ready to go, you take a look at your beacon map. Looks like you still have a while until the fleet becomes an immediate threat, so you can spare some time to do something on the ship if you wish.</text>
+	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
 	<triggeredEvent event="UNSTABLE_CHECKER" loops="999999999" jumps="1"/>
+	<choice hidden="true" req="prof_beacon_active" blue="true">
+		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
+		<event>
+			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
+			<variable name="loc_beacon_active" op="set" val="1"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<loadEvent>STORAGE_CHECK</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
 	<choice>
 		<text>함선에서 무언가를 한다.</text>
 		<event load="STORAGE_CHECK"/>
@@ -930,11 +1182,11 @@
 </event>
 
 <event name="FINISH_BEACON_NEBULA">
-	<text>이 장거리 송신소는 성운 속에 위치해 있습니다. FTL 드라이브 충전이 완료되면 다음 구역으로 이동할 수 있습니다.</text>
-	<!--<choice hidden="true">
-		<text>Explore</text>
+	<text> 장거리 송신소는 성운 속에 위치해 있습니다. FTL 드라이브 충전이 완료되면 다음 구역으로 이동할 수 있습니다.</text>
+	<choice hidden="true">
+		<text>탐사한다.</text>
 		<event load="NEBULA_EXIT"/>
-	</choice>-->
+	</choice>
 	<choice hidden="true">
 		<text>창고를 확인한다.</text>
 		<event load="STORAGE_CHECK"/>
@@ -1585,7 +1837,7 @@
 </eventList>
 <event name="ABANDONED_GHOST_BOARDED">
 	<text>유령이 선원들의 뒤를 밟아 함선에 침입했습니다!</text>
-	<boarders min="2" max="4" class="goul"/>
+	<boarders min="2" max="4" class="phantom_goul"/>
 </event>
 
 <!--
@@ -2234,7 +2486,7 @@
 	</event>
 	<event>
 		<text>함선 내부에서 더 큰 싸움의 흔적을 볼 수 있었습니다. 하이브 맨티스들의 사체를 보건대 다른 맨티스와 싸웠던 것 같습니다. 싸움에서 도망치다 화물칸에 갇힌 젊은 독립 맨티스를 보니 더더욱 확실해 보입니다. 그는 당신의 부대에 합류하고 싶어합니다.</text>
-		<crewMember amount="1" class="freemantis"/>
+		<crewMember amount="1" class="mantis_free"/>
 		<autoReward level="LOW">stuff</autoReward>
 	</event>
 </eventList>
@@ -2541,12 +2793,12 @@
 	</choice>
 </event>
 <textList name="FIND_WEAPON">
-	<text planet="NONE">Holy crap! A weapon is just floating in space!</text>
-	<text planet="PLANET_UNPOPULATED" back="BG_NEBULA">You inform a nearby station of your flight from the Rebels. They offer to outfit your ship with a weapon and wish you well.</text>
-	<text planet="PLANET_POPULATED" back="BG_NEBULA">A settlement still loyal to the Federation hails your ship. They have prepared a weapon to aid your escape from the Rebels.</text>
-	<text>As soon as you arrive a small Mantis ship detaches from a wreck and jumps away. You must have interrupted their salvage operation because you find a weapon ready to be installed!</text>
-	<text>A small merchant ship messages you, "Underground Federation comm channels are all talking about your 'secret' mission. Let us install a weapon to help. Good luck!"</text>
-	<text>Debris from a battle is scattered around this system. A few pieces bounce against your ship. You passively scan them and discover there is a functioning weapon among them!</text> 
+	<text planet="NONE">맙소사! 무기가 우주공간에 그냥 떠나니고 있었습니다!</text>
+	<text planet="PLANET_UNPOPULATED" back="BG_NEBULA"> 당신은 인근 정거장에 반군 함대로부터 도망치고 있음을 알렸습니다.그들은 당신의 함선에 무기를 무장시키고 당신의 안전을 기원합니다.</text>
+	<text planet="PLANET_POPULATED" back="BG_NEBULA">여전히 연방에 충성하고 있는 정착지가 당신의 함선에 신호를 보냅니다. 그들은 당신이 반군 함대로 도망치는 것을 지원하는 무기를 준비하고 있었습니다.</text>
+	<text>당신이 도착하자마자 작은 맨티스 함선이 난파선에서 벗어나 도약을 합니다. 그들이 무기를 설치중인 것으로 보아 당신이 인양 작업을 방해한게 틀림 없습니다!</text>
+	<text>작은 행상인이 당신에게 메세지를 보냅니다. "지하 연방 통신 채널들이 모두 당신의 비밀 임무에 대해 이야기하고 있습니다. 우리가 도울 무기를 설치하게 해주세요. 행운을 빌어요!!"</text>
+	<text>전투의 잔해가 이 시스템 주변에 흩 뿌려져 있습니다. 몇 조각이 당신의 함선에 부딪혀 틩겨집니다. 당신은 스캔을 해보니 그중 작동하고 있는 무기가 있다는 것을 알게 되었습니다!</text> 
 </textList>
 
 <event name ="FUEL_FOR_DRONE">
@@ -2561,9 +2813,9 @@
 		</event>
 	</choice>
 	<choice>
-		<text>Reject their offer.</text>
+		<text>제안을 거절한다.</text>
 		<event>
-			<text>You're good with what you have.</text>
+			<text>지금 가진 것으로 충분합니다.</text>
 			<choice hidden="true">
 				<text>창고를 확인한다.</text>
 				<event load="STORAGE_CHECK"/>
@@ -2576,9 +2828,9 @@
 	</choice>
 </event>
 <textList name="FUEL_FOR_DRONE">
-	<text planet="PLANET_POPULATED">A nearby space station hails you. "Greetings! Your arrival is most fortuitous. We recently came across some extra drones. If you have some fuel, perhaps we can make a deal?"</text>
-	<text>A strange vessel approaches. A digital message appears on your view-screen: "This is an automated merchant. Refill this vessel with fuel and it will supply you with drones."</text>
-	<text>You arrive in the sector and are greeted by a science vessel waiting by the beacon. They hail you, "We find ourselves low on fuel and have a proposition."</text>
+	<text planet="PLANET_POPULATED">근처 정거장에서 당신을 불렀습니다. "반갑습니다! 여기 오시다니 운이 아주 좋으시네요. 저희가 최근에 여분의 드론을 발견했습니다. 연료랑 교환하실 생각 있으신가요?"</text>
+	<text>수상한 선박이 다가옵니다. 당신의 스크린에 메세지가 나타났습니다: "본 함은 무인 상선입니다. 선박에 연료를 투입하면 드론이 제공될 것 입니다.."</text>
+	<text>송신소에 도착하자마자 과학선이 당신을 맞이했습니다. 그들이 당신에게 제안을 했습니다. "저희는 연료가 부족합니다. 다음과 같은 제안을 하겠습니다."</text>
 </textList>
 
 <event name="TRADER_CIV">
@@ -2586,13 +2838,13 @@
 	<text load="TRADER_CIV"/>
 	<status type="limit" target="enemy" system="teleporter" amount="0"/>
 	<choice>
-		<text>Trade.</text>
+		<text>거래한다.</text>
 		<event load="TRADER_LIST"/>
 	</choice>
 	<choice>
-		<text>Ignore.</text>
+		<text>무시한다.</text>
 		<event>
-			<text>You decide you have nothing you want to trade.</text>
+			<text>당신은 거래할 것이 없다고 결정했습니다.</text>
 			<choice hidden="true">
 				<text>창고를 확인한다.</text>
 				<event load="STORAGE_CHECK"/>
@@ -2605,12 +2857,12 @@
 	</choice>
 </event>
 <textList name="TRADER_CIV">
-	<text planet="PLANET_POPULATED">You arrive at a quiet spaceport and are immediately hailed by another ship at port with a "once in a lifetime deal!"</text>
-	<text planet="PLANET_POPULATED">You jump into a sector filled with civilian activity. Your scan the various advertisement channels while waiting for your FTL to charge, and are intrigued by a grey-market shipwright.</text>
-	<text planet="PLANET_POPULATED">Your ship is flooded with advertisement transmissions from nearby merchants as soon as you arrive at this beacon. You arbitrarily pick one to examine in detail.</text>
-	<text planet="NONE">Despite the barren area, a trader has set up shop at this beacon. He presents his offer.</text>
-	<text>The beacon at first glance seems home to a junk yard. Upon closer inspection, it reveals itself to be a ramshackle market. One trader has a deal that catches your eye.</text>
-	<text planet="NONE">A pawn broker has set up shop at this obscure beacon. He might be offering something worth looking at.</text>
+	<text planet="PLANET_POPULATED">당신은 조용한 우주 항구에 도착 하자마자 즉시 항구에 있는 다른 배에 교신이 왔습니다. "평생오지 않는 기회입니다."</text>
+	<text planet="PLANET_POPULATED">당신은 시민들의 활동으로 가득 차 있는 구역으로 도약합니다. 당신의 초광속 도약이 충전되기를 기다리는 동안 다양한 광고 채널을 스캔하고, 불법 거래소의 조선업자에게 흥미를 느낍니다.</text>
+	<text planet="PLANET_POPULATED">당신이 이 송신소 도착하자마자 당신의 배는 근처 상인들의 광고 전송으로 넘쳐납니다. 당신은 임의로 자세히 조사할 것을 고릅니다.</text>
+	<text planet="NONE">척박한 지역임에도 불구하고 한 상인이 이 신호소에 상점을 차렸습니다. 그는 제안을 합니다.</text>
+	<text>이 송신소는 언뜻 보면 쓰레기장 같지만 자세히 보니 허름한 시장이었습니다. 한 상인이 눈길을 끄는 거래를 제안했습니다.</text>
+	<text planet="NONE">전당포 브로커가 무명의 신호소에 가게를 차렸습니다. 뭔가 쓸모있는 것을 제안 하고 있는 것 같습니다.</text>
 </textList>
 <eventList name="TRADER_LIST">
 	<event>
@@ -2640,7 +2892,7 @@
 </eventList>
 <eventList name ="FUEL_FOR_DRONE">
 	<event>
-		<text planet="PLANET_POPULATED">A nearby space station hails you. "Greetings! Your arrival is most fortuitous. We recently came across some extra drones. If you have some fuel, perhaps we can make a deal?"</text>
+		<text planet="PLANET_POPULATED">가까운 우주 정거장이 당신을 부릅니다. "안녕하세요! 운 좋게도 도착하셨네요.  최근에 여분의 드론을 발견했습니다. 연료만 있다면 거래 할 수 있겠습니까?"</text>
 		<ship load="SHIP_CIVILIAN_STATION" hostile="false"/>
 		<status type="limit" target="enemy" system="teleporter" amount="0"/>
 		<choice>
@@ -2679,7 +2931,7 @@
 		</choice>
 	</event>
 	<event>
-		<text>A strange vessel approaches. A digital message appears on your view-screen: "This is an automated merchant. Refill this vessel with fuel and it will supply you with drones."</text>
+		<text>수상한 선박이 접근합니다. 당신의 스크린에 디지털 메시지가 표시됩니다. "저는 자동 상인입니다. 이 수송선을 연료로 채워주시면 드론 장치를 제공해 드립니다."</text>
 		<ship load="SHIP_AUTO_SUPPORT" hostile="false"/>
 		<choice>
 			<text>제안을 받아들인다.</text>
@@ -2717,7 +2969,7 @@
 		</choice>
 	</event>
 	<event>
-		<text>You arrive in the sector and are greeted by a science vessel waiting by the beacon. They hail you, "We find ourselves low on fuel and have a proposition."</text>
+		<text>당신은 구역에 도착하니 송신소에서 기다리고 있던 과학선이 맞이했습니다. 그들은 당신에게 제안을합니다."저희가 연료가 부족합니다. 여기 제안이 있습니다."</text>
 		<ship load="SHIP_ZOLTAN_GENERIC" hostile="false"/>
 		<choice>
 			<text>제안을 받아들인다.</text>
@@ -2745,7 +2997,7 @@
 		<choice>
 			<text>공격!</text>
 			<event>
-				<text>You attack the Zoltan ship.</text>
+				<text>당신은 졸탄함선을 공격합니다.</text>
 				<ship hostile="true"/>
 				<choice hidden="true">
 					<text>계속...</text>
@@ -2757,10 +3009,10 @@
 </eventList>
 
 <event name="REFUEL_STATION" unique="true">
-	<text>A ship refueling station is stationed at this beacon. We can purchase fuel here.</text>
+	<text>이 신호소에는 선박 급유기가 배치돼 있습니다. 여기서 연료를 살 수 있습니다.</text>
 	<ship load="SHIP_FED_REFUEL" hostile="false"/>
 	<choice hidden="false">
-		<text>Buy 6 fuel for 12 scrap.</text>
+		<text>연료 6개를 12스크랩으로 산다.</text>
 		<event>
 			<text>"거래해 주셔서 감사합니다."</text>
 			<item_modify>
@@ -2770,7 +3022,7 @@
 		</event>
 	</choice>
 	<choice hidden="false">
-		<text>Buy 3 fuel for 6 scrap.</text>
+		<text>연료 3개를 6스크랩으로 산다.</text>
 		<event>
 			<text>"거래해 주셔서 감사합니다."</text>
 			<item_modify>
@@ -2780,7 +3032,7 @@
 		</event>
 	</choice>
 	<choice hidden="false">
-		<text>Buy 1 fuel for 2 scrap.</text>
+		<text>연료 1개를 2스크랩으로 산다.</text>
 		<event>
 			<text>"거래해 주셔서 감사합니다."</text>
 			<item_modify>
@@ -2806,7 +3058,7 @@
 	<choice>
 		<text>정거장을 공격하라!</text>
 		<event>
-			<text>The station is surprised by your sudden hostility, but prepares to defend itself.</text>
+			<text>그 정거장은 갑작스러운 당신의 적대적인 행동에 놀랐지만, 방어 태세를 갖추고 있습니다.</text>
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>계속...</text>
@@ -2817,7 +3069,7 @@
 </event>
 
 <event name="REPAIR_STATION" unique="true">
-	<text>You see a small station fitted with hundreds of Repair drones. You receive an automated message, "We don't know who you are and we don't care, but this is the right place for some ship repair!"</text>
+	<text>당신은 수백 대의 수리 드론으로 가득 차 있는 정거장을 포착했습니다. 당신은 자동 메시지를 받았습니다. "우리는 당신이 누군지 신경 쓰지는 않는다. 이곳은 함선을 수리하기에 알맞은 장소다."</text>
 	<ship load="SHIP_AUTO_STATION" hostile="false"/>
 	<choice>
 		<text>Repair 20 damage.</text>
@@ -2866,7 +3118,7 @@
 	<choice>
 		<text>정거장을 공격하라!</text>
 		<event>
-			<text>The Auto-station wastes no time powering up its defenses.</text>
+			<text>이 자동정거장은 방어 전원을 켜는 데 시간을 낭비하지 않았습니다.</text>
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>계속...</text>
@@ -2877,7 +3129,7 @@
 </event>
 
 <event name="SELL_DRONES_STATION" unique="true"> 
-	<text>You see a civilian space station with heavy damage. You receive a message, "We've been hit hard by the war. We need more drone parts to speed up our repairs. We'll buy some from you if you have extra."</text>
+	<text>민간인 우주정거장이 심하게 파손된 것을 발견했습니다. 당신은 메시지를 받았습니다, "우리는 전쟁으로 큰 손상을 입었습니다. 수리를 하려면 드론 부품이 더 필요합니다. 남는 게 있으면 사오겠습니다."</text>
 	<ship load="SHIP_CIVILIAN_STATION_DAMAGED" hostile="false"/>
 	<status type="limit" target="enemy" system="teleporter" amount="0"/>
 	<choice hidden="true">
@@ -2927,7 +3179,7 @@
 	<choice>
 		<text>정거장을 공격하라!</text>
 		<event>
-			<text>The station is surprised by your sudden hostility, but prepares to defend themselves.</text>
+			<text>그 정거장은 갑작스러운 당신의 적대적인 행동에 놀랐지만, 방어 태세를 갖추고 있습니다.</text>
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>계속...</text>
@@ -3000,7 +3252,7 @@
 <event name="DONOR_PONY" unique="true">
 	<text>Scanners are showing intelligent life forms on a nearby planet. No match for them can be found in the database.</text>
 	<choice hidden="true">
-		<text>조사한다.</text>
+		<text>Investigate.</text>
 		<event>
 			<text>You land a small shuttle in an enormous field, whose only occupants are small, brightly colored, six-legged, horse-like animals. Could they be what your scans picked up?</text>
 			<choice hidden="true">
@@ -3012,20 +3264,20 @@
 				<event load="PONY_SELL"/>
 			</choice>
 			<choice hidden="true">
-				<text>떠난다.</text>
+				<text>Leave.</text>
 				<event>
 					<text>This isn't the time for exobiology. You head back to the ship.</text>
 				</event>
 			</choice>
 			<choice hidden="true" req="mind">
-				<text>(정신 지배) Pacify the ponies and steal one.</text>
+				<text>(Mind Control) Pacify the ponies and steal one.</text>
 				<event>
-					<text>Under the effects of the 정신 지배 the pony does nothing to resist you, allowing you to collect it with little difficulty.</text>
+					<text>Under the effects of the mind control the pony does nothing to resist you, allowing you to collect it with little difficulty.</text>
 					<crewMember amount="1" class="pony"/>
 				</event>
 			</choice>
 			<choice hidden="true" req="LIST_CREW_SLUG">
-				<text>(슬러그 선원) Attempt to communicate telepathically.</text>
+				<text>(Slug Crew) Attempt to communicate telepathically.</text>
 				<event>
 					<text>After a moment, your crew tells you that these are simple beings, who enjoy a peaceful life. Your Slug puts the horse into a calm state, and you even manage to bring back a specimen. Without any fear of the horses, you explore further and even find old wreckage on the planet of an Engi ship, though the inhabitant is dead.</text>
 					<crewMember amount="1" class="pony"/>
@@ -3036,7 +3288,7 @@
 				<text>(Nights) "Oi, lisssten up you freakin' horssse thingsss!"</text>
 				<event>
 					<text>Nights drunkenly stumbles forwards, shouting at the horses randomly. This scares them away, but fortunately you follow them back to the location of a crash site where you find a barely alive Engi Defender and a lot of scrap. Nights might be a hungover idiot, but at least he accidentally brings you into a lot of beneficial situations.</text>
-					<crewMember amount="1" class="defend"/>
+					<crewMember amount="1" class="engi_defender"/>
 					<autoReward level="HIGH">scrap_only</autoReward>
 				</event>
 			</choice>
@@ -3050,7 +3302,7 @@
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>무시한다.</text>
+		<text>Ignore it.</text>
 		<event>
 			<text>You ignore the readings and prepare to move on.</text>
 			<choice hidden="true">
@@ -3071,7 +3323,7 @@
 		<autoReward level="LOW">standard</autoReward>
 	</event>
 	<event>
-		<text>You try to communicate in every possible way you can but they just stand there, silently judging you with their large, expressionless eyes. You prepare to 떠난다.</text>
+		<text>You try to communicate in every possible way you can but they just stand there, silently judging you with their large, expressionless eyes. You prepare to leave.</text>
 	</event>
 </eventList>
 <event name="PONY_SELL">
@@ -3093,21 +3345,21 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="LIST_CREW_SLUG">
-		<text>(슬러그 선원) Your Slug senses lifeforms aboard the ship, none of them look promising.</text>
+		<text>(Slug Crew) Your Slug senses lifeforms aboard the ship, none of them look promising.</text>
 		<event>
 			<text>Following your Slug's advice, you decide to avoid the station. While waiting for the FTL drive to charge, you skirt around the edge of the station and collect some scrap.</text>
 			<autoReward level="RANDOM">scrap_only</autoReward>
 		</event>
 	</choice>
 	<choice hidden="true" req="LIFE_SCANNER">
-		<text>(생체 감지기) Run scans on the station.</text>
+		<text>(Lifeform Scanners) Run scans on the station.</text>
 		<event>
 			<text>Scans show quite the depressing scene inside. Most of the crew are already dead, and they show signs of disease. It's best not to go anywhere near the station, and just scrap the hull instead.</text>
 			<autoReward level="RANDOM">scrap_only</autoReward>
 		</event>
 	</choice>
 	<choice hidden="true" req="BLUELIST_DRONES_BOARDING">
-		<text>(강습 드론) Send the drone. [-1|]</text>
+		<text>(Boarding Drone) Send the drone. [-1|]</text>
 		<event>
 			<text>Human corpses are scattered across the station. You find the source of the signal, a lone survivor that locked themselves in a storage closet. They desperately cling onto your drone while sobbing. Knowing what a traumatic experience it must have been, you run some evaluations but ultimately decide they're stable enough to be of help. You quickly retreat with them in tow back to the ship, and hope they can recover enough to be of some use.</text>
 			<autoReward level="LOW">scrap_only</autoReward>
@@ -3142,7 +3394,7 @@
 			</event>
 		</choice>
 		<choice hidden="true" req="medbay" lvl="2">
-			<text>(고급 의료실) Try to cure the disease.</text>
+			<text>(Improved Medbay) Try to cure the disease.</text>
 			<event>
 				<text>Your advanced medical suite is able to isolate the cause of the problem and administer an antidote. That was a close one.</text>
 			</event>
@@ -3153,11 +3405,11 @@
 <event name="TRADER_UPGRADES_EXCHANGE" unique="true"> 
 	<text load="TRADER_UPGRADES_EXCHANGE_TEXT"/>
 	<choice>
-		<text>거래를 승낙한다.</text>
+		<text>Agree to the trade.</text>
 		<event load="TRADER_UPGRADES_EXCHANGE_LIST"/>
 	</choice>
 	<choice>	
-		<text>정중하게 거절한다.</text>
+		<text>Respectfully decline.</text>
 		<event>	
 			<text>You decide you need what supplies you have.</text>
 			<choice hidden="true">
@@ -3594,7 +3846,7 @@
 		<event>
 			<text>"We understand... Please send help our way if you meet anyone trustworthy."</text>
 			<choice hidden="true">
-				<text>Check the storage.</text>
+				<text>창고를 확인한다.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice hidden="true">
@@ -3673,7 +3925,7 @@
 		<event>
 			<text>You have an important mission, you can't waste time investigating.</text>
 			<choice hidden="true">
-				<text>Check the storage.</text>
+				<text>창고를 확인한다.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice hidden="true">
@@ -4407,9 +4659,9 @@
 		</event>			
 	</choice>
 	<choice hidden="true" req="FIRE_EXTINGUISHERS">
-		<text>(Extinguishers) Use your tech to surpress the fire.</text>
+		<text>(Extinguishers) Use your tech to supress the fire.</text>
 		<event>
-			<text>You quickly grab some extra extinguishers from storage and attach a hose to the supression system, them move through the station putting out the larger fires.</text>
+			<text>You quickly grab some extra extinguishers from the storage and attach a hose to the supression system, them move through the station, putting out the larger fires.</text>
 			<choice hidden="true">
 				<text>Contact the survivors.</text>
 				<event>
@@ -4444,7 +4696,7 @@
 	<event>
 		<text>You pull up alongside the station and cut through their hull. You are able to rescue a few survivors but many more are lost. One of the survivors offers to join your crew and you offload the rest on a nearby station.</text>
 		<autoReward level="LOW">scrap_only</autoReward>
-		<crewMember amount="1" class="energy">Dr. Jones</crewMember> 
+		<crewMember amount="1" class="zoltan">Dr. Jones</crewMember> 
 	</event>
 </eventList>
 
@@ -4592,7 +4844,7 @@
 	</event>
 	<event>
 		<text>As you approach the ship, your sensors flicker off for a second and you realise you have been boarded by Ghosts!</text>
-		<boarders min="2" max="4" class="wraith"/>
+		<boarders min="2" max="4" class="phantom_wraith"/>
 	</event>
 </eventList>
 
@@ -4701,7 +4953,7 @@
 	<choice>
 		<text>Engage the Rebel and rescue the space dock.</text>
 		<event>
-			<text>You lock onto the rebel and move in to engage.</text>
+			<text>You lock onto the Rebel and move in to engage.</text>
 			<ship load="SHIP_REBEL_STORE_RESCUE" hostile="true"/>
 			<choice hidden="true">
 				<text>계속...</text>

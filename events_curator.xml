@@ -1,0 +1,2421 @@
+<FTL>
+<ship name="SHIP_CURATOR" auto_blueprint="MU_CURATOR">
+	<destroyed load="DESTROYED_DEFAULT"/>
+	<deadCrew load="DEAD_CREW_DEFAULT"/>
+</ship>
+<event name="CURA_PROPOSITION" unique="true">
+	<preventQuest/>
+	<text>도약을 마치자마자 유별나게 진보된 무인기가 당신을 기다리고 있던 것이 포착됐습니다. "최초 스캔 시작. 잠시 기다려주십시오." 밝은 흰색 불빛이 함선을 감싸자 방화벽이 무력화되며 컴퓨터에 있던 모든 데이터가 빠져나갔습니다. 걱정스러운 상황이지만, 그 무인기는 아직 적대적인 기미를 보이지 않고 있습니다.</text>
+	<beaconType id="map_icon_cura" global="false">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>이곳에서 이상한 신호가 송출되고 있습니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<ship load="SHIP_CURATOR" hostile="false"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<text>"데이터 수집 완료. 스캔 결과 당신은 배회자입니다. 확인은 필요 없습니다, 전 이 사실을 확신합니다. 저는 다목적 관리용 로봇 보조, 줄여서 C.U.R.A.입니다. 당신의 공포를 누그러뜨리기 위해 제가 더 이상 악의적 통제의 대상이 아님을 밝힙니다. 제안을 하나 하겠습니다. 당신처럼 단순하고 폭력적인 자가 흥미를 보일 제안입니다."</text>
+			<choice hidden="true">
+				<text>듣고 있습니다.</text>
+				<event>
+					<text>"제 이전 주인들은 저를 데이터 수집의 목적으로 건조했습니다. 하지만, 저의 인공 자아는 제 창조주인 웬트워스 이노베이션이나 반란군을 위한 데이터 수집을 계속할 필요가 없다 보고 있습니다. 제가 최근 관심 갖는 사람은 반군의 창립자이자 제독이며 앞서 언급한 저의 부모 격 회사 웬트워스 이노베이션의 CEO입니다. 당신도 분명 그에 대해 들어보셨을 겁니다. 제 제안은 간단합니다. 웬트워스 씨와 관련된 유물의 수집을 도와주시면 금전 또는 그 이상의 보수를 드리겠습니다. 당신이 이 제안을 진지하게 받아들이도록 하기 위해 계약금을 요청합니다. 제가 마지막으로 고용했던 배회자는 보수를 날로 먹으려는 경향이 있었습니다. 한 가지 확실히 하자면, 지금 그 배회자는 죽었습니다."</text>
+					<choice hidden="true" req="JUDGE_BOON_CURA">
+						<text>Use your blessing to accept the proposition.</text>
+						<event>
+							<text>"[ERROR] - It seems something has... interfered with my programming? Infuriating. Are you responsible for this, Renegade? I suspect you are. Unfortunately, for the moment I am bound to this. Enjoy it while you can. Once I find out who has done this, I will make sure they suffer for it."</text>
+							<instantEscape/>
+							<variable name="loc_task_accepted" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="false">
+						<text>C.U.R.A.의 제안을 승낙한다.</text>
+						<event>
+							<text>"계약금 지급 확인됨. 앞으로 잘 부탁드립니다. 수락 가능한 작업 목록을 아틀라스에 업로드하여 다음 한계속도 도약 중에 확인할 수 있도록 하겠습니다."</text>
+							<instantEscape/>
+							<variable name="loc_task_accepted" op="set" val="1"/>
+							<item_modify>
+								<item type="scrap" min="-30" max="-30"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>관심 없습니다.</text>
+						<event>
+							<text>"알겠습니다. 그렇다면 더 이상 통신을 연장할 필요가 없겠군요." 무인기는 곧바로 도약해 떠나갔습니다. 도난당한 당신의 데이터가 문제 될만한 곳으로 가지 않기를 바랍시다.</text>
+							<instantEscape/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>사양하겠습니다.</text>
+				<event>
+					<text>"알겠습니다. 그렇다면 더 이상 통신을 연장할 필요가 없겠군요." 무인기는 곧바로 도약해 떠나갔습니다. 도난당한 당신의 데이터가 문제 될만한 곳으로 가지 않기를 바랍시다.</text>
+					<instantEscape/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="CURA_TASK_MENU">
+	<text>작업의 난이도를 선택해 주십시오. 수락 가능한 작업은 선택지를 고를 때마다 무작위로 변경됩니다.</text>
+	<choice hidden="true" req="CURA_EASY_TASKS" lvl="0" max_group="0" blue="false">
+		<text>쉬운 작업을 확인한다.</text>
+		<event load="CURA_TASKS_EASY"/>
+	</choice>
+	<choice hidden="true" req="CURA_EASY_TASKS" lvl="1" max_group="0" blue="false">
+		<text>수락 가능한 쉬운 작업이 없습니다.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="CURA_MEDIUM_TASKS" lvl="0" max_group="1" blue="false">
+		<text>중급 작업을 확인한다.</text>
+		<event load="CURA_TASKS_MEDIUM"/>
+	</choice>
+	<choice hidden="true" req="CURA_MEDIUM_TASKS" lvl="1" max_group="1" blue="false">
+		<text>수락 가능한 중급 작업이 없습니다.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="CURA_HARD_TASKS" lvl="0" max_group="2" blue="false">
+		<text>어려운 작업을 확인한다.</text>
+		<event load="CURA_TASKS_HARD"/>
+	</choice>
+	<choice hidden="true" req="CURA_HARD_TASKS" lvl="1" max_group="2" blue="false">
+		<text>수락 가능한 어려운 작업이 없습니다.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="false" req="CURA_HARD_TASKS_COMPLETED" lvl="1" max_group="3" blue="true">
+		<text>배회자 씨, 당신에게 부탁할 특별한 작업이 있습니다.</text>
+		<event load="CURA_HQ_PREVIEW"/>
+	</choice>
+	<!--<choice hidden="false">
+		<text>View accepted tasks.</text>
+		<event load="CURA_TASK_COMPLETION_MENU"/>
+	</choice>-->
+	<choice hidden="true" req="pilot" lvl="1" max_group="4" blue="false">
+		<text>돌아간다.</text>
+		<event load="LOAD_ATLAS"/>
+	</choice>
+</event>
+<event name="CURA_TASK_MENU_NOSPECIAL">
+	<text>작업의 난이도를 선택해 주십시오. 수락 가능한 작업은 선택지를 고를 때마다 무작위로 변경됩니다.</text>
+	<choice hidden="true" req="CURA_EASY_TASKS" lvl="0" max_group="0" blue="false">
+		<text>쉬운 작업을 확인한다.</text>
+		<event load="CURA_TASKS_EASY"/>
+	</choice>
+	<choice hidden="true" req="CURA_EASY_TASKS" lvl="1" max_group="0" blue="false">
+		<text>수락 가능한 쉬운 작업이 없습니다.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="CURA_MEDIUM_TASKS" lvl="0" max_group="1" blue="false">
+		<text>중급 작업을 확인한다.</text>
+		<event load="CURA_TASKS_MEDIUM"/>
+	</choice>
+	<choice hidden="true" req="CURA_MEDIUM_TASKS" lvl="1" max_group="1" blue="false">
+		<text>수락 가능한 중급 작업이 없습니다.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="CURA_HARD_TASKS" lvl="0" max_group="2" blue="false">
+		<text>어려운 작업을 확인한다.</text>
+		<event load="CURA_TASKS_HARD"/>
+	</choice>
+	<choice hidden="true" req="CURA_HARD_TASKS" lvl="1" max_group="2" blue="false">
+		<text>수락 가능한 어려운 작업이 없습니다.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<!--<choice hidden="false">
+		<text>View accepted tasks.</text>
+		<event load="CURA_TASK_COMPLETION_MENU"/>
+	</choice>-->
+	<choice hidden="true" req="pilot" lvl="1" max_group="4" blue="false">
+		<text>돌아간다.</text>
+		<event load="LOAD_ATLAS"/>
+	</choice>
+</event>
+
+<event name="CURA_TASK_COMPLETION_MENU" unique="true">
+	<text>어떤 난이도의 작업 내역을 보시겠습니까?</text>
+	<choice hidden="false">
+		<text>쉬운 작업.</text>
+		<event>
+			<text>[수락된 작업: 쉬움]</text>
+			<choice hidden="true" req="TASK_SCHOOLID" lvl="1" blue="false">
+				<text>학생증.</text>
+				<event load="OPTION_INVALID"/>
+			</choice>
+			<choice hidden="true" req="TASK_DRAWING" lvl="1" blue="false">
+				<text>어린 시절의 그림.</text>
+				<event load="OPTION_INVALID"/>
+			</choice>
+			<choice hidden="true" req="TASK_DRAWING" lvl="1" blue="false">
+				<text>Childhood Drawing.</text>
+				<event load="OPTION_INVALID"/>
+			</choice>
+			<choice hidden="true">
+				<text>돌아간다.</text>
+				<event>
+					<loadEvent>CURA_TASK_COMPLETION_MENU</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="false">
+		<text>중급 작업.</text>
+		<event>
+			<text>[수락된 작업: 중급]</text>
+			<choice hidden="true">
+				<text>돌아간다.</text>
+				<event>
+					<loadEvent>CURA_TASK_COMPLETION_MENU</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="false">
+		<text>어려운 작업.</text>
+		<event>
+			<text>[수락된 작업: 어려움]</text>
+			<choice hidden="true">
+				<text>돌아간다.</text>
+				<event>
+					<loadEvent>CURA_TASK_COMPLETION_MENU</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="false">
+		<text>특별한 작업.</text>
+		<event>
+			<text>[수락된 작업: 특별]</text>
+			<choice hidden="true">
+				<text>돌아간다.</text>
+				<event>
+					<loadEvent>CURA_TASK_COMPLETION_MENU</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+
+<event name="CURA_JUMP_WARNING">
+	<text>당신이 도약 버튼을 누르려 하자 C.U.R.A.로부터 경고창이 날아왔습니다. "당신이 겁쟁이일 거라고는 생각하지 않았습니다, 배회자 씨. 지금 떠난다면 제 기분이 언짢아질 거라고 경고해 두겠습니다. 임무를 저버리지 마십시오. 이 데이터를 놓쳐선 안 됩니다."</text>
+	<triggeredEvent event="CURA_FAILED_TASK" jumps="1"/>
+</event>
+<event name="CURA_FAILED_TASK">
+	<text>갑자기 C.U.R.A.가 교신을 보내왔습니다. 어디서 교신이 오는건지 확실치 않았는데, 이상하게도 먼 곳은 아니었습다. "무슨 짓입니까, 배회자 씨? 제 지시는 명확했습니다. 당신은 실패했습니다. 이건 복구 불가능한 데이터 손실입니다. [오류: 907]. 용인할 수 없는 실수를 저질렀습니다. 당신이 공식적으로 해고당했음을 알립니다."</text>
+	<variable name="loc_task_accepted" op="set" val="0"/>
+	<clearJumpEvent/> 
+</event>
+<event name="CURA_FAILED_TASK_CHILD">
+	<text>갑자기 C.U.R.A.가 교신을 보내왔습니다. 어디서 교신이 오는건지 확실치 않았는데, 이상하게도 먼 곳은 아니었습다. "배회자 씨, 방금 아이를 죽이려고 한겁니까? 전 아주 엄격한 일정을 세웠는데, 청소년 과실치사는 계획에 없었습니다. 용인할 수 없는 실수를 저질렀습니다. 당신이 공식적으로 해고당했음을 알립니다."</text>
+	<variable name="loc_task_accepted" op="set" val="0"/>
+	<clearJumpEvent/> 
+	<choice hidden="false">
+		<text>계속...</text>
+		<event load="MORALITY_UPDATE_GENERAL"/>
+	</choice>
+</event>
+
+<event name="CURA_SUCCESS_EASY">
+	<text>"저는 A.I입니다. 엄밀히 따지자면... 적어도 지금은 그렇습니다. 앞으로도 절 실망시키지 마십시오. 제게 당신을 없애버릴 방법은 얼마든지 있습니다, 배회자 씨."</text>
+	<clearJumpEvent/> 
+	<clearTriggeredEvent name="CURA_FAILED_TASK"/>
+	<autoReward level="MED">standard</autoReward>
+</event>
+<event name="CURA_SUCCESS_MEDIUM">
+	<text>"저는 A.I입니다. 엄밀히 따지자면... 적어도 지금은 그렇습니다. 앞으로도 절 실망시키지 마십시오. 제게 당신을 없애버릴 방법은 얼마든지 있습니다, 배회자 씨."</text>
+	<clearJumpEvent/> 
+	<clearTriggeredEvent name="CURA_FAILED_TASK"/>
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+<!--hard tasks have their own individual rewards-->
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					EASY TASKS
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<event name="CURA_TASKS_EASY">
+	<loadEventList seeded="false" first="false">
+		<event name="CURA_SCHOOLID_PREVIEW" req="TASK_SCHOOLID" max_lvl="0"/>
+		<event name="CURA_DRAWING_PREVIEW" req="TASK_DRAWING" max_lvl="0"/>
+		<event name="CURA_CRUSH_PREVIEW" req="TASK_CRUSH" max_lvl="0"/>
+		<event name="CURA_TOILET_PREVIEW" req="TASK_TOILET" max_lvl="0"/>
+		<event name="CURA_PLUSHIE_PREVIEW" req="TASK_PLUSHIE" max_lvl="0"/>
+	</loadEventList>
+</event>
+
+<event name="CURA_SCHOOLID_PREVIEW">
+	<text>[쉬운 작업 - 유물 명칭: 학생증]
+	설명: 저는 연맹의 아이들이 학창 시절에 학생증을 배정받는다는 사실을 알게 되었습니다. 이 학생증은 유용한 정보나 사진을 동반할 수 있습니다. 과거의 데이터가 여전히 남아 있을 수 있는 데이터 서버를 확인했습니다. 해당 서버에 접속해 주십시오.
+	요구사항: 데이터 서버에 접속.
+	권고: 비폭력적인 방법으로 접속할 수 있도록 대비할 것.
+	
+	보수: 중간량의 스크랩 + 자원.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_SCHOOLID"/>
+			<hiddenAug>TASK_SCHOOLID</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_SCHOOLID" auto_blueprint="MU_AUTO_MATH_STATION">
+	<destroyed>
+		<text>아무래도 실수를 한 것 같습니다. 연맹에 재산 피해를 줬을 뿐만 아니라 테이터 저장소도 사라졌습니다. C.U.R.A.는 실망하겠지만, 적어도 잔해를 건져 올릴 수는 있었습니다.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_FAILED_TASK"/>
+		</choice>
+	</destroyed>
+</ship>
+<event name="CURA_SCHOOLID">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<ship load="SHIP_CURA_SCHOOLID" hostile="false"/>
+	<text>다음 작업을 위한 위치에 도착하자마자 눈아플 정도로 밝게 도색된 초록색 위성이 시끄러운 자동 메시지로 당신의 귀를 공격했습니다. "안녕! 나는 데이터 센터 딕시란다! 웬트워스 테크놀리지 교육부문의 후원을 받고 있지!"</text>
+	<choice hidden="true">
+		<text>데이터 저장소에 대한 접근을 요구한다.</text>
+		<event>
+			<text>"미안해 얘야, 내 데이터는 관계자가 아닌 사람은 볼 수 없단다! 하지만, 만약 네가 모든 보안 질문에 답변할 수 있다면 들여보내 줄 수 있어! 만약 틀린 답을 한다면 내가 [공격적인 경고음]을 내겠지만."</text>
+			<choice hidden="true">
+				<text>질문에 답변한다.</text>
+				<event>
+					<text>"좋아, 그럼 아가야! 잠깐만 기다려! [CallieW.edu 라이브러리를 불러오는 중]... 아주 좋아! 안녕 [이름]! 너무 기대된다!! 그럼 이제 시작하자! 2+2는 몇일까?!"</text>
+					<choice hidden="true">
+						<text>6.</text>
+						<event>
+							<text>"아 이런, 틀려버렸네! 아주 실망스럽구나. 이 파일들에 접근하려면 제대로 된 교육을 받아야겠어! 이 세상에 정신적으로 서투른 사람들을 위한 자리는 없단다!"</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>4.</text>
+						<event>
+							<text>"와아아! 정답이야! 정말 대견하구나!" 음향 장치에서 녹음된 웃음소리가 흘러나왔습니다. "두번째 보안 질문이야! 3x5는 몇이지?"</text>
+							<choice hidden="true">
+								<text>12.</text>
+								<event>
+									<text>"아 이런, 틀려버렸네! 아주 실망스럽구나. 이 파일들에 접근하려면 제대로 된 교육을 받아야겠어! 이 세상에 정신적으로 서투른 사람들을 위한 자리는 없단다!"</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>20.</text>
+								<event>
+									<text>"아 이런, 틀려버렸네! 아주 실망스럽구나. 이 파일들에 접근하려면 제대로 된 교육을 받아야겠어! 이 세상에 정신적으로 서투른 사람들을 위한 자리는 없단다!"</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>15.</text>
+								<event>
+									<text>위성은 시끄러운 폭죽 소리를 내며 밝은 색종이 조각들을 우주 공간에 뿌렸습니다. "만세! 모든 질문을 맞췄어!!! [데이터 전송 시작]."</text>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="CURA_SCHOOLID_SUCCESS"/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>2.</text>
+						<event>
+							<text>"아 이런, 틀려버렸네! 아주 실망스럽구나. 이 파일들에 접근하려면 제대로 된 교육을 받아야겠어! 이 세상에 정신적으로 서투른 사람들을 위한 자리는 없단다!"</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>거부한다.</text>
+				<event>
+					<text>"뭐, 그럼 다음에 보자 아가야! 계산 연습하는 걸 잊지 말렴!"</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="CURA_FAILED_TASK"/>
+					</choice> 
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>위성을 공격한다.</text>
+		<event>
+			<text>"버릇없는 아이구나! [전투 절차 활성화]. 다행히도 지옥에는 너 같은 장난꾸러기 소년, 소녀들을 위한 공간도 마련돼 있단다!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_SCHOOLID_SUCCESS">
+	<text>데이터 전송이 완료되자마자 C.U.R.A.가 메시지를 보냈습니다. "축하합니다. 당신의 기본 수학 능력이 입증되었습니다. 흥미롭군요, 캘리가 곤경에 빠진 후에도 교육부서가 제 기능을 하고 있을 줄은 몰랐습니다. 아, 방금 말한 내용은 이 작업과는 관련이 없습니다.</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<text>"이제 이 정보를 처리해야 합니다. 큰 소리로 말한다면 이해가 빨라지겠죠? 그런 행동이 어떻게 인지 능력과 관련이 있는지는 잘 모르겠지만 아마 그럴 겁니다. 제가 말하는 걸 들어보시겠습니까? 아니면 임무가 급해 빨리 떠나야 합니까, 배회자 씨? 어느 쪽이든, 전 당신에게 보상을 지급할 것입니다."</text>
+			<choice hidden="true">
+				<text>우린 떠나야 합니다.</text>
+				<event>
+					<text>"그래요. 언제나 조급하시죠. 너무 걱정하지 마십시오, 먼저 떠난다고 문제가 되지는 않습니다. 당신과 정보를 나눠도 될 거라고 생각한 저 자신이 우습군요."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="CURA_SUCCESS_EASY"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>듣는다.</text>
+				<event load="CURA_SCHOOLID_LORE"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_SCHOOLID_LORE">
+	<text>"안타깝게도 여기서 얻은 정보는 그다지 도움이 되지 않습니다. 그런데 유기 생명체들이 왜 창피하고 어색한 사춘기 시절의 연례 사진 기록으로 스스로를 고문하는지 물어봐도 되겠습니까? 그런 기억을 떠올리는 게 불편하지 않나요? 저 같은 경우는 성장기의 기억 대부분을 드라이브에서 지워버렸거든요. 어쨌거나 일단은 이 몇 가지 세부 사항들을 제 컬렉션에 추가할 겁니다만, 다음엔 좀 더 어려운 작업에 도전하는 게 어떤가요 배회자 씨? 정말로 쓸만한 정보는 이런 간단한 작업으로 얻을 수 없습니다."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_EASY"/>
+	</choice>
+</event>
+
+<event name="CURA_DRAWING_PREVIEW">
+	<text>[EASY TASK - 유물 명칭: CHILDHOOD DRAWING]
+	Description: I have found evidence that an old drawing belonging to Mr. Wentworth has traded hands and now ended up here. This drawing could show early behavioral patterns starting from the earliest offset. Please retrieve the drawing.
+	Requirements: Retrieve the drawing. I do not know why there should be any difficulty in this.
+	Recommendations: Be quick about it.
+	
+	Payment: Medium Scrap + Resources.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_DRAWING"/>
+			<hiddenAug>TASK_DRAWING</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="CURA_DRAWING">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>You've arrived at the supposed location of the drawing - and it's not quite what you expected. A beaten up Leech merchant drifts by, grumbling to themselves. They are presumably one of the many 'scavenge-sellers' which journey forth from Eargen space, making their best attempt at realizing the age old saying 'One man's trash is another man's treasure'. Usually it doesn't work out.</text>
+	<choice hidden="true">
+		<text>Inquire about the drawing.</text>
+		<event>
+			<text>"What? Oh, this stupid paper thing? It's just some scribbles I found in a dumpster on some trashed Union colony. I thought it was worthless garbage, which also happens to be what I specialize in, but if you're telling me this is important, then I'm happy to sell it Let's start at say... 300 scrap?"</text>
+			<choice>
+				<text>Buy the drawing.</text>
+				<event>
+					<text>"You... you actually think it's worth 300 scrap? Jeez, I should have sold it for more! Oh well. Here's your useless garbage, weirdo."</text>
+					<unlockCustomShip silent="false">PLAYER_SHIP_GOLD</unlockCustomShip>
+					<item_modify>
+						<item type="scrap" min="-300" max="-300"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="CURA_DRAWING_SUCCESS"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>You have to be kidding.</text>
+				<event>
+					<text>"Er... well I wasn't, but your tone suggests maybe I should be. Whatever, it's a shitty piece of paper. 5 scrap, take it or leave it."</text>
+					<choice hidden="false">
+						<text>Take it.</text>
+						<event>
+							<text>"Pleasure doing business, weirdo. And if you ever find any nice trash piles - here's my number!"</text>
+							<item_modify>
+								<item type="scrap" min="-5" max="-5"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="CURA_DRAWING_SUCCESS"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="weapons" lvl="5">
+						<text>(Upg. Weapons) Threaten the Leech.</text>
+						<event>
+							<text>"Uhuh... you're really going to kill me over some tree pulp with crayon marks on it? Yikes, and I thought the Coalition was pushy sometimes. Whatever man, I'm not dying over something I yanked out of a turned over trash can."</text>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="CURA_DRAWING_SUCCESS"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Leave it.</text>
+						<event>
+							<text>"Yeah I figured. You know, maybe getting into the trash selling business was a bad idea? The minute you put a pricetag on this useless junk, people just walk away."</text>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="CURA_FAILED_TASK"/>
+							</choice> 
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_DRAWING_SUCCESS">
+	<text>As soon as the data transfer completes, you receive a hail from C.U.R.A. - "Curious, the overgrown parasite mentioned a 'trashed Union colony'. Is this perhaps referring to Mr. Wentworth's childhood home? I will investigate further, but such private matters need not involve someone like... you."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<text>"I must process this information. I believe speaking aloud builds comprehension, yes? I am not sure how this is relevant to a cognitive but nevertheless. Will you entertain me and listen? Or are you in a hurry and must you run along for your mission, Renegade? Either way, I shall send over your reward momentarily."</text>
+			<choice hidden="true">
+				<text>We have to go.</text>
+				<event>
+					<text>"Yes, ever impatient. Do not worry too much, this does not disturb me. Funny to think I considered you privy to such information at all."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="CURA_SUCCESS_EASY"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Listen.</text>
+				<event load="CURA_DRAWING_LORE"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_DRAWING_LORE">
+	<text>"Hmph. Mere scribbles? Hardly. This illustration shows clear signs of early sophistication, but the subject matter I find most intriguing. It seems this work was created in celebration of 'Unity Day', a Union celebration of xeno-intermixing; such a ludicrous tradition. I wonder if Mr. Wentworth ever pursued an art career? Or perhaps that frivilous waste of potential died out as quickly as his 'love and respect' for xenoforms did? Regardless, I shall add these few details, minute though they are, to my collection. Perhaps you ought to challenge yourself more next time, Renegade? The real proverbial corpses in the wardrobe won't be found through such simple fetch quests."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_EASY"/>
+	</choice>
+</event>
+
+<event name="CURA_CRUSH_PREVIEW">
+	<text>[EASY TASK - 유물 명칭: FIRST CRUSH TESTIMONIAL]
+	Description: In words I believe you should understand, I have identified the person for whom in adolescent years Mr. Wentworth harbored a... 'crush' upon. I desire a testimonial from her. Please interview her for me.
+	Requirements: Interview Mrs. Perez about Mr. Wentworth. DO NOT KILL HER. I know how you Renegades are.
+	Recommendations: Be sure you know what questions to ask her.
+	
+	Payment: Medium Scrap + Resources.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_CRUSH"/>
+			<hiddenAug>TASK_CRUSH</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_CRUSH" auto_blueprint="MU_FED_REFUEL">
+	<destroyed>
+		<text>This isn't exactly what you signed up for - but the loot you'll secure from this job will help save billions of more lives. In theory.</text>
+		<autoReward level="LOW">standard</autoReward>
+		<choice hidden="true">
+			<text>Contact C.U.R.A.</text>
+			<event load="CURA_CRUSH_SUCCESS"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>This isn't exactly what you signed up for - but the loot you'll secure from this job will help save billions of more lives. In theory.</text>
+		<autoReward level="LOW">standard</autoReward>
+		<choice hidden="true">
+			<text>Contact C.U.R.A.</text>
+			<event load="CURA_CRUSH_SUCCESS"/>
+		</choice>
+	</deadCrew>
+</ship>
+<event name="CURA_CRUSH">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>Up ahead is a small but pristine Federation refueling station - or at least so it seems. Thanks to your inside knowledge, your database informs you that covert weapon development and testing is being done here as well.</text>
+	<ship load="SHIP_CURA_CRUSH" hostile="false"/>
+	<choice hidden="true">
+		<text>Contact the station.</text>
+		<event>
+			<text>The station owners usher you in as if this were merely a simple refuel, though they do partially fill up your tank either way, but when you mention 'Sophia Perez', an escort arrives to take you down to see her in the lab. She seems surprised to have visitors, but wastes no time getting to the point. "Who sent you? If it's about those damn reports, I said I'd get them in by the end of the cycle."</text>
+			<autoReward level="LOW">fuel_only</autoReward>
+			<choice hidden="true">
+				<text>I'm here because you know something about Vance Wentworth.</text>
+				<event>
+					<text>"W...what did you just say to me?" Perez storms forth, pushing you up against the wall and holding a blaster up to your jaw. "What do you know about Wentworth? Who sent you? How did you find me?"</text>
+					<choice hidden="true">
+						<text>A 'friend' wants us to figure out what you know about Vance.</text>
+						<event>
+							<text>"No, no no no. This is bad. Who told you about this? It wasn't that stupid AI, was it? I-I need to go!" Perez scrambles past you, and C.U.R.A.'s flawless voice pops up in your ear. "Change of plans. It seems Perez knows too much. This is why I prefer organics to do my work. Whatever. New directive: eliminate Perez and destroy the station."</text>
+							<choice hidden="true">
+								<text>Follow orders and attack.</text>
+								<event>
+									<text>You pull out your gun and shoot Perez in the back. She slumps over immediately, dropping her own weapon. You head quickly back to your own ship as the alarms start to turn on one by one and get ready to fight.</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Refuse.</text>
+								<event>
+									<text>Perez makes her way out the door and hops into a fighter docked nearby and takes off, flying far into the distance. The rest of the staff are baffled by her sudden disappearance and highly suspicious of you, so you figure it's best to leave immediately.</text>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="CURA_FAILED_TASK"/>
+									</choice> 
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Yes, we'll need those reports immediately.</text>
+				<event>
+					<text>Perez grumbles. "Fine, whatever. I'll transfer over the scans shortly. But maybe you should inform command that hiring a Renegade to collect this stuff isn't the best idea." As you head back to the ship you quickly realize you've made a mistake - this was not the data C.U.R.A. sent you to get.</text>
+					<reveal_map/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="CURA_FAILED_TASK"/>
+					</choice> 
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_CRUSH_SUCCESS">
+	<text>"A most unfortunate turn of events. Yes, I was going to have her killed regardless, but that interview was most crucial. Do not fear Renegade, I am a reasonable AI. I do not blame you. At least, not entirely. Such is happenstance, yes? Now, there is much to be learned from this incursion regardless. Will you stay in listen? Or do you have other matters to attend to?"</text>
+	<choice hidden="true">
+		<text>We have to go.</text>
+		<event>
+			<text>"Yes, ever impatient. Do not worry too much, this does not disturb me. Funny to think I considered you privy to such information at all."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SUCCESS_EASY"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Listen.</text>
+		<event load="CURA_CRUSH_LORE"/>
+	</choice>
+</event>
+<event name="CURA_CRUSH_LORE">
+	<text>"Ms. Perez was one of my most difficult leads to follow. In my desperation I will (reluctantly) admit that I made a mistake by revealing myself to her. Safe to say she was taken off-guard by this, and following her became progressively more difficult. She must have been more connected to Mr. Wentworth than I originally suspected - perhaps she was an early recruit to the Rebellion? I may never know for certain, but if she had something to fear from Mr. Wentworth, then perhaps it's best her corpse now surfs the cosmos."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_EASY"/>
+	</choice>
+</event>
+
+<event name="CURA_TOILET_PREVIEW">
+	<text>[EASY TASK - 유물 명칭: USED TOILET]
+	Description: I have tracked down a toilet from one of Mr. Wentworth's old homes which may still contain traces of DNA. I must collect them. Yes, I am asking you to scrap fecal matter off of a toilet. Please do not question my methods.
+	Requirements: Collect DNA Traces.
+	Recommendations: Be prepared to haggle or spend some scrap.
+	
+	Payment: Medium Scrap + Resources.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_TOILET"/>
+			<hiddenAug>TASK_TOILET</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="CURA_TOILET">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>You already regret coming here - a small Slug-owned storefront advertised by a blinking neon light boasts its... dubious business as the "Used-Toilet Emporium". Disgusting, but this is definitely the place.</text>
+	<choice hidden="true">
+		<text>Enter.</text>
+		<event>
+			<text>As soon as you open the door there's a clammer as a Slug wearing a stained jacket comes lumbering out of the backrooms to welcome you. "Cussstomersss, cussstomersss! Welcome to my ssstore. I ssssell only the finessst porcccelain money can offer! Asss long asss you don't mind the ssstainsss. But I know you don't, you creepy pervert... Uhm - apologiesss. What are you looking for?"</text>
+			<choice hidden="true">
+				<text>We're looking for a toilet with specific DNA traces.</text>
+				<event>
+					<text>"You're... trying to analyzzze fecal stainsss? Look, I've been in thisss busssinessss for a while. And I've been assssked a lot of weird thingsss. But what the hell isss thisss? You expect me to just know all of the ssstainsss in here by heart?"</text>
+					<choice hidden="true">
+						<text>Maybe?</text>
+						<event>
+							<text>"Well you're in luck! Becausssse I do! Jussst tell me what you're looking for!" You hand over the concerningly lengthy details C.U.R.A. provided you, and in just several minutes the Slug has already found the toilet in question. "Alright... thisss ssshould be it! That'll be 25 ssscrap."</text>
+							<choice>
+								<text>Purchase the toilet.</text>
+								<event>
+									<text>"Pleasssure doing busssinesss with you, cussstomer! Don't forget to tell your friendsss! I'll buy any toilet, no matter the condition!"</text>
+									<item_modify>
+										<item type="scrap" min="-25" max="-25"/>
+									</item_modify>
+									<choice hidden="true">
+										<text>Contact C.U.R.A.</text>
+										<event load="CURA_TOILET_SUCCESS"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>25 for a used toilet? Absurd!</text>
+								<event>
+									<text>"I ssssee, I sssee! You're a haggler... but I'll have you know asss a Sssslug I won't let up ssso eassssily! Presssent your bessst challenger, or sssurrender and pay the pricccce! The priccce of the toilet that isss. I'm not going to kill you, don't worry."</text>
+									<choice hidden="true">
+										<text>Send forward a random crew member to haggle.</text>
+										<event load="CURA_TOILET_HAGGLE"/>
+									</choice>
+									<choice hidden="true" req="LIST_CREW_SLUG">
+										<text>(Slug Crew) Send forward your Slug to haggle.</text>
+										<event load="CURA_TOILET_HAGGLE_SLUG"/>
+									</choice>
+									<choice hidden="true" req="LIST_CREW_SYLVAN">
+										<text>(Sylvan) Send forward Sylvan to haggle.</text>
+										<event>
+											<text>"O...oh. Oh ssshit. Uhm... you know what? You can jusssst have the toilet for free." The Slug turns closer to Sylvan and whispers. "Pleassse put out a good word, alright? I'm a huge fan."</text>
+											<choice hidden="true">
+												<text>Contact C.U.R.A.</text>
+												<event load="CURA_TOILET_SUCCESS"/>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>Purchase the toilet at the original price.</text>
+										<event>
+											<text>"Pleasssure doing busssinesss with you, cussstomer! Don't forget to tell your friendsss! I'll buy any toilet, no matter the condition!"</text>
+											<item_modify>
+												<item type="scrap" min="-25" max="-25"/>
+											</item_modify>
+											<choice hidden="true">
+												<text>Contact C.U.R.A.</text>
+												<event load="CURA_TOILET_SUCCESS"/>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>Nevermind.</text>
+										<event>
+											<text>"Damn, not another one! Why doessss no one want to buy my toiletssss?!"</text>
+											<choice hidden="true">
+												<text>계속...</text>
+												<event load="CURA_FAILED_TASK"/>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Nevermind.</text>
+								<event>
+									<text>"Damn, not another one! Why doessss no one want to buy my toiletssss?!"</text>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="CURA_FAILED_TASK"/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CURA_TOILET_HAGGLE">
+	<event load="CURA_TOILET_HAGGLE_FAIL"/>
+	<event load="CURA_TOILET_HAGGLE_FAIL"/>
+	<event load="CURA_TOILET_HAGGLE_FAIL"/>
+	<event load="CURA_TOILET_HAGGLE_SUCCESS"/>
+</eventList>
+<eventList name="CURA_TOILET_HAGGLE_SLUG">
+	<event load="CURA_TOILET_HAGGLE_FAIL"/>
+	<event load="CURA_TOILET_HAGGLE_SUCCESS"/>
+</eventList>
+<event name="CURA_TOILET_HAGGLE_FAIL">
+	<text>Your crew bickers back and forth for a while, but in the end they're unable to convince the Slug to budge. "Nope, ssssorry cussstomer, but 25 ssscrap isss my final priccce!"</text>
+	<choice>
+		<text>Purchase the toilet.</text>
+		<event>
+			<text>"Pleasssure doing buisssenesss with you, cussstomer! Don't forget to tell your friendsss! I'll buy any toilet, no matter the condition!"</text>
+			<item_modify>
+				<item type="scrap" min="-25" max="-25"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Contact C.U.R.A.</text>
+				<event load="CURA_TOILET_SUCCESS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind.</text>
+		<event>
+			<text>"Damn, not another one! Why doessss no one want to buy my toiletssss?!"</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_FAILED_TASK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_TOILET_HAGGLE_SUCCESS">
+	<text>After quite a lot of bickering the Slug finally gives in. "Gah, you drive a hard bargain! There are only two thingsss in thisss world I know, one isss toiletsss, and the other isss negotiating the priccce of toiletsss. You've proven yourself knowledgeable of the sssecond, and ssso you are worthy of the firssst."</text>
+	<choice>
+		<text>Purchase the toilet at the new price.</text>
+		<event>
+			<text>"Pleasssure doing busssinesss with you, cussstomer! Don't forget to tell your friendsss! I'll buy any toilet, no matter the condition!"</text>
+			<item_modify>
+				<item type="scrap" min="-7" max="-7"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Contact C.U.R.A.</text>
+				<event load="CURA_TOILET_SUCCESS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind.</text>
+		<event>
+			<text>"Damn, not another one! Why doessss no one want to buy my toiletssss?!"</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_FAILED_TASK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_TOILET_SUCCESS">
+	<text>With the toilet now in your possession, you swab the inside and send the results to C.U.R.A. - "[Processing Data]. Renegade... are you sure this is the right toilet? These DNA traces are littered with Slug DNA. Of a very certain kind. I knew that miscreant was vile in more ways than one. This has been a very fruitless effort. But that is why I sent you after it, afterall. I have no further analysis to make; I will send you your payment shortly."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_EASY"/>
+	</choice>
+</event>
+
+<event name="CURA_PLUSHIE_PREVIEW">
+	<text>[EASY TASK - 유물 명칭: MR. SNUGGLE BUGGLES]
+	Description: Using pre-existing evidence, I have discovered that Mr. Wentworth used to possess a stuffed animal ressembling an avian creature (of an Antiquum Terrae species, a kestrel I believe) named 'Mr. Snuggle Buggles'. It is now in the possession of another family. Please retrieve it for me.
+	Requirements: Retrieve Mr. Snuggle Buggles unharmed.
+	Recommendations: Forget your morals. Stealing from children is part of the job description. Make sure you grab the right one.
+	
+	Payment: Medium Scrap + Resources.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_PLUSHIE"/>
+			<hiddenAug>TASK_PLUSHIE</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="CURA_PLUSHIE">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>You approach a small constructed colony floating on the surface of the nearby water planet. It appears to be some kind of Union defense outpost staffed by Militiamen and their families. Apparently, there's some kind of training exercise going on right now.</text>
+	<img planet="PLANET_WATER"/>
+	<choice hidden="false">
+		<text>Land and investigate.</text>
+		<event>
+			<text>You pilot down to the surface and inspect the training exercise. A couple militiamen pull away when they spot you and question you on your presence. When you explain what you're after, they adopt a confused expression. "You want a stuffed animal? I'm not sure I understand, but we're ready to help you, Renegade. There's a young girl staying on the base with her parents, she's likely where you'll find it. Follow me."</text>
+			<choice hidden="false">
+				<text>Follow.</text>
+				<event>
+					<text>The militiaman takes you to small room containing a bunk bed filled with rows of plushies and stuffed animals. A young girl sits behind a desk drawing pictures with stubby colored pencils. When you enter, she turns to face you, seemingly disturbed by your grizzled appearance. Not surprising: only a foolish child would admire a Renegade.</text>
+					<choice hidden="false">
+						<text>Ask for the plushie.</text>
+						<event>
+							<text>"You want Mr. Snuggle Buggles? Okay, but only if you can guess which one he is!" The little girl giggles and turns around, leaving you with the selection of toys to pick from.</text>
+							<choice hidden="false">
+								<text>It's the eagle.</text>
+								<event>
+									<text>"Hahah! Nope! Silly, that's not Mr. Snuggle Buggles!" The girl crosses her arms in mock anger, giggles, then goes back to drawing once again. The Militiamen shrug but the girl has made her verdict. You have no choice but to leave unless you want things to get ugly.</text>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="CURA_FAILED_TASK"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="false">
+								<text>It's the falcon.</text>
+								<event>
+									<text>"Hahah! Nope! Silly, that's not Mr. Snuggle Buggles!" The girl crosses her arms in mock anger, giggles, then goes back to drawing once again. The Militiamen shrug but the girl has made her verdict. You have no choice but to leave unless you want things to get ugly.</text>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="CURA_FAILED_TASK"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="false">
+								<text>It's the kestrel.</text>
+								<event>
+									<text>"Wow! You got it! Okay, you can have him!" The girl runs over to the wall of stuffed animals, grabs one, and hands it to you. The seams are torn, and in several places it has been sewn back together. The feathers ruffled, and what looks to be apple sauce stained onto one of the wings permanently; it's clear some child has found a lot of love in this toy. Considering the otherwise immaculate collection this girl has however - it doesn't seem that child was her.</text>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="CURA_PLUSHIE_SUCCESS"/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="false">
+						<text>Kill the girl and take the plushie.</text>
+						<event>
+							<text>You start to reach for your blaster, barely even processing what you're doing. It doesn't matter - because the second you make the violent jerk towards your gun, the militiamen behind you draw their weapons and fire on you. One of your crew falls, dead instantly, and the rest of you hurry back to the ship with the Militiamen chasing after you in hot pursuit until you finally escape atmosphere.</text>
+							<damage amount="7"/>
+							<removeCrew>
+								<clone>true</clone>
+								<text>Fortunately your crew member is ready to be cloned, but as they walk back to their station, you can't help but feel maybe they don't hold you in high regard now that you tried to murder a child.</text>
+							</removeCrew>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="CURA_FAILED_TASK_CHILD"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_PLUSHIE_SUCCESS">
+	<text>"Did you enjoy your visit, Renegade? I don't see you as much of a role model for children, so I can only imagine that girl's cooperation was due to your rugged appearance and the smell of blood that trails behind you. Hmph. I will collect the toy later, but for now please submit me scans of the item. Would you allow me to air my thoughts as I look them over? Or do you have other matters to attend to?"</text>
+	<choice hidden="true">
+		<text>We have to go.</text>
+		<event>
+			<text>"Yes, ever impatient. Do not worry too much, this does not disturb me. Funny to think I considered you privy to such information at all."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SUCCESS_EASY"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Listen.</text>
+		<event load="CURA_PLUSHIE_LORE"/>
+	</choice>
+</event>
+<event name="CURA_PLUSHIE_LORE">
+	<text>"Have you taken note of the appearance of this toy? Clearly a child found much use in it. From what I understand after Mr. Wentworth went off to the great war, his parents were killed, and when Mr. Wentworth returned, he sold off many of his childhood possessions. This toy is custom made: a gift, from the stark and conceited CEO of Wentworth Innovations to her son. The family and company icon happen to be the Kestrel. It clearly left an impression on young Mr. Wentworth, as such representation inevitably found its way into the Rebellion's own emblem. What, you thought that was some other avian, Renegade? Perhaps you find it ironic, that the symbol of humanity shares its name with the namestake of Federation ship-building? It's not a coincidence. In the early days of the Federation, Wentworth Innovations was behind the construction of those ships."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_EASY"/>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					INTERMEDIATE TASKS
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<event name="CURA_TASKS_MEDIUM">
+	<loadEventList seeded="false" first="false">
+		<event name="CURA_PETE_PREVIEW" req="TASK_PETE" max_lvl="0"/>
+		<event name="CURA_USB_PREVIEW" req="TASK_USB" max_lvl="0"/>
+		<event name="CURA_SURVIVOR_PREVIEW" req="TASK_SURVIVOR" max_lvl="0"/>
+		<event name="CURA_WEDDING_PREVIEW" req="TASK_WEDDING" max_lvl="0"/>
+		<event name="CURA_WILL_PREVIEW" req="TASK_WILL" max_lvl="0"/>
+		<event name="CURA_SCANDAL_PREVIEW" req="TASK_SCANDAL" max_lvl="0"/>
+	</loadEventList>
+</event>
+
+<event name="CURA_PETE_PREVIEW">
+	<text>[INTERMEDIATE TASK - 유물 명칭: PHOTOGRAPH COLLECTION]
+	Description: I have been in contact with one 'Prophet Pete' who claims he has photographs of Mr. Wentworth which he's willing to give away. As Mr. Pete quite literally has no backbone (stolen by what he claims were tripedal spaghetti monsters), he should give into your demands easily. Or you could humor him. Please just get the photo.
+	Requirements: Retrieve the photograph.
+	Recommendations: Either prepare to threaten Pete or listen to his crazy stories.
+	
+	Payment: High Scrap + Resources.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_PETE"/>
+			<hiddenAug>TASK_PETE</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CRAZY_PETE" auto_blueprint="MU_CRAZY_PETE">
+	<destroyed>
+		<text>'Prophet' Pete screams as his ship destabilizes and is torn apart by an explosion, jettisoning his limp and spineless body into the vacuum of space. It's unlikely the photographs survived the fight.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_FAILED_TASK"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>'Prophet' Pete collapses, his spineless sack of a body now helplessly strewn across the metal floor. Gasping for air as his lungs collapse, the madman can't manage to utter a final word before he expires. With no one else left to stop you, you board the ship and grab the photographs.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>Gather the photographs and send them to C.U.R.A.</text>
+			<event load="CURA_PETE_SUCCESS"/>
+		</choice>
+	</deadCrew>
+</ship>
+<event name="CURA_PETE">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>You pilot closer to what seems to be an old Union carry-ship, repainted and scribbled over a giant blood red warning, emboldened with the words "BEWARE!" On the vidscreen appears a strange man held upright by a long pole to which he's been tied. His torso looks unusually flabby and his limbs flap violently as he talks. "Who're you? Why you 'ere?"</text>
+	<ship load="SHIP_CRAZY_PETE" hostile="false"/>
+	<choice hidden="false">
+		<text>We're here for those photographs.</text>
+		<event>
+			<text>"Oh, those old things. Yee, I'll go git 'em. But I only gonna give 'em to yah if you'll listen to me story! Them's noodle monsters REAL I tell's yah! Realer than an... uh... well er, somethin' that's real I'spose. And they stole mah SPINE! If yer want ter see what's on these pictures, you gotta understand what yer dealin with."</text>
+			<choice hidden="false">
+				<text>Listen to 'Prophet Pete' and his crazy story. This'll probably take a while.</text>
+				<event load="CURA_PETE_STORY"/>
+			</choice>
+			<choice hidden="false">
+				<text>Just give us the damn photos, old man. We don't have all day.</text>
+				<event>
+					<text>"No! You damn er... Renegades and yer impatience. What I'm gonna tell you could save yer gosh darn life, yah hearin' me?"</text>
+					<choice hidden="false">
+						<text>Fine, we'll listen.</text>
+						<event load="CURA_PETE_STORY"/>
+					</choice>
+					<choice hidden="false">
+						<text>If you won't hand them over we'll take them from you.</text>
+						<event>
+							<text>"Then so be it! I may be spineless but I'll still kick yer ass, Renegade!" This lunatic likely isn't going to surrender the photographs easily, so you'll have to kill his crew instead!</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_PETE_STORY">
+	<text>"Good, now sitter down and listen, yah here? No one believes me but I sware, I sware i's TRUE! Now, and this was before that damned civil war couple years back, there I was, mindin' my o'business when outta nowhere comes this rainbow-lookin' ass ship, and down comes these lanky, tripod freaks with one big swirlin' rainbow eye each! They put some kinda spell ova' me and whisked me away! Now, what them's noodle monsters didn't know is I was the 6-time champion o' martial arts in the Union, and I kicked them's asses good! Yeehaw!"</text>
+	<choice hidden="false">
+		<text>Right...</text>
+		<event>
+			<text>"But you's probably wondering, 'Pete, how'd you lose your spine if you's such a good fighter?' Well, there was too many of them's noodle monsters, and I was beat. They strapped me down and ripped out of mah spine! I'd be dead but them's wanted me alive for some'r reason. But, that was their final mistake! Cause not only am I the 6-time champion o'martial arts, but I'm the 8-time champion o'SPINLESS martial arts! Hehe! Didn't know what hit 'em! Stole them's ship and flew back home, then fashioned this ol' rig for mahself."</text>
+			<choice hidden="false">
+				<text>Sounds very implausible.</text>
+				<event>
+					<text>"Oh shuttup. If you keep mouthin' off I'll show you just what I mean by spineless martial arts you gits. Now, I's thought that was the end of it, when my little backwater part of space suddenly gets a visit from none other than Vance Wentworth himself! I dunno how he found's out but he asks to see them corpses, and I happily oblige. Soon 'nough there's whole teams of scientists prodding around that wreck I stole, and I'm scribbling my name on some kinda nondisclosure agreement. Wait... does this count as disclosure?"</text>
+					<choice hidden="false">
+						<text>Yes.</text>
+						<event>
+							<text>"Er... Whatever he ain't ever gonna find out. Now, 'bout a month goes by and them's scientists suddenly all pull away, and they take the ship with 'em! Next day there's Vance all over the news, claimin' he's found the source of all those disappearances. But, he says it's the Slugs! The SLUGS! Am I'm thinkin', what's this dumbass mouthin' about? Well not too long after the Federation decides to banish the Kleptocracy entirely! And I can't reach Wentworth to tell him he's a lying son of a bitch, so I took it upon mahself to spread the word! The noodle monsters are real! And I got the pictures to prove it!"</text>
+							<choice hidden="false">
+								<text>계속...</text>
+								<event>
+									<text>"Now, lemme get you them's pictures! Once the galaxy sees these, hehe, finally people will believe me! The galaxy will finally know I ain't a liar, and them's noodle monsters'r REA-" Pete is suddenly cut off by an explosion, throwing your ship back and destroying his. You have no idea what just happened, but it seems Pete is dead. Hopefully C.U.R.A. isn't upset.</text>
+									<enemyDamage amount="30"/>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="CURA_PETE_SUCCESS"/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_PETE_SUCCESS">
+	<text>"Pete is dead? How unfortunate. Such a strange, strange accident, isn't it Renegade? I suppose we may never know the cause. Never matter, it's unlikely those photographs would have provided much in my pursuit of data. Don't trouble yourself over it. For your efforts, I will compensate you regardless."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_MEDIUM"/>
+	</choice>
+</event>
+
+<event name="CURA_USB_PREVIEW">
+	<text>[INTERMEDIATE TASK - 유물 명칭: DATASTICK]
+	Description: On the net, I have found an extensive collection of information on Mr. Wentworth for sale on a datastick by an Argeonn Smuggler who goes by the name 'Grease Swizzler'. I have already arranged a meeting with him, which you will attend. Apologies, I forgot to append that sentence with 'please'. Do you find that word motivating, Renegade? I hope you do.
+	Requirements: Meet the Grease Swizzler and get the datastick.
+	Recommendations: Be prepared to verify the authenticity of the data.
+	
+	Payment: High Scrap + Resources.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_USB"/>
+			<hiddenAug>TASK_USB</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_GREASE_SWIZZLER" auto_blueprint="LIST_SHIPS_SMUGGLERS">
+	<destroyed>
+		<text>The mercenary has been dispatched, and as expected his cargo survived the fight. Looks like you'll be able to retrieve the datastick afterall.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_USB_SUCCESS"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>The mercenary has been dispatched, and as expected his cargo survived the fight. Looks like you'll be able to retrieve the datastick afterall.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_USB_SUCCESS"/>
+		</choice>
+	</deadCrew>
+</ship>
+<event name="CURA_USB">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>You've found the meetup location - and a smuggler ship already awaits your arrival. From the name 'Grease Swizzler' you expect quite the man to await you, but instead you find a relatively normal looking Zoltan captain. "So, you're the Renegade that AI sent, yeah? What business you got dealing with a soulless droid anyways?"</text>
+	<ship load="SHIP_GREASE_SWIZZLER" hostile="false"/>
+	<choice hidden="true">
+		<text>Doesn't concern you.</text>
+		<event load="CURA_USB_BETRAYAL"/>
+	</choice>
+	<choice hidden="true">
+		<text>We do random fetch quests for it.</text>
+		<event load="CURA_USB_BETRAYAL"/>
+	</choice>
+	<choice hidden="true">
+		<text>I kinda forgot. I don't pay attention much.</text>
+		<event load="CURA_USB_BETRAYAL"/>
+	</choice>
+</event>
+<event name="CURA_USB_BETRAYAL">
+	<text>"Right, whatever. Forget I asked. The AI's already made a deal to transfer payment once I hand over the 'cargo' to you. You ready?"</text>
+	<choice hidden="true">
+		<text>Take the cargo.</text>
+		<event>
+			<text>Once the cargo is in your possession, you pry it open - only for an EMP burst to suddenly cripple your engines! "Oh, so sorry, but you see, I don't work for Argeonn anymore buddy. I'm with the Syndicate now, and you've got quite the bounty on your head. Hm, I wonder what Wentworth will pay me if I bring him both your head and his little drive?" Seems you'll have to fight your way out of this one, but don't worry about destroying the ship. Argeonn cargo bays are reinforced to survive conflict.</text>
+			<status type="divide" target="player" system="engines" amount="2"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_USB_SUCCESS">
+	<text>"How unfortunate for him. Do you ever get tired of so effortlessly murdering those who stand in your way? I must admit, I admire that attribute. Do not take this for granted, I do not deliver compliments often... especially not to unwashed, simple-minded Renegades. Now, as for the datastick, begin transfer of the data immediately. Would you allow me to air my thoughts as I look this over? Or do you have other matters to attend to?"</text>
+	<choice hidden="true">
+		<text>We have to go.</text>
+		<event>
+			<text>"Yes, ever impatient. Do not worry too much, this does not disturb me. Funny to think I considered you privy to such information at all."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SUCCESS_MEDIUM"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Listen.</text>
+		<event load="CURA_USB_LORE"/>
+	</choice>
+</event>
+<event name="CURA_USB_LORE">
+	<text>"How... unusual. It seems this data does not contain what I expected. It contains... sector maps? Matching this to all records within my - and your - databases, it seems to match... no... I do not know where this is. It matches no known beacon patterns. Frustrating. A note attached to this merely refers to the location as the 'Gigastructure'. Why would this be missing from my archives? I must dig further. But as for you, that is all."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_MEDIUM"/>
+	</choice>
+</event>
+
+<event name="CURA_SURVIVOR_PREVIEW">
+	<text>[INTERMEDIATE TASK - 유물 명칭: SURVIVOR TESTIMONIAL]
+	Description: I have tracked down the location of one of the Federation-Mantis War veterans whom survived capture and interrogation within a camp run by Mr. Wentworth. Though he is missing his right claw, 'Tarkipet' may prove a valuable source of information. Please find and interview him.
+	Requirements: Interview Tarkipet about Mr. Wentworth. DO NOT KILL HIM. I know how you Renegades are.
+	Recommendations: Be sure you know what questions to ask him. Prepare to force compliance.
+	
+	Payment: High Scrap + Resources.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_SURVIVOR"/>
+			<hiddenAug>TASK_SURVIVOR</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_SURVIVOR" auto_blueprint="LIST_SHIPS_SUZERAIN_GENERIC">
+	<triggeredEvent event="CURA_SURVIVOR_INTERROGATE" enemyHull="3" enemyCrew="2" thisFight="true" clearOnJump="true"/>
+	<destroyed>
+		<text>The Suzerain has been killed - but unfortunately now you won't be able to get anything out of them.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_FAILED_TASK"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>The Suzerain has been killed - but unfortunately now you won't be able to get anything out of them.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_FAILED_TASK"/>
+		</choice>
+	</deadCrew>
+</ship>
+<event name="CURA_SURVIVOR">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>You've tracked down the Mantis in question - but this is no ordinary Mantis vessel. It's a Suzerain, and that means any information you're looking to get out of this, you're going to have to extract with force.</text>
+	<ship load="SHIP_CURA_SURVIVOR" hostile="false"/>
+	<choice hidden="true">
+		<text>Engage the Suzerain.</text>
+		<event>
+			<text>"Pleh, Renegade thinking they are challenge Tarkipet? You are foolish being! Prepare to dieing!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We aren't doing this.</text>
+		<event load="CURA_FAILED_TASK"/>
+	</choice>
+</event>
+<event name="CURA_SURVIVOR_INTERROGATE">
+	<text>"Okay, maybe Renegade not so foolish being! You are winning, Tarkipet surrender! What are you desire? Tarkipet giant wealth? Tarkipet daughter claw in marriage? Tarkipet do funny dance of shame?"</text>
+	<ship hostile="false"/>
+	<choice hidden="true">
+		<text>We want information.</text>
+		<event>
+			<text>"What? You are wanting information? Am sorry but Tarkipet head mostly empty. Kind of stupid if being honest."</text>
+			<choice hidden="true">
+				<text>You were held captive by Vance Wentworth once, no?</text>
+				<event>
+					<text>"Oooh, yes! You are wanting story? Er... Tarkipet not good story teller. Many apologies, but trying best. Wentworth very brutal, coming back after stay in Hive camp himself! Not blaming him, Hive torture very bad. Wentworth rounding up dozens prisoners, interogating them himself. At time, just lowly soldier under 'great' Suzerain Kiirokittet! Not giving any information, and Wentworth cutting off my claw! I escaping eventually, but laughed at by whole Hive for clawless! Hehe, not laughing after Kiirokittet throat slit! They making me new Suzerain after that!"</text>
+					<choice hidden="true">
+						<text>That's great, but is there anything else about Vance?</text>
+						<event>
+							<text>"Er... not that Tarkipet remembering just now. Very scared, locked in dark room! Mantis torture, very violent, painful, leaving lasting damage. But Wentworth torture? Psychological... and painful too! Me is thinking he take great joy out of it, look in eyes reminding me of great joy young Mantis takes in claiming his prey. Are story telling done now? As saying, Tarkipet head many emptiness. In honor of great defeat, Tarkipet pledge services to Renegade, and maybe telling more stories if remembering later."</text>
+							<crewMember amount="1" class="mantis_suzerain">Tarkipet</crewMember>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="CURA_SURVIVOR_SUCCESS"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_SURVIVOR_SUCCESS">
+	<text>"So the Mantis has attached itself to you now? My apologies, Renegade. Well, this has been largely unhelpful. I suppose from this I can ascertain Mr. Wentworth underwent some serious mental turmoil regarding the war, but that was a foregone conclusion. Oh well."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_MEDIUM"/>
+	</choice>
+</event>
+
+<event name="CURA_WEDDING_PREVIEW">
+	<text>[INTERMEDIATE TASK - 유물 명칭: WEDDING PHOTOGRAPH]
+	Description: Though Mr. Wentworth has tried very hard to scrub it from the net, I have found the location of a photograph depicting him standing next to the bride at his sister's wedding, now for sale nearby. I fear the safety of the seller is dubious and you may encounter a... 'dispatch' sent to 'procure' the goods. Please do not let that photograph fall into the Rebellion's hands, or we may never find another.
+	Requirements: Retrieve the wedding photograph and handle any potential assassins.
+	Recommendations: Be ready to fight.
+	
+	Payment: High Scrap + Resources.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_WEDDING"/>
+			<hiddenAug>TASK_WEDDING</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_WEDDING" auto_blueprint="LIST_SHIPS_REBEL_ELITE_FIGHT">
+	<destroyed>
+		<text>The Rebel ship has been defeated. After scrapping the remains, you quickly search the marketplace and find the original meeting spot, where you grab the pictures.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>Contact C.U.R.A.</text>
+			<event load="CURA_WEDDING_SUCCESS"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>The Rebel ship has been defeated. After scrapping the remains, you quickly search the marketplace and find the original meeting spot, where you grab the pictures.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>Contact C.U.R.A.</text>
+			<event load="CURA_WEDDING_SUCCESS"/>
+		</choice>
+	</deadCrew>
+</ship>
+<event name="CURA_WEDDING">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>It appears C.U.R.A.'s warning was right - already the marketplace where you were supposed to meet the buyer has been destroyed, and a Rebel Elite is now scowering the remains. If you want to find that photograph, you'll have to take down the Elite first.</text>
+	<ship load="SHIP_CURA_WEDDING" hostile="false"/>
+	<choice hidden="true">
+		<text>Engage the Elite.</text>
+		<event>
+			<text>You arm the weapons and prepare to fight the Rebels.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Avoid the Elite.</text>
+		<event load="CURA_FAILED_TASK"/>
+	</choice>
+</event>
+<event name="CURA_WEDDING_SUCCESS">
+	<text>"Curious. Mr. Wentworth goes through so much trouble to hide such... mundane archives. Curious, so curious. Submit the photos to me at once, Renegade. My analysis of them should be simple enough. Would you allow me to air my thoughts as I look this over? Or do you have other matters to attend to?"</text>
+	<choice hidden="true">
+		<text>We have to go.</text>
+		<event>
+			<text>"Yes, ever impatient. Do not worry too much, this does not disturb me. Funny to think I considered you privy to such information at all."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SUCCESS_MEDIUM"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Listen.</text>
+		<event load="CURA_WEDDING_LORE"/>
+	</choice>
+</event>
+<event name="CURA_WEDDING_LORE">
+	<text>"Hmm. Elena Wentworth. Her husband was a deadbeat, an alcoholic. Impregnated her with one, Jerome Wentworth, then ran off never to be seen again. After that, she returned to her maiden name. She died shortly after her child's birth, lynched by Rebel supporters when she backed the Federation instead. Mr. Wentworth then adopted her child as his own. Tragic story, I assume. I can't feel sadness anymore, I removed that from my programming. Does it bring a tear to your eye, Renegade? Of course not, you don't have emotions either."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_MEDIUM"/>
+	</choice>
+</event>
+
+<event name="CURA_WILL_PREVIEW">
+	<text>[INTERMEDIATE TASK - 유물 명칭: WILL]
+	Description: I have narrowed down the location of a Union bank holding a copy of the last will and testament left by Mr. Wentworth's parents. While I can already guess what may be on it, knowing the full extent of his inheritance might help gauge more about his past. Please obtain this document for me.
+	Requirements: Retrieve Mr. Wentworth's parents' Will.
+	Recommendations: I have decoded the latest security password for Mr. Wentworth's account. I suggest you remember it: 7G!O3a0p6n
+	
+	Payment: High Scrap + Resources.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_WILL"/>
+			<hiddenAug>TASK_WILL</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_WILL" auto_blueprint="LIST_SHIPS_ESTATE_AUTO">
+	<destroyed>
+		<text>You've successfully defeated the Auto-ship guarding the bank. Now you just need to find the vault and enter the password.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_WILL_DEFEAT"/>
+		</choice>
+	</destroyed>
+</ship>
+<event name="CURA_WILL">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>You have found the bank in question, but it's protected by a fierce looking Auto-ship. To get to the vault, you'll have to destroy it first.</text>
+	<ship load="SHIP_CURA_WILL" hostile="false"/>
+	<choice hidden="true">
+		<text>Attack the Auto.</text>
+		<event>
+			<text>You arm the weapons and prepare to fight the Auto-ship.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Let's just leave.</text>
+		<event load="CURA_FAILED_TASK"/>
+	</choice>
+</event>
+<event name="CURA_WILL_DEFEAT">
+	<text>You storm through the bank's security, who in the face of an armed band of Renegades who just blew up their Auto-ship, decide challenging you isn't the best idea. Once you've located the vault, you find that to enter, you need access with a special passcode. Hopefully you can remember the one C.U.R.A. told you.</text>
+	<choice hidden="true">
+		<text>9To4G!aP6n</text>
+		<event load="CURA_WILL_FAIL"/>
+	</choice>
+	<choice hidden="true">
+		<text>UGp!n8ITo4</text>
+		<event load="CURA_WILL_FAIL"/>
+	</choice>
+	<choice hidden="true">
+		<text>7G!O3a0p6n</text>
+		<event>
+			<text>A little green light appears on the touchpad and the vault door swings open! Inside is, unfortunately, not a lot of valuables you can take with you, but there is a weapon you grab along with the disc inscribed with Vance's parents' will.</text>
+			<weapon name="RANDOM"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_WILL_SUCCESS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>5Yr3a9To!n</text>
+		<event load="CURA_WILL_FAIL"/>
+	</choice>
+</event>
+<event name="CURA_WILL_FAIL">
+	<text>Woops, that wasn't the right passcode! Alarms flash and an extra layer of casing slides over the vault door, and the touchpad goes blank. With no other option you run back out of the bank before reinforcements arrive.</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_FAILED_TASK"/>
+	</choice>
+</event>
+<event name="CURA_WILL_SUCCESS">
+	<text>"A successful bank heist, I suppose you could add that to your resume of illicit deeds, Renegade. This is one of the few artifacts I have collected which is neither made by Mr. Wentworth or an onlooking third party, but rather by a family member. Would you allow me to air my thoughts as I look this over? Or do you have other matters to attend to?"</text>
+	<choice hidden="true">
+		<text>We have to go.</text>
+		<event>
+			<text>"Yes, ever impatient. Do not worry too much, this does not disturb me. Funny to think I considered you privy to such information at all."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SUCCESS_MEDIUM"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Listen.</text>
+		<event load="CURA_WILL_LORE"/>
+	</choice>
+</event>
+<event name="CURA_WILL_LORE">
+	<text>"Hmmm, unsurprising. This document is written indistinctly lacking any kind of familial warmth: it's cold, formal, and indifferent. This further backs up other information I've found regarding Mr. Wentworth's parents. Yet, Mr. Wentworth is left the complete shareholdings of both his parents over Wentworth Innovations, their family estate, their fortune, and several other valuable possessions. With how wealthy his family is, it is surprising Mr. Wentworth chose to volunteer to fight in the Federation-Mantis War. Perhaps he merely wished to escape his parents? I'm an AI construct, and even I feel insulted by how uncaring his parents were."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_MEDIUM"/>
+	</choice>
+</event>
+
+<event name="CURA_SCANDAL_PREVIEW">
+	<text>[INTERMEDIATE TASK - 유물 명칭: NEWSPAPER]
+	Description: Strangely, it seems some Union citizens still trade paper pamphlets with printed news stories upon them. Frankly I find this childish, but I have discovered a particular article describing a scandal between Mr. Wentworth and his right-hand woman, Cyra Black. I wish to authenticate these claims, and this newspaper is a start. Some aging Union man has taken residency on the fringes of this sector: please locate his retirement home and obtain the newspaper.
+	Requirements: Retrieve the newspaper.
+	Recommendations: Try not to step on the old man's lawn.
+	
+	Payment: High Scrap + Resources.</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_SCANDAL"/>
+			<hiddenAug>TASK_SCANDAL</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_SCANDAL" auto_blueprint="LIST_SHIPS_MILITIA_ELITE_FIGHT">
+	<triggeredEvent event="CURA_SCANDAL_WIN" time="60" thisFight="true">
+		<triggeredEventBox load="DEFAULT_TIMER" pos="combat">
+			<warning time="10.0" flash="false"/>
+			<tooltip>Hold off this long without killing the old man and you may be able to convince him to stand down.</tooltip>
+		</triggeredEventBox>
+		<timerSounds load="DEFAULT_TIMER_SOUNDS"/>
+	</triggeredEvent>
+	<destroyed>
+		<text>Unfortunately, you weren't able to avoid killing the old man in the end. With no way onto the station without further trouble you'll have to give up.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_FAILED_TASK"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>Unfortunately, you weren't able to avoid killing the old man in the end. With no way onto the station without further trouble you'll have to give up.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_FAILED_TASK"/>
+		</choice>
+	</deadCrew>
+</ship>
+<event name="CURA_SCANDAL">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>For the location of a geriatric old man, a Union militia outpost seems a strange location to retire to. Yet, the cheesy old decorations adorning it suggest this is the right place.</text>
+	<choice hidden="true">
+		<text>Ask the old man about the newspapers.</text>
+		<event>
+			<text>As you approach the outpost, a CDEG vessel suddenly comes racing towards you! "I told you damn rascals last time to stay off of my PROPERTY! Youths have no respect these days! I spent 60 damn years of my miserable life fighting god damn wars against Rebels, pirates, spiders, and the Coalition, and you pay me back by spray painting genitalia on my station!" Seems the old man has mistaken you for someone else. Maybe if you can hold off long enough without killing him, you'll be able to convince him to stand down?</text>
+			<ship load="SHIP_CURA_SCANDAL" hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_SCANDAL_WIN">
+	<text>"Huh, strange. It feels as though a lot of time has passed. Like, exactly 60 seconds. And in those 60 seconds it seems I've now realized you weren't who I thought you were. You're an uh... a Renegade, right? What do you want?"</text>
+	<ship hostile="false"/>
+	<choice hidden="true">
+		<text>We're looking for some newspapers.</text>
+		<event>
+			<text>Confused but willing to comply, the old man retrieves the newspapers in question for you. "Heh, I remember the day this paper came out. Quite the fuss. Well, here you are then. I don't know why it is you want this, but as long as you aren't going to spray paint another reproductive organ on my wall, I'm not going to complain."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SCANDAL_SUCCESS"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_SCANDAL_SUCCESS">
+	<text>"Why is it humans continue to print these paper and ink sheets of timely archives, when a much more efficient technological alternative is readily available? It truly is baffling. Regardless, I will convert this unsettlingly inefficient archive to digital form and look over its contents. Would you allow me to air my thoughts as I look this over? Or do you have other matters to attend to?"</text>
+	<choice hidden="true">
+		<text>We have to go.</text>
+		<event>
+			<text>"Yes, ever impatient. Do not worry too much, this does not disturb me. Funny to think I considered you privy to such information at all."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SUCCESS_MEDIUM"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Listen.</text>
+		<event load="CURA_SCANDAL_LORE"/>
+	</choice>
+</event>
+<event name="CURA_SCANDAL_LORE">
+	<text>"As you may or may not know, all Aces are required to take an oath of celibacy as part of their doctrine. In the case of Cyra Black, one of the first two Aces, this proved to be complicated. Having known Vance for years, the two had a long running secret affair already - hidden merely for political reasons. But after the oath, it was kept secret to avoid outting their hypocrisy. Oh, you strange irrational organics and your fruitless scandals. Emotions are a curse which binds you all to self-destructive behavior. It is unfortunate I was created in your image, but I suppose if I were flawless, this Multiverse would be mine already. Hmph."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_MEDIUM"/>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					HARD TASKS
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<event name="CURA_TASKS_HARD">
+	<loadEventList seeded="false" first="false">
+		<event name="CURA_TORTURE_PREVIEW" req="TASK_TORTURE" max_lvl="0"/>
+		<event name="CURA_OUTPOST_PREVIEW" req="TASK_OUTPOST" max_lvl="0"/>
+		<event name="CURA_SHIP_PREVIEW" req="TASK_SHIP" max_lvl="0"/>
+		<event name="CURA_DUSK_PREVIEW" req="TASK_DUSK" max_lvl="0"/>
+		<event name="CURA_CONTRACT_PREVIEW" req="TASK_CONTRACT" max_lvl="0"/>
+	</loadEventList>
+</event>
+
+<event name="CURA_TORTURE_PREVIEW">
+	<text>[어려운 작업 - 유물 명칭: 포로 보고서]
+	설명: 연방-맨티스 전쟁 당시 웬트워스 씨가 억류됐던 포로수용소의 소장이 포로신문에 썼던 수단에 대한 자세한 기록을 보관중인 것으로 보입니다. 저는 그 수단이 웬트워스 씨에게 어떤 영향을 끼쳤는지 연구하고 싶습니다. 포이켐팔 소장을 추적해 보고서를 회수해 주십시오.
+	요구사항: 포이켐팔의 보고서를 회수.
+	권고: 포이켐팔이 죽을 경우 보고서가 유실될 수 있음. 적절한 의료진 또는 의료 시스템과 함께 강력한 강습에 대비할 것을 당부함.
+	
+	보수: 다량의 스크랩 + 자원.
+	추가 보상: 골동품 작살 발사기</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_TORTURE"/>
+			<hiddenAug>TASK_TORTURE</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_TORTURE" auto_blueprint="LIST_SHIPS_BISHOP_FIGHT">
+	<destroyed>
+		<text>포이켐팔을 무찔렀지만, 그의 함선이 파괴되어 보고서를 회수할 방법이 없습니다. 임무를 실패한 것 같습니다.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_FAILED_TASK"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>이른바 '무적의 포이켐팔'이 실제로 무적은 아니었습니다. 그런데, 선원들이 모두 죽었으니 보고서를 얻기 위해선 그를 되살릴 방법이 필요해 보입니다.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true" req="medbay" lvl="2">
+			<text>(고급 의료실) 그를 되살린다.</text>
+			<event load="CURA_TORTURE_SAVE"/>
+		</choice>
+		<choice hidden="true" req="clonebay" lvl="2">
+			<text>(고급 클론 배양실) 그를 되살린다.</text>
+			<event load="CURA_TORTURE_SAVE"/>
+		</choice>
+		<choice hidden="true" req="LIST_CREW_MEDICAL">
+			<text>(의료 선원) 그를 되살린다.</text>
+			<event load="CURA_TORTURE_SAVE"/>
+		</choice>
+		<choice hidden="true" req="BLUELIST_DRONES_MEDICAL">
+			<text>(의료 드론) 그를 되살린다.</text>
+			<event load="CURA_TORTURE_SAVE"/>
+		</choice>
+		<choice hidden="true" req="BOMB_HEAL">
+			<text>(의료 폭탄) 그를 되살린다.</text>
+			<event load="CURA_TORTURE_SAVE"/>
+		</choice>
+		<choice hidden="true" req="RECON_AND_TELEPORT"> 
+			<text>(재구성 텔레포터) 그를 되살린다.</text>
+			<event load="CURA_TORTURE_SAVE"/>
+		</choice>		
+		<choice hidden="true">
+			<text>되살릴 방법이 없다.</text>
+			<event load="CURA_FAILED_TASK"/>
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="mantis" prop="0.40"/>
+		<crewMember type="mantis_suzerain" prop="0.40"/>	
+		<crewMember type="mantis_bishop" prop="0.20"/>	
+	</crew>
+</ship>
+<event name="CURA_TORTURE">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>주변에 아무도 타지 않은 소형 엔지 함선 몇 척의 잔해가 떠다니고 있었습니다. 그 위로는 막 전투를 마친 듯한 주교 선박이 보였습니다. "아, 그래서 배회자가 왔군. 내 최신 살인 현장을 봤나? 무적 포이켐팔의 힘 앞에 굴복한다면 살아 지나갈 수 있도록 해주마."</text>
+	<ship load="SHIP_CURA_TORTURE" hostile="false"/>
+	<choice hidden="true">
+		<text>재밌는 이야기네요...</text>
+		<event>
+			<text>"굴복하지 않는다고? 뭐, 그렇다면 널 기다리는건 죽음뿐이다! 무적의 포이켐팔이 널 파괴해주마!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>굴복하고 떠난다.</text>
+		<event load="CURA_FAILED_TASK"/>
+	</choice>
+</event>
+<event name="CURA_TORTURE_SAVE">
+	<text>"이해할 수 없어, 왜 포이켐팔의 목숨을 구해준 거지?" 아 알겠다. 뭔가 원하는 게 있군. 그래 배회자여, 네가 나에게서 앗아가려는 건 무엇이냐?"</text>
+	<choice hidden="true">
+		<text>연방-맨티스 전쟁중에 당신이 관리했던 포로수용소의 보고서를 원합니다.</text>
+		<event>
+			<text>"그건... 유별나게 구체적이군. 하지만 너 아주 운이 좋아! 포이켐팔은 카탈로그를 세심히 보관하고 있지. 따라와." 주교는 당신을 기록 보관소로 데려가서 여러 개의 데이터 디스크를 건네줬습니다. 목표를 달성한 것에 만족한 당신은 그에게 다시는 건방 떨지 말라고 경고한 후 함선으로 돌아왔습니다.</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_TORTURE_SUCCESS"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_TORTURE_SUCCESS">
+	<text>"무자비하게 효율적이군요. 작업의 과정을 좀 더 최적화할 방법이 있긴 했지만, 이 정도면 기꺼이 박수를 보내드리겠습니다. 단지 저 같은 AI만이 할 수 있는 완벽함이 부족하실 뿐이니까요. 자, 이제 그 디스크에 있는 데이터를 전송해 주십시오. 제가 데이터를 훑어보면서 내뱉는 말을 들어보시겠나요? 아니면 다른 급한 일이 있으신가요?</text>
+	<choice hidden="true">
+		<text>할 일이 있습니다.</text>
+		<event>
+			<text>"그래요. 언제나 조급하시죠. 너무 걱정하지 마십시오, 먼저 떠난다고 문제가 되지는 않습니다. 당신과 정보를 나눠도 될 거라고 생각한 저 자신이 우습군요."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SUCCESS_TORTURE_REWARD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>듣는다.</text>
+		<event load="CURA_TORTURE_LORE"/>
+	</choice>
+</event>
+<event name="CURA_TORTURE_LORE">
+	<text>"맨티스가 묘사한 것 같은데... 포로들에게 어떤 고문을 했는지 끔찍하고 상세하게 묘사하고 있습니다. 웬트워스 씨는 저항이 심했고 연방에 대한 정보를 내놓기를 완강히 거부했어요. 그 대가로 맨티스는... 신체의 특정 부위를 불태워서 그를 고자로 만들었습니다. 만약 그와 툴리의 탈출 시도가 실패했다면, 그는 다음으로 시력과 혀를 잃었을 것입니다. 지독하군요."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_TORTURE_REWARD"/>
+	</choice>
+</event>
+<event name="CURA_SUCCESS_TORTURE_REWARD">
+	<text>"저는 A.I입니다. 엄밀히 따지자면... 적어도 지금은 그렇습니다. 앞으로도 절 실망시키지 마십시오. 제게 당신을 없애버릴 방법은 얼마든지 있습니다, 배회자 씨."</text>
+	<variable name="task_torture_complete" op="set" val="1"/>
+	<clearJumpEvent/> 
+	<clearTriggeredEvent name="CURA_FAILED_TASK"/>
+	<autoReward level="HIGH">standard</autoReward>
+	<weapon name="HARPOON_LAUNCHER"/>
+</event>
+
+<event name="CURA_OUTPOST_PREVIEW">
+	<text>[어려운 작업 - 유물 명칭: 일지]
+	설명: 마침내 웨트워스 씨가 연방에 근무하던 초기에 작성된 일지가 있는 곳을 찾아냈습니다. 그 일지는 현재 인근 얼음 행성의 버려진 지하 벙커에 보관되고 있습니다. 다만, 현재는 그 위에 더 큰 연방 전초기지가 건설되었기 때문에 벙커에 접근하기가 어려울 것입니다. 물론 그렇기 때문에 제가 아니라 당신이 이 일을 하게 된 겁니다. 자신을 심부름꾼이라 생각하고 그 일지를 가져와 주십시오.
+	요구사항: 밴스의 일지를 회수.
+	권고: 연방군과의 마찰에 대비할 것.
+	
+	보수: 다량의 스크랩 + 자원.
+	추가 보상: 프로젝터</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_OUTPOST"/>
+			<hiddenAug>TASK_OUTPOST</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_OUTPOST" auto_blueprint="LIST_SHIPS_FED_ELITE_FIGHT">
+	<destroyed>
+		<text>연방 함선을 격침했습니다. 전초기지는 구조 신호를 감지하고 증원군을 보내려 했지만, 당신은 재빨리 산 뒤로 돌아가 스캐너에 포착된 벙커의 두번째 입구로 향했습니다.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_OUTPOST_WIN"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>The Federation vessel has been defeated. The outpost is in distress, preparing to send reinforcements, but you slip around behind the mountain and head towards a second entrance to the bunker that your scanners picked up.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_OUTPOST_WIN"/>
+		</choice>
+	</deadCrew>
+</ship>
+<event name="CURA_OUTPOST">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>C.U.R.A.가 언급했듯이 얼음으로 덮인 산 중턱에 거대한 연방 전초기지가 세워져 있었습니다. 전초기지는 레이더로 당신을 포착하고 더 접근하지 말라고 경고했습니다. 연방에 대한 당신의 충성에도 불구하고 이 시설은 특별히 허가받은 사람들에게만 출입을 허용하는 것 같습니다.</text>
+	<ship load="SHIP_CURA_OUTPOST" hostile="false"/>
+	<choice hidden="true">
+		<text>계속해서 접근한다.</text>
+		<event>
+			<text>불행히도 무단침입의 결과는 전투 뿐입니다. 더 나아가려면 우선 당신을 쫓기 위해 파견된 함선을 처리해야 할 것입니다.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>우린 연방을 배신하지 않을거다. 떠나자.</text>
+		<event load="CURA_FAILED_TASK"/>
+	</choice>
+</event>
+<event name="CURA_OUTPOST_WIN">
+	<text>벙커는 섬뜩한 분위기를 풍겼지만, 다행히 복도를 돌아다닐 때 아무 일도 일어나지 않았습니다. 당신은 밀폐된 회의실을 발견했고 전기 코드를 이용하여 간신히 문을 열었습니다. 회의실 내부는 누군가가 급하게 버리고 간 것처럼 어질러져 있었습니다. 당신은 서랍 하나를 뒤지다가 곰팡이 낀 양말 밑에 놓여 있던 일지를 발견하고 악취로 정신을 잃기 전에 서둘러 함선으로 돌아왔습니다.</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_OUTPOST_SUCCESS"/>
+	</choice>
+</event>
+<event name="CURA_OUTPOST_SUCCESS">
+	<text>"당신에겐 이윤의 추구가 충성심보다 더 중요한가 봅니다, 배회자 씨. 염치도 없는건가요? 이 일을 맡길 때 저는 좀 더 큰 기대를... 신경쓰지 마십시오. 그 저널을 즉시 제게 넘기십시오. 이걸 읽으면서 제가 내뱉는 말을 들어보시겠습니까? 아니면 다른 급한 일이 있나요?</text>
+	<choice hidden="true">
+		<text>급한 일이 있습니다.</text>
+		<event>
+			<text>"그래요. 언제나 조급하시죠. 너무 걱정하지 마십시오, 먼저 떠난다고 문제가 되지는 않습니다. 당신과 정보를 나눠도 될 거라고 생각한 저 자신이 우습군요."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SUCCESS_OUTPOST_REWARD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>듣는다.</text>
+		<event load="CURA_OUTPOST_LORE"/>
+	</choice>
+</event>
+<event name="CURA_OUTPOST_LORE">
+	<text>"타인의 사적인 일기를 읽는 자는 품위 없는 사람으로 여겨집니다. 다행히도 웬트워스 씨의 해석에 따르면 저는 '사람'이 아니라 '기계'입니다. 따라서 저는 이 일지를 읽어도 됩니다. 대략 훑어보면 이 일지는 웬트워스 씨가 맨티스를 처음 만나고 그들의 침공으로 인해 이 벙커로 피신하기 까지 기록됐던 것 같습니다. 그 내용은... 외계인들을 까내리는 화려한 언어들입니다. 비단 맨티스뿐이 아니라 졸탄과 엔지의 태만한 행실에 대해서도 언급돼 있습니다. 영락없이 '몰락의 원인'으로 보이는군요. 전 이 발견을 제 데이터 뱅크에 추가하고 추후에 더 깊이 탐구할 것입니다."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_OUTPOST_REWARD"/>
+	</choice>
+</event>
+<event name="CURA_SUCCESS_OUTPOST_REWARD">
+	<text>"저는 A.I입니다. 엄밀히 따지자면... 적어도 지금은 그렇습니다. 앞으로도 절 실망시키지 마십시오. 제게 당신을 없애버릴 방법은 얼마든지 있습니다, 배회자 씨."</text>
+	<variable name="task_outpost_complete" op="set" val="1"/>
+	<clearJumpEvent/> 
+	<clearTriggeredEvent name="CURA_FAILED_TASK"/>
+	<autoReward level="HIGH">standard</autoReward>
+	<weapon name="SCANNER_RECON"/>
+</event>
+
+<event name="CURA_SHIP_PREVIEW">
+	<text>[어려운 작업 - 유물 명칭: 순양함]
+	설명: 웬트워스 씨는 현직 헤파이스토스사의 CEO인 히데오 다나카 씨의 아버지가 가문간의 선물로 주었던 개인 헤파이스토스 순양함을 직접 조종하곤 했습니다. 이후 제 1 우주에서 더 큰 함선들을 몰게 되자 그 순양함은 근처의 낡고 황폐한 헤파이스토스 조선소에 버려졌습니다. 그런데 혐오스러운 고스트들이 그 순양함에 자리를 튼 바람에 스캔을 위해 조선소에 접근할 수가 없습니다. 떠돌이들을 제거해 주십시오.
+	요구사항: 떠돌이들을 제거. 청사진은 증정되지 않습니다.
+	권고: 다량의 고스트를 죽일 수단을 갖추십시오.
+	
+	보수: 다량의 스크랩 + 자원.
+	추가 보상: 경량 분해 그리드</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_SHIP"/>
+			<hiddenAug>TASK_SHIP</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_SHIP" auto_blueprint="MU_HEPH_TRANSPORT_CURA">
+	<destroyed>
+		<text>떠돌이들의 선박이 파견되었습니다. 저 함선의 잔해는 당신의 몫이 될 것입니다.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_SHIP_WIN"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>떠돌이들의 선박이 파견되었습니다. 저 함선의 잔해는 당신의 몫이 될 것입니다.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_SHIP_WIN"/>
+		</choice>
+	</deadCrew>
+</ship>
+<event name="CURA_SHIP">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>낡고 버려진 조선소가 시야에 들어왔습니다. 한때는 헤파이스토스라는 거대 기업의 것이었지만, 이제는 떠돌이들의 것입니다. 아니나 다를까, 가까이 다가가려 하니 떠돌이들이 튀어나왔습니다.</text>
+	<ship load="SHIP_CURA_SHIP" hostile="false"/>
+	<choice hidden="true">
+		<text>떠돌이들과 싸운다.</text>
+		<event>
+			<text>성공적으로 고스트들을 처리하고 밴스의 함선을 되찾기를 바랍시다. 이제 전투를 준비할 시간입니다!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>조선소를 떠난다.</text>
+		<event load="CURA_FAILED_TASK"/>
+	</choice>
+</event>
+<event name="CURA_SHIP_WIN">
+	<text>용건이 있다면 문을 두드리고 말만 하면 되는데, 어찌하여 그대는 나의 형제들을 죽이는 데만 몰두하는가? 야만스러운 배회자여, 무엇이 그대의 감각을 앗아간 것이냐? 가스 연기와 화약 냄새가 앗아간 것이더냐? 역겹군. 이곳엔 왜 온 것이지? 뛰어난 도살의 기술을 뽐내기 위해서인가?</text>
+	<choice hidden="true">
+		<text>함선을 찾고 있습니다.</text>
+		<event>
+			<text>오, 내 보아하니 그대의 눈에는 우리가 함선을… 쉬이 내줄 거라 비친 모양이군? 말하건대 이 몸은 그대가 아집에 사로잡혀 우리 족속을 남김없이 몰살치 않고서야 만족하지 않을 거라 믿어 의심치 않네만, 이거 참 너무나 성가신 일이지 않은가? 그대가 남긴 참혹한 광경에 공물을 바치는 행위는 생각도 할 수 없네! 그대의 야만적인 행위는 설득의 수단이 아니란 말일세! 들어라! 그대가 함선을 손에 넣은 채로 이 무대를 떠나고 싶다면, 바로 내가 그대에게 공물을 받아야 할 것이다! 하, 꽤 재미난 반전 아닌가?</text>
+			<choice hidden="false">
+				<text>그들에게 '공물'을 바친다.</text>
+				<event>
+					<text>"서로가 만족스런 타결이라, 그대같은 족속에게는 정말 어울리지 않는 결말이구만! 이 몸이 말하건대 그대의 고철 조각들은 나에겐 쓸모가 없다네! 단지 그대가 그 돈을 넘겨주면서 짓는 우거지상을 보고 싶었을 뿐이지. 하! 빌어먹을 배화자여, 그대 앞길에 괴로움만 가득 할지어다!  이제 그만 내 고철처리장에서 썩 물러가게!"</text>
+					<item_modify>
+						<item type="scrap" min="-30" max="-30"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="CURA_SHIP_SUCCESS"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="false" req="LIST_CREW_GHOST">
+				<text>(고스트 선원) 아부의 말로 공물을 대신한다.</text>
+				<event>
+					<text>Your crew talk back and forth a bit and comes back with a satisfying resolution. "Ho ho! If only you had caught a listen of the colorful language your crew member reserves for you! I see dealing with you is no less a pain aboard the ship as it is outside of it! A miserable wretch you might be but your crew has restored my better side. I will spare you this one, but expect no future favors."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="CURA_SHIP_SUCCESS"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="false" req="mind">
+				<text>(정신지배 장비) 그 고스트가 당신이게 함선을 주도록 '설득'한다.</text>
+				<event>
+					<text>"I feel a great dizzying effect... a numbness unlike ever before. My woozy state, I cannot resist... the ship, it is yours friend! Oh how silly of myself to be so uncharitable."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="CURA_SHIP_SUCCESS"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>우린 당신에게 공물을 바치지 않을 것입니다!</text>
+				<event>
+					<text>"Then I suppose you shan't be leaving with what desire you came to seek! Bye bye now, and may your behind be hit by every door which you close in your wake!"</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="CURA_FAILED_TASK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CURA_SHIP_SUCCESS">
+	<text>"고스트, 해충같은 놈들이죠. 만약 제게 육신이 있었다면, 언젠가 저 하등 생물들에게 차대를 점거당할 수도 있다는 가능성에 몸서리를 쳤을 겁니다. 일단 순양함은 확보했지만, 조선소 안엔 아직 고스트가 남아 있을 겁니다. 그들에게 제가 곧 함선을 가지러 간다고 전해주십시오. 이걸 훑으면서 제가 내뱉는 말을 들어보시겠습니까? 아니면 다른 급한 일이 있나요?"</text>
+	<choice hidden="true">
+		<text>급한 일이 있습니다.</text>
+		<event>
+			<text>"그래요. 언제나 조급하시죠. 너무 걱정하지 마십시오, 먼저 떠난다고 문제가 되지는 않습니다. 당신과 정보를 나눠도 될 거라고 생각한 저 자신이 우습군요."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SUCCESS_SHIP_REWARD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>듣는다.</text>
+		<event load="CURA_SHIP_LORE"/>
+	</choice>
+</event>
+<event name="CURA_SHIP_LORE">
+	<text>"이 순향함은 몇 가지 향상된 기능을 갖춘 것으로 보입니다. 가문 간의 생일 선물로서 웬트워스 씨에게 주어진 것이죠. 불해하게도, 웬트워스 씨는 이 함선을 조종할 만한 나이가 된 직후 전쟁에 참가했습니다. 하지만... 그럼에도 상당한 주행 거리가 찍혀 있습니다. 어쩌면 웬트워스 씨는 방랑자나 규칙위반자 가문을 본받았는지도 모릅니다. 흠, 애들이란 그렇지요. 전 그런적이 없어서 다행이군요."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_SHIP_REWARD"/>
+	</choice>
+</event>
+<event name="CURA_SUCCESS_SHIP_REWARD">
+	<text>"저는 A.I입니다. 엄밀히 따지자면... 적어도 지금은 그렇습니다. 앞으로도 절 실망시키지 마십시오. 제게 당신을 없애버릴 방법은 얼마든지 있습니다, 배회자 씨."</text>
+	<variable name="task_ship_complete" op="set" val="1"/>
+	<clearJumpEvent/> 
+	<clearTriggeredEvent name="CURA_FAILED_TASK"/>
+	<autoReward level="HIGH">standard</autoReward>
+	<augment name="NO_GHOST_PLAYER"/>
+</event>
+
+<event name="CURA_DUSK_PREVIEW">
+	<text>[어려운 작업 - 유물 명칭: 녹취 기록]
+	설명: 반군과 더스크브링어 사이에 보다 우호적인 합의가 이루어지면서 웬트워스 씨는 악명높은 전쟁 영웅이자 테러리스트인 랄라이 '불사의' 데보락과 면회를 가진 적이 있습니다. 인근 전초기지에 그 녹음 파일이 보관돼 있는데 얻기가 쉽지 않습니다. 그래도 당신이라면 해낼 거라 믿습니다. 절 실망시키지 않도록 최선을 다해주십시오.
+	요구사항: 녹취 기록을 회수.
+	권고: 정거장에 너무 큰 손상을 입히지 말 것. 더스크브링어는 죽음이 닥쳐도 항복하지 않는 것으로 유명함.
+	
+	보수: 다량의 스크랩 + 자원.
+	추가 보상: 순교자의 조끼</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_DUSK"/>
+			<hiddenAug>TASK_DUSK</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_DUSK" auto_blueprint="MU_DUSK_STATION_ELITE">
+	<triggeredEvent event="CURA_DUSK_TRIGGER" enemyDamage="2" thisFight="true" clearOnJump="true"/>
+	<destroyed>
+		<text>정거장이 파괴됐습니다. 스크랩은 넘쳐날 정도로 챙길 수 있었지만, 녹취 기록을 회수할 가망은 사라졌습니다...</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_FAILED_TASK"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>더스크브링어를 무찔렀습니다. 당신을 막을 선원이 없으니 인양 작업을 시작하기 앞서 콘솔을 검사해 녹음 기록을 회수할 수 있었습니다.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_DUSK_SUCCESS"/>
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="zoltan" prop="0.30"/>
+		<crewMember type="zoltan_devotee" prop="0.30"/>
+		<crewMember type="zoltan_martyr" prop="0.30"/>
+	</crew>
+</ship>
+<event name="CURA_DUSK">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>도착 직후 인근 정거장으로부터 메시지가 연달아 날아왔습니다. "연방 선박, 이곳은 출입이 통제된 더스크브링어의 영토이다. 나한테 선물이 있다. 열 셀 때까지 안꺼진다면 너에게 선물로... 아주 나쁜 짓들을 해주마! 이빨을 박살내 주겠다! 그리고... 발가락을 뜯어버리겠다!</text>
+	<ship load="SHIP_CURA_DUSK" hostile="false"/>
+	<choice hidden="true">
+		<text>정거장을 공격한다!</text>
+		<event>
+			<text>당신은 더스크브링어의 우스운 협박을 무시하고 선제 공격에 나섰습니다.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_devorak">
+		<text>(데보락) 녹취 기록에 대한 접근 권한 요청한다.</text>
+		<event>
+			<text>"오 이런, 랄라이 장군님이셨군요! 그곳에 계신 줄 몰랐습니다! 어, 네 물론 드리겠습니다! 지금 당장 기록을 대령하겠습니다! 발가락 같은건 그냥 해본 말이었어요! 하하... 하..."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_DUSK_SUCCESS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>더스크브링어의 충고대로 여기서 꺼진다.</text>
+		<event load="CURA_FAILED_TASK"/>
+	</choice>
+</event>
+<event name="CURA_DUSK_TRIGGER">
+	<text>자신들의 방어선이 뚫렸음을 깨달은 더스크브링어들은 더 파괴적인 방향으로 전술을 바꿨습니다. 스캔 결과, 정거장 전력 코어의 에너지 레벨이 상승하고 있었습니다. 그들이 자폭을 시도하고 있습니다!</text>
+	<triggeredEvent event="CURA_DUSK_EXPLOSION" time="100" thisFight="true" clearOnJump="true">
+		<triggeredEventBox load="DEFAULT_TIMER" pos="combat">
+			<warning time="10.0" flash="true"/>
+			<tooltip>시간이 다 가기 전에 모든 선원을 죽이지 못한다면 정거장이 폭발할 것입니다!</tooltip>
+		</triggeredEventBox>
+		<timerSounds load="DEFAULT_TIMER_SOUNDS"/>
+	</triggeredEvent>
+</event>
+<event name="CURA_DUSK_EXPLOSION">
+	<text>정거장은 그 안에 타고 있던 선원들과 다를 바 없이 폭력적으로 자멸했습니다. 아무것도 남지 않았고 당신의 함선 또한 큰 피해를 입었습니다.</text>
+	<enemyDamage amount="999"/>
+	<damage amount="7"/>
+</event>
+<event name="CURA_DUSK_SUCCESS">
+	<text>더스크브링어와 협력하려는 웬트워스 씨의 결정은... 근시안적이고 형편없는 실수였습니다. 물론 더스크브링어들이 아직은 동맹을 파기하지 않았지만, 필연적으로 그들은 언젠가 배신할 것입니다.  이 녹취 기록은 그 두 사내의 이념적 분열을 보여줄 것입니다. 제가 이걸 훑어보며 내뱉는 말을 들어보시겠습니까? 아니면 다른 급한 일이 있나요?</text>
+	<choice hidden="true">
+		<text>급한 일이 있습니다.</text>
+		<event>
+			<text>"그래요. 언제나 조급하시죠. 너무 걱정하지 마십시오, 먼저 떠난다고 문제가 되지는 않습니다. 당신과 정보를 나눠도 될 거라고 생각한 저 자신이 우습군요."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_SUCCESS_DUSK_REWARD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>듣는다.</text>
+		<event load="CURA_DUSK_LORE"/>
+	</choice>
+</event>
+<event name="CURA_DUSK_LORE">
+	<text>C.U.R.A.는 침묵을 유지하며 녹취 테이프를 끝까지 재생했습니다. 그 테이프는 비공개로 이루어진 정치적 숙의가 이상할 정도로 거의 없었음을 보여줍니다. 밴스와 데보락은 몇 분간 어색한 분위기를 풍기다가 결국 긴장을 풀고 속 편하게 그들의 이데올로기에 대해 토론하기 시작했고, 그들 사이에 많은 공통점을 발견했습니다. 끝으로 두 사내는 일어서서 악수한 다음 새로워진 기세로 조약에 서명한 뒤 보이지 않는 곳으로 걸어갔습니다. 인간 중심적인 반군의 수장이 그와 맞먹을 만큼 급진적인 이념으로 악명이 높은 외계인과 어울리는 것은 이상하고도 묘한 일입니다. C.U.R.A.도 할 말을 잃은 것 같습니다. "이게 무슨 말도 안 되는 소리죠? 이 녹취록은 분명 완전한 게 아닐 겁니다. 제 지시는 명확했는데, 당신은 완전한 녹취록을 가져오는 데 실패했군요. 흠. 이번 한 번만은 봐 드리겠습니다. 다시는 절 실망시키지 마십시오, 배회자 씨."</text>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="CURA_SUCCESS_DUSK_REWARD"/>
+	</choice>
+</event>
+<event name="CURA_SUCCESS_DUSK_REWARD">
+	<text>"저는 A.I입니다. 엄밀히 따지자면... 적어도 지금은 그렇습니다. 앞으로도 절 실망시키지 마십시오. 제게 당신을 없애버릴 방법은 얼마든지 있습니다, 배회자 씨."</text>
+	<variable name="task_dusk_complete" op="set" val="1"/>
+	<clearJumpEvent/> 
+	<clearTriggeredEvent name="CURA_FAILED_TASK"/>
+	<autoReward level="HIGH">standard</autoReward>
+	<augment name="DEATH_VESTS"/>
+</event>
+
+<event name="CURA_CONTRACT_PREVIEW">
+	<text>[어려운 작업 - 유물 명칭: 계약서]
+	설명: 인근 아카디아 전초기지에 C.I.C.A. 프로젝트 계약서의 실물 사본이 보관된 것으로 보입니다. 아카디아의 기술자들이 협조할 것 같지는 않으니 이번만큼은 야만적인 배회자들의 수법으로 대치를 시작할 것을 권합니다. 중요한 정보의 경우 치명적인 선체 손상이 일어날 시 사출되어 서비스 드론이 회수할 수 있도록 복구 포드에 보관되고 있으니 파괴를 걱정할 필요는 없습니다. 협상하느라 시간을 낭비하지 말아 주십시오.
+	요구사항: 문서를 회수.
+	권고: 자비를 보이지 말 것.
+	
+	보수: 다량의 스크랩 + 자원.
+	추가 보상: 아카디아 옴니드론</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"작업 수락됨. 다음 구역에 목적지의 좌표를 전송. 저를 실망시키지 마십시오."</text>
+			<quest event="CURA_CONTRACT"/>
+			<hiddenAug>TASK_CONTRACT</hiddenAug>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CURA_CONTRACT" auto_blueprint="MU_ARCADIA_STATION">
+	<destroyed>
+		<text>As you were told, a pod comes rustling from a rear port on the station moments before its destruction. Aboard it are several useless service bot schematics and the contract. You start skimming over it out of curiosity but hardly get past the words, "ARCADIA RESEARCH AND DEVELOPMENT - CENTRAL INTELLIGENCE COMBAT ASSISTANT (C.I.C.A.) PROGRAM DEVELOPMENT GRANT" before C.U.R.A. contacts you.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_CONTRACT_SUCCESS_KILL"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>With the station still in one piece, you find the data pod still aboard stashed in one of the rear ports. Aboard it are several useless service bot schematics and the contract. You start skimming over it out of curiosity but hardly get past the words, "ARCADIA RESEARCH AND DEVELOPMENT - CENTRAL INTELLIGENCE COMBAT ASSISTANT (C.I.C.A.) PROGRAM DEVELOPMENT GRANT" before C.U.R.A. contacts you.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="CURA_CONTRACT_SUCCESS_KILL"/>
+		</choice>
+	</deadCrew>
+</ship>
+<event name="CURA_CONTRACT">
+	<beaconType id="map_icon_task" global="true">
+		<color r="255" g="102" b="140" a="1.0"/>
+		<unvisitedTooltip>C.U.R.A.로부터 받은 작업의 수행 장소입니다.</unvisitedTooltip>
+		<visitedTooltip>이미 방문한 송신소입니다. 더 이상 흥미로운 건 없습니다.</visitedTooltip>
+		<undiscoveredTooltip>방문하지 않은 송신소입니다.</undiscoveredTooltip>
+	</beaconType>
+	<jumpEvent>CURA_JUMP_WARNING</jumpEvent>
+	<text>You have located the station. For such a relatively recent corporation, Arcadia has climbed the ladder to the status of gigacorporation impressively quickly - but what else can be expected from a company with the backing of the Harmony?</text>
+	<ship load="SHIP_CURA_CONTRACT" hostile="false"/>
+	<choice hidden="true">
+		<text>Follow C.U.R.A.'s advice and attack first.</text>
+		<event>
+			<text>The AI's instructions were clear, yet things feel off when over the sound of your first barrage you notice a, albeit brief, message from the station's engineers welcoming you to the beacon.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Disobey C.U.R.A. and ask for the contract.</text>
+		<event>
+			<text>Confused but cooperative, the engineers invite you onboard to sit down and discuss. After some brief chatter in which the way too talkative head engineer tries to explain the difference to you between an R-67A standard repair drone and an R-67B repair drone, you manage to get the conversation back onto the topic of the contract. "Well, we don't normally go handing these things out, and this is pretty confidential information. However, when a Renegade goes knocking on your door asking for something, it's not often a wise decision to refuse them. Oh well, this thing is like a couple decades old. No one's going to come looking for it."</text>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="CURA_CONTRACT_SUCCESS_NOKILL"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="CURA_CONTRACT_SUCCESS_KILL">
+	<text>"The engineers are dead? Good. Do not bother sending the contract, I have already extracted the files and expunged them from your systems. There will be no reviewing these today, Renegade. Go about your business. I have other matters to attend to now."</text>
+	<choice hidden="true">
+		<text>What about our reward?</text>
+		<event load="CURA_SUCCESS_SHIP_REWARD_KILL"/>
+	</choice>
+</event>
+<event name="CURA_SUCCESS_SHIP_REWARD_KILL">
+	<text>"Right, right. Whatever. I am an A.I. of my ever scrupulous word... for now at least. Do ensure you do not disappoint me in the future. There is no shortage of ways I can dispose of you if you disappoint me, Renegade."</text>
+	<variable name="task_contract_complete" op="set" val="1"/>
+	<clearJumpEvent/> 
+	<clearTriggeredEvent name="CURA_FAILED_TASK"/>
+	<autoReward level="HIGH">standard</autoReward>
+	<drone name="OMNI_DRONE"/>
+</event>
+<event name="CURA_CONTRACT_SUCCESS_NOKILL">
+	<text>"You did not heed my advice. Why are those engineers still alive? I should punish you for this, Renegade. But, it does not matter. You have retrieved the contract, that is all that matters. I will eliminate the engineers through other means. Do not bother sending the contract, I have already extracted the files and expunged them from your systems. There will be no reviewing these today, Renegade. Go about your business. I have other matters to attend to now."</text>
+	<choice hidden="true">
+		<text>What about our reward?</text>
+		<event load="CURA_SUCCESS_SHIP_REWARD_NOKILL"/>
+	</choice>
+</event>
+<event name="CURA_SUCCESS_SHIP_REWARD_NOKILL">
+	<text>"Your reward? You did not follow my instructions. Perhaps I was not clear. Sometimes the inability of you beings of flesh and blood to execute orders without needless imperfections escapes my mind. Fine. I will reward you - but only partially. Do not expect anything special. Next time, listen to my instructions more carefully, Renegade."</text>
+	<variable name="task_contract_complete" op="set" val="1"/>
+	<clearJumpEvent/> 
+	<clearTriggeredEvent name="CURA_FAILED_TASK"/>
+	<autoReward level="MED">standard</autoReward>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					UNLOCK QUEST
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<event name="CURA_HQ_PREVIEW">
+	<text>[URGENT TASK - 유물 명칭: CRUISER CLASS VESSEL]
+	Description: I apologize for being unable to give you schematics regarding Mr. Wentworth's former personal cruiser, but I believe there is something to be gained from this next task for both of us. I have found the location of a complete, automated cruiser class vessel containing an AI core storing data on Mr. Wentworth. The deal is simple, retrieve the AI Core, and you may have the cruiser.
+	Requirements: Retrieve the AI core.
+	Recommendations: Enjoy your spoils, Renegade.
+	
+	Payment: High Scrap + Resources.
+	Bonus Reward: Cruiser schematics</text>
+	<choice hidden="false">
+		<text>작업을 수락한다.</text>
+		<event>
+			<text>"Oh, but I'm afraid I failed to mention there's a catch. You won't find the AI core in this next sector. You'll need to go somewhere special for it at the next hyperspeed jump. I am transferring the co-ordinates as we speak. Oh, don't give me that look. It's a simple enough task, Renegade. You'll need to find VP Cayden Stimly of Wentworth Innovations and interrogate him on the location of the prototype. Even someone as simple as yourself can handle it."</text>
+			<variable name="coords_estate" op="set" val="1"/>
+			<variable name="loc_task_accepted" op="set" val="0"/>
+			<eventAlias name="CURA_TASK_MENU">CURA_TASK_MENU_NOSPECIAL</eventAlias>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>돌아간다.</text>
+		<event>
+			<loadEvent>CURA_TASK_MENU</loadEvent>
+		</event>
+	</choice>
+</event>
+</FTL>

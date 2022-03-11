@@ -1,0 +1,2696 @@
+<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					SHELL SECTOR
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+
+<!--
+		NO NEBULA
+	Events that have no nebula
+-->
+<eventList name="SHELL_CLEARING">
+	<event load="GENERIC_SHELL_CLEARING"/>
+	<event load="SPECIAL_SHELL_CLEARING"/>
+</eventList>
+
+<!--STANDARD-->
+<eventList name="GENERIC_SHELL_CLEARING">
+	<event load="ENCOUNTER_REBEL"/>
+	<event load="ENCOUNTER_AUTO"/>
+	<event load="ROGUE_REBEL"/>
+	<event load="PIRATE_BRIBER"/>
+	<event load="BROKEN_REBEL_DRONE"/>
+	<event load="FED_BROKEN_SUPPLY_DRONE"/>
+	<event load="DONOR_PONY"/>
+</eventList>
+
+<!--SHELL-->
+<eventList name="SPECIAL_SHELL_CLEARING">
+	<event load="SHELL_CLAN_CHOICE"/>
+	<event load="ENCOUNTER_CLAN_SHELL_CLEARING"/>
+	<event load="ENCOUNTER_SHELL"/>
+</eventList>
+
+<event name="ENCOUNTER_SHELL" unique="true">
+	<text>셸들은 보통 성운으로 피신해 있는것을 선호하지만, 그중 하나가 멀리 떨어진 것 같습니다. 그들이 무기를 올리는 것으로 보아 당신이 그들을 사냥하러 왔다고 생각하는 것 같습니다!</text>
+	<ship load="SHIP_SHELL_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_CLAN_SHELL_CLEARING" unique="true">
+	<text load="CLAN_FIGHT"/>
+	<ship load="SHIP_CLAN_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="CLAN_FIGHT">
+	<text>당신은 슬러그 클랜스맨이 성운밖에서 휴식하고있는 것을 발견했습니다. 하지만, 그들이 당신을 발견하자 마자 휴식을 포기하고 즉시 공격했습니다.</text>
+	<text>당신은 몇몇 슬러그 클랜스맨들이 셸 식민지를 공격하려는 계획을 알아챘고, 그들은 당신이 엿들었다는 것을 눈치채고 보복하려고 했습니다!</text>
+</textList>
+
+<event name="SHELL_CLAN_CHOICE" unique="true">
+	<text>이 송신소에서는 셸과 클랜스맨이 서로 개싸움에 들어선 것으로 보입니다. 앞으로 전진하려면 오로지 그들의 함선중 하나와 싸워야만 할 것으로 보입니다.</text>
+	<choice>
+		<text>셸들을 공격한다.</text>
+        <event>
+			<text>당신은 셸 함선을 정면으로 공격했고, 클랜스맨 함선은 탈출했습니다. 당연히도, 이들의 사냥에 대한 헌신은 연방에 빚을 지기엔 이르지 못했고, 도약해서 당신과 셸들을 홀로 남겨두었습니다.</text>
+            <ship load="SHIP_SHELL_GENERIC" hostile="true"/>
+            <choice hidden="true">
+                <text>계속...</text>
+                <event load="MORALITY_UPDATE_SHELL_FIGHT"/>
+            </choice>
+        </event>
+    </choice>
+    <choice>
+		<text>클랜스맨을 공격한다.</text>
+		<event>
+			<text>당신은 클랜스맨을 정면으로 공격했습니다. 셸들은 결과를 보려 머무르고 싶어하지는 않아보였고, 이내 도약했습니다.</text>
+            <ship load="SHIP_CLAN_FIGHT" hostile="true"/>
+            <choice hidden="true">
+                <text>계속...</text>
+                <event load="COMBAT_CHECK"/>
+            </choice>
+        </event>
+    </choice>
+    <choice req="cloaking">
+		<text>(은폐장) 은폐하고 날아간다.</text>
+        <event/>
+    </choice>
+    <choice req="engines" lvl="5">
+		<text>(고급 엔진) 날아간다.</text>
+        <event/>
+    </choice>
+</event>
+
+<!--
+		ITEMS
+	Events that give stuff
+	-->
+<eventList name="NEBULA_ITEMS_SHELL">
+	<event load="NEBULA_SHELL_TOXINTEST"/>
+	<event load="NEBULA_SHELL_FOSSILS"/>
+</eventList>
+
+<event name="NEBULA_SHELL_FOSSILS" unique="true">
+	<text>근처에 사람이 살고있지 않은 거대한 행성에 셸 과학자 한명이 떠돌고 있었습니다. 당신은 그 배로부터 교신을 받았습니다. "아주 오래전에, 이 행서어엉에는 사아아람이 사아알기에 적합했을거라고 추측하고있어! 게다가, 셰에엘과 스으을러그의 종 간에 잃어버린 연결고리를 가진 화서어억이 있을수우우도 있지! 멋지지 않나?"</text>
+	<environment type="nebula"/>
+	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_UNPOPULATED_TERRA"/>
+	<status type="limit" target="player" system="sensors" amount="1"/>
+	<choice hidden="true">
+		<text>흥미를 표한다.</text>
+		<event>
+			<text>"오, 이것에 흥미를 가진 다른 사아아람을 만나다니 정말 놀랍군! 오, 오, 알겠어! 관시이임이 있습니다면 당신에게 의뢰가 하나 있어. 이 행성에 내가 수우우집하고 싶은 화서어억 새애앰플이 몇 있지만, 우리가 오래 사아알아남기에는 대기가 너무 뜨거워. 우리를 위해 그것을 가져다 줄수우우 있나? 회수우우는 그리 어렵진 않을거야, 근처에 버려진 채굴지역이 있을거야."</text>
+			<choice hidden="true">
+				<text>동의한다.</text>
+				<event>
+					<text>당신은 행성 표면으로 내려갔고, 밀수꾼이 화석을 채집하고 있던 것을 발견했습니다. "이봐, 이 근-사한 돌들을 내다 팔면 얼마까지 나올ㄲ.. 이런, 연방이다! 튀어!"</text>
+					<ship load="SHIP_SMUGGLER_FOSSIL" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>거절한다.</text>
+				<event>
+					<text>"괜찮아. 내 얘기를 들어줘서어어 고마웠어!"</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>정중하게 대화를 끝낸다.</text>
+		<event>
+			<text>생물학 수업이나 듣고 있을 시간은 없습니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_SHELL_TOXINTEST" unique="true">
+	<text>근처에는 쉘 실험실이 있는 것으로 보입니다. 그들이 교신해왔습니다. "오 마침 좋은 방문자야! 유감스으으럽게도, 최근에 많은 사아아람들을 보지 못했었는데 말이야, 아주 많은 새애애로운... 반군들이 들이닥쳤는데  우리 독소오오에 이사아앙하게 반응하더군. 당신이 가진 외계인 아무나에게 독소오오가 미칠수우우 있는 영향을 시이일험하고 싶은데... 위험서어엉은 인지하고 있고 분명히 그에 따른 댓가는 치룰거야."</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>선원을 보낸다.</text>
+		<event load="TOXINTEST_REGULAR"/>
+	</choice>
+	<choice hidden="true" req="shell">
+		<text>(셸 선원) 셸 선원을 보낸다</text>
+		<event>
+			<text>"우리는 어... 이런 행동은 고맙지만, 정말로 우리종족을 시이일험할 필요는 없어...."</text>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_NO2">
+		<text>(무산소 선원) 당신의 무산소 선원을 보낸다.</text>
+		<event>
+			<text>"놀랍군! 독소오오가 여전히 효과는 있지만, 적은 양으로는 그렇게 많은 해를 끼치지 않는것으로 보여. 더 큰 농도를 시이일험하고 시이잎지만 거의 치명적일거야. 어쨌든, 도와준것에 정말 감사아아하고있어"</text>
+			<autoReward level="MED">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>거절한다.</text>
+		<event>
+			<text>"괜찮아. 어짜피 너희같은 연합 함서어언은 분명 더 중요한  일이 있을거야."</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="TOXINTEST_REGULAR">
+	<event>
+		<text>"역시이이. 반란군 함서어언에서 이런 결과를 많이 봤어. 꽤 해롭다고 할 수우우 있지!" 그들은 당신의 선원을 돌려보냅니다. 다소 아파는 보이지만 일할수 있을 정도로 건강해 보입니다.</text>
+		<autoReward level="LOW">scrap_only</autoReward>
+	</event>
+	<event>
+		<text>"오... 오 이런. 꽤 빨랐는데... 유감스으으럽게도 안좋은 소오오시이익이 있어.당시이인의 서어언원이 잘 반응하지 못했어. 사아알리기 위해 아무것도 할 수우우 없었습니다는게 믿겨지지가 않아."</text>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event>
+				<text>대원을 구하기위해 당신이 할수 있었던 일은 아무것도 없었습니다. 셸들은 깊이 미안해하고 보상금을 대폭 인상하겠다고 말했습니다.</text>
+				<autoReward level="HIGH">item</autoReward>
+				<removeCrew>
+					<clone>true</clone>
+					<text>다행히도, 당신은 클론베이를 통해 선원을 부활시킬 수 있었고, 셸은 이 사실을 몰랐습니다...</text>
+				</removeCrew>
+			</event>
+		</choice>
+		<choice hidden="true" req="medbay" lvl="2">
+			<text>(고급 의료실) 선원을 살린다.</text>
+			<event>
+				<text>당신은 서둘러 선원을 의료실로 옮겼습니다. 셸들은 여전히 미안해했고, 보상금을 인상했습니다.</text>
+				<autoReward level="MED">scrap_only</autoReward>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<!--
+		NEBULA!!!  HOSTILE
+	Events with nebula environments
+-->
+<eventList name="NEBULA_HOSTILE_SHELL">
+	<event load="NEBULA_ENCOUNTER_SHELL_MILITARY"/>
+	<event load="NEBULA_ENCOUNTER_SHELL_MILITARY"/>
+	<event load="NEBULA_ENCOUNTER_SHELL_CIVILIAN"/>
+	<event load="NEBULA_ENCOUNTER_SHELL_MANAGEMENT"/>
+	
+	<event load="ENCOUNTER_CLAN_SHELL"/>
+	<event load="NEBULA_ENCOUNTER_SHELL_AUTO"/>
+	
+	<event load="NEBULA_SHELL_SMUGGLER"/>
+</eventList>
+
+<event name="NEBULA_ENCOUNTER_SHELL_CIVILIAN" unique="true">
+	<text>셸 시민들은 보통 직접적인 전투를 하지 않지만... 대부분의 군사 구역이 파업에 들어갔기 때문에, 몇몇은 그들 스스로 해결해야 한다고 생각합니다. 근처의 셸 함선이 당신을 공격하는것으로 보아 당신을 위협요소로 생각하는 것 같습니다!</text>
+	<ship load="SHIP_SHELL_FIGHT" hostile="true"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="NEBULA_ENCOUNTER_SHELL_MANAGEMENT" unique="true">
+	<text>셸 관리선이 인근 보안검색대에서 공사를 진행하고 있었습니다. 당신의 갑작스런 등장은 그들을 걱정시켰고, 그들은 검문소를 지킬 아무 병력도 없이 당신에게 달려들어 공격했습니다!</text>
+	<ship load="SHIP_SHELL_MECH" hostile="true"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="NEBULA_ENCOUNTER_SHELL_MILITARY">
+	<text load="NEBULA_SHELL_MILITARY_FIGHT"/>
+	<ship load="SHIP_SHELL_SOLDIER" hostile="true"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="NEBULA_SHELL_MILITARY_FIGHT">
+	<text>셸 군사구역은 난장판인 상태이고, 노동력은 파업상태에 있습니다.그럼에도 불구하고, 셸 천재정에 충성하는 사람들은 국민들을 보호하기 위해 뒤에 남아있습니다. 누구로부터 보호하냐고요? 바로 당신입니다!</text>
+	<text>"민간 지역 근처에는 군함이 출입할수 없다! 연방이건 아니건, 당장 이곳을 떠나라!" 당신은 FTL 드라이브가 아직 충전되지 않았습니다고 설명하려 했지만, 셸들은 듣지 않고 흥분해서 공격했습니다!</text>
+	<text>"귀 선박에서 승인되지 않은 셸이 아닌 사람이 확인되었습니다. 국장  및 상임의원인 'Nerva'의 명령에 따라, 연방 공무원들은 천재정 영토에 들어갈 수 없습니다. 당신은 제거될 것입니다."</text>
+	<text>셸 군사 함선이 당신을 조준했습니다. 당신은 그들이 멈춰서서 스캔을 할지 궁금해했지만, 그들은 즉시 발포했습니다! 셸 구역은 더이상 우호적이지 않습니다!</text>
+</textList>
+
+<event name="ENCOUNTER_CLAN_SHELL">
+	<text load="NEBULA_CLAN_SHELL_FIGHT"/>
+	<ship load="SHIP_CLAN_FIGHT" hostile="true"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="NEBULA_CLAN_SHELL_FIGHT">
+	<text>당신은 위험한 사냥꾼 길드의 일원을 마주친걸로 보입니다.그들은 셸의 갑옷을 얻기 위해 셸을 사냥하고는 하지만, 그에 못지않게 다른 배들도 사냥합니다!</text>
+	<text>"아무거또 업떤 내 트로피 벽에는 네 머리가 짤 보일거야!" 한 클랜스맨과 그의 함선이 접근했습니다. 무장한 채로! </text>
+	<text>성운 바깥에서 슬러그 사냥꾼이 왔고, 당신에게 무기를 겨누고 있습니다!</text>
+	<text>당신은 미행당하고 있는 느낌이 들었습니다. 추적자를 향해서 배를 돌리니, 슬러그 클랜스맨이 당신을 향해 오는 것을 볼 수 있었습니다!</text>
+	<text>"오, 쩌걸 봐, 확씰히 ?는 길드로 데려갈 가찌가 이써" 근처의 슬러그 함선이 공격했습니다.</text>
+</textList>
+
+<event name="NEBULA_ENCOUNTER_SHELL_SLUG" unique="true">
+	<text>보통, 일반적인 슬러그들은 셸 섹터를 피하고 싶어하며 사촌종들과 불화를 일으키고 싶어하지 않습니다. 하지만, 그러하지 않은 한 함선이 당신과 마주친 것 같습니다. 그리고 이제, 그들은 당신과 싸우려 합니다!</text>
+	<ship load="SHIP_SLUG_FIGHT" hostile="true"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="NEBULA_ENCOUNTER_SHELL_AUTO" unique="true">
+	<text>반군들은 셸의 열렬한 팬이기 때문이 아니라, 보통 그들의 독소를 너무 두려워하여 직접 공격하지 않습니다. 대신 그들은 더러운 일을 하기위한 무인기를 보내는 것을 선호합니다. 불행히도, 이러한 무인기 중 하나가 당신을 알아보고 공격했습니다!</text>
+	<ship load="SHIP_AUTO_FIGHT" hostile="true"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="NEBULA_SHELL_SMUGGLER" unique="true">
+	<text>밀수선 한 척이 이 성운을 몰래 통과하려는 것 같습니다. 그들은 당신을 눈치채고, 위치가 알려지길 원하지 않아 공격했습니다!</text>
+	<ship load="SHIP_SMUGGLER_SHELL" hostile="true"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+
+<!--
+		NEUTRAL!!!   (WITH NEBULA)
+	Events that could have a fight
+-->
+<eventList name="NEBULA_NEUTRAL_SHELL">
+	<event load="NEBULA_SHELL_ADBUCTION"/>
+	<event load="NEBULA_SHELL_NEUROTOXINLAB"/>
+	<event load="NEBULA_SHELL_SUZERAIN"/>
+	<event load="NEBULA_SHELL_ZOLTAN_TOXIN"/>
+	<event load="NEBULA_SHELL_COALITION_RECRUITER"/>
+	
+	<event load="NEBULA_SHELL_HIDING"/>
+	<event load="NEBULA_SHELL_CLAN_LODGE"/>
+	
+	<event load="NEBULA_PIRATE_SMUGGLE"/>
+	<event load="NEBULA_DUEL"/>
+</eventList>
+
+<event name="NEBULA_SHELL_SUZERAIN" unique="true">
+	<text>아마, 이 성운에서 마지막으로 보게 될 배는 맨티스 영주일 것입니다.하물며 도약 직후 당신과 교신하는 함선은 말입니다.</text>
+	<environment type="nebula"/>
+	<ship load="SHIP_SUZERAIN_FIGHT" hostile="false"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<text>"선장, 선장, 이 셸들 흥미롭지 않나? 하나 붙잡아 발톱깎이 사용하고 싶은데, 계속 반으로 자르고 있는다." 맨티스가 낄낄거렸습니다. "혹시 내가 쓸 셸 하나 있나?"</text>
+			<choice hidden="true" req="LIST_CREW_SHELL" lvl="0" max_group="0" blue="false">
+				<text>사과하고, 거절하며, 이곳을 벗어난다.</text>
+				<event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_SHELL" lvl="1" max_group="0" blue="false">
+				<text>사과하고, 거절하며, 이곳을 벗어난다.</text>
+				<event>
+					<text>"딸깍, 딸깍, 거기 셸 있는거 알아! 내 전리품 갖고 못간다!"</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>그들을 공격해라!</text>
+				<event>
+					<text>당신은 무기실에 전력을 공급하고 멘티스 영주와 싸웁니다.</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="shell">
+				<text>(셸 선원) 맨티스 영주에게 셸을 건낸다</text>
+				<event>
+					<text>당신은 맨티스 영주에게 셸을 건냈습니다.</text>
+					<removeCrew class="shell">
+						<clone>false</clone>
+						<text>셸은 곧 죽을지도 모르지만, 그 이후에 복제하지 않는 것이 좋을 것 같습니다.</text>
+					</removeCrew>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event>
+							<text>"오, 고마워! 이거 쓸만하겠다! 여기 보답. 이 전사 데려가, 지금 함선 공간 충분하지 않거든."</text>
+							<autoReward level="LOW">scrap_only</autoReward>
+							<crewMember amount="1" class="mantis" combat="1"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="shell_scientist">
+				<text>(셸 선원) 맨티스 영주에게 셸 과학자를 건낸다.</text>
+				<event>
+					<text>당신은 맨티스 영주에게 셸 과학자를 건냈습니다.</text>
+					<removeCrew class="shell_scientist">
+						<clone>false</clone>
+						<text>셸은 곧 죽을지도 모르지만,  그 이후에 복제하지 않는것이 좋을 것 같습니다.</text>
+					</removeCrew>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event>
+							<text>"오, 고마워! 이거 쓸만하겠다! 여기 보답. 이 전사 데려가, 지금 함선 공간 충분하지 않거든."</text>
+							<autoReward level="LOW">scrap_only</autoReward>
+							<crewMember amount="1" class="mantis" combat="1"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="shell_mechanic">
+				<text>(셸 선원) 맨티스 영주에게 셸 기계공을 건낸다.</text>
+				<event>
+					<text>당신은 맨티스 영주에게 셸 기계공을 건냈습니다.</text>
+					<removeCrew class="shell_mechanic">
+						<clone>false</clone>
+						<text>셸은 곧 죽을지도 모르지만,  그 이후에 복제하지 않는것이 좋을 것 같습니다.</text>
+					</removeCrew>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event>
+							<text>"오, 고마워! 이거 쓸만하겠다! 여기 보답. 이 전사 데려가, 지금 함선 공간 충분하지 않거든."</text>
+							<autoReward level="LOW">scrap_only</autoReward>
+							<crewMember amount="1" class="mantis" combat="1"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="shell_guardian">
+				<text>(셸 선원) 맨티스 영주에게 셸 수호자를 건낸다.</text>
+				<event>
+					<text>당신은 맨티스 영주에게 셸 수호자를 건냈습니다.</text>
+					<removeCrew class="shell_guardian">
+						<clone>false</clone>
+						<text>셸은 곧 죽을지도 모르지만,  그 이후에 복제하지 않는것이 좋을 것 같습니다.</text>
+					</removeCrew>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event>
+							<text>"오, 고마워! 이거 쓸만하겠다! 여기 보답. 이 전사 데려가, 지금 함선 공간 충분하지 않거든."</text>
+							<autoReward level="LOW">scrap_only</autoReward>
+							<crewMember amount="1" class="mantis" combat="1"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="shell_radiant">
+				<text>(찬란한 셸 선원) 맨티스 영주에게 찬란한 셸을 보내서 중독시킨다.</text>
+				<event>
+					<text>당신은 맨티스 영주에게 찬란한 셸을 보내었습니다. 함정임을 깨닫지 못하고, 맨티스는 아주 큰 보상을 하였습니다.</text>
+					<autoReward level="MED">scrap_only</autoReward>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event>
+							<text>얼마 지나지 않아 당신은 영주 함선의 침묵을 알아차렸습니다. 당신은 찬란한 셸로부터 교신을 받았고, 당신은 다시 데리러 갔습니다. 배를 잠깐 들여다 보니 맨티스들이 땅바닥에서 실룩거리는 것을 볼 수 있었습니다. 그들의 뇌는 이미 흐믈흐물해져 있었습니다...</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_SHELL_COALITION_RECRUITER" unique="true">
+	<text>당신은 이 성운에서 익숙한 파란색 음영을 발견했습니다. 당신은 그 음영이 연합의 것임을 깨닫고 급히 몸을 숨겼습니다. 당신은 그들과 셸 함선 사이의 무전 대화를 포착했고, 셸을 당신의 편으로 영입하려고 했습니다.</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>그 사이로 끼어들어 직접 셸을 영입한다!</text>
+		<event>
+			<text>"뭐야?" 당신은 연합 대화에 끼어들어 방해하며, 연방에 대해 설명했습니다. 분노한 연합 선장은 독백을 계속하고 있지만,  셸은 누구의 말을 들어야 할지 모르는 상태입니다.</text>
+			<choice hidden="true">
+				<text>우군과의 동맹을 약속하며, 셸을 설득한다.</text>
+				<event>
+					<text>당신은 오래 지속될수 있는 동맹, 개방된 국경, 또한 무료 쿠키를 약속했습니다. 특히 마지막 부분은 셸의 마음을 사로잡은 것으로 보이며, 이는 연합 함선에게 불쾌하게 다가왔습니다. 연합은 임무에 실패한 것으로 보고, 당신의 함선을 공격하기로 결심했습니다!</text>
+					<crewMember amount="1" class="shell"/>
+					<ship load="SHIP_COALITION_FIGHT" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>안전을 약속하며, 셸을 설득한다.</text>
+				<event>
+					<text> 당신은 셸에게 안전을 약속했지만 그들은 관심조차도 없었습니다. 이미 그들의 방어의 자신이 있던 그들은 연합 함선에 귀를 기울이기로 결정했고, 연합 함선은 매우 설득력 있었습니다. 이제 연합은 셸에 대한 승부에서 이겼으니, 다음번에는 당신을 공격하기로 했습니다!</text>
+					<ship load="SHIP_COALITION_SHELLCREW" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text> 위협으로 그들을 설득한다.</text>
+				<event>
+					<text>당신은 셸들을 위협했지만, 그것은 그들을 동요시키는 것 외에는 하지 못했습니다. 대신 그들은 연합 함선에 귀를 기울이기로 결정했고, 연합 함선은 매우 설득력 있었습니다. 이제 연합은 셸에 대한 승부에서 이겼으니, 다음번에는 당신을 공격하기로 했습니다!</text>
+					<ship load="SHIP_COALITION_SHELLCREW" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_SHELL">
+				<text>(셸 선원) 그들을 설득한다.</text>
+				<event>
+					<text> 셸들은 자신의 친구의 말을 믿는 것 같았습니다. 연방에 자신있어하는 그들중 하나가 당신의 선원으로 합류하기를 제안했고, 그것은 연합 함선을 불쾌하게 만들었습니다. 연합은 임무에 실패한 것으로 보고, 당신을 공격하기로 결심했습니다!</text>
+					<crewMember amount="1" class="shell"/>
+					<ship load="SHIP_COALITION_FIGHT" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>연합 함선에게 공격을 시작한다.</text>
+		<event>
+			<text>당신은 숨어있던 곳에서 빠져나와 연합 함선을 공격했습니다. 셸 함선은 재빨리 도약해 도망쳤습니다.</text>
+			<ship load="SHIP_COALITION_FIGHT" hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>연합 함선을 무시한다.</text>
+		<event>
+			<text>셸들이 연합에 참여하고 싶다면, 그렇게 놔두는게 좋겠습니다. 바라건데, 연합이 얼마나 엉망진창인 상태인지 깨닫기를 바랍니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_SHELL_CLAN_LODGE" unique="true">
+	<text>외계 생명체 사냥꾼 길드가 이 신호소 주변에 쉼터를 만든 것으로 보입니다. 셸 구역 안에서 꽤나 대담한 움직임을 보이고 있지만, 클랜스맨들은 이 구역 경계에 대해 전혀 몰랐습니다.</text>
+	<environment type="nebula"/>
+	<ship load="SHIP_CLAN_LODGE" hostile="false"/>
+	<choice hidden="true">
+		<text>쉼터를 공격한다.</text>
+		<event>
+			<text> 이들을 죽이는것은 모든 사람들에게 호의를 베푸는 일입니다! 당신은 무기를 장전하고 공격하기위해 이동했습니다..</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="snail">
+		<text>(클랜스맨 선원) 보급품을 요청한다.</text>
+		<event>
+			<text>쉼터에서, 그들중 하나가 당신의 배에 승선했고, 보급품을 건내는 것을 동의했습니다..</text>
+			<autoReward level="MED">stuff</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>쉼터를 무시한다.</text>
+		<event>
+			<text>그리 오래지 않아 셸들 중 하나가 이곳을 발견하고 사냥꾼들은 작전을 중단할 것입니다. 당신은 이런 귀찮은 일보다 더 중요한 일이 있습니다. .</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_SHELL_HIDING" unique="true">
+	<text>당신은 심하게 손상받았지만, 부분적으로는 작동하고 있는 셸 함선이 표류하고 있던 것을 발견했습니다. 갑자기, 컴퓨터가 원치 않던 텔레포터 작동을 감지했습니다!</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<text>셸은 구체화 되어서, 빠르게 먼 곳으로 굴러갔습니다. 얼마 지나지 않아 클랜스맨 함선이 성운에서 나와, 쉘 함선을 향해 무기를 발사하여 파괴했습니다. 여기서 이 둘을 연관짓는 것은 그리 어렵지 않았습니다..</text>
+			<ship load="SHIP_CLAN_FIGHT" hostile="false"/>
+			<choice hidden="true">
+				<text>셸을 클랜스맨에게 넘긴다.</text>
+				<event load="SHELL_HIDING_RATOUT"/>
+			</choice>
+			<choice hidden="true">
+				<text>셸을 보호한다.</text>
+				<event load="SHELL_HIDING_PROTECT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="SHELL_HIDING_PROTECT">
+	<event>
+		<text>당신은 슬러그 함선이 지나갈때까지 기다렸다. 다행히도 .그들은 당신의 배를 전혀 생각하지 않고 당신을 무시하는 것 같습니다. 셸은 비밀은 지켜줘서 고맙고, 선원들과 같이 일하고 싶다고 제안했습니다.</text>
+		<crewMember amount="1" class="shell"/>
+	</event>
+	<event>
+		<text>슬러그들이 눈치채지 못하길 바랬지만, 불행히도 그들의 텔레파시 능력이 함선에 있는 셸을 감지한 것 같습니다. 그들은 당신의 함선을 다음 타겟으로 정했고 즉시 공격했습니다! 당신은 새로운 셸 친구와 같이 방어태세를 갖추었습니다.</text>
+		<crewMember amount="1" class="shell"/>
+		<boarders min="1" max="2" class="slug_clansman"/>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="SHELL_HIDING_RATOUT">
+	<event>
+		<text>당신은 슬러그에게 교신하여 셸들중 하나가 당신의 함선으로 탈출했음을 알렸습니다. 그들은 셸에 대한 댓가를 제안했습니다. 하지만 셸을 잡으려다 그 생명체는 폭발해버렸고, 충돌로 인하여 선원 중 하나가 사망했습니다. 그 후에 이 생명체를 죽이는 데에는 총알 몇 발이면 충분했고, 다행히 슬러그들이 댓가를 치를정도로 외관은 멀쩡했습니다.</text>
+		<autoReward level="MED">scrap_only</autoReward>
+		<removeCrew>
+			<clone>true</clone>
+			<text>다행히도 클론베이는 선원을 복제하기를 시작했습니다.</text>
+		</removeCrew>
+	</event>
+	<event>
+		<text>당신의 선원들이 셸을 잡고, 땅에서 끌어올려서, 무기력하게 공중으로 올려놓았습니다. 당신은 슬러그에게 연락하여 셸이 우리의 함선의 탑승했다고 알렸습니다. 당신의 도움에 기뻐하여, 그들은 셸을 가져가고 약간의 스크랩을 전송했습니다.</text>
+		<autoReward level="MED">scrap_only</autoReward>
+	</event>
+</eventList>
+
+<event name="NEBULA_SHELL_ZOLTAN_TOXIN" unique="true">
+	<text>당신은 한 졸탄 과학선에게 교신받았습니다. "당신은 연방선박이지요. 맞습니까? 우리는 당신이 셸 함선을 사냥하여 나포하는 서비스를 -당연히 유상으로- 제공 해 주시기를 요청합니다. 우리는 그들의 독소를 역설계하여 평화적 분쟁 해결을 위한 '비치명적 마비 화학물질'을 개발하려고 합니다"</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>받아들인다.</text>
+		<event>
+			<text>"가스를 채취할 수 있도록 반드시 선박을 파괴하시면 안됩니다." 졸탄이 셸 함선으로 안내했습니다.</text>
+			<ship load="SHIP_SHELL_ZOLTAN_TOXIN" hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="MORALITY_UPDATE_SHELL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>거절한다.</text>
+		<event>
+			<text>"동맹국을 돕지 않으려는 당신들을 절대 잊지 않을겁니다." 졸탄은 더 이상 말하지 않았습니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_SHELL_ADBUCTION" unique="true">
+	<text>당신은 근처에 민간 합선이 셸 납치범에게 공격받는 것을 발견했습니다!</text>
+	<environment type="nebula"/>
+	<ship load="SHIP_SHELL_ABDUCTION" hostile="false"/>
+	<choice hidden="true">
+		<text>셸들과 교신한다.</text>
+		<event>
+			<text>당신은 셸함선이 교신에 응답하는 것을 보고 놀랐습니다. "안녕하세에에요. 우리가 나빠 보이겠지만, 시이이민들을 해치지 않겠다고 약소오옥할게요. 우린 단지 그들에게 몇가지 테스으으트를 하고 시이잎을 뿐이에요, 단수우운히 과학을 위해서어어요!"</text>
+			<choice hidden="true">
+				<text>시민들을 내버려 두라고 위협한다.</text>
+				<event load="NEBULA_SHELL_ADBUCTION_DEMAND"/>
+			</choice>
+			<choice hidden="true">
+				<text>시민들에게 이 상황을 설명한다.</text>
+				<event load="NEBULA_SHELL_ADBUCTION_EXPLAIN"/>
+			</choice>
+			<choice hidden="true">
+				<text>그들에 일에서 손을 뗀다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>셸들을 공격해라!</text>
+		<event>
+			<text>당신은 셸들에게 어떤 기회도 주지 않기로 했고, 즉시 공격했습니다.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="MORALITY_UPDATE_SHELL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>함선들을 피한다.</text>
+		<event>
+			<text>당신은 셸 함선이 왜 그러는지는 모르겠지만, 관여하지 않는 것이 좋을 것 같습니다고 판단했습니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="NEBULA_SHELL_ADBUCTION_DESTROY">
+	<event>
+		<text>민간인들은 셸들의 납치 시도에서 살아남지 못한 것으로 보입니다. 그들이 싸움으로 죽었든, 치명적인 독소로 인해 죽었든, 지금은 이미 늦어보입니다. 당신은 함선의 손상이 덜 된 부분들을 스크랩화했습니다..</text>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+	<event>
+		<text>대부분의 생존자는 이 분쟁에서 살아남지 못한 것으로 보입니다. 마지막 생존자가 당신의 함선에서 일하고 싶다고 요청했습니다.</text>
+		<crewMember amount="1" class="human"/>
+	</event>
+</eventList>
+<eventList name="NEBULA_SHELL_ADBUCTION_DEMAND">
+	<event>
+		<text> 셸들은 당신의 말을 별로 듣고싶어 하지 않았습니다. 대신에, 당신의 대원들을 잡아들이기로 했습니다!</text>
+		<boarders min="1" max="2" class="shell"/>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>셸들은 당신을 건드리고 싶지 않아했습니다. 그들은 당신의 요구를 듣고 민간인에게서 철수했으며, 민간 선박은 도와줘서 고맙다고 말했습니다.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+</eventList>
+<eventList name="NEBULA_SHELL_ADBUCTION_EXPLAIN">
+	<event>
+		<text> 셸들이 민간인들을 해칠 의도가 없다는 것을 설명하고, 그 둘 사이에 타협점을 찾을 수 있었습니다. 셸은 평화적인 협상을 돕는 대가로 당신에게 약간의 보상을 해주었습니다.</text>
+		<autoReward level="LOW">stuff</autoReward>
+	</event>
+	<event>
+		<text>당신의 설명하려는 시도는 오히려 그들을 더 두려워하게 만들었습니다. 그들은 도망치려고 하고, 셸은 당신이 그들을 도와준다고 비난했습니다. 함선이 공격해옵니다.</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="NEBULA_SHELL_NEUROTOXINLAB" unique="true">
+	<text>성운의 구름속 사이로 반란군의 과학기지가 보였습니다. 셸 구역에서 이런 것을 보는것은 이상했지만, 분명 그럴만한 일이 있을 것 입니다.</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>가까이 다가가 조사한다.</text>
+		<event>
+			<text> 이상하게도, 가까이 다가가는 동안 반란군 함선이 당신을 공격하지 않았습니다. 더 이상한점은, 이 정거장은 단 한명 빼고는 다른 생명신호가 감지되지 않았습니다.</text>
+			<choice hidden="true">	
+				<text>더 자세히 조사한다.</text>
+                <event>
+					<text>당연히, 단 한명뿐인 반군 기술자는 당신에게 위협을 끼치지 못한다. 당신은 안으로 선원들을 보냈습니다. 그들은 안에서 시체가 흩어져 있는 실험실을 보았지만, 그들에게는 아무런 상처도 없었습니다. 방에서 이상한 냄새가 희미하게 났습니다.</text>
+					<choice hidden="true">	
+						<text>계속 조사한다.</text>
+						<event>
+							<text>선원들은 정거장을 통과하며 이전에 감지했던 생명 신호를 계속 찾았습니다. 곧 그들은 면도를 하지않은채 침을 흘리면서, 앞뒤로 몸을 흔들며 커다란 큐브를 껴안고있는 한 기술자를 발견했습니다. 선원들은 상황을 설명시킬수 있을 정도로 그를 오래 진정시켰고, 기술자는 무인기들 중 하나가 적대적으로 되었을 당시 셸이 방출한 신경독을 연구해서 무기화하는 임무를 맡은것 같았습니다. 그리고 그 독소를 이용해서, 무인기는 모든 과학자들을 죽였습니다. 기술자가 경고하기를 당신들이 이정거장에 탑승했으니, AI도 그것을 알았을 것이라고 했습니다!</text>
+							<choice hidden="true">	
+								<text>선원들을 빼내라, 당장!</text>
+                                <event>
+									<text>당신의 선원들과 정신이상 기술자는 서둘러 함선으로 돌아왔습니다. 그들이 왔듯이, 커다란 무인기가 정거장에서 벗어나 당신을 쫓아왔습니다!</text>
+                                    <crewMember amount="1" class="human_engineer">Ratman</crewMember>
+                                    <ship load="SHIP_AUTO_LARGE" hostile="true"/>
+                                    <choice hidden="true">
+                                        <text>계속...</text>
+                                        <event load="COMBAT_CHECK"/>
+                                    </choice>
+                                </event>
+                            </choice>
+                        </event>
+                    </choice>
+                    <choice hidden="true">    
+						<text>이곳은 이상하다. 선원들을 빼낸다.</text>
+						<event>
+							<text>당신은 만약을 위해 선원들을 함선으로 불러들였습니다.</text>
+						</event>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">    
+		<text>정거장을 무시한다.</text>
+		<event>
+			<text>당신은 반란군 정거장과의 거리를 두는것이 좋아보였습니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<!--
+		DISTRESS!!!
+	Events that should be a distress signal
+-->
+<eventList name="NEBULA_DISTRESS_SHELL">
+	<event load="NEBULA_DISTRESS_SHELL_SUFFOCATING"/>
+	<event load="NEBULA_DISTRESS_SHELL_CHOICE"/>
+</eventList>
+
+<event name="NEBULA_DISTRESS_SHELL_CHOICE" unique="true">
+	<text> 당신은 셸 함선이 슬러그 수송선으로 접근하는것을 발견했습니다. 슬러그들이 무엇을 하고 있었는지는 모르겠지만, 곤경에 처한 것은 확실합니다.</text>
+	<environment type="nebula"/>
+	<ship load="SHIP_SHELL_FIGHT" hostile="false"/>
+	<distressBeacon/>
+	<choice hidden="true">
+		<text>슬러그들을 돕는다.</text>
+		<event>
+			<text>슬러그들을 돕기 위해 움직이기 시작했을때, 거의 동시에 슬러그는 당신의 컴퓨터로 하나의 메시지를 보내고 도약해 날아갔습니다. "피식!" 셸 함선은 혼란스러웠지만 당신과 관련이 있다고 생각했고, 당신을 공격했습니다!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text> 슬러그를 무시한다.</text>
+		<event>
+			<text>당신은 슬러그 수송선을 무시하고 지나갔습니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_DISTRESS_SHELL_SUFFOCATING" unique="true">
+	<text>조난신호 근원치 그천에 셸 함선 하나가 나타났습니다. 그들의 생명유지장치는 부셔져있었고, 급속도로 질식하는 중이였습니다.</text>
+	<environment type="nebula"/>
+	<distressBeacon/>
+	<ship load="SHIP_SHELL_GENERIC" hostile="false"/>
+	<status type="limit" target="enemy" system="oxygen" amount="0"/>
+	<choice hidden="true">
+		<text>승선해서 셸을 구해라!</text>
+		<event>
+			<text>당신은 셸함선과 도킹했지만, 그들은 기뻐보이지 않았습니다.  산소없이 오래 살수 없음에도 불구하고, 그들은 당신을 해적으로 착각하여 공격했습니다...</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="oxygen" lvl="2">
+		<text>(고급 산소실) 도킹하여 산소를 공급한다.</text>
+		<event>
+			<text>당신은 셸 함선과 도킹하여 천천히 산소를 공급했습니다. 마지막 생존자가 탈출할때까지 충분히 안정된 상태를 유지한것 같았습니다. 아무 선원이나 배도 없어, 그는 당신과 합류하겠다고 권했습니다.</text>
+			<crewMember amount="1" class="shell"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ORCHID">
+		<text>(오키드 선원) 오키드 선원을 보내 산소를 공급한다.</text>
+		<event>
+			<text>당신은 셸 함선과 도킹하여 천천히 산소를 공급했습니다. 마지막 생존자가 탈출할때까지 충분히 안정된 상태를 유지한것 같았습니다. 아무 선원이나 배도 없어, 그는 당신과 합류하겠다고 권했습니다.</text>
+			<crewMember amount="1" class="shell"/>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>배를 피한다.</text>
+		<event>
+			<text>불행히도, 셸 함선에 신경독 가스가 퍼져있다는 것을 고려할때, 그들의 함선과 도킹하는것은 너무 위험할 수 있습니다. 이 일과 관여되지 않는것이 최선입니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		STORM!!!
+	Events with storm
+-->
+<eventList name="NEBULA_STORM_SHELL" unique="true">
+	<event load="NEBULA_ENCOUNTER_SHELL_STORM"/>
+</eventList>
+
+<event name="NEBULA_ENCOUNTER_SHELL_STORM">
+	<text>이 이온폭풍 속에서 셸 함선 한척이 기다리고 있는 것 같습니다. 무슨 이유로 당신을 적대하는지는 모르겠지만, 당신이 이 싸움에서 쉽게 빠져나가기는 어려워 보입니다.</text>
+	<ship load="SHIP_SHELL_FIGHT" hostile="true"/>
+	<environment type="storm"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					SHELL HOME SECTOR
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<event name="NEBULA_SHELLHOME_LAB" unique="true">
+	<preventQuest/>
+	<text>당신은 성운속에 숨어있던 연방함선과 교신했습니다. "오 다행이야, 우리가 보낸 지원요청을 받고 왔군요! 우리는 이 섹터를 우회해서 최후의 결전으로 군대를 움직이고 있었어요. 셸 유괴범들이 갑자기 나타나서 선원들을 납치하기 전까진 상황이 괜찮을거라고 생각했었지만요!  아마 그 선원들은 이 송신소 근처 연구소에 잡혀있을 것 같은데, 우리의 무장으로는 그들을 구하기엔 너무 빈약해요..."</text>
+	<environment type="nebula"/>
+	<distressBeacon/>
+	<choice hidden="true">
+		<text>정거장을 조사하는것을 돕는다.</text>
+		<event>
+			<text> 정거장은 지금까지 봐왔던 다른 정거장과는 달랐습니다. 거대했으며 정예의 색으로 칠해져있었고, 이곳은 분명 중요한 장소일것 입니다.</text>
+			<choice hidden="true">
+				<text>그들과 교신해서 평화롭게 협상하자. 이 과학자들을 죽일필요는 없다.</text>
+				<event>
+					<text>"오, 연방함서어언이군요. 이 송신소오오에 온것을 환영해요! 무엇을 도와드릴까요?" 당신은 상황을 설명했고 그 셸은 잠시 생각하는듯 했습니다. "알겠어요. 사아아과할게요, 이건 우리 구역에 오는 새애앵명체들을 공부하려는 저희의 관스으읍이에요. 물론 우리는 그들에게 해를 끼치지 않고, 단수우운히 그들을 태워 데려오고, 고통없이 간단한 테스으으트를 한 후, 가는길에 그들을 보낼 뿐이에요. 악의는 없어요! 걱정하지 마세에에요, 그들을 즉시이이 모두 풀어줄게요. 문제를 일으키고 시이잎진 않아요."</text>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event>
+							<text>셸들이 연방 선원들을 풀어주는동안, 당신은 또다른 도약신호를 감지했습니다. 갑자기, 매우 큰 스텔스함이 송신소로 도약해왔습니다. 당신은 셸들을 향한 함선의 메시지를 받았습니다. "여기는 DA_SR 12, 연방 구조신호에 응답해왔다. 당신은 연방의 B클래스 시민이다. 우리는 곧 그곳에 정박할 것이고, 항복하고 체포당하지 않으면 무력을 행사할 것이다."</text>
+							<ship load="SHIP_SHELL_STEALTH" hostile="false"/>
+							<choice hidden="true">
+								<text>셸들은 이런 취급을 받아선 안된다! 그들을 보호하고 스텔스함을 공격해라.</text>
+								<event>
+									<text>당신은 스텔스함과 셸 사이로 배를 이동시켰습니다. "범죄자들을 보호하려는 것인가? 그렇다면 무력을 행사하는 수 밖에 없다!"</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>계속...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+									
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>이런, 우린 이 일에 관여할 수 없다. 떠난다.</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>병사들을 구할 수 있기를 바라며 정거장을 공격한다.</text>
+				<event>
+					<text>당신은 무장하고 셸 연구소를 공격했습니다. 병사들을 구하기 위해서는 함체를 파괴하지 않고 선원들을 처치해야만 합니다.</text>
+					<ship load="SHIP_SHELL_DONUTBOSS" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>우리가 예상했던 것 보다 훨씬 심각하다. 떠난다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text> 당신이 도움을 줄 수 없다고 설명한 후 떠납니다.</text>
+		<event>
+			<text>당신은 연방함선에 사과하고 더 중요한 임무가 있다고 설명합니다. 바라건대, 그들을 도울 진짜 지원팀이 오기를 바랍니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SHELLHOME_LAB_RESCUE_LAB">
+	<text>"우리를 구해줬군요! 연방군 함서어언이었는데... 우릴 구하려고 동족을 배시이인하시이인 겁니까? 어떻게 해야할지 모르겠어요. 하지만 전 시이이간이 없어요. 부탁이건데, 제가 여기 머물 수우우 없게 되었으니 당신과 함께 갈 수우우 있게 허락해주세에에요. 당연히 먼저 이 인간들을  모두 풀어주고 그들의 함서어언으로 돌려보낼게요."</text>
+	<variable name="ach_boss_stealth" op="set" val="1"/>
+	<unlockCustomShip silent="false">PLAYER_SHIP_SHELL</unlockCustomShip>
+	<crewMember amount="1" class="shell_radiant">Bamalf</crewMember>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="MORALITY_REMOVE_SHELL"/>
+	</choice>
+</event>
+<ship name="SHIP_SHELL_DONUTBOSS" auto_blueprint="MU_SHELL_DONUTBOSS">
+	<destroyed>
+		<text>The laboratory explodes, undoubtedly killing all of the crew, including the Federation personnel, inside. You hope the Federation doesn't hear about this blunder...</text>
+		<autoReward level="HIGH">standard</autoReward>
+	</destroyed>
+	<deadCrew>
+		<text>You've killed all of the scientists aboard the station. You scrap the exterior of the hull.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>Free the Soldiers.</text>
+			<event>
+				<text>You board the station and free all of the Federation personnel. They thank you briefly before rushing back to their ship, which has docked with the station to retrieve them. The Federation ship thanks you and pays you for your help.</text>
+				<autoReward level="MED">scrap_only</autoReward>
+				<choice hidden="true">
+					<text>계속...</text>
+					<event>
+						<text>You take a quick look around the station before you leave and find a strange device in one of the laboratories. It appears to be made to emit the neurotoxin that usually protects Shell ships. The one installed in the lab must have broken during the fight, judging from the fact you're able to be here now, but this one is fully functional. You bring it back to the ship.</text>
+						<variable name="ach_boss_donut" op="set" val="1"/>
+						<augment name="TOXIC_GAS"/>
+					</event>
+				</choice>
+			</event>
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="shell_radiant" prop="0.50"/>
+		<crewMember type="shell" prop="0.50"/>
+	</crew>
+</ship>
+<ship name="SHIP_SHELL_STEALTH" auto_blueprint="MU_STEALTH_BOSS">
+	<destroyed>
+		<text>You've neutralized the Stealth Cruiser, and rescued the Shells in the process.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>Contact the scientists.</text>
+			<event load="SHELLHOME_LAB_RESCUE_LAB"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>You've neutralized the Stealth Cruiser, and rescued the Shells in the process.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>Contact the scientists.</text>
+			<event load="SHELLHOME_LAB_RESCUE_LAB"/>
+		</choice>
+	</deadCrew>
+</ship>
+
+<eventList name="NEBULA_SHELLHOME_UNIQUE">
+	<event load="NEBULA_SHELLHOME_IMMUNITY"/>
+	<event load="NEBULA_SHELL_HIDDEN_COLONY"/>
+	<event load="NEBULA_SHELLHOME_MERCENARY"/>
+</eventList>
+
+<event name="NEBULA_SHELLHOME_MERCENARY" unique="true">
+	<text>당신은 이 송신소에 혼자만 있지 않습니다. 근처에 시스템은 켜져있지만, 배가 거의 작동하지 않는 용병 함선 한 척이 있습니다.</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>용병 함선과 교신하여 왜 이곳에 있는지를 물어본다.</text>
+		<event>
+			<text>"오,실수였어. 셸 함선중 하나를 포획해 오라고 클랜스맨들에게 의뢰받았지만, 우리가 준비한 것 보다 훨씬 어려운 임무였어. 이제 기대할 건 셸함선이 지나가면서 무작위로 죽어주기를 기다리는 것뿐이야. 얼마나 오래가 걸리던지..."</text>
+			<choice hidden="true">
+				<text>그들을 돕는다. 셸 함선을 찾아 포획한다.</text>
+				<event>
+					<text>당신은 용병함선을 지나 셸 함선을 만날 때 까지 성운 깊숙히 날아갔습니다.</text>
+					<ship load="SHIP_SHELL_MERCENARY" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="MORALITY_UPDATE_SHELL_FIGHT"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>떠난다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>용병함선을 공격한다.</text>
+		<event>
+			<text>당신은 해적에게 아무 기회도 주지 않기로 했고, 즉시 공격했습니다.</text>
+			<ship load="SHIP_MERCENARY_ALL" hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>용병함선을 무시한다.</text>
+		<event>
+			<text>쉘 고향성단에 있는 용병들은 느낌이 좋지 않습니다. 함선을 무시합니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_SHELLHOME_IMMUNITY" unique="true">
+	<text>당신은 성운속으로 들어가는 슬러그 클랜스맨을 쫓는 근처의 셸 함선으로부터 교신을 받았습니다.</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>그들의 말을 들어본다.</text>
+		<event>
+			<text>"연방 함서어언은 사아아람들을 돕죠? 도움이 필요해요! 이 클랜스으으맨들이 셸들의 독소오오 새애앰플을 훔쳤어요. 그들이 시이일험시이일로 가져간다면 해독제를 개발할 지도 몰라요. 만약 그런일이 새애앵긴다면 우리들 함선에 아무 문제없이 스으응서언할 수우우 있을거에요. "</text>
+			<choice hidden="true">
+				<text>클랜스맨을 쫓는 것을 수락한다.</text>
+				<event>
+					<text>"완벽해요! 당신이 새애앰플을 가져올 수우우 있습니다면 최고겠지만, 그게 당시이인의 능력을 벗어난다고 해도 걱정하지 마세에에요. 그들이 그저 죽어있기만 하면 되요"</text>
+					<ship load="SHIP_CLAN_IMMUNITY" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>셸을 피한다.</text>
+		<event>
+			<text>당신은 여기서 무슨 일이 일어나고 있는지 모르지만, 그들의 일에 관여하는데 흥미가 없었습니다. 당신은 셸을 무시했고, 그들은 결국 슬러그들을 쫓는 것을 포기했습니다..</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_SHELL_HIDDEN_COLONY" unique="true">
+	<text>당신은 셸 우주선이 성운속으로 들어가는것을 포착했습니다. 당신이 충분히 빠르다면 따라잡을 수 있을 것 같습니다.</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>따라간다.</text>
+		<event>
+			<text>성운을 통과하여 따라가보니, 당신은 여러개의 정거장 사이로 연결된 셸 식민지을 보고 놀랐습니다.</text>
+			<ship load="SHIP_SHELL_COLONY_STATION" hostile="false"/>
+			<choice hidden="true">
+				<text>셸들과 접촉한다.</text>
+				<event>
+					<text>당신은 식민지 안에있는 셸들과 교신했습니다. 셸들은 당신이 말하는것을 기다립니다.</text>
+					<choice hidden="true">
+						<text>공격!</text>
+						<event>
+							<text> 당신은 아무 이유없이 이 평화로운 외계인들을 공격하는것이 여기서 할수있는 최선의 행동이라고 결정했습니다.</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>계속...</text>
+								<event load="MORALITY_UPDATE_SHELL_FIGHT"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text> 거래를 요청한다.</text>
+						<event>
+							<text>셸들 사이에 말이 오갔지만, 모두 당신과 거래하는 것이 해가 되지 않을 것이라고 동의하는 것 같습니다.</text>
+							<store/>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>보급품을 건내주라고 위협한다.</text>
+						<event load="SHELL_HIDDEN_COLONY_DEMAND"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>군집을 무시한다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>그들을 무시한다.</text>
+		<event>
+			<text>여기서 무슨 일이 벌어지는 지는 모르겠지만, 고립된 셸 우주선은 당신의 임무와는 상관이 없습니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="SHELL_HIDDEN_COLONY_DEMAND">
+	<event>
+		<text>셸들은 최대한 싸우기를 피하는것 같습니다. 그들은 나눠줄 수 있는 보급품을 건냈습니다.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="MORALITY_UPDATE_SHELL"/>
+		</choice>
+	</event>
+	<event>
+		<text>이 식민지는 당신의 위협을 받아들이지 않았습니다. 그들은 무기를 올려 보복하려 합니다!</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="MORALITY_UPDATE_SHELL_FIGHT"/>
+		</choice>
+	</event>
+</eventList>
+<event name="SHELL_HIDDEN_COLONY_SURRENDER" unique="true">
+	<text>"제발, 멈춰주세에에요! 가진 모든것을 드릴테니, 제발 우리를 내버려 두세에에요!"</text>
+	<choice>
+		<text>무기를 요구한다.</text>
+		<event>
+			<weapon name="RANDOM"/>
+		</event>
+	</choice>
+	<choice>
+		<text>노예를 요구한다.</text>
+		<event>
+			<crewMember amount="1" class="shell"/>
+		</event>
+	</choice>
+	<choice>
+		<text> 스크랩을 요구한다.</text>
+		<event>
+			<autoReward level="MED">scrap_only</autoReward>
+		</event>
+	</choice>
+</event>
+
+<!--
+		NEUTRAL!!!   (WITH NEBULA)
+	Events that could have a fight
+-->
+
+<eventList name="NEBULA_NEUTRAL_SHELLHOME">
+	<event load="NEBULA_SHELL_ADBUCTION"/>
+	<event load="NEBULA_SHELL_NEUROTOXINLAB"/>
+	<event load="NEBULA_SHELL_SUZERAIN"/>
+	<event load="NEBULA_SHELL_ZOLTAN_TOXIN"/>
+	<event load="NEBULA_SHELL_COALITION_RECRUITER"/>
+	
+	<event load="NEBULA_SHELL_HIDING"/>
+	<event load="NEBULA_SHELL_CLAN_LODGE"/>
+</eventList>
+
+<!--
+		NEBULA!!!  HOSTILE
+	Events with nebula environments
+-->
+<eventList name="NEBULA_HOSTILE_SHELLHOME">
+	<event load="NEBULA_ENCOUNTER_SHELL_ELITE"/>
+	
+	<event load="NEBULA_ENCOUNTER_SHELL_CIVILIAN"/>
+	<event load="NEBULA_ENCOUNTER_SHELL_MILITARY"/>
+	<event load="NEBULA_ENCOUNTER_SHELL_MANAGEMENT"/>
+	<event load="ENCOUNTER_CLAN_SHELL"/>
+	
+	<event load="NEBULA_SHELL_SMUGGLER"/>
+</eventList>
+
+<event name="NEBULA_ENCOUNTER_SHELL_ELITE" unique="true">
+	<text>찬란한 셸들은 셸 구역의 보호자로서. 그들의 강한 독성 구성은 적 선원들을 물리치는데 효과입니다. 불행히도, 그들의 우주선 중 하나가 당신을 발견했고, 당신을 위협요소로 생각하는 것 같습니다!</text>
+	<ship load="SHIP_SHELL_ELITE_FIGHT" hostile="true"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					MORPH SECTOR
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<ship name="SHIP_SHELL_LAB_DELTA" auto_blueprint="MU_SHELL_LAB_DELTA">
+	<!--<surrender min="5" max="7">
+		<text>"알았어, 알았어! 생각을 바꿨어! 살려만 줘!"</text>
+		<choice hidden="true">
+			<text>그들의 말을 듣고 멈춘다.</text>
+			<event>
+				<text>"오 고마워 '뉴턴'군. 우리의 운소오옹 소오오시이익을 어떻게 알았지? 가장 안전한 통시이인을 사아아용했었는데!"</text>
+				<ship hostile="false"/>
+				<choice hidden="true">
+					<text>어... 무슨 운송 말이지?</text>
+					<ship hostile="false"/>
+					<event>
+						<text>"잠깐만... 무슨일이 일어나는지 전혀 몰라? 젠장. 이 사아앙황을 시이임하게 망쳐버렸어... 지금부터는 아무 말도 안할거야!"</text>
+						<ship hostile="true"/>
+					</event>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>거절하고 계속 공격한다.</text>
+			<event/>
+		</choice>
+	</surrender>-->
+	<surrender min="1" max="3">
+		<text>"알았어! 새애앵각을 바꿨어! 사아알려만 줘!"</text>
+		<ship hostile="false"/>
+		<choice hidden="true">
+			<text>상황이 어떻게 돌아가는지 설명하라고 말한다.</text>
+			<event>
+				<text>"우리는 어... 청사아아진, 그리고 화물과 모프 DNA를 넘겨달라고 반군으로부터 많은 돈을 제안받았어. 그렇게 쳐다보지마! 같은 사아앙황이였으면, 너라도 똑같이 했을거야!"</text>
+				<choice hidden="true">
+					<text>반란군은 외계인들을 싫어하지 않나?</text>
+					<event>
+						<text>"제발,  그 '외계인'이라는 단어는 쓰으으지마. 너희들도 우리한테는 외계인이야. 그래도... 그래, 그들은 친절하지는 않아. 하지만 망할만큼 돈이 많다고!  한 지역 전체를 점령딩하는 것보다 윗사아아람들을 매수우우하는게 더 쉬이입지. 불행히도... 너희들이 이곳에 왔네. 그리고 우리 물주는 나타나지를 않았고..."</text>
+						<choice hidden="true">
+							<text>대신 화물을 달라고 요구한다. 반군들에게 쓸모가 있다면, 우리에게도 그럴것이다.</text>
+							<event>
+								<text>"뭐? 우리 돈은 어쩌고!" 당신은 스위치를 켜 무기를 다시 올렸고, 셸은 침을 꼴깍 삼켰다. "오... 알았어. 괜찮을거야. 아마 이 일 때문에 해고당하겠지만... 그래. 어쨌든 이 일로 해고될 거였어. 하지만 당시이인이 결론을 지었구나. 마치 "이중 해고"가 되버렸네."</text>
+								<choice hidden="true">
+									<text>계속...</text>
+									<event load="MORPH_SITE_DELTA_UNLOCK"/>
+								</choice>	
+							</event>
+						</choice>
+					</event>
+				</choice>
+			</event>
+		</choice>
+	</surrender>
+	<destroyed load="MORPH_SITE_DELTA_FAIL"/>
+	<deadCrew load="MORPH_SITE_DELTA_FAIL"/>
+</ship>
+<event name="MORPH_SITE_DELTA" unique="true"> <!--CRUISER UNLOCK-->
+	<preventQuest/>
+	<beaconType id="map_icon_delta" global="true">
+		<color r="244" g="106" b="145" a="1"/>
+	</beaconType>
+	<text>거대한 셸 실험실이 이곳에 자리잡은것 같은데, 아직도 작동중입니다! 당신은 어떻게 아직도 반군의 포위망 속에서 오래 살아남을 수 있었는지 궁금하지 않을 수가 없었습니다.</text>
+	<ship load="SHIP_SHELL_LAB_DELTA" hostile="false"/>
+	<choice hidden="true">	
+		<text>실험실과 교신한다.</text>
+		<event>
+			<text>당신은 겁에 질린 과학자들로부터 교신을 받았습니다. "빌어먹을, 당시이인들은 우리를 절때 새애앵포할 수우우 없어, 연방놈들!" 정거장은 갑자기 아무 이유도 없이 사격을 개시했습니다. 만약 당신이 그곳을 충분히 손상시킬 수 있다면, 무슨 일이 일어나고 있는지 알 수 있을 것입니다.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>연구소를 무시한다.</text>
+		<event>
+			<text>당신은 셸들을 괴롭히는것보다 더 할만한 일들이 있을 것입니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="MORPH_SITE_DELTA_FAIL">
+	<text>결국 모든 셸들을 죽인것 같군요. 남은 것들을 인양합니다.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<variable name="ach_boss_delta" op="set" val="1"/>
+</event>
+<event name="MORPH_SITE_DELTA_UNLOCK">
+	<text>셸이 말한대로, 반군에게 쓸모가 있다면 연방에게도 그럴 것입니다. 설계도는 연방 기지에 전달할 것입니다. 무기는 당신이 가져갈 것이고, 모프 DNA는 안전하게 보관할 것입니다. 굳이 반군 손에 들어갈 필요는 없죠...</text>
+	<unlockCustomShip silent="false">PLAYER_SHIP_SCIENTIST</unlockCustomShip>
+	<weapon name="BEAM_SHELL"/>
+	<variable name="ach_boss_delta" op="set" val="1"/>
+</event>
+
+<ship name="SHIP_OOJ_BEGIN" auto_blueprint="LIST_SHIPS_REBEL_FIGHT">
+	<destroyed load="MORPH_SITE_ALPHA_ENTER"/>
+	<deadCrew load="MORPH_SITE_ALPHA_ENTER"/>
+	<crew>
+		<crewMember type="blobhuman" prop="1"/>
+	</crew>
+</ship>
+<event name="NEBULA_MORPH_SITE_ALPHA" unique="true"> <!--OOJ MAJOO-->
+	<preventQuest/>
+	<beaconType id="map_icon_alpha" global="true">
+		<color r="255" g="125" b="75" a="1"/>
+	</beaconType>
+	<text>이곳은 마치 셸 실험실이 있...었던 곳 같습니다. 당신 지도에 "Site Alpha"라 적힌것을 보면 확실히 중요한곳 같군요. 보기에는 반군에 의해 파손된 것 같았고, 여전히 함선 한 척이 남아있었습니다.</text>
+	<environment type="nebula"/>
+	<ship load="SHIP_OOJ_BEGIN" hostile="false"/>
+	<choice hidden="true">	
+		<text>실험실로 들어가기 위해 공격한다.</text>
+		<event>
+			<text>반군 함선은 천천히 적의를 표하며, 아무말도 하지 않았습니다. 그럼에도 불구하고, 그들은 무기를 올려 공격합니다!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>반군을 무시한다.</text>
+		<event>
+			<text>이미 이 장소는 면밀히 조사했습니다. 별 것도 없을텐데 말려들 이유는 없습니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="MORPH_SITE_ALPHA_ENTER">
+	<text>또 하나의 반군 함선이 당신에 의해 파괴되었습니다. 실험실을 조사하기 전에 함체를 인양합니다.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">	
+		<text>계속...</text>
+		<event>
+			<text>당신은 방들 중 하나에서 여전히 작동하는 단말기를 발견했습니다. 반군에 의해 불능화 되기 전까지 메시지를 보냈던 중간 단계였던 것으로 보입니다. 당신은 정보를 다운받아 함선에서 재생합니다...</text>
+			<choice hidden="true">	
+				<text>녹음을 들어본다.</text>
+				<event>
+					<text"마지막 봉쇄애애 부대가 뚫렸스으읍니다. 반군이 "Site Alpha"에 도달했고, 0번 목표물을 탈취당했스으읍니다. MFK 에이스가 왔스으으므로 즉시이이 지원을 요청합니다. 반복합니다. 지원을 요청합ㄴ..." 녹음은 짧게 끝났지만, 무슨 일이 일어났는지 쉽게 짐작할 수 있을 것 같습니다. 확실히 중요한건 없습니다. 하지만 여기에 0번 목표물에 대한 추적 신호가 있는 것 같습니다.</text>
+					<quest event="ENCOUNTER_OOJMAJOO"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_OOJ_FIGHT" auto_blueprint="LIST_SHIPS_REBEL_SELITE_FIGHT">
+	<surrender min="3" max="4">
+		<text>갑자기, 반군 함선에서 목소리가 들려왔는데, 이상하게도 인간같지 않았지만 왜 그런지 딱 꼬집어 말할 수는 없었습니다."그 만! 이배 는 더이 상 싸우길 원치않 아요! 제발- 멈 춰 주세요! 제발. 제 발. 제발..."</text>
+		<choice hidden="true">
+			<text>그들의 말을 듣고 멈춘다.</text>
+			<event>
+				<text>"고-마워요. 당신 은 정말...착하 군요!" 갑자기 뭐가 문제인지 알았습니다! 이 목소리는 서로 다른 오디오 트랙에서부터 합쳐져 들려왔었습니다. 사람이 말하는 것도 아니였고, 기묘한 녹음소리 였습니다.</text>
+				<ship hostile="false"/>
+				<choice hidden="true">
+					<text>목소리에 관하여 물어본다.</text>
+					<event>
+						<text>당신은 한동안 대답을 듣지 못했고, 그들이 당신을 무시했다고 생각하기 시작습니다. 그런데 갑자기, '목소리' 가 들려왔습니다. "내 가 당신들 을 믿어 도될까 요?"</text>
+						<choice hidden="true">
+							<text>물론.</text>
+							<event>
+								<text>"이 함 선은 반군이 아니에 요. 난 OO-JMA-JOO. 모프 들의 아버지입 니다. 셸들은 친절하 지않 아요. 그들은 우 리를 노예로 만들 기를 원해요. 제게 안 전을 허락해 줄 수있 나요? 제가 안전하 면 모프들도 안전할 거에 요."</text>
+								<choice hidden="true">
+									<text>당신과 함께 가는것을 허락한다.</text>
+									<event>
+										<text>당신은 한 모프가 전송되는것을 기대했지만, 대신에 반란군 함선의 모양이 바뀌어 거대한 회색 방울이 되었습니다. "제가너 무 큰 거같 군요. 맞 출게요. 당신이 저의몸 의 이쪽 부분 을 데리고갔 으 면 좋겠어 요. 먹이 를 주면 자라 날거에 요. 고마워 요 연 방."</text>
+										<variable name="ach_crew_ooj" op="set" val="1"/>
+										<crewMember amount="1" class="bloblarge">OOJ MAJOO</crewMember>
+										<choice hidden="true">
+											<text>계속...</text>
+											<event load="MORPH_3_UNLOCK"/>
+										</choice>
+									</event>
+								</choice>
+								<choice hidden="true">
+									<text>우리는 이러한 일에 적합한 사람이 아니다.</text>
+									<event>
+										<text>"알 겠어요. 저를 죽 이지않 아줘서 고 마워 요." 반군 함선은 무기를 내던지고, 점프해 날아갔습니다</text>
+										<weapon name="RANDOM"/>
+										<choice hidden="true">
+											<text>계속...</text>
+											<event load="MORPH_3_UNLOCK"/>
+										</choice>
+									</event>
+								</choice>
+							</event>
+						</choice>
+						<choice hidden="true">
+							<text>안돼.</text>
+							<event>
+								<text>배는 멈췄고, 즉시 도약해서 날아갔습니다. 추측컨데 당신은 그들을 공포에 질리게 했을것입니다, 바보들.</text>
+							</event>
+						</choice>
+					</event>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>거절하고 계속 공격한다.</text>
+			<event/>
+		</choice>
+	</surrender>
+	<destroyed load="DESTROYED_REBEL"/>
+	<deadCrew load="DEAD_CREW_REBEL"/>
+	<crew>
+		<crewMember type="human_soldier" prop="1"/>
+	</crew>
+</ship>
+<event name="MORPH_3_UNLOCK">
+	<event/>
+</event>
+<event name="ENCOUNTER_OOJMAJOO">
+	<text>이 우주선은 0번 목표물을 싣고 있는 것 같습니다. 이전의 대부분의 반군 함선들처럼, 당신을 찾았다고 자랑하거나, 위협하거나, 모욕하려 하지도 않고 조용히 지나갑니다.</text>
+	<ship load="SHIP_OOJ_FIGHT" hostile="false"/>
+	<choice hidden="true">	
+		<text>공격해라!</text>
+		<event>
+			<text>"0번 목표물"을 싣고 있는지 확실하지는 않지만, 반군들을 그냥 보낼 수는 없습니다!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_MORPH">	
+		<text>(모프 선원) "팁 팁 타칼루..."</text>
+		<event>
+			<text>모프 선원들이 뭔가 할 말이 있어 보이는데, 당신은 알아듣지를 못합니다. 그들의 말도 안되는 소리를 듣다가, MFK 에이스 함선과 선체를 부딪힙니다. 배가 갑자기 적대적으로 바뀌어 공격합니다!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>함선을 혼자 가게 놔둔다.</text>
+		<event>
+			<text>이러한 반군 함선을 보는것은 드물지만, 오늘은 싸울 기분이 아닙니다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_MORPH_SITE_OMEGA" unique="true"> <!--ALKALI-->
+	<preventQuest/>
+	<beaconType id="map_icon_omega" global="true">
+		<color r="110" g="210" b="0" a="1"/>
+	</beaconType>
+	<text>당신은 Alkali가 입구에서 말했던 Site Omega에 도착했습니다. 멀리서 커다란 셸 실험실을 발견하고 조심스럽게 접근합니다.</text>
+	<environment type="nebula"/>
+	<choice hidden="true">	
+		<text>도킹한다.</text>
+		<event>
+			<text>이상하게도, 시설의 가스시설이 차단되어 있었습니다. 당신에게는 편리했지만 의문을 제기하지는 않았습니다. 정거장에 정박하고 안으로 들어갑니다...</text>
+			<choice hidden="true">	
+				<text>계속...</text>
+				<event>
+					<text>내부 복도는 붉고 초록색의 피가 뒤섞여 있었고, 당신은 조심스럽게 인간의 짓밟힌 시체들과 죽은 셸들의 부서진 조각들을 밟습니다. 반군의 군복으로 보아 내부에서 총격전이 일어났던것 같은데... 당신은 물러서지 않고 대학살의 흔적을 따라갑니다.</text>
+					<choice hidden="true">	
+						<text>계속...</text>
+						<event>
+							<text>마침내 잠긴 문에 다다랐고, 문을 부수자 바닥에 부상당한 셸 과학자를 만나게 됩니다.아마도 Alkali일 것입니다.그는 당신을 발견하자마자 주사기가 꽂힌 테이블을 가리킵니다."당시이인 저거스으을 가져와..." </text>
+							<choice hidden="true">	
+								<text>그에게 주사기를 준다.</text>
+								<event load="ALKALI_LORE"/>
+							</choice>
+							<choice hidden="true">	
+								<text>아니, 먼저 몇가지 질문에 대답해라</text>
+								<event>
+									<text>Alkali가 당신을 노려봤고, 당신 말을 듣고있는지도 모릅니다. "내 말 안들려? 주사아아기를 가져와. 낭비할 시이이간이 없어"</text>
+									<choice hidden="true">	
+										<text>그에게 주사기를 준다.</text>
+										<event load="ALKALI_LORE"/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>안좋은 생각이다. 정거장을 무시한다.</text>
+		<event>
+			<text>이 장소가 폐쇄가 된다면, 좋은 일이 아닐것이다.</text>
+			<choice hidden="true">
+				<text>창고를 확인한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ALKALI_LORE">
+	<text>당신은 재빨리 Alkali의 팔에 주사기의 갈색 약물을 투여합니다. "잘됐군, 나는 재새애앵력을 끌어올릴 무언가가 필요했었을 뿐이야. 자, 왜 연방이 이 구역을 침입한거지? 나는 천재정이 당시이인이 다른 일들에 더 몰두하고 있음에도 불구하고 당신을 우려하는지에 대해 못 느끼고 있었는데 말이야."</text>
+	<choice hidden="true">	
+		<text>반군이 왜 여기있는 지에 대해서도 물어볼 수 있지</text>
+		<event>
+			<text>"맞아, 나도 그거에 대해서 궁금했지.그들이 우리의 흥미를 끌었고 그게 우리의... 나의 최근의 시이일수우우였지. 모프들은 보다시이이피, 셰에엘들을 위해 노동하도록 만들어졌지. 어렵고, 간단한 일들을 하게 말이야. 구역 관리자인 망할 Nerva가, 프로젝트 지원을 위한 지금 스으응인을 계속 거부했어! 아마 모프가 그들을 쓸모없게 만들거라고 새애앵각했을거야, 마치 찬란한 셰에엘들과 군사아아지구처럼..."</text>
+			<choice hidden="true">	
+				<text>계속...</text>
+				<event>
+					<text>"이 망할년이 내 시이이서어얼을 파괴했어도 놀라지 않았을 거야! 하지만 과학자들 사아아이에는 뜬 소오오문일 뿐이지... 이제 내 질문에 대답해줘. 여기에는 왜 왔어? 나는 모르는사아아람이 의도도 모른채 있는 것이 달갑지 않고, 당신이 나를 쏘거나, 어떤 이교도들의 시이인에게 나를 바치기 전에 당시이인의 의도를 알고시이잎어."</text>
+					<choice hidden="true">	
+						<text>우리는 노드 17로 가는중이다.</text>
+						<event>
+							<text>"뭐, 젠장, 다들 네가 어디로 가는지는 알고있어. 맹세에에컨데, 모두가 그 버려진 구역으로 가고있지. 아주 망시이인이야! 잘 모르겠지만, 당신들은 MV기수우울을 이용해서 고대의 미스으으터리를 풀거나, 차원간 유토피아 같은것을 만들수우우도 있었어. 하지만 당시이인들은 서어어로 싸아아우기 위해서어어만 사용하지. 우리 셰에엘들은 이런 문제로 고통받지는 않아. 우리는 과학의 사아아람들이고, 내적 갈등에 대해 고통받지 않아. 아직 당시이인은 내 질문에 대답하지 않았어, 나를 죽이러 왔나? 당신네 사아아람들이 겪고있는 치명적인 우주 질병을 치료하기 위해 나를 고용할건가? 젠장, 기다리는거도 지겹군."</text>
+							<choice hidden="true">	
+								<text>우리는 당신의 조난신호를 받고 왔다.</text>
+								<event>
+									<text>"하, 참 자서어언가 납시이이었군, 그렇지 않아? 좋아, 그럼 당시이인보다 더 나쁠 무언가보다 당신이 호위하는게 좋을 것 같아. 당신은 바보같은 종교나 음모론따위는 믿지 않지? 예방접종은 맞았겠지?"</text>
+									<choice hidden="true">	
+										<text>안믿지.</text>
+										<event>
+											<text>"아주좋아. 그러면, 기회가 있을때 나를 천재정으로 되돌려줘. 그동안까진 아주 유용할거야. 나는 공짜 탑스으응객이 아니거든."</text>
+											<crewMember amount="1" repair="2" class="shellalkali">Alkali</crewMember>
+											<choice hidden="true">	
+												<text>Ok.</text>
+												<event load="ALKALI_LEGION"/>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true" req="zoltan_monk">	
+										<text>(수도승 선원) "우리는 평화를 위한 존재들입니다. 위대한 눈이 우리를 인도합니다."</text>
+										<event>
+											<text>Alkali는 역겨워하며 당신을 쳐다봅니다."음... 적어도 네가 날 죽이지 않을 거란건 알아. 부탁인데, 당신배에 타는동안 영적인 물건들이 없는 방에서 자게해줘. 청소오오도구함이라도 사아앙관없어. 기회가 있을때 나를 천재정으로 되돌려줘. 그동안까진 아주 유용할거야. 나는 공짜 탑스으응객이 아니거든."</text>
+											<crewMember amount="1" repair="2" class="shellalkali">Alkali</crewMember>
+											<choice hidden="true">	
+												<text>Ok.</text>
+												<event load="ALKALI_LEGION"/>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true" req="LIST_CREW_ROCK_FAITHFUL">	
+										<text>(독실한 락맨 선원) "장로들이 우리를 영광스런 삶으로 인도할 것이오!"</text>
+										<event>
+											<text>Alkali가 역겨워하며 당신을 쳐다봅니다. "어... 대단해, 야만인들 무리네. 부탁인데, 당신배에 타는동안 영적인 물건들이 없는 방에서 자게해줘. 청소오오도구함이라도 사아앙관없어. 기회가 있을때 나를 천재정으로 되돌려줘. 그동안까진 아주 유용할거야. 나는 공짜 탑스으응객이 아니거든."</text>
+											<crewMember amount="1" repair="2" class="shellalkali">Alkali</crewMember>
+											<choice hidden="true">	
+												<text>Ok.</text>
+												<event load="ALKALI_LEGION"/>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">	
+								<text>그를 죽인다.</text>
+								<event>
+									<text>당신은 레이저총을 뽑아, Alkali를 쏩니다. 그는 상처에서 회복되지 못한 채 즉시 죽습니다. 이제 더이상 할 수 있는게 없으니 함선으로 돌아가 이게 얼마나 큰 실수였는지 생각합니다.</text>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_LEGION_ALKALI" auto_blueprint="MU_LEGION_ASSAULT_ALKALI">
+	<surrender min="3" max="4">
+		<text>"That is enough! You will hand over the target at once and you will leave this system! This is an order!"</text>
+		<choice hidden="true">
+			<text>No, piss off.</text>
+			<event/>
+		</choice>
+		<choice hidden="true" req="shellalkali" blue="false">
+			<text>Alright, sure.</text>
+			<event>
+				<text>You send over the Shell scientist to the Rebels, who collect him and carry him away. After this, you're certain they'll alert the fleet of your location. Let's hope that still gives you enough time to leave...</text>
+				<modifyPursuit amount="2"/>
+				<ship hostile="false"/>
+				<removeCrew class="shellalkali">
+					<clone>false</clone>
+					<text>Alkali probably won't be alive for long after this one, but you can't clone him when you aren't certain.</text>
+				</removeCrew>
+			</event>
+		</choice>
+	</surrender>
+	<destroyed load="ALKALI_LEGION_DEFEATED"/>
+	<deadCrew load="ALKALI_LEGION_DEFEATED"/>
+	<crew>
+		<crewMember type="LIST_CREW_MALFORM_RANDOM" prop="0.5"/>
+		<crewMember type="LIST_CREW_LEGION" prop="0.5"/>
+	</crew>
+</ship>
+<event name="ALKALI_LEGION"> <!--MAKE SURE THE REBEL SHIP HERE PREVENTS JUMPING WITH SOME SPECIAL COMBAT AUGMENT-->
+	<text>As you begin to depart from the station, a Rebel ship jumps in, but it's not like any Rebel design you remember in your debriefing. Renegades, Elites, MFK Aces, Engineers, none of them bear that logo... A yellow helmet, with the word Legion on it, stands out to you. Is this some new Rebel fleet?</text>
+	<ship load="SHIP_LEGION_ALKALI" hostile="false"/>
+	<choice hidden="true">	
+		<text>계속...</text>
+		<event>
+			<text>You receive a hail from the Rebel vessel. "Federation. Under any other occasion, I would not hesitate to destroy you. However, we are here on important business. Hand over the scientist, and you will be permitted to leave. Fail to do so, and we will pull him from the hands of your mangled corpses. Attempting to leave this beacon without handing over the target will be met with failure. We have already disabled your long range FTL drive."</text>
+			<choice hidden="true">	
+				<text>Refuse.</text>
+				<event>
+					<text>"Then you leave us no choice. Do not worry. You won't live long enough to regret this decision." True to their word, it appears your FTL drive has been sabotaged! Your engines will still function, but you won't be able to jump until the Rebels are dead!</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">	
+				<text>Give them Alkali.</text>
+				<event>
+					<text>Alkali protests, but he isn't going to argue with the barrel of a gun to his forehead. The Rebels board your ship in a concerningly large number, injecting a tranquilizer into Alkali and carting him off. You expect them to turn on you, but nothing happens. Instead, the Rebels head back to their ship and jump away, leaving you dumbfounded.</text>
+					<removeCrew class="shellalkali">
+						<clone>false</clone>
+						<text>Alkali probably won't be alive for long after this one, but you can't clone him when he hasn't even been entered into your databanks yet.</text>
+					</removeCrew>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ALKALI_LEGION_DEFEATED">
+	<text>The Rebel vessel has been defeated, leaving behind plenty of scrap matter and an unusually high-tech weapon. Surprisingly, you still detect faint life signs aboard the wreck as you scrap it...</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<weapon name="LIST_WEAPONS_NEWGEN"/>
+	<variable name="ach_crew_alkali" op="set" val="1"/>
+	<choice hidden="true">	
+		<text>계속...</text>
+		<event>
+			<text>You move closer, tearing open the cargo bay to find a wounded Rebel soldier. As soon as you approach he panics, reaching for a sharp piece of metal, and plunges it deep into his chest. An act of suicide, likely trying to stop you from getting information... but on what?</text>
+			<choice hidden="true">	
+				<text>Investigate the ship.</text>
+				<event>
+					<text>Seems most of the data on the ship was purged during the fight - a strange practice, but it seems they knew their fate before the fight had even begun. Whatever this ship was, it was under very clear orders not to let anything leak. Maybe this won't be the last time you see a ship like this, though that's very uncertain.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		CLEARING!!!
+	Events that do things
+-->
+<eventList name="MORPH_CLEARING">
+	<event load="MORPH_RUINS"/>
+	<event load="MORPH_PIRATE_INSANE"/>
+	<event load="MORPH_SLUG"/>
+</eventList>
+
+<event name="MORPH_SLUG" unique="true">
+	<text>You jump in, expecting to find a ship in distress. Instead, you see a Slug Clansman chewing on some alien popcorn. "Oh, hey watssssup man."</text>
+	<distressBeacon/>
+	<choice hidden="true">	
+		<text>What's with the distress beacon?</text>
+		<event>
+			<text>"Oh, yeahhhh that. There wassss sssome Morphsss here a minute ago. Think I ssscared them off tho-" The Slug is cut off when the Morph ship comes flying back, firing on the Slug hull!</text>
+			<choice hidden="true">	
+				<text>Aid the Slug Clansmen.</text>
+				<event>
+					<text>There's probably a valid reason for the Morphs attacking these Clansmen... but nonetheless you aren't going to let it happen!</text>
+					<ship load="SHIP_MORPH_SLUG_MORPH" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">	
+				<text>Aid the Morphs.</text>
+				<event>
+					<text>You can imagine why the Morphs are mad - Clansmen aren't known for being friendly to their fellow nebula dwellers... or anyone for that matter. You won't let them become the Guild's next prey. You prepare to defend the Morphs!</text>
+					<ship load="SHIP_MORPH_SLUG_CLAN" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">	
+				<text>Alright fun chat, time to leave.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Obviously, they aren't in danger anymore. Leave.</text>
+		<event>
+			<text>These Clansmen likely are attempting to lower your guard just to shoot you when you won't expect it. It's better to leave them to be entertained by this sector's unpredictable inhabitants.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MORPH_SLUG_CLANHELP">
+	<event>
+		<text>It appears the Clansman ship was destroyed in the fight. Little remains but scrap matter for you to take.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>It looks as though the Clansman ship took a beating during the fight... but the Slug onboard is still alive. "Ayyy yo my ssship isss totaled. Gonna hang with you now if that'ssss alright."</text>
+		<crewMember amount="1" class="slug_clansman"/>
+	</event>
+</eventList>
+
+<event name="MORPH_RUINS" unique="true">
+	<text>Though Shells usually stick to the nebulas, it seems a Shell research outpost was set up here previously. It's heavily damaged though, but maybe something is left?</text>
+	<choice hidden="true">	
+		<text>Approach the wreck.</text>
+		<event>
+			<text>You move closer to the wreck, but are stopped when a mechanic ship flies past. "Hey, is thhhhat really necessary? You're only making our job harder. Management always gets thhhhe worst jobs! I'd rather be scooping out equinoid brains or fighting off Slugs, but yet here I am. Do us a favor and leave thhhhat station alone, would you?"</text>
+			<ship load="SHIP_SHELL_MECH" hostile="false"/>
+			<choice hidden="true">	
+				<text>Nah.</text>
+				<event>
+					<text>You ignore the Shells, scooping up all that you can. The ship watches in growing anger, and their captain finally snaps. "Alright, damn you to hell. We have a job to do, and you've officially crossed the line!"</text>
+					<autoReward level="MED">standard</autoReward>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="MORALITY_UPDATE_SHELL_FIGHT"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">	
+				<text>Offer some scrap to help. [-30~]</text>
+				<event>
+					<text>"Oh, wow. Thhhhat's quite helpful! Why can't thhhe council authhhhorize us better funding? Ugh, I hate thhhis job. You know what? I quit! I'm withhh you know. What are you gonna do about it, huh Director Nerva? Oh man, it feels so good to say thhhat..."</text>
+					<item_modify>
+						<item type="scrap" min="-30" max="-30"/>
+					</item_modify>
+					<crewMember amount="1" class="shell_mechanic"/>
+				</event>
+			</choice>
+			<choice hidden="true" req="REPAIR_ARM">	
+				<text>(Repair Arm) Fix up the station.</text>
+				<event>
+					<text>"Oh, wow. Thhhhat's quite efficient! Why can't thhhe council authhhhorize us using thhhose? Ugh, I hate thhhis job. You know what? I quit! I'm withhh you know. What are you gonna do about it, huh Director Nerva? Oh man, it feels so good to say thhhat..."</text>
+					<crewMember amount="1" class="shell_mechanic"/>
+				</event>
+			</choice>
+			<choice hidden="true" req="SHIP_REPAIR">	
+				<text>(Hull Repair Drone) Fix up the station. [-1|]</text>
+				<event>
+					<text>"Oh, wow. Thhhhat's quite efficient! Why can't thhhe council authhhhorize us using thhhose? Ugh, I hate thhhis job. You know what? I quit! I'm withhh you know. What are you gonna do about it, huh Director Nerva? Oh man, it feels so good to say thhhat..."</text>
+					<crewMember amount="1" class="shell_mechanic"/>
+					<item_modify>
+						<item type="drones" min="-1" max="-1"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true">	
+				<text>Leave.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Ignore the wreck.</text>
+		<event>
+			<text>One man's trash is another man's trash too. What could be left worth taking anyways?</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="MORPH_PIRATE_INSANE" unique="true">
+	<text>Before you can go any further, you're stopped by a pirate vessel. "Have you heard the news!? Our new gods, the Morphs, have risen! The great one himself, oh mighty OOJ MAJOO has been freed from captivity! Do you have an offering for the gods, or will you live a life of regretful sin?!"</text>
+	<ship load="SHIP_PIRATE_ALL" hostile="false"/>
+	<choice>	
+		<text>Make an offering.</text>
+		<event>
+			<text>"You are wise! I have all certainty the great OOJ MAJOO shall bless you! As a devout believer in the Morphs, I shall grant you passage, and aid in your travels!"</text>
+			<item_modify>
+				<item type="fuel" min="-2" max="-2"/>
+				<item type="missiles" min="-1" max="-1"/>
+				<item type="scrap" min="-10" max="-10"/>
+			</item_modify>
+			<choice hidden="true">	
+				<text>계속...</text>
+				<event>
+					<text>The pirate does extensive work on your hull, and offers an augment to appease you.</text>
+					<damage amount="-10"/>
+					<augment name="RANDOM"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_MORPH">	
+		<text>(Morph Crew) "Jibble Jooble wip wip!"</text>
+		<event>
+			<text>"Oh sweet heavens, you're one of them! I am so sorry my lord for not recognizing you!" The pirate falls to his knees, pleading for forgiveness. You promise to spare him so long as he hands over one of the weapons in his storage.</text>
+			<weapon name="RANDOM"/>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Guess I'll be a sinner.</text>
+		<event>
+			<text>The pirate screeches in rage, and powers up his weapons. You should do the same.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		ITEMS!!!
+	Events that give items
+-->
+<eventList name="NEBULA_MORPH_ITEMS">
+	<event load="NEBULA_MORPH_PEEPEEPOOPOO"/>
+	<event load="NEBULA_MORPH_SOLAR"/>
+	<event load="NEBULA_MORPH_SMUGGLER_CONFUSED"/>
+	<event load="NEBULA_MORPH_ENGINEER_TECHNO"/>
+</eventList>
+
+<event name="NEBULA_MORPH_SOLAR" unique="true">
+	<text>Normally Shells aren't ones for unmanned tech, and normally you don't see full sized stars deep in the nebula. Despite both of these things being uncommon, it seems you've run into both! A small Shell solar energy collection device is orbiting the star. Inside are several power cells you might be able to interface with... if you can figure the machine out.</text>
+	<img back="BACK_EVENT_LIGHTNEBULA" planet="NONE"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<environment type="sun"/>
+	<choice hidden="true">
+		<text>Take your chance and interface with the device.</text>
+		<event load="MORPH_SOLAR_STUPID"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SHELL_SCIENTIST">
+		<text>(Shell Scientist) Interface with the device.</text>
+		<event load="MORPH_SOLAR_SMART"/>
+	</choice>
+	<choice hidden="true">	
+		<text>Ignore it.</text>
+		<event>
+			<text>It's too risky, especially this close to a star. You'll have to jump away as soon as you can.</text>
+		</event>
+	</choice>
+</event>
+<eventList name="MORPH_SOLAR_STUPID">
+	<event>
+		<text>You manage to break open the device, but the power cells are fried. Too damaged to be any worth in your reactor, but you can repurpose them into fuel. Better than nothing.</text>
+		<autoReward level="LOW">fuel_only</autoReward>
+	</event>
+	<event>
+		<text>Somehow you get the process right, and interface directly with the machine. You drain as much power as you can for yourself, which will do good work for your reactor.</text>
+		<upgrade amount="1" system="reactor"/>
+	</event>
+	<event>
+		<text>You simply can't figure out how the machine works. You fiddle with it for a little longer, but a flare from the star strikes your ship, causing some damage. You give up and hurry to leave.</text>
+		<damage amount="3" system="random" effect="fire"/>
+	</event>
+	<event>
+		<text>You play with the machine for a while, and eventually manage to pull out the cells to repurpose as fuel. Unfortunately, a stray science vessel has spotted you... and they aren't happy!</text>
+		<autoReward level="LOW">fuel_only</autoReward>
+		<ship load="SHIP_SHELL_SCIENCE" hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="MORPH_SOLAR_SMART">
+	<event>
+		<text>Your Shell knows exactly how this machine works, and they retrieve the power cells to install into your reactor. This will give it a nice boost!</text>
+		<upgrade amount="1" system="reactor"/>
+	</event>
+	<event>
+		<text>Your Shell knows exactly how this machine works, and they retrieve the power cells to install into your reactor. This will give it a nice boost! Unfortunately, a stray science vessel has spotted you... and they aren't happy!</text>
+		<upgrade amount="1" system="reactor"/>
+		<ship load="SHIP_SHELL_SCIENCE" hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="NEBULA_MORPH_PEEPEEPOOPOO" unique="true">
+	<text>A hail from the nearest Morph ship bears an odd message. "Pee pee poo poo." To you, this sounds like nothing more than a crude joke. But for all you know, to the Morphs this could be profound.</text>
+	<ship load="SHIP_MORPH_FIGHT" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">	
+		<text>Take some time to decipher it.</text>
+		<event>
+			<text>You spend hours analyzing what it could mean. You work your brain, trying every possible angle to look for. At last, you give up. It seems the true meaning of pee pee poo poo shall forever remain lost to you. Fortunately, your efforts don't go entirely in vain, and the morph seems to appreciate your thoughtfulness and gives you a small chunk of scrap.</text>
+			<autoReward level="LOW">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_MORPH">	
+		<text>(Morph Crew) Have your Morph explain this meaning to you.</text>
+		<event>
+			<text>Your Morph speaks to you for a long time, revealing the universe's inner secrets. The answer to your every problem, the meaning of the universe itself, it is all held tight in this one simple, unassuming phrase. Unfortunately, you don't understand your crewmate's speech either. You suppose these secrets shall remain forever lost to you. Fortunately, this wisdom is not lost on the other ship, who offers a chunk of scrap for being so wise.</text>
+			<autoReward level="HIGH">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>This is an insult!</text>
+		<event>
+			<text>You aren't going to let the Morphs insult you like this! You open fire.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>It's nothing more than crass and crude.</text>
+		<event>
+			<text>You do not believe such a phrase could hold any importance. You abandon this thought experiment and carry on.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_MORPH_ENGINEER_TECHNO" unique="true">
+	<text>It appears the nearby Engineer ship isn't attacking you just yet. Instead, they hail. "You know, I should attack you. But frankly, I just want to brag to someone about my latest achievement!"</text>
+	<ship load="SHIP_ENGINEER_TECHO" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">	
+		<text>Listen.</text>
+		<event>
+			<text>"You've probably heard of or seen the Technopaths by now. They're like the Morphs, but they can take the form of noncarbon entities instead! Well, I thought it would be a great idea to start replacing my drones with some. It's almost exactly the same amount of efficiency, but without any of the power usage! It's great!"</text>
+			<choice>	
+				<text>Buy a Technopath.</text>
+				<event>
+					<item_modify>
+						<item type="drones" min="-4" max="-6"/>
+					</item_modify>
+					<crewMember amount="1" class="techno"/>
+				</event>
+			</choice>
+			<choice hidden="true">	
+				<text>Acknowledge their success and carry on.</text>
+				<event>
+					<text>You're only trying to carry on to the next beacon, but the Engineer seems so happy you ackowledged him he even offers you some free droneparts.</text>
+					<autoReward level="MED">droneparts_only</autoReward>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We aren't here for stories. Attack the engineers!</text>
+		<event>
+			<text>You won't show these Rebels mercy just because they want to talk!</text>
+			<boarders min="2" max="2" class="technobattle"/>
+			<damage amount="0" effect="breach" system="random"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Ignore them.</text>
+		<event load="MORPH_ENGINEER_TECHNO_IGNORE"/>
+	</choice>
+</event>
+<eventList name="MORPH_ENGINEER_TECHNO_IGNORE">
+	<event>
+		<text>You mute the Engineers and carry on your way.</text>
+		<choice hidden="true">
+			<text>Check the storage.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice hidden="true">
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
+	</event>
+	<event>
+		<text>You attempt to mute the engineers, but that only agitates them. They attack!</text>
+		<boarders min="2" max="2" class="technobattle"/>
+		<damage amount="0" effect="breach" system="random"/>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="NEBULA_MORPH_SMUGGLER_CONFUSED" unique="true">
+	<text>Nearby is a smuggler, flying through the nebula. Perhaps they have something of value to offer?</text>
+	<ship load="SHIP_SMUGGLER_ALL" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">	
+		<text>Hail and offer to trade.</text>
+		<event>
+			<text>You expect a simple response from the vessel, but instead you receive a loud screech, followed by the shout of one of your crew. You run to their location where you see a frightened smuggler holding a pistol to their face. "You- you're one of them morphs, ain't ya! Don't play no damn tricks on me!</text>
+			<choice hidden="true">	
+				<text>Just put the blaster down!</text>
+				<event load="MORPH_SMUGGLER_CONFUSED_TALK"/>
+			</choice>
+			<choice hidden="true" req="clonebay">	
+				<text>(Clone Bay) There's no risk here. Blast the asshole and carry on.</text>
+				<event>
+					<text>You draw your blaster, shooting the smuggler, but not before he shoots your own crew. Luckily, there indeed is no risk, and your crew comes back perfectly fine. The smuggler ship now inoperable, you scrap some of its hull.</text>
+					<autoReward level="MED">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_MORPH">	
+				<text>(Morph Crew) "Koo! Yup tur loo!"</text>
+				<event>
+					<text>The smuggler screams, horrified at the sight of an actual Morph on your ship. Firing widly, it causes some damage to your ship, but you're able to subdue him. With his ship now inoperable, you scrap some of the hull.</text>
+					<damage amount="2" system="random"/>
+					<autoReward level="MED">standard</autoReward>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Ignore the smugglers.</text>
+		<event>
+			<text>You doubt they have anything to offer thats worth your time.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MORPH_SMUGGLER_CONFUSED_TALK">
+	<event>
+		<text>You talk in a slow, calming voice as you approach the smuggler. This seems to relax him, giving you enough time to grab him and snap his neck. Job well done? With the smuggler out of the way, you loot his pockets and find some resources.</text>
+		<autoReward level="LOW">stuff</autoReward>
+	</event>
+	<event>
+		<text>"Hey, you ain't talkin' no gibberish! Tha's good... tha's good... If you ain't no blob though, you outta be careful, them blobs everywhere! It ain't no safe place travelin along, think I oughta come with you folks..."</text>
+		<crewMember amount="1" class="rock_outcast"/>
+	</event>
+	<event>
+		<text>"You talk real damn good for an impostor!" The smuggler swivels to shoot you, but you manage to jump out of the way. Soon you find yourself in a fight!</text>
+		<boarders min="1" max="1" class="rock_outcast"/>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<!--
+		NEUTRAL!!!
+	Events that do things
+-->
+<eventList name="NEBULA_MORPH_NEUTRAL">
+	<event load="NEBULA_MORPH_SHELL_REFUGEE"/>
+	<event load="NEBULA_MORPH_BLOCKADE"/>
+	<event load="NEBULA_MORPH_FREEGUN"/>
+	<event load="NEBULA_MORPH_AUTOSCIENCECHOICE"/>
+</eventList>
+
+<event name="NEBULA_MORPH_FREEGUN" unique="true">
+	<text>Holy crap! A weapon is just floating in space! Sure it's a storm, but a gun is a gun!</text>
+	<environment type="storm"/>
+	<choice hidden="true">
+		<text>Grab the weapon.</text>
+		<event load="MORPH_FREEGUN_GRAB"/>
+	</choice>
+	<choice hidden="true">	
+		<text>Our luck is never this good. Leave it.</text>
+		<event>
+			<text>God knows what that "gun" could be. You leave it behind and carry on.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MORPH_FREEGUN_GRAB">
+	<event>
+		<text>Looks like the weapon was real after all!</text>
+		<weapon name="RANDOM"/>
+	</event>
+	<event>
+		<text>You draw the weapon onboard, only for it to stir and suddenly split into several separate Technopaths!</text>
+		<boarders min="5" max="6" class="techno"/>
+	</event>
+	<event>
+		<text>You draw the weapon onboard, only for a Morph vessel to come stumbling out of the clouds, yelling. "AKOO BLAT TRI TROO KAPAT RETEROO!" Looks like bringing this weapon onboard has angered them somehow... and it's apparent why. The weapon is in fact another Morph, but they don't seem nearly as hostile as the shouting ship!</text>
+		<crewMember amount="1" class="blob"/>
+		<ship load="SHIP_MORPH_FIGHT" hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="NEBULA_MORPH_SHELL_REFUGEE">
+	<text>It looks like a Shell vessel is approaching...</text>
+	<environment type="nebula"/>
+	<choice hidden="true">	
+		<text>계속...</text>
+		<event load="MORPH_SHELL_REFUGEE_LIST"/>
+	</choice>
+</event>
+<eventList name="MORPH_SHELL_REFUGEE_LIST">
+	<event load="MORPH_SHELL_REFUGEE_SCIENCE"/>
+	<event load="MORPH_SHELL_REFUGEE_IMPOSTER"/>
+</eventList>
+<event name="MORPH_SHELL_REFUGEE_SCIENCE">
+	<text>It looks like the Shell ship is a science vessel. They beg you for help. "Thhhhe Rebels, thhhey've been following us everywhere! Would you be so kind as to aid us?"</text>
+	<ship load="SHIP_SHELL_SCIENCE" hostile="false"/>
+	<choice hidden="true">	
+		<text>Offer to take them aboard.</text>
+		<event load="MORPH_SHELL_REFUGEE_SCIENCE_CREW"/>
+	</choice>
+	<choice>
+		<text>Offer them some supplies to better prepare themselves.</text>
+		<event>
+			<text>You give the Shells some missiles and droneparts to help them...</text>
+			<item_modify>
+				<item type="fuel" min="-3" max="-5"/>
+				<item type="drones" min="-3" max="-5"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<text>"Oh, you are most generous! You have our best wishes. Here, accept this gift."</text>
+					<drone name="RANDOM"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack!</text>
+		<event>
+			<text>Never one to shy away from casual needless murder, you power up the weapons and attack the Shells.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="MORALITY_UPDATE_SHELL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>We can't help.</text>
+		<event>
+			<text>You apologize but have nothing to offer. The Shells nod and carry on.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MORPH_SHELL_REFUGEE_SCIENCE_CREW">
+	<event>
+		<text>The Shells are reluctant to trust you to such a degree, and ultimately decline. With nothing else to do, they fly away, leaving you with some time on your hands.</text>
+		<choice hidden="true">
+			<text>Check the storage.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice hidden="true">
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
+	</event>
+	<event>
+		<text>The Shells appreciate the offer and accept. Though most you drop off at a nearby Shell station, one of them wishes to stay behind.</text>
+		<crewMember amount="1" class="shell_scientist"/>
+	</event>
+	<event>
+		<text>The Shells are reluctant, but ultimately agree. Once dropped off at a nearby station, they offer you some scrap as pay.</text>
+		<autoReward level="MED">scrap_only</autoReward>
+	</event>
+</eventList>
+<event name="MORPH_SHELL_REFUGEE_IMPOSTER">
+	<text>It looks like the Shell ship is a science vessel. They beg you for help. "The Rebels, they've been following us everywhere! Would you be so kind as to aid us?"</text>
+	<ship load="SHIP_SHELL_SCIENCE_IMPOSTER" hostile="false"/>
+	<choice hidden="true">	
+		<text>Offer to take them aboard.</text>
+		<event>
+			<text>As soon as they crew step aboard, it's apparent that those Shells... they're Rebels! It was a trap all along!</text>
+			<boarders min="3" max="4" class="human"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Offer them some supplies to better prepare themselves.</text>
+		<event>
+			<text>You give the Shells some missiles and droneparts to help them...</text>
+			<item_modify>
+				<item type="fuel" min="-3" max="-5"/>
+				<item type="drones" min="-3" max="-5"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event>
+					<text>"Oh, you really are stupid after all! It was a trap, idiots!" The ship turns hostile, revealing itself to be piloted by Rebels!</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack!</text>
+		<event>
+			<text>You expect protesting from the Shell vessel, but instead you're met with angry shouts from a Rebel captain! "Damn it, how did you know it was a trap?!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>We can't help.</text>
+		<event>
+			<text>The Shell ship stays suspiciously silent for a moment, followed by them raising their weapons. A Rebel captain appears on the vidscreen. "Ahahah, it was a trap all along!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_MORPH_BLOCKADE" unique="true">
+	<text>When you first jump in, you assume this to be a simple, empty nebula, but such a hope is betrayed when a militant vessel comes out of the clouds. "Hey, didn't you hear Prof. Alkali's warning? Thhhhis sector is dangerous. Thhhhhis beacon is under quarantine. I suggest you move it."</text>
+	<ship load="SHIP_SHELL_SOLDIER" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">	
+		<text>You can't tell us what to do!</text>
+		<event>
+			<text>You'll be damned if you let anyone tell you where you can and can't go. You arm the weapons and prepare for battle.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="MORALITY_UPDATE_SHELL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Alright, we'll leave.</text>
+		<event>
+			<text>You power down the weapons and prepare to leave the system as soon as you can.</text>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_MORPH_AUTOSCIENCECHOICE" unique="true">
+	<text>A short range distress signal is being emitted from a Shell science station nearby, which is under attack by a Rebel Auto-ship!</text>
+	<ship load="SHIP_AUTO_MORPH_AUTOSCIENCECHOICE" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">	
+		<text>Assist the Shells!</text>
+		<event>
+			<text>You attack the Auto vessel.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Ignore the conflict.</text>
+		<event>
+			<text>You don't have the time to play hero right now and help the Shells.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MORPH_AUTOSCIENCECHOICE_REWARD">
+	<event>
+		<text>"Your timing is most convenient! Thank you, Federation. May this heal your wounds."</text>
+		<drone name="DOCTOR_DEFENSE"/>
+	</event>
+	<event>
+		<text>It appears the Shells did not make it. All you can do is scrap the hull of the station.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+</eventList>
+
+<!--
+		DISTRESS!!!
+	Events that do things
+-->
+<eventList name="NEBULA_MORPH_DISTRESS">
+	<event load="NEBULA_DISTRESS_MORPH_SLICE"/>
+	<event load="NEBULA_DISTRESS_MORPH_REBEL_JAMMED"/>
+</eventList>
+
+<event name="NEBULA_DISTRESS_MORPH_REBEL_JAMMED" unique="true">
+	<text>Of all things, you didn't expect to see a Rebel ship being the one to solicit their distress beacon on open comms. Despite being Federation, they don't seem shy to hail you either. "You know that gross sentient space gunk that lives here? Well some of their goopy insides got all stuck in our engines, and now they're jammed. Now I know we don't exactly get along, but there surely could be something in it for you!"</text>
+	<ship load="SHIP_REBEL_MORPH_JAMMED" hostile="false"/>
+	<distressBeacon/>
+	<environment type="nebula"/>
+	<choice hidden="true">	
+		<text>Try and fix up their engines.</text>
+		<event load="MORPH_REBEL_JAMMED_FIX"/>
+	</choice>
+	<choice hidden="true">	
+		<text>There couldn't be a better opportunity to attack!</text>
+		<event>
+			<text>If they don't have engines, there's nowhere these Rebels can run! Still they try, but it's pointless.</text>
+			<status type="limit" target="enemy" system="engines" amount="0"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGINEER">	
+		<text>(Engineer Crew) Have your engineer take a look at the engines.</text>
+		<event>
+			<text>Fortunately, your engineer clears out the Morphs quickly, and the Rebels seem impressed. "Hmmm... you've helped us more than we expected. I suppose the act of not murdering us is worthy of some pay as promised."</text>
+			<autoReward level="HIGH">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGI">	
+		<text>(Engi Crew) Have your Engi take a look at the engines.</text>
+		<event>
+			<text>Fortunately, your Engi clears out the Morphs quickly, and the Rebels seem impressed. "Hmmm... you've helped us more than we expected. I suppose the act of not murdering us is worthy of some pay as promised."</text>
+			<autoReward level="HIGH">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_MORPH">	
+		<text>(Morph Crew) Have your Morph reawaken the hibernating goo.</text>
+		<event>
+			<text>Your Morph lets out a cacophony of shrill chirping, followed by many more from the Morphs in the engines, who detach themselves from the mechanism and roll to meet your Morph. The Rebels aren't really sure what they just witnessed, but they reluctantly pay you in "thanks".</text>
+			<autoReward level="LOW">standard</autoReward>
+			<crewMember amount="1" class="blob"/>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Ignore the Rebels.</text>
+		<event>
+			<text>Knowing the Rebels, this could just as well be yet another trap. Atleast, they don't seem to follow you.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MORPH_REBEL_JAMMED_FIX">
+	<event>
+		<text>It's not easy work, but you chip away at the goo with the help of the Rebels. Eventually, you finally scoop out all of the goo, and the Rebels' engines spark to life once again.</text>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="MORPH_REBEL_JAMMED_FIX_SUCCEED"/>
+		</choice>
+	</event>
+	<event>
+		<text>It's back-breaking work, and to no avail. The goo simply won't come out, and it becomes clear these engines aren't going to recover...</text>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="MORPH_REBEL_JAMMED_FIX_FAIL"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="MORPH_REBEL_JAMMED_FIX_SUCCEED">
+	<event>
+		<text>"Great work! Too bad I'm afraid we're still going to have to alert the fleet on your location!" The Rebel ship speeds off, and you chase after them!</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>"Hmmm... you've helped us more than we expected. I suppose the act of not murdering us is worthy of some pay as promised."</text>
+		<autoReward level="HIGH">standard</autoReward>
+	</event>
+</eventList>
+<eventList name="MORPH_REBEL_JAMMED_FIX_FAIL">
+	<event>
+		<text>"Bah, you're worthless. What was I thinking, expecting help from a Fed ship?"</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>계속...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>"Though you have proven yourself unable to assist, your willingness to help is most remarkable. As my ship is thoroughly ruined, it would appear my options are either to wait here for some miracle, or to go with you instead. I don't believe in miracles, so I only see one valid option."</text>
+		<crewMember amount="1" pilot="2" class="human"/>
+	</event>
+</eventList>
+
+
+<event name="NEBULA_DISTRESS_MORPH_SLICE" unique="true">
+	<text>The distress call nearby seems to be coming from a Mantis vessel, whose captain frantically screams at you. "HELP, HELP, HELP HELP HELP HELP! ME TRYING SLICE UP BLOB, BLOB BECOME MORE BLOB! NOW BLOB EVERYWHERE! SO MANY! AAAAAAAAAGH!"</text>
+	<distressBeacon/>
+	<ship load="SHIP_MANTIS_MORPH_SLICE" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">	
+		<text>Help rid their ship of the Morphs.</text>
+		<event>
+			<text>If you're expecting any kind of reward, you'll have to be careful not to destroy the ship!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_DRONES_BOARDING">	
+		<text>(Boarding Drone) Send the drone in to eradicate the morphs. [-1|]</text>
+		<event load="MORPH_SLICE_BOARDER"/>
+	</choice>
+	<choice hidden="true">	
+		<text>Leave the Mantis to their troubles.</text>
+		<event>
+			<text>You do not see any reason to help the Mantis. The Hive has clashed with mightier foes than agitated slimes in the past; they can deal with this on their own.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MORPH_SLICE_BOARDER">
+	<event>
+		<text>Your boarding drone makes quick work of the blobs. Once eradicated, the Mantis thanks you and gives you a decent reward.</text>
+		<autoReward level="MED">standard</autoReward>
+		<item_modify>
+			<item type="drones" min="-1" max="-1"/>
+		</item_modify>
+	</event>
+	<event>
+		<text>It appears you didn't plan for the Morphs mimicking your own drone - a Technopath takes the shape of your boarder, and blasts it into pieces! Disparaged, you consider your options.</text>
+		<item_modify>
+			<item type="drones" min="-1" max="-1"/>
+		</item_modify>
+		<choice hidden="true">	
+			<text>Fight the Morphs yourself.</text>
+			<event>
+				<text>If you're expecting any kind of reward, you'll have to be careful not to destroy the ship!</text>
+				<ship hostile="true"/>
+				<choice hidden="true">
+					<text>계속...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">	
+			<text>Ignore the Mantis, there's nothing else to do.</text>
+			<event/>
+		</choice>
+	</event>
+</eventList>
+
+<!--
+		HOSTILE!!!
+	Events that do things
+-->
+<eventList name="NEBULA_MORPH_HOSTILE">
+	<event load="NEBULA_ENCOUNTER_MORPH"/>
+	<event load="NEBULA_ENCOUNTER_REBEL_MORPH"/>
+	<event load="NEBULA_ENCOUNTER_AUTO_MORPH"/>
+	<event load="NEBULA_ENCOUNTER_SHELL_SCIENTIST_MORPH"/>
+</eventList>
+
+<event name="NEBULA_ENCOUNTER_MORPH">
+	<text load="TEXT_ENCOUNTER_MORPH"/>
+	<ship load="SHIP_MORPH_FIGHT" hostile="true"/> 
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_MORPH">
+	<text>"KALPU! KALPU! RETER LIP LOO TIKA TIKA BOO!" An irate Morph begins to fling insults you can only imagine are incredibly vulgar in their language. You have literally no idea what you did to anger them though. Maybe just existing is enough to offend them?</text>
+	<text>As yet another hostile Morph vessel approaches, you can't help but wonder if the Shells never actually finished "designing" their temperament. What else could explain how erratic they are?</text>
+	<text>You receive a video with a gibberish title which shows several cartoon alien warriors fighting each other in gladiatorial combat. Minutes later, a Morph ship approaches, weapons on the ready.</text>
+	<text>Something tells you the nearby Morph ship isn't friendly. It might be the aggressive shouting, or their charging weapons. Just a hunch, though.</text>
+	<text>These aggressive Morphs really set a bad image for the rest of their kind. At least they don't yell "Hey, you're that Federation ship!" every time they see you.</text>
+	<text>You wonder if the Morphs are even aware who you are, or what your mission is. Unfortunately, "booj kabooj" is not an indicitive answer as a Morph vessel opens fire.</text>
+</textList>
+
+<event name="NEBULA_ENCOUNTER_REBEL_MORPH">
+	<text load="TEXT_ENCOUNTER_REBEL_MORPH"/>
+	<ship load="SHIP_REBEL_FIGHT" hostile="true"/> 
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_MORPH">
+	<text>The Rebellion's sudden interest in these small, grey, unassuming blobs is concerning. It seems to have drawn a lot of their ships here too, such as the one here currently moving into fight you!</text>
+	<text>"Hey, you're that Federation ship! Stop right there-" You mute the Rebel vessel. All of these lackeys are the same, they might as well be Morphs themselves.</text>
+	<text>Something isn't right about this nebula. A sliver of orange slips through the clouds, and your body goes into alert. Rebel vessel inbound!</text>
+	<text>There's never a dull moment in this sector. This time it appears your foe will be a Rebel. Is it better than a Shell or Morph? Time will tell...</text>
+	<text>Rebels aren't all too common nowadays outside of sectors of interest or the fleet trailing you, which means if anything the ship here is a sign of something bigger. Beyond that, it's also a sign there's a fight in your very near future!</text>
+	<text>You gave up your past self to become the brave Multiverse Renegade who'd save the Federation. Now, a Rebel ship moves into your path to stop you. Show them how you get things done.</text>
+</textList>
+
+<event name="NEBULA_ENCOUNTER_AUTO_MORPH">
+	<text load="TEXT_ENCOUNTER_AUTO_MORPH"/>
+	<ship load="SHIP_AUTO_FIGHT" hostile="true"/> 
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_AUTO_MORPH">
+    <text>"Detecting for samples of substance M4-RH. Error. Reprocessing vessel. Federation ship detected. Activating 'sweet jesus that's an enemy' protocol." An Auto-ship quickly transitions from recon to combat mode. Prepare for battle!</text>
+    <text>You've seen several Rebel vessels prowling about here already, but this time it appears your foe is an automated vessel! Good thing this nebula is keeping you on your toes, because you've already started charging the weapons.</text>
+    <text>The Atlas entry said the Rebel threat here was high, and these Auto-ships are a clear sign of it. How much property damage will you cause the Rebels today?</text>
+    <text>"This beacon is under Rebellion control. Federation vessels will not be tolerated." An Auto-vessel moves in. If the Shells haven't taken care of this scrapbucket yet, then you will.</text>
+    <text>Thankfully, though it's sometimes hard to spot the grey wings of an Auto-ship slipping through the dark nebula, their distinct orange glow gives them away. Get ready for a fight!</text>
+</textList>
+
+<event name="NEBULA_ENCOUNTER_SHELL_SCIENTIST_MORPH" unique="true">
+	<text>Normally Shell ships are reasonably passive, especially the scientists. However, the ship here doesn't follow that example. "Damn it, we already have to deal with thhhhe Rebels here! We didn't ask for Federation intervention!"</text>
+	<ship load="SHIP_SHELL_SCIENCE" hostile="true"/> 
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+</FTL>
