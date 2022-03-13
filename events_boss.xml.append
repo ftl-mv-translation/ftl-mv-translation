@@ -40,6 +40,19 @@
 	</choice>
 </event>
 <event name="LASTSTAND_WARP">
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="SET_DETERGENT" req="detergent_mode" lvl="1"/>
+		<event name="LASTSTAND_WARP_REAL" req="detergent_mode" lvl="0"/>
+	</loadEventList>
+</event>
+<event name="SET_DETERGENT">
+	<jumpEvent>DETERGENT_WIN</jumpEvent>
+	<loadEvent>LASTSTAND_WARP</loadEvent>
+</event>
+<event name="HAS_VISITED_LASTSTAND">
+	<variable name="loc_laststand" op="add" val="1"/>
+</event>
+<event name="LASTSTAND_WARP_REAL">
 	<text>명칭: 연방 수도
 	유형: 우호적
 	고유성: 있음
@@ -47,7 +60,7 @@
 	반군 위협 수준: !치명적으로 높음!
 
 	연방 수도는 당신의 마지막 목적지입니다. 이 현실을 반군의 포위로부터 구하려면 연방 본부가 파괴되기 전에 반군 기함을 격침해야 합니다.</text>
-	<variable name="loc_laststand" op="add" val="1"/>
+	<queueEvent>HAS_VISITED_LASTSTAND</queueEvent>
 	<choice hidden="true" req="loc_laststand" lvl="1" max_group="0" blue="false">
 		<text>계속...</text>
 		<event load="TRUE_LAST_STAND_START_EMERGENCY"/>
@@ -75,6 +88,7 @@
 </ship>
 <event name="TRUE_LAST_STAND_START_EMERGENCY">
 	<changeBackground>BACK_EVENT_LASTSTAND</changeBackground>
+	<metaVariable name="prof_finalsector" op="add" val="1"/>
 	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
 	<playSound>lightspeed</playSound>
 	<text>계획 없이 17번 노드를 이탈했던 게 연방에 재앙을 불러온 것 같습니다. 기함은 이미 본부에 도착했고 연방군은 압도당했습니다. 지체할 시간이 없습니다, 당장 본부로 가야 합니다!</text>
@@ -104,6 +118,18 @@
 	<choice hidden="true">
 		<text>계속...</text>
 		<event load="TRUE_LAST_STAND_START"/>
+	</choice>
+</event>
+<event name="DETERGENT_WIN">
+	<text>Before you can leave, you recieve another hail from Tully. "Wait - is that detergent you have? Oh thank Newton, the Rebel blockade has drained us of essential supplies and we have a surpluss of uniforms to clean. It's not much, but with this maybe we can get our troops back into shape!"</text>
+	<achievement>ACH_ACC_DETERGENT</achievement>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>DETERGENT MODE COMPLETE!
+			Congradulations Renegade on successfully completing DETERGENT MODE! It was a turbulent journey for certain, but you've pulled through triumphantly! The Federation shall have dirty laundry no more, thanks to you.</text>
+			<playSound>victory</playSound>
+		</event>
 	</choice>
 </event>
 <event name="TRUE_LAST_STAND_START">
@@ -949,7 +975,7 @@
 					<item_modify>
 						<item type="scrap" min="2000" max="2000"/>
 					</item_modify>
-					<win ach="zoltan_peacekeeper" creditsText="credit_victory_peace" text="" creditsBackground="VICTORY_PEACE"/>
+					<win ach="peace" creditsText="credit_victory_peace" text="" creditsBackground="VICTORY_PEACE"/>
 				</event>
 			</choice>
 		</event>
