@@ -4056,7 +4056,7 @@
 	<beaconType id="map_icon_store_mantis" global="false">
 		<color r="215" g="175" b="175" a="1"/>
 	</beaconType>
-	<text>맨티스들은 상인을 천시하기 때문에 이 직업을 잘 갖지 않습니다. 당신은 근처의 우주 정거장에서 광고 받고 약간 놀랐습니다. 살펴볼 가치가 있을까요?</text>
+	<text>당신은 근처 우주 정거장에서 송출된 광고를 받고 약간 놀랐습니다. 맨티스들은 상인을 천시하기 때문에 이런 직업을 잘 갖지 않습니다. 살펴볼 가치가 있을까요?</text>
 	<ship load="SHIP_MANTIS_STATION" hostile="false"/>
 	<choice hidden="true">
 		<text>정박한다.</text>
@@ -4065,7 +4065,18 @@
 	<choice hidden="true" req="LIST_CREW_HIVE">
 		<text>(하이브 선원) 안전하게 정박할 수 있도록 요청한다.</text>
 		<event>
-			<text>"흐음, 아군 보이는군. 좋아, 거래해 하지. 이익 내고, 사냥감 죽이는 보람! 뭐, 그정도 아니지만. 죽음 재밌지."</text>
+			<text>"흐음, 아군 보이는군. 좋아, 거래하지. 이익 내고, 사냥감 죽이는 보람! 뭐, 그정도 아니지만. 죽음 재밌지."</text>
+			<choice>
+				<text>계속...</text>
+				<event load="STORE_LOAD_MANTIS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="kaz">
+		<text>(카자앜플레쓰킬맄) 안전하게 정박할 수 있도록 요청한다.</text>
+		<event>
+			<text>"위대한 카자앜플레쓰킬맄 우리 상점 왔다고? 좋아, 이거 홍보 도움된다! 살인마끼리 거래 매우 보람있을 거다! 무료 살인 도구 샘플 받아라!"</text>
+			<weapon name="GIFTLIST_MANTIS"/>
 			<choice>
 				<text>계속...</text>
 				<event load="STORE_LOAD_MANTIS"/>
@@ -4144,6 +4155,10 @@
 				<text>(하이브 맨티스) 물건을 사고 싶다.</text>
 				<event load="STOREEVENT_MANTIS_WHALE_CONVINCE"/>
 			</choice>
+			<choice hidden="true" req="kaz">
+				<text>(카자앜플레쓰킬맄) 거래하고 싶습니다.</text>
+				<event load="STOREEVENT_MANTIS_WHALE_KAZ"/>
+			</choice>
 			<choice hidden="true">
 				<text>자, 우리가 할말을 대신 해줬으니...</text>
 				<event>
@@ -4192,6 +4207,30 @@
 </eventList>
 <event name="STOREEVENT_MANTIS_WHALE_CONVINCE">
 	<text>"흠. 그럼 내가 잘못 생각했네. 와라, 우리 재고 많다. 노예 상품, 저쪽에."</text>
+	<store>STORE_MANTIS</store>
+	<choice>
+		<text>노예를 산다.</text>
+		<event load="TRADELIST_CREW_MANTISSLAVE"/>
+	</choice>
+	<choice hidden="true">
+		<text>일반 상품만 본다.</text>
+		<event>
+			<text>지금은 노예가 필요 없습니다. 당신은 일반 상품을 둘러봤습니다.</text>
+			<choice>
+				<text>함선에서 무언가를 한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="STOREEVENT_MANTIS_WHALE_KAZ">
+	<text>"오오 강인한 카자앜플레쓰킬맄! 우리 당신 존경한다. 당신이... 하이브 일 싫어할지라도. 들어와라, 귀한 손님. 우리 공물 받아라!"</text>
+	<weapon name="RANDOM"/>
 	<store>STORE_MANTIS</store>
 	<choice>
 		<text>노예를 구입한다.</text>

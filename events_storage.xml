@@ -99,54 +99,54 @@
 </event>
 
 <event name="STORAGE_CHECK_BUTTON">
-	<text>What do you want to do?</text>
+	<text>무엇을 하시겠습니까?</text>
 	<eventAlias name="STORAGE_CHECK_REAL" jumpClear="true">STORAGE_CHECK_BUTTON</eventAlias>
 	<choice req="FEDERATION_DATABASE" max_lvl="0" hidden="true" blue="false">
-		<text>[Federation Database] Learn about the storage menu.</text>
+		<text>[연방 데이터베이스] 창고 메뉴에 대해 알아본다.</text>
 		<event load="STORAGE_CHECK_LEARN"/>
 	</choice>
 	<choice hidden="true">
-		<text>Talk to your crew.</text>
+		<text>선원들과 대화한다.</text>
 		<event load="STORAGE_CHECK_CREW"/>
 	</choice>
 	<choice hidden="true">
-		<text>Check the mission report.</text>
+		<text>임무 보고서를 확인한다.</text>
 		<event load="STORAGE_CHECK_STATUS"/>
 	</choice>
 	<choice hidden="true">
-		<text>Install an internal upgrade.</text>
+		<text>내부 업그레이드를 설치한다.</text>
 		<event load="STORAGE_CHECK_SYSTEM"/>
 	</choice>
 	<choice req="LAB_INSTALLED" lvl="0" max_lvl="0" hidden="true" blue="false">
-		<text>Install the onboard lab.</text>
+		<text>선상 연구실을 설치한다.</text>
 		<event load="STORAGE_CHECK_LAB_INSTALL"/>
 	</choice>
 	<choice req="LAB_INSTALLED" lvl="1" hidden="true" blue="false">
-		<text>Check the onboard lab.</text>
+		<text>선상 연구실을 확인한다.</text>
 		<event load="STORAGE_CHECK_LAB"/>
 	</choice>
 	<choice req="HEKTAR_MODULAR_WEAPONS" hidden="true" blue="false">
-		<text>Modify a modular weapon.</text>
+		<text>모듈식 무기를 조정한다.</text>
 		<event load="STORAGE_CHECK_MODULAR"/>
 	</choice>
 	<choice req="LIST_CHECK_CRATES" hidden="true" blue="false">
-		<text>Open a crate.</text>
+		<text>상자를 연다.</text>
 		<event load="STORAGE_CHECK_CRATE"/>
 	</choice>
 	<choice req="LIST_CLONE_CANNON" hidden="true" blue="false">
-		<text>(Clone Cannon) Configure the Cannon.</text>
+		<text>(클론 대포) 대포를 조정한다.</text>
 		<event load="STORAGE_CHECK_CLONE_CANNON"/>
 	</choice>
 	<choice req="ANCIENT_ACTIVATOR" hidden="true" blue="false">
-		<text>(Hibernating Alien) Try to awaken the alien.</text>
+		<text>(절전 상태의 외계인) 외계인을 깨운다.</text>
 		<event load="STORAGE_CHECK_AUG_ANCIENT_ACTIVATOR"/>
 	</choice>
 	<choice req="COMIC_BOOKS" hidden="true" blue="false">
-		<text>Read one of your comic books</text>
+		<text>만화책을 읽는다.</text>
 		<event load="STORAGE_CHECK_COMICS"/>
 	</choice>
 	<choice req="pilot" lvl="1" max_group="16" hidden="true" blue="false">
-		<text>Do nothing.</text>
+		<text>아무것도 하지 않는다.</text>
 		<event/>
 	</choice>
 </event>
@@ -12804,6 +12804,7 @@ ARM
 	</choice>
 </event>
 <event name="STORAGE_CHECK_SYSTEM_ARM_UNINSTALL_SCRAP">
+	<disableScrapAugments/>
 	<text>스크랩 회수 로봇 팔을 해체합니다.
 	[다음 효과가 사라집니다: ~ 획득량 10% 상승]</text>
 	<choice hidden="true">
@@ -20689,10 +20690,6 @@ CLONEBAY
 		<event load="STORAGE_CHECK_CRATE_DRONES"/>
 	</choice>
 	<choice>
-		<text>Talk to the crew instead.</text>
-		<event load="STORAGE_CHECK_CREW"/>
-	</choice>
-	<choice>
 		<text>아무것도 아니다, 무언가 다른 일을 하자.</text>
 		<event load="STORAGE_CHECK"/>
 	</choice>
@@ -20768,26 +20765,94 @@ CLONEBAY
 </event>
 <event name="STORAGE_CHECK_JOB">
 	<text>어떤 작업을 수행하시겠습니까?</text>
-	<choice req="MINELAUNCHER_CHECK" lvl="0" max_group="0" blue="false" hidden="true">
+	<choice req="MINELAUNCHER_CHECK" lvl="0" max_lvl="0" blue="false" hidden="true">
 		<text>충분한 시간과 기뢰 사출기 없이는 기뢰를 설치할 수 없습니다.</text>
 		<event load="OPTION_INVALID"/>
 	</choice>
-	<choice req="MINELAUNCHER_CHECK" lvl="1" max_group="0" blue="false" hidden="true">
+	<choice req="MINELAUNCHER_CHECK" lvl="1" blue="false" hidden="true">
 		<text>기뢰를 설치한다.</text>
 		<event load="STORAGE_CHECK_JOB_FLEET"/>
 	</choice>
-	<choice req="pilot" lvl="1" max_group="2" blue="false" hidden="true">
+	<choice req="lord" blue="false" hidden="true">
+		<text>Have Vortigon convert one of your rock crew, if you have any.</text>
+		<event load="STORAGE_CHECK_JOB_VORTIGON_CONVERT"/>
+	</choice>
+	<choice req="eater" blue="false" hidden="true">
+		<text>Send out the Beacon Eater to consume the beacon.</text>
+		<event load="STORAGE_CHECK_JOB_EATER_CONSUME"/>
+	</choice>
+	<choice hidden="true">
 		<text>인양 임무를 수행한다.</text>
 		<event load="STORAGE_CHECK_JOB_SALVAGE"/>
 	</choice>
-	<choice req="pilot" lvl="1" max_group="3" blue="false" hidden="true">
+	<choice hidden="true">
 		<text>선체를 수리한다.</text>
 		<event load="STORAGE_CHECK_JOB_REPAIR"/>
 	</choice>
-	<choice req="pilot" lvl="1" max_group="4" blue="false" hidden="true">
+	<choice hidden="true">
+		<text>Nevermind.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+</event>
+
+<eventList name="STORAGE_CHECK_JOB_EATER_CONSUME">
+	<event>
+		<text>The Beacon Eater nibbles away, careful not to damage the beacon too much so that you can't interface with it. After he's had his share, he drifts back carrying an extra lump of fuel and scrap.</text>
+		<autoReward level="MED">fuel</autoReward>
+	</event>
+	<event>
+		<text>The Beacon Eater nibbles away, careful not to damage the beacon too much so that you can't interface with it. After he's had his share, he drifts back carrying an extra lump of fuel and scrap.</text>
+		<autoReward level="MED">fuel</autoReward>
+	</event>
+	<event>
+		<text>The Beacon Eater nibbles away, careful not to damage the beacon too much so that you can't interface with it. After he's had his share, he drifts back carrying an extra lump of fuel and scrap.</text>
+		<autoReward level="MED">fuel</autoReward>
+	</event>
+	<event>
+		<text>The Beacon Eater nibbles away at the beacon, but suddenly it begins to spark, and then collapses! The Beacon Eater is thrown into the hull of the ship as the beacon dies. You're stranded, and the fleet will likely catch up a bit until you can hypercharge your MV drive enough to get you out of here.</text>
+		<modifyPursuit amount="1"/>
+		<autoReward level="LOW">fuel</autoReward>  
+	</event>
+</eventList>
+
+<event name="STORAGE_CHECK_JOB_VORTIGON_CONVERT">
+	<text>What crew do you want to convert?</text>
+	<choice req="rock" hidden="true">
+		<text>Have Vortigon convert one of your Rock Crew.</text>
+		<event load="STORAGE_CHECK_CREW_VORTIGON_CONVERT_ROCK"/>
+	</choice>
+	<choice req="easter_brick" hidden="true">
+		<text>Have Vortigon convert one of your Brickman Crew.</text>
+		<event load="STORAGE_CHECK_CREW_VORTIGON_CONVERT_BRICK"/>
+	</choice>
+	<choice req="rock_outcast" hidden="true">
+		<text>Have Vortigon convert one of your Outcast Crew.</text>
+		<event load="STORAGE_CHECK_CREW_VORTIGON_CONVERT_OUTCAST"/>
+	</choice>
+	<choice req="rock_commando" hidden="true">
+		<text>Have Vortigon convert one of your Commando Crew.</text>
+		<event load="STORAGE_CHECK_CREW_VORTIGON_CONVERT_COMMANDO"/>
+	</choice>
+	<choice hidden="true">
 		<text>아무것도 아니다.</text>
 		<event load="STORAGE_CHECK"/>
 	</choice>
+</event>
+<event name="STORAGE_CHECK_CREW_VORTIGON_CONVERT_ROCK">
+	<text>Vortigon sits down with your Rock crew...</text>
+	<transformRace class="rock">rock_cultist</transformRace>
+</event>
+<event name="STORAGE_CHECK_CREW_VORTIGON_CONVERT_BRICK">
+	<text>Vortigon sits down with your Rock crew...</text>
+	<transformRace class="easter_brick">rock_cultist</transformRace>
+</event>
+<event name="STORAGE_CHECK_CREW_VORTIGON_CONVERT_OUTCAST">
+	<text>Vortigon sits down with your Rock crew...</text>
+	<transformRace class="rock_outcast">rock_cultist</transformRace>
+</event>
+<event name="STORAGE_CHECK_CREW_VORTIGON_CONVERT_COMMANDO">
+	<text>Vortigon sits down with your Rock crew...</text>
+	<transformRace class="rock_commando">rock_cultist</transformRace>
 </event>
 
 <event name="STORAGE_CHECK_JOB_FLEET">
@@ -31070,8 +31135,8 @@ TUCO
 	<text>OUTCAST DETAILS
 	SPECIES? [Rockman] SUBTYPE? [Yes]
 	Subtype Details: Non-Genetic, Standard
-	Stats: Learns combat 25% faster. Gains 5% damage for each nearby Rockmen present, and 10% for each nearby allied Outcast.
-	Inherited Stats: 175 Health, x0.5 move speed. Immune to fire damage, 50% stun resistance.</text>
+	Stats: Normal (x1) movement speed outside of combat. Gains +20% combat damage for each enemy in the room, and lose 75% speed in the presence of enemies. Grants +20% combat damage and repair speed to each allied Outcast, regardless of which ship they are on.
+	Inherited Stats: 175 Health. Immune to fire damage, 50% stun resistance.</text>
 	<choice>
 		<text>계속...</text>
 		<event load="STORAGE_CHECK"/>
@@ -31325,18 +31390,6 @@ DEVORAK
 		<text id="talk_to_crew"/>
 		<event load="STORAGE_CHECK_CREW_DEVORAK_TALK"/>
 	</choice>
-	<choice req="zoltan" hidden="true">
-		<text>Have Devorak convert one of your Zoltan Crew to a Devotee.</text>
-		<event load="STORAGE_CHECK_CREW_DEVORAK_CONVERT_ZOLTAN"/>
-	</choice>
-	<choice req="zoltan_peacekeeper" hidden="true">
-		<text>Have Devorak convert one of your Peacekeeper Crew to a Martyr.</text>
-		<event load="STORAGE_CHECK_CREW_DEVORAK_CONVERT_PEACEKEEPER"/>
-	</choice>
-	<choice req="zoltan_monk" hidden="true">
-		<text>Have Devorak rid your Monk of their religious ways.</text>
-		<event load="STORAGE_CHECK_CREW_DEVORAK_CONVERT_MONK"/>
-	</choice>
 	<choice hidden="true">
 		<text id="scan_crew"/>
 		<event load="STORAGE_CHECK_CREW_DEVORAK_SCAN"/>
@@ -31355,18 +31408,6 @@ DEVORAK
 		<text>계속...</text>
 		<event load="STORAGE_CHECK"/>
 	</choice>
-</event>
-<event name="STORAGE_CHECK_CREW_DEVORAK_CONVERT_ZOLTAN">
-	<text>Devorak sits down with your Zoltan crew...</text>
-	<transformRace class="zoltan">zoltan_devotee</transformRace>
-</event>
-<event name="STORAGE_CHECK_CREW_DEVORAK_CONVERT_PEACEKEEPER">
-	<text>Devorak sits down with your Peacekeeper crew...</text>
-	<transformRace class="zoltan_peacekeeper">zoltan_martyr</transformRace>
-</event>
-<event name="STORAGE_CHECK_CREW_DEVORAK_CONVERT_MONK">
-	<text>Devorak sits down with your Monk crew...</text>
-	<transformRace class="zoltan_monk">zoltan</transformRace>
 </event>
 <event name="STORAGE_CHECK_CREW_DEVORAK_TALK">
 	<text load="TEXT_CREW_TALK_DEVORAK"/>
@@ -31406,22 +31447,6 @@ VORTIGON
 		<text id="talk_to_crew"/>
 		<event load="STORAGE_CHECK_CREW_VORTIGON_TALK"/>
 	</choice>
-	<choice req="rock" hidden="true">
-		<text>Have Vortigon convert one of your Rock Crew.</text>
-		<event load="STORAGE_CHECK_CREW_VORTIGON_CONVERT_ROCK"/>
-	</choice>
-	<choice req="easter_brick" hidden="true">
-		<text>Have Vortigon convert one of your Rock Crew.</text>
-		<event load="STORAGE_CHECK_CREW_VORTIGON_CONVERT_ROCK"/>
-	</choice>
-	<choice req="rock_outcast" hidden="true">
-		<text>Have Vortigon convert one of your Outcast Crew.</text>
-		<event load="STORAGE_CHECK_CREW_VORTIGON_CONVERT_OUTCAST"/>
-	</choice>
-	<choice req="rock_commando" hidden="true">
-		<text>Have Vortigon convert one of your Commando Crew.</text>
-		<event load="STORAGE_CHECK_CREW_VORTIGON_CONVERT_COMMANDO"/>
-	</choice>
 	<choice hidden="true">
 		<text id="scan_crew"/>
 		<event load="STORAGE_CHECK_CREW_VORTIGON_SCAN"/>
@@ -31439,18 +31464,6 @@ VORTIGON
 		<text>계속...</text>
 		<event load="STORAGE_CHECK"/>
 	</choice>
-</event>
-<event name="STORAGE_CHECK_CREW_VORTIGON_CONVERT_ROCK">
-	<text>Vortigon sits down with your Rock crew...</text>
-	<transformRace class="rock">rock_cultist</transformRace>
-</event>
-<event name="STORAGE_CHECK_CREW_VORTIGON_CONVERT_OUTCAST">
-	<text>Vortigon sits down with your Rock crew...</text>
-	<transformRace class="rock_outcast">rock_cultist</transformRace>
-</event>
-<event name="STORAGE_CHECK_CREW_VORTIGON_CONVERT_COMMANDO">
-	<text>Vortigon sits down with your Rock crew...</text>
-	<transformRace class="rock_commando">rock_cultist</transformRace>
 </event>
 <event name="STORAGE_CHECK_CREW_VORTIGON_TALK">
 	<text load="TEXT_CREW_TALK_VORTIGON"/>
@@ -33516,10 +33529,6 @@ EATER
 		<text id="scan_crew"/>
 		<event load="STORAGE_CHECK_CREW_EATER_SCAN"/>
 	</choice>
-	<choice hidden="true">
-		<text>Send out the Beacon Eater to consume the beacon.</text>
-		<event load="STORAGE_CHECK_CREW_EATER_CONSUME"/>
-	</choice>
 </event>
 <event name="STORAGE_CHECK_CREW_EATER_SCAN">
 	<text>BEACON EATER DETAILS
@@ -33549,25 +33558,6 @@ EATER
 	<text>The Beacon Eater does not exclusively eat beacons, contrary to what his name suggests. Sometimes he eats a ship or two instead.</text>
 	<!--needs a lot more!-->
 </textList>
-<eventList name="STORAGE_CHECK_CREW_EATER_CONSUME">
-	<event>
-		<text>The Beacon Eater nibbles away, careful not to damage the beacon too much so that you can't interface with it. After he's had his share, he drifts back carrying an extra lump of fuel and scrap.</text>
-		<autoReward level="MED">fuel</autoReward>
-	</event>
-	<event>
-		<text>The Beacon Eater nibbles away, careful not to damage the beacon too much so that you can't interface with it. After he's had his share, he drifts back carrying an extra lump of fuel and scrap.</text>
-		<autoReward level="MED">fuel</autoReward>
-	</event>
-	<event>
-		<text>The Beacon Eater nibbles away, careful not to damage the beacon too much so that you can't interface with it. After he's had his share, he drifts back carrying an extra lump of fuel and scrap.</text>
-		<autoReward level="MED">fuel</autoReward>
-	</event>
-	<event>
-		<text>The Beacon Eater nibbles away at the beacon, but suddenly it begins to spark, and then collapses! The Beacon Eater is thrown into the hull of the ship as the beacon dies. You're stranded, and the fleet will likely catch up a bit until you can hypercharge your MV drive enough to get you out of here.</text>
-		<modifyPursuit amount="1"/>
-		<autoReward level="LOW">fuel</autoReward>  
-	</event>
-</eventList>
 
 <!--
 \\\\\\\\\\\\\\\\
