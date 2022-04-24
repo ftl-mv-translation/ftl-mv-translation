@@ -91,6 +91,7 @@
 	<metaVariable name="prof_finalsector" op="add" val="1"/>
 	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
 	<playSound>lightspeed</playSound>
+	<recallBoarders/>
 	<text>계획 없이 17번 노드를 이탈했던 게 연방에 재앙을 불러온 것 같습니다. 기함은 이미 본부에 도착했고 연방군은 압도당했습니다. 지체할 시간이 없습니다, 당장 본부로 가야 합니다!</text>
 	<choice hidden="true">
 		<text>계속...</text>
@@ -103,6 +104,7 @@
 	<text>광속을 벗어나는 순간 무언가 잘못됐음을 알아챘습니다. 입구 송신소가 MFK 에이스의 공격을 받고 있는 것 같습니다!</text>
 	<changeBackground>BACK_EVENT_LASTSTAND</changeBackground>
 	<playSound>lightspeed</playSound>
+	<variable name="loc_laststand" op="add" val="-1"/>
 	<customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
 	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
 	<metaVariable name="prof_finalsector" op="add" val="1"/>
@@ -115,7 +117,12 @@
 <event name="LAST_STAND_START_EXTREME_FINISH">
 	<text>당신은 MFK 에이스를 물리치고 잔해를 수거한 다음 툴리 제독을 포함한 연방 함대의 생존자들과 접촉했습니다.</text>
 	<autoReward level="HIGH">standard</autoReward>
-	<choice hidden="true">
+	<queueEvent>HAS_VISITED_LASTSTAND</queueEvent>
+	<choice hidden="true" req="loc_laststand" lvl="1" blue="false">
+		<text>Continue...</text>
+		<event load="TRUE_LAST_STAND_START_EMERGENCY"/>
+	</choice>
+	<choice hidden="true" req="loc_laststand" lvl="0" max_lvl="0" blue="false">
 		<text>계속...</text>
 		<event load="TRUE_LAST_STAND_START"/>
 	</choice>
@@ -138,7 +145,7 @@
 	<customFleet right="false" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
 	<changeBackground>BACK_EVENT_LASTSTAND</changeBackground>
 	<playSound>lightspeed</playSound>
-	<choice hidden="true" req="rep_general" lvl="0" max_lvl="7" max_group="0" blue="false">
+	<choice hidden="true" req="rep_general" lvl="-2147483648" max_lvl="7" max_group="0" blue="false">
 		<text>계속...</text>
 		<event>
 			<text>신속한 신분증 감별을 통해 문제 없이 송신소를 통과할 수 있었습니다.</text>
@@ -713,7 +720,7 @@
 <event name="TURZIL_TRUTH">
 	<text>Tully dispatches one of the largest support ships in the Federation fleet to fix up your hull and provide as much assistance as possible. Turzil pulls you aside, "Your assistance was: necessary for continued survival. It is understood common methods of showing gratitude involve transmission of items of high personal value. I desire to give you: old cruiser. No longer in use, but Federation can fix it up."</text>
 	<unlockCustomShip silent="false">PLAYER_SHIP_ENGI</unlockCustomShip>
-	<variable name="ach_crew_unique_turzil" op="set" val="1"/>
+	<variable name="ach_crew_turzil" op="set" val="1"/>
 	<damage amount="-20"/>
 	<reveal_map/>
 	<item_modify>
@@ -728,7 +735,7 @@
 </event>
 <event name="TULLY_CONTACT">
 	<text>툴리가 당신과 함께 앉아 상자를 당신 앞에 있는 테이블 위에 놓았습니다. "보급 상자 안에 뭐가 있는지 알고 있나?" 당신을 고개를 가로저었습니다. "그렇다면 말해주겠네. 아무것도 없어." 당신이 혼란스러운 모습을 보이자 툴리가 낄낄댔습니다. "몇몇 주요 연방 간부들에게 보급 상자를 나눠줬네. 믿을 만한 사람에게 주어 내게 전달시키도록 했지. 그건 자네가 이 마지막 싸움을 할 자격이 있다는 증거야. 이제 출발하는 게 좋겠군, 기함은 결코 자멸하지 않을 테니."</text>
-	<variable name="ach_crew_unique_tully" op="set" val="1"/>
+	<variable name="ach_crew_tully" op="set" val="1"/>
 	<crewMember amount="1" class="unique_tully">Tully</crewMember>
 	<damage amount="-15"/>
 	<autoReward level="MED">standard</autoReward>
@@ -1762,7 +1769,7 @@
 							</choice>
 						</event>
 					</choice>
-					<choice req="REPAIR">
+					<choice req="BLUELIST_DRONES_REPAIR_ALL">
 						<text>(Repair Drone) Dispatch the drone to fix up their equipment.</text>
 						<event>
 							<text>"Perfect, this'll help us greatly. Thank you so much Captain."</text>

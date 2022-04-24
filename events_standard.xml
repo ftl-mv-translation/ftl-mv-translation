@@ -2431,10 +2431,19 @@
 	<choice req="LIST_CREW_ENGI">
 		<text>(엔지 선원) 무료 드론 부품을 요청한다.</text>
 		<event>
-			<store>STORE_ENGI_MOREDRONES</store>
+			<text>당신은 드론공의 사업에 관심을 표한 후 상점에 들렀습니다.</text>
 			<item_modify>
 				<item type="drones" min="3" max="5"/>
 			</item_modify>
+			<store>STORE_ENGI_MOREDRONES</store>
+			<choice>
+				<text>함선에서 무언가를 한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
 		</event>
 	</choice>
 	<choice hidden="true">
@@ -3450,7 +3459,7 @@
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>계속...</text>
-				<event load="MORALITY_UPDATE_CRYSTAL"/>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
 			</choice>
 		</event>
 	</choice>
@@ -4072,7 +4081,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="kaz">
+	<choice hidden="true" req="unique_kaz">
 		<text>(카자앜플레쓰킬맄) 안전하게 정박할 수 있도록 요청한다.</text>
 		<event>
 			<text>"위대한 카자앜플레쓰킬맄 우리 상점 왔다고? 좋아, 이거 홍보 도움된다! 살인마끼리 거래 매우 보람있을 거다! 무료 살인 도구 샘플 받아라!"</text>
@@ -4155,7 +4164,7 @@
 				<text>(하이브 맨티스) 물건을 사고 싶다.</text>
 				<event load="STOREEVENT_MANTIS_WHALE_CONVINCE"/>
 			</choice>
-			<choice hidden="true" req="kaz">
+			<choice hidden="true" req="unique_kaz">
 				<text>(카자앜플레쓰킬맄) 거래하고 싶습니다.</text>
 				<event load="STOREEVENT_MANTIS_WHALE_KAZ"/>
 			</choice>
@@ -4227,7 +4236,6 @@
 		</event>
 	</choice>
 </event>
-
 <event name="STOREEVENT_MANTIS_WHALE_KAZ">
 	<text>"오오 강인한 카자앜플레쓰킬맄! 우리 당신 존경한다. 당신이... 하이브 일 싫어할지라도. 들어와라, 귀한 손님. 우리 공물 받아라!"</text>
 	<weapon name="RANDOM"/>
@@ -4777,7 +4785,7 @@
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true" req="ariadne">
+			<choice hidden="true" req="unique_ariadne">
 				<text>(아리아드네) 선교사를 협박한다.</text>
 				<event>
 					<text>선교사는 로스트선 제독을 보고는 겁에 질려 즉시 투항했습니다. 심지어 몇몇 신앙심 부족한 성직자들이 반란을 일으켰습니다. 그들은 새로이 얻게 된 자유에 대한 보답을 했고 거래도 제안했습니다.</text>
@@ -4785,7 +4793,7 @@
 					<autoReward level="LOW">item</autoReward>
 				</event>
 			</choice>
-			<choice hidden="true" req="lord">
+			<choice hidden="true" req="unique_vortigon">
 				<text>(보티곤) 매섭게 노려본다.</text>
 				<event>
 					<text>보티곤이 앞으로 한 발짝 나가자 락맨은 두려움에 뒤로 슬금슬금 물러났습니다. 그는 선교사를 다른 방으로 데려갔고 그들이 돌아왔을 때 선교사는 파란색 로브를 걸치고 있었습니다. 이쯤 되면 짐작하셨겠지만, 상점을 이용해도 될 것 같습니다.</text>
@@ -5147,7 +5155,7 @@
 			<store>STORE_AUTO</store>
 		</event>
 	</choice>
-	<choice hidden="true" req="hacking" lvl="1" max_lvl="3">
+	<choice hidden="true" req="hacking" lvl="1" max_lvl="2">
 		<text>(해킹 장비) 무인기가 당신과 거래하도록 도선을 재배열한다.</text>
 		<event>
 			<text>운 좋게도, 무인기를 해킹해 연방 신분증을 받아들이도록 재설정 할 수 있었습니다.</text>
@@ -7562,6 +7570,14 @@
 		<text>마트를 돌아다닌다.</text>
 		<event load="STOREEVENT_TONY_EXPLORE"/>
 	</choice>
+	<choice hidden="true" req="loc_loan_any" lvl="0" max_lvl="0" blue="false">
+		<text>우선 대출을 받는다.</text>
+		<event load="STOREEVENT_TONY_LOAN"/>
+	</choice>
+	<choice hidden="true" req="loc_loan_any" lvl="1" blue="false">
+		<text>지금은 대출을 받을 수 없습니다.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
 	<choice hidden="true">
 		<text>필요한것만 확인하고 떠난다.</text>
 		<event>
@@ -7576,6 +7592,218 @@
 			</choice>
 		</event>
 	</choice>
+</event>
+<event name="STOREEVENT_TONY_LOAN">
+	<text>놀랍게도, 토니네 시장의 옆에 다양한 상품을 뽐내는 고리대금업 사무소가 있는 것 같습니다. 잘 이용한다면 유용하겠지만, 약탈적인 금리에 주의할 필요가 있습니다. 토니네는 평판이 좋을지 몰라도 어쨌든 리치가 운영하는 사업체입니다. 리치를 믿는 것은 슬러그를 믿는 것과 다름없습니다.</text>
+	<choice hidden="true">
+		<text>25 스크랩을 대출한다.</text>
+		<event>
+			<text>그 사무소를 운영하는 리치는 자신의 이름조차 밝히지 않고 열정적으로 스크랩을 대출해줬습니다. 사실, 좀 심할 정도로 열정적이었습니다. 그는 당신이 서명을 마친 후에야 40%의 이자가 붙는다는 것을 알려줬습니다. 그러고는 "지렁이"의 분을 사면 안 되기 때문에 반드시 빚을 갚을 수 있도록 하라고 경고했습니다.</text>
+			<variable name="loc_loan_25" op="set" val="1"/>
+			<variable name="loc_loan_any" op="set" val="1"/>
+			<item_modify>
+				<item type="scrap" min="25" max="25"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>50 스크랩을 대출한다.</text>
+		<event>
+			<text>그 사무소를 운영하는 리치는 자신의 이름조차 밝히지 않고 열정적으로 스크랩을 대출해줬습니다. 사실, 좀 심할 정도로 열정적이었습니다. 그는 당신이 서명을 마친 후에야 40%의 이자가 붙는다는 것을 알려줬습니다. 그러고는 "지렁이"의 분을 사면 안 되기 때문에 반드시 빚을 갚을 수 있도록 하라고 경고했습니다.</text>
+			<variable name="loc_loan_50" op="set" val="1"/>
+			<variable name="loc_loan_any" op="set" val="1"/>
+			<item_modify>
+				<item type="scrap" min="50" max="50"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>100 스크랩을 대출한다.</text>
+		<event>
+			<text>그 사무소를 운영하는 리치는 자신의 이름조차 밝히지 않고 열정적으로 스크랩을 대출해줬습니다. 사실, 좀 심할 정도로 열정적이었습니다. 그는 당신이 서명을 마친 후에야 40%의 이자가 붙는다는 것을 알려줬습니다. 그러고는 "지렁이"의 분을 사면 안 되기 때문에 반드시 빚을 갚을 수 있도록 하라고 경고했습니다.</text>
+			<variable name="loc_loan_100" op="set" val="1"/>
+			<variable name="loc_loan_any" op="set" val="1"/>
+			<item_modify>
+				<item type="scrap" min="100" max="100"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>관두자.</text>
+		<event>
+			<text>사무실을 운영하던 리치가 당신을 부르며 손을 흔들었지만, 당신의 마음은 확고합니다. 당신은 이 함정에 빠지지 않을 겁니다. 이번엔 그냥 떠나도록 합시다.</text>
+		</event>
+	</choice>
+</event>
+
+<event name="FINISH_BEACON_DEBT">
+	<loadEventList seeded="false" first="true" generate="true" default="DEBT_COLLECTOR_NORMAL">
+		<event name="DEBT_COLLECTOR_EASY" req="loc_loan_25" lvl="1"/>
+		<event name="DEBT_COLLECTOR_NORMAL" req="loc_loan_50" lvl="1"/>
+		<event name="DEBT_COLLECTOR_HARD" req="loc_loan_50" lvl="1"/>
+	</loadEventList>
+</event>
+<!--easy-->
+<ship name="SHIP_DEBT_COLLECTOR_EASY" auto_blueprint="MU_DEBT_COLLECTOR_EASY">
+	<escape timer="30" load="DEBT_COLLECTOR_ESCAPE" max="4" min="2"/>
+	<destroyed load="DEBT_COLLECTOR_DEFEAT"/>
+	<deadCrew load="DEBT_COLLECTOR_DEFEAT"/>
+</ship>
+<event name="DEBT_COLLECTOR_EASY">
+	<ship load="SHIP_DEBT_COLLECTOR_EASY" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="FINISH_BEACON_DEBT_REUNION" req="loc_debt_collector" lvl="1"/>
+		<event name="FINISH_BEACON_DEBT_FIRST" req="loc_debt_collector" lvl="0" max_lvl="0"/>
+	</loadEventList>
+</event>
+<!--normal-->
+<ship name="SHIP_DEBT_COLLECTOR_NORMAL" auto_blueprint="MU_DEBT_COLLECTOR_NORMAL">
+	<escape timer="30" load="DEBT_COLLECTOR_ESCAPE" max="4" min="2"/>
+	<destroyed load="DEBT_COLLECTOR_DEFEAT"/>
+	<deadCrew load="DEBT_COLLECTOR_DEFEAT"/>
+</ship>
+<event name="DEBT_COLLECTOR_NORMAL">
+	<ship load="SHIP_DEBT_COLLECTOR_NORMAL" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="FINISH_BEACON_DEBT_REUNION" req="loc_debt_collector" lvl="1"/>
+		<event name="FINISH_BEACON_DEBT_FIRST" req="loc_debt_collector" lvl="0" max_lvl="0"/>
+	</loadEventList>
+</event>
+<!--hard-->
+<ship name="SHIP_DEBT_COLLECTOR_HARD" auto_blueprint="MU_DEBT_COLLECTOR_HARD">
+	<escape timer="30" load="DEBT_COLLECTOR_ESCAPE" max="4" min="2"/>
+	<destroyed load="DEBT_COLLECTOR_DEFEAT"/>
+	<deadCrew load="DEBT_COLLECTOR_DEFEAT"/>
+</ship>
+<event name="DEBT_COLLECTOR_HARD">
+	<ship load="SHIP_DEBT_COLLECTOR_HARD" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="FINISH_BEACON_DEBT_REUNION" req="loc_debt_collector" lvl="1"/>
+		<event name="FINISH_BEACON_DEBT_FIRST" req="loc_debt_collector" lvl="0" max_lvl="0"/>
+	</loadEventList>
+</event>
+
+<event name="FINISH_BEACON_DEBT_REUNION">
+    <text>You've arrived at the Long-Range Beacon. Unfortunately, it seems you've run into LaRoache once again! A beefy Leech vessel brandishing the Tony's logo approaches, and on screen appears a tutting Ampere with a fedora, a cigar, and a striped vest. "Alright punk, you's got away real slick last time, but I'm about to put the kabosh on that. Since I'm feeling a little generous today, I'll give you anotha chance: but it's gonna cost you's... Big time. LaRoache ain't messing around."</text>
+	<choice req="loc_loan_25" blue="false">
+		<text>빚을 갚는다.</text>
+		<event>
+			<text>"Ah, and things were just about'a get interestin'! Oh well, guess you's keister is saved for another day, eh? Alright alright, hurry along now. LaRoache has other business to uh... attend to. Don't let the Long-Range relay hit you on the way out, heheheh..."</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_25" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-40" max="-40"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="loc_loan_50" blue="false">
+		<text>빚을 갚는다.</text>
+		<event>
+			<text>"Ah, and things were just about'a get interestin'! Oh well, guess you's keister is saved for another day, eh? Alright alright, hurry along now. LaRoache has other business to uh... attend to. Don't let the Long-Range relay hit you on the way out, heheheh..."</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_50" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-80" max="-80"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="loc_loan_100" blue="false">
+		<text>빚을 갚는다.</text>
+		<event>
+			<text>"Ah, and things were just about'a get interestin'! Oh well, guess you's keister is saved for another day, eh? Alright alright, hurry along now. LaRoache has other business to uh... attend to. Don't let the Long-Range relay hit you on the way out, heheheh..."</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_100" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-160" max="-160"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>We aren't paying that!</text>
+		<event>
+			<text>"Again? You's gonna regret it this time. I tire of your games, Renegade! Now you're gonna face the music!"</text>
+			<ship hostile="true"/>
+			<boarders min="2" max="2" class="ampere"/>
+			<choice>
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FINISH_BEACON_DEBT_FIRST">
+    <text>장거리 송신소에 도착했습니다. 불행히도, 함선 한 척이 당신을 기다리고 있었습니다. 토니네의 로고가 새겨진 육중한 리치 선박이 다가오자 스크린에 중절모, 시가, 줄무늬 조끼를 두른 암페어가 나타났습니다. "그래 자네가 배회자인가 엉? 나의 이름은... 로이. 로이 "지렁이" 라로슈. 아마도 어... 나에 대해선 들어봤을 테지? 알다시피 나는 자선가라네. 자네와 같은 가난한 사람들에게 내 돈을 나눠주는 자선가. 헤헤헤, 문제는 내가 이걸로 사업을 하려 한다는 거지. 사실은 자선이 아닌 거야. 그러니 너의 친구 라로슈의 부탁을 들어주는 게 어떤가? 지금 당장 빚을 갚거나 아니면... 히히히... 아, 그리고 도망칠 순 없어. 듣고 있나? 너의 FTL 드라이브를 재밍 해놨다. 이 일이 처리되면 풀어주도록 하지.</text>
+	<variable name="loc_debt_collector" op="set" val="1"/>
+	<choice req="loc_loan_25" blue="false">
+		<text>빚을 갚는다.</text>
+		<event>
+			<text>"Ah, and things were just about'a get interestin'! Oh well, guess you's keister is saved for another day, eh? Alright alright, hurry along now. LaRoache has other business to uh... attend to. Don't let the Long-Range relay hit you on the way out, heheheh..."</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_25" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-35" max="-35"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="loc_loan_50" blue="false">
+		<text>빚을 갚는다.</text>
+		<event>
+			<text>"Ah, and things were just about'a get interestin'! Oh well, guess you's keister is saved for another day, eh? Alright alright, hurry along now. LaRoache has other business to uh... attend to. Don't let the Long-Range relay hit you on the way out, heheheh..."</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_50" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-70" max="-70"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="loc_loan_100" blue="false">
+		<text>빚을 갚는다.</text>
+		<event>
+			<text>"Ah, and things were just about'a get interestin'! Oh well, guess you's keister is saved for another day, eh? Alright alright, hurry along now. LaRoache has other business to uh... attend to. Don't let the Long-Range relay hit you on the way out, heheheh..."</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_100" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-140" max="-140"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>갚을 생각 없습니다!</text>
+		<event>
+			<text>"You Renegades and your complete lack of respect. I'm an honest business man, but you thieves keep tryin'a bankrupt me! So stingy! Ah well, you can't say you weren't warned, Renegade! The Worm's just gotta collect his dues... heheheh."</text>
+			<ship hostile="true"/>
+			<choice>
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DEBT_COLLECTOR_ESCAPE">
+    <text>"Alright, I've had enough of this baloney. You's can keep your stinkin' money, I'm getting outta here!"</text>
+    <escape/>
+	<choice>
+		<text>Let LaRoache go.</text>
+		<event>
+			<text>"So long, sucker! Hahah!"</text>
+			<recallBoarders/>
+			<instantEscape/>
+		</event>
+	</choice>
+	<choice>
+		<text>Keep fighting!</text>
+		<event/>
+	</choice>
+</event>
+<event name="DEBT_COLLECTOR_DEFEAT">
+    <text>"Ah shit, I ain't getting myself out of this one are I? Well played, Renegade. Well... played..."</text>
+    <variable name="loc_loan_any" op="set" val="0"/>
+	<autoReward level="HIGH">standard</autoReward>
+	<augment name="ATM_MACHINE"/>
+	<triggeredEvent name="ATM_CHECKER" event="ATM_MACHINE_WITHDRAW_CHECK" loops="999999999">
+	  <jumps amount="1" type="1"/>
+	</triggeredEvent>
+	<unlockCustomShip silent="false">PLAYER_SHIP_GOLD_2</unlockCustomShip>
 </event>
 
 <eventList name="STOREEVENT_TONY_EXPLORE">
@@ -7949,7 +8177,7 @@ slug karen fighting for last item on shelf
 															<text>"I'm not sure I was even happy before. It's hard to remember the days before the... incident. But maybe... maybe you're right. I haven't left this station in 2 years. Could you take me with you? You're a Multiverse Renegade, right? Maybe some adventure would be a good chance to fix me..."</text>
 															<unlockCustomShip silent="false">PLAYER_SHIP_TONY</unlockCustomShip>
 															<variable name="ach_crew_tony" op="set" val="1"/>
-															<crewMember amount="1" all_skills="1" class="tonysr">Tony Sr.</crewMember>
+															<crewMember amount="1" all_skills="1" class="unique_tonysr">Tony Sr.</crewMember>
 															<store>STORE_TONY</store> 
 														</event>
 													</choice>
@@ -7971,7 +8199,7 @@ slug karen fighting for last item on shelf
 														<event>
 															<text>"That deal never did go through, by the way." Tony turns to Rig, who shrugs. When Rig explains his new situation to Tony, the Leech simply can't believe it. "You... you were mind controlled by the SAME Slugs? What!? There must be something deeper here... You know, I've spent a lot of time searching for the ones responsible, and I think I've found them. Maybe together we can finally track them down and get some sweet sweet revenge."</text>
 															<variable name="ach_crew_tony" op="set" val="1"/>
-															<crewMember amount="1" all_skills="1" class="tonysr">Tony Sr.</crewMember>
+															<crewMember amount="1" all_skills="1" class="unique_tonysr">Tony Sr.</crewMember>
 															<quest event="BUTT_BUDDIES"/>
 														</event>
 													</choice>

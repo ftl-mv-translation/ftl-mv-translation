@@ -1,0 +1,1106 @@
+<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					SEPERATIST SECTOR 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+
+<event name="HARMONY_LINK_SEP" unique="true">
+	<preventQuest/>
+	<beaconType id="map_icon_link" global="false">
+		<color r="137" g="142" b="148" a="1.0"/>
+		<unvisitedTooltip>This is the location of a Harmony Link.</unvisitedTooltip>
+		<visitedTooltip>This is the location of a Harmony Link.</visitedTooltip>
+	</beaconType>
+	<text>당신은 하모니 링크를 발견한 것 같습니다. 이 거대한 행성 크기의 구조들은 수 없이 많은 나노봇들로 만들어졌고, 이 섹터의 모든 엔지들에게 강력한 신호를 보내고 있습니다. 하지만 이 구조물은 이 섹터를 지배한 분리주의자들에게 파괴되어 더이상 작동하지 않아 보입니다.</text>
+	<img back="BACK_EVENT_HARMONYLINK" planet="NONE"/>
+	<choice hidden="true" lvl="1" req="HARMONY_LINK_CHECK" max_group="1" blue="false">
+		<text>계속...</text>
+		<event load="HARMONY_LINK_SEP_EVENTS"/>
+	</choice>
+	<choice hidden="true" lvl="0" req="HARMONY_LINK_CHECK" max_group="1" blue="false">
+		<text>계속...</text>
+		<event load="HARMONY_LINK_EVENTS_SEP_NOANCIENT"/>
+	</choice>
+</event>
+
+<eventList name="HARMONY_LINK_SEP_EVENTS">
+	<event load="HARMONY_LINK_FIGHTMANTIS"/>
+	<event load="HARMONY_LINK_SEPARATIST"/>
+	
+	<event load="HARMONY_LINK_ANCIENT"/>
+</eventList>
+<eventList name="HARMONY_LINK_EVENTS_SEP_NOANCIENT"> <!--the player has already found the ancients, and as such it will not spawn again-->
+	<event load="HARMONY_LINK_SEPARATIST"/>
+	<event load="HARMONY_LINK_FIGHTMANTIS"/>
+</eventList>
+
+<event name="HARMONY_LINK_SEPARATIST">
+	<text>분리주의자 함선이 하모니 링크를 분석중입니다. 그건 당신을 눈치채지도, 신경쓰지도 않는 것 같습니다.</text>
+	<ship load="SHIP_SEPERATIST_FIGHT" hostile="false"/>
+	<choice hidden="true">
+		<text>교신한다.</text>
+		<event>
+			<text>"연방임을 인지함. 도움을 주고 싶다면 폭발물을 제공하기를 원함. 우리는 하모니 링크 [해체] 시도중."</text>
+			<choice>
+				<text>미사일을 5개 준다.</text>
+				<event>
+					<text>당신은 분리주의자들에게 미사일을 제공합니다.</text>
+					<item_modify>
+						<item type="missiles" min="-5" max="-5"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event>
+							<text>"와, 별로 도움이 되지 않음. 사용할수도 없어 보임. 스크랩 5개의 가치."</text>
+							<item_modify>
+								<item type="scrap" min="5" max="5"/>
+							</item_modify>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>미사일을 15개 준다.</text>
+				<event>
+					<text>당신은 분리주의자들에게 미사일을 제공합니다.</text>
+					<item_modify>
+						<item type="missiles" min="-15" max="-15"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event>
+							<text>분리주의자들은 미사일을 장전한 후, 하모니 링크에 직격으로 발사합니다. 외부가 산산조각나지만, 나노봇이 날아오며, 눈에 띄는 손상 없이 다시 구조가 형성됩니다. "흠, 이제 [파악]함. 받아 주길 바람."</text>
+							<autoReward level="LOW">standard</autoReward>
+							<drone name="RANDOM"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>거절한다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>우리가 더 상황이 좋으니 공격한다!</text>
+		<event>
+			<text>분리주의자들은 아무말도 없지만, 명백히 싸움 없이는 보내주지 않을 것 같습니다!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>엔지를 무시합니다.</text>
+		<event>
+			<text>그들에게 위협을 주지 않는다면, 그들도 당신에게 위협이 되지는 않겠지요.</text>
+			<choice>
+				<text>함선에서 무언가를 한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		ITEMS!!!
+	Events that give items
+-->
+<eventList name="ITEMS_SEPERATIST">
+	<event load="SEPERATIST_BODY_SCAN"/>
+	<event load="SEPERATIST_WORTHLESS_JUNK"/>
+	<event load="SEPERATIST_FREE_CREW"/>
+	<event load="SEPERATIST_TRAP_SCAN"/>
+	
+	<event load="ENGI_GIFT"/>
+	<event load="ENGI_FLEET_DELAY"/>
+</eventList>
+
+<event name="SEPERATIST_WORTHLESS_JUNK" unique="true">
+	<text>당신은 근처 배에서 보조장비에 대해서 말씨름하는 두 분리주의자들을 발견합니다. 당신은 그들에게 교신을 보냅니다. "환영함. 우리는 물건을 습득함. 물건의 목적은 모르고, 우리들은 이걸 가질 마음이 0임. 이 [쓸데없는 쓰레기]를 가져가기를 원함."</text>
+	<augment name="RANDOM"/>
+</event>
+
+<event name="SEPERATIST_ICECREAM" unique="true">
+    <text>A small Separatist vendor nearby is advertising to passing ships some kind of miracle concoction it claims can solve anyone's problems. Sounds incredulous, but would it hurt to check it out?</text>
+    <choice hidden="true">
+        <text>Investigate the vendor.</text>
+        <event>
+			<text>"Welcome, welcome, [valued] customer! Might I interest you in the -exotic-, delightful, and positively splenerific taste of F.D.P.T.W.T.F.M.C.E.? You won't regret it!"</text>
+			<choice hidden="true">
+				<text>What?</text>
+				<event>
+					<text>"Have you never heard of [Frozen Dairy Product Topped With Terran Fruit and Melted Coco Extract]? I am told it is -all- the rage in the Union. I recommend a purchase. It will make your crew happier."</text>
+					<choice hidden="true">
+						<text>Buy the F.D.P.T.W.T.F.M.C.E.</text>
+						<event>
+							<text>"Thank you for your [purchase] Renegade! I hope to have more flavors in the -future-!"</text>
+							
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>That sounds like it'll kill us. No thanks.</text>
+				<event>
+					<text>The Separatist frowns but says nothing more. You brush past them and move on.</text>
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice hidden="true">
+        <text>Ignore the Engi.</text>
+        <event>
+            <text>Their promises are clearly fabricated. You don't have time to waste on dissapointing yourself, better to get a move on.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="SEPERATIST_TRAP_SCAN" unique="true">
+    <text>당신이 도약을 하니 옆의 분리주의자 함선이 반겨줍니다. "연방함선의 선장이여 당신은 [운]이 좋음. 나는 이 분야의 지도를 포함한 광범위한 데이터를 소유하고 있음. 다운로드할 의향이 있는가?"</text>
+    <choice hidden="true">
+        <text>데이터를 다운로드합니다.</text>
+        <event load="SEPERATIST_TRAP_SCAN_ACCEPT"/>
+    </choice>
+    <choice hidden="true">
+        <text>괜찮다.</text>
+        <event>
+            <text>"이런 굉장한 [행운]을 잡을 기회에 관심이 없어 보임".</text>
+            <choice>
+                <text>함선에서 무언가를 한다.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>아무것도 하지 않는다.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="SEPERATIST_TRAP_SCAN_ACCEPT">
+    <event>
+        <text>당신은 정보를 전송하기 시작합니다. 로드되는 데이터를 확인합니다. 대부분은 생선 모양의 에틸벤젠 케이크 레시피나 정직의 중요성에 대한 기사 같이 무작위의 쓰레기들입니다. 마침내, 당신은 다운로드되는 지도 데이터를 확인합니다. 딩신은 분리주의자들에게 고마워하는 마음으로 고개를 끄덕이며, 전송이 완료된 뒤에 도약합니다.</text>
+        <reveal_map/>
+    </event>
+    <event>
+        <text>당신은 정보를 전송하기 시작합니다. 로드되는 데이터를 확인합니다. 대부분은 생선 모양의 에틸벤젠 케이크 레시피나 정직의 중요성에 대한 기사 같이 무작위의 쓰레기들입니다. 하지만 지도 데이터를 다운로드하기 전에 에러가 발생하여, 당신의 컴퓨터가 멈춰버립니다. 당신은 기다려보지만 여전히 오프라인이며 곧 당신이 속았다는 걸 깨닫습니다! 분리주의자 함선은 무기를 올려 공격을 하기 위해 움직입니다!</text>
+        <ship load="SHIP_SEPERATIST_SCAN" hostile="true"/> 
+        <choice hidden="true">
+            <text>계속...</text>
+            <event load="COMBAT_CHECK"/>
+        </choice>
+    </event>
+</eventList>
+
+<event name="SEPERATIST_FREE_CREW" unique="true">
+	<text>분리주의자 하나가 처음에는 바이너리로, 곧 이내 영어로 변경하며 맞이합니다. "연방. 연방. 손상된 대화 프로세서 프로셋서에 대하여 무시해주길 바람. 나는 최근 최근에 [하모니]들에게서 도망쳤고, 연방 함선 함선에서 일하기를 희망함. 나를 받아 받아줄 것인가?"</text>
+	<choice hidden="true">
+		<text>승선을 환영한다!</text>
+		<event>
+			<text>"고맙 고맙다 함장!"</text>
+			<crewMember amount="1" class="engi_separatist">L-4673</crewMember>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>선원이 더 필요하지 않다.</text>
+		<event>
+			<text>"아... 알겠음 알겠음. 임무 임무에 행운이 따르길."</text>
+		</event>
+	</choice>
+</event>
+
+<event name="SEPERATIST_BODY_SCAN" unique="true">
+	<text>이 신호소에 함선은 없지만, 한 분리주의자 엔지가 당신 함선의 함교를 비추고 있습니다. 그는 한시코 빨리 당신의 몸을 스캔해서, 당신의 몸처럼 모양을 만들고 싶어합니다.</text>
+	<choice hidden="true">
+		<text>허락한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_ALLOW"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SOLDIER">
+		<text>(엘리트 인간) 당신의 엘리트 인간과 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_SOLDIER"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SUZERAIN">
+        <text>(하이브 엘리트) 당신의 엘리트 맨티스와 함께 인도한다.</text>
+        <event load="SEPERATIST_BODY_SCAN_SUZERAIN"/>
+    </choice>
+	<choice hidden="true" req="LIST_CREW_SABOTEUR">
+		<text>(엘리트 슬러그) 당신의 엘리트 슬러그와 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_SABOTEUR"/>
+	</choice>
+	<choice hidden="true" req="zoltan_peacekeeper">
+		<text>(졸탄 평화 유지군) 당신의 졸탄 평화 유지군과 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_PEACE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRUSADER">
+		<text>(엘리트 락맨) 당신의 엘리트 락맨과 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_CRUSADER"/>
+	</choice>
+	<choice hidden="true" req="orchid_chieftain">
+		<text>(오키드 추장) 당신의 오키드 추장과 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_CHIEFTAIN"/>
+	</choice>
+	<choice hidden="true" req="crystal_sentinel">
+		<text>(크리스탈 감시병) 당신의 크리스탈 감시병과 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_SENTINEL"/>
+	</choice>
+	<choice hidden="true" req="lanius_welder">
+		<text>(라니우스 용접공) 당신의 라니우스 용접공과 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_WELDER"/>
+	</choice>
+	<choice hidden="true" req="phantom_alpha">
+		<text>(알파 팬텀) 당신의 팬텀 알파와 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_PHANTOMALPHA"/>
+	</choice>
+	<choice hidden="true" req="phantom_mare_alpha">
+		<text>(알파 메어) 당신의 메어 알파와 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_MAREALPHA"/>
+	</choice>
+	<choice hidden="true" req="phantom_goul_alpha">
+		<text>(알파 구울) 당신의 구울 알파와 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_GOULALPHA"/>
+	</choice>
+	<choice hidden="true" req="phantom_wraith_alpha">
+		<text>(알파 레이스) 당신의 레이스 알파와 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_WRAITHALPHA"/>
+	</choice>
+	<choice hidden="true" req="shell_radiant">
+		<text>(찬란한 셸) 당신의 찬란한 셸과 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_RADIANT"/>
+	</choice>
+	<choice hidden="true" req="zoltan_martyr">
+		<text>(졸탄 순교자) 당신의 졸탄 순교자와 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_RADICAL"/>
+	</choice>
+	<choice hidden="true" req="mantis_warlord">
+		<text>(맨티스 장군) 당신의 맨티스 장군과 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_WARLORD"/>
+	</choice>
+	<choice hidden="true" req="slug_ranger">
+		<text>(레인저) 당신의 레인저와 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_RANGER"/>
+	</choice>
+	<choice hidden="true" req="leech_ampere">
+		<text>(리치 암페어) 당신의 리치 암페어와 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_AMPERE"/>
+	</choice>
+	<choice hidden="true" req="human_technician">
+		<text>(인간 공병) 당신의 인간 공병과 함께 인도한다.</text>
+		<event load="SEPERATIST_BODY_SCAN_TECH"/>
+	</choice>		
+	<choice hidden="true" req="LIST_CREW_ENGI">
+		<text>(엔지) 엔지를 스캔하라고 이야기합니다.</text>
+		<event>
+			<text>"당신은... 내 현재 상태와 동일시하는 걸 희망하는가? 나는 이 논리를 이해하지 못함. 나는 스캔할 더 높은 지능의 다른 개체를 찾을 것임."</text>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>거절한다.</text>
+		<event>
+			<text>"원치 않는 결과. 필살기 모드 작동" 그의 몸에서 칼처럼 생긴 5개의 긴 앞날들이 나타나고, 근처의 선원들 중 한 명을 베어버린 뒤 함선 전체를 뒤흔들며 폭발합니다!</text>
+			<damage amount="3" effect="fire"/>
+			<removeCrew>
+				<clone>true</clone>
+				<text>당신의 선원은 클론 배양실에서 휘청거리면서 나오며 다시 살아납니다. 그때부터 당신은 항상 칼이나 다른 날카로운 물건들을 최대한 피하게 되겠지만, 적어도 영원히 사라지지는 않을 것입니다.</text>
+			</removeCrew>
+		</event>
+	</choice>
+</event>
+<eventList name="SEPERATIST_BODY_SCAN_ALLOW">
+    <event>
+        <text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 당신의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다.</text>
+        <autoReward level="MED">droneparts_only</autoReward>
+    </event>
+    <event>
+        <text>"당신의 몸은 못생김. 이 형태로 유지하고 싶지 않음. 안녕히." 그는 함선을 비추던 광선을 끕니다.</text>
+    </event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_SOLDIER">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="human_soldier">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_SUZERAIN">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="mantis_suzerain">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_SABOTEUR">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="slug_saboteur">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_PEACE">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="zoltan_peacekeeper">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_CRUSADER">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="rock_crusader">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_CHIEFTAIN">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="orchid_chieftain">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_SENTINEL">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="crystal_sentinel">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_WELDER">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="lanius_welder">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_PHANTOMALPHA">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="phantom_alpha">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_GOULALPHA">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="phantom_goul_alpha">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_MAREALPHA">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="phantom_mare_alpha">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_WRAITHALPHA">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="phantom_wraith_alpha">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_RADIANT">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="shell_radiant">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_RADICAL">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="zoltan_martyr">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_WARLORD">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="mantis_warlord">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_RANGER">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="slug_ranger">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_AMPERE">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="leech_ampere">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_TECH">
+	<event>
+		<text>"신체 상태가 최상임. 만족도 98%. 나머지 2%는 내가 해결 가능함. 친구여 고마움. 감사의 의미로 선물을 받아주길." 그는 선원의 완벽한 복제로 변신한 뒤 함선을 비추던 광선을 끄고, 몇 개의 드론 부품들을 남겨둡니다</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"이 형태는... 굉장히 멋짐. 스캔을 시작하겠지만 세부 사항이 완벽해야 함. 형태를 완벽하게 만들기 위해서는 더 오래 머물러야 할 것으로 보임."</text>
+		<crewMember amount="1" class="human_technician">L-9678</crewMember>
+	</event>
+</eventList>
+
+<!--
+		HOSTILE!!!
+	Events that always have a fight
+-->
+<eventList name="HOSTILE_SEPERATIST">
+	<event load="ENCOUNTER_SEPERATIST"/>
+	<event load="ENCOUNTER_SEPERATIST"/>
+	<event load="ENCOUNTER_ENGI_SEPERATIST"/>
+	<event load="ENCOUNTER_MANTIS_SEPERATIST"/>
+	<event load="ENCOUNTER_ZOLTAN_AUTO_SEPERATIST"/>
+	
+	<event load="ENCOUNTER_REBEL"/>
+</eventList>
+
+<event name="ENCOUNTER_SEPERATIST">
+	<text load="TEXT_ENCOUNTER_SEPERATIST"/>
+	<ship load="SHIP_SEPERATIST_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_SEPERATIST">
+    <text>잠시 날카로운 소리가 통신에 재생되고 바이너리 메시지가 반복됩니다. 당신은 분리주의자들이 방어 체계를 날려버릴 경고 사격을 날리기 전까지 이를 번역할 시간이 부족합니다.</text>
+    <text>이상하게 장황한 엔지가 당신에게 교신을 합니다. "좋지 않은 시간에 만남, 연방 함선. 나는 이성과 논리를 위해 암호화하는 시스템 부분이 손상받은 것으로 보이고, 이제 죽이고 싶은 강렬한 욕망을 갖게 됨."</text>
+    <text>분노한 분리주의자가 교신을 합니다. "문제: 당신은 우연히 내 평생의 친구를 현미경으로 밟음. 해결법 : 죽음."</text>
+    <text>분리주의자들은 보통 다른 함선들을 피하지만, 이 신호소에 있는 배는 심각한 상태이며, 스크랩이 절실히 필요한 것으로 보입니다.</text>
+    <text>분리주의자 함선이 공격을 위해 이동합니다. 당신이 그를 어떻게 화나게 했는지는 모르겠지만 그건 더 이상 중요하지 않습니다.</text>
+    <text>당신은 셰익스피어라는 이름의 죽은 인간의 작품에 대해 많은 이야기를 하는 분리주의자 함선에서 교신을 받습니다. 그는 갑자기 이야기를 멈추더니 공격합니다!</text>
+</textList>
+
+<event name="ENCOUNTER_ENGI_SEPERATIST" unique="true">
+	<text>분리주의자 함선이 신호소 주위를 돌고 있지만, 당신이 그들과 접촉하기 전에 그들은 도망치고 Engi 함선이 접근합니다. "하모니의 적을 돕는 연방? 모순... 연방 함선: 반드시 제거되어야 함."</text>
+	<ship load="SHIP_ENGI_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_MANTIS_SEPERATIST">
+	<text load="TEXT_ENCOUNTER_MANTIS_SEPERATIST"/>
+	<ship load="SHIP_MANTIS_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_MANTIS_SEPERATIST">
+	<text>분리주의자이든 아니든, 맨티스는 엔지 노예의 출처에 관심이 없습니다. 이 구역을 정찰하는 맨티스가 당신의 배를 공격하기로 결정합니다!</text>
+	<text>일반적인 엔지 구역이 될 것이라는 가정 하에 이 곳으로 온 맨티스 함선은 전투 인구가 적은 상황 인해 짜증이 났습니다. 마침내 당신의 함선과의 도전적인 전투가 시작되고 그들은 시간을 낭비하지 않고 진입하여 공격합니다.</text>
+	<text>당신은 도약하기 전 짧은 교신을 받습니다. "살인 벌레들을 조심해라!" 추격 중인 맨티스 함선이 대신 당신을 표적으로 삼기로 결정했습니다.</text>
+	<text>좌절한 맨티스 함장이 통신 화면에 나타난다. "좋아, 다른 함선이군. 어떤 놀라운 공포로 우리를 맞이하는 거지? 생고기 먹는 성운? 아니면 긴 촉수 있는 칼날 손 괴물?" 그는 당신이 사실 연방 함선이라는 것을 즉시 깨닫고, 모든 의구심이 사라집니다. 그는 선원들에게 전투 준비를 명령합니다!</text>
+	<text>이 구역에서는 적색 선체의 섬광이 엔지 또는 다른 선박과 마주칠지에 대한 것은 모르겠습니다. 불행히도, 이번에는 싸움을 갈망하는 맨티스입니다.</text>
+</textList>
+
+<event name="ENCOUNTER_ZOLTAN_AUTO_SEPERATIST" unique="true">
+	<text>"우리는 무인 함선을 피하기를 추천함. 그건 망가졌음." 당신은 교신을 보냈던 분리주의자 함선이 큰 소행성 뒤에 숨은 것과 동시에, 졸탄 무인 함선이 당신에게 돌진하는 것을 알아차립니다!</text>
+	<ship load="SHIP_ZOLTAN_AUTO_FIGHT_SEPERATIST" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="ENCOUNTER_ZOLTAN_AUTO_SEPERATIST_KILL">
+	<text>분리주의자들은 로봇처럼 웃는 소리를 냅니다. "음, 나는 왜 다른 사람들이 투기장 전투를 보면서 즐거움을 얻는지 알겠음." 그들은 당신에게 무인 함선의 난파선을 남겨두고 도약합니다..</text>
+	<autoReward level="LOW">standard</autoReward>
+</event>
+
+<!--
+		NEUTRAL!!!
+	Events that can have a fight
+-->
+<eventList name="NEUTRAL_SEPERATIST">
+	<event load="SEPERATIST_NANOCLOUD"/>
+	<event load="SEPERATIST_ENGI_CHOICE"/>
+	<event load="SEPERATIST_FLEET_DELAY"/>
+	<event load="SEPERATIST_DISGUISE"/>
+	
+	<event load="ASTEROID_EXPLORE"/>
+	<event load="BROKEN_REBEL_DRONE"/>
+	<event load="ALISON_MANTIS_CREW_MV"/>
+</eventList>
+
+<event name="SEPERATIST_ENGI_CHOICE" unique="true">
+	<text>두 엔지 함선이 이 신호소에서 싸우고 있습니다. 하나는 하모니, 다른 하나는 분리주의자들입니다.</text>
+	<choice hidden="true">
+		<text>함선들과 교신한다.</text>
+		<event>
+			<text>하모니 엔지는 분리주의자들이 하모니로 돌아와 다시 한 번 동질성을 받아들이도록 설득하고 있다고 말합니다. 분리주의자들은 평화롭게 삶을 살고 싶다며 거절합니다.</text>
+			<choice hidden="true">
+				<text>하모니의 편을 든다.</text>
+				<event>
+					<text>두 함선 모두 당신이 개입하는 것에 특별히 동요하는 것 같지 않습니다. 그리고 분리주의자는 아무것도 변하지 않은 것처럼 계속 싸우고 있습니다.</text>
+					<ship load="SHIP_SEPERATIST_CHOICE" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>분리주의자의 편을 든다.</text>
+				<event>
+					<text>"불가능. 휴전을 지키지 않음. 연방이 조약을 파기. 즉시 전투."</text>
+					<ship load="SHIP_ENGI_CHOICE" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="MORALITY_UPDATE_ENGI_FIGHT"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>멀리 날아갑니다.</text>
+		<event>
+			<text>당신은 안전한 거리에 있을 때까지 통신을 통해 두 함선이 메아리치는 소리를 들을 수 있습니다.</text>
+			<choice>
+				<text>함선에서 무언가를 한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SEPERATIST_SEPERATIST_CHOICE_WIN">
+	<text>"성공. 감사는 우리의 것이다. 보상으로 [드론]을 받길." 엔지 함선은 필요에 따라 분리주의자의 운명을 받아들이고 도약합니다.</text>
+	<autoReward level="MED">standard</autoReward>
+	<drone name="RANDOM"/>
+</event>
+<event name="SEPERATIST_ENGI_CHOICE_WIN">
+	<text>"불행한 죽음. 우리는 하모니가 이 섹터를 떠나기를 바람. 그래도 연방에 감사함. 아마 내가 당신의 배로 피신한다면 그들의 정찰병들로부터 안전할 것임."</text>
+	<autoReward level="MED">standard</autoReward>
+	<crewMember amount="1" class="engi_separatist">L-6437</crewMember>
+</event>
+
+<event name="SEPERATIST_NANOCLOUD" unique="true">
+	<text>분리주의자 함선이 근처를 떠돌며 천천히 당신과 거리를 둡니다. 당신은 빠른 스캔 결과 승무원이 탑승하지 않았지만 함선은 완벽하게 기능하고 응답하는 것에 다소 당황했습니다.</text>
+	<ship load="SHIP_SEPERATIST_NANOCLOUD" hostile="false"/> 
+	<choice hidden="true">
+		<text>공격한다.</text>
+		<event>
+			<text>함선의 미스터리는 당신에게 중요하지 않습니다. 당신이 단지 생각한 것은 그 함선을 폭파하여 얻는 보상입니다.</text>
+			<ship hostile="true"/> 
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>교신한다.</text>
+		<event>
+			<text>당신은 교신을 시도하지만 함선에서 들리는 소리는 윙윙거리는 희미한 소리뿐입니다.</text>
+			<choice hidden="true">
+				<text>공격한다.</text>
+				<event>
+					<text>함선의 미스터리는 당신에게 중요하지 않습니다. 당신이 단지 생각한 것은 그 함선을 폭파하여 얻는 보상입니다.</text>
+					<ship hostile="true"/> 
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>함선을 무시한다.</text>
+				<event>
+					<text>당신은 이 미스터리에 흥미가 떨어졌고, 이동할 준비를 합니다.</text>
+					<choice>
+						<text>함선에서 무언가를 한다.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>아무것도 하지 않는다.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(슬러그 승무원) 생명 신호를 탐지합니다.</text>
+		<event>
+			<text>슬러그는 적함에서 어떤 형태로든 정보를 얻으려 합니다. 그들은 잠재적인 생명의 희미한 징후를 감지하지만, 그들과 대화는 거의 불가능합니다.</text>
+			<choice hidden="true">
+				<text>공격한다.</text>
+				<event>
+					<text>함선의 미스터리는 당신에게 중요하지 않습니다. 당신이 단지 생각한 것은 그 함선을 폭파하여 얻는 보상입니다.</text>
+					<ship hostile="true"/> 
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>함선을 무시한다.</text>
+				<event>
+					<text>당신은 이 미스터리에 흥미가 떨어졌고, 이동할 준비를 합니다.</text>
+					<choice>
+						<text>함선에서 무언가를 한다.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>아무것도 하지 않는다.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>함선을 무시한다.</text>
+		<event>
+			<text>당신은 그 배를 상대할 마음이 없습니다.</text>
+			<choice>
+				<text>함선에서 무언가를 한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SEPERATIST_NANOCLOUD_DESTROYED">
+	<text>이상한 분리주의자 함선이 파괴된 채로 있고, 당신은 잔해에서 쓸만한 것을 모읍니다.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event>
+			<text>당신이 이동하려고 할 때 삐걱거리고 높은 음조의 목소리가 당신의 뒤에서 들립니다. 주위를 돌아보면 회색빛 나노봇 구름이 방 안을 무작위로 떠다니는 것을 볼 수 있습니다. "결과: 훌륭. 감사: 최대. 풍자: 100%. 당신은 내 함선을 파괴. 나는 당신과 나를 통합할 수밖에 없음."</text>
+			<augment name="NANOBOT_DEFENSE_SYSTEM"/>
+		</event>
+	</choice>
+</event>
+
+<event name="SEPERATIST_FLEET_DELAY" unique="true">
+	<text>분리주의자 함선이 교신합니다 "함대에 대한 상황은 알고있음. 우리는: 제안. 적 함선을 처치하는 걸 도와주면 함대를 지연시키겠음."</text>
+	<choice hidden="true">
+		<text>그들의 제안을 들어봅니다.</text>
+		<event>
+			<text>"반란군 무인 함선, 그들의 인공지능은 만족스럽지 못함. 항상 길을 잃음. 이제, 우리는 이 구역에서 잃어버린 배를 처리해야 함. 도와줄 것인가?"</text>
+			<choice hidden="true">
+				<text>무인 함선을 처리하는 데에 동의한다</text>
+				<event>
+					<text>분리주의자들은 무인 함선이 있는 곳으로 당신을 안내합니다.</text>
+					<ship load="SHIP_AUTO_SEPERATIST" hostile="true"/>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>제안을 거절한다.</text>
+				<event>
+					<text>"당신의 응답에 -불만족-했지만, 인내하겠음. 좋은 하루 함장."</text>
+					<choice>
+						<text>함선에서 무언가를 한다.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>아무것도 하지 않는다.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>정중히 거절한다.</text>
+		<event>
+			<text>"좋음 = 좋음. 죽지 말도록."</text>
+			<choice>
+				<text>함선에서 무언가를 한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SEPERATIST_FLEET_DELAY_WIN">
+	<text>"매우 좋음. 제안의 마지막. [함선]을 움직이지 말길." 분리주의자들은 당신의 함선을 스캔하여 당신의 온몸에 따끔따끔한 느낌을 줍니다. 분리주의자들이 다시 교신하지만, 이번에는 당신과 매우 닮아 보입니다. "작업이 100%는 아니지만, 지금으로써는 유효함. 당신의 도약 신호를 가렸음. 함대는 나를 따라올 것임. 좋은 하루."</text>
+	<modifyPursuit amount="-2"/>
+</event>
+<event name="SEPERATIST_FLEET_DELAY_LOSE">
+	<text>"당신은 실패했음. 우리와 다시는 대화를 시도하지 말길."</text>
+</event>
+
+<event name="SEPERATIST_DISGUISE" unique="true">
+	<text>엔지 함선이 카메라가 꺼져 있음에도 불구하고 교신을 합니다. "연방, 우리는 요청... 요청: 반역자를 찾는 것에 대한 도움. 우리는 보급품을 희망함."</text>
+	<ship load="SHIP_SEPERATIST_DISGUISE" hostile="false"/>
+	<choice>
+		<text>그들의 터무니없는 요구에 따라준다.</text>
+		<event>
+			<text>긴 기계 팔이 함선 선체에서 뻗어 나와 보급품을 움켜잡습니다. 엔지는 나중에 보상을 하겠다고 약속합니다.</text>
+			<item_modify>
+				<item type="fuel" min="-5" max="-5"/>
+				<item type="scrap" min="-35" max="-35"/>
+				<item type="missiles" min="-3" max="-3"/>
+				<item type="drones" min="-7" max="-7"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>계속.</text>
+				<event load="SEPERATIST_DISGUISE_DONATE"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGI">
+		<text>(엔지 승무원) 그들과 연락하여 협상합니다.</text>
+		<event>
+			<text>엔지 승무원이 그들과 대화를 요청합니다. 엔지 함선은 반응하지 않지만, 계속된 교신 뒤에, 그들의 무기가 준비되었습니다!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>도울 수 없다고 이야기한다.</text>
+		<event>
+			<text>"보급품 미충족. 단호한 조치 필요... 이 목소리 집어치워, 원하는 건 모두 챙겨가겠음."</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>계속...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="SEPERATIST_DISGUISE_DONATE">
+	<event>
+		<text>더듬거리는 소리가 들리고 카메라가 켜지면서 선장이 일반 엔지가 아니라 분리주의자임을 알 수 있습니다. 그는 카메라를 재빨리 끄지만 상황은 지나갔습니다. "이봐, 경솔하게 할 필요는 없음. 네가 준 물건의 절반을 돌려줄 테니 싸우지 말자. 공평한가?"</text>
+		<choice hidden="true">
+			<text>보급품을 나누는 것에 동의합니다.</text>
+			<event>
+				<text>팔이 다시 한 번 펼쳐지고 당신이 그들에게 지불한 보급품의 절반을 나눠줍니다. 당신은 그들이 자신들에게 유리하게 반올림했다는 것을 알아차리지만, 그들이 성급하게 도망쳤기 때문에 불평하기에는 너무 늦었습니다.</text>
+				<item_modify>
+					<item type="fuel" min="2" max="2"/>
+					<item type="scrap" min="17" max="17"/>
+					<item type="missiles" min="1" max="1"/>
+					<item type="drones" min="3" max="3"/>
+				</item_modify>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>싸운다.</text>
+			<event>
+				<text>분리주의자는 살려달라고 간청하지만, 당신은 그들을 살려둘 생각이 없습니다.</text>
+				<ship hostile="true"/>
+				<choice hidden="true">
+					<text>계속...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>카메라의 신호가 깜박이면서 독선적인 분리주의자 선장이 모습을 드러냅니다. "미안하지만, 당신은 속았음. 나한테. 나는 매우 똑똑하고 영리함. 하하. 하지만, 보상은 없음."</text>
+		<choice hidden="true">
+			<text>나쁜 놈을 처리한다.</text>
+			<event>
+				<text>"잠깐, 넌 뭐하는 거지? 안돼, 안돼, 멈춰. 잠깐. 이건 [안 좋은] 아이디어였음!"</text>
+				<ship hostile="true"/>
+				<choice hidden="true">
+					<text>계속...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>속은 걸 인정한다.</text>
+			<event>
+				<text>분리주의자는 당신이 반격하지 않기로 한 것에 놀란 것 같습니다. 당신은 대화를 종료하고 함선을 무시합니다.</text>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>"기부해 주셔서 감사, 대위님. 영광임. 우리는 하모니 함선이 아님. 이 함선은 이제 분리주의자 함선임. 그래도 우리는 당신에게 [감사함]. 선물을 받아주기 바람.</text>
+		<augment name="NANOBOT_DEFENSE_SYSTEM"/>
+	</event>
+</eventList>
+
+<!--
+		DISTRESS!!!
+	Events that have a distress beacon  
+-->
+<eventList name="DISTRESS_SEPERATIST">
+	<event load="DISTRESS_SEPERATIST_COMMUNITY_VIRUS"/>
+	
+	<event load="DISTRESS_CIVILIAN_ASTEROIDS_BEACON"/>  
+	<event load="DISTRESS_FRIENDLY_BEACON"/>
+	<event load="DISTRESS_TRAPPED_MINER"/>
+	<event load="DISTRESS_AUTO_REPAIRS"/>
+</eventList>
+
+<event name="DISTRESS_SEPERATIST_COMMUNITY_VIRUS" unique="true">
+	<text>분리주의자들은 보통 고립을 선호하지만, 인근 행성에서 분리주의자 식민지라는 귀한 예제가 발견되었습니다. 조난 신호는 그 행성의 표면에서 발신된 것으로 보입니다.</text>
+	<distressBeacon/> 
+	<img planet="PLANET_POPULATED_SMALL"/>
+	<choice hidden="true">
+		<text>그들과 교신한다.</text>
+		<event>
+			<text>"환영한다 반갑지 않은 사람. 당신은 환영이라고 생각하라. 우리는 요청이 있음. 우리는 최근 [치명적인] 바이러스에 감염되어, 사상자가 4분의 1을 넘는다. 도와줄 수 있는가?</text>
+			<choice>
+				<text>보급품을 나눠준다</text>
+				<event>
+					<text>비록 반응에서 그것이 큰 도움이 되지 않을 것이라는 것을 알 수 있지만, 엔지들은 그래도 당신의 기부에 감사해하고 있습니다.</text>
+					<item_modify>
+						<item type="scrap" min="-20" max="-20"/>
+						<item type="drones" min="-4" max="-4"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>계속...</text>
+						<event>
+							<text>분리주의자는 물리적인 보상은 아무것도 할 수 없지만, 당신의 선체를 수리할 수는 있습니다.</text>
+							<damage amount="-10"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="hacking">
+				<text>(해킹) 바이러스를 격리하기 위해 해킹한다.</text>
+				<event>
+					<text>해킹은 놀라울 정도로 효과적이었으며, 여러 분리주의자들로부터 바이러스 코드의 모든 인스턴스를 제거할 수 있게 되었습니다. 당신의 해킹이 얼마나 효과적인지, 그들은 더 많은 치료를 위해 조금 더 머물 것을 요청합니다.</text>
+					<item_modify>
+						<item type="drones" min="-1" max="-1"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>잠시 남아 더 치료한다.</text>
+						<event>
+							<text>다른 분리주의자들을 치료하는 데 하루를 꼬박 쓰긴 했지만, 마침내 식민지 전체의 바이러스를 치료하는 데 성공한 것으로 보입니다. 그들은 매우 고마워하며, 함선을 위한 장비를 당신에게 선물합니다. 그들 중 한 명은 바이러스가 다시 나타날 때의 식민지에서 그들의 운명을 두려워하여, 당신의 선원이 되는 것을 비밀리에 제안합니다.</text>
+							<weapon name="RANDOM"/>
+							<crewMember amount="1" class="engi_separatist">L-8133</crewMember>
+							<modifyPursuit amount="1"/>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>더 머물 순 없다.</text>
+						<event>
+							<text>"대기 실패에 따른 사상자 비율 계산: 20%. 당신이 구해준 인원들은 다시 감염될 것이 분명함, 우리가 어떻게든 할 수 있으니, 당신을 기다리게 하지 않겠음."</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="engi">
+				<text>(엔지 선원) 엔지 선원을 내려보내 도와주게 한다.</text>
+				<event load="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_ENGI"/>
+			</choice>
+			<choice hidden="true" req="engi_separatist">
+				<text>(분리주의자 선원) 분리주의자 선원을 내려보내 도와주게 한다.</text>
+				<event load="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_SEPARATIST"/>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_DEFENDER">
+				<text>(엔지 수비대 선원) 수비대 선원을 내려보내 도와주게 한다.</text>
+				<event load="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_DEFENDER"/>
+			</choice>
+			<choice hidden="true">
+				<text>감염에 대해서 아는게 없다.</text>
+				<event>
+					<text>"-오류: 논리가 존재하지 않음- 생물학적 감염이 아님,우리는 기ㄱㄱ-" 당신은 통신을 중단합니다. 그들은 더이상 통신을 시도하지 않습니다.</text>
+					<choice>
+						<text>함선에서 무언가를 한다.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>아무것도 하지 않는다.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>식민지를 무시한다.</text>
+		<event>
+			<text>그들이 알아차리기에는 너무 멀리 떨어져 있어서, 당신은 현재 위치에서 방해받지 않고 있습니다.</text>
+			<choice>
+				<text>함선에서 무언가를 한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_ENGI">
+	<event>
+		<text>당신의 엔지는 행성으로 보내져 성공적으로 바이러스의 근원을 찾아 분리주의자의 시스템에서 제거합니다. 그들은 스스로 해결하는 방법을 확인한 뒤, 엔지에게 선물을 주어 배로 다시 가져옵니다.</text>
+		<drone name="RANDOM"/>
+	</event>
+	<event>
+		<text>엔지는 분리주의자를 디버깅하려고 시도하지만 결국에는 바이러스 자체를 포착하게에 그칩니다. 코드에서 천천히 침식되어 단단한 모양을 유지하고 나노봇이 흩어지면서 증발합니다. 분리주의자들은 애도를 표할 뿐 더 이상 말을 하지 않는다.</text>
+		<removeCrew class="engi">
+			<clone>false</clone>
+			<text>당신은 바이러스가 클론 배양실까지 옮겨올지 확실하지 않지만 선원의 복제를 시도합니다. 안타깝게도 복제품은 많은 결함를 가지고 있고 일정한 형체를 유지하지 못합니다. 당신은 그 것을 고통에서 벗어나게 하고 클론 배양실에서 데이터를 삭제합니다.</text>
+		</removeCrew>
+	</event>
+</eventList>
+<eventList name="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_SEPARATIST">
+	<event>
+		<text>당신의 엔지는 행성으로 보내져 성공적으로 바이러스의 근원을 찾아 분리주의자의 시스템에서 제거합니다. 그들은 스스로 해결하는 방법을 확인한 뒤, 엔지에게 선물을 주어 배로 다시 가져옵니다.</text>
+		<drone name="RANDOM"/>
+	</event>
+	<event>
+		<text>엔지는 분리주의자를 디버깅하려고 시도하지만 결국에는 바이러스 자체를 포착하게에 그칩니다. 코드에서 천천히 침식되어 단단한 모양을 유지하고 나노봇이 흩어지면서 증발합니다. 분리주의자들은 애도를 표할 뿐 더 이상 말을 하지 않는다.</text>
+		<removeCrew class="engi_separatist">
+			<clone>false</clone>
+			<text>당신은 바이러스가 클론 배양실까지 옮겨올지 확실하지 않지만 선원의 복제를 시도합니다. 안타깝게도 복제품은 많은 결함를 가지고 있고 일정한 형체를 유지하지 못합니다. 당신은 그 것을 고통에서 벗어나게 하고 클론 배양실에서 데이터를 삭제합니다.ㅌ </text>
+		</removeCrew>
+	</event>
+</eventList>
+<event name="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_DEFENDER">
+	<text>당신의 엔지는 행성으로 보내져 성공적으로 바이러스의 근원을 찾아 분리주의자의 시스템에서 제거합니다. 그들은 스스로 해결하는 방법을 확인한 뒤, 엔지에게 선물을 주어 배로 다시 가져옵니다.</text>
+	<drone name="RANDOM"/>
+</event>
+
+<!--
+		QUEST!!!
+	Events that can have a quest
+-->
+<eventList name="QUESTS_SEPERATIST">
+	<event load="QUEST_SEPERATIST_ENGI_BOUNTY"/>
+</eventList>
+
+<event name="QUEST_SEPERATIST_ENGI_BOUNTY" unique="true">
+	<text>엔지 함선 중대가 근처의 작은 행성에 캠프를 설치했습니다. 그들은 평화로워 보이며 방어용 드론만이 보호를 위해 온라인 상태입니다.</text>
+	<choice hidden="true">
+		<text>교신한다.</text>
+		<event>
+			<text>"연락요청이 접수됨. 타이밍은 운이 좋음. 제안이 있음. 현재 목표: 분리주의자들을 사냥하고 하모니의 편으로 돌리기. 위험한 분리주의자 선박의 위치가 알려져 있으며, 교전하기에는 위험이 너무 높음. 우리는 당신에게 그 함선들을 포획하기를 요청함."</text>
+			<choice hidden="true">
+				<text>동의한다.</text>
+				<event>
+					<text>엔지가 분리주의자 함선의 위치를 전송합니다.</text>
+					<quest event="QUEST_SEPERATIST_ENGI_BOUNTY_QUEST"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>거절한다.</text>
+				<event>
+					<text>엔지는 즉시 교신을 종료하고 앞으로도 교신에 답하지 않을 겁니다.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>무시한다.</text>
+		<event>
+			<text>엔지 함선은 당신에게 방해받지 않는 것으로 보이며 당신은 그들을 내버려 둡니다..</text>
+			<choice>
+				<text>함선에서 무언가를 한다.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>아무것도 하지 않는다.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_SEPERATIST_ENGI_BOUNTY_QUEST">
+	<text>분리주의자들이 당신을 알아차리는 데는 오랜 시간이 걸리지 않습니다. "그래서, 당신은 나를 죽이러 왔는가? 그렇다면 전투를 준비해라, 연방." 당신은 함선을 파괴하지 않고 포획하라는 엔지의 요청을 기억합니다. 그렇게 하려면 선원을 죽여야 한다는 것을 알고 있습니다.</text>
+	<ship load="SHIP_SEPERATIST_BOUNTY" hostile="true"/>
+	<choice hidden="true">
+		<text>계속...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+</FTL>

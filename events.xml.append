@@ -411,7 +411,7 @@
 	<eventButton name="UI_STORAGE_CHECK_BUTTON">
         <event load="STORAGE_CHECK_BUTTON"/>
         <image border="12">statusUI/top_storage_on</image>
-		<text border="3">STORAGE</text>
+		<!--<text border="3">STORAGE</text>-->
         <location>0</location>
         <tooltip>Open the storage menu.</tooltip>
         <inactiveTooltip>Unavailable: You cannot do this while in danger!</inactiveTooltip>
@@ -425,16 +425,14 @@
     </eventButton>
 </event>
 
-
-
-<event name="OPTION_INVALID">
-	<text>Dude, that's cheating. How are you seeing this right now?</text>
-	<item_modify>
-		<item type="fuel" min="-99999" max="-99999"/>
-		<item type="scrap" min="-99999" max="-99999"/>
-		<item type="missiles" min="-99999" max="-99999"/>
-		<item type="drones" min="-99999" max="-99999"/>
-	</item_modify>
+<event name="ADDON_TRC_INFO">
+	<text>THE RENEGADE COLLECTION
+	Developed by: Kix
+	Currently Disabled.
+	
+	An equipment expansion pack meant to be used alongside Multiverse. Includes many various weapon and drone concepts considered, for one reason or another, unfitting for the base mod. While attempting to be balanced, due to the nature of the equipment in this pack as well as the fact it is not part of base Multiverse means there may be a higher variation of balance than usual. The new weapons include those that are niche, too conceptually similar to existing weapons, involve "hard-to-balance" gimmicks, or are just conceptually bizarre.
+	
+	To enable the Renegade Collection, go to the subset forums and visit the MV addon page!</text>
 </event>
 
 <event name="START_GAME">
@@ -448,20 +446,31 @@
 	<text>당신은 쏜살같이 지나가는 별과 일렁거리는 우주를 바라봤습니다. 당신이 쓸 새로운 대장정의 시작에 걸맞다 할 수 있겠습니다. 다음에는 어떤 일이 일어날까요?</text>
 	<queueEvent seeded="true">THE_JUDGES_VARIABLE_CLEAR</queueEvent>
 	<deathEvent>DEATH</deathEvent>
+	<eventButton name="ADDON_TRC">
+        <event load="ADDON_TRC_INFO"/>
+        <image border="0">addons/trc</image>
+        <customLocation x="115" y="7"/>
+        <tooltip id="addon_hover_trc"/>
+        <jumpClear>false</jumpClear>
+        <noDanger>false</noDanger>
+    </eventButton>
 	<eventButton name="UI_STORAGE_CHECK_BUTTON">
         <event load="STORAGE_CHECK_BUTTON"/>
-        <image border="12">statusUI/top_storage_on</image>
-		<text border="3">STORAGE</text>
-        <location>1</location>
+        <image>statusUI/top_storage</image>
+        <location>2</location>
         <tooltip>Open the storage menu.</tooltip>
         <inactiveTooltip>Unavailable: You cannot do this while in danger!</inactiveTooltip>
-        <color r="255" g="255" b="255"/>
-        <activeColor r="255" g="255" b="255"/>
-        <inactiveColor r="160" g="162" b="171"/>
-        <selectedColor r="58" g="127" b="255"/>
-        <textColor r="23" g="44" b="62"/>
         <jumpClear>false</jumpClear>
         <noDanger>true</noDanger>
+    </eventButton>
+	<eventButton name="UI_TOGGLE_BUTTON">
+        <event load="COMBAT_CHECK_TOGGLE_BUTTON"/>
+        <image>statusUI/top_toggle</image>
+        <customLocation x="105" y="94"/>
+        <tooltip>Toggle a drone or weapon.</tooltip>
+        <inactiveTooltip>Unavailable!</inactiveTooltip>
+        <jumpClear>false</jumpClear>
+        <noDanger>false</noDanger>
     </eventButton>
 	<removeNebula/>
 	<beaconType id="map_icon_start" global="false">
@@ -1073,6 +1082,7 @@
 		<event name="BOON_SELECT_TELEPORTER" req="prof_e_boon_teleporter"/>
 		<event name="BOON_SELECT_MIND" req="prof_e_boon_mind"/>
 		<event name="BOON_SELECT_HACKING" req="prof_e_boon_hacking"/>
+		<event name="BOON_SELECT_CLOAKING" req="prof_e_boon_cloaking"/>
 		<event name="BOON_SELECT_TEMPORAL" req="prof_e_boon_temporal"/>
 		<event name="BOON_SELECT_DRONES" req="prof_e_boon_drones"/>
 		<event name="BOON_SELECT_SENSORS" req="prof_e_boon_sensors"/>
@@ -1102,142 +1112,44 @@
 
 <event name="START_BEACON_EXPLAIN_LOAD">
 	<loadEventList seeded="false" default="START_BEACON_EXPLAIN">
-		<event name="START_BEACON_EXPLAIN_POWERS2" req="STAGE_2"/>
-		<event name="START_BEACON_EXPLAIN_POWERS3" req="STAGE_3"/>
-		<event name="START_BEACON_EXPLAIN_EXTRALIFE" req="EXTRA_LIFE"/>
-		<event name="START_BEACON_EXPLAIN_MVDRIVE" req="MULTIVERSE_DRIVE_GOOD"/>
-		<event name="START_BEACON_EXPLAIN_UNSTABLE" req="EMERGENCY_DRIVE"/>
+		<event name="GIVE_POWERSURGE_2" req="STAGE_2"/>
+		<event name="GIVE_POWERSURGE_3" req="STAGE_3"/>
+		<event name="GIVE_EXTRALIFE" req="EXTRA_LIFE"/>
+		<event name="GIVE_MVDRIVE" req="MULTIVERSE_DRIVE_GOOD"/>
+		<event name="GIVE_UNSTABLE" req="EMERGENCY_DRIVE"/>
+		<event name="GIVE_ATM" req="ATM_MACHINE"/>
 	</loadEventList>
 </event>
-<event name="START_BEACON_EXPLAIN">
-	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에서 무언가를 할 수 있을 것 같습니다.</text>
-	<choice hidden="true" req="prof_beacon_active" blue="true">
-		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
-		<event>
-			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
-			<variable name="loc_beacon_active" op="set" val="1"/>
-			<choice hidden="true">
-				<text>계속...</text>
-				<event>
-					<loadEvent>STORAGE_CHECK</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice>
-		<text>함선에서 무언가를 한다.</text>
-		<event load="STORAGE_CHECK"/>
-	</choice>
-	<choice>
-		<text>아무것도 하지 않는다.</text>
-		<event/>
-	</choice>
-</event>
-<event name="START_BEACON_EXPLAIN_POWERS2">
-	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
+<event name="GIVE_POWERSURGE_2">
 	<triggeredEvent event="FLAGSHIP_STAGE2_TRACKER" seeded="false" loops="999999999" jumps="1"/>
-	<choice hidden="true" req="prof_beacon_active" blue="true">
-		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
-		<event>
-			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
-			<variable name="loc_beacon_active" op="set" val="1"/>
-			<choice hidden="true">
-				<text>계속...</text>
-				<event>
-					<loadEvent>STORAGE_CHECK</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice>
-		<text>함선에서 무언가를 한다.</text>
-		<event load="STORAGE_CHECK"/>
-	</choice>
-	<choice>
-		<text>아무것도 하지 않는다.</text>
-		<event/>
-	</choice>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
 </event>
-<event name="START_BEACON_EXPLAIN_POWERS3">
-	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
+<event name="GIVE_POWERSURGE_3">
 	<triggeredEvent event="FLAGSHIP_STAGE3_TRACKER" seeded="false" loops="999999999" jumps="1"/>
-	<choice hidden="true" req="prof_beacon_active" blue="true">
-		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
-		<event>
-			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
-			<variable name="loc_beacon_active" op="set" val="1"/>
-			<choice hidden="true">
-				<text>계속...</text>
-				<event>
-					<loadEvent>STORAGE_CHECK</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice>
-		<text>함선에서 무언가를 한다.</text>
-		<event load="STORAGE_CHECK"/>
-	</choice>
-	<choice>
-		<text>아무것도 하지 않는다.</text>
-		<event/>
-	</choice>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
 </event>
-<event name="START_BEACON_EXPLAIN_EXTRALIFE">
-	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
+<event name="GIVE_EXTRALIFE">
 	<triggeredEvent event="EXTRA_LIFE_HEAL" playerHull="3" clearOnJump="false"/>
-	<choice hidden="true" req="prof_beacon_active" blue="true">
-		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
-		<event>
-			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
-			<variable name="loc_beacon_active" op="set" val="1"/>
-			<choice hidden="true">
-				<text>계속...</text>
-				<event>
-					<loadEvent>STORAGE_CHECK</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice>
-		<text>함선에서 무언가를 한다.</text>
-		<event load="STORAGE_CHECK"/>
-	</choice>
-	<choice>
-		<text>아무것도 하지 않는다.</text>
-		<event/>
-	</choice>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
 </event>
-<event name="START_BEACON_EXPLAIN_MVDRIVE">
-	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
+<event name="GIVE_MVDRIVE">
 	<triggeredEvent event="MV_DRIVE_EXPLODE" loops="999999999">
 	  <jumps amount="1" type="1"/>
 	</triggeredEvent>
-	<choice hidden="true" req="prof_beacon_active" blue="true">
-		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
-		<event>
-			<text>당신은 이 송신기가 낯설지 않게 느껴졌습니다. 이것의 기능이 무엇인지 확실하지는 않지만, 당신은 호기심을 가득 차 송신기를 작동시켰습니다. 아마도 이것은 뭔가 커다란 결과를 불러올 것입니다...</text>
-			<variable name="loc_beacon_active" op="set" val="1"/>
-			<choice hidden="true">
-				<text>계속...</text>
-				<event>
-					<loadEvent>STORAGE_CHECK</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice>
-		<text>함선에서 무언가를 한다.</text>
-		<event load="STORAGE_CHECK"/>
-	</choice>
-	<choice>
-		<text>아무것도 하지 않는다.</text>
-		<event/>
-	</choice>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
 </event>
-<event name="START_BEACON_EXPLAIN_UNSTABLE">
-	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
+<event name="GIVE_UNSTABLE">
 	<triggeredEvent event="UNSTABLE_CHECKER" loops="999999999" jumps="1"/>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_ATM">
+	<triggeredEvent name="ATM_CHECKER" event="ATM_MACHINE_WITHDRAW_CHECK" loops="999999999">
+	  <jumps amount="1" type="1"/>
+	</triggeredEvent>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="START_BEACON_EXPLAIN">
+	<text>당신은 마침내 출발 준비를 마쳤습니다. 송신소 지도를 보니 반군 함대가 완전한 위협이 되기 전 까지 약간 시간이 있는 것 같습니다. 원한다면 함선에 추가 개조를 할 수 있을 것 같습니다.</text>
 	<choice hidden="true" req="prof_beacon_active" blue="true">
 		<text>근처에 이상한 송신기가 놓여 있습니다. 작동시키겠습니까?</text>
 		<event>
@@ -1262,7 +1174,13 @@
 </event>
 
 <event name="FINISH_BEACON">
-    <text>당신은 장거리 송신소에 도착했습니다. FTL 드라이브 충전이 완료되면 다음 구역으로 이동할 수 있습니다.</text>
+    <loadEventList seeded="true" first="false" generate="true">
+		<event name="FINISH_BEACON_REAL"/>
+		<event name="FINISH_BEACON_DEBT" req="LOANS" lvl="1"/> <!--in events_standard.xml-->
+	</loadEventList>
+</event>
+<event name="FINISH_BEACON_REAL">
+    <text>장거리 송신소에 도착했습니다. FTL 드라이브 충전이 완료되면 다음 구역으로 이동할 수 있습니다.</text>
     <choice hidden="true">
         <text>탐사한다.</text>
         <event load="EXIT_LIST"/>
@@ -1278,7 +1196,14 @@
 </event>
 
 <event name="FINISH_BEACON_NEBULA">
-	<text> 장거리 송신소는 성운 속에 위치해 있습니다. FTL 드라이브 충전이 완료되면 다음 구역으로 이동할 수 있습니다.</text>
+    <loadEventList seeded="true" first="false">
+		<event name="FINISH_BEACON_NEBULA_REAL"/>
+		<event name="FINISH_BEACON_NEBULA_REAL"/>
+		<event name="FINISH_BEACON_DEBT" req="LOANS" lvl="1"/>
+	</loadEventList>
+</event>
+<event name="FINISH_BEACON_NEBULA_REAL">
+	<text>이 장거리 송신소는 성운 속에 위치해 있습니다. FTL 드라이브 충전이 완료되면 다음 구역으로 이동할 수 있습니다.</text>
 	<choice hidden="true">
 		<text>탐사한다.</text>
 		<event load="NEBULA_EXIT"/>
@@ -3346,61 +3271,61 @@
 </event>
 
 <event name="DONOR_PONY" unique="true">
-	<text>Scanners are showing intelligent life forms on a nearby planet. No match for them can be found in the database.</text>
+	<text>스캐너가 인근 행성에서 고등한 생명 신호를 발견했습니다. 이 생명신호와 일치하는 데이터베이스는 찾을 수 없었습니다.</text>
 	<choice hidden="true">
-		<text>Investigate.</text>
+		<text>조사한다.</text>
 		<event>
-			<text>You land a small shuttle in an enormous field, whose only occupants are small, brightly colored, six-legged, horse-like animals. Could they be what your scans picked up?</text>
+			<text>당신은 광활한 벌판에 조그만 셔틀로 착륙했습니다. 그곳의 거주자들은 체구가 작았으며 밝은 색을 띄었고, 여섯 개의 발을 가진, 말과 비슷하게 생긴 동물이었습니다. 이것들이 당신의 스캐너로 발견한 생명체인 걸까요?</text>
 			<choice hidden="true">
-				<text>Try to communicate peacefully.</text>
+				<text>평화적으로 의사소통을 시도한다.</text>
 				<event load="DONOR_PONY_PEACE"/>
 			</choice>
 			<choice hidden="true">
-				<text>Bring some of the creatures on board to sell.</text>
+				<text>몇마리를 함선에 끌고와 팔아버린다</text>
 				<event load="PONY_SELL"/>
 			</choice>
 			<choice hidden="true">
-				<text>Leave.</text>
+				<text>떠난다.</text>
 				<event>
-					<text>This isn't the time for exobiology. You head back to the ship.</text>
+					<text>지금은 우주 생물학 따위를 할 때가 아닙니다. 당신은 함선으로 되돌아갔습니다.</text>
 				</event>
 			</choice>
 			<choice hidden="true" req="mind">
-				<text>(Mind Control) Pacify the ponies and steal one.</text>
+				<text>(정신지배 장비) 말들을 달래며 한마리를 훔친다.</text>
 				<event>
-					<text>Under the effects of the mind control the pony does nothing to resist you, allowing you to collect it with little difficulty.</text>
+					<text>정신 지배의 효과로 인해 말은 저항을 하지 않고, 별다른 어려움 없이 데려옵니다.</text>
 					<crewMember amount="1" class="pony"/>
 				</event>
 			</choice>
 			<choice hidden="true" req="LIST_CREW_SLUG">
-				<text>(Slug Crew) Attempt to communicate telepathically.</text>
+				<text>(슬러그 선원) 텔레파시로 의사소통을 시도한다.</text>
 				<event>
-					<text>After a moment, your crew tells you that these are simple beings, who enjoy a peaceful life. Your Slug puts the horse into a calm state, and you even manage to bring back a specimen. Without any fear of the horses, you explore further and even find old wreckage on the planet of an Engi ship, though the inhabitant is dead.</text>
+					<text잠시 후, 당신의 승무원은 그들이 평화로운 삶을 즐기는 단순한 존재라고 말했습니다. 슬러그는 말을 평온하게 만들고는 말 한마리를 가져왔습니다. 말들에 대한 두려움이 떨쳐내고 멀리 탐험을 하니 모든 거주민들이 죽은 엔지 함선의 행성에서 오래된 잔해를 발견했습니다.</text>
 					<crewMember amount="1" class="pony"/>
 					<autoReward level="HIGH">stuff</autoReward>
 				</event>
 			</choice>
-			<choice hidden="true" req="nights">
-				<text>(Nights) "Oi, lisssten up you freakin' horssse thingsss!"</text>
+			<choice hidden="true" req="unique_nights">
+				<text>(Nights) "어이, 망할 말들아 입 좀 다물어봐!"</text>
 				<event>
-					<text>Nights drunkenly stumbles forwards, shouting at the horses randomly. This scares them away, but fortunately you follow them back to the location of a crash site where you find a barely alive Engi Defender and a lot of scrap. Nights might be a hungover idiot, but at least he accidentally brings you into a lot of beneficial situations.</text>
+					<text>나이트는 술에 취해 마구잡이로 말을 향해 소리치며 앞으로 비틀거렸습니다. 이것은 그들을 겁주어 도망치게 만들었고 다행히 당신은 간신히 살아 있는 Engi Defender와 많은양의 스크랩이 발견된 추락 현장으로 따라갔습니다. 나이트는 숙취에 시달리는 얼간이 이였지만 우연히도 당신을 유용한 상황으로 이끌었습니다.</text>
 					<crewMember amount="1" class="engi_defender"/>
 					<autoReward level="HIGH">scrap_only</autoReward>
 				</event>
 			</choice>
 			<choice hidden="true" req="LIST_CREW_JERRY">
-				<text>(Jerry) Jerry wants to pet a horse.</text>
+				<text>(Jerry) 제리는 말을 쓰다듬고 싶어 합니다.</text>
 				<event>
-					<text>You shrug and let Jerry go. To your surprise, he returns in the shuttle with one of the horses with him. Who the hell even is this guy?</text>
+					<text>당신은 어깨를 으쓱하고는 제리를 가게 내버려둡니다. 놀랍게도, 그는 말 한 마리와 함께 셔틀을 타고 돌아왔습니다. 대체 이 사람은 뭐하는 사람일까요?</text>
 					<crewMember amount="1" class="pony"/>
 				</event>
 			</choice>
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>Ignore it.</text>
+		<text>무시한다.</text>
 		<event>
-			<text>You ignore the readings and prepare to move on.</text>
+			<text>당신은 스캔 결과를 무시하고 떠나려 했습니다.</text>
 			<choice hidden="true">
 				<text>창고를 확인한다.</text>
 				<event load="STORAGE_CHECK"/>
@@ -3414,50 +3339,50 @@
 </event>
 <eventList name="DONOR_PONY_PEACE">
 	<event>
-		<text>None of your attempts to communicate seem to work: they just stare at you silently. As you prepare to leave, one of the creatures canters forward and forcefully nudges you away from the ship. He seems to want you to follow him. Eventually, they guide you to an old Engi ship's crash site. Inside you are able to find and reactivate an Engi!</text>
+		<text>대화하려는 당신의 시도는 아무런 효과가 없습니다. 그들은 그저 조용히 당신을 바라볼 뿐이었습니다. 떠날 채비를 하고 있을 때, 생물 중 하나가 앞으로 나아가서 강제로 당신을 함선에서 밀어냈습니다. 그는 당신이 자기를 따라오길 바라는 것 같습니다. 그들은 당신을 오래된 엔지 함선의 추락 현장으로 안내했습니다. 내부에서 엔지를 찾아서 다시 활성화할 수 있습니다!</text>
 		<crewMember amount="1" class="engi"/>
 		<autoReward level="LOW">standard</autoReward>
 	</event>
 	<event>
-		<text>You try to communicate in every possible way you can but they just stand there, silently judging you with their large, expressionless eyes. You prepare to leave.</text>
+		<text>당신은 가능한 한 모든 방법으로 의사소통을 하려고 노력하지만, 그들은 그저 크고 무표정한 눈으로 당신을 묵묵히 서 있을 뿐이었습니다. 당신은 떠날 채비를 합니다.</text>
 	</event>
 </eventList>
 <event name="PONY_SELL">
-	<text>The seemingly docile creatures quickly turn violent when you show your hostile intentions. They stampede with terrifying force, charging the ship before you have time to react.</text>
+	<text>유순해 보이는 생물들은 적대적인 태도를 보이니 곧바로 폭력적으로 변했습니다. 그들은 무서운 힘으로 돌진해 당신이 반응할 틈도 없이 배를 덮쳤습니다.</text>
 	<boarders min="3" max="3" class="pony"/> 
 </event>
 
 <event name="DONOR_PLAGUE" unique="true">
-	<text>You arrive near a damaged and dilapidated space station. It appears to be abandoned but you detect faint life signatures on board.</text>
+	<text>파손되고 황폐해진 우주 정거장 근처에 도착했습니다. 버려진 것처럼 보이지만 기내에서 희미한 생명 징후를 발견할 수 있었습니다.</text>
 	<choice hidden="true">
-		<text>Board the station and look for survivors.</text>
+		<text>정류장에 탑승해서 생존자를 찾는다.</text>
 		<event load="DONOR_PLAGUE_LIST"/>
 	</choice>
 	<choice hidden="true">
-		<text>Scrap some of the debris.</text>
+		<text>잔해를 스크랩한다.</text>
 		<event>
-			<text>While waiting for the FTL drive to charge, you skirt around the edge of the station and collect some scrap.</text>
+			<text>FTL 드라이브가 충전되기를 기다리는 동안 정류장의 가장자리를 피해서 스크랩을 수거합니다.</text>
 			<autoReward level="RANDOM">scrap_only</autoReward>
 		</event>
 	</choice>
 	<choice hidden="true" req="LIST_CREW_SLUG">
-		<text>(Slug Crew) Your Slug senses lifeforms aboard the ship, none of them look promising.</text>
+		<text>(슬러그 선원) 슬러그는 함선에 있는 생명체를 감지하지만, 모두 상태가 좋아 보이진 않았습니다.</text>
 		<event>
-			<text>Following your Slug's advice, you decide to avoid the station. While waiting for the FTL drive to charge, you skirt around the edge of the station and collect some scrap.</text>
+			<text>슬러그의 조언에 따라 당신은 정류장을 피하기로 결심했습니다. 초광속 드라이브가 충전되기를 기다리는 동안 정류장의 가장자리를 피해서 스크랩을 수거합니다.</text>
 			<autoReward level="RANDOM">scrap_only</autoReward>
 		</event>
 	</choice>
 	<choice hidden="true" req="LIFE_SCANNER">
-		<text>(Lifeform Scanners) Run scans on the station.</text>
+		<text>(생체 감지기)정류장에 스캐너를 가동한다.</text>
 		<event>
-			<text>Scans show quite the depressing scene inside. Most of the crew are already dead, and they show signs of disease. It's best not to go anywhere near the station, and just scrap the hull instead.</text>
+			<text>스캔 결과 참담한 장면이 확인됐습니다. 대부분의 선원들은 이미 사망했고 살아남은 일부는 질병의 징후가 보입니다. 내부까진 살펴보지 말고 선체만 파헤치는 것이 좋아보입니다.</text>
 			<autoReward level="RANDOM">scrap_only</autoReward>
 		</event>
 	</choice>
 	<choice hidden="true" req="BLUELIST_DRONES_BOARDING">
-		<text>(Boarding Drone) Send the drone. [-1|]</text>
+		<text>(강습 드론) 드론을 보낸다. [-1|]</text>
 		<event>
-			<text>Human corpses are scattered across the station. You find the source of the signal, a lone survivor that locked themselves in a storage closet. They desperately cling onto your drone while sobbing. Knowing what a traumatic experience it must have been, you run some evaluations but ultimately decide they're stable enough to be of help. You quickly retreat with them in tow back to the ship, and hope they can recover enough to be of some use.</text>
+			<text>정류장 곳곳에 시체가 널브러져 있습니다. 창고에 스스로 가둔 생존자의 생존 신호를 찾았습니다. 그는 흐느끼면서 필사적으로 당신의 드론에 매달립니다. 얼마나 충격적인 경험이었는지 알고, 당신은 몇 가지 평가를 실시를 하며 궁극적으로 그가 도와주기에 안정적이라는 것을 판단했습니다. 그를 데리고 재빨리 배로 후퇴하고 도움이 될 만큼 회복되기를 바랍니다.</text>
 			<autoReward level="LOW">scrap_only</autoReward>
 			<crewMember amount="1" class="human"/>
 			<item_modify>
@@ -3468,31 +3393,31 @@
 </event>
 <eventList name="DONOR_PLAGUE_LIST">
 	<event>
-		<text>All around you is the stench of death and decay. The life sign readings must have been malfunctioning because you really doubt anything could be alive in here. You quickly return to the ship.</text>
+		<text>온갖 시체와 부패물 사이에서 악취가 진동을 합니다. 생체 신호 감지는 오작동이었음이 틀림 없습니다. 이런 상황에서는 그 누구라도 살아있을 리 만무하기 때문입니다. 당신은 재빨리 함선으로 돌아왔습니다.</text>
 		<autoReward level="LOW">scrap_only</autoReward>
 	</event>
 	<event>
-		<text>Human corpses are scattered across the station. You find the source of the signal, a lone survivor that locked themselves in a storage closet. You quickly retreat with them in tow back to the ship, and hope they can recover enough to be of some use.</text>
+		<text>인간 시체들이 정거장 전체에 흩어져있습니다. 당신은 생체 신호의 근원지를 찾았습니다. 한 외로운 생존자가 창고 벽장에 숨어있었습니다. 당신은 그를 데리고 빠르게 함선으로 되돌아왔습니다. 그가 잘 회복해서 함선에 도움이 되길 바라면서 말입니다.</text>
 		<autoReward level="LOW">scrap_only</autoReward>
 		<crewMember amount="1" class="human"/>
 	</event>
 	<event>	
-		<text>All around you is the stench of death and decay. Suddenly, one of your crew bends over and starts retching violently. Some sort of disease must have wiped out this station. You pull back to the ship, but it looks like your crewmember is not going to make it.</text>
+		<text>온갖 시체와 부패물 사이에서 악취가 진동을 합니다. 당신의 승무원 중 한 명이 갑자기 위험할 정도로 구역질하기 시작합니다. 아무래도 이 정거장은 어떤 종류의 질병에 당한 모양입니다. 당신과 승무원들은 함선으로 서둘러 돌아왔습니다만, 구역질하던 승무원은 아무래도 죽을 것 같습니다.스크린 리더 지원이 사용 설정되었습니다.</text>
 		<autoReward level="LOW">scrap_only</autoReward>
 		<choice hidden="true">
 			<text>계속...</text>
 			<event>
-				<text>Your crewmember insists you leave them behind, not wanting to endanger the rest of the crew. Knowing the truth of this, you hurry back to the ship.</text>
+				<text>당신의 승무원은 그들을 남겨두고 떠나라고 주장했습니다. 나머지 승무원들을 위험에 빠뜨리고 싶지 않습니다. 이 일의 진실을 알고, 당신은 서둘러 배로 돌아갔습니다.</text>
 				<removeCrew>
 					<clone>false</clone>
-					<text>You stop your crew's clone from forming, knowing that the disease would follow into his next life.</text>
+					<text>당신은 그의 다음 생에서도 질병이 따라 올 것을 알고 승무원이 복제 되는 것을 멈춥니다.</text>
 				</removeCrew>
 			</event>
 		</choice>
 		<choice hidden="true" req="medbay" lvl="2">
-			<text>(Improved Medbay) Try to cure the disease.</text>
+			<text>(고급 의료실)병을 고치려고 노력한다.</text>
 			<event>
-				<text>Your advanced medical suite is able to isolate the cause of the problem and administer an antidote. That was a close one.</text>
+				<text>당신은 고급 의료실에서 질병의 원인을 파악하고 해독제를 투여할 수 있었습니다. 정말 아슬아슬했습니다.</text>
 			</event>
 		</choice>
 	</event>
@@ -3501,13 +3426,13 @@
 <event name="TRADER_UPGRADES_EXCHANGE" unique="true"> 
 	<text load="TRADER_UPGRADES_EXCHANGE_TEXT"/>
 	<choice>
-		<text>Agree to the trade.</text>
+		<text>거래를 승낙한다.</text>
 		<event load="TRADER_UPGRADES_EXCHANGE_LIST"/>
 	</choice>
 	<choice>	
-		<text>Respectfully decline.</text>
+		<text>정중하게 거절한다.</text>
 		<event>	
-			<text>You decide you need what supplies you have.</text>
+			<text>가지고 있는 보급품 중 무엇이 필요한지 결정합니다.</text>
 			<choice hidden="true">
 				<text>창고를 확인한다.</text>
 				<event load="STORAGE_CHECK"/>
@@ -3520,12 +3445,12 @@
 	</choice>
 </event>
 <textList name="TRADER_UPGRADES_EXCHANGE_TEXT">
-	<text>"You look like a military vessel. We're trying to get back to our homes alive. I'm an engineer by trade and could try to improve your reactor if you have any extra supplies."</text>
-	<text>You receive a message from a small convoy. They're looking for some military supplies and are offering to try to improve your reactor in exchange.</text>
+	<text>"당신은 군함인 것 같네요. 우린 살아서 집으로 돌아가려고 노력중입니다. 저는 엔지니어입니다. 여분의 물자가 있으면 반응로를 개선할 수 있습니다."</text>
+	<text>당신은 작은 호송선으로부터 메시지를 받았습니다. 그들은 군사 물자를 찾고 있고 그 대가로 원자로를 개선하겠다고 제안합니다.</text>
 </textList>
 <eventList name="TRADER_UPGRADES_EXCHANGE_LIST">
 	<event>
-		<text>You make the exchange and their team comes on board to try to improve your reactor.</text>
+		<text>당신이 교환을 하면 그들이 당신의 반응로를 개선하기 위해 승선할 것입니다.</text>
 		<item_modify>
 			<item type="missiles" min="-5" max="-3"/>
 			<item type="drones" min="-2" max="-0"/>
@@ -3533,7 +3458,7 @@
 		<upgrade amount="1" system="reactor"/>
 	</event>
 	<event>
-		<text>You make the exchange and their team comes on board to try to improve your reactor.</text>
+		<text>당신이 교환을 하면 그들이 당신의 반응로를 개선하기 위해 승선할 것입니다.</text>
 		<item_modify>
 			<item type="missiles" min="-2" max="0"/>
 			<item type="drones" min="-3" max="-2"/>
@@ -3541,7 +3466,7 @@
 		<upgrade amount="1" system="reactor"/>
 	</event>
 	<event>
-		<text>You make the exchange and their team comes on board to try to improve your reactor.</text>
+		<text>당신이 교환을 하면 그들이 당신의 반응로를 개선하기 위해 승선할 것입니다.</text>
 		<item_modify>
 			<item type="missiles" min="-2" max="0"/>
 			<item type="drones" min="-2" max="0"/>
@@ -3552,15 +3477,15 @@
 </eventList>
 
 <event name="ASTEROID_EXPLORE" unique="true">
-	<text>Scans reveal a large asteroid field nearby. Short-range scanners may discover useful materials while we wait for the FTL to recharge.</text>
+	<text>근처에 큰 소행성 지대가 탐지되었습니다. 초광속 도약을 기다리는동안 단거리 탐지기를 이용해 유용한 자원을 찾을 수도 있습니다.</text>
 	<choice hidden="true">
-		<text>Explore the asteroid field.</text>
+		<text>소행성 지대를 탐사한다.</text>
 		<event load="ASTEROID_EXPLORE_RESULTS"/>
 	</choice>
 	<choice>	
-		<text>Too dangerous. We'll just wait for the FTL to charge.</text>
+		<text>너무 위험하다. 그냥 초광속 도약을 기다리자.</text>
 		<event>
-			<text>You move on from the asteroid field.</text>
+			<text>당신은 소행성 지대에서 벗어납니다.</text>
 			<choice hidden="true">
 				<text>창고를 확인한다.</text>
 				<event load="STORAGE_CHECK"/>
@@ -3572,30 +3497,30 @@
 		</event>
 	</choice>
 	<choice req="SCRAP_COLLECTOR" hidden="true">
-		<text>(Scrap Recovery Arm) Attempt to mine the asteroids.</text>
+		<text>(Scrap Recovery Arm) 소행성을 채굴을 시도한다.</text>
 		<event>
-			<text>You carefully extract as much usable material as possible from the nearest asteroids while waiting for the FTL to charge.</text>
+			<text>당신은 초광속 도약을 기다리는동안 근처 소행성에서 할 수 있을 만큼 자원을 추출했습니다.</text>
 			<autoReward level="HIGH">scrap_only</autoReward>
 		</event>
 	</choice>
 	<choice req="MAGNET_ARM" hidden="true">
-		<text>(Magnetic Arm) Attempt to mine the asteroids.</text>
+		<text>(Magnetic Arm) 소행성 채굴을 시도해본다.</text>
 		<event>
-			<text>Your magnetic arm is not well suited to the task, but it is able to salvage a very small portion of space junk drifting around nearby.</text>
+			<text>당신의 마그네틱 암은 이 작업에 적합하지 않지만, 근처를 떠도는 우주 쓰레기의 극히 일부를 건져낼 수 있었습니다.</text>
 			<autoReward level="LOW">stuff</autoReward>
 		</event>
 	</choice>
 	<choice req="BLUELIST_MINING" hidden="true">
-		<text>(Mining Equipment) Attempt to mine the asteroids.</text> 
+		<text>(Mining Equipment) 소행성을 채굴을 시도한다.</text> 
 		<event>
-			<text>You carefully extract as much usable material as possible from the nearest asteroids while waiting for the FTL to charge.</text>
+			<text>당신은 초광속 도약을 기다리는동안 근처 소행성에서 할 수 있을 만큼 자원을 추출했습니다.</text>
 			<autoReward level="HIGH">scrap_only</autoReward>
 		</event>
 	</choice>
 	<choice req="BLUELIST_DRONES_BEAM" hidden="true">
-		<text>(Beam Drone) Attempt to mine the asteroids. [-1|]</text> 
+		<text>(Beam Drone) 소행성 채굴을 시도해본다. [-1|]</text> 
 		<event>
-			<text>You carefully extract as much usable material as possible from the nearest asteroids while waiting for the FTL to charge.</text>
+			<text>당신은 초광속 도약을 기다리는동안 근처 소행성에서 할 수 있을 만큼 자원을 추출했습니다.</text>
 			<autoReward level="HIGH">scrap_only</autoReward>
 			<item_modify>
 				<item type="drones" min="-1" max="-1"/>
@@ -3605,28 +3530,28 @@
 </event>
 <eventList name="ASTEROID_EXPLORE_RESULTS">
 	<event>
-		<text>A brief exploration yields nothing of interest.</text>
+		<text>짧은 탐사동안 쓸만한 것은 발견되지 않았습니다.</text>
 	</event>
 	<event>
-		<text>Scans reveal a number of asteroids with useful compositions. You extract some fuel.</text>
+		<text>탐색 결과 다수의 소행성에서 유용한 화합물이 발견되었습니다. 당신은 연료를 추출했습니다.</text>
 		<autoReward level="HIGH">fuel_only</autoReward>
 	</event>
 	<event>
-		<text>You discover the remains of ship embedded into an asteroid. It still has some functional missiles.</text>
+		<text>당신은 소행성에 박혀있는 함선의 잔해들을 발견했습니다. 작동 가능한 미사일 몇개가 들어있었습니다.</text>
 		<autoReward level="MED">missiles</autoReward>
 	</event>
 	<event>
-		<text>You happen upon an abandoned mining site. A few mining drones were left behind and could be repurposed.</text>
+		<text>당신은 우연히 버려진 광산을 발견했습니다. 채굴 드론 몇개가 남아 있었고 다른 용도로 쓸 수 있어 보입니다.</text>
 		<autoReward level="MED">droneparts</autoReward>
 	</event>
 	<event>
-		<text>The asteroid field proved more dangerous than expected. Some asteroids managed to get through your ship's defenses.</text>
+		<text>소행성 지대는 예상보다 더 위험한 것으로 드러났습니다. 몇몇 소행성이 함선의 방어를 뚫었습니다.</text>
 		<damage amount="3"/>
 		<damage amount="1" system="random"/>
 		<damage amount="1" system="room" effect="fire"/>
 	</event>
 	<event>
-		<text>A pirate ship hiding behind one of the larger asteroids attacks you!</text>
+		<text>커다란 소행성 뒤에 숨어있던 해적선이 당신을 공격했습니다!</text>
 		<ship load="SHIP_PIRATE_ALL" hostile="true"/>
 		<environment type="asteroid"/>
 		<choice hidden="true">
@@ -3660,41 +3585,41 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="BOARDERS_HACKING" unique="true">
-	<text>You catch a glimpse of a strange signal coming from a space station before your sensors shut off unexpectedly. As you discover that your sensors are being jammed, you hear hostiles beam onto your ship.</text>
+	<text>당신은 우주 정거장에서 이상한 신호가 흘러나오는 것을 감지합니다. 조금 뒤, 당신의 센서가 별안간 꺼져버립니다. 당신이 그것이 오류 때문이 아닌, 방해 전파에 의한 것이란 것을 알아챈 순간, 당신은 적대적인 인원들이 당신의 함선에 올라타는 소리를 듣습니다. 싸울 준비를 하세요!</text>
 	<boarders min="3" max="5" class="human"/>
 	<choice hidden="true">
 		<text>계속...</text>
 		<event>
-			<text>Until you are able to jump away from the hostile space station, your sensors will be disabled. You should deal with these boarders first though!</text>
+			<text>당신이 적대적인 우주 정류장에서 벗어날 수 있을 때까지, 당신의 센서는 사용할 수 없게 될 것입니다. 먼저 이 탑승자들을 먼저 상대해야 합니다!</text>
 			<status type="limit" target="player" system="sensors" amount="0"/>
 		</event>
 	</choice>
 	<choice hidden="true" req="hacking"> <!--DLC - added -->
-		<text>(Hacking System) Counter the remote hacking.</text>
+		<text>(Hacking System)원격 해킹을 상쇄한다.</text>
 		<event>
-			<text>Your hacking system automatically counters the digital assault. Your Sensors flicker back on and you prepare to fight the boarders.</text>
+			<text>해킹 시스템은 자동적으로 디지털 공격에 대응합니다. 센서가 다시 복구되고 당신은 탑승자들과 싸울 채비를 합니다.</text>
 		</event>
 	</choice>
 	<choice hidden="true" req="ANTI_VIRUS">
-		<text>(Anti-Virus) Counter the remote hacking.</text>
+		<text>(Anti-Virus) 원격 해킹을 상쇄한.</text>
 		<event>
-			<text>Your Sensors flicker back on and you prepare to fight the boarders.</text>
+			<text>센서가 다시 복구 되고 당신은 탑승자와 싸울 준비를 합니다.</text>
 		</event>
 	</choice>
 </event>
 
 <event name="STATION_SICK" unique="true">
-	<text>You arrive to find a small research station putting out a distress signal. There is no response to your hails.</text>
+	<text>도착한 당신은 작은 연구 시설이 조난 신호를 보내고 있는것을 발견합니다. 당신은 응답 신호를 전송했지만, 아무도 응답하지 않았습니다.</text>
 	<choice hidden="true">
-		<text>Dock with the station and investigate.</text>
+		<text>정거장에 정박한 뒤 조사한다.</text>
 		<event load="STATION_SICK_LIST"/>
 	</choice>
 	<choice>
-		<text>Leave it alone.</text>
+		<text>그냥 내버려 둔다.</text>
 		<event>
-			<text>It's not worth risking your crew like this.</text>
+			<text>이런 식으로 승무원들을 위험에 빠뜨릴 필요는 없습니다.</text>
 			<choice>
-				<text>Do something on-board the ship.</text>
+				<text>함선안에서 무언가를 한다.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
@@ -3704,17 +3629,17 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="BLUELIST_DRONES_BOARDING">
-		<text>(Boarding Drone) Use a drone to investigate. [-1|]</text>
+		<text>(Boarding Drone) 드론을 사용하여 조사한다 [-1|]</text>
 		<event load="STATION_SICK_DRONE_LIST"/>
 	</choice>  
 	<choice hidden="true" req="LIFE_SCANNER">
-		<text>(Life Scanner) Run advanced life scans.</text>
+		<text>(Life Scanner) 생명 센서를 가동한다.</text>
 		<event load="STATION_SICK_SCANNER"/>
 	</choice>
 	<choice hidden="true" req="INFO_MACHINE">
-		<text>(Analyzer) Gather the station's logs.</text>
+		<text>(Analyzer) 정거장의 일지를 모은다.</text>
 		<event>
-			<text>The logs show that a number of the crew on this station died from the effects of a parasite that caused cannibalistic notions in the human mind. Knowing it is far too risky to enter, you stick to salvaging the exterior.</text>
+			<text>일지를 보면, 이 정거장의 승무원 다수가 식인을 유발하는 기생충으로 인해 사망했다는 것을 알 수 있었습니다. 들어가기에는 너무 위험하다는 것을 깨닫고, 선체 외부 인양 작업에 매진합니다.</text>
 			<autoReward level="MED">standard</autoReward>
 		</event>
 	</choice>		
@@ -3724,61 +3649,61 @@
 		<text>Sensors show scattered signs of life although most of the crew are deceased. However the health signatures of the living indicate they are violent and unstable. You decide it's better to move on than risk engaging the remaining crew.</text>
 	</event>
 	<event>
-		<text>There are no life signs detected on the ship although there appears to be a number of deceased crew. There does not appear to be any airborn contagions so your crew quickly salvages what they can before moving on. You can only wonder what befell the station.</text>
+		<text>배에서는 어떤 생명 징후가 포착되지 않았습니다. 승무원들이 모두 사망한 것으로 보입니다. 공기로부터 전염되는 것으로 보이지 않았기에 승무원들은 다른 곳으로 이동하기 전에 가능한 쓸만한 것을 재빨리 회수합니다. 정거장에서 무슨 일이 일어났는지 궁금할 뿐입니다.</text>
 		<autoReward level="MED">standard</autoReward>
 	</event>
 </eventList>
 <eventList name="STATION_SICK_LIST">
 	<event>
-		<text>Inside there are signs of a great struggle; scientists lie dead where they fell, brutally dismembered. You grab a few research drone parts lying on a desk near the door and leave quickly.</text>
+		<text>안으로 들어가자, 당신은 엄청난 싸움의 흔적을 발견할 수 있었습니다. 과학자들은 무자비하게 찢겨진 채로 죽어있었으며, 사방이 그들의 피로 물들어 있었습니다. 당신은 연구용 드론의 부품 몇 개를 챙긴 뒤 서둘러 떠났습니다.</text>
 		<autoReward level="MED">droneparts</autoReward>
 	</event>
 	<event>
-		<text>You dock with the station and see a frantic person banging on the airlock door. Once inside your ship, he drops to the floor saying, "My... friends... They've gone insane... They're coming!" You hand him a blaster and turn to see a number of people charging toward the ship.</text>
+		<text>당신이 정거장에 착륙하자, 몹시 흥분한 사람이 에어락 문을 두드렸습니다. 문을 열자 그는 쓰러지듯 당신의 함선 안으로 들어왔습니다. "내... 동료들... 그들은 전부 미쳐버렸어요... 저기, 그들이 와요!" 당신은 그에게 무기를 쥐어준 뒤, 함선을 향해 몰려오는 군중들을 발견합니다.</text>
 		<crewMember amount="1"/>
 		<choice>
-			<text>Prepare for a fight!</text>
+			<text>싸울 준비를 한다!</text>
 			<event>
 				<boarders min="3" max="4" class="human"/>
 			</event>
 		</choice>
 		<choice hidden="true" req="medbay" lvl="3" max_group="0"> 
-			<text>(Medbay) Have the Advanced Medbay analyze their condition.</text>
+			<text>(Medbay) 향상된 의료실을 이용해 그들의 상태를 점검한다.</text>
 			<event>
-				<text>You hold them off while retreating into the Med-bay. Its advanced systems determine that an alien neurotoxin is the cause of their frenzy. It synthesizes an antidote and releases it into the room. After a time, the scientists recover. One offers their services as thanks for saving them.</text>
+				<text>당신은 그들을 막아내며 의료실까지 퇴각했습니다. 향상된 의료 시스템이 그들이 외계 신경독에 감염되었음을 밝혀내었고, 그것이 그들의 광증을 유발하고 있다는 것도 알려주었습니다. 당신은 치료제를 합성하여 그들이 몰려들고 있는 방에 살포하였습니다. 잠시 뒤, 과학자들은 모두 회복되었습니다. 그들 중 한 명이 감사의 표시로 당신을 따르기로 했습니다.</text>
 				<crewMember repair="1" amount="1"/>
 				<autoReward level="MED">scrap_only</autoReward>
 			</event>
 		</choice>  
 	</event>
 	<event>
-		<text>As you explore the base, crazed screams are heard. Your team retreats back to your ship with a number of armed scientists in pursuit. One of your team starts to cough and falls in a spasm onto the floor.</text>
+		<text>당신이 시설을 탐사하던 도중, 광기어린 비명 소리가 들렸습니다. 당신의 승무원들은 무장한 연구원들에게 쫒겨 함선까지 도망쳤습니다. 거의 다 도망쳤을 때, 승무원들 중 한명이 갑자기 기침을 해대며 땅바닥에 쓰러집니다.</text>
 		<choice>
-			<text>Drag him back to the ship and prepare for a fight.</text>
+			<text>그를 함선에 서둘러 태운 뒤 싸울 준비를 합니다.</text>
 			<event>
-				<text>As you get back on board, your injured friend rises up and starts to attack you, screaming. Caught off-guard, your remaining crew fall back as the other scientists fight their way onto the ship.</text>
+				<text>당신이 함선에 타자마자, 부상당한 당신의 동료가 일어나더니 비명을 지르며 당신을 공격하기 시작합니다. 당신의 다른 승무원들은 미친 연구원들이 함선에 도달하기 전에 후퇴하였습니다.</text>
 				<boarders min="3" max="4" class="human"/>
 				<crewMember amount="-1" class="traitor"/>
 			</event>
 		</choice>
 		<choice hidden="true" req="teleporter"> 
-			<text>(Teleporter) Use your Teleporter to retrieve your crew.</text>
+			<text>(Teleporter) 당신의 승무원을 회수하기 위해 텔레포터를 사용합니다.</text>
 			<event>
-				<text>You beam your away team back to the ship and disengage from the station. Although the ship is safe, the infected crewmember quickly becomes frenzied and attacks.</text>
+				<text>당신은 당신의 승무원들을 태우고 서둘러 정거장을 떠났습니다. 이제 안전해졌다고 생각될 무렵, 감염된 당신의 승무원이 별안간 공격적으로 돌변합니다.</text>
 				<crewMember amount="-1" class="traitor"/>
 			</event>
 		</choice>
 		<choice hidden="true" req="medbay" lvl="2" max_group="0"> 
-			<text>(Medbay) Drag him back to the Medbay.</text>
+			<text>(Medbay)그를 의료실로 끌고갑니다.</text>
 			<event>
-				<text>You hold him down and the Medbay is able to stop whatever neurotoxin was on the ship from fully infecting your crew. Once he recovers, you prepare to fight off the scientists, who are beyond help.</text>
+				<text>당신은 그를 붙잡아서 의료실 시스템이 감염된 함선에 있던 승무원의 신경독을 해독할수 있게 했습니다. 그가 회복된 후 당신은 도움을 뿌리친 과학자와 싸울 준비를 합니다.</text>
 				<boarders min="3" max="4" class="human"/>
 			</event>
 		</choice>
 		<choice hidden="true" req="medbay" lvl="3" max_group="0">  
-			<text>(Advanced Medbay) Have the Advanced Medbay analyze their condition.</text>
+			<text>(Advanced Medbay) 향상된 의료실이 저들의 상태를 진단하게 합니다.</text>
 			<event>
-				<text>You hold them off while retreating into the Med-bay. Its advanced systems determine that an alien neurotoxin is driving your crewmember insane. It synthesizes an antidote and releases it into the ship. After a time, the frenzied scientists recover and one offers to help out as thanks for saving them.</text>
+				<text>당신은 그들을 힘겹게 막아내며 의무실에 도달했습니다. 향상된 의료 시스템이 외계 신경독이 당신의 승무원을 미치게 한 원인이라는 것을 밝혀냈습니다. 의료기는 치료제를 합성하여 함선에 살포했습니다. 잠시 후, 미쳐 날뛰던 과학자들은 회복되었고, 그 중 한명이 감사의 표시로 당신을 돕겠다고 말했습니다.</text>
 				<crewMember amount="1"/>
 			</event>
 		</choice> 
@@ -3786,19 +3711,19 @@
 </eventList>
 <eventList name="STATION_SICK_DRONE_LIST">
 	<event>
-		<text>You send your drone to explore the station. What you find is disconcerting... It appears that something has caused the scientists and guards to tear each other to pieces. You abandon the drone on the station for fear that it is contagious.</text>
+		<text>당신은 시설 탐사를 위해 당신의 대인용 드론을 파견했습니다. 그리고 당신이 발견한 것은...충격적이었습니다. 원인 모를 무언가가 과학자들과 경비원들이 서로를 찢어발기도록 만들고 있었습니다. 당신은 그곳에 벌어지고 있는 일에 공포를 느끼고, 드론을 버려둔 채 정거장을 떠났습니다.</text>
 		<item_modify>
 			<item type="drones" min="-1" max="-1"/>
 		</item_modify>
 	</event>
 	<event>
-		<text>Once on board the station, your drone is immediately beset by frenzied scientists and guards. It eventually gets torn apart by the mob but it has bought you enough time to disengage from the station and escape into empty space.</text>
+		<text>정거장에 내려서자마자, 당신의 드론은 광기에 찬 과학자들과 경비원들의 무리에 둘러싸였습니다. 드론은 군중들에 의해 무자비하게 뜯겨져 나갔지만, 당신이 정거장을 떠나 우주로 도망칠 때까지 충분한 시간을 벌어주었습니다.</text>
 		<item_modify>
 			<item type="drones" min="-1" max="-1"/>
 		</item_modify>
 	</event>
 	<event>
-		<text>The cameras mounted to your drone show a chaotic scene. No people are to be found but the remnants of a recent battle on-board the ship are obvious. You instruct the drone to retrieve some useful materials before leaving.</text>
+		<text>대인용 드론에 부착된 카메라를 통해 본 장면은 혼돈 그 자체였습니다. 살아있는 사람은 아무도 없었고, 최근에 있었던 듯 한 어떤 전투의 흔적들만이 남아있었습니다. 당신은 드론에게 쓸만한 부품들을 챙기게 한 뒤 떠났습니다.</text>
 		<autoReward level="MED">standard</autoReward>
 		<item_modify>
 			<item type="drones" min="-1" max="-1"/>
@@ -3818,12 +3743,12 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="PIRATE_STATION_CROPS" unique="true">
-	<text>Scans show a remote settlement being blockaded by a pirate ship. The ship hastily messages you, "Stay out of this, or you'll be next!...Concentrate fire on..."</text>
+	<text>해적선이 정착지 한곳을 가로막고있는걸 탐지했습니다. 해적들이 당신에게 메세지를 보냈습니다. "저리 꺼져! 안그러면 다음에는!... 집중사격 준비..."</text>
 	<ship load="SHIP_PIRATE_STATION_CROPS" hostile="false"/>
 	<choice hidden="true">
-		<text>Attack the pirate.</text>
+		<text>해적을 공격한다.</text>
 		<event>
-			<text>"You asked for it!" They pull away from the planet and move in to engage.</text>
+			<text>" 화를 자초하는군!! " 교전을 위해 그들이 행성으로부터 멀어지도록 이동합니다.</text>
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>계속...</text>
@@ -3832,9 +3757,9 @@
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>Ignore them.</text>
+		<text>그들을 무시한다.</text>
 		<event>
-			<text>It's just not possible to save every civilian affected by this war. You prepare to jump.</text>
+			<text>전쟁의 영향을 받는 모든 사람을 시민을 구출하는건 불가능 합니다. 도약 준비를 합니다.</text>
 			<choice>
 				<text>함선에서 무언가를 한다.</text>
 				<event load="STORAGE_CHECK"/>
@@ -3846,9 +3771,9 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="BLUELIST_FIRE_NONBALLISTIC">
-		<text>(Fire Weapon) Show the pirate how to intimidate settlers: burn their crops!</text>
+		<text>(Fire Weapon) 해적들에게 정착민과 사귀는 법을 보여주자구. 농작물을 태워버려!</text>
 		<event>
-			<text>The pirate watches as you start to light the meager crops on fire. In a few moments the settlement surrenders, offering tribute to leave them alone. The pirate seems impressed.</text>
+			<text>당신이 메마른 농작물에 불을 지르는걸 해적들이 지켜봅니다. 몇분 뒤 정착민들 항복후, 가만 놔두라며 공물을 바칩니다. 해적들은 감명받은듯 합니다.</text>
 			<autoReward level="HIGH">drone</autoReward>
 			<choice hidden="true">
 				<text>계속...</text>
@@ -3857,9 +3782,9 @@
 		</event>
 	</choice>		
 	<choice hidden="true" req="BLUELIST_FIRE_BALLISTIC">
-		<text>(Ballistic Fire Weapon) Show the pirate how to intimidate settlers: start fires in their crude dwellings. [-1}]</text>
+		<text>(Ballistic Fire Weapon)해적들에게 정착민과 사귀는 법을 보여주자구. 저 허접한 거주지에 사격개시. [-1}]</text>
 		<event>
-			<text>The pirate watches as you teleport an incendiary explosive into the settlement. As the settlers scramble to put out the fires, their rudimentary planetary defenses power down. Forcing their surrender was laughably easy, but the pirate seems impressed with your tactics and agrees to share the settlement's 'tribute'.</text>
+			<text>당신이 소이폭탄을 거주지에 날리는걸 해적들이 지켜봅니다. 정착민이 불을 끄느라 허둥지둥하자, 그들의 보잘것없는 행성 방어 시스템의 전원이 내려갑니다. 그들을 항복시키는 것은 웃음이 나올정도로 쉬웠습니다. 그러나 해적들은 당신의 전략에 깊이 감명받아 공물을 나눠주는 것에 대해 동의했습니다.</text>
 			<item_modify>
 				<item type="missiles" min="-1" max="-1"/>
 			</item_modify>
@@ -3871,9 +3796,9 @@
 		</event>
 	</choice>	
 	<choice hidden="true" req="BLUELIST_PARTICLE">
-		<text>(Particle Tech) Show the pirate how to intimidate settlers: burn their crops!</text>
+		<text>(Particle Tech) 해적들에게 정착민과 사귀는 법을 보여주자구. 농작물을 태워버려!</text>
 		<event>
-			<text>The pirate watches as you start to light the meager crops on fire. In a few moments the settlement surrenders, offering tribute to leave them alone. The pirate seems impressed.</text>
+			<text>당신이 메마른 농작물에 불을 지르는걸 해적들이 지켜봅니다. 몇분 뒤 정착민들 항복후, 가만 놔두라며 공물을 바칩니다. 해적들은 감명받은듯 합니다.</text>
 			<autoReward level="HIGH">drone</autoReward>
 			<choice hidden="true">
 				<text>계속...</text>
@@ -3883,7 +3808,7 @@
 	</choice>	
 </event>
 <event name="PIRATE_STATION_CROPS_RESULT">
-	<text>With the pirates gone you signal the station. "We appreciate what you've done, but there'll just be another ship looking to profit from our isolation soon enough. Sorry we can't give you more."</text>
+	<text>해적들이 떠나가자 당신은 정거장에 신호를 보냅니다. "당신들이 해준 일에 대해선 감사하게 생각합니다. 하지만 우리는 지갑에 여유를 둬야해요 우리를 털어먹으려는 놈들은 언젠가 또 올테까요. 더 드리지 못해서 죄송합니다."</text>
 	<autoReward level="LOW">stuff</autoReward>
 </event>
 
@@ -3905,9 +3830,9 @@
 	<ship load="SHIP_CIVILIAN_ALL" hostile="false"/>
 	<status type="limit" target="enemy" system="teleporter" amount="0"/>
 	<choice>
-		<text>Give them the fuel.</text>
+		<text>그들에게 연료를 나눠준다</text>
 		<event>
-			<text>You give them the fuel.</text>
+			<text>You 그들에게 연료를 나눠준다</text>
 			<item_modify>
 				<item type="fuel" min="-4" max="-2"/>
 			</item_modify>
@@ -3918,9 +3843,9 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="FUEL_CONSERVER">
-		<text>(Fuel Conserver) Show them how to wire up their own conserver.</text>
+		<text>(Fuel Conserver) 그들에게 어떻게 보존장치를 사용하는지 보여준다.</text>
 		<event>
-			<text>You break out the manual for your conservation device and give it to the Civilians. Whatever they throw together won't be nearly as efficient, but it should get them somewhere.</text>
+			<text>당신은 보존장치에 대한 설명서를 꺼내 민간인에게 전달했습니다. 그들에게는 그다지 효과적이지는 않겠지만, 적어도 그들을 어딘가로 데려갈 것 입니다.</text>
 			<choice hidden="true">
 				<text>계속...</text>
 				<event load="RANDOM_GIFT"/>
@@ -3928,9 +3853,9 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="EXTRA_PREP">
-		<text>(Emergency Manual) Teach the civilians how to produce fuel onboard.</text>
+		<text>(Emergency Manual) 민간인에게 기내에서 연료를 생산하는 법을 알려준다.</text>
 		<event>
-			<text>You clone the data from the emergency manual and pass it onto the Civilians. Whatever they throw together won't be cost efficient, but it should get them somewhere. This is digital piracy by the way. Scum.</text>
+			<text>당신은 비상 매뉴얼 데이터를 복제하여 민간인에게 전달했습니다. 그들에게는 그다지 효율이 있지는 않겠지만, 적어도 그들을 어딘가로 데려갈 것 입니다. 그리고 이건 디지털 저작권 침해입니다. 쓰레기.</text>
 			<choice hidden="true">
 				<text>계속...</text>
 				<event load="RANDOM_GIFT"/>
@@ -3938,9 +3863,9 @@
 		</event>
 	</choice>
 	<choice>
-		<text>Apologize, wish them luck, and continue on.</text>
+		<text>사과하며 행운을 빌어줍니다. 그리고 당신의 여정을 지속합니다.</text>
 		<event>
-			<text>"We understand... Please send help our way if you meet anyone trustworthy."</text>
+			<text>"저희도 이해 합니다. 믿을 만한 사람을 만나면 저희 쪽으로 보내주시기 바랍니다."</text>
 			<choice hidden="true">
 				<text>창고를 확인한다.</text>
 				<event load="STORAGE_CHECK"/>
@@ -3954,7 +3879,7 @@
 	<choice>
 		<text>Attack them.</text>
 		<event>
-			<text>"Wait, what are you doing?" You ignore their cries for mercy and move in to attack.</text>
+			<text>"잠깐, 지금 뭐하시는 겁니까?" 자비를 구하는 외침은 무시하고 그들을 공격하기 시작합니다.</text>
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>계속...</text>
@@ -3965,19 +3890,19 @@
 </event>
 <eventList name="RANDOM_GIFT">  <!-- JUSTIN - ADD STUFF-->
 	<event>	
-		<text>"Thank you so much! We don't have much to offer, but have a look at the sector scans we took." Your map is updated.</text>
+		<text>"정말 감사합니다. 드릴 수 있는게 많지 않지만, 여기 저희가 확보한 섹터 지도입니다."  지도가 업데이트 되었습니다.</text>
 		<reveal_map/>
 	</event>
 	<event>
-		<text>"Thank you. Here, have this extra scrap as payment."</text>
+		<text>"고맙습니다. 여기에 있는 스크랩을 값을 치르겠습니다."</text>
 		<autoReward level="HIGH">scrap_only</autoReward>
 	</event>
 	<event>
-		<text>"Thank you. Here, have this extra scrap as payment."</text>
+		<text>"고맙습니다. 여기에 있는 스크랩을 값을 치르겠습니다."</text>
 		<autoReward level="HIGH">scrap_only</autoReward>
 	</event>
 	<event>
-		<text>"Thank the Gods. We can finally get out of here! We're jumping straight home so take this extra weapon. We won't need it, hopefully."</text>
+		<text>"오 신이시여 감사합니다. 드디어 여기서 나갈 수 있어! 곧장 고향으로 떠날 테니 여기 있는 이 무기를 가져가세요! 저희가 이것이 필요 없길 바라야죠."</text>
 		<weapon name="RANDOM"/>
 	</event>
 	<event> <!--DLC!-->
@@ -3986,11 +3911,11 @@
 	</event>
 </eventList>
 <textList name="FRIENDLY_BEACON">
-	<text>"Greetings! It is so good to see you! We've been out of fuel and floating out here for weeks. We were terrified a pirate or those damn Rebels would find us first. Could you spare some fuel?"</text>
-	<text>You arrive to find a ship floating among some debris. "Hello. Our impulse drives are shot and we can't jump. Could you give us some fuel?"</text>
-	<text>A small civilian ship flies over as soon as you arrive. You're prepared to fight but they just inform you that they're out of FTL fuel and can't jump.</text>
-	<text>"Hello. We used our last FTL fuel to jump to this station." They indicate a burnt out husk of debris and warped metal. "As you can see the war must have spread to this sector. We've been stranded ever since."</text>
-	<text>The ship emitting the distress beacon messages you, "Sorry to bother you, but we're out of fuel and can't get out of this barren sector. Could you help us out?</text>
+	<text>"안녕하세요! 만나서 정말 감사합니다! 연료가 전부 떨어져 몇 주째 떠다니고 있었어요. 해적이나 반란군이 먼저 저희를 찾을까봐 두려웠습니다. 혹시 연료 조금만 주실 수 있나요?"</text>
+	<text>당신은 파편들 사이에 배가 떠 있는 것을 발견했습니다. "안녕하세요. 임펄스 드라이버가 망가져서 도약을 할 수 없습니다. 연료 좀 나눠주실 수 있나요?"</text>
+	<text>당신이 도착하자마자 작은 민간 선박이 날아옵니다. 당신은 싸울 준비를 했지만 그들은 초광속 연료가 떨어져서 도약할 수 없다고 당신에게 알립니다.</text>
+	<text>"안녕하세요. 저희가 마지막 초광속 연료를 사용하여 이 정거장으로 도약했습니다." 그들은 전부 타버린 선체의 잔해와 뒤틀린 금속으로 보였습니다. "보시다시피 전쟁은 이 구역까지 퍼져나갔습니다. 우리는 그 이후로 계속 발이 묶였습니다."</text>
+	<text>조난 신호를 보내는 함선은 여러분에게 "방해해서 미안하지만, 우리는 연료가 떨어져서 이 황량한 구역을 벗어날 수 없습니다. 좀 도와 주시겠어요?" 이렇게 메세지를 보냈습니다.</text>
 </textList>
 
 <event name="DISTRESS_TRAP_BEACON" unique="true">
@@ -4003,7 +3928,7 @@
 	</choice>
 </event>
 <textList name="TRAP_BEACON_TEXT">
-	<text>You arrive at the beacon and immediately detect a pirate ship. It seems this distress beacon was a trap!</text>
+	<text>송신소에 도착하니 즉시 해적선을 탐지 됐습니다. 이 조난 신호는 함정이었던 것 같습니다!</text>
 	<text>"Haha! I knew someone would fall into our dastardly trap!" It appears this distress beacon was nothing but a decoy for a pirate ambush.</text>
 	<text>Your cockpit lights up with warning signals. You are being targeted by a nearby ship. The distress call was a lure to attract unwitting ships into weapons range. You prepare for a fight.</text>
 	<text>As soon as you arrive at the distress signal, shots are fired toward your ship. A trap!</text>
