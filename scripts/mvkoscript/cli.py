@@ -49,7 +49,12 @@ def unhandled(ctx, a, b, mismatch):
 @click.option('--location', '-l', default='', help='A location to file written in CSV')
 @click.pass_context
 def generate_csv(ctx, xml, output, prefix, location):
-    '''Generate translate-toolkit compatible CSV file from XML'''
+    '''
+    Generate translate-toolkit compatible CSV file from XML.
+
+    Usage: mvko -c ..\mvkoscript.config.jsonc generate-csv ..\src-ko\data\blueprints.xml.append ko.csv --prefix
+           'data/blueprints.xml.append$' --location 'src-ko/data/blue/blueprints.xml.append'
+    '''
     config = ctx.obj['config']
     stringSelectionXPath = config.get('stringSelectionXPath', [])
 
@@ -103,6 +108,37 @@ def generate_csv(ctx, xml, output, prefix, location):
                 '',
             ])
 
+@main.command()
+@click.argument('original')
+@click.argument('translated')
+@click.pass_context
+def empty_untranslated(ctx, original, translated):
+    '''
+    Given two CSV files, empty the strings in the target CSV
+    where it is exactly same as respective string in the source.
+    '''
+    
+    with open(original, encoding='utf-8') as originalfile:
+        entries_original = list(csv.DictReader(originalfile))
+    with open(translated, encoding='utf-8') as translatedfile:
+        entries_translated = list(csv.DictReader(translatedfile))
+    
+    assert len(entries_original) == len(entries_translated)
+
+    for i, entry in enumerate(entries_translated):
+        if entries_original[i]['target'] == entry['target']:
+            entry['target'] = ''
+    
+    with open(translated, 'w', encoding='utf-8', newline='') as translatedfile:
+        # Using QUOTE_ALL because Weblate's CSV parser uses built-in csv.Sniffer which is incredibly unreliable.
+        writer = csv.DictWriter(
+            translatedfile,
+            fieldnames=[
+                'location', 'source', 'target', 'ID', 'fuzzy', 'context', 'translator_comments', 'developer_comments'
+            ],
+            quoting=csv.QUOTE_ALL
+        )
+        writer.writerows(entries_translated)        
 
 if __name__ == '__main__':
     main()
