@@ -1,4 +1,61 @@
 from lxml import etree
+from io import BytesIO, StringIO
+
+XSLT_ADD_NAMESPACE_TEMPLATE = '''
+<xsl:stylesheet
+    version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:%NAMESPACE_NAME%="http://dummy/%NAMESPACE_NAME%"
+>
+    <xsl:output indent="yes" method="xml"/>
+    <xsl:param name="namespaces"/>
+
+    <xsl:template match="@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="/*" priority="1">
+        <xsl:element name="{name()}">
+            <xsl:attribute name="%NAMESPACE_NAME%:XMLTOOLSDUMMY">XMLTOOLSDUMMY</xsl:attribute>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates/>
+        </xsl:element>
+    </xsl:template>
+</xsl:stylesheet>
+'''
+
+def parse_illformed(path, namespaces=None):
+    '''
+    Read namespace-ill-formed XML with undefined namespaces and double-hypen comments.
+    '''
+    namespaces = namespaces or []
+    
+    tree = etree.parse(path, etree.XMLParser(recover=True))
+
+    if namespaces:
+        # Apply XSLT multiple times to add namespace definitions
+        for namespace in namespaces:
+            xslt_content = XSLT_ADD_NAMESPACE_TEMPLATE.replace('%NAMESPACE_NAME%', namespace)
+            xslt = etree.parse(StringIO(xslt_content))
+            tree = tree.xslt(xslt)
+        
+        # Reparse since the old "recovered" namespaces are not actually processed in the tree
+        tree = etree.parse(BytesIO(etree.tostring(tree)), etree.XMLParser(recover=True))
+
+        # Remove attributes added by XSLT
+        for namespace in namespaces:
+            tree.getroot().attrib.pop(f'{{http://dummy/{namespace}}}XMLTOOLSDUMMY')
+
+    # Remove double-hypen comments
+    for comment in tree.xpath('//comment()'):
+        comment.text = comment.text.replace('--', '__')
+
+    # Reparse once again with no recover option
+    tree = etree.parse(BytesIO(etree.tostring(tree)))
+
+    return tree
 
 class AttributeProxy:
     def __init__(self, attrib):
@@ -7,6 +64,10 @@ class AttributeProxy:
     @property
     def value(self):
         return str(self._attrib)
+
+    @value.setter
+    def value(self, value):
+        self.getparent().set(self.attrname, value)
     
     @property
     def attrname(self):
@@ -21,12 +82,18 @@ class AttributeProxy:
     def __hash__(self):
         return hash((self.getparent(), self.attrname))
 
+def get_element(tree_or_element):
+    getroot = getattr(tree_or_element, 'getroot', None)
+    if getroot is not None:
+        return getroot()
+    return tree_or_element
+
 def xpath(tree_or_element, expr):
     '''
     Similar to lxml xpath(), but wraps attribute into AttributeProxy class,
     not lxml.etree._ElementUnicodeResult which is a thin proxy of str. This gives more control.
     '''
-    xpath_result = tree_or_element.xpath(expr)
+    xpath_result = tree_or_element.xpath(expr, namespaces=get_element(tree_or_element).nsmap)
 
     def convert_xpath_result(element_or_attribute):
         if getattr(element_or_attribute, 'is_attribute', False):
@@ -34,7 +101,7 @@ def xpath(tree_or_element, expr):
         else:
             return element_or_attribute
 
-    return map(convert_xpath_result, xpath_result)
+    return list(map(convert_xpath_result, xpath_result))
 
 def getpath(tree, element_or_attribute_or_attributeproxy):
     '''
@@ -63,7 +130,7 @@ def getpath(tree, element_or_attribute_or_attributeproxy):
                 # no []: just add the segment
                 return xpath_ordinal
 
-            xpath_ordinal_result = tree.xpath(xpath_ordinal)
+            xpath_ordinal_result = tree.xpath(xpath_ordinal, namespaces=tree.getroot().nsmap)
             assert(len(xpath_ordinal_result) == 1)
             elem = xpath_ordinal_result[0]
 
@@ -74,7 +141,7 @@ def getpath(tree, element_or_attribute_or_attributeproxy):
 
             xpath_name = f'{newpath}/{elem.tag}[@name="{name}"]'
             try:
-                xpath_name_result = tree.xpath(xpath_name)
+                xpath_name_result = tree.xpath(xpath_name, namespaces=tree.getroot().nsmap)
                 if xpath_name_result == xpath_ordinal_result:
                     return xpath_name
             except etree.XPathEvalError:
