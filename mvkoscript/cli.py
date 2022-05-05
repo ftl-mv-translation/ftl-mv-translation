@@ -156,7 +156,7 @@ def empty_untranslated(ctx, original, translated):
     
     for i in reversed(removelist_original):
         del entries_original[i]
-    for i in reversed(entries_translated):
+    for i in reversed(removelist_translated):
         del entries_translated[i]
     
     with open(translated, 'w', encoding='utf-8', newline='') as translatedfile:
