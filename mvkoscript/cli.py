@@ -16,7 +16,7 @@ def ensureparent(outputfilepath):
     Path(outputfilepath).parent.mkdir(parents=True, exist_ok=True)
 
 def redirect_stdhandles_to_utf8():
-    # pyinstaller ignores PYTHONIOENCODING so we redirect them
+    # pyinstaller ignores PYTHONIOENCODING; redirect them when freezed.
     sys.stdin = open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False)
     sys.stdout = open(sys.stdout.fileno(), 'w', encoding='utf-8', closefd=False)
     sys.stderr = open(sys.stderr.fileno(), 'w', encoding='utf-8', closefd=False)
@@ -188,47 +188,67 @@ def key_to_xpath(key):
 
 @main.command()
 @click.argument('inputxml')
-@click.argument('inputcsv')
+@click.argument('originalcsv')
+@click.argument('translatedcsv')
 @click.argument('outputxml')
 @click.pass_context
-def apply_locale(ctx, inputxml, inputcsv, outputxml):
+def apply_locale(ctx, inputxml, originalcsv, translatedcsv, outputxml):
     '''
     Apply locale CSV to XML, generating a translated XML file.
 
-    Usage: mvko apply-locale src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/ko.csv output/data/blueprints.xml.append
+    Usage: mvko apply-locale src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/en.csv
+           locale/data/blueprints.xml.append/ko.csv output/data/blueprints.xml.append
     '''
     print(f'Reading {inputxml}...')
     tree = parse_illformed(inputxml, FTL_NAMESPACES)
+
+    def csv_to_dict(path):
+        with open(path, encoding='utf-8') as csvfile:
+            return {entry['source']: entry['target'] for entry in csv.DictReader(csvfile)}
+
+    original_entries = csv_to_dict(originalcsv)
+    translated_entries = csv_to_dict(translatedcsv)
     
-    with open(inputcsv, encoding='utf-8') as csvfile:
-        entries = list(csv.DictReader(csvfile))
-    
-    for entry in entries:
-        value = entry['target']
-        if value == '':
-            # Not yet translated: leave original text
+    untranslated_count = 0
+
+    for key, value in original_entries.items():
+        translation = translated_entries.get(key, None)
+        if not value:
+            print(f'WARNING: {key} is empty in csv (original).')
+            if translation:
+                print(f'         AND {key} is NON-EMPTY in csv (translation); This might indicate a problem.')
+            continue
+        
+        if not translation:
+            untranslated_count += 1
             continue
 
-        key = entry['source']
         xpathexpr = key_to_xpath(key)
         entities = xpath(tree, xpathexpr)
 
         if len(entities) == 0:
-            print(f'Warning: XPath query yielded nothing: {key}.')
+            print(f'WARNING: XPath query yielded nothing: {key}.')
         elif len(entities) > 1:
-            print(f'Warning: XPath query yielded multiple results: {key}.')
+            print(f'WARNING: XPath query yielded multiple results: {key}.')
         else:
             entity = entities[0]
             if getattr(entity, 'value', None) is not None:
                 # AttributeProxy
-                setattr(entity, 'value', value)
+                setattr(entity, 'value', translation)
             else:
-                setattr(entity, 'text', value)
+                setattr(entity, 'text', translation)
     
     result = etree.tostring(tree, encoding='utf-8', pretty_print=True)
+
+    # This ugly hack makes XML ill-formed (by undefined namespace) but seems required for FTL to parse them correctly.
+    # Note that `xmlns:mod="http://dummy/mod"` part is actually added by parse_illformed.
+    result = result.replace(b'<FTL xmlns:mod="http://dummy/mod">', b'<FTL>')
+
     ensureparent(outputxml)
     with open(outputxml, 'wb') as outputfile:
         outputfile.write(result)
+
+    print(f'#untranslated = {untranslated_count}')
 
 def runproc(desc, reportfile, configpath, *args):
     newenv = dict(os.environ)
@@ -362,36 +382,48 @@ def batch_apply(ctx):
     '''
 
     configpath = ctx.obj['configpath']
-    config = ctx.obj['config']
-    file_patterns = config.get('filePatterns', [])
 
-    filepaths_en = [
-        Path(path).as_posix()
-        for file_pattern in file_patterns
-        for path in glob(file_pattern, root_dir='src-en', recursive=True)
+    target_en = [
+        Path(path).parent.as_posix()
+        for path in glob('**/en.csv', root_dir='locale', recursive=True)
     ]
+    target_ko = [
+        Path(path).parent.as_posix()
+        for path in glob('**/ko.csv', root_dir='locale', recursive=True)
+    ]
+    target_either = sorted(
+        set(target_en) | set(target_ko),
+        key=(target_en + target_ko).index
+    )
 
-    # TODO
+    xmlbasepath_en = Path('src-en')
+    csvbasepath = Path('locale')
+    outputbasepath = Path('output')
 
-    # with open('report.txt', 'w', encoding='utf-8', newline='\n') as reportfile:
-    #     for filepath in filepaths_en:
-    #         print(f'Processing {filepath}...')
+    with open('report.txt', 'w', encoding='utf-8', newline='\n') as reportfile:
+        for targetpath in target_either:
+            print(f'Processing {targetpath}...')
 
-    #         # Generate csv for each language
-    #         lang = 'en'
-    #         csv_success = runproc(
-    #             f'Generating CSV file: {filepath}, {lang}',
-    #             reportfile, configpath,
-    #             'generate-csv', f'src-{lang}/{filepath}', f'locale/{filepath}/{lang}.csv',
-    #             '-p', f'{filepath}$', '-l', f'src-en/{filepath}'
-    #         )
-    #         if csv_success and Path(f'locale/{filepath}/ko.csv').exists():
-    #             # Empty untranslated strings
-    #             runproc(
-    #                 f'Emptying untranslated strings: {filepath}',
-    #                 reportfile, configpath,
-    #                 'empty-untranslated', f'locale/{filepath}/en.csv', f'locale/{filepath}/ko.csv'
-    #             )
+            csvpath_en = csvbasepath / targetpath / 'en.csv'
+            csvpath_ko = csvbasepath / targetpath / 'ko.csv'
+            xmlpath = xmlbasepath_en / targetpath
+            outputpath = outputbasepath / targetpath
+
+            if not csvpath_en.exists():
+                print('=> skipped: en.csv not found')
+                continue
+            if not csvpath_ko.exists():
+                print('=> skipped: ko.csv not found')
+                continue
+            if not xmlpath.exists():
+                print('=> skipped: XML not found')
+                continue
+            
+            runproc(
+                f'Applying translation: {targetpath}',
+                reportfile, configpath,
+                'apply-locale', str(xmlpath), str(csvpath_en), str(csvpath_ko), str(outputpath)
+            )
 
 if __name__ == '__main__':
     main()
