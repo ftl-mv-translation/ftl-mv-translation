@@ -147,38 +147,38 @@ def empty_untranslated(ctx, original, translated):
         entries_original = list(csv.DictReader(originalfile))
     with open(translated, encoding='utf-8') as translatedfile:
         entries_translated = list(csv.DictReader(translatedfile))
-    
-    assert len(entries_original) == len(entries_translated)
 
-    removelist_original = []
-    removelist_translated = []
-    
-    for i, entry_original in enumerate(entries_original):
-        entry_translated = entries_translated[i]
+    # Extract keys where string value are empty on both the orignal and the translated
+    key_of_empty_strings_original = set(entry['source'] for entry in entries_original if entry['target'] == '')
+    key_of_empty_strings_translated = set(entry['source'] for entry in entries_translated if entry['target'] == '')
+    key_of_empty_strings_both = key_of_empty_strings_original & key_of_empty_strings_translated
 
-        if entry_original['target'] == '':
-            removelist_original.append(i)
-            if entry_translated['target'] == '':
-                removelist_translated.append(i)
-        elif entry_original['target'] == entry_translated['target']:
-            entry_translated['target'] = ''
+    # Filter empty strings out
+    # Rule: original removes all empty strings, and translated removes strings where BOTH are empty
+    entries_original = [entry for entry in entries_original if entry['source'] not in key_of_empty_strings_original]
+    entries_translated = [entry for entry in entries_translated if entry['source'] not in key_of_empty_strings_both]
+
+    # Identical translations are removed out afterward
+    dict_original = {entry['source']: entry['target'] for entry in entries_original}
+    for entry in entries_translated:
+        if entry['target'] == dict_original.get(entry['source'], None):
+            entry['target'] = ''
+
+    def write_csv(path, entries):
+        with open(path, 'w', encoding='utf-8', newline='') as csvfile:
+            # Using QUOTE_ALL because Weblate's CSV parser uses built-in csv.Sniffer which is incredibly unreliable.
+            writer = csv.DictWriter(
+                csvfile,
+                fieldnames=[
+                    'location', 'source', 'target', 'ID', 'fuzzy', 'context', 'translator_comments', 'developer_comments'
+                ],
+                quoting=csv.QUOTE_ALL
+            )
+            writer.writeheader()
+            writer.writerows(entries)
     
-    for i in reversed(removelist_original):
-        del entries_original[i]
-    for i in reversed(removelist_translated):
-        del entries_translated[i]
-    
-    with open(translated, 'w', encoding='utf-8', newline='') as translatedfile:
-        # Using QUOTE_ALL because Weblate's CSV parser uses built-in csv.Sniffer which is incredibly unreliable.
-        writer = csv.DictWriter(
-            translatedfile,
-            fieldnames=[
-                'location', 'source', 'target', 'ID', 'fuzzy', 'context', 'translator_comments', 'developer_comments'
-            ],
-            quoting=csv.QUOTE_ALL
-        )
-        writer.writeheader()
-        writer.writerows(entries_translated)
+    write_csv(original, entries_original)
+    write_csv(translated, entries_translated)
 
 def key_to_xpath(key):
     idx = key.find('$')
