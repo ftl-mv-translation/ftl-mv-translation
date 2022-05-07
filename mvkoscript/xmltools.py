@@ -42,7 +42,7 @@ def parse_illformed(path, namespaces=None):
             tree = tree.xslt(xslt)
         
         # Reparse since the old "recovered" namespaces are not actually processed in the tree
-        tree = etree.parse(BytesIO(etree.tostring(tree)), etree.XMLParser(recover=True))
+        tree = etree.parse(BytesIO(etree.tostring(tree, encoding='utf-8')), etree.XMLParser(recover=True))
 
         # Remove attributes added by XSLT
         for namespace in namespaces:
@@ -53,7 +53,7 @@ def parse_illformed(path, namespaces=None):
         comment.text = comment.text.replace('--', '__')
 
     # Reparse once again with no recover option
-    tree = etree.parse(BytesIO(etree.tostring(tree)))
+    tree = etree.parse(BytesIO(etree.tostring(tree, encoding='utf-8')))
 
     return tree
 
