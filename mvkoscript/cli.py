@@ -8,12 +8,18 @@ import subprocess
 from glob import glob
 from pathlib import Path
 from lxml import etree
-from .xmltools import xpath, getpath, xmldiff, getsourceline, parse_illformed
+from mvkoscript.xmltools import xpath, getpath, xmldiff, getsourceline, parse_illformed
 
 FTL_NAMESPACES = ['mod']
 
 def ensureparent(outputfilepath):
     Path(outputfilepath).parent.mkdir(parents=True, exist_ok=True)
+
+def redirect_stdhandles_to_utf8():
+    # pyinstaller ignores PYTHONIOENCODING so we redirect them
+    sys.stdin = open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False)
+    sys.stdout = open(sys.stdout.fileno(), 'w', encoding='utf-8', closefd=False)
+    sys.stderr = open(sys.stderr.fileno(), 'w', encoding='utf-8', closefd=False)
 
 @click.group()
 @click.option('--config', '-c', default='mvkoscript.config.jsonc', help='config file')
@@ -23,6 +29,9 @@ def main(ctx, config):
     with open(config, encoding='utf-8') as f:
         ctx.obj['configpath'] = config
         ctx.obj['config'] = json5.load(f)
+    
+    if getattr(sys, 'frozen', False) and os.environ.get('PYTHONIOENCODING', None) == 'utf-8':
+        redirect_stdhandles_to_utf8()
     
 @main.command()
 @click.argument('a')
@@ -223,14 +232,17 @@ def apply_locale(ctx, inputxml, inputcsv, outputxml):
 
 def runproc(desc, reportfile, configpath, *args):
     newenv = dict(os.environ)
+    executeargs = [sys.executable] if getattr(sys, 'frozen', False) else [sys.executable, sys.argv[0]]
+    executeargs += ['-c', configpath]
+
     newenv['PYTHONIOENCODING']='utf-8'
     proc = subprocess.run(
-        [sys.executable, sys.argv[0], '-c', configpath] + list(args),
+        executeargs + list(args),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         env=newenv
     )
-    result = proc.stdout.decode(errors='replace').replace('\r', '')
+    result = proc.stdout.decode(encoding='utf-8', errors='replace').replace('\r', '')
     reportfile.write(
         f'---------------------\n{desc}\n({args})\nerrorcode {proc.returncode}\n---------------------\n{result}\n\n'
     )
@@ -338,6 +350,48 @@ def batch_en(ctx):
                     reportfile, configpath,
                     'empty-untranslated', f'locale/{filepath}/en.csv', f'locale/{filepath}/ko.csv'
                 )
+
+@main.command()
+@click.pass_context
+def batch_apply(ctx):
+    '''
+    Batch operation for applying translation.
+    Assumes "src-en/" and "locale/" directory to be present. Updates "output/" directory and "report.txt".
+
+    Usage: mvko batch-apply
+    '''
+
+    configpath = ctx.obj['configpath']
+    config = ctx.obj['config']
+    file_patterns = config.get('filePatterns', [])
+
+    filepaths_en = [
+        Path(path).as_posix()
+        for file_pattern in file_patterns
+        for path in glob(file_pattern, root_dir='src-en', recursive=True)
+    ]
+
+    # TODO
+
+    # with open('report.txt', 'w', encoding='utf-8', newline='\n') as reportfile:
+    #     for filepath in filepaths_en:
+    #         print(f'Processing {filepath}...')
+
+    #         # Generate csv for each language
+    #         lang = 'en'
+    #         csv_success = runproc(
+    #             f'Generating CSV file: {filepath}, {lang}',
+    #             reportfile, configpath,
+    #             'generate-csv', f'src-{lang}/{filepath}', f'locale/{filepath}/{lang}.csv',
+    #             '-p', f'{filepath}$', '-l', f'src-en/{filepath}'
+    #         )
+    #         if csv_success and Path(f'locale/{filepath}/ko.csv').exists():
+    #             # Empty untranslated strings
+    #             runproc(
+    #                 f'Emptying untranslated strings: {filepath}',
+    #                 reportfile, configpath,
+    #                 'empty-untranslated', f'locale/{filepath}/en.csv', f'locale/{filepath}/ko.csv'
+    #             )
 
 if __name__ == '__main__':
     main()
