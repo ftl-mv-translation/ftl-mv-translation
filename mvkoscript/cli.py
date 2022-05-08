@@ -1,8 +1,8 @@
 from functools import reduce
-import csv
 import sys
 import os
 import click
+import json
 import json5
 import subprocess
 from glob import glob
@@ -20,6 +20,14 @@ def redirect_stdhandles_to_utf8():
     sys.stdin = open(sys.stdin.fileno(), 'r', encoding='utf-8', closefd=False)
     sys.stdout = open(sys.stdout.fileno(), 'w', encoding='utf-8', closefd=False)
     sys.stderr = open(sys.stderr.fileno(), 'w', encoding='utf-8', closefd=False)
+
+def readjson(path):
+    with open(path, encoding='utf-8') as f:
+        return json.load(f)
+    
+def writejson(path, obj):
+    with open(path, 'w', encoding='utf-8', newline='') as f:
+        json.dump(obj, f, indent=4, ensure_ascii=False)
 
 @click.group()
 @click.option('--config', '-c', default='mvkoscript.config.jsonc', help='config file')
@@ -69,13 +77,13 @@ def unhandled(ctx, a, b, mismatch):
 @click.argument('xml')
 @click.argument('output')
 @click.option('--prefix', '-p', default='', help='A prefix string for IDs')
-@click.option('--location', '-l', default='', help='A location to file written in CSV')
+@click.option('--location', '-l', default='', help='A location to file written in JSON')
 @click.pass_context
-def generate_csv(ctx, xml, output, prefix, location):
+def generate_json(ctx, xml, output, prefix, location):
     '''
-    Generate translate-toolkit compatible CSV file from XML.
+    Generate translate-toolkit compatible JSON file from XML.
 
-    Usage: mvko generate-csv src-ko/data/blueprints.xml.append locale/data/blueprints.xml.append/ko.csv
+    Usage: mvko generate-json src-ko/data/blueprints.xml.append locale/data/blueprints.xml.append/ko.json
     '''
     config = ctx.obj['config']
     stringSelectionXPath = config.get('stringSelectionXPath', [])
@@ -95,90 +103,49 @@ def generate_csv(ctx, xml, output, prefix, location):
             getattr(entity, 'tag', None) or getattr(entity, 'attrname', None)
         )
     )
+
+    def getkey(entity):
+        return f'{prefix}{getpath(tree, entity)}'
+    def getvalue(entity):
+        if getattr(entity, 'value', None) is not None:
+            # AttributeProxy
+            return getattr(entity, 'value')
+        else:
+            return (getattr(entity, 'text') or '').strip()
+
     print(f'Found {len(entities)} strings')
     print(f'Writing {output}...')
     ensureparent(output)
-    with open(output, 'w', encoding='utf-8', newline='') as csvfile:
-        # Using QUOTE_ALL because Weblate's CSV parser uses built-in csv.Sniffer which is incredibly unreliable.
-        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        writer.writerow(
-            ['location', 'source', 'target', 'ID', 'fuzzy', 'context', 'translator_comments', 'developer_comments']
-        )
-        for entity in entities:
-            key = f'{prefix}{getpath(tree, entity)}'
-            if getattr(entity, 'value', None) is not None:
-                # AttributeProxy
-                value = getattr(entity, 'value')
-            else:
-                value = (getattr(entity, 'text') or '').strip()
-            
-            writer.writerow([
-                # location
-                f'{location}:{getsourceline(entity)}',
-                # source
-                key,
-                # target
-                value,
-                # ID
-                key,
-                # fuzzy
-                '',
-                # context
-                '',
-                # translator_comments
-                '',
-                # developer_comments
-                '',
-            ])
+    
+    writejson(output, {getkey(entity): getvalue(entity) for entity in entities})
 
 @main.command()
 @click.argument('original')
 @click.argument('translated')
 @click.pass_context
-def empty_untranslated(ctx, original, translated):
+def sanitize_json(ctx, original, translated):
     '''
-    Given two CSV files, empty each string in the target CSV
-    where its respective string in the source is exactly the same.
+    Given two JSON files, sanitize them to be properly marked in Weblate.
 
-    Usage: mvko empty-untranslated locale/data/blueprints.xml.append/en.csv locale/data/blueprints.xml.append/ko.csv
+    Usage: mvko sanitize-json locale/data/blueprints.xml.append/en.json locale/data/blueprints.xml.append/ko.json
     '''
     
-    with open(original, encoding='utf-8') as originalfile:
-        entries_original = list(csv.DictReader(originalfile))
-    with open(translated, encoding='utf-8') as translatedfile:
-        entries_translated = list(csv.DictReader(translatedfile))
+    entries_original = readjson(original)
+    entries_translated = readjson(translated)
 
     # Extract keys where string value are empty on both the orignal and the translated
-    key_of_empty_strings_original = set(entry['source'] for entry in entries_original if entry['target'] == '')
-    key_of_empty_strings_translated = set(entry['source'] for entry in entries_translated if entry['target'] == '')
+    key_of_empty_strings_original = set(k for k, v in entries_original.items() if v == '')
+    key_of_empty_strings_translated = set(k for k, v in entries_translated.items() if v == '')
     key_of_empty_strings_both = key_of_empty_strings_original & key_of_empty_strings_translated
 
-    # Filter empty strings out
-    # Rule: original removes all empty strings, and translated removes strings where BOTH are empty
-    entries_original = [entry for entry in entries_original if entry['source'] not in key_of_empty_strings_original]
-    entries_translated = [entry for entry in entries_translated if entry['source'] not in key_of_empty_strings_both]
+    # Original: filter empty strings out
+    entries_original = {k: v for k, v in entries_original.items() if k not in key_of_empty_strings_original}
 
-    # Identical translations are removed out afterward
-    dict_original = {entry['source']: entry['target'] for entry in entries_original}
-    for entry in entries_translated:
-        if entry['target'] == dict_original.get(entry['source'], None):
-            entry['target'] = ''
-
-    def write_csv(path, entries):
-        with open(path, 'w', encoding='utf-8', newline='') as csvfile:
-            # Using QUOTE_ALL because Weblate's CSV parser uses built-in csv.Sniffer which is incredibly unreliable.
-            writer = csv.DictWriter(
-                csvfile,
-                fieldnames=[
-                    'location', 'source', 'target', 'ID', 'fuzzy', 'context', 'translator_comments', 'developer_comments'
-                ],
-                quoting=csv.QUOTE_ALL
-            )
-            writer.writeheader()
-            writer.writerows(entries)
+    # Translated: filter strings that are empty on both sides, and empty the same-literals
+    entries_translated = {k: v for k, v in entries_translated.items() if k not in key_of_empty_strings_both}
     
-    write_csv(original, entries_original)
-    write_csv(translated, entries_translated)
+    writejson(original, entries_original)
+    writejson(translated, entries_translated)
 
 def key_to_xpath(key):
     idx = key.find('$')
@@ -188,35 +155,31 @@ def key_to_xpath(key):
 
 @main.command()
 @click.argument('inputxml')
-@click.argument('originalcsv')
-@click.argument('translatedcsv')
+@click.argument('originaljson')
+@click.argument('translatedjson')
 @click.argument('outputxml')
 @click.pass_context
-def apply_locale(ctx, inputxml, originalcsv, translatedcsv, outputxml):
+def apply_locale(ctx, inputxml, originaljson, translatedjson, outputxml):
     '''
-    Apply locale CSV to XML, generating a translated XML file.
+    Apply locale JSON to XML, generating a translated XML file.
 
-    Usage: mvko apply-locale src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/en.csv
-           locale/data/blueprints.xml.append/ko.csv output/data/blueprints.xml.append
+    Usage: mvko apply-locale src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/en.json
+           locale/data/blueprints.xml.append/ko.json output/data/blueprints.xml.append
     '''
     print(f'Reading {inputxml}...')
     tree = parse_illformed(inputxml, FTL_NAMESPACES)
 
-    def csv_to_dict(path):
-        with open(path, encoding='utf-8') as csvfile:
-            return {entry['source']: entry['target'] for entry in csv.DictReader(csvfile)}
-
-    original_entries = csv_to_dict(originalcsv)
-    translated_entries = csv_to_dict(translatedcsv)
+    entries_original = readjson(originaljson)
+    entries_translated = readjson(translatedjson)
     
     untranslated_count = 0
 
-    for key, value in original_entries.items():
-        translation = translated_entries.get(key, None)
+    for key, value in entries_original.items():
+        translation = entries_translated.get(key, None)
         if not value:
-            print(f'WARNING: {key} is empty in csv (original).')
+            print(f'WARNING: Skipping {key} as empty or nonexistent in json (original).')
             if translation:
-                print(f'         AND {key} is NON-EMPTY in csv (translation); This might indicate a problem.')
+                print(f'   note: {key} is NON-EMPTY in json (translation); This might indicate a problem.')
             continue
         
         if not translation:
@@ -302,23 +265,23 @@ def batch_bootstrap(ctx):
             print(f'Processing {filepath}...')
 
             exists = {'en': filepath in filepaths_en, 'ko': filepath in filepaths_ko}
-            csv_success = {'en': False, 'ko': False}
+            json_success = {'en': False, 'ko': False}
 
-            # Generate csv for each language
+            # Generate json for each language
             for lang in ('en', 'ko'):
                 if exists[lang]:
-                    csv_success[lang] = runproc(
-                        f'Generating CSV file: {filepath}, {lang}',
+                    json_success[lang] = runproc(
+                        f'Generating JSON file: {filepath}, {lang}',
                         reportfile, configpath,
-                        'generate-csv', f'src-{lang}/{filepath}', f'locale/{filepath}/{lang}.csv',
+                        'generate-json', f'src-{lang}/{filepath}', f'locale/{filepath}/{lang}.json',
                         '-p', f'{filepath}$', '-l', f'src-en/{filepath}'
                     )
-            if csv_success['en'] and csv_success['ko']:
+            if json_success['en'] and json_success['ko']:
                 # Empty untranslated strings
                 runproc(
                     f'Emptying untranslated strings: {filepath}',
                     reportfile, configpath,
-                    'empty-untranslated', f'locale/{filepath}/en.csv', f'locale/{filepath}/ko.csv'
+                    'sanitize-json', f'locale/{filepath}/en.json', f'locale/{filepath}/ko.json'
                 )
             if exists['en'] and exists['ko']:
                 # Run diff report
@@ -348,27 +311,27 @@ def batch_en(ctx):
         for path in glob(file_pattern, root_dir='src-en', recursive=True)
     ]
 
-    for oldcsv in glob('locale/**/en.csv', recursive=True):
-        Path(oldcsv).unlink()
+    for oldjson in glob('locale/**/en.json', recursive=True):
+        Path(oldjson).unlink()
 
     with open('report.txt', 'w', encoding='utf-8', newline='\n') as reportfile:
         for filepath in filepaths_en:
             print(f'Processing {filepath}...')
 
-            # Generate csv for each language
+            # Generate json for each language
             lang = 'en'
-            csv_success = runproc(
-                f'Generating CSV file: {filepath}, {lang}',
+            json_success = runproc(
+                f'Generating JSON file: {filepath}, {lang}',
                 reportfile, configpath,
-                'generate-csv', f'src-{lang}/{filepath}', f'locale/{filepath}/{lang}.csv',
+                'generate-json', f'src-{lang}/{filepath}', f'locale/{filepath}/{lang}.json',
                 '-p', f'{filepath}$', '-l', f'src-en/{filepath}'
             )
-            if csv_success and Path(f'locale/{filepath}/ko.csv').exists():
+            if json_success and Path(f'locale/{filepath}/ko.json').exists():
                 # Empty untranslated strings
                 runproc(
                     f'Emptying untranslated strings: {filepath}',
                     reportfile, configpath,
-                    'empty-untranslated', f'locale/{filepath}/en.csv', f'locale/{filepath}/ko.csv'
+                    'sanitize-json', f'locale/{filepath}/en.json', f'locale/{filepath}/ko.json'
                 )
 
 @main.command()
@@ -385,11 +348,11 @@ def batch_apply(ctx):
 
     target_en = [
         Path(path).parent.as_posix()
-        for path in glob('**/en.csv', root_dir='locale', recursive=True)
+        for path in glob('**/en.json', root_dir='locale', recursive=True)
     ]
     target_ko = [
         Path(path).parent.as_posix()
-        for path in glob('**/ko.csv', root_dir='locale', recursive=True)
+        for path in glob('**/ko.json', root_dir='locale', recursive=True)
     ]
     target_either = sorted(
         set(target_en) | set(target_ko),
@@ -397,23 +360,23 @@ def batch_apply(ctx):
     )
 
     xmlbasepath_en = Path('src-en')
-    csvbasepath = Path('locale')
+    jsonbasepath = Path('locale')
     outputbasepath = Path('output')
 
     with open('report.txt', 'w', encoding='utf-8', newline='\n') as reportfile:
         for targetpath in target_either:
             print(f'Processing {targetpath}...')
 
-            csvpath_en = csvbasepath / targetpath / 'en.csv'
-            csvpath_ko = csvbasepath / targetpath / 'ko.csv'
+            jsonpath_en = jsonbasepath / targetpath / 'en.json'
+            jsonpath_ko = jsonbasepath / targetpath / 'ko.json'
             xmlpath = xmlbasepath_en / targetpath
             outputpath = outputbasepath / targetpath
 
-            if not csvpath_en.exists():
-                print('=> skipped: en.csv not found')
+            if not jsonpath_en.exists():
+                print('=> skipped: en.json not found')
                 continue
-            if not csvpath_ko.exists():
-                print('=> skipped: ko.csv not found')
+            if not jsonpath_ko.exists():
+                print('=> skipped: ko.json not found')
                 continue
             if not xmlpath.exists():
                 print('=> skipped: XML not found')
@@ -422,7 +385,7 @@ def batch_apply(ctx):
             runproc(
                 f'Applying translation: {targetpath}',
                 reportfile, configpath,
-                'apply-locale', str(xmlpath), str(csvpath_en), str(csvpath_ko), str(outputpath)
+                'apply-locale', str(xmlpath), str(jsonpath_en), str(jsonpath_ko), str(outputpath)
             )
 
 if __name__ == '__main__':
