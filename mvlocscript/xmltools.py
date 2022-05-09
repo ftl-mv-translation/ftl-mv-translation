@@ -28,7 +28,7 @@ XSLT_ADD_NAMESPACE_TEMPLATE = '''
 
 def parse_illformed(path, namespaces=None):
     '''
-    Read namespace-ill-formed XML with undefined namespaces and double-hypen comments.
+    Read ill-formed XML with undefined namespaces and double-hypen comments.
     '''
     namespaces = namespaces or []
     
