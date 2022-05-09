@@ -8,7 +8,7 @@ import subprocess
 from glob import glob
 from pathlib import Path
 from lxml import etree
-from mvkoscript.xmltools import xpath, getpath, xmldiff, getsourceline, parse_illformed
+from mvloc.xmltools import xpath, getpath, xmldiff, getsourceline, parse_illformed
 
 FTL_NAMESPACES = ['mod']
 
@@ -30,7 +30,7 @@ def writejson(path, obj):
         json.dump(obj, f, indent=4, ensure_ascii=False)
 
 @click.group()
-@click.option('--config', '-c', default='mvkoscript.config.jsonc', help='config file')
+@click.option('--config', '-c', default='mvloc.config.jsonc', help='config file')
 @click.pass_context
 def main(ctx, config):
     ctx.ensure_object(dict)
@@ -83,7 +83,7 @@ def generate_json(ctx, xml, output, prefix, location):
     '''
     Generate translate-toolkit compatible JSON file from XML.
 
-    Usage: mvko generate-json src-ko/data/blueprints.xml.append locale/data/blueprints.xml.append/ko.json
+    Usage: mvloc generate-json src-ko/data/blueprints.xml.append locale/data/blueprints.xml.append/ko.json
     '''
     config = ctx.obj['config']
     stringSelectionXPath = config.get('stringSelectionXPath', [])
@@ -127,7 +127,7 @@ def sanitize_json(ctx, original, translated):
     '''
     Given two JSON files, sanitize them to be properly marked in Weblate.
 
-    Usage: mvko sanitize-json locale/data/blueprints.xml.append/en.json locale/data/blueprints.xml.append/ko.json
+    Usage: mvloc sanitize-json locale/data/blueprints.xml.append/en.json locale/data/blueprints.xml.append/ko.json
     '''
     
     entries_original = readjson(original)
@@ -163,7 +163,7 @@ def apply_locale(ctx, inputxml, originaljson, translatedjson, outputxml):
     '''
     Apply locale JSON to XML, generating a translated XML file.
 
-    Usage: mvko apply-locale src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/en.json
+    Usage: mvloc apply-locale src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/en.json
            locale/data/blueprints.xml.append/ko.json output/data/blueprints.xml.append
     '''
     print(f'Reading {inputxml}...')
@@ -238,7 +238,7 @@ def batch_bootstrap(ctx):
     Batch operation for bootstrapping.
     Assumes "src-en/" and "src-ko/" directory to be present. Generates "locale/" directory and "report.txt".
 
-    Usage: mvko batch-bootstrap
+    Usage: mvloc batch-bootstrap
     '''
 
     configpath = ctx.obj['configpath']
@@ -298,7 +298,7 @@ def batch_en(ctx):
     Batch operation for English update.
     Assumes "src-en/" directory to be present. Updates "locale/" directory and "report.txt".
 
-    Usage: mvko batch-en
+    Usage: mvloc batch-en
     '''
 
     configpath = ctx.obj['configpath']
@@ -341,7 +341,7 @@ def batch_apply(ctx):
     Batch operation for applying translation.
     Assumes "src-en/" and "locale/" directory to be present. Updates "output/" directory and "report.txt".
 
-    Usage: mvko batch-apply
+    Usage: mvloc batch-apply
     '''
 
     configpath = ctx.obj['configpath']
