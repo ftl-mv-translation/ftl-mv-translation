@@ -7,11 +7,12 @@ from glob import glob
 from functools import reduce
 from pathlib import Path
 from lxml import etree
-from mvlocscript.xmltools import xpath, getpath, xmldiff, getsourceline, parse_illformed
+from mvlocscript.xmltools import xpath, UniqueXPathGenerator, xmldiff, getsourceline, parse_illformed
 from mvlocscript.fstools import ensureparent, simulate_pythonioencoding_for_pyinstaller
 from mvlocscript.localeformats import stringentries_to_dictionary, readpo, writepo, StringEntry
 
-FTL_NAMESPACES = ['mod']
+FTL_XML_NAMESPACES = ['mod']
+FTL_XML_UNIQUE_ATTRIBUTES = ['name']
 
 @click.group()
 @click.option('--config', '-c', default='mvloc.config.jsonc', help='config file')
@@ -35,8 +36,8 @@ def unhandled(ctx, a, b, mismatch):
     config = ctx.obj['config']
     stringSelectionXPath = config.get('stringSelectionXPath', [])
 
-    atree = parse_illformed(a, FTL_NAMESPACES)
-    btree = parse_illformed(b, FTL_NAMESPACES)
+    atree = parse_illformed(a, FTL_XML_NAMESPACES)
+    btree = parse_illformed(b, FTL_XML_NAMESPACES)
 
     excluded = reduce(
         lambda s1, s2: s1 | s2,
@@ -44,7 +45,7 @@ def unhandled(ctx, a, b, mismatch):
     )
 
     print('Comparing files...')
-    diff = xmldiff(atree, btree)
+    diff = xmldiff(atree, btree, FTL_XML_UNIQUE_ATTRIBUTES)
     print()
     print(f'#differences (all): {len(diff)}')
     diff = [(p, m) for p, m in diff if not excluded.issuperset(xpath(atree, p))]
@@ -74,7 +75,7 @@ def generate(ctx, xml, output, prefix, location):
     location = location or xml
 
     print(f'Reading {xml}...')
-    tree = parse_illformed(xml, FTL_NAMESPACES)
+    tree = parse_illformed(xml, FTL_XML_NAMESPACES)
     entities = reduce(
         lambda s1, s2: s1 | s2,
         (set(xpath(tree, xpathexpr)) for xpathexpr in stringSelectionXPath)
@@ -87,8 +88,12 @@ def generate(ctx, xml, output, prefix, location):
         )
     )
 
+    uniqueXPathGenerator = UniqueXPathGenerator(tree, FTL_XML_UNIQUE_ATTRIBUTES)
+
     def getkey(entity):
-        return f'{prefix}{getpath(tree, entity)}'
+        path = uniqueXPathGenerator.getpath(entity)
+        return f'{prefix}{path}'
+    
     def getvalue(entity):
         if getattr(entity, 'value', None) is not None:
             # AttributeProxy
@@ -99,7 +104,7 @@ def generate(ctx, xml, output, prefix, location):
     print(f'Found {len(entities)} strings')
     print(f'Writing {output}...')
     ensureparent(output)
-    
+
     writepo(
         output,
         [StringEntry(getkey(entity), getvalue(entity), getsourceline(entity)) for entity in entities],
@@ -126,7 +131,7 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
            locale/data/blueprints.xml.append/ko.po output/data/blueprints.xml.append
     '''
     print(f'Reading {inputxml}...')
-    tree = parse_illformed(inputxml, FTL_NAMESPACES)
+    tree = parse_illformed(inputxml, FTL_XML_NAMESPACES)
 
     entries_original = stringentries_to_dictionary(readpo(originalpo))
     entries_translated = stringentries_to_dictionary(readpo(translatedpo))
@@ -136,9 +141,11 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
     for key, value in entries_original.items():
         translation = entries_translated.get(key, None)
         if not value:
-            print(f'WARNING: Skipping {key} as empty or nonexistent in locale (original).')
             if translation:
-                print(f'   note: {key} is NON-EMPTY in locale (translation); This might indicate a problem.')
+                print(
+                    f'WARNING: {key} is empty in original but NON-EMPTY in target locale;'
+                    ' This might indicate a problem.'
+                )
             continue
         
         if not translation:

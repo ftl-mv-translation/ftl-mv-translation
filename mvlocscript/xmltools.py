@@ -103,58 +103,85 @@ def xpath(tree_or_element, expr):
 
     return list(map(convert_xpath_result, xpath_result))
 
-def getpath(tree, element_or_attribute_or_attributeproxy):
+class UniqueXPathGenerator:
     '''
-    Similar to lxml.etree.ElementTree.getpath(), but use @name attribute instead of ordinal if available.
-    Also supports attributes and AttributeProxy.
+    Similar to lxml.etree.ElementTree.getpath(), but
+    * Use unique attributes instead of ordinal if available.
+    * Condense redundant elements around unique attributes.
+    * Supports attributes and AttributeProxy.
     '''
+    def __init__(self, tree, unique_attr=None):
+        self.tree = tree
+        self.unique_attr = unique_attr or []
+        self.tagname_to_elements = {}
 
-    attrname = getattr(element_or_attribute_or_attributeproxy, 'attrname', None)
-    if attrname:
-        return getpath(tree, element_or_attribute_or_attributeproxy.getparent()) + f'/@{attrname}'
+    def _check_xpath(self, rootobj, xpathexpr, expected_element):
+        results = rootobj.xpath(xpathexpr, namespaces=self.tree.getroot().nsmap)
+        return len(results) == 1 and results[0] == expected_element
     
-    element = element_or_attribute_or_attributeproxy
-    path = tree.getpath(element)
-    segments = path.split('/')
+    def _get_tag_as_written(self, e):
+        tag, prefix = e.tag, e.prefix
+        if prefix is None:
+            return tag
+        else:
+            return f'{prefix}:{tag[tag.find("}") + 1:]}'
+    
+    def getpath(self, element_or_attribute_or_attributeproxy):
+        attrname = getattr(element_or_attribute_or_attributeproxy, 'attrname', None)
+        if attrname:
+            return self.getpath(self.tree, element_or_attribute_or_attributeproxy.getparent()) + f'/@{attrname}'
 
-    newpath = ''
-    for i, segment in enumerate(segments):
-        if i == 0 and segment == '':
+        element = element_or_attribute_or_attributeproxy
+        path = self.tree.getpath(element)
+
+        segments = path.split('/')
+        if segments[0] == '':
             # Initial '/'
-            continue
+            segments = segments[1:]
+            assert segments
 
-        def next_newpath():
-            xpath_ordinal = f'{newpath}/{segment}'
+        new_xpath = ''
+        curelement = None
+        for segment in segments:
+            curelement = self.tree.getroot() if curelement is None else curelement.xpath(segment, namespaces=self.tree.getroot().nsmap)[0]
 
-            if segment.find('[') == -1:
-                # no []: just add the segment
-                return xpath_ordinal
+            for attrname in self.unique_attr:
+                attrval = curelement.get(attrname)
+                if attrval is None:
+                    continue
 
-            xpath_ordinal_result = tree.xpath(xpath_ordinal, namespaces=tree.getroot().nsmap)
-            assert(len(xpath_ordinal_result) == 1)
-            elem = xpath_ordinal_result[0]
+                tagname = self._get_tag_as_written(curelement)
+                new_segment = f'{tagname}[@{attrname}="{attrval}"]'
 
-            name = elem.get('name')
-            if name is None:
-                # no @name: just use ordinal as-is
-                return xpath_ordinal
-
-            xpath_name = f'{newpath}/{elem.tag}[@name="{name}"]'
-            try:
-                xpath_name_result = tree.xpath(xpath_name, namespaces=tree.getroot().nsmap)
-                if xpath_name_result == xpath_ordinal_result:
-                    return xpath_name
-            except etree.XPathEvalError:
-                return xpath_ordinal
-            
-            return xpath_ordinal
+                cached_elements = self.tagname_to_elements.get(tagname, None)
+                if cached_elements is None:
+                    cached_elements = self.tree.xpath(f'//{tagname}', namespaces=self.tree.getroot().nsmap)
+                    self.tagname_to_elements[tagname] = cached_elements
+                
+                if all(
+                    cachedelement.get(attrname) != attrval
+                    for cachedelement in cached_elements
+                    if cachedelement != curelement
+                ):
+                    # //tag[@attr="value"]
+                    new_xpath = f'//{new_segment}'
+                    break
+                
+                results = curelement.xpath(f'../{new_segment}', namespaces=self.tree.getroot().nsmap)
+                if len(results) == 1 and results[0] == curelement:
+                    # /.../tag[@attr="value"]
+                    new_xpath = f'{new_xpath}/{new_segment}'
+                    break
+            else:
+                # /.../tag[ordinal]
+                new_xpath = f'{new_xpath}/{segment}'
         
-        newpath = next_newpath()
-    
-    return newpath
+        return new_xpath
 
-def xmldiff(atree, btree):
+def xmldiff(atree, btree, unique_attr=None):
     '''Compare atree and btree'''
+
+    uniqueXPathGenerator = UniqueXPathGenerator(atree, unique_attr)
     
     differences = []
     def normalized_text(elem):
@@ -171,21 +198,21 @@ def xmldiff(atree, btree):
     
     def add_differences(aelem, belem):
         if aelem.tag != belem.tag:
-            differences.append((getpath(atree, aelem), f'tag differs: {aelem.tag} != {belem.tag}'))
+            differences.append((uniqueXPathGenerator.getpath(aelem), f'tag differs: {aelem.tag} != {belem.tag}'))
         
         if normalized_text(aelem) != normalized_text(belem):
             differences.append(
-                (getpath(atree, aelem), f'text differs: "{normalized_text(aelem)}" != "{normalized_text(belem)}"')
+                (uniqueXPathGenerator.getpath(aelem), f'text differs: "{normalized_text(aelem)}" != "{normalized_text(belem)}"')
             )
         
-        add_attribute_differences(getpath(atree, aelem), aelem.attrib, belem.attrib)
+        add_attribute_differences(uniqueXPathGenerator.getpath(aelem), aelem.attrib, belem.attrib)
 
         iselement = lambda e: isinstance(e.tag, str) # non-comment checker
         achildren = list(filter(iselement, aelem))
         bchildren = list(filter(iselement, belem))
                 
         if len(achildren) != len(bchildren):
-            differences.append((getpath(atree, aelem), f'#children differs: {len(aelem)} != {len(belem)}'))
+            differences.append((uniqueXPathGenerator.getpath(aelem), f'#children differs: {len(aelem)} != {len(belem)}'))
         else:
             for i in range(len(achildren)):
                 add_differences(achildren[i], bchildren[i])
@@ -201,3 +228,4 @@ def getsourceline(element_or_attribute_or_attributeproxy):
     if ret is None:
         raise RuntimeError(f'getsourceline failed for {element_or_attribute_or_attributeproxy}')
     return ret
+    
