@@ -281,7 +281,7 @@ def batch_apply(ctx, targetlang):
 
     xmlbasepath_en = Path('src-en')
     localebasepath = Path('locale')
-    outputbasepath = Path('output')
+    outputbasepath = Path('output') / targetlang
 
     with open('report.txt', 'w', encoding='utf-8', newline='\n') as reportfile:
         for targetpath in locale_either:
