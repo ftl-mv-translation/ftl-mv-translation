@@ -22,16 +22,16 @@ The repo is designed to work with [Weblate](https://weblate.org/). Following Web
 * Component discovery
    ```
    Regular expression to match translation files against:
-   locale/(?P<component>.*)/(?P<language>[^/.]*)\.json
+   locale/(?P<component>.*)/(?P<language>[^/.]*)\.po
    
    File format:
-   JSON file
+   gettext PO file (monolingual)
    
    Define the monolingual base filename:
-   locale/{{ component }}/en.json
+   locale/{{ component }}/en.po
    
    Define the base file for new translations:
-   locale/{{ component }}/en.json
+   locale/{{ component }}/en.po
    ```
 
 * Flag unchanged translations as "Needs editing"
@@ -41,8 +41,8 @@ The repo is designed to work with [Weblate](https://weblate.org/). Following Web
 1. Unzip the latest FTL: Multiverse into src-en/ directory
 2. Run `mvloc batch-generate --clean en`
 
-The command extracts localizable strings from `src-en/` and updates  `en.json` files in `locale/`. Weblate can
-automatically grab the JSON changes once the repository is updated.
+The command extracts localizable strings from `src-en/` and updates  `en.po` files in `locale/`. Weblate can
+automatically grab the changes once the repository is updated.
 
 ### Changing string extraction criteria
 
@@ -60,10 +60,14 @@ then writes them out to `output/<langname>` directory.
 
 1. Unzip the original FTL: Multiverse into `src-en/` directory
 2. Create `src-<langname>/` directory and place the translated XMLs there -- Example: `src-ko/`.
-3. Run `mvloc batch-generate --diff <langname>`
+3. Run `mvloc batch-generate --diff --clean --empty-identical <langname>`
 
 The bootstrapping process tries to reverse the applying process: extracting the strings out of already translated
 XML files. This is useful when migrating from an ongoing translation project.
+
+In case where the string extraction criteria is incomplete to cover your XMLs, the unhandled changes are shown in
+the report.txt (shown as "Diff report" tasks). In that case, adjust `mvloc.config.jsonc` appropriately, follow the
+"Updating the English strings" workflow to update en.po files, and repeat this workflow again.
 
 ## Disclaimer
 
