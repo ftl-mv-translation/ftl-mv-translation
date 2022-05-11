@@ -3,6 +3,8 @@
 # `mvloc` Source Code
 
 ```
+Copyright 2022 Ned Son.
+
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the
