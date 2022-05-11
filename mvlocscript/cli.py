@@ -185,8 +185,9 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
     entries_translated = stringentries_to_dictionary(entry for entry in readpo(translatedpo) if not entry.obsolete)
     
     for key, entry_original in entries_original.items():
+        entry_translated = entries_translated.get(key, None)
         original = entry_original.value
-        translation = entries_translated.get(key, None)
+        translation = entry_translated.value if entry_translated else None
         if not original:
             if translation:
                 print(
@@ -194,7 +195,6 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
                     ' This might indicate a problem.'
                 )
             continue
-        
         if not translation:
             continue
 
