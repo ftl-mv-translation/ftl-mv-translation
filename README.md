@@ -67,6 +67,12 @@ In case where the string extraction criteria is incomplete to cover your XMLs, t
 the report.txt (shown as "Diff report" tasks). In that case, adjust `mvloc.config.jsonc` appropriately, follow the
 "Updating the English strings" workflow to update en.po files, and repeat this workflow again.
 
+> #### Bootstrapping only a subset of XML files
+>
+> * This is useful when importing a new translated XML file over an already existing locale in the project.
+> * Put XML files into `src-<langname>/`. Make sure to remove any other files or they will be overwritten as well!
+> * Remove `--clean` option when invoking `mvloc`. Other files will be untouched.
+
 ## Disclaimer
 
 FTL: Faster Than Light is a trademark of Subset Games. Unless otherwise stated, the authors and the contributors of this

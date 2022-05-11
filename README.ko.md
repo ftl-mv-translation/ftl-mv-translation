@@ -54,22 +54,22 @@
 ### 부트스트래핑
 
 1. 원문 FTL: Multiverse를 `src-en/` 디렉토리에 압축 해제합니다
-2. `src-ko/` 디렉토리를 만들고 번역본 XML 파일을 보관합니다
+2. `src-<언어이름>/` 디렉토리를 만들고 번역본 XML 파일을 보관합니다 -- 예: `src-ko/`
 3. `mvloc batch-generate --diff --clean --empty-identical <언어이름>`을 실행합니다
 
 부트스트래핑은 번역 적용의 정반대입니다. 이미 있는 번역본 XML로부터 스트링을 추출합니다.
 기존에 이미 진행되고 있던 번역 프로젝트를 옮길 때 유용합니다.
 
-In case where the string extraction criteria is incomplete to cover your XMLs, the unhandled changes are shown in
-the report.txt (shown as "Diff report" tasks). In that case, adjust `mvloc.config.jsonc` appropriately, follow the
-"Updating the English strings" workflow to update en.po files, and repeat this workflow again.
+만약 스트링 추출 기준이 불완전한 경우, XML의 모든 번역문을 추출하지 못할 수도 있습니다. 이 경우 report.txt 파일 내에
+추출되지 못한 변경점들이 표시됩니다 ("Diff report"). 이를 참조하여, "스트링 추출 기준 변경하기" 및
+"영문 스트링 업데이트하기" 작업흐름을 따라해주시고, 그 다음 이 작업을 다시 시도해주시면 됩니다.
 
-> #### 일부 파일만 부트스트래핑하기
+> #### 일부 파일만 부트스트래핑하는 경우
 >
-> * 부트스트래핑 할 파일만 `src-ko/`에 넣고 나머지 파일은 지워주세요.
-> * 실행시 `--clean` 옵션을 지워주세요. 그럼 부트스트래핑하는 파일만 변경되고 나머지 파일들은 변경되지 않습니다.
-
+> * 부트스트래핑 할 파일만 `src-<언어이름>/`에 넣어주세요.  해당 디렉토리에 다른 파일이 남아있으면 안 됩니다.
+> * 실행시 `--clean` 옵션을 지워주세요. 그럼 해당 파일만 변경되고 나머지 파일들은 변경되지 않습니다.
 
 ## 면책 조항
 
-FTL: Faster Than Light은 Subset Games의 상표입니다. 별도 언급이 없는 한, 이 저장소의 저자와 기여자들은 Subset Games와 관계가 없습니다.
+FTL: Faster Than Light은 Subset Games의 상표입니다. 별도 언급이 없는 한, 이 저장소의 저자와 기여자들은
+Subset Games와 관계가 없습니다.
