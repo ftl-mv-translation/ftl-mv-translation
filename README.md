@@ -1,4 +1,4 @@
-# FTL: Multiverse Korean Translation
+# FTL: Multiverse Translation Project
 
 ## Running the script
 
@@ -33,8 +33,6 @@ The repo is designed to work with [Weblate](https://weblate.org/). Following Web
    Define the base file for new translations:
    locale/{{ component }}/en.po
    ```
-
-* Flag unchanged translations as "Needs editing"
 
 ### Updating the English strings
 
