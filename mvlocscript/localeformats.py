@@ -1,28 +1,30 @@
-import json
 import polib
 from collections import namedtuple
 
-StringEntry = namedtuple('StringEntry', ['key', 'value', 'lineno'])
+StringEntry = namedtuple('StringEntry', ['key', 'value', 'lineno', 'fuzzy', 'obsolete'])
 
-def stringentries_to_dictionary(entries: list[StringEntry]) -> dict[str, str]:
-    return {entry.key: entry.value for entry in entries}
-
-def readjson(path) -> list[StringEntry]:
-    with open(path, encoding='utf-8') as f:
-        return [StringEntry(k, v, -1) for k, v in json.load(f).items()]
-
-    
-def writejson(path, entries: list[StringEntry]):
-    with open(path, 'w', encoding='utf-8', newline='') as f:
-        json.dump({entry.key: entry.value for entry in entries}, f, indent=4, ensure_ascii=False)
+def stringentries_to_dictionary(entries: list[StringEntry]) -> dict[str, StringEntry]:
+    return {entry.key: entry for entry in entries}
 
 def readpo(path) -> list[StringEntry]:
-    return [
-        StringEntry(entry.msgid, entry.msgstr, entry.occurrences[0][1])
-        for entry in polib.pofile(path)
-    ]
+    ret = []
+    for entry in polib.pofile(path):
+        occurrences = entry.occurrences[0][1] if entry.occurrences else -1
+        if occurrences == -1 and not entry.obsolete:
+            raise RuntimeError("sourceline cannot be omitted for non-obsolete entries")
 
-def writepo(path, entries: list[StringEntry], sourcelocation):
+        ret.append(
+            StringEntry(entry.msgid, entry.msgstr, occurrences, entry.fuzzy, entry.obsolete)
+        )
+    return ret
+
+def infer_sourcelocation(path):
+    try:
+        return polib.pofile(path)[0].occurrences[0][0]
+    except:
+        return None
+
+def _create_pofile(entries: list[StringEntry], sourcelocation):
     po = polib.POFile()
     po.metadata = {
         'MIME-Version': '1.0',
@@ -30,10 +32,30 @@ def writepo(path, entries: list[StringEntry], sourcelocation):
         'Content-Transfer-Encoding': '8bit',
     }
     for entry in entries:
-        po.append(polib.POEntry(
+        poentry = polib.POEntry(
             msgid=entry.key,
             msgstr=entry.value,
-            occurrences=[(sourcelocation, entry.lineno)]
-        ))
+            occurrences=[(sourcelocation, entry.lineno)],
+            obsolete=entry.obsolete,
+            flags=['fuzzy'] if entry.fuzzy else []
+        )
+        po.append(poentry)
     
+    return po
+
+def writepo(path, entries: list[StringEntry], sourcelocation):
+    _create_pofile(entries, sourcelocation).save(path)
+
+def generate_pot(entries: list[StringEntry], sourcelocation):
+    pot = _create_pofile(entries, sourcelocation)
+    for entry in pot:
+        entry.obsolete = False
+        entry.flags = []
+        entry.msgstr = ''
+    return pot
+
+def merge_pot(path, pot):
+    print(path)
+    po = polib.pofile(path)
+    po.merge(pot)
     po.save(path)

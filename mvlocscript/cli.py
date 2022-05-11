@@ -3,13 +3,14 @@ import os
 import click
 import json5
 import subprocess
-from glob import glob
 from functools import reduce
 from pathlib import Path
 from lxml import etree
 from mvlocscript.xmltools import xpath, UniqueXPathGenerator, xmldiff, getsourceline, parse_illformed
-from mvlocscript.fstools import ensureparent, simulate_pythonioencoding_for_pyinstaller
-from mvlocscript.localeformats import stringentries_to_dictionary, readpo, writepo, StringEntry
+from mvlocscript.fstools import ensureparent, simulate_pythonioencoding_for_pyinstaller, glob_posix
+from mvlocscript.localeformats import (
+    generate_pot, infer_sourcelocation, merge_pot, stringentries_to_dictionary, readpo, writepo, StringEntry
+)
 
 FTL_XML_NAMESPACES = ['mod']
 FTL_XML_UNIQUE_ATTRIBUTES = ['name']
@@ -107,9 +108,56 @@ def generate(ctx, xml, output, prefix, location):
 
     writepo(
         output,
-        [StringEntry(getkey(entity), getvalue(entity), getsourceline(entity)) for entity in entities],
+        [StringEntry(getkey(entity), getvalue(entity), getsourceline(entity), False, False) for entity in entities],
         location
     )
+
+
+@main.command()
+@click.argument('original')
+@click.argument('translated')
+@click.option(
+    '--empty-identical', '-e', is_flag=True, default=False,
+    help='Empty each translated string if it is identical to the original.'
+)
+@click.pass_context
+def sanitize(ctx, original, translated, empty_identical):
+    '''
+    Given two locale files, sanitize them to be properly flagged in Weblate.
+
+    Usage: mvloc sanitize --fuzzy locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po
+    '''
+
+    config = ctx.obj['config']
+    stringSelectionXPath = config.get('stringSelectionXPath', [])
+
+    sourcelocation = infer_sourcelocation(original)
+    assert sourcelocation
+
+    entries_original = readpo(original)
+
+    # Original: filter empty strings out
+    key_of_empty_strings_original = set(entry.key for entry in entries_original if entry.value == '')
+    entries_original = [entry for entry in entries_original if entry.key not in key_of_empty_strings_original]
+    writepo(original, entries_original, sourcelocation)
+
+    # Translated: apply original changes to translation as if invoking msgmerge
+    pot = generate_pot(entries_original, sourcelocation)
+    merge_pot(translated, pot)
+
+    if empty_identical:
+        # Translated: empty strings identical to their respective original string
+        dict_original = stringentries_to_dictionary(entries_original)
+        entries_translated = readpo(translated)
+
+        def transform_entry(entry_translated):
+            entry_original = dict_original.get(entry_translated.key)
+            if (entry_original is not None) and (entry_original.value == entry_translated.value):
+                return entry_translated._replace(value = '')
+            return entry_translated
+
+        entries_translated = [transform_entry(entry_translated) for entry_translated in entries_translated]
+        writepo(translated, entries_translated, sourcelocation)
 
 def key_to_xpath(key):
     idx = key.find('$')
@@ -134,22 +182,20 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
     tree = parse_illformed(inputxml, FTL_XML_NAMESPACES)
 
     entries_original = stringentries_to_dictionary(readpo(originalpo))
-    entries_translated = stringentries_to_dictionary(readpo(translatedpo))
+    entries_translated = stringentries_to_dictionary(entry for entry in readpo(translatedpo) if not entry.obsolete)
     
-    untranslated_count = 0
-
-    for key, value in entries_original.items():
+    for key, entry_original in entries_original.items():
+        original = entry_original.value
         translation = entries_translated.get(key, None)
-        if not value:
+        if not original:
             if translation:
                 print(
-                    f'WARNING: {key} is empty in original but NON-EMPTY in target locale;'
+                    f'WARNING: {key} is empty in original but NON-EMPTY, NON-OBSOLETE in target locale;'
                     ' This might indicate a problem.'
                 )
             continue
         
         if not translation:
-            untranslated_count += 1
             continue
 
         xpathexpr = key_to_xpath(key)
@@ -176,8 +222,7 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
     ensureparent(outputxml)
     with open(outputxml, 'wb') as outputfile:
         outputfile.write(result)
-
-    print(f'#untranslated = {untranslated_count}')
+    
 
 def runproc(desc, reportfile, configpath, *args):
     newenv = dict(os.environ)
@@ -205,14 +250,18 @@ def runproc(desc, reportfile, configpath, *args):
 @click.option(
     '--clean', '-c', is_flag=True, default=False, help='Delete all <TARGETLANG>.po files from locale/ directory.'
 )
+@click.option(
+    '--empty-identical', '-e', is_flag=True, default=False,
+    help='Empty each translated string if it is identical to the original.'
+)
 @click.pass_context
-def batch_generate(ctx, targetlang, diff, clean):
+def batch_generate(ctx, targetlang, diff, clean, empty_identical):
     '''
     Batch operation for bootstrapping.
     Assumes "src-en/" and "src-<TARGETLANG>/" directory to be present.
     Generates "locale/**/<TARGETLANG>.po" files and "report.txt" file.
 
-    Usage: mvloc batch-generate --diff --clean ko
+    Usage: mvloc batch-generate --diff --clean --empty-identical ko
     '''
 
     configpath = ctx.obj['configpath']
@@ -220,32 +269,65 @@ def batch_generate(ctx, targetlang, diff, clean):
     file_patterns = config.get('filePatterns', [])
 
     filepaths_en = [
-        Path(path).as_posix()
+        path
         for file_pattern in file_patterns
-        for path in glob(file_pattern, root_dir='src-en', recursive=True)
+        for path in glob_posix(file_pattern, root_dir='src-en')
     ]
     filepaths_targetlang = [
-        Path(path).as_posix()
+        path
         for file_pattern in file_patterns
-        for path in glob(file_pattern, root_dir=f'src-{targetlang}', recursive=True)
+        for path in glob_posix(file_pattern, root_dir=f'src-{targetlang}')
     ]
 
     if clean:
-        for oldlocale in glob(f'locale/**/{targetlang}.po', recursive=True):
+        for oldlocale in glob_posix(f'locale/**/{targetlang}.po'):
             Path(oldlocale).unlink()
     
     with open('report.txt', 'w', encoding='utf-8', newline='\n') as reportfile:
         for filepath in filepaths_targetlang:
             print(f'Processing {filepath}...')
 
+            # Generate locale
             success = runproc(
                 f'Generating locale: {filepath}, {targetlang}',
                 reportfile, configpath,
                 'generate', f'src-{targetlang}/{filepath}', f'locale/{filepath}/{targetlang}.po',
                 '-p', f'{filepath}$', '-l', f'src-en/{filepath}'
             )
+            if not success:
+                continue
 
-            if success and diff and (filepath in filepaths_en):
+            # Sanitize:
+            # 1) if targetlang is en: apply sanitization to all translation
+            # 2) otherwise: apply sanitization to one translation only
+            en_locale = f'locale/{filepath}/en.po'
+            if Path(en_locale).exists():
+                sanitize_args = ['sanitize']
+                if empty_identical:
+                    sanitize_args.append('--empty-identical')
+                sanitize_args.append(en_locale)
+
+                if targetlang == 'en':
+                    sanitize_targets = glob_posix(f'locale/{filepath}/*.po')
+                    assert en_locale in sanitize_targets # We've just generated it
+
+                    if len(sanitize_targets) == 1:
+                        # English only: sanitize itself for empty string removal
+                        pass
+                    else:
+                        sanitize_targets.remove(en_locale)
+                else:
+                    sanitize_targets = [f'locale/{filepath}/{targetlang}.po']
+                
+                for sanitize_target in sanitize_targets:
+                    runproc(
+                        f'Sanitizing locale: {filepath}, {sanitize_target}',
+                        reportfile, configpath,
+                        *sanitize_args, sanitize_target
+                    )
+
+            # Generate diff report
+            if diff and (filepath in filepaths_en):
                 # Run diff report
                 runproc(
                     f'Diff report: {filepath}',
@@ -268,11 +350,11 @@ def batch_apply(ctx, targetlang):
 
     locale_en = [
         Path(path).parent.as_posix()
-        for path in glob('**/en.po', root_dir='locale', recursive=True)
+        for path in glob_posix('**/en.po', root_dir='locale')
     ]
     locale_targetlang = [
         Path(path).parent.as_posix()
-        for path in glob(f'**/{targetlang}.po', root_dir='locale', recursive=True)
+        for path in glob_posix(f'**/{targetlang}.po', root_dir='locale')
     ]
     locale_either = sorted(
         set(locale_en) | set(locale_targetlang),
