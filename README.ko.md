@@ -7,7 +7,9 @@
 `mvloc` 명령은 아래 두 가지 방식 중 하나로 실행할 수 있습니다:
 
 1. pip로 설치하기 (virtualenv 내에서 설치하는 것을 추천)
-2. poetry로 패키지를 설치하고 (`poetry install`) `poetry run mvloc` 명령으로 실행하기.
+2. poetry로 패키지를 설치하고 (`poetry install`) `poetry shell` 명령으로 virtualenv가 활성화된 쉘을 실행합니다. 이 안에서 `mvloc` 명령을 사용할 수 있습니다. (*)
+
+(*) 혹시 `poetry run mvloc` 으로 직접 실행하는 경우 `batch-` 명령이 실패할 수 있습니다. 이는 [poetry의 버그](https://github.com/python-poetry/poetry/issues/965)이며, `poetry shell`로 먼저 쉘에 진입하고 `mvloc` 명령을 사용하면 이 문제를 피할 수 있습니다.
 
 참고: `batch-`로 시작하는 모든 `mvloc` 명령은 `report.txt` 파일을 생성합니다. 이 파일 안에는 각 작업의 로그가 저장됩니다.
 
