@@ -3,7 +3,6 @@
 The Korean translation is provided by:
 
 * dedor111
-* nedsociety (nedsociety _AT_ gmail _DOT_ com)
 * foredayner (whcjfrnjs97 _AT_ naver _DOT_ com)
 * mistwalka (mistwaruka _AT_ gmail _DOT_ com)
 * rulebook (rulebook77 _AT_ gmail _DOT_ com)
@@ -12,6 +11,7 @@ The Korean translation is provided by:
 * BeeMOre (windowssart01 _AT_ gmail _DOT_ com)
 * Byeol_Lor (metagrams _AT_ gmail _DOT_ com)
 * 생선왕머킹: (youtube: https://www.youtube.com/channel/UCJewtI9FxWLB2Qf1Tam83UQ/videos)
+* nedsociety (nedsociety _AT_ gmail _DOT_ com)
 
 ... and 4 anonymous contributors.
 
