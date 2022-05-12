@@ -1,0 +1,328 @@
+<textList name="START_TEXT_PEACEFUL">
+	<text>You have arrived in the peaceful sector. 1</text>
+	<text>You have arrived in the peaceful sector. 2</text>
+	<text>You have arrived in the peaceful sector. 3</text>
+</textList>
+<event name="START_BEACON_PEACEFUL">
+	<text load="START_TEXT_PEACEFUL"/>
+	<ship load="LIST_SHIPS_GUARD_PEACEFUL" hostile="false"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>You notice the guard at this beacon, but they pay you no mind.</text>
+			<choice>
+				<text>Interact with or attack ship.</text>
+				<event load="GUARD_PEACEFUL_INTERACT"/>
+			</choice>
+			<choice>
+				<text>Ignore the guard.</text>
+				<event load="START_BEACON_PEACEFUL_STORAGE"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="GUARD_PEACEFUL_INTERACT">
+	<text>You approach the guard carefully, weighing your options. They're already suspicious.</text>
+	<choice>
+		<text>Attack the guard.</text>
+		<event>
+			<ship hostile="true"/>
+		</event>
+	</choice>
+	<choice>
+		<text>Demand they hand over the contents of their storage.</text>
+		<event load="GUARD_PEACEFUL_DEMAND"/>
+	</choice>
+	<choice>
+		<text>Contact the guard.</text>
+		<event load="GUARD_PEACEFUL_CONTACT"/>
+	</choice>
+	<choice>
+		<text>Change your mind and leave the guard alone.</text>
+		<event>
+			<text>With the guard already cautious of your movements, you decide its best not to stick around.</text>
+		</event>
+	</choice>
+	<choice req="weapons" lvl="6">
+		<text>(Upg. Weapons) Threaten the guard.</text>
+		<event load="GUARD_PEACEFUL_DEMAND_WEAPONS"/>
+	</choice>
+	<choice req="engi"> <!--equivelent race for the sector-->
+		<text>(Engi) Contact the guard.</text>
+		<event load="GUARD_PEACEFUL_CONTACT_RACE"/>
+	</choice>
+</event>
+<eventList name="GUARD_PEACEFUL_DEMAND">
+	<event>
+		<text>The guard refuses your demands and insteads raises its weapons!</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>The guard refuses your demands and insteads raises its weapons!</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>The guard refuses your demands and insteads raises its weapons!</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>The guard is reluctant, but hands over a portion of their storage. However, as you are gathering the goods they raise their weapons and attack!</text>
+		<autoReward level="LOW">stuff</autoReward>
+		<ship hostile="true"/>
+	</event>
+</eventList>
+<eventList name="GUARD_PEACEFUL_DEMAND_WEAPONS">
+	<event>
+		<text>The guard is reluctant, but hands over a portion of their storage. However, as you are gathering the goods they raise their weapons and attack!</text>
+		<autoReward level="LOW">stuff</autoReward>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>The guard is reluctant, but hands over a portion of their storage. However, as you are gathering the goods they raise their weapons and attack!</text>
+		<autoReward level="LOW">stuff</autoReward>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>The guard is reluctant, but hands over a large portion of their storage. They try to attack you but you flash your weapons again, and they rethink defending the goods, happy to let you go with some scrap and not their heads.</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+</eventList>
+<eventList name="GUARD_PEACEFUL_CONTACT">
+	<event>
+		<text>The guard refuses to respond to your hails. You decide its best to leave it alone.</text>
+	</event>
+	<event>
+		<text>The guard refuses to respond to your hails. You decide its best to leave it alone.</text>
+	</event>
+	<event>
+		<text>The guard.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+</eventList>
+<eventList name="GUARD_PEACEFUL_CONTACT_RACE">
+	<event>
+		<text>The guard's crew apologizes but they tell you they are unable to help in your mission</text>
+	</event>
+	<event>
+		<text>The guard's crew, happy to see one of their own aboard your ship, offer you a small portion of the rescources in their storage to aid you on your mission.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+</eventList>
+<event name="GUARD_PEACEFUL_DESTROY">
+	<text>With the guard destroyed, you're dissapointed to find their storage did not survive the fight. You can't hang around long before reinforcements arrive, so you take whats left of the debris and leave the husk of the ship behind.</text>
+	<autoReward level="LOW">stuff</autoReward>
+	<environment type="PDS" target="player"/>
+	<choice>
+		<text>Continue...</text>
+		<event>
+			<text>A nearby ASB satellite registers the Guard's distress signal and targets your ship!</text>
+			<environment type="PDS" target="player"/>
+		</event>
+	</choice>
+	<choice req="PDS_DISABLE">
+		<text>[ASB Jammer] Disable the ASB satellites before they can target your ship.</text>
+		<event>
+			<text>The jammer works like a charm, and the satellites never once lock onto your ship. We still shouldn't stick around, but now you have some extra time to scrap the guard.</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+</event>
+<event name="GUARD_PEACEFUL_KILL">
+	<text>With the crew dead, the storage is yours. You find some sort of unique [REWARD TYPE HERE], which you take along with any extra scrap or rescources. You can't stick around long to scrap the hull of the ship before reinforcements arrive, but you're satisfied with what you have.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<environment type="PDS" target="player"/>
+	<choice>
+		<text>Continue...</text>
+		<event>
+			<text>A nearby ASB satellite registers the Guard's distress signal and targets your ship!</text>
+			<environment type="PDS" target="player"/>
+		</event>
+	</choice>
+	<choice req="PDS_DISABLE">
+		<text>[ASB Jammer] Disable the ASB satellites before they can target your ship.</text>
+		<event>
+			<text>The jammer works like a charm, and the satellites never once lock onto your ship. We still shouldn't stick around, but now you have some extra time to scrap the guard.</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+</event>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<textList name="START_TEXT_HOSTILE">
+	<text>You have arrived in the hostile sector. 1</text>
+	<text>You have arrived in the hostile sector. 2</text>
+	<text>You have arrived in the hostile sector. 3</text>
+</textList>
+<event name="START_BEACON_HOSTILE">
+	<text load="START_TEXT_HOSTILE"/>
+	<ship load="LIST_SHIPS_GUARD_HOSTILE" hostile="false"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>The guard hails you. "You are not welcome here!"</text>
+			<choice hidden="true">
+				<text>Prepare for combat!</text>
+				<event/>
+			</choice>
+			<choice hidden="true">
+				<text>Try to bribe them.</text>
+				<event>
+					<text>You hope this is enough to satisfy them...</text>
+					<item_modify>
+						<item type="scrap" min="-25" max="-25"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="GUARD_HOSTILE_BRIBE"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="mind">
+				<text>(Mind Control) Attempt to mind control them.</text>
+				<event load="GUARD_HOSTILE_MIND"/>
+			</choice>
+			<choice hidden="true" req="mantis"> <!--equivelent race for the sector-->
+				<text>(Mantis) Try to persuade them to let you go.</text>
+				<event load="GUARD_HOSTILE_TALK"/>
+			</choice>
+			<choice hidden="true" req="cloak">
+				<text>(Cloaking) Cloak and try to escape.</text>
+				<event load="GUARD_HOSTILE_CLOAK"/>
+			</choice>
+			<choice hidden="true" req="engines" lvl="5">
+				<text>(Adv Engines) Try to escape the guard.</text>
+				<event load="GUARD_HOSTILE_ESCAPE"/>
+			</choice>
+			<choice hidden="true" req="pilot" lvl="3">
+				<text>(Adv Autopilot) Activate the auto-pilot to try and escape.</text>
+				<event load="GUARD_HOSTILE_ESCAPE"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="GUARD_HOSTILE_BRIBE">
+	<event>
+		<text>"Flattering. I wonder what else you might have in your storage..." Uh oh...</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>"Flattering. I wonder what else you might have in your storage..." Uh oh....</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>The guard seems satisfied with the bribe. "I guess you can pass... for now."</text>
+	</event>
+</eventList>
+<eventList name="GUARD_HOSTILE_MIND">
+	<event>
+		<text>Your tricks are not enough to effect the guards, and it only seems to anger them!</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>Your tricks are not enough to effect the guards, and it only seems to anger them!</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>"Oh pardon me, how rude of us. Here, take some of this as a show of our well-being. Have a great day!"</text>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+</eventList>
+<eventList name="GUARD_HOSTILE_TALK">
+	<event>
+		<text>"One of us? On your ship? How disgusting. A traitor! I'll enjoy scrubbing your ship clean of the scum."</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>"One of us? On your ship? How disgusting. A traitor! I'll enjoy scrubbing your ship clean of the scum."</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>"What madness are you spewing? A covert mission on a fake federation ship? Well... that does sound rather important. Alright, I'll let you pass for now, but you better hope we dont cross paths again."</text>
+	</event>
+</eventList>
+<eventList name="GUARD_HOSTILE_CLOAK">
+	<event>
+		<text>You try to cloak and evade the enemy ship, but their scanners are too good and they lock onto your location!</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>You try to cloak and evade the enemy ship, but their scanners are too good and they lock onto your location!</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>You successfully manage to evade the enemy guard.</text>
+	</event>
+</eventList>
+<eventList name="GUARD_HOSTILE_ESCAPE">
+	<event>
+		<text>You try to evade the enemy ship, but they're too fast for your ship!</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>You try to evade the enemy ship, but they're too fast for your ship!</text>
+		<ship hostile="true"/>
+	</event>
+	<event>
+		<text>You successfully manage to evade the enemy guard.</text>
+	</event>
+</eventList>
+<event name="GUARD_HOSTILE_DESTROY">
+	<text>With the guard destroyed, you're dissapointed to find their storage did not survive the fight. You can't hang around long before reinforcements arrive, so you take whats left of the debris and leave the husk of the ship behind.</text>
+	<autoReward level="LOW">stuff</autoReward>
+	<environment type="PDS" target="player"/>
+	<choice>
+		<text>Continue...</text>
+		<event>
+			<text>A nearby ASB satellite registers the Guard's distress signal and targets your ship!</text>
+			<environment type="PDS" target="player"/>
+		</event>
+	</choice>
+	<choice req="PDS_DISABLE" hidden="true">
+		<text>[ASB Jammer] Disable the ASB satellites before they can target your ship.</text>
+		<event>
+			<text>The jammer works like a charm, and the satellites never once lock onto your ship. We still shouldn't stick around, but now you have some extra time to scrap the guard.</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+</event>
+<event name="GUARD_HOSTILE_KILL">
+	<text>With the crew dead, the storage is yours. You find some sort of unique [REWARD TYPE HERE], which you take along with any extra scrap or rescources. You can't stick around long to scrap the hull of the ship before reinforcements arrive, but you're satisfied with what you have.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<environment type="PDS" target="player"/>
+	<choice>
+		<text>Continue...</text>
+		<event>
+			<text>A nearby ASB satellite registers the Guard's distress signal and targets your ship!</text>
+			<environment type="PDS" target="player"/>
+		</event>
+	</choice>
+	<choice req="PDS_DISABLE" hidden="true">
+		<text>[ASB Jammer] Disable the ASB satellites before they can target your ship.</text>
+		<event>
+			<text>The jammer works like a charm, and the satellites never once lock onto your ship. We still shouldn't stick around, but now you have some extra time to scrap the guard.</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+</event>

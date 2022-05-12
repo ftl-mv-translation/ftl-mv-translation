@@ -1,0 +1,35 @@
+<event name="FACTION_TRANSPORT" unique="true">
+	<img planet="NONE"/>
+	<text>This beacon hosts a FACTION transport. It's safe to bet the ship is most likely carrying some special tech. If you can kill its crew, their cargo will be yours.</text>
+	<choice>
+		<text>Demand the surrender of their goods.</text>
+		<event>
+			<text>You prepare to secure their cargo by force.</text>
+			<ship load="SHIP_FACTION_TRANSPORT_LOOT" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Avoid the ship.</text>
+		<event>
+			<text>They stay outside your weapons range, and eventually jump away.</text>
+		</event>
+	</choice>
+</event>
+<event name="TRANSPORT_CAPTURE_FACTION" unique="true">
+	<text>The crew is dead, leaving you with the ship. It's cargo is yours for the taking. Aboard is the special tech you expected, which you bring back to your ship.</text>
+	<autoReward level="MED">standard</autoReward>
+	<weapon name="LIST_LOOT_FACTION"/>
+</event>
+
+<ship name="SHIP_FACTION_TRANSPORT_LOOT" auto_blueprint="MU_REBEL_TRANSPORT">
+	<escape timer="40" min="30" max="30" >
+		<text>They look like they don't want to fight. They are trying to escape.</text>
+		<ship hostile="true"/>
+	</escape>
+	<destroyed load="TRANSPORT_DESTROYED"/>
+	<deadCrew load="TRANSPORT_CAPTURE_FACTION"/>
+</ship>

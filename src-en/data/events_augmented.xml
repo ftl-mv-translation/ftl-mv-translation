@@ -1,0 +1,980 @@
+<FTL>
+<event name="AUGMENTED_QUESTION"> <!--the thing you get at the store-->
+	<text>The store owners look over the robot in curiosity. You wait for their response.</text>
+	<variable name="loc_got_corpse" op="set" val="0"/>
+	<choice>
+		<text>Continue...</text>
+		<event>
+			<text>"While I certainly have never seen anything like this in particular, it reminds me of these strange ships I saw flying past. They were of Lanius build, but oddly colored. They stopped by here briefly, trading some strange cubical weapons for fuel. Here's their last known co-ordinates, in case you want to ask them about it."</text>
+			<quest event="AUGMENTED_DISCOVERY"/>
+		</event>
+	</choice>
+</event>
+
+<event name="AUGMENTED_DISCOVERY">
+	<preventQuest/>
+	<preventBossFleet/>
+	<beaconType id="map_icon_cronch" global="true">
+		<color r="66" g="255" b="0" a="1.0"/>
+		<unvisitedTooltip>These are the coordinates you found at the Harmony Link.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+	</beaconType>
+	<text>You've arrived at the coords marked on your map. You notice the remains of some much smaller but similar cubical ships as before. The main difference from last time however, other than location, is three massive Lanius vessels in colors you've never seen before.</text>
+	<ship load="SHIP_AUGMENTED_INTRO" hostile="false"/>
+	<choice>
+		<text>Contact the Lanius.</text>
+		<event>
+			<text>You hail the ships, but receive no verbal response. Instead, a strangely colored Lanius pops out of their hull, and glides towards you. It attaches to your hull, and burrows its way through, but the damage shouldn't be too hard to patch up quickly.</text>
+			<choice>
+				<text>Continue...</text>
+				<event>
+					<text>The Lanius unfolds, spitting out some metal. It speaks in a monotone but strangely well-translated voice. "Apologies damage. Not wanting take airlocks, my bad. You call me, assuming question have?"</text>
+					<choice>
+						<text>Show them the robot.</text>
+						<event>
+							<text>The strange Lanius inspects the robot before speaking. "No, not robot. Lifeform, like you. Metal, like me. Showing this to leader, best option. She wanting see this, rare find one alive! Allowing me to assist FTL drive?"</text>
+							<choice hidden="true">
+								<text>Agree to let him "assist the FTL Drive".</text>
+								<event>
+									<text>The Lanius waddles over to the engines and fiddles around with your drive. "We going now. Grab thing bolted down, bumpy ride!" Suddenly, the engines activate and you can feel the ship entering lightspeed!</text>
+									<crewMember amount="1" class="lanius_augmented">Cronchmeister</crewMember>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event>
+											<secretSectorWarp>SECTOR_AUGMENTED</secretSectorWarp>
+											<secretSector/>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Refuse.</text>
+								<event>
+									<text>"So the boring! Be taking alien then, needing food." They press some button on a device in their hands, and the ship in the distance moves towards you with its weapons powered on!</text>
+									<boarders min="1" max="1" class="lanius_augmented"/>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Ignore the Lanius.</text>
+		<event>
+			<text>Despite coming all this way with some great mystery afoot, you'd decide to be a stick in the mud and quit now. That's pretty lame.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="AUGMENTED_ANOINTED">
+	<preventQuest/>
+	<beaconType id="map_icon_anointed" global="true">
+		<color r="255" g="0" b="230" a="1.0"/>
+		<unvisitedTooltip>The location of the augmented leader, the Anointed.</unvisitedTooltip>
+		<visitedTooltip>Visited location.</visitedTooltip>
+	</beaconType>
+	<variable name="loc_anointed" op="set" val="1"/>
+	<text>You've arrived at the exit...</text>
+	<choice req="loc_anointed" lvl="0" max_group="0" hidden="true" blue="false">
+		<text>Continue...</text>
+		<event>
+			<text>A white Lanius with purple details stands up from her large throne as soon as you arrive.</text>
+			<ship load="SHIP_AUGMENTED_ANOINTED" hostile="false"/>
+			<choice>
+				<text>Continue...</text>
+				<event>
+					<text>"You are Federation ship I hear about. I understand you have brought with you one of ancient creatures. I will buy it from you, modest price."</text>
+					<choice>
+						<text>Sell it.</text>
+						<event>
+							<text>You wait for the Lanius to come aboard and take the ancient from you. This will likely be the last you see of this great mystery, but you've made a good profit from it.</text>
+							<item_modify>
+								<item type="fuel" min="3" max="3"/>
+								<item type="scrap" min="35" max="35"/>
+								<item type="missiles" min="3" max="3"/>
+								<item type="drones" min="2" max="2"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice>
+						<text>Ask what she intends to use it for first.</text>
+						<event>
+							<text>"Food, naturally. My diet, very complicated. Hard to get hands on these, especially live ones. He will make tasty snack, though I would preferred royal to commoner..."</text>
+							<choice hidden="true">
+								<text>Refuse, we aren't going to let this creature eat another living being!</text>
+								<event>
+									<text>"So you are turning down offer? Most disappointing. Perhaps price too low for you? I raise it, being fair."</text>
+									<choice hidden="true">
+										<text>Hold firm on your decision.</text>
+										<event>
+											<text>"You really stubborn. Fine, no final offer. You not giving me creature, then I taking it myself!"</text>
+											<ship hostile="true"/>
+											<choice hidden="true">
+												<text>Continue...</text>
+												<event load="COMBAT_CHECK"/>
+											</choice>
+										</event>
+									</choice>
+									<choice>
+										<text>Agree to the new price.</text>
+										<event>
+											<text>You wait for the Lanius to come aboard and take the ancient from you. This will likely be the last you see of this great mystery, but you've made a good profit from it.</text>
+											<item_modify>
+												<item type="fuel" min="5" max="5"/>
+												<item type="scrap" min="50" max="50"/>
+												<item type="missiles" min="5" max="5"/>
+												<item type="drones" min="3" max="3"/>
+											</item_modify>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice>
+								<text>Sell it.</text>
+								<event>
+									<text>You wait for the Lanius to come aboard and take the ancient from you. This will likely be the last you see of this great mystery, but you've made a good profit from it.</text>
+									<item_modify>
+										<item type="fuel" min="3" max="3"/>
+										<item type="scrap" min="35" max="35"/>
+										<item type="missiles" min="3" max="3"/>
+										<item type="drones" min="2" max="2"/>
+									</item_modify>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="loc_anointed" lvl="1" max_group="0" hidden="true" blue="false"> <!--theoretically you can never get this except in the fleet so Im just going to make it that for simplisities sake-->
+		<text>Continue...</text>
+		<event>
+			<text>Looks like the Anointed's ship is gone now, but the Rebel fleet has taken control of the beacon! You'll have to fight your way out!</text>
+			<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+			<environment type="PDS" target="player"/>
+			<ship load="SHIP_REBEL_FLEET_S" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+			<choice hidden="true" req="engines" lvl="6">
+				<text>(Adv. Engines) Try to escape the Elite.</text>
+				<event load="FLEET_ESCAPE"/>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_JERRY">
+				<text>(Jerry) Hello!</text>
+				<event>
+					<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+					<ship hostile="false"/> 
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ANOINTED_SURRENDER">
+	<text>"Ok, you winning. You may keep creature, not worth dying over. Taking this, and leave us here. Apologies for attack."</text>
+	<choice>
+		<text>Accept her surrender.</text>
+		<event load="ANOINTED_SURRENDER_ACCEPT"/>
+	</choice>
+	<choice hidden="true">
+		<text>Refuse.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="ANOINTED_SURRENDER_ACCEPT">
+	<text>You accept the Anointed's surrender, and she transfers over a good amount of scrap. As you prepare to leave though, she asks to speak with you about one more thing.</text>
+	<variable name="ach_boss_augcruiser" op="set" val="1"/>
+	<autoReward level="HIGH">weapon</autoReward>
+	<ship hostile="false"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>The Lanius hands you a strange key-like device. "This ancient, like many other, is in hibernation. This device seeming able to awaken them. There is mystery here, yes? I wishing I could solve it, but you are one now with privileged. You will need this and fuel as catalyst. Good luck."</text>
+			<hiddenAug>ANCIENT_ACTIVATOR</hiddenAug>
+			<choice hidden="true">
+				<text>Accept her gift and leave.</text>
+				<event/>
+			</choice>
+			<choice hidden="true">
+				<text>Offer to take her with you.</text>
+				<event>
+					<text>"Oh, could not. Sorry, but busy here. My life, very difficult. The material of body very unstable, always needing to feed on more. Without it, I decay, die. Very painful, you understand."</text>
+					<checkCargo/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event/>
+					</choice>
+					<!--update these as new ones are added!!!!! I know I'm going to forget-->
+					<choice hidden="true" req="ANCIENT_LASER">
+						<text>Offer her an Ancient Laser to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_LASER"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ANCIENT_BEAM">
+						<text>Offer her an Ancient Beam to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_BEAM"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ANCIENT_FOCUS">
+						<text>Offer her an Ancient Pinpoint to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_FOCUS"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ANCIENT_FOCUS_2">
+						<text>Offer her an Ancient Pinpoint Mk. II to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_FOCUS_2"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ANCIENT_MISSILES">
+						<text>Offer her an Ancient Missile Launcher to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_MISSILES"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ANCIENT_BOMB">
+						<text>Offer her an Ancient Bomb Launcher to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_BOMB"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ANCIENT_STUN">
+						<text>Offer her an Ancient Peacekeeper to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_STUN"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ANCIENT_COMBAT_LASER">
+						<text>Offer her an Ancient Laser Drone to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_COMBAT_LASER"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ANCIENT_COMBAT_ION">
+						<text>Offer her an Ancient Ion Drone to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_COMBAT_ION"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ANCIENT_COMBAT_MISSILE">
+						<text>Offer her an Ancient Missile Drone to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_COMBAT_MISSILE"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ANCIENT_DEFENSE_1">
+						<text>Offer her an Ancient Overwatcher Drone to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ANCIENT_DEFENSE_1"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="MENDER">
+						<text>Offer her an Ancient Mender to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="MENDER"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="DIRECTOR">
+						<text>Offer her an Ancient Director to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="DIRECTOR"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ATOM_DEFEND">
+						<text>Offer her an Ancient Atomizer to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ATOM_DEFEND"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="ATOM_BOARDER">
+						<text>Offer her an Ancient Atomizer to feed on.</text>
+						<event>
+							<text>"This, high quality tech. You must lucky finding this. Alright, this will serve as now. Very curious, wanting to see what happens when being awakens!"</text>
+							<remove name="ATOM_BOARDER"/>
+							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
+							<variable name="ach_crew_anointed" op="set" val="1"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ANOINTED_DESTROYED">
+    <text>The Anointed's cruiser explodes. There's plenty left to scrap from the wreckage, but with her dies any chance that you might figure out what to do with this alien.</text>
+    <variable name="ach_boss_augcruiser" op="set" val="1"/>
+	<autoReward level="HIGH">weapon</autoReward>
+</event>
+
+<event name="ANOINTED_DEADCREW">
+    <text>The crew of the cruiser has been neutralized. You move in to inspect the ship and collect the remains.</text>
+   <variable name="ach_boss_augcruiser" op="set" val="1"/>
+	<autoReward level="HIGH">weapon</autoReward>
+    <choice hidden="true">
+        <text>Continue...</text>
+        <event>
+            <text>As you inspect the ship, you find the Anointed decaying on the ground. She gestures for you to come closer, and slaps a strange looking device in your hands. She manages to choke out the words "This is activator key. Along with fuel catalyst, will wake ancient... from h-hibernation. There is great mystery here... my mistake for interrupting. You will solve it, I am sure..." With that, she falls to the ground, dead.</text>
+            <hiddenAug>ANCIENT_ACTIVATOR</hiddenAug>
+        </event>
+    </choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					AUGMENTED SECTOR 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+
+<!--
+		ITEMS!!!
+	Events that give items
+-->
+<eventList name="ITEMS_AUGMENTED">
+	<event load="AUGMENTED_FREESCRAP"/>
+	<event load="AUGMENTED_HUNGRY"/>
+	<event load="AUGMENTED_WAYSTONE"/>
+	<event load="AUGMENTED_FEEDING"/>
+</eventList>
+
+<event name="AUGMENTED_FREESCRAP" unique="true">
+	<text>It seems this beacon was once home to an Ancient ship, but has been scrapped down to the core. There is just enough left however for you to get some extra scrap.</text>
+	<autoReward level="LOW">scrap_only</autoReward>
+	<choice hidden="true">
+		<text>Check the storage.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice hidden="true">
+		<text>Do nothing.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="AUGMENTED_HUNGRY" unique="true">
+	<text>A small shuttle flies past, carrying a single augmented Lanius. They hail you, pleading for a favor. "My body, it decomposing fast. Need to eat hull to live. This shuttle small, begging you let take small bite of yours. Nothing you can't managing."</text>
+	<choice hidden="true">
+		<text>Let him eat the hull.</text>
+		<event>
+			<text>The Lanius flies the shuttle close and exits out the bottom, gliding its way onto yours. He attaches and begins to liquify a small portion of the hull. It's barely anything, much less than you expected, but the Lanius is grateful and even offers to join your crew.</text>
+			<crewMember amount="1" class="lanius_augmented"/>
+			<damage amount="2" effect="breach" system="room"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Refuse.</text>
+		<event>
+			<text>You refuse. The Lanius looks frightened, but not for long before their arms fall off and they melt into a puddle of metal. Guess when he said fast, he meant very fast...</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="AUGMENTED_WAYSTONE" unique="true">
+    <text>This sector is home to all kinds of weird sights, and now you can add Crystal Elites to your list of unexpected visitors you didn't think you'd see in this sector.</text>
+    <ship load="SHIP_CRYSTAL_ELITE_GENERIC" hostile="false"/>
+    <choice hidden="true">
+        <text>Hail them.</text>
+        <event>
+            <text>The Crystal Sentinels are equally surprised to see a Federation ship here, but they regard you in at least a decently passive way. "We've come looking for several parts from these structures. We believe their tech was combined with that of our ancestors to create the waystone that sealed away our homeworlds. However, navigating this sector is difficult. If you happen to have any map data, we'll gladly take it."</text>
+            <choice>
+                <text>Sell them whatever basic data you've already collected.</text>
+                <event>
+                    <autoReward level="LOW">scrap_only</autoReward>
+                </event>
+            </choice>
+            <choice req="FTL_JUMPER">
+                <text>(Adv. Navigation) Sell them the data your navigator has picked up.</text>
+                <event>
+                    <autoReward level="HIGH">scrap_only</autoReward>
+                </event>
+            </choice>
+            <choice req="ADV_SCANNERS">
+                <text>(LRS) Sell them the data your scanners have collected.</text>
+                <event>
+                    <autoReward level="HIGH">scrap_only</autoReward>
+                </event>
+            </choice>
+            <choice req="sensors" lvl="3">
+                <text>(Adv. Sensors) Sell them the data your sensors have collected.</text>
+                <event>
+                    <autoReward level="HIGH">scrap_only</autoReward>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Attack!</text>
+        <event>
+            <text>In true barbarian fashion, you prove that you love nothing more than to attack first and ask questions later. You attack the Crystalline vessel without mercy.</text>
+            <ship hostile="true"/> 
+            <choice hidden="true">
+                <text>Continue...</text>
+                <event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Ignore the Crystals.</text>
+        <event>
+            <text>The Crystals spend some time exploring two nearby wrecks before jumping away. You figure if they didn't find anything, you won't either.</text>
+            <choice hidden="true">
+                <text>Check the storage.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice hidden="true">
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="AUGMENTED_FEEDING" unique="true">
+	<text>Nearby is a small ancient ruin with some augmented Lanius feeding on it. As you approach, they hail you. "You visitor? If having any fellow Lanius, feel free join in. Enough here to change composition!"</text>
+	<choice hidden="true" req="lanius">
+		<text>Let your Lanius feed on the ruins.</text>
+		<event>
+			<text>Your Lanius glides out of the ship towards the ruins and attaches to them along with the others...</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>You watch in fascination as your Lanius's metal body slowly turns dark black. Soon they return, looking the same as all the other augmented Lanius you've seen, and with the same abilities too.</text>
+					<transformRace class="lanius">lanius_augmented</transformRace>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack them to access the ruins on your own!</text>
+		<event>
+			<text>You move closer, firing on the Lanius. They detach from the structure, allowing you to move in and salvage it. However, they aren't deterred long enough, and they re-attach themselves to the hull and break their way in!</text>
+			<boarders min="2" max="3" class="lanius_augmented"/>
+			<autoReward level="HIGH">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>The Lanius make no further attempts at contacting you.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		HOSTILE!!!
+	Events that give items
+-->
+<eventList name="HOSTILE_AUGMENTED">
+	<event load="ENCOUNTER_AUGMENTED"/>
+	<event load="ENCOUNTER_AUGMENTED"/>
+	
+	<event load="ENCOUNTER_AUGMENTED_AUTOANCIENT"/>
+	<event load="ENCOUNTER_AUGMENTED_LANIUS"/>
+	
+	<event load="ENCOUNTER_AUGMENTED_PIRATE"/>
+</eventList>
+
+<event name="ENCOUNTER_AUGMENTED">
+	<text load="TEXT_ENCOUNTER_AUGMENTED"/>
+	<ship load="SHIP_AUGMENTED" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_AUGMENTED">
+	<text>The Augmented are fearsome fighters and scavengers, even if you've met a few friendly ones too. It appears you've met one that is far less friendly, and they're looking to attack you!</text>
+	<text>It appears the drive for life-sustaining scrap has driven the nearby Augmented Lanius to madness, and they're desperate enough to attack a military vessel like yours!</text>
+	<text>You didn't think the Lanius could get anymore scrap-hungry than the ones in the Swarmlands, but the Augmented have proven otherwise. Prepare for battle!</text>
+	<text>"Needing scrap. You have ship made of scrap. I eat you ship. Do not worrying, am fair. Will give you shuttle." This won't fly for as long as you are captain of this ship!</text>
+	<text>You knew the Augmented come here to feed on ancient wreckage, but you didn't know they'd go so far as to attack a ship like yours!</text>
+</textList>
+
+<event name="ENCOUNTER_AUGMENTED_LANIUS">
+	<text load="TEXT_ENCOUNTER_AUGMENTED_LANIUS"/>
+	<ship load="SHIP_LANIUS_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_AUGMENTED_LANIUS">
+    <text>This sector might be primarily run by the Augmented Lanius, but that doesn't mean it isn't possible to find regular Lanius lying in wait to prey on passing ships, such as the one here that's firing in your direction.</text>
+    <text>You might have been surprised by seeing a hostile Lanius ship here, but the Augmented have to come from somewhere, you suppose.</text>
+    <text>This ship here might be no Augmented vessel, but it is a regular Lanius, and they're as hungry for your ship as anywhere else!</text>
+    <text>You briefly hope you might be able to reason with the approaching Lanius ship, but alas it appears it's too late for words, only violence.</text>
+</textList>
+
+<event name="ENCOUNTER_AUGMENTED_AUTOANCIENT" unique="true">
+	<text>Another automated ship similar to the one you saw has managed to survive the Lanius swarm in this sector. As soon as you approach, it seems to recognize you as a threat and attacks!</text>
+	<ship load="SHIP_ANCIENT_AUTO" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_AUGMENTED_PIRATE" unique="true">
+	<text>You receive a hail from a pirate ship, but on the other line you hear nothing but loud screaming as an augmented Lanius cuts open the pirate captain and devours him. "Apologies for witnessing. Need food. You next."</text>
+	<ship load="SHIP_PIRATE_AUGMENTED" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--
+		NEUTRAL!!!
+	Events that can have a fight
+-->
+<eventList name="NEUTRAL_AUGMENTED">
+	<event load="AUGMENTED_CHOICE"/>
+	
+	<event load="AUGMENTED_LANIUS"/>
+	<event load="AUGMENTED_INQUISITION"/>
+	<event load="AUGMENTED_SEPARATISTS"/>
+	<event load="AUGMENTED_GHOST"/>
+</eventList>
+
+<event name="AUGMENTED_CHOICE">
+	<text load="TEXT_AUGMENTED_CHOICE"/>
+	<ship load="SHIP_AUGMENTED" hostile="false"/> 
+	<choice hidden="true">
+		<text>Fight the Lanius.</text>
+		<event>
+			<text>You power up your weapons and fight the Augmented ship.</text>
+			<ship hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Avoid them.</text>
+		<event>
+			<text>You decide not to fight the Lanius, and fly away.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<textList name="TEXT_AUGMENTED_CHOICE">
+	<text>The Augmented might not always be the friendliest, but the ship here makes no move to fight you. Will you do the same?</text>
+	<text>"Am warning you avoid. My ship dangerous, you wanting not to mess with." The Lanius on the other ship sticks out his chest in pride and waves his sharp blades boastfully.</text>
+	<text>A Lanius trying to avoid conflict with a military ship isn't all too uncommon, but you've seen some particularly savage Augmented ships. Still, the vessel here makes no aggressive moves.</text>
+	<text>At first you aren't certain if the Lanius ship in front of you is still active, but scans turn back faint life signs. Not injured, just asleep. Do you wish to take advantage of this situation?</text>
+</textList>
+
+<event name="AUGMENTED_LANIUS" unique="true">
+	<text>It seems tensions have gotten high between the nearby augmented and elite Lanius vessel over possession of some ancient wreckage. Do you want to get involved?</text>
+	<choice hidden="true">
+		<text>Help the Augmented.</text>
+		<event>
+			<text>You power up your weapons and fight the elite ship.</text>
+			<ship load="SHIP_AUGMENTED_LANIUS_ELITE" hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Help the Elites.</text>
+		<event>
+			<text>You power up your weapons and fight the augmented ship.</text>
+			<ship load="SHIP_AUGMENTED_LANIUS_AUG" hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Avoid them.</text>
+		<event>
+			<text>You decide not to interact with the Lanius, and fly away.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="AUGMENTED_GHOST" unique="true">
+    <text>The Ancient vessel nearby is in much better condition than usual, but that's not the only thing off about it... scans show Ghosts have taken control of the ship!</text>
+    <ship load="SHIP_GHOST_ANCIENT" hostile="false"/>
+    <choice hidden="true">
+        <text>Attack them, maybe the ship has something of value!</text>
+        <event>
+            <text>The Ghosts, determined not to give up their ship, prepare to defend themselves against your attack.</text>
+            <ship hostile="true"/> 
+            <choice hidden="true">
+                <text>Continue...</text>
+                <event load="COMBAT_CHECK"/>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Hail the Ghosts and offer to trade.</text>
+        <event>
+            <text>You send your message and wait for a response, knowing the Ghosts need some time to type out their response. "Hello, you are acknowledged. We have recovered this new ship, but lack fuel. If you have generous amounts of fuel, we will trade."</text>
+            <choice>
+                <text>Give them a small amount of fuel.</text>
+                <event>
+                    <text>"This is a quantifiable amount of fuel, but only barely. I hope you did not expect payment higher than this."</text>
+                    <item_modify>
+                        <item type="fuel" min="-2" max="-2"/>
+                        <item type="scrap" min="5" max="5"/>
+                    </item_modify>
+                </event>
+            </choice>
+            <choice>
+                <text>Give them a medium amount of fuel.</text>
+                <event>
+                    <text>"This will service well. Thank you."</text>
+                    <item_modify>
+                        <item type="fuel" min="-7" max="-7"/>
+                        <item type="scrap" min="20" max="20"/>
+                    </item_modify>
+                </event>
+            </choice>
+            <choice>
+                <text>Give them a large amount of fuel.</text>
+                <event>
+                    <text>"This is a large quantity of fuel. You have our highest appreciation. Please take this weapon, it belonged to the old owners of this ship, whoever they might have been."</text>
+                    <item_modify>
+                        <item type="fuel" min="-15" max="-15"/>
+                        <item type="scrap" min="40" max="40"/>
+                    </item_modify>
+                    <weapon name="ANCIENT_BOMB"/>
+                </event>
+            </choice>
+            <choice>
+                <text>We cannot spare any fuel.</text>
+                <event>
+                    <text>You wait for any further response from the Ghosts, but get none. You pull away from the Ancient ship and leave the Ghosts behind.</text>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Ignore the Ghosts.</text>
+        <event>
+            <text>If the Ghosts have managed to secure an Ancient ship, good for them. That's not a band of gas beings you want to deal with.</text>
+            <choice hidden="true">
+                <text>Check the storage.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice hidden="true">
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="AUGMENTED_SEPARATISTS" unique="true">
+	<text>A lone Engi Separatist is scanning a long abandoned ancient vessel. When you jump in, they put some distance between your ships, but don't leave.</text>
+	<ship load="SHIP_SEPARATIST_RUINS" hostile="false"/>
+	<choice hidden="true">
+		<text>Hail them.</text>
+		<event>
+			<text>"Local Federation vessel, we [assure] you that you have been detected. Please do not interfere, we are searching for ways to [disable] the Harmony."</text>
+			<choice hidden="true">
+				<text>Ask further questions.</text>
+				<event>
+					<text>The Separatist lets out an audible sigh. "The [cubical] vessels that populate this sector belonged to ancient race. It is believed, though 60% speculation, that these creatures first developed Harmony. There is your [lore], now please leave."</text>
+					<choice hidden="true">
+						<text>Attack them, maybe they have something valuable on-board!</text>
+						<event>
+							<text>You've decided to attack the Separatist ship. Prepare for battle.</text>
+							<ship hostile="true"/> 
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Do what they say and leave them alone.</text>
+						<event>
+							<text>The ship isn't bothering you, so you won't bother them either.</text>
+							<choice hidden="true">
+								<text>Check the storage.</text>
+								<event load="STORAGE_CHECK"/>
+							</choice>
+							<choice hidden="true">
+								<text>Do nothing.</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_VARIANT_SEPARATIST">
+				<text>(Separatist Crew) "Your mission is of [high] importance. However, so is ours. Requesting: supplies."</text>
+				<event>
+					<text>Your Separatist explains your mission to the other Engi. "This request is acceptable. Transferring supplies now."</text>
+					<autoReward level="MED">stuff</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_HARMONY">
+				<text>(Engi Crew) "This is unacceptable. Preventing Separatist success is highest priority."</text>
+				<event>
+					<text>Your Engi demands that you take care of the Separatists before they can complete their mission.</text>
+					<ship hostile="true"/> 
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Do what they say and leave them alone.</text>
+				<event>
+					<text>The ship isn't bothering you, so you won't bother them either.</text>
+					<choice hidden="true">
+						<text>Check the storage.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice hidden="true">
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the Separatists.</text>
+		<event>
+			<text>You'll be damned if you let some Engi run away from you. You'll solve this the only way you know - with needless murder.</text>
+			<ship hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the Engi.</text>
+		<event>
+			<text>The ship isn't bothering you, so you won't bother them either.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="AUGMENTED_INQUISITION" unique="true">
+	<text>Here you've found perhaps the last thing you would have thought to see, an abandoned elite Rock vessel. The Elders must have sent this scout here to press their influence even further, or perhaps they know more than you do...</text>
+	<ship load="SHIP_ROCK_ELITE_GENERIC" hostile="false"/>
+	<choice hidden="true">
+		<text>Salvage the wreckage.</text>
+		<event load="AUGMENTED_INQUISITION_SALVAGE"/>
+	</choice>
+	<choice hidden="true" req="sensors" lvl="2">
+		<text>(Improved Sensors) Scan the wreckage first.</text>
+		<event load="AUGMENTED_INQUISITION_SCAN"/>
+	</choice>
+	<choice hidden="true" req="LIFE_SCANNER">
+		<text>(Lifeform Scanner) Scan the wreckage first.</text>
+		<event load="AUGMENTED_INQUISITION_SCAN"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(Slug Crew) Scan the wreckage first.</text>
+		<event load="AUGMENTED_INQUISITION_SCAN"/>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>The Rock vessel remains motionless while you fly away.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="AUGMENTED_INQUISITION_SALVAGE">
+	<event>
+		<text>Nothing disturbs you while you scrap the ship. It appears the Lanius must have done some serious damage to their life support, and even the resistant Crusaders couldn't save themselves.</text>
+		<autoReward level="HIGH">stuff</autoReward>
+	</event>
+	<event>
+		<text>While salvaging the ship, suddenly several Rockmen Crusaders bust in through the door. "No one expects the Rock Inquisition!" Whether it was an ambush or they just really don't like you, it doesn't matter anymore. Prepare for combat!</text>
+		<boarders min="2" max="2" class="rock_crusader"/> <!--the meme has 3 but oh well-->
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="AUGMENTED_INQUISITION_SCAN">
+	<event>
+		<text>Scans show the ship is empty. It appears the Lanius must have done some serious damage to their life support, and even the resistant Crusaders couldn't save themselves. You decide it's safe to salvage.</text>
+		<autoReward level="HIGH">stuff</autoReward>
+	</event>
+	<event>
+		<text>Scans show the life support on the ship has taken some damage, but the Crusader crew is still aboard.</text>
+		<choice hidden="true">
+			<text>Attack them while they're weak!</text>
+			<event>
+				<text>You raise the weapons and attack the Crusader vessel while their oxygen is offline!</text>
+				<status type="limit" target="enemy" system="oxygen" amount="0"/>
+				<ship hostile="true"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>Question them.</text>
+			<event>
+				<text>The Crusaders are surprisingly receptive to your questions. "We heard this sector contained relics of an ancient god race, which matched some ancient Crystal mythology. The Elders don't want any challengers to the Crystal race, so they sent us out here to capture one and bring it back... only to find a bunch of Lanius who wanted to eat us. Now if you'll excuse us, we have to get back to repairing this ship before we suffocate and die."</text>
+				<choice hidden="true">
+					<text>Attack them while they're weak!</text>
+					<event>
+						<text>You raise the weapons and attack the Crusader vessel while their oxygen is offline!</text>
+						<status type="limit" target="enemy" system="oxygen" amount="0"/>
+						<ship hostile="true"/>
+						<choice hidden="true">
+							<text>Continue...</text>
+							<event load="COMBAT_CHECK"/>
+						</choice>
+					</event>
+				</choice>
+				<choice hidden="true" req="oxygen" lvl="2">
+					<text>(Upg. Oxygen) Offer to dock and refill their oxygen.</text>
+					<event>
+						<text>The Crusaders agree, and you quickly dock with their ship and flood it with oxygen. They're considerably pleased, and while most of them feel the need to carry on with their mission, one wishes to stay behind with you, to which the others don't protest.</text>
+						<crewMember amount="1" class="rock_crusader">Python</crewMember>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>Leave them be.</text>
+					<event/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>Ignore them.</text>
+			<event/>
+		</choice>
+	</event>
+</eventList>
+
+</FTL>

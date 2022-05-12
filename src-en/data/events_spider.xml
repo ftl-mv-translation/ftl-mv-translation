@@ -1,0 +1,1242 @@
+<FTL>
+<!--start quest-->
+<event name="SPIDER_QUEST_START" unique="true">
+	<text>You find a number of ships fleeing from a small space station. A squadron of Militia vessels have been deployed around the area. One ship hails you: "Civilian, this system is restricted. We must request that you leave immediately."</text>
+	<distressBeacon/>
+	<choice req="loc_beentobrood" lvl="0" hidden="true" blue="false" max_group="0">
+		<text>We're no Civilian ship, what is the issue?</text>
+		<event>
+			<text>"A Federation military vessel? My bad then. This station has been infected by some kind of weird... giant alien spiders. Think you could clear this station of the infestation, without causing too much damage?"</text>
+			<ship load="SHIP_INFESTED_STATION" hostile="false"/> 
+			<choice hidden="true">
+				<text>Agree.</text>
+				<event>
+					<text>The Militiamen give you clearance to engage the station, but give two last warnings. "We aren't sure what these things are, but they seem to be able to keep the station's systems functional. If you have to cause some damage that's understandable, but please do not cause very much, we can't go around destroying civilian property."</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Decline.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="loc_beentobrood" lvl="1" hidden="true" blue="false" max_group="0">
+		<text>We're no Civilian ship, what is the issue?</text>
+		<event>
+			<text>"Well, I'll be! You're the ship who was sent out to take care of that spider issue. Unfortunately, there's still some spider problems on the outskirts here. Don't suppose you could take care of these ones again, could you?"</text>
+			<ship load="SHIP_INFESTED_STATION_REPEAT" hostile="false"/> 
+			<choice hidden="true">
+				<text>Agree.</text>
+				<event>
+					<text>The Militiamen give you clearance to engage the station. "Just as before, please try and be careful! We can't go around blowing up civilian property!"</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Decline.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="pilot" lvl="1" hidden="true" max_group="1" blue="false">
+		<text>Agree to leave.</text>
+		<event>
+			<text>You navigate away from the station, but you stay in the system long enough to do something on the ship.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="INFESTED_STATION_WIN">
+	<text>You've cleared out the spider infestation from the station. The Militiamen thank you for your help, and payment is given for your effort.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>Ask about the spiders.</text>
+		<event>
+			<text>"Not sure there's much I can tell you. Things came from the Brood, one of those pirate clans that live out in abandoned space. Commander Montgomery could tell you more than me, but he's busy handling the infestation elsewhere. Seems the spiders have finally got so out of hand that even the Brood can't control them anymore, and now's our chance."</text>
+			<choice hidden="true">
+				<text>Could we help?</text>
+				<event>
+					<text>"We hired another Renegade sorta like you a while back to help but from what I understand he hasn't been of much use. I'd be hesitant sending in another loose cannon, but considering you handled the situation so delicately here why the hell not. I'll transfer the coordinates for the Brood stronghold to you. Best of luck."</text>
+					<variable name="coords_spider" op="set" val="1"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Accept the reward and carry on.</text>
+		<event/>
+	</choice>
+</event>
+<event name="INFESTED_STATION_WIN_REPEAT">
+	<text>"Thanks again for the help! Hopefully we'll be able to clear these things entirely out of civilian space in a while from now."</text>
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+
+<event name="INFESTED_STATION_SURRENDER">
+	<text>"You've caused too much damage to the station's hull! You need to stop damaging it! Kill the spiders or quit and we'll get someone better for the job. We'll pay you for at least trying to help if you do."</text>
+	<choice hidden="true">
+		<text>Stop firing.</text>
+		<event>
+			<text>You can tell you're only being paid so the Militiamen can be assured you'll leave, but it's better than nothing.</text>
+			<autoReward level="LOW">standard</autoReward>
+			<ship hostile="false"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>No no, we can do this!</text>
+		<event>
+			<text>The captain of the other ship sighs. "Fine, but make sure not to destroy it."</text>
+		</event>
+	</choice>
+</event>
+<event name="INFESTED_STATION_DESTROY">
+	<text>"God damn it, we told you not to destroy the station!" Highly displeased with you, the Militiamen demand you leave the system.</text>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					SPIDER!
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+
+<!--
+		ITEMS!!!
+	Events that give items
+-->
+<eventList name="ITEM_INFESTATION">
+	<event load="INFESTATION_ORPHAN"/>
+	<event load="INFESTATION_SLAVERS"/>
+</eventList>
+
+<event name="INFESTATION_SLAVERS" unique="true">
+	<text>A slaver vessel is offering slaves to passing ships for incredibly cheap prices. You inquire further, and they explain, "We have come to join the spider selling business, son! There's bank to be made, haha! Alas... we must depart with some of our long-time labourers due to lack of space. For a quality price, how does a new worker sound?"</text>
+	<ship load="SHIP_SLAVER_ALL" hostile="false"/>
+	<choice>
+		<text>Buy a slave.</text>
+		<event>
+			<crewMember amount="1"/>
+			<item_modify>
+				<item type="scrap" min="-15" max="-30"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Fight the ship.</text>
+		<event>
+			<text>Last thing the Militia needs to deal with is slavers selling spiders to other ships. You'll take care of these pirates for them!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Decline.</text>
+		<event>
+			<text>"Your loss son!" The slaver hangs up.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="INFESTATION_ORPHAN" unique="true"> <!--its a reference-->
+	<text>This system is empty of ships. Out of boredom, you run some scans on the nearby planet and find that it actually has a long running cave system! Maybe worth a look?</text>
+	<img planet="PLANET_UNPOPULATED_TERRA"/>
+	<choice hidden="true">
+		<text>Explore the cave.</text>
+		<event>
+			<text>You plunge deeper into the cave, and not too far in you hear the sounds of a child crying.</text>
+			<choice hidden="true">
+				<text>Look for the source.</text>
+				<event>
+					<text>You head towards the crying until you come across a Rockman child, being chased by a giant spider! You're about to shoot when you realize the sound you heard aren't crying - it's playful laughter. Several times the Rockman trips, with the spider patiently waiting for them to get back up before continuing to chase them.</text>
+					<choice hidden="true">
+						<text>Rescue the child!</text>
+						<event>
+							<text>You raise your weapon and shoot at the spider, but it barely hurts them! Several weavers come crawling out from the surrounding tunnels, alerted by the gunfire. You're chased back to the ship with the spiders in pursuit!</text>
+							<boarders min="2" max="3" class="spider_weaver"/>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Announce your presence peacefully.</text>
+						<event>
+							<text>You holster your gun and cough, signifying your presence. You attempt to speak to the Rockman. "Visitors? We so rarely see those! This is my friend Charlotte, and I am Wilbur! She watches after me ever since my parents's ship crashed here!" You question Wilbur further and learn he has been here ever since he was merely an infant.</text>
+							<choice hidden="true">
+								<text>Offer to take Wilbur with you.</text>
+								<event>
+									<text>"You would take me away? I haven't been off this planet in years! Just, let me say goodbye!" The Rockman runs over to the spider and give it a large hug, then runs over to join you. As you leave the cave, you turn back to see the spider watch you leave. If you had known better, you'd even have said it looked sad.</text>
+									<crewMember amount="1" class="rock">Wilbur</crewMember>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Request to see the wreck site.</text>
+								<event>
+									<text>"Sure!" Wilbur motions for you to follow and runs through the tunnels. You follow until you enter a large room with a massive ship wreck, covered in eggs, lying dormant. "The ship no longer functions, but feel free to scrap it! I've already removed anything sentimental years ago."</text>
+									<autoReward level="HIGH">scrap_only</autoReward>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Leave unnoticed.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Continue on your current path and ignore the sound.</text>
+				<event>
+					<text>You continue travelling until you come across bits of an old, tarnished Rock Cruiser webbed up along the walls. You quickly check for spiders, and once you're certain you're alone you gather up as much as you can carry and bring the salvage back to the ship.</text>
+					<autoReward level="LOW">scrap_only</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Nope nope nope, get out of here now.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the planet.</text>
+		<event>
+			<text>Best not to go spelunking in a sector infested with giant alien spiders.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		NEUTRAL!!!
+	Events that give items
+-->
+<eventList name="NEUTRAL_INFESTATION">
+	<event load="BROOD_CIVILIAN"/>
+	<event load="INFESTATION_CIVILIAN"/>
+	<event load="INFESTATION_PURGER"/>
+	<event load="INFESTATION_BAKE_SALE"/>
+	<event load="INFESTATION_MAFIA"/>
+	<event load="INFESTATION_SHELL"/>
+</eventList>
+
+<event name="BROOD_CIVILIAN" unique="true">
+	<text>The Brood might mostly target the Militia, but they are still pirates. A civilian vessel is under attack here from a Brood vessel!</text>
+	<ship load="SHIP_BROOD_RESCUE" hostile="false"/>
+	<choice>
+		<text>Aid the civilian ship.</text>
+		<event>
+			<text>You power up your weapons and engage the pirate ship.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Stay out of it.</text>
+		<event>
+			<text>The fight brings them out of your immediate scanning range. After a time the distress calls stop.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="INFESTATION_CIVILIAN" unique="true">
+	<text>You receive a hail from a Civilian vessel. "Help, we're under attack from a ship full of spiders! Why does this stuff always happen to us?!"</text>
+	<ship load="SHIP_INFESTED_RESCUE" hostile="false"/>
+	<choice>
+		<text>Aid the civilian ship.</text>
+		<event>
+			<text>You power up your weapons and engage the infested ship.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Stay out of it.</text>
+		<event>
+			<text>The fight brings them out of your immediate scanning range. After a time the distress calls stop.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="INFESTATION_SHELL" unique="true">
+	<text>A Shell science vessel is watching an infested vessel sporadically flicker back and forth around the beacon. They hail you shortly after you jump in. "Hello. We are looking for an infant spider to study. We understand thhhe risk, and will pay if you go thhhrough withhh it."</text>
+	<ship load="SHIP_SHELL_BROOD" hostile="false"/>
+	<choice hidden="true">
+		<text>Send a team aboard the infested vessel to capture a hatchling.</text>
+		<event load="INFESTATION_SHELL_RISKY"/>
+	</choice>
+	<choice hidden="true" req="teleporter">
+		<text>(Teleporter) Beam back a spider without any risk.</text>
+		<event>
+			<text>You lock onto the spider and beam them back aboard your ship. Once captured, you hail the Shell vessel...</text>
+			<choice hidden="true">
+				<text>Contact the Shells.</text>
+				<event load="INFESTATION_SHELL_REWARD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Decline.</text>
+		<event>
+			<text>"Understandable. Not everyone has a taste in science."</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="INFESTATION_SHELL_RISKY">
+	<event>
+		<text>Your crew board the vessel, but are quickly stormed by spiders! They retreat back to the ship, but one of them doesn't make it. You watch as the spiders drag away their flailing body as you undock, unable to help. The Shells apologize for your loss and offer a piddly amount of scrap to "compensate".</text>
+		<autoReward level="LOW">scrap_only</autoReward>
+		<removeCrew>
+			<clone>true</clone>
+			<text>Fortunately, your crew has already been cloned, but now with a deep-seeded sense of arachnophobia.</text>
+		</removeCrew>
+	</event>
+	<event>
+		<text>Fortunately for your crew, most of the spiders are sleeping. They step quietly through the halls until they grab one of the hatchlings and run back to the ship.</text>
+		<choice hidden="true">
+			<text>Contact the Shells.</text>
+			<event load="INFESTATION_SHELL_REWARD"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="INFESTATION_SHELL_REWARD">
+	<event>
+		<text>The Shells thank you for your help. "Thhhis will help our research greatly. Thhe first step to preventing thhhis infestation from spreading is to understand what makes thhhese spiders tick!"</text>
+		<autoReward level="HIGH">weapon</autoReward>
+	</event>
+	<event>
+		<text>"Thhhank you... this will help the Brood greatly!" Their weapons come online, a sure sign that this was a trap!</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="INFESTATION_MAFIA" unique="true">  <!--its a reference-->
+	<text>A violent battle is being held between the Militia and Brood. In the distance is a large, well armed pirate yacht firing away.</text>
+	<choice hidden="true">
+		<text>Board the yacht, it's large enough that you could look around without being noticed.</text>
+		<event>
+			<text>You step aboard to find a large variety of races of all shapes and sizes walking about. The interior is lined in a crimson wallpaper and the floor a velvet carpet. It looks like some kind of weird hotel... and a strangely well armed one like that.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>As you continue deeper into the yacht you notice two doors. One marked "Night Club", and the other "High Grade Military Explosives [Off Access!!!]"</text>
+					<choice hidden="true">
+						<text>Check the Club.</text>
+						<event>
+							<text>You step into the night club only to find a spider seductively dancing around a pole on a stage in front of other pirates. You promptly close the door and head over the explosive room instead.</text>
+							<choice hidden="true">
+								<text>Check the Explosive Room.</text>
+								<event load="INFESTATION_MAFIA_EXPLOSIVES"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Check the Explosive Room.</text>
+						<event load="INFESTATION_MAFIA_EXPLOSIVES"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave quickly.</text>
+		<event>
+			<text>You fly away from the battle.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_MAFIA_EXPLOSIVES">
+	<text>The walls of the room are lined with explosives, many of which have small skulls printed on them.</text>
+	<choice hidden="true">
+		<text>Grab some of the explosives.</text>
+		<event>
+			<text>Your crew grab as much ammunition as they can carry, until a Duskbringer in bright red armor bursts into the room, holding a small bomb. "Feds, in my territory? Oh, now you've really made me mad!"</text>
+			<autoReward level="HIGH">missiles_only</autoReward>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>As you run to leave, you're chased down by the Duskbringer and several other Brood members. Even when you undock from the yacht, you're followed by an unusually colored Duskbringer pirate.</text>
+					<ship load="SHIP_CHERRI" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave, we shouldn't be stealing from pirates.</text>
+		<event load="INFESTATION_MAFIA_EARLYLEAVE"/>
+	</choice>
+</event>
+<eventList name="INFESTATION_MAFIA_EARLYLEAVE">
+	<event>
+		<text>As you run to exit the yacht you are spotted by several pirates. You make it back to your ship in time, but a Brood vessel is in hot pursuit!</text>
+		<ship load="SHIP_BROOD" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event/>
+</eventList>
+<event name="CHERRI_AUG">
+	<event/>
+</event>
+
+<event name="INFESTATION_BAKE_SALE" unique="true">  <!--its a reference... actually hostile I guess, but I need more neutral-->
+	<text>You jump when you notice a Brood ship docked at the beacon, but they make no move to attack. Instead, they advertise a small bake sale with some donuts and cider. "For spiders, by spiders, of spiders!" says a pirate with a hatchling pet on their lap.</text>
+	<ship load="SHIP_BROOD_MUFFET" hostile="false"/>
+	<choice hidden="true">
+		<text>Have a donut.</text>
+		<event>
+			<text>"Oh, so generous, we don't get many customers. Hopefully you intend to pay though, dearies. Donuts cost 999 scrap in these parts!"</text>
+			<choice>
+				<text>Pay it.</text>
+				<event>
+					<text>"Ahuhuhuhu... come back any time.." The Brood ship hangs up.</text>
+					<item_modify>
+						<item type="scrap" min="-999" max="-999"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="SCAM_UNLOCK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>Hell no!</text>
+				<event>
+					<text>"Oh, don't be silly.. You aren't going anywhere without paying! Ahuhuhu... I bet you'll make a great ingredient in my next cake!" You notice your engines functioning at lower power, they must be using a combat augment!"</text>
+					<status type="divide" target="player" system="engines" amount="2"/>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the Brood ship.</text>
+		<event load="INFESTATION_BAKE_SALE_LEAVE"/>
+	</choice>
+</event>
+<eventList name="INFESTATION_BAKE_SALE_LEAVE">
+	<event>
+		<text>As you're about to leave, you receive another message. "Oh, don't be stingy! Come back here, dearie.." The Brood ship arms its weapons.</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>You don't do business with pirates.</text>
+		<choice>
+			<text>Do something onboard the ship.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice>
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="INFESTATION_PURGER" unique="true">
+	<text>All around you are the charred remains of what once were ships. No life signs are detected aboard any of them. In the center of the wreckage is a small civilian station with a heavily modified Auto-guard defending it.</text>
+	<ship load="SHIP_AUTO_PURGER" hostile="false"/>
+	<choice hidden="true">
+		<text>Hail the station.</text>
+		<event>
+			<text>"Another one of you? Stay away, Stay away! We don't want any of you spider freaks! Get any closer and you'll meet your end just like all of these other infested wrecks!" It appears the civilians are delusional.</text>
+			<choice hidden="true">
+				<text>Attack the Auto-ship.</text>
+				<event>
+					<text>You can't let these civilians keep murdering other ships. You'll have to take out their Auto-ship to stop them.</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Heed their warnings and stay away.</text>
+				<event>
+					<text>You aren't particularly interested in messing with that Auto-ship. You avoid the station.</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_PURGER_WIN">
+	<text>The Auto-Purger has been dealt with. You scrap the remains of the ship.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>"AAAAH, THE SPIDERS, THEY'RE EVOLVING!" The civilians mute the comms and several large, expensive laser cannons extend from their hull. These guys mean business, and it's probably best to leave them alone now. Fortunately, that leaves you further time to investigate the Auto-ship, where you discover a special Laser weapon!</text>
+			<weapon name="LASER_FIRE_SPECIAL"/>
+		</event>
+	</choice>
+</event>
+
+<!--
+		HOSTILE!!!
+	Events that call up a fight for sure
+-->
+<eventList name="HOSTILE_INFESTATION">
+	<event load="ENCOUNTER_INFESTED"/>
+	<event load="ENCOUNTER_INFESTED_ENGI"/>
+	<event load="ENCOUNTER_BROOD"/>
+	<event load="ENCOUNTER_CLANSMEN_INFESTATION"/>
+</eventList>
+
+<event name="ENCOUNTER_INFESTED"> 
+	<text load="TEXT_ENCOUNTER_INFESTED"/>
+	<ship load="SHIP_INFESTED" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_INFESTED">
+	<text>You attempt to hail the neighbouring ship, but all you get in return is a series of clicks and chittering. The ship is infested, man the weapons!</text>
+	<text>One can never be too careful in this sector full of unusually-intelligent spiders. Quick scans reveal the ship here has been infested, and when the ship moves in on the attack your suspicions are confirmed.</text>
+	<text>An infested vessel moves in. Looks like you have another ship full of spiders to deal with!</text>
+	<text>The Militia wasn't joking when they said this sector was infested to the brim with spiders. A full functional vessel now controlled by spiders approaches, on the offence!</text>
+	
+	<!--duplicate-->
+	<text>You attempt to hail the neighbouring ship, but all you get in return is a series of clicks and chittering. The ship is infested, man the weapons!</text>
+	<text>One can never be too careful in this sector full of unusually-intelligent spiders. Quick scans reveal the ship here has been infested, and when the ship moves in on the attack your suspicions are confirmed.</text>
+	<text>An infested vessel moves in. Looks like you have another ship full of spiders to deal with!</text>
+	<text>The Militia wasn't joking when they said this sector was infested to the brim with spiders. A full functional vessel now controlled by spiders approaches, on the offence!</text>
+</textList>
+
+<event name="ENCOUNTER_INFESTED_ENGI" unique="true"> <!--has to be unique because Engi medbots + spiders is big ouch since they heal faster-->
+	<text>It's an unusual surprise seeing an Engi ship so deep in such a dangerous sector. You attempt to hail them, but only get back a garbled response followed by hissing. The ship must be infested with spiders!</text>
+	<ship load="SHIP_INFESTED_ENGI" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_BROOD">
+	<text load="TEXT_ENCOUNTER_BROOD"/>
+	<ship load="SHIP_BROOD" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_BROOD">
+	<text planet="PLANET_MOONS">A Brood vessel is hiding in the shadow of a nearby moon waiting for a ship to attack. Once they realize you're Federation they decide to release their spiders on you!</text>
+	<text>You remember the guard's warning about Brood ships here, and you can see why. A deadly Brood vessel with their weaponized spiders approaches.</text>
+	<text>A civilian ship jumps away after sending you a very brief message. "Crazy spider people, stay away!" You don't have time to process what the ship means before a hostile Brood ship comes out of nowhere and attacks!</text>
+	<text>Few threats are more menacing than a ship full of eternally burning Rockmen with giant laser cannons. Fortunately, such a ship is not what you're greeted with at this beacon, but it's still no good sight. A crazed Brood vessel attacks, and it appears conflict is inevitable.</text>
+	<text>"Fear me! Fear the spiders!" You aren't given a chance to respond before a spider-obsessed pirate vessel barrels down on you with murder on their minds.</text>
+	
+	<!--duplicate-->
+	<text planet="PLANET_MOONS">A Brood vessel is hiding in the shadow of a nearby moon waiting for a ship to attack. Once they realize you're Federation they decide to release their spiders on you!</text>
+	<text>You remember the guard's warning about Brood ships here, and you can see why. A deadly Brood vessel with their weaponized spiders approaches.</text>
+	<text>A civilian ship jumps away after sending you a very brief message. "Crazy spider people, stay away!" You don't have time to process what the ship means before a hostile Brood ship comes out of nowhere and attacks!</text>
+	<text>Few threats are more menacing than a ship full of eternally burning Rockmen with giant laser cannons. Fortunately, such a ship is not what you're greeted with at this beacon, but it's still no good sight. A crazed Brood vessel attacks, and it appears conflict is inevitable.</text>
+	<text>"Fear me! Fear the spiders!" You aren't given a chance to respond before a spider-obsessed pirate vessel barrels down on you with murder on their minds.</text>
+</textList>
+
+<event name="ENCOUNTER_CLANSMEN_INFESTATION">
+	<text load="TEXT_ENCOUNTER_CLANSMEN_INFESTATION"/>
+	<ship load="SHIP_CLAN_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_CLANSMEN_INFESTATION">
+	<text>"I grow tired of thessse ssspiderss. I came for a challenge, but thessse arachnidsss are too easssy to kill. I long for a challenge... ssssuch asss you!" A Slug clansman attacks!</text>
+	<text>The Clansmen enjoy a good exotic hunt, and the spiders are just that. However, that doesn't mean they won't also go out of the way to hunt ships like yours!</text>
+	<text>"Pissss off Feds! Thisss sssector is my hunting ground, not yoursss!" An offended Slug arms their weapons, and it's about time for you to do the same!</text>
+	<text>Few things are deadlier than a mad Slug, and the Clansman here is particularly miffed. "Damn ssspiders keep eating my crew. You, Fed sship. Sssstay ssstill and let me kill you, I need an easssy kill for onccce!"</text>
+	
+	<!--duplicate-->
+	<text>"I grow tired of thessse ssspiderss. I came for a challenge, but thessse arachnidsss are too easssy to kill. I long for a challenge... ssssuch asss you!" A Slug clansman attacks!</text>
+	<text>The Clansmen enjoy a good exotic hunt, and the spiders are just that. However, that doesn't mean they won't also go out of the way to hunt ships like yours!</text>
+	<text>"Pissss off Feds! Thissss sssector is my hunting ground, not yoursss!" An offended Slug arms their weapons, and it's about time for you to do the same!</text>
+	<text>Few things are deadlier than a mad slug, and the Clansman here is particularly miffed. "Damn ssspiders keep eating my crew. You, Fed sship. Sssstay ssstill and let me kill you, I need an easssy kill for onccce!"</text>
+</textList>
+
+<!--
+		BOARDERS!!!
+	Events with boarder calls
+-->
+<eventList name="BOARDERS_INFESTATION">
+	<event load="INFESTED_WRECKAGE"/>
+</eventList>
+
+<event name="INFESTED_WRECKAGE" unique="true">
+	<text>Nearby drifts a small wreck of a civilian vessel.</text>
+	<choice hidden="true">
+		<text>Scrap the hull.</text>
+		<event load="INFESTED_WRECKAGE_SCRAP"/>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the wreckage.</text>
+		<event>
+			<text>The wreckage continues to drift past you, seemingly lifeless.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIFE_SCANNER">
+		<text>(Lifeform Scanner) Scan the wreckage.</text>
+		<event load="INFESTED_WRECKAGE_SCAN"/>
+	</choice>
+	<choice hidden="true" req="sensors" lvl="2">
+		<text>(Upg. Sensors) Scan the wreckage.</text>
+		<event load="INFESTED_WRECKAGE_SCAN"/>
+	</choice>
+</event>
+<eventList name="INFESTED_WRECKAGE_SCRAP">
+	<event>
+		<text>Amid the interior of the ship are the corpses of several dozen spiders. In the helm sits the injured but alive captain. With his ship destroyed, he offers to join your crew.</text>
+		<crewMember amount="1"/>
+	</event>
+	<event>
+		<text>Surprisingly, there's no spiders aboard the wreckage. You scrap the exterior of the ship.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>As you should have expected, the ship is teeming with spiders. You manage to pull your crew back in time but the horde of spiders cannot be stopped.</text>
+		<boarders min="2" max="3" class="spider"/>
+	</event>
+	<event>
+		<text>As you should have expected, the ship is teeming with spiders. You order the crew back but it's too late, one of them falls victim to the swarm. You swiftly detach from the wreck before the spiders can get aboard.</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>Your crew has already been cloned, now with a deep sense of arachnophobia.</text>
+		</removeCrew>
+	</event>
+</eventList>
+<eventList name="INFESTED_WRECKAGE_SCAN">
+	<event>
+		<text>Scans of the wreckage show it is teeming with spiders. You decide it is best to ignore the ship.</text>
+	</event>
+	<event>
+		<text>You quickly scan the ship for lifeforms. Luckily, it appears no living creatures, including spiders, remain. You safely scrap the hull.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+</eventList>
+
+<!--
+		DISTRESS!!!
+	Events with distress beacons
+-->
+<eventList name="DISTRESS_INFESTATION">
+	<event load="DISTRESS_INFESTATION_CRASH"/>
+	<event load="DISTRESS_BROOD_CIVILIAN"/>
+	<event load="DISTRESS_INFESTATION_CIVILIAN"/>
+</eventList>
+
+<event name="DISTRESS_BROOD_CIVILIAN" unique="true">
+	<text>A Brood vessel is firing upon a civilian ship, the same one that has sent out the distress signal. The civilians won't stand a chance unless you do something.</text>
+	<ship load="SHIP_BROOD_RESCUE" hostile="false"/>
+	<distressBeacon/>
+	<choice>
+		<text>Aid the civilian ship.</text>
+		<event>
+			<text>You power up your weapons and engage the pirate ship.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Stay out of it.</text>
+		<event>
+			<text>The fight brings them out of your immediate scanning range. After a time the distress calls stop.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DISTRESS_INFESTATION_CIVILIAN" unique="true">
+	<text>There's two ships at this distress beacon, but only one is still under control by its original owners. An infested vessel is hunting civilians, and it looks like they're almost upon them!</text>
+	<ship load="SHIP_INFESTED_RESCUE" hostile="false"/>
+	<distressBeacon/>
+	<choice>
+		<text>Aid the civilian ship.</text>
+		<event>
+			<text>You power up your weapons and engage the infested ship.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Stay out of it.</text>
+		<event>
+			<text>The fight brings them out of your immediate scanning range. After a time the distress calls stop.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DISTRESS_INFESTATION_CRASH" unique="true"> <!--its a reference-->
+	<text>On the nearby forest planet appears to be the origin of the distress signal.</text>
+	<distressBeacon/>
+	<img planet="PLANET_POPULATED_GRASSY"/>
+	<choice hidden="true">
+		<text>Investigate.</text>
+		<event>
+			<text>You pilot closer to the surface, where you spot a wrecked Operative Militia ship stuck between two trees. Two Militiamen, one with bright orange hair, and the other with a long scar down his face and a pair of round glasses, are bunkered down, rifles drawn, facing towards a hill.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>You exit the vehicle and walk towards the Militiamen, who quickly shush you before you can speak. In a slow whisper, the red head says "Be very very quiet, or these spiders will hear us. There's a massive hive here, and we have to get out." The one with glasses shakes his head an disagreement, "No, we heard a supply cache was taken by the spiders. We have to get it back!"</text>
+					<choice hidden="true">
+						<text>Agree to avoid the hive.</text>
+						<event>
+							<text>You run back to the ship, careful not to awaken the spiders. Though their friend stays behind, stupidly decided to take back the cache all on his own, the red head offers to stay with you.</text>
+							<crewMember amount="1" class="human_soldier">Ronald Westly</crewMember>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Agree to go after the cache.</text>
+						<event>
+							<text>You hurry towards the hive, followed by the spectacled Militiaman. Stepping further into a cave running through the hill, you find the cache covered in webbing. You haul it over your shoulder back to the ship, but a swarm of spiders now alert to your location follow!</text>
+							<crewMember amount="1" class="human">Harold Porter</crewMember>
+							<autoReward level="MED">item</autoReward>
+							<boarders min="4" max="5" class="spider"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Avoid the planet.</text>
+		<event>
+			<text>You don't know what's down there, but you can't trust anything in this sector.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		QUEST!!!
+	Events with quests
+-->
+<eventList name="QUEST_INFESTATION">
+	<event load="INFESTATION_PHOTOGRAPHER"/>
+</eventList>
+
+<event name="INFESTATION_PHOTOGRAPHER" unique="true"> <!--its a reference-->
+	<text>You assumed most of the civilians had evacuated this sector, but one ship is searching through the wreckage of several large carriers.</text>
+	<ship load="SHIP_CIVILIAN_GENERIC" hostile="false"/>
+	<choice hidden="true">
+		<text>Hail them.</text>
+		<event>
+			<text>"Ugh, JJ is going to be pissed - Oh, hello. It's very fortunate you've shown up. I'm from the Trumpet, a small newspaper in the Coreworlds. Our lead photographer was sent here to get some pictures of the sector, but he's gone missing. Perhaps you could hunt him down for us? We aren't armed well enough for this sector..."</text>
+			<quest event="INFESTATION_PHOTOGRAPHER_QUEST"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the civilians.</text>
+		<event>
+			<text>You leave the civilian ship alone.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_PHOTOGRAPHER_QUEST">
+	<text>You've arrived at the co-ordinates given by the civilians. A terrestrial planet, though with few signs of civilization, is located within the system limits. This must be the place...</text>
+	<img planet="PLANET_UNPOPULATED_TERRA"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>It doesn't take long to find the photographer. A human so thin his ribcage looks like it's about to escape his chest stands triumphant over a horde of spiders, who crawl around him in submission. He shouts to your ship. "Fear me, for I am the spider man! King of the spiders, and soon to be king of man!"</text>
+			<choice hidden="true">
+				<text>Wh...what?</text>
+				<event>
+					<text>From the ground rises a beaten but still functional Federation ship, staffed mostly by spiders. The "spider man" jumps aboard the ship, and rises to fight you!</text>
+					<ship load="SHIP_SPIDERMAN" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_PHOTOGRAPHER_DESTROY">
+	<text>The wrecked ship falls back down the ground, crushing several hundred spiders and sending many more flying. With the horde dispersed, you land as well and quickly gather some salvage.</text>
+	<autoReward level="MED">standard</autoReward> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>Unfortunately, this means the photographer is dead. There's no reason to report back to the civilian ship now.</text>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_PHOTOGRAPHER_DEADCREW">
+	<text>The now crewless vessel falls back down the ground, crushing several hundred spiders and sending many more flying. With the horde dispersed, you land as well and quickly gather some salvage.</text>
+	<autoReward level="HIGH">standard</autoReward> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>Unfortunately, this means the photographer is dead. There's no reason to report back to the civilian ship now.</text>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_PHOTOGRAPHER_SURRENDER">
+	<text>As the Federation ship smokes and shutters, you receive a hail from the once-photographer. "Ok, I no longer wish to be king of the spiders!"</text>
+	<choice hidden="true">
+		<text>Let him live.</text>
+		<event>
+			<text>The Federation ship pilots back down to the planet's surface and the human dismounts.</text>
+			<ship hostile="false"/>
+			<choice hidden="true">
+				<text>Drop him off at the nearest station for the reward.</text>
+				<event>
+					<text>You drop off the photographer at the nearest station, where the civilians from earlier are waiting. Grateful, they give you a generous helping of fuel and scrap.</text>
+					<autoReward level="MED">fuel</autoReward> 
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Offer him a position on your ship.</text>
+				<event>
+					<text>With his previous two occupations as a photographer and "king of the spiders" having been put to an end, he is more than willing to work for you.</text>
+					<crewMember amount="1" class="human">Peter</crewMember>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore him and finish him off.</text>
+		<event/>
+	</choice>
+</event>
+
+<!--
+		UNLOCK QUEST!!!!!
+		UNLOCK QUEST!!!!!
+		UNLOCK QUEST!!!!!
+-->
+<ship name="SHIP_BROOD_CRUISER" auto_blueprint="MU_BROOD_CRUISER">
+	<destroyed load="INFESTATION_IRWIN_WIN"/>
+	<deadCrew load="INFESTATION_IRWIN_WIN"/>
+	<crew>
+		<crewMember type="LIST_CREW_PIRATE_RANDOM" prop="0.5"/>
+		<crewMember type="LIST_CREW_SPIDER_RANDOM" prop="0.5"/>
+	</crew>
+</ship>
+<event name="INFESTATION_IRWIN" unique="true">
+	<preventQuest/>
+	<preventFleet/>
+	<quest>
+		<nebulaBeacon>false</nebulaBeacon>
+		<aggressive>2</aggressive>
+	</quest>
+	<beaconType id="map_icon_irwin" global="true">
+		<color r="235" g="95" b="255" a="1.0"/>
+	</beaconType>
+	<text>These are the last known co-ordinates of the renegade hired by the Militia. Some strange facility has been constructed here, and a massive civilian transport ship is in the process of leaving the planet. You spot a distant, strangely shaped vessel parked outside the entrance.</text>
+	<img back="BACK_EVENT_SPIDERLAB" planet="NONE"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>You pull closer, careful not to be spotted. It seems you failed to spot a second ship, a large Mantis cruiser in Brood colors. You land behind one of the massive solar panels and tune into the conversation between the two ships. It seems Irwin is speaking with an unusually well-dressed Brood member in what seems to be a painted Ace uniform.</text>
+			<ship load="SHIP_BROOD_CRUISER" hostile="false"/>
+			<choice hidden="true" req="loc_beentonest" blue="false" lvl="0" max_group="0">
+				<text>Continue...</text>
+				<event>
+					<text>"Heheh, hey there Virgo. Look, I know thisss looksss bad but..." Irwin is cut off by the imposing figure. "I do not have time for your shit anymore Irwin. Vael is getting tired. You had ONE job, to recover the DNA. And what happened? You come slithering back to me with nothing. Now, they're about to blow the whole nest to hell. You expect me to TOLERATE this?"</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>"Well... yessss? Look, it wasssn't easy convincccing the C.D.E.G. to hire me after the Vek dissssassster ruined the reputation of renegadessss!" Irwin continues to protest but is cut off once more. "It doesn't matter. Too much time has passed. The window of opportunity is slim. Vael has cut a deal with the Brood, they will recover the DNA for us. We have no more use for you, Irwin. You are nothing but a loose end." Virgo draws his laser and aims it right at Irwin.</text>
+							<choice hidden="true">
+								<text>Intervene.</text>
+								<event>
+									<text>Seems this Irwin fellow might have information of use. You jump out from your cover and draw your own weapon. Virgo shows no signs of disturbance but merely retracts his weapon and hurries back to the Brood ship, which immediately powers up its weapons! Irwin, to no surprise, rushes back to his ship but is stopped by a missile from the pirates, destroying his engines.</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Do nothing.</text>
+								<event>
+									<text>You watch as the Slug desperately pleads for his life, but the assassin pays him no attention. He shoots only once and the Clansman falls to the ground in a puddle of his own green blood. Virgo orders the pirates behind him to destroy Irwin's ship before they go. Seems this is your cue to leave as well.</text>
+									<instantEscape/>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_beentonest" blue="false" lvl="1" max_group="0">
+				<text>Continue...</text>
+				<event>
+					<text>"Heheh, hey there Virgo. Look, I know thisss looksss bad but..." Irwin is cut off by the imposing figure. "I do not have time for your shit anymore Irwin. Vael is getting tired. You had ONE job, to recover the DNA. And what happened? You come slithering back to me with nothing. Now, they've blown that nest to hell and we have no way of recovering the samples! You expect me to TOLERATE this?"</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>"Well... yessss? Look, it wasssn't easy convincccing the C.D.E.G. to hire me after the Vek dissssassster ruined the reputation of renegadessss!" Irwin continues to protest but is cut off once more. "It doesn't matter. Too much time has passed. The window of opportunity is gone. We have no more use for you, Irwin. You are nothing but a loose end." Virgo draws his laser and aims it right at Irwin.</text>
+							<choice hidden="true">
+								<text>Intervene.</text>
+								<event>
+									<text>Seems this Irwin fellow might have information of use. You jump out from your cover and draw your own weapon. Virgo shows no signs of disturbance but merely retracts his weapon and hurries back to the Brood ship, which immediately powers up its weapons! Irwin, to no surprise, rushes back to his ship but is stopped by a missile from the pirates, destroying his engines.</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Do nothing.</text>
+								<event>
+									<text>You watch as the Slug desperately pleads for his life, but the assassin pays him no attention. He shoots only once and the Clansman falls to the ground in a puddle of his own green blood. Virgo orders the pirates behind him to destroy Irwin's ship before they go. Seems this is your cue to leave as well.</text>
+									<instantEscape/>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_IRWIN_WIN">
+	<text>The Brood cruiser has been defeated. It falls to the ground in a heap, and you scrap its remains.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>Check on Irwin.</text>
+		<event>
+			<text>When the Slug sees you approaching he immediately pretends he was never scared at all, but around his strange blunderbuss-like gun his tentacles have gone white. "Glad we renegadessss know how to ssstick up for each other! Now, what's your rate? I know this kind of ssserviccce isssn't free. I'm not sssstupid."</text>
+			<choice hidden="true">
+				<text>We aren't looking for pay. But we wouldn't mind information.</text>
+				<event>
+					<text>"HAH! What a riot. Let'sss be clear here. Information issss money. Money issss everything, and everything isss money. There ain't no sssane man in thisss Multiverssse who worksss for free. Kindnesss isss jussst a meansss to an end. Favorsss are blank checksss. You're a renegade, don't play me for a fool. We aren't philanthropisssts, we're mercccenariesss. Murdererssss with a pricccce tag. I've been in thisss busssinessss long enough to know that."</text>
+					<choice hidden="true">
+						<text>That's not the point. Tell us about this Virgo fellow.</text>
+						<event>
+							<text>"Whatever you sssay. Virgo isss an Angel. Asssasssin for big daddy Vael of the Ssssyndicate. He'ssss my mossst recccent client, but the isssue iss Vael doessssn't normally deal with roguesss. Hissss mercsss usssually work for him, and his patienccce with me wasss ssshort. Virgo wasss his reassssurrenccce I would follow through."</text>
+							<choice hidden="true">
+								<text>Follow through with what?</text>
+								<event>
+									<text>"Ssstealing sssome kind of DNA. Thessse G.A.S., the Vek, bla bla bla, they're all basssed on the sssame ssstuff. I ain't a biologissst, I dunno what I'm talking about. Point isss, Vael caught wind Sssenator Wright wasss getting cold feet and was gonna blow the top off thisss whole thing. I wasss SSSUPPOSSSED to bring Vael the DNA before the big boom, but I like being alive, you know?"</text>
+									<choice hidden="true">
+										<text>Didn't you use to be a Clansman?</text>
+										<event>
+											<text>"Yeahhhh. I WASSS. But I got tricked by that asssshole Billy Hektar into getting wrapped up in hisss little ssslave trade. Wasss going fine until one day I decccided to bring along a friend of mine, a ranger named Ssssylvan. I thought he'd want to help, but inssstead he acted all weird. I realizzzed he wasss a risssk, but rather than jusssst dying like I wanted, he blew up my fleet and leaked my involvement in Hektar to the Guild. Thing issss, ssslavery actually breakssss one of the sacred rulessss, and so I wasss kind of booted. Lesssson isss, trussst no one! They'll alwaysss turn on you."</text>
+											<choice hidden="true">
+												<text>Right...</text>
+												<event>
+													<text>"That being sssaid, I need a ride. My ship isss toassst. Ssssince you're a renegade, I'm sure you could alwaysss ussse more help. Ssso, let'ss ssstrike a deal! I join your crew, and we sssplit the profitsss half and half. Deal? No!? Alright well, I guessss we can figure out the numbersss later... Oh, and sssseeing asss I won't need my ssship anymore, you do whatever with it."</text>
+													<crewMember amount="1" all_skills="2" class="unique_irwin">Irwin</crewMember>
+													<variable name="ach_boss_brood" op="set" val="1"/>
+													<variable name="ach_crew_irwin" op="set" val="1"/>
+													<autoReward level="MED">standard</autoReward>
+													<unlockCustomShip silent="false">PLAYER_SHIP_SPIDER</unlockCustomShip>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_MILITIA_CRUISER" auto_blueprint="MU_MILITIA_CRUISER">
+	<destroyed load="INFESTATION_NEST_WIN"/>
+	<deadCrew load="INFESTATION_NEST_WIN"/>
+</ship>
+<event name="INFESTATION_NEST">
+	<preventQuest/>
+	<preventFleet/>
+	<beaconType id="map_icon_nest" global="true">
+		<color r="63" g="73" b="77" a="1.0"/>
+	</beaconType>
+	<quest>
+		<nebulaBeacon>false</nebulaBeacon>
+		<aggressive>2</aggressive>
+	</quest>
+	<text>You've arrived at the Spider Hive. The planet is appropriately spooky for what you're dealing with. In the skies, the Militia and Brood forces fight for control over the planet, but you're able to slip through the chaos and land on the surface near a giant cavern.</text>
+	<img back="BACK_EVENT_NEST" planet="NONE"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>You receive a distant hail from Montgomery, though it cuts in and out. "You made - delivery ship damaged - bombs are lost in cavern - need you - find them and - destroy the nest - Brood inside - careful!"</text>
+			<choice hidden="true">
+				<text>Enter the cavern.</text>
+				<event>
+					<text>You plunge into the darkness, guided only by the light from your own ship through empty labyrinths of bedrock. You pass by what appears to be the wreck of a Militia vessel, evidently the one carrying the bombs. You find them, fortunately, undamaged in the cargo and haul them back onto your ship.</text>
+					<choice hidden="true">
+						<text>If we don't detonate these, no one else can.</text>
+						<event>
+							<text>You keep on going, ever wary of the fact you could easily meet the same fate here as the first ship if you fail. Eventually the tunnels lead to what is presumably the center of the cavern, a massive near perfectly spherical room with walls lined with holes containing tens of thousands of eggs. There's no way this was the product of nature. This room was designed with intent.</text>
+							<choice hidden="true">
+								<text>Stealthily begin setting up the bombs.</text>
+								<event>
+									<text>Your crew rush to wire the bombs without waking up the spiders. From what you remember, these are the same design as the ones used against the Vek on Earth. Just one of those was capable of creating an explosion visible from space and caused massive earthquakes across the planet, so you can only imagine what kind of impact three of them will have. And you sure as hell don't want to stick around to see it.</text>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event>
+											<text>While wiring the third and final bomb, one of your crew trips and drops a metal plate from the bomb on the ground. At once, it seem as though every spider in the entire cavern lets out a cry. In a matter of seconds a massive roar silences them and a monstrous creature the size of three men erupts from the ground. This must be the queen, and she sure isn't happy. All 8 of her eyes lock onto you, but she doesn't attack. It almost seems as if she's giving you a warning.</text>
+											<choice hidden="true">
+												<text>Put down your laser.</text>
+												<event>
+													<text>It seems like suicide almost, but the last thing you want to risk is angering the spiders. From all you've seen so far, they seem more intelligent than the Militia is willing to admit and maybe, just maybe, you can make it out of here without anyone dying. The queen seems to notice this behavior and backs away from you. Around her several hatchlings cling to her legs, but they scatter when she turns and crawls though a hole in the hatchery walls. It almost seems as if she wants you to follow.</text>
+													<choice hidden="true">
+														<text>Follow her.</text>
+														<event>
+															<text>You crawl through the tunnel and find yourself now standing in a massive rectangular room with ships and lab equipment. You wipe away some of the dirt caked onto the walls and find underneath is rusted metal. This was a research center at some point, but judging from the smell, the staff are all dead. You see the queen walk over to a row of tubes on the walls, where you find many exotic creatures, some of which seem eerlily similar to the G.A.S., Vek, and other insectoid monstrosities used by the Brood. You glance over at a nearby desk where you find a letter addressed to, of all people, Oscar Wright. Next to it is a dongle containing blueprints for some kind of cruiser model, which you slip into your pocket.</text>
+															<variable name="loc_beentonest" op="set" val="1"/>
+															<choice hidden="true">
+																<text>Read the letter.</text>
+																<event>
+																	<text>"Dear Senator,
+																	There has been a change of plans. Your methods for testing the insectoid DNA have deeply disturbed both me and the council. My team found a new candidate anyways. There will no longer be a need to continue your experiments. I would like to remind you that the only reason you are where you are today is because of your history with the Admiral, and in his absence the new leadership is not as generous. I am writing this only out of the best of intentions for your well being. If you don't want to wake up with a bullet in your head, I advise destroying all evidence at all costs.
+																	
+																	You know what you have to do, Oscar. Do not fail the Rebellion again.
+																	Sincerely, Dr. E.W."</text>
+																	<choice hidden="true">
+																		<text>Continue...</text>
+																		<event>
+																			<text>You aren't sure what to make of this, but you don't have much time. Montgomery calls out from behind you, ordering that you drop the letter. "Turn around slowly, captain. Put that paper down and come with me. We need to detonate the bombs and leave."</text>
+																			<ship load="SHIP_MILITIA_CRUISER" hostile="false"/>
+																			<choice hidden="true">
+																				<text>Confront Montgomery about the letter.</text>
+																				<event>
+																					<text>Montgomery cuts you off before you can finish. "What reason do you think the C.D.E.G. is here? Did you really think the Brood was behind all of this? That some stupid pirates could just breach the security of the Union's Coreworlds? No, but the Federation has been concerningly ignorant to the Senator's intentions. The Brood is real, yes, but they were nothing before this. We gave them the insectoids to release. We planted the Vek on Earth. It was an awful decision in hindsight, yes, and that's why we're here. The experiment was a failure. We cannot risk exposing the Senator's ties to the Rebellion. I'm afraid you're now a liability. But disposing of liabilities is what I'm best at."</text>
+																					<ship hostile="true"/>
+																					<choice hidden="true">
+																						<text>Continue...</text>
+																						<event load="COMBAT_CHECK"/>
+																					</choice>
+																				</event>
+																			</choice>
+																			<choice hidden="true">
+																				<text>Abandon the lab and the spiders and leave.</text>
+																				<event>
+																					<text>You take one last look at the queen and hurry out of the lab. You spot a massive CDEG Cruiser which Montgomery boards. In the distance the horde of spiders chase after you, but you're too fast. Both of your ships escape just in time as the bombs fill your ship with a blinding light. Once it finally subsides, Montgomery hails you one last time. "You saw nothing down there, understand?" You nod your head. "Good. You will be rewarded for your assistance, but I hope you understand that it would be a poor decision to speak of what was down there to anyone else."</text>
+																					<autoReward level="HIGH">weapon</autoReward>
+																				</event>
+																			</choice>
+																		</event>
+																	</choice>
+																</event>
+															</choice>
+														</event>
+													</choice>
+													<choice hidden="true">
+														<text>Leave now.</text>
+														<event/>
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>Take no chances, shoot the queen.</text>
+												<event>
+													<text>It would be suicide to try anything else here. You blast the queen, but your shot hardly does anything against her hardened exoskeleton. She charges at you as do the rest of her offspring, and they tear one of your crew limb from limb. You have no choice but to retreat back to the ship and hurry out of the cavern. From a distance, you pull the trigger and the bombs detonate at once, creating a blinding flash of light that seems to engulf everything. And then, in an instant, the light subsides and nothing is left but a monumental crater in the face of the earth. The Brood forces, seeing their failure, jump away, and the Militia thanks you. The G.A.S. are no more.</text>
+													<autoReward level="HIGH">weapon</autoReward>
+													<removeCrew>
+														<clone>true</clone>
+														<text>Fortunately, your crew is able to be recovered thanks to the Clone Bay, but they'll likely suffer from permanent arachnophobia from now on.</text>
+													</removeCrew>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Leave with the bombs and give them to someone better qualified.</text>
+						<event>
+							<text>Now having safely recovered the bombs, you leave the cavern and hail Montgomery. A Militia ship breaks off from the fighting to retrieve the explosives and gives you a reward.</text>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>This is too risky, we can't do this.</text>
+				<event>
+					<text>You can't risk going up against an entire hive of spiders on our own! You pull away from the battle.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_NEST_WIN">
+	<text>Montgomery in the end was not enough to stop you. Though the rest of the crew aboard his vessel were likely oblivious to his intentions, they were necessary casualties.</text>
+	<variable name="ach_boss_milcruiser" op="set" val="1"/>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>While scrapping the crashed wreckage, you hear the moan of a dying man and find Montgomery, impaled by part of the debris. He turns to you, and with his final breath he mutters, "No evidence. An Ace... never fails." He raises his hand, still holding the detonator, and flips the switch. Instantly, the nearby Reinfield bombs activate and the countdown to decimation begins.</text>
+			<choice hidden="true">
+				<text>We have to rescue the queen!</text>
+				<event>
+					<text>You run back into the hatchery where you find the queen comforting several wailing hatchlings. The droning sound of the bombs as they count down drowns out your cries but the queen spots you, and somehow understands the severity of the situation. You make your way back to the ship and take off, rushing through the tunnels as the walls shake and the inferno behind you expands. In the end it comes down to almost a matter of seconds as you kick the engines into maximum thrust and take off from the planet.</text>
+					<crewMember amount="1" class="unique_queen" combat="2">The Queen</crewMember>
+					<variable name="ach_crew_queen" op="set" val="1"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>So many different questions are left running through your head. Why was the Rebellion testing the spiders and the Vek? What is the 'new candidate'? Who is Dr E.W.? You aren't sure if any of these questions will be answered, but you can't linger for too much longer. The queen, while safe, is obviously disturbed by the loss of her children. Had you not saved her, the entire species would have likely gone extinct. All you can do now is be glad another Ace is dead, and carry on with your mission. Maybe some day, whether it's you or another captain, someone will get to the bottom of this. You pull out the dongle from earlier and download the blueprint data onto your ship for later.</text>
+							<unlockCustomShip silent="false">PLAYER_SHIP_BROOD</unlockCustomShip>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>

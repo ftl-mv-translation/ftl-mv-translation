@@ -1,0 +1,1795 @@
+<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					COALITION SECTOR 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+
+<!--
+		ITEMS!!!
+	Events that give stuff
+-->
+<eventList name="ITEMS_COALITION">
+	<event load="COALITION_REBEL_STRANDED"/>
+	<event load="COALITION_FED_AUTO"/>
+	<event load="COALITION_FREEMANTIS_SLAVES"/>
+	<event load="COALITION_HEKTAR"/>
+</eventList>
+
+<event name="COALITION_FED_AUTO" unique="true">
+	<text>You're shocked to see a Federation Auto-Ship here. "This ship has been deployed by the Federation to provide relief to soldiers on the Coalition front. It's dangerous to go alone, take this."</text>
+	<ship load="SHIP_FED_AUTO_COALITION" hostile="false"/>
+	<choice>
+		<text>Accept the supplies.</text>
+		<event>
+			<text>"Best of luck Captain." The Auto-Ship jumps away.</text>
+			<autoReward level="MED">item</autoReward>
+		</event>
+	</choice>
+	<choice req="INFO_MACHINE" hidden="true">
+		<text>(Analyzer) Disable the Auto and download its data stores.</text>
+		<event>
+			<text>You power down the Auto-ship then download all of the data onboard. Seems it has already mapped most of this sector, which is very helpful for you!</text>
+			<autoReward level="LOW">standard</autoReward>
+			<reveal_map/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the ship, there must be more supplies on-board.</text>
+		<event>
+			<text>"Treachery detected. Activating combat procedures."</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="COALITION_FED_AUTO_WIN">
+	<text>As you scrap the ship, you notice the cargo bay managed to survive the wreckage.</text>
+	<autoReward level="LOW">stuff</autoReward>
+	<choice hidden="true">
+		<text>Open the cargo.</text>
+		<event load="COALITION_FED_AUTO_WIN_OPEN"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ELITE">
+		<text>(Elite Crew) Have your elite carefully open the door.</text>
+		<event>
+			<text>Your crew approaches the storage bay, taking note of a subtle explosive trap to deter pirates. Your crew disables the trap and enters.</text>
+			<autoReward level="HIGH">stuff</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave it be.</text>
+		<event/>
+	</choice>
+</event>
+<eventList name="COALITION_FED_AUTO_WIN_OPEN">
+	<event>
+		<text>As you tear open the cargo bay, you hear a distinct clicking noise. You quickly try to get out of the way but it's too late. The trapped cargo explodes, damaging the ship and destroying all of the cargo and the rest of the Auto-ship wreckage.</text>
+		<damage amount="5"/>
+	</event>
+	<event>
+		<text>You tear open the cargo bay to find excess amounts of resources for you to take.</text>
+		<autoReward level="HIGH">stuff</autoReward>
+	</event>
+</eventList>
+
+<event name="COALITION_HEKTAR" unique="true">
+	<text>As soon as you arrive, an ear-bleedingly loud advertisement blasts through your ship's stereo. "ATTENTION ALL SHOPPERS! HEKTAR INDUSTRIESSS ISSS PROUD TO ANNOUNCCCE THE ARRIVAL OF OUR NEW HEKTAR BRAND MILITARY SSSUPPLY DEPOTSSS, OPEN TO ALL COALITION SHIPSSS (or anyone elssse willing to give usss money) SO COME IN AND SSSSHOP SSSSHOP SSSSHOP! I DEMAND IT OF YOU!"</text>
+	<ship load="SHIP_HEKTAR_STATION" hostile="false"/>
+	<choice hidden="true">
+		<text>Go in and "shop shop shop".</text>
+		<event>
+			<text>"Ah, another brainlesss idi- er... no way, no that'sss right. Another brainless idiot who'll give usss their money! Welcome to Hektar Indussstriesss! If you like what you see here, conssssider visssiting the Hektar Mega-Market ssssome time in the future!"</text>
+			<store>STORE_HEKTAR_DEFAULT</store>
+		</event>
+	</choice>
+	<choice hidden="true" req="FEDERATION_DATABASE">
+		<text>[Federation Database] What is Hektar?</text>
+		<event>
+			<text id="database_hektar"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<restartEvent/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_VARIANT_HEKTAR">
+		<text>(Hektar Crew) Request an employee discount.</text>
+		<event>
+			<text>"AHAHAHAHAHAHHAHAHAH! HAH! AHAH! Hah... oh boy. An employee dissscount? Are you ssstupid? Hektar doesssn't give employee dissscountsss, it gives employee markupsss! How dare you try and sssteal money from me, you leech!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_VARIANT_BILLY">
+		<text>(Billy) Request a Hektar(tm) brand supply package.</text>
+		<event>
+			<text>It only takes a few minutes before Billy returns, and soon after a Hektar package is deposited in your hold. Guess it pays to have the CEO of a major corporation aboard your ship.</text>
+			<weapon name="HEKTAR_MODULAR_WEAPONS"/>
+			<store>STORE_HEKTAR_DEFAULT</store>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the depot.</text>
+		<event>
+			<text>Hektar, for as good as their products might be, is a villainous corporation. If they're selling to the Coalition now, then it's your duty to shut them down.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the depot.</text>
+		<event>
+			<text>"Hey! Where do you think you're going? I sssaid I DEMAND you come in and sssshop! Damn it, you WILL SSSHOP OR DIE!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="COALITION_REBEL_STRANDED" unique="true">
+	<text>A Rebel ship is stuck at this beacon, with noticeable damage to their engines. They make no attempt to attack you, too heavily damaged to take the risk.</text>
+	<ship load="SHIP_REBEL_GENERIC_NOESCAPE" hostile="false"/>
+	<status type="limit" target="enemy" system="engines" amount="0"/>
+	<choice hidden="true">
+		<text>Hail the Rebel.</text>
+		<event>
+			<text>"God damn it, not the Feds. What the hell do you want? If you're going to kill us, make it quick."</text>
+			<choice hidden="true">
+				<text>We aren't here to fight.</text>
+				<event>
+					<text>The Rebel captain chuckles weakly. "Yeah, right. Well if you're telling the truth, we could use some help with repairs, or some scrap. Took a pretty bad shot from the Coalition guard, and we leaked the fuel all the way here."</text>
+					<choice>
+						<text>Give them the scrap.</text>
+						<event>
+							<text>The Rebel Captain growls, expecting the cargo to be trapped. But when nothing explodes and he's certain theres no infectious murder-bugs inside, he reluctantly thanks you and promises to delay the fleet when he returns to them.</text>
+							<item_modify>
+								<item type="scrap" min="-25" max="-25"/>
+							</item_modify>
+							<modifyPursuit amount="-2"/>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Take some time to repair their engines.</text>
+						<event>
+							<text>It takes a while, but you're able to patch up the damage. The Rebel captain is surprised at your willingness to help. "Maybe I misjudged you... don't think this changes anything, but it's only right that you are paid for your efforts."</text>
+							<modifyPursuit amount="1"/>
+							<autoReward level="HIGH">weapon</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="REBEL_ID">
+						<text>(Forged ID) Pretend to be a Rebel ship to leech supplies.</text>
+						<event>
+							<text>You explain the importance of your mission to "stop the Federation" and quickly snap to a salute. To your surprise, the Rebel captain salutes back. "For the glory and for the Rebellion!" Seems their loyalty to the Rebellion is undying even in a desperate situation, though their intelligence is questionable.</text>
+							<autoReward level="HIGH">weapon</autoReward>
+						</event>
+					</choice>
+					<choice>
+						<text>Booby trap the cargo.</text>
+						<event>
+							<text>You pass over the "scrap" to the Rebels. They pry open the crate to see a ticking bomb that lights their ship ablaze. The Captain rushes back to the bridge, coughing. "Ok, you win. Take this garbage and leave us alone."</text>
+							<item_modify>
+								<item type="missiles" min="-5" max="-5"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>Accept their gracious offer.</text>
+								<event>
+									<text>You take the supplies from them and prepare to leave.</text>
+									<autoReward level="HIGH">standard</autoReward>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>We can't help.</text>
+						<event>
+							<text>"Yeah, not surprised. Get lost."</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Finish them off.</text>
+				<event>
+					<text>With no engines to run away, the Rebel ship is forced to fight you completely stationary.</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the ship.</text>
+		<event>
+			<text>With no engines to run away, the Rebel ship is forced to fight you completely stationary.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Fly away from the ship.</text>
+		<event>
+			<text>You don't have time to mess with the Rebels too in this dangerous sector. You fly away, and as expected the Rebel ship is powerless to follow.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="COALITION_FREEMANTIS_SLAVES" unique="true">
+	<text>Seeing a Free Mantis ship in Coalition space isn't the only unexpected thing at this beacon. It appears the ship has also managed to take a Coalition ship hostage. "Hello friend! Great day today! We have wide selection of crew for you to pick. Taken from fresh Coalition kill!"</text>
+	<choice hidden="true">
+		<text>Take the Slug.</text>
+		<event>
+			<text>The Free Mantis transfer over the Slug slave.</text>
+			<crewMember amount="1" class="slug"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Take the Mantis.</text>
+		<event>
+			<text>The Free Mantis transfer over the Mantis slave.</text>
+			<crewMember amount="1" class="mantis"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Take the Rockman.</text>
+		<event>
+			<text>The Free Mantis transfer over the Rockman slave.</text>
+			<crewMember amount="1" class="rock"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Take the Leech.</text>
+		<event>
+			<text>The Free Mantis transfer over the Leech slave.</text>
+			<crewMember amount="1" class="leech"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We aren't interested in slaves.</text>
+		<event>
+			<text>"Oh! Federation so kind, so forgiving. You are true hero!" You thank the Free Mantis and leave.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		HOSTILE!!!
+	Events that call up a fight for sure
+-->
+<eventList name="HOSTILE_COALITION">
+	<event load="ENCOUNTER_COALITION"/>
+	<event load="ENCOUNTER_COALITION"/>
+	<event load="ENCOUNTER_REBEL_COALITION"/>
+	<event load="ENCOUNTER_MANTIS_COALITION"/>
+	<event load="ENCOUNTER_LEECH_COALITION"/>
+	
+	<event load="COALITION_CHECKPOINT"/>
+	
+	<event load="HAZARD_COALITION"/>
+</eventList>
+
+<event name="ENCOUNTER_COALITION">
+	<text load="TEXT_ENCOUNTER_COALITION"/>
+	<ship load="SHIP_COALITION_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_COALITION">
+	<text>Two Coalition ships appear to be exchanging slaves at this beacon. One of them quickly jumps away after seeing you, but the other attacks!</text>
+	<text>The Coalition is made of the 4 most hostile races in the galaxy. They aren't known for ignoring a potential fight, and this ship is no exception.</text>
+	<text>You find a Coalition ship salvaging the wreck of a Federation scout. Upon seeing your ship, it immediately abandons the wreck and attacks!</text>
+	<text>You are hailed by the captain of a nearby Coalition ship shortly after arriving. "You have a lot of nerve showing up in our sector. Now you will die!"</text>
+	<text>You see a Coalition ship docked outside a nearby outpost. You order your crew to engage the ship.</text>
+	<text>The war has brought out the worst in the 4 races that make up the Coalition. Clearly the ship at this beacon has no intentions of letting us go unharmed.</text>
+
+	<text>"Hehehe, are you lossst? Ssseemsss you wandered too far into Coalition ssspaccce, buddy! Heheheheheheh, gonna cry about it? Hehehehehehh..." You take this chance to arm the guns while the Slug captain continues to laugh.</text>
+	<text>The Leech captain on the nearby Coalition ship waves to you. "Sup man. How's it goin?" He is promptly shoved to the side and replaced by the true captain, a Slug. "You ssstupid tapeworm, we're sssupposssed to fight thessse idiotsss!"</text>
+</textList>
+
+<event name="ENCOUNTER_REBEL_COALITION">
+	<text load="TEXT_ENCOUNTER_REBEL_COALITION"/>
+	<ship load="SHIP_REBEL_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_COALITION">
+	<text>"You're stuck in this hell too? I'm almost sympathetic, but the Federation is responsible for creating the Coalition!"</text>
+	<text>A Rebel ship, trying its best to escape from Coalition territory, has decided to take a detour and attack your ship.</text>
+	<text>The Rebels tend to avoid the Coalition as much as the Federation, but this ship appears to be an exception.</text>
+	<text>"At last, a ship not filled with alien filth. I'd much prefer to fight Federation scum!"</text>
+</textList>
+
+<event name="COALITION_CHECKPOINT">
+	<text>A looping message plays over the stereo. "This beacon is a security checkpoint. Submit to processing. If you have nothing to hide, you have nothing to fear." You can hear a Rockman chuckling as the track ends. There's no way they'll let you pass as a Federation ship.</text>
+	<ship load="SHIP_COALITION_CHECKPOINT" hostile="false"/>
+	<choice hidden="true">
+		<text>Fight through.</text>
+		<event>
+			<text>You prepare to fight the checkpoint.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="cloaking" max_lvl="2">
+		<text>(Cloaking) Try to sneak past.</text>
+		<event load="COALITION_CHECKPOINT_CLOAK"/>
+	</choice>
+	<choice hidden="true" req="cloaking" lvl="3">
+		<text>(Adv. Cloaking) Try to sneak past.</text>
+		<event>
+			<text>The Coalition station stands no chance at detecting you with your superior cloaking. You slip past completely unnoticed.</text>
+		</event>
+	</choice>
+	<choice hidden="true" req="engines" lvl="3" max_lvl="4">
+		<text>(Upg. Engines) Try to sneak past.</text>
+		<event load="COALITION_CHECKPOINT_ENGINES"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="5">
+		<text>(Adv. Engines) Try to sneak past.</text>
+		<event>
+			<text>With the station completely immobile, you easily speed past them.</text>
+		</event>
+	</choice>
+</event>
+<eventList name="COALITION_CHECKPOINT_CLOAK">
+    <event>
+        <text>By some odds, the station does not detect you as you sneak past.</text>
+    </event>
+    <event>
+        <text>Whether it was because their scanners were too powerful, or their Slug crew detecting your presence doesn't matter, because the station has detected you and raises its weapons. You doubt cloaking will have any effect now that they know exactly where you are.</text>
+        <status type="limit" target="player" system="cloaking" amount="0"/>
+        <ship hostile="true"/>
+        <choice hidden="true">
+            <text>Continue...</text>
+            <event load="COMBAT_CHECK"/>
+        </choice>
+    </event>
+</eventList>
+<eventList name="COALITION_CHECKPOINT_ENGINES">
+	<event>
+		<text>There's no doubt the station noticed you, but you're long gone before they can do anything about it.</text>
+	</event>
+	<event>
+		<text>As you try to fly past, your engines immediately halt. They must be using a combat augment to limit your engines! Unable to escape now, you're forced to fight the station.</text>
+		<status type="limit" target="player" system="engines" amount="1"/>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+		<choice hidden="true" req="ANTI_VIRUS">
+			<text>(Anti-Virus) Restore your engines.</text>
+			<event>
+				<text>Your engine system is restored to full power.</text>
+				<status type="clear" target="player" system="engines" amount="100"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<event name="ENCOUNTER_MANTIS_COALITION" unique="true">
+	<text>An eager Mantis contacts you. "Yes! This is chance to prove myself! Your blood is path to leading glorious Coalition ship of own!"</text>
+	<ship load="SHIP_MANTIS_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_LEECH_COALITION" unique="true">
+	<text>A Leech revolutionary flies past. "Are you even aware of what the Coalition has done to Eargen space? The Federation has done nothing to prevent this chaos! Nothing! It's all YOUR fault! GAAAH! Like, specifically yours. Don't ask me why, just accept your responsibility and die!"</text>
+	<ship load="SHIP_ALKRAM_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--
+		ENVIRONMENT!!!
+	Events with unique environments
+-->
+<eventList name="HAZARD_COALITION">
+	<event load="COALITION_ASTEROID"/>
+	<event load="COALITION_PULSAR"/>
+</eventList>
+
+<event name="COALITION_ASTEROID" unique="true">
+	<environment type="asteroid"/>
+	<text>The nearby Coalition's Rock soldier appears on the vid-screen, noticeably upset. "Bro, why you in my rock patch? Bro, you don't know how hard it was to convince the Coalition to let me have this. Bro. Not cool."</text>
+	<ship load="SHIP_COALITION_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="COALITION_PULSAR" unique="true">
+	<environment type="pulsar"/>
+	<text>The Pulsar isn't the only obstacle this beacon has. A Coalition ship wastes no time to attack.</text>
+	<ship load="SHIP_COALITION_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--
+		NEUTRAL!!!
+	Events that can call a fight
+-->
+<eventList name="NEUTRAL_COALITION">
+	<event load="COALITION_CIVILIAN"/>
+
+	<event load="COALITION_JAILER"/>
+	<event load="COALITION_LOSTSUN_CHOICE"/>
+	<event load="COALITION_SLUG_PEACEFUL"/>
+	<event load="COALITION_CONSTRUCTION_YARD"/>
+	
+	<event load="ROCK_SLUG_ARGUMENT"/>
+	<event load="ASTEROID_EXPLORE"/>
+	<event load="REFUGEE_NO_DISTRESS"/>
+</eventList>
+
+<event name="COALITION_CIVILIAN">
+	<text load="TEXT_COALITION_CIVILIAN"/>
+	<ship load="SHIP_COALITION_CIVILIAN" hostile="false"/>
+	<choice hidden="true">
+		<text>Rescue the civilians!</text>
+		<event>
+			<text>You engage the Coalition ship.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="FLARE_DISTRACTION" hidden="true">
+		<text>(Flares) Use the flares to make a distraction so the Civilian ship can escape.</text>
+		<event>
+			<text>The Coalition ship notices the flares and redirects its weapons towards them. Even though it quickly realizes it's a trick, the Civilian ship has already flown far away.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="SAVE_CIVILIAN_LIST"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the civilians.</text>
+		<event>
+			<text>You quickly fly away. Soon, the signals coming from the civilians are replaced by the flash of an explosion from their ship.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<textList name="TEXT_COALITION_CIVILIAN">
+	<text>You are repeatedly hailed by a nearby civilian ship. You approach it carefully when a Coalition ship flies past, firing at the civilians!</text>
+	<text>You notice a Coalition ship assaulting a civilian transport. You receive simultaneous hails from both ships, a plea for help and a warning to stay away.</text>
+	<text>Coalition space is a dangerous place for any ship, so you are not surprised to see the unarmed civilian ship at this beacon under attack from a Coalition ship.</text>
+</textList>
+
+<event name="COALITION_JAILER" unique="true">
+	<text>You catch sight of a Coalition Jailer resting nearby. Knowing the Coalition, the ship's prisoners likely consist of mainly Federation officers.</text>
+	<ship load="SHIP_COALITION_JAILER" hostile="false"/> 
+	<choice hidden="true">
+		<text>Attack the Jailer.</text>
+		<event>
+			<text>You power up your weapons and engage the Coalition vessel.</text>
+			<ship hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="FIREARMS_AND_TELEPORT">
+		<text>(Armories + Teleporter) Storm the Jailer.</text>
+		<event>
+			<text>Your crew, armed to the teeth, board the Jailer and quickly take down the Coalition crew staffing it. With the jailers turned prisoners, you free everyone locked up who you don't think will kill you immediately.</text>
+			<crewMember amount="1" class="LIST_CREW_FEDERATION"/>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Ignore the Jailer.</text>
+		<event>
+			<text>You aren't in the mood to hole a jailbreak today. You distance yourself from the Jailer.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="COALITION_JAILER_DESTROY">
+	<text>The Jailer has been destroyed. While an excess of scrap remains, it's very unlikely and prisoners survived.</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+<event name="COALITION_JAILER_KILL">
+	<text>The crew of the Jailer has been emptied. You scrap the externals of the ship.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Check the prisoners.</text>
+		<event load="COALITION_JAILER_KILL_SLAVES"/>
+	</choice>
+</event>
+<eventList name="COALITION_JAILER_KILL_SLAVES">
+	<event>
+		<text>It appears the prisoners did not survive the fight. There's nothing left for you to do except leave.</text>
+	</event>
+	<event>
+		<text>It appears most of the prisoners died or were severely injured during the fight. One lone survivor stumbles out of his cell, and with some help is healthy enough to work aboard your ship.</text>
+		<crewMember amount="1" class="human_soldier"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event/>
+		</choice>
+		<choice hidden="true" req="clonebay" lvl="2">
+			<text>(Upg. Clone Bay) Try to save some of the prisoners.</text>
+			<event>
+				<text>You manage to get DNA samples from a few of the injured prisoners and enter them into the Clone Bay. After reviving them, they thank you and pay you with what little they managed to sneak with them.</text>
+				<autoReward level="MED">scrap_only</autoReward>
+			</event>
+		</choice>
+		<choice hidden="true" req="BLUELIST_DRONES_MEDICAL">
+			<text>(Medical Drone) Try to save some of the prisoners.</text>
+			<event>
+				<text>Your medical drone is deployed onto the scene, healing many of the other prisoners. After reviving them, they thank you and pay you with what little they managed to sneak with them.</text>
+				<autoReward level="MED">scrap_only</autoReward>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>Many of the prisoners appear to have survived. You'll free them all, but you can likely convince one of them to join your crew.</text>
+		<choice>
+			<text>Recruit a Human.</text>
+			<event>
+				<crewMember amount="1" class="human"/>
+			</event>
+		</choice>
+		<choice>
+			<text>Recruit an Engi.</text>
+			<event>
+				<crewMember amount="1" class="engi"/>
+			</event>
+		</choice>
+		<choice>
+			<text>Recruit a Zoltan.</text>
+			<event>
+				<crewMember amount="1" class="zoltan"/>
+			</event>
+		</choice>
+		<choice>
+			<text>We don't need any more crew.</text>
+			<event/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="COALITION_CONSTRUCTION_YARD" unique="true">
+	<text>A large Coalition construction yard has been established nearby. It doesn't seem to boast any particularly large ships, but there's a few ships still under construction scattered around.</text>
+	<choice hidden="true">
+		<text>Attempt to access the unconstructed ships.</text>
+		<event>
+			<text>As expected, the Coalition isn't going to just let you steal from them without a fight. One of their military vessels is deployed to stop you!</text>
+			<ship load="SHIP_COALITION_CONSTRUCTION" hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Attack the construction yard while pretending to be a Rebel.</text>
+		<event>
+			<text>You open fire on the construction yard, as the Coalition enforcers engage. You make it pretty clear you're a "Rebel", shouting xenophobic insults and plenty of hearty 'Glory to the Rebellion!'s. You're pretty sure the Coalition gets the message, and they probably won't be so welcoming to the Rebel fleet once it passes by either.</text>
+			<modifyPursuit amount="-2"/>
+			<ship load="SHIP_COALITION_FIGHT" hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="FLARE_DISTRACTION">
+		<text>(Flares) Launch the flares to distract the Coalition guards.</text>
+		<event load="COALITION_CONSTRUCTION_YARD_WIN"/>
+	</choice>
+	<choice hidden="true">	
+		<text>Ignore the shipyard.</text>
+		<event>
+			<text>Messing with a Coalition construction yard isn't on your agenda for the day, and frankly you'd rather it stay that way.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="COALITION_CONSTRUCTION_YARD_SCRAP">
+	<event>
+		<text>No one spots you as you scrap the ship. You finish up.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>As you start scrapping the ship, sirens flash and a crew of workers rush aboard the ship to defend against you!</text>
+		<autoReward level="LOW">scrap_only</autoReward>
+		<ship hostile="true"/> 
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="COALITION_CONSTRUCTION_YARD_WIN">
+	<event>
+		<text>You quickly move closer to the construction yard and pull apart some of the ships.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>You quickly move closer to the construction yard and pull apart some of the ships. Seems some of them were even outfitted with equipment pre-emptively!</text>
+		<autoReward level="LOW">item</autoReward>
+	</event>
+	<event>
+		<text>You quickly move closer to the construction yard and pull apart some of the ships. On one of them you even find a Leech engineer, who instead of raising the alarm begs to be taken with you to escape the 'insufferable work environment.'</text>
+		<autoReward level="LOW">stuff</autoReward>
+		<crewMember amount="1" class="leech" repair="2"/>
+	</event>
+</eventList>
+
+<event name="COALITION_LOSTSUN_CHOICE" unique="true">
+	<text>This beacon holds an unusual sight. A rare Lost Sun ship is dueling with a Coalition vessel. Neither seem to notice you.</text>
+	<choice hidden="true">
+		<text>Attack the Coalition.</text>
+		<event>
+			<text>You power up your weapons and engage the Coalition vessel.</text>
+			<ship load="SHIP_COALITION_COALITION_CHOICE" hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the Lost Sun.</text>
+		<event>
+			<text>You power up your weapons and engage the Lost Sun vessel.</text>
+			<ship load="SHIP_COALITION_LOSTSUN_CHOICE" hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="FEDERATION_DATABASE">
+		<text>[Federation Database] What do these two have against each other?</text>
+		<event>
+			<text id="database_lsversuscoal"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<restartEvent/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Ignore the two ships.</text>
+		<event>
+			<text>This is a fight you don't want to get involved in. You leave them to their fighting.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="COALITION_LOSTSUN_CHOICE_COALITION">
+	<text>The Coalition ship has been neutralized. You scrap what remains.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Contact the Lost Sun.</text>
+		<event>
+			<text>"While Admiral Obadann might be more occupied with the Theocracy, there was a promise made in our alliance. The Federation, while reluctantly, has held their end of the bargain, and so I intend to uphold ours. Perhaps my strength may be of further benefit aboard your vessel."</text>
+			<crewMember amount="1" class="rock_commando"/>
+		</event>
+	</choice>
+</event>
+<event name="COALITION_LOSTSUN_CHOICE_LOSTSUN">
+	<text>The Lost Sun ship has been neutralized. You scrap what remains.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>Contact the Coalition.</text>
+		<event>
+			<text>The Slug captain of the Coalition vessel responds. "The hell issss wrong with you? Aren't you sssuppossssed to be alliesss with them? The Federation really isss full of backssstabbing traitorouss sssscum! Heh. That'sss pretty rad. Here, take sssome crap or whatever."</text>
+			<autoReward level="RANDOM">item</autoReward>
+		</event>
+	</choice>
+</event>
+
+<event name="COALITION_SLUG_PEACEFUL" unique="true">
+	<text>This ship here may not be a Coalition ship, but it's still a Slug! However, they still haven't attacked. "What, ssssuprisssed we aren't itching to fight you? In casssse you didn't know, not every Sssslug likesss thievery and vengeanccce. We're just here to watch and ssspectate thingsss unfold."</text>
+	<ship load="SHIP_SLUG_FIGHT" hostile="false"/>
+	<choice hidden="true">
+		<text>Attack them!</text>
+		<event>
+			<text>"Great. We come here to esscape from the Kleptocracccy ssshithole and inssstead we run into an angry Fed pig in the middle of Coalition ssspaccce. What the hell, man."</text>
+			<ship hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Request to trade.</text>
+		<event load="COALITION_SLUG_PEACEFUL_TRADE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(Slug Crew) Request their flight maps.</text>
+		<event>
+			<text>"Sssure, a deal can be made... It would be cussstomary to charge for thessse, but I'll be niccce..."</text>
+			<reveal_map/>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Leave them be.</text>
+		<event>
+			<text>You ignore the peaceful Slug ship and do something on-board.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="COALITION_SLUG_PEACEFUL_TRADE">
+	<event>
+		<text>"An interesssting offer yesss, but we mussst decline. We wisssh to atleassst sstay neutral with the Coalition, and trading with a Federation sssship isss not a good way to achieve thisss."</text>
+		<choice hidden="true">
+			<text>Attack them!</text>
+			<event>
+				<text>"Great. We come here to esscape from the Kleptocracccy ssshithole and inssstead we run into an angry Fed pig in the middle of Coalition ssspaccce. What the hell, man."</text>
+				<ship hostile="true"/> 
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">	
+			<text>Leave them be.</text>
+			<event>
+				<text>You ignore the peaceful Slug ship and do something on-board.</text>
+				<choice hidden="true">
+					<text>Check the storage.</text>
+					<event load="STORAGE_CHECK"/>
+				</choice>
+				<choice hidden="true">
+					<text>Do nothing.</text>
+					<event/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>"Ah, well you've made an offer we can't refussse. If there wasss one ssssstereotype of Ssslugssss that alwaysss fitssssss, it'ss our love for trading."</text>
+		<store>STORE_SLUG</store>
+	</event>
+</eventList>
+
+<!--
+		DISTRESS!!!
+	
+-->
+<eventList name="DISTRESS_BEACON_COALITION">
+	<event load="DISTRESS_COALITION_FED"/>
+	<event load="DISTRESS_COALITION_TRAP_BEACON"/>
+	<event load="DISTRESS_COALITION_PIRATE_FEAR"/>
+	
+	<event load="DISTRESS_MANTIS_IDLE"/>
+	<event load="DISTRESS_AUTO_REPAIRS"/>
+</eventList>
+
+<event name="DISTRESS_COALITION_PIRATE_FEAR">
+	<text>This beacon has a very rare sight. The source of this distress beacon is coming from the pirate ship here! A hyperventilating pirate captain hails you. "Oh god, I'm so sick of this sector. You gotta help us man, no one should be subjected to this torment! I came here to blow up some Civilians and rob some colonies, not have my right hand man sliced in half by a Mantis and my engineer zapped to death by stinky worms!"</text>
+	<ship load="SHIP_PIRATE_ALL" hostile="false"/>
+	<distressBeacon/>
+	<choice hidden="true">
+		<text>Attack the pirates.</text>
+		<event>
+			<text>You have no sympathy for the pirates. You raise your weapons and attack.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Give them some supplies.</text>
+		<event>
+			<text>You hand over the supplies to the pirates.</text>
+			<item_modify>
+				<item type="fuel" min="-3" max="-3"/>
+				<item type="scrap" min="-20" max="-20"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>The pirates are shocked that you were willing to help them. They gift you a weapon that they "borrowed" from a previous victim.</text>
+					<weapon name="RANDOM"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We can't help.</text>
+		<event load="DISTRESS_COALITION_PIRATE_FEAR_IGNORE"/>
+	</choice>
+</event>
+<eventList name="DISTRESS_COALITION_PIRATE_FEAR_IGNORE">
+	<event>
+		<text>The pirate doesn't say anything as you end the call, and doesn't follow when you distance yourself from them.</text>
+		<choice hidden="true">
+			<text>Check the storage.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice hidden="true">
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
+	</event>
+	<event>
+		<text>The pirate stops crying for a moment to glare at you. "Well if you won't be charitable, we'll just take your ship and supplies ourselves!"</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="DISTRESS_COALITION_TRAP_BEACON">
+	<text>"I knew it would be a foolish Federation ship who stumbled into this trap!" Your life support immediately shuts off, suggesting the Coalition ship here is wielding a combat augment against you!</text>
+	<ship load="SHIP_COALITION_FIGHT" hostile="true"/>
+	<status type="limit" target="player" system="oxygen" amount="0"/>
+	<distressBeacon/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="ANTI_VIRUS">
+		<text>(Anti-Virus) Restore your oxygen.</text>
+		<event>
+			<text>Your Oxygen system is restored to full power.</text>
+			<status type="clear" target="player" system="oxygen" amount="100"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DISTRESS_COALITION_FED">
+	<text>The source of the distress beacon is a Federation ship, running away from its Coalition pursuer.</text>
+	<ship load="SHIP_COALITION_FEDERATION_DISTRESS" hostile="false"/>
+	<distressBeacon/>
+	<choice hidden="true">
+		<text>Rescue the Feds!</text>
+		<event>
+			<text>You engage the Coalition ship.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the two ships.</text>
+		<event>
+			<text>You fly away from the ships, trying not to think of the inevitable fate of the Federation ship.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="SAVE_FEDERATION_DISTRESS">   
+	<event>
+		<text>The ship you saved was badly damaged in the battle. Most of the crew accepts your offer to be dropped off at a nearby station. One offers to join your crew.</text>
+		<choice>
+			<text>Welcome aboard!</text>
+			<event>
+				<text>The survivor gets on board the ship.</text>
+				<crewMember amount="1"/>
+			</event>
+		</choice>
+		<choice>
+			<text>Decline their request.</text>
+			<event/>
+		</choice>
+	</event>
+	<event>
+		<text>Apparently the ship that was being assaulted was a transport vessel. They thank you for saving them and offer part of their cargo.</text>
+		<autoReward level="MED">item</autoReward>
+	</event> 
+	<event> 
+		<text>It seems the crew did not survive the assault. You take what you can from the remains of the ship.</text>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+	<event>
+		<text>They respond, "It's a good thing you came when you did; we'd be dead now otherwise. I'm a shipwright and I'd like to help you like you helped me."</text>
+		<choice>
+			<text>The captain offers to install a piece of equipment on your ship.</text>
+			<event>
+				<autoReward level="LOW">weapon</autoReward>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>"This sector has become increasingly dangerous for the Federation. I think my crew can patch up some of your hull damage as thanks."</text>
+		<damage amount="-5"/>
+	</event>
+</eventList>
+
+<!--
+		NEBULA!!!
+	Events that give items
+-->
+<eventList name="NEBULA_COALITION">
+	<event load="NEBULA"/>
+	
+	<event load="NEBULA_ENCOUNTER_COALITION"/>
+	<event load="NEBULA_ENCOUNTER_COALITION"/>
+	<event load="NEBULA_ENCOUNTER_COALITION"/>
+</eventList>
+
+<event name="NEBULA_ENCOUNTER_COALITION">
+	<text load="TEXT_NEBULA_ENCOUNTER_COALITION"/>
+	<ship load="SHIP_COALITION_FIGHT" hostile="true"/> 
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_NEBULA_ENCOUNTER_COALITION">
+	<text>The Coalition's alliance with the Slugs means many times their ships can be found crawling around nebulas. This is one such occasion.</text>
+	<text>It appears a Coalition ship is hiding in this nebula beacon. Upon spotting you they arm their weapons!</text>
+	<text>A Coalition ship exploring this nebula has found you and attacks!</text>
+</textList>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					COALITION STRONGHOLD
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+
+<!--
+		HOSTILE!!!
+	Events that can call a fight
+-->
+<eventList name="NEBULA_HOSTILE_COALITION">
+	<event load="NEBULA_ENCOUNTER_COALITION"/>
+	
+	<event load="NEBULA_COALITION_ABDUCTOR"/>
+	<event load="NEBULA_COALITION_CHECKPOINT"/>
+	
+	<!--<event load="NEBULA_BOARDERS_SLUG"/>
+	<event load="ENCOUNTER_ROGUE_NEBULA"/>
+	<event load="ENCOUNTER_REBEL_NEBULA"/>-->
+</eventList>
+
+<event name="NEBULA_COALITION_ABDUCTOR" unique="true">
+	<text>A Coalition Abductor is hiding in this beacon. They hail you ominously, "Choose your death, travelers. Betrayal by one of your crew, or destruction at our hands?"</text>
+	<ship load="SHIP_COALITION_ABDUCTOR" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Betrayal.</text>
+		<event>
+			<text>"An interesting choice. Enjoy!" One of your crew buckles over, completely mad. They charge you, turned hostile by the Abductor's mind control. The ship quickly slips away into the nebula.</text>
+			<crewMember amount="-1" class="traitor"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Destruction.</text>
+		<event>
+			<text>"So you wish to taste the bitter end at the end of our guns? What a great choice!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="weapons" lvl="6">
+		<text>(Upg. Weapons) Neither, dumbass.</text>
+		<event>
+			<text>"Ah yes yes, you are a skilled negotiator. Silly of me to think such tricks would work on you. Heheh..."</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="COMBAT_WARP_JAMMER">
+		<text>(Disruption Field) Neither, dumbass.</text>
+		<event>
+			<text>"Ah yes yes, you are a skilled negotiator. Silly of me to think such tricks would work on you. Heheh..."</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_COALITION_CHECKPOINT">
+	<text>A looping message plays over the stereo. "This beacon is a security checkpoint. Submit to processing. If you have nothing to hide, you have nothing to fear." You can hear a Rockman chuckling as the track ends. There's no way they'll let you pass as a Federation ship.</text>
+	<ship load="SHIP_COALITION_CHECKPOINT" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Fight through.</text>
+		<event>
+			<text>You prepare to fight the checkpoint.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="cloaking" max_lvl="2">
+		<text>(Cloaking) Try to sneak past.</text>
+		<event load="COALITION_CHECKPOINT_CLOAK"/>
+	</choice>
+	<choice hidden="true" req="cloaking" lvl="3">
+		<text>(Adv. Cloaking) Try to sneak past.</text>
+		<event>
+			<text>The Coalition station stands no chance at detecting you with your superior cloaking. You slip past completely unnoticed.</text>
+		</event>
+	</choice>
+	<choice hidden="true" req="engines" lvl="3" max_lvl="4">
+		<text>(Upg. Engines) Try to sneak past.</text>
+		<event load="COALITION_CHECKPOINT_ENGINES"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="5">
+		<text>(Adv. Engines) Try to sneak past.</text>
+		<event>
+			<text>With the station completely immobile, you easily speed past them.</text>
+		</event>
+	</choice>
+</event>
+
+<!--
+		NEUTRAL!!!
+	Events that can call a fight
+-->
+<eventList name="NEBULA_NEUTRAL_COALITION">
+	<event load="NEBULA_COALITION_CIVILIAN"/>
+
+	<event load="NEBULA_COALITION_SQUABBLING"/>
+	<event load="NEBULA_COALITION_COOL_SLUG"/>
+	<event load="NEBULA_COALITION_SUZERAIN_CHOICE"/>
+	<event load="NEBULA_COALITION_HARVESTING"/>
+	
+	<event load="NEBULA_LOST_SHIP"/>
+	<event load="NEBULA_ROCK_RACIST"/>
+	<event load="NEBULA_MANTIS_CHOICE"/>
+</eventList>
+
+<event name="NEBULA_COALITION_CIVILIAN">
+	<text load="TEXT_COALITION_CIVILIAN"/>
+	<ship load="SHIP_COALITION_CIVILIAN" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Rescue the civilians!</text>
+		<event>
+			<text>You engage the Coalition ship.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the civilians.</text>
+		<event>
+			<text>You quickly fly away. Soon, the signals coming from the civilians are replaced by the flash of an explosion from their ship.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<textList name="TEXT_COALITION_CIVILIAN">
+	<text>You are repeatedly hailed by a nearby civilian ship. You approach it carefully when a Coalition ship flies past, firing at the civilians!</text>
+	<text>You notice a Coalition ship assaulting a civilian transport. You receive simultaneous hails from both ships, a plea for help and a warning to stay away.</text>
+	<text>Coalition space is a dangerous place for any ship, so you are not surprised to see the unarmed civilian ship at this beacon under attack from a Coalition ship.</text>
+</textList>
+
+<event name="NEBULA_COALITION_SUZERAIN_CHOICE" hidden="true">
+	<text>A Suzerain ship is patrolling this nebula. You catch some chatter between their crew. "You know, I prefer this place before nebula." "Yes, agree. Nebulas annoying. How long till Slug bits are attach to ship and we see again?"</text>
+	<ship load="SHIP_SUZERAIN_FIGHT" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Attack them!</text>
+		<event>
+			<text>You raise your weapons and attack the suzerain ship.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the Suzerains.</text>
+		<event>
+			<text>The Suzerain ship doesn't notice you as you fly away.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_COALITION_SQUABBLING" unique="true">
+	<text>You catch a conversation between the crew of the nearby elite Coalition ship. "Told you idiot, this place bad idea go to!" "Oh ssssshut up, there'sssss nothing wrong with nebulasssss!" "The weapons need calibrating! BAH! Quit all of your whining and someone come help me." "You guys argue more than pops and his three girlfriends! I can't believe this is worse than back home..."</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Tune in: Nebulas are great for hiding.</text>
+		<event>
+			<text>The Slug chuckles. "Hah, thessse guyssss get it! You guysss sssssuck, I'm chilling with the Fedsss now! Later lossssers."</text>
+			<ship load="SHIP_COALITION_SQUABBLING_NOSLUG" hostile="true"/>
+			<crewMember amount="1" class="slug_saboteur">Irsssnar</crewMember>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Tune in: Nebulas are horribly annoying.</text>
+		<event>
+			<text>The Mantis roars in triumph. "Yes! Someone understand me! I feel so validated! I prove loyalty to new friends by killing old sucky friends!"</text>
+			<ship load="SHIP_COALITION_SQUABBLING_NOMANTIS" hostile="true"/>
+			<crewMember amount="1" class="mantis_suzerain">Kackalacknak</crewMember>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Tune in: Sounds like a pointless argument that could be solved with lots of guns.</text>
+		<event>
+			<text>The Rockman bellows in laughter. "Hahahahahah! I could not agree more. All these idiots want is stealth this, stealth that, but they won't let me just install 30 missile launchers on this thing and blast everyone to oblivion! Maybe you guys will let me pursue my dreams!"</text>
+			<ship load="SHIP_COALITION_SQUABBLING_NOROCK" hostile="true"/>
+			<crewMember amount="1" class="rock_crusader">Ockraban</crewMember>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Tune in: For a supposedly mighty military force, you all seem awfully uncoordinated.</text>
+		<event>
+			<text>The Leech snickers. "Yeah, what the Federation ship said! You guys are no fun, you get your kicks from blowing up civvies! Take that stick out of your assholes and go roll in some mud or something. I'm outta here!"</text>
+			<ship load="SHIP_COALITION_SQUABBLING_NOLEECH" hostile="true"/>
+			<crewMember amount="1" class="leech_ampere">Carlos</crewMember>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>You distance yourself from the arguing Coalition ship.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_COALITION_COOL_SLUG" unique="true">
+    <text>"Ssssup." You jump and turn around to see a Slug wearing sunglasses "sitting" in a folding chair.</text>
+    <environment type="nebula"/>
+    <choice hidden="true">
+        <text>Uh, hello?</text>
+        <event load="NEBULA_COALITION_COOL_SLUG_HELLO"/>
+    </choice>
+    <choice hidden="true">
+        <text>Attack before he can!</text>
+        <event load="NEBULA_COALITION_COOL_SLUG_ATTACK"/>
+    </choice>
+</event>
+<eventList name="NEBULA_COALITION_COOL_SLUG_HELLO">
+	<event>
+		<text>"Wanna know sssomething cool? Thisss was all a dissstraction!" A Coalition ship uncloaks, and the Slug draws his blaster!</text>
+		<ship load="SHIP_COALITION_FIGHT" hostile="true"/>
+		<boarders min="1" max="1" class="slug_saboteur"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>"You got an extra sssspacce on your crew? I kinda got booted out of my lassst ssship after I fell assssleep while repairing the life support and asssphyxiated the rest of the crew."</text>
+		<choice hidden="true">
+			<text>Sure, welcome aboard.</text>
+			<event>
+				<text>"Ssssweeeet man. You're doing me a real favor here."</text>
+				<crewMember amount="1" class="slug_saboteur">Orssin</crewMember>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>No can do.</text>
+			<event>
+				<text>"Laaame. Ssssee you never losssers." He beams away, though you have no idea how.</text>
+			</event>
+		</choice>
+	</event>
+</eventList>
+<eventList name="NEBULA_COALITION_COOL_SLUG_ATTACK">
+	<event>
+		<text>"Hey man! Not cool. I wassss jussst asking for sssome help and you gotta do me this way?"</text>
+		<boarders min="1" max="1" class="slug_saboteur"/>
+	</event>
+	<event>
+		<text>"Ah crap, they found me out!" The saboteur teleports away and a Coalition ship uncloaks, weapons ready!</text>
+		<ship load="SHIP_COALITION_FIGHT" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="NEBULA_COALITION_HARVESTING" unique="true">
+	<text>While the Coalition ship at this beacon is no surprise, the fact that it is trying to harvest the nebula gasses is! You've never seen a ship try to do this before, but maybe you can steal some from them?</text>
+	<ship load="SHIP_COALITION_NEBULA_HARVEST" hostile="false"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Attack!</text>
+		<event>
+			<text>You engage the Coalition ship.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>You watch the curious process a little longer before moving deeper into the nebula to hide.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DESTROYED_COALITION_NEBULA_HARVEST">
+	<event>
+		<text>While plenty of salvage is left for you to collect, little remains of the gasses they were collecting, now released back into the nebula around you.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>While salvaging the wreckage, you find a few canisters of the gasses, which you bring aboard. You can probably sell this at a store for a lot of scrap.</text>
+		<autoReward level="MED">standard</autoReward>
+		<augment name="NEBULA_GASSES"/>
+	</event>
+</eventList>
+<event name="DEAD_CREW_COALITION_NEBULA_HARVEST">
+	<text>After salvaging the externals of the ship, you find several tubes of the gas scattered around the inside, which you collect. You can probably sell these at a store for a lot of scrap.</text>
+	<autoReward level="MED">standard</autoReward>
+	<augment name="NEBULA_GASSES"/>
+</event>
+
+<!--
+		COALITION UNLOCK!!!!!
+		COALITION UNLOCK!!!!!
+		COALITION UNLOCK!!!!!
+-->
+<event name="NEBULA_KAZ_START" unique="true">
+	<preventQuest/>
+	<distressBeacon/>
+	<text>The distress beacon is what brought you here, but this isn't an ordinary scene in front of you. A Slug town, seemingly once under Coalition occupation, has been completely wasted. An ominous scent of rotting bodies drifts through the stale and smokey air. Whatever or whoever did this did it quite clearly out of spite. The Coalition is no friend of yours either, but who would do this?</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Investigate.</text>
+		<event>
+			<text>At first you assume the red smears on the wall are blood, but the Slug inhabitants of this colony would only have bled green. Settling that it's paint, you notice the marking of a claw and a cutlass, painted large and boastfully on the side of the town-hall, which is now less of a hall and more a single wall and some rubble. It's strangely familiar, but you can't remember where you've seen it...</text>
+			<choice hidden="true">
+				<text>Keep looking.</text>
+				<event>
+					<text>You continue to look through the wastes, until you come across a lone survivor. A young Slug, missing one of his eyestalks, is elated to see you. Or at least, as elated as the sole survivor of a genocidal rampage could be. "You- you have to help. The Mantissss, they did thisss... a pirate, but with the banner of the Hive. Pleassse, don't leave me here..."</text>
+					<choice hidden="true">
+						<text>Take the Slug with you and follow the pirate.</text>
+						<event>
+							<text>With the coordinates marked on your map, you help the Slug onto your ship and get ready to search for the culprit of this attack.</text>
+							<crewMember amount="1" class="slug"/>
+							<quest event="KAZ_QUEST"/>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Leave the Slug and this mystery.</text>
+						<event>
+							<text>You help the Slug stand up, but apologize and explain you cannot hang around. At the very least, you can offer solace that the chances of the pirate returning are minimal.</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>It's not important.</text>
+		<event>
+			<text>Searching for the culprit of this massacre will only put you closer to danger. The only safe course of action is to stay clear of this place.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="KAZ_QUEST" unique="true">
+	<beaconType id="map_icon_pirate" global="true">
+		<color r="220" g="35" b="32" a="1.0"/>
+		<unvisitedTooltip>Location of the genocidal pirate.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+	</beaconType>
+	<preventQuest/>
+	<preventFleet/>
+	<quest>
+		<nebulaBeacon>true</nebulaBeacon>
+		<createNebula>true</createNebula>
+		<nextSector>true</nextSector>
+		<aggressive>2</aggressive>
+	</quest>
+	<text>Looks like you've found the right location, because the ship in front of you is most certainly a pirate. Just... a very well equipped one.</text>
+	<ship load="SHIP_KAZAAAK" hostile="false"/>
+	<choice hidden="true">
+		<text>Hail the ship.</text>
+		<event load="KAZ_HAIL"/>
+	</choice>
+	<choice hidden="true">
+		<text>We do not want to mess with this ship.</text>
+		<event>
+			<text>Messing with the culprit of this massacre will only put you closer to danger. The only safe course of action is to stay clear of this encounter.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_KAZAAAK" auto_blueprint="MU_KAZAAAK">
+	<triggeredEvent event="KAZ_SURRENDER" enemyCrew="2" thisFight="true" clearOnJump="true"/>
+	<escape timer="50" min="6" max="7">
+		<text>"Madness, madness! My legacy does not end here, dying to a Fed with no honor. You are not taking my life today, captain!"</text>
+	</escape>
+	<gotaway>
+		<text>Kazaaak jumps away, a rare display of cowardice by a Mantis, but apparently you were so unworthy he did not even consider you worthy enough an opponent to die to.</text>
+	</gotaway>
+	<destroyed>
+		<text>The once proud and esteemed Mantis warrior has fallen. And for what? His message was not a lie, but without him to tell it, no one else will.</text>
+		<autoReward level="MED">standard</autoReward>
+	</destroyed>
+	<deadCrew>
+		<text>The once proud and esteemed Mantis warrior has fallen. And for what? His message was not a lie, but without him to tell it, no one else will.</text>
+		<autoReward level="MED">standard</autoReward>
+	</deadCrew>
+</ship>
+<event name="KAZ_HAIL">
+	<text>As soon as the Mantis appears on the screen, the memories come flooding back. This is no ordinary pirate, this is Kazaaakplethkilik. Perhaps the most infamous warrior in the galaxy, if not the Multiverse. The only question is, why is Kazaaakplethkilik here so deep in Coalition space? It seems you're about to find out...</text>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>A muscular Mantis in red armor flexes his sharp appendages in front of the camera. "You are not of Coalition, but you carry boldness to approach me. It would seem neither of us meant to be here... What is Federation ship doing in Coalition space? It has been longest time since I have drawn arms against your people."</text>
+			<choice hidden="true">
+				<text>We could ask the same about you.</text>
+				<event>
+					<text>"Clever words, but you should know it is foolish not to answer question of Mantis captain. I am here doing what YOU could not. Prized though dear Leikonpliiinakra is to me, she has made grave mistake in forming this 'Coalition'. It is dishonorable, and I can see that it not meant to last. Federation sees it too, but they will not act. They would rather allow Coalition to collapse on itself than take action. You use precious bureaucracy as a shield of responsibility rather than taking action to prevent galactic-scale destruction!"</text>
+					<choice hidden="true">
+						<text>So to solve this you're massacring entire towns?</text>
+						<event>
+							<text>"I taking action where no one else would! All filth who live in these lands are far from innocent. They allow Coalition to exist, and so they are no better than the Federation or the Coalition. You are pointing finger but I do not see you taking action. You know not honor. I will show you what warrior of virtues fights like!" It's not impossible you could convince him to stand down, but that means you'll have to fight him like a 'warrior of virtue'. Try not to damage his hull too much, and neutralize enough of his crew that he surrenders.</text>
+							<boarders min="2" max="2" class="mantis"/>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Don't antagonize him further - leave.</text>
+						<event>
+							<text>"Yes, yes. Leave like the cowards you all are. You know what I say is true, and you have not even heart to refute it. I spit in faces of men and women like you."</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="FEDERATION_DATABASE">
+		<text>[Federation Database] Who is Kazaaakplethkilik?</text>
+		<event>
+			<text id="database_kazaaak"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<restartEvent/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="KAZ_SURRENDER">
+	<text>The crew of the mighty warrior Kazaaakplethkilik has been reduced to a sliver of its former size. The wounded warrior still continues to fight on, but you can tell his heart isn't in it anymore. Perhaps this is the time to show him your honor.</text>
+	<choice hidden="true">
+		<text>Spare Kazaaak.</text>
+		<event>
+			<text>"You... you letting me live? I... I do not understand. Is this some Federation trick? You have chance to strike me down, avenge men and women I killed during the war, yet you would let me live?"</text>
+			<surrender/>
+			<ship hostile="false"/>
+			<choice hidden="true">
+				<text>The Federation-Mantis War was in the past. Neither side was free from blame.</text>
+				<event>
+					<text>"Oh do not giving me history lesson. I live through it, I know how things go. Still, so you spare old Mantis. What of Coalition?"</text>
+					<choice hidden="true">
+						<text>The Coalition is a problem, but the Rebellion is a bigger threat.</text>
+						<event>
+							<text>"Hmmm, Rebellion. You know, I fight Vance once, long ago. Much slimmer then, but human not fare well after months of concentration camps. Perhaps... perhaps you are right. The Hive and I's approach, while more direct, could be to blame for this Rebellion. Perhaps if we had been more patient and trusting of humanity, Vance never would have turned to genocide."</text>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event>
+									<text>"You have teaching me, Federation captain. Or at least, I think. Perhaps I have lessons yet to learn, as I'm sure you do as well. But now that my crew has been slaughtered and I am without purpose, maybe it's time I repent for my mistakes. I have no need for this ship of mine any longer. Perhaps it will service you better."</text>
+									<variable name="ach_boss_kazaaak" op="set" val="1"/>
+									<variable name="ach_crew_kazaaak" op="set" val="1"/>
+									<autoReward level="HIGH">standard</autoReward>
+									<unlockCustomShip silent="false">PLAYER_SHIP_HIVE</unlockCustomShip>
+									<crewMember amount="1" all_skills="2" class="unique_kaz">Kazaaakplethkilik</crewMember>
+									<choice hidden="true" req="loc_beentohive" lvl="0" max_group="0" blue="false">
+										<text>Continue...</text>
+										<event>
+											<text>"Asking one more favor of you, captain, if you are not minding. I wish to return to Hive, speak with queen. I am giving you coordinates now, in case we are not finding it on journeys."</text>
+											<variable name="coords_hive" op="set" val="1"/>
+										</event>
+									</choice>
+									<choice hidden="true" req="loc_beentohive" lvl="1" max_group="0" blue="false">
+										<text>Continue...</text>
+										<event/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Finish him off.</text>
+		<event/>
+	</choice>
+</event>
+
+<!--
+		COALITION UNLOCK!!!!!
+		COALITION UNLOCK!!!!!
+		COALITION UNLOCK!!!!!
+-->
+<ship name="SHIP_COALITION_CEALAFORMER_1" auto_blueprint="MU_COALITION_CEALAFORMER">
+	<escape timer="2" min="20" max="20"/>
+	<gotaway load="NEBULA_COALITIONHOLD_CEALAFORMER_2"/>
+	<destroyed load="NEBULA_COALITIONHOLD_CEALAFORMER_FASTKILL"/>
+	<deadCrew load="NEBULA_COALITIONHOLD_CEALAFORMER_FASTKILL"/>
+</ship>
+<event name="NEBULA_COALITIONHOLD_CEALAFORMER_1" unique="true">
+	<preventQuest/>
+	<text>The nebula at this beacon is very thick. Too thick, in fact. You can just barely make out part of a ship slipping through the nebula. You're being followed.</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Face your pursuer.</text>
+		<event>
+			<text>The ship that comes out of the nebula is no ship you've ever seen or heard of before. Despite being armed as well as any other military ship, as soon as it spots you the ship hastily moves to escape!</text>
+			<ship load="SHIP_COALITION_CEALAFORMER_1" hostile="true"/>
+			<instantEscape/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Get out of here, fast.</text>
+		<event/>
+	</choice>
+</event>
+<event name="NEBULA_COALITIONHOLD_CEALAFORMER_FASTKILL">
+	<text>I see you are cheating. I hope you're proud of yourself.</text>
+</event>
+<event name="NEBULA_COALITIONHOLD_CEALAFORMER_2">
+	<text>The ship's speedy retreat has left you very confused.</text>
+	<choice hidden="true" req="sensors" lvl="2">
+		<text>(Upg. Sensors) Lock onto their jump signature and follow them.</text>
+		<event>
+			<text>Luckily, you're able to pick up their jump signature. You enter their new co-ordinates into your database.</text>
+			<quest event="COALITIONHOLD_CEALAFORMER_3"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(Slug Crew) Have your Slug track their ship.</text>
+		<event>
+			<text>Luckily, your Slug is able to detect their jump signature. You enter their new co-ordinates into your database.</text>
+			<quest event="COALITIONHOLD_CEALAFORMER_3"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="ADV_SCANNERS">
+		<text>(Long-Ranged Scanners) Track their ship.</text>
+		<event>
+			<text>Luckily, you're able to pick up their jump signature. You enter their new co-ordinates into your database.</text>
+			<quest event="COALITIONHOLD_CEALAFORMER_3"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="FTL_JUMPER">
+		<text>(Adv. Navigation) Track their ship.</text>
+		<event>
+			<text>Luckily, you're able to pick up their jump signature. You enter their new co-ordinates into your database.</text>
+			<quest event="COALITIONHOLD_CEALAFORMER_3"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="INFO_MACHINE">
+		<text>(Analyzer) Track their ship.</text>
+		<event>
+			<text>You grab the beacon's logs and determine the direction in which the ship is heading. You enter their new co-ordinates into your database.</text>
+			<quest event="COALITIONHOLD_CEALAFORMER_3"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Move on.</text>
+		<event>
+			<text>You're sure there was something significant about this encounter, but it's too late now.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_COALITION_CEALAFORMER_2" auto_blueprint="MU_COALITION_CEALAFORMER">
+	<destroyed>
+		<text>The Cealaformer has been eliminated. You scrap the remains.</text>
+		<variable name="ach_boss_cealaformer" op="set" val="1"/> 
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>Investigate the spire.</text>
+			<event load="COALITIONHOLD_CEALAFORMER_4"/>    
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>The Cealaformer has been eliminated. You scrap the remains.</text>
+		<variable name="ach_boss_cealaformer" op="set" val="1"/>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>Investigate the spire.</text>
+			<event load="COALITIONHOLD_CEALAFORMER_4"/>    
+		</choice>
+	</deadCrew>
+</ship>
+<event name="COALITIONHOLD_CEALAFORMER_3">
+	<beaconType id="map_icon_coalition" global="true">
+		<color r="20" g="70" b="125" a="1.0"/>
+		<unvisitedTooltip>Location of the strange vessel.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+	</beaconType>
+	<preventFleet/>
+	<quest>
+		<nebulaBeacon>true</nebulaBeacon>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
+	<text>You've tracked down the strange ship - but your destination isn't quite what you expected. In the middle of an ion storm you find a rogue planet submerged entirely in darkness except for a glowing spire and fields of tesla coils drawing power from the storm. A warning appears on your screen; "Warning: you are approaching a restricted zone. Only authorized Coalition personnel may enter."</text>
+	<img back="BACK_EVENT_COALBASE" planet="NONE"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<choice hidden="true">
+		<text>Ignore the warning and approach.</text>
+		<event>
+			<text>As you move closer to the spire, you're stopped by an approaching ship - the same as you saw earlier! Now that you have time to scan it properly, it seems it's using tech similar to the cealaforming stations deployed by the Kleptocracy - except mobile! This must be where the artificial nebulas in this sector came from! To figure out the mystery behind the giant structure in the distance you'll have to destroy this ship first.</text>
+			<ship load="SHIP_COALITION_CEALAFORMER_2" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave.</text>
+		<event>
+			<text>This must be some kind of secret Coalition facility - far too risky to even consider approaching armed the way you are.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="COALITIONHOLD_CEALAFORMER_4">
+	<text>It seems most of the lower levels of the structure were already evacuated... or maybe never even populated at all. The whole place is strangely empty.</text>
+	<choice hidden="true">
+		<text>Keep exploring.</text>
+		<event>
+			<text>You push forward, exploring empty hallway after empty hallway, barren room after barren room. Laboratories filled with shelves that are empty, even hangars with nothing but a few scattered trollies. There's no signs of a struggle nor any bodies, so you can only make one assumption. This place was built in preparation of something, some plan that hasn't yet come to fruition. But what could it be?</text>
+			<choice hidden="true">
+				<text>There must be something here - keep looking!</text>
+				<event>
+					<text>You do another once-over of the facility, searching for any clues. It takes some time, but eventually you come across a secret compartment that leads deeper underground. The security systems look unfinished, so the Coalition must have been relying on the secrecy of this location as protection for the time being.</text>
+					<modifyPursuit amount="1"/>
+					<choice hidden="true">
+						<text>Look inside.</text>
+						<event>
+							<text>The secret room reveals itself to be some kind of meeting room. 4 ornate chairs face encircle a large holotable - one for the leader of all 4 factions within the Coalition. A door behind the table leads into a huge cathedral-like space. There's so many things to look through, but first you head over to the most obvious. An unfinished frame and blueprints for a prototype Coalition cruiser - something to compete with the Federation and Rebellion's own advanced warships. You make scans of the blueprints then set fire to them. This should set the Coalition back a bit, though they probably have copies.</text>
+							<unlockCustomShip silent="false">PLAYER_SHIP_COALITION</unlockCustomShip>
+							<choice hidden="true">
+								<text>Take a look at the rest of the room.</text>
+								<event>
+									<text>The rest of the room is filled with ruins of some ancient technology made from Aether, similar to that of the vessel the first Multiverse drive was reverse engineered from. On the table are papers with partial translations of the alien hieroglyphics, detailing strange and worrying descriptions of "doomsday bombs", "reality altering monoliths", and a drawing of a cubical robot with a single eye. You heard the Coalition recovered some precursor tech during the Aquarian invasions, but you had no idea their research was this in-depth. You don't have time to bring all of this back to the ship, but you grab one of the seemingly functional weapons to bring with you.</text>
+									<autoReward level="MED">stuff</autoReward>
+									<weapon name="ANCIENT_MISSILES"/>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Leave with the scans.</text>
+								<event>
+									<text>You don't have time to keep digging through everything in this facility. You've already found vital information to assist the Federation - that's good enough.</text>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>We can only hope that, whatever it is, it never comes to be.</text>
+				<event>
+					<text>Assuming you live, you'll have to bring this up to your superiors at the Federation. For now though, you must carry on with your mission.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>

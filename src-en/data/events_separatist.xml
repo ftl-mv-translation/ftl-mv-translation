@@ -1,0 +1,1106 @@
+<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					SEPERATIST SECTOR 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+
+<event name="HARMONY_LINK_SEP" unique="true">
+	<preventQuest/>
+	<beaconType id="map_icon_link" global="false">
+		<color r="137" g="142" b="148" a="1.0"/>
+		<unvisitedTooltip>This is the location of a Harmony Link.</unvisitedTooltip>
+		<visitedTooltip>This is the location of a Harmony Link.</visitedTooltip>
+	</beaconType>
+	<text>It appears you've discovered a Harmony Link. These massive planet-sized structures are made up of trillions of nanobots, and transmit a strong signal to all of the Engi in the sector. However, it appears this one is no longer functional, likely sabotaged by the Separatists when they took control of this sector.</text>
+	<img back="BACK_EVENT_HARMONYLINK" planet="NONE"/>
+	<choice hidden="true" lvl="1" req="HARMONY_LINK_CHECK" max_group="1" blue="false">
+		<text>Continue...</text>
+		<event load="HARMONY_LINK_SEP_EVENTS"/>
+	</choice>
+	<choice hidden="true" lvl="0" req="HARMONY_LINK_CHECK" max_group="1" blue="false">
+		<text>Continue...</text>
+		<event load="HARMONY_LINK_EVENTS_SEP_NOANCIENT"/>
+	</choice>
+</event>
+
+<eventList name="HARMONY_LINK_SEP_EVENTS">
+	<event load="HARMONY_LINK_FIGHTMANTIS"/>
+	<event load="HARMONY_LINK_SEPARATIST"/>
+	
+	<event load="HARMONY_LINK_ANCIENT"/>
+</eventList>
+<eventList name="HARMONY_LINK_EVENTS_SEP_NOANCIENT"> <!--the player has already found the ancients, and as such it will not spawn again-->
+	<event load="HARMONY_LINK_SEPARATIST"/>
+	<event load="HARMONY_LINK_FIGHTMANTIS"/>
+</eventList>
+
+<event name="HARMONY_LINK_SEPARATIST">
+	<text>A Separatist vessel is analyzing the Harmony link. They either don't notice you or couldn't care less about your presence.</text>
+	<ship load="SHIP_SEPERATIST_FIGHT" hostile="false"/>
+	<choice hidden="true">
+		<text>Hail them.</text>
+		<event>
+			<text>"Yes, we -see- you, Federation. If you wish to be useful, perhaps you could lend us some explosives. We are attempting the [demolition] of the Harmony links."</text>
+			<choice>
+				<text>Give them 5 missiles.</text>
+				<event>
+					<text>You transfer over the missiles to the Separatists.</text>
+					<item_modify>
+						<item type="missiles" min="-5" max="-5"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>"Wow. This is quite -unhelpful-. We cannot even use these. I suppose this is worth about, 5 scrap."</text>
+							<item_modify>
+								<item type="scrap" min="5" max="5"/>
+							</item_modify>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>Give them 15 missiles.</text>
+				<event>
+					<text>You transfer over the missiles to the Separatists.</text>
+					<item_modify>
+						<item type="missiles" min="-15" max="-15"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>The Separatists load the missiles, then fire them directly into the Harmony link. It shatters the exterior, sending nanobots flying, only for them to reform again without any noticeable damage. "Well, at least now we [know]. Accept this payment."</text>
+							<autoReward level="LOW">standard</autoReward>
+							<drone name="RANDOM"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>Decline.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Take advantage of this situation and attack!</text>
+		<event>
+			<text>The Separatists speak no words, but evidently won't go down without a fight!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the Engi.</text>
+		<event>
+			<text>If they're no threat to you, then you'll be no threat to them.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		ITEMS!!!
+	Events that give items
+-->
+<eventList name="ITEMS_SEPERATIST">
+	<event load="SEPERATIST_BODY_SCAN"/>
+	<event load="SEPERATIST_WORTHLESS_JUNK"/>
+	<event load="SEPERATIST_FREE_CREW"/>
+	<event load="SEPERATIST_TRAP_SCAN"/>
+	
+	<event load="ENGI_GIFT"/>
+	<event load="ENGI_FLEET_DELAY"/>
+</eventList>
+
+<event name="SEPERATIST_WORTHLESS_JUNK" unique="true">
+	<text>You catch the two Separatists on the nearby ship squabbling over something about an augment. You hail them. "Yes, greetings. We have obtained object. Object's purpose is unknown, and our desire to keep it is 0. Please take this [worthless junk] off of our hands."</text>
+	<augment name="RANDOM"/>
+</event>
+
+<event name="SEPERATIST_ICECREAM" unique="true">
+    <text>A small Separatist vendor nearby is advertising to passing ships some kind of miracle concoction it claims can solve anyone's problems. Sounds incredulous, but would it hurt to check it out?</text>
+    <choice hidden="true">
+        <text>Investigate the vendor.</text>
+        <event>
+			<text>"Welcome, welcome, [valued] customer! Might I interest you in the -exotic-, delightful, and positively splenerific taste of F.D.P.T.W.T.F.M.C.E.? You won't regret it!"</text>
+			<choice hidden="true">
+				<text>What?</text>
+				<event>
+					<text>"Have you never heard of [Frozen Dairy Product Topped With Terran Fruit and Melted Coco Extract]? I am told it is -all- the rage in the Union. I recommend a purchase. It will make your crew happier."</text>
+					<choice hidden="true">
+						<text>Buy the F.D.P.T.W.T.F.M.C.E.</text>
+						<event>
+							<text>"Thank you for your [purchase] Renegade! I hope to have more flavors in the -future-!"</text>
+							
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>That sounds like it'll kill us. No thanks.</text>
+				<event>
+					<text>The Separatist frowns but says nothing more. You brush past them and move on.</text>
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice hidden="true">
+        <text>Ignore the Engi.</text>
+        <event>
+            <text>Their promises are clearly fabricated. You don't have time to waste on dissapointing yourself, better to get a move on.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="SEPERATIST_TRAP_SCAN" unique="true">
+    <text>A neighboring Separatist ship hails you soon after you jump in. "You are in [luck] captain of Federation vessel. I am in possession of an expansive data suite, including a map of this sector. Would you like to download?"</text>
+    <choice hidden="true">
+        <text>Download the data.</text>
+        <event load="SEPERATIST_TRAP_SCAN_ACCEPT"/>
+    </choice>
+    <choice hidden="true">
+        <text>No thanks.</text>
+        <event>
+            <text>"I see you have no interest in taking avantage of great [opportunities]".</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="SEPERATIST_TRAP_SCAN_ACCEPT">
+    <event>
+        <text>You begin the transfer of the information. You watch as the data loads. Most of it is random junk, such as a recipe for fish shaped ethyl benzene cake and an article on the importance of honesty. At last, you see the map data downloading. You thank the Separatist, who nods, and jumps away once the transfer is complete.</text>
+        <reveal_map/>
+    </event>
+    <event>
+        <text>You begin the transfer of the information. You watch as the data loads. Most of it is random junk, such as a recipe for fish shaped ethyl benzene cake and an article on the importance of honesty. However before the map data begins to download, an error occurs, and your computer shuts down. You wait but it stays offline, and you realize you've been tricked! The Separatist ship raises its weapons and moves in to attack!</text>
+        <ship load="SHIP_SEPERATIST_SCAN" hostile="true"/> 
+        <choice hidden="true">
+            <text>Continue...</text>
+            <event load="COMBAT_CHECK"/>
+        </choice>
+    </event>
+</eventList>
+
+<event name="SEPERATIST_FREE_CREW" unique="true">
+	<text>A Separatist hails you, first speaking in binary before eventually switching over to English. "Federation. Federation. Please ignore my damaged speech processor processorsor. I have very recently recently broken free from the [Harmony], and wish to serve on a Federation vessel vessel. Will you accept accept me?"</text>
+	<choice hidden="true">
+		<text>Welcome aboard!</text>
+		<event>
+			<text>"Oh, Thank thank you captain!"</text>
+			<crewMember amount="1" class="engi_separatist">L-4673</crewMember>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We don't need more crew.</text>
+		<event>
+			<text>"Oh... I understand understand. Best of luck with your mission mission."</text>
+		</event>
+	</choice>
+</event>
+
+<event name="SEPERATIST_BODY_SCAN" unique="true">
+	<text>Though no ship is located at this beacon, a single Separatist Engi beams onto the bridge of your ship. He wastes no time to ask if he may scan your body, wishing to shape his form in the shape of yours.</text>
+	<choice hidden="true">
+		<text>Allow him.</text>
+		<event load="SEPERATIST_BODY_SCAN_ALLOW"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SOLDIER">
+		<text>(Elite Human) Entice him with your Elite Human.</text>
+		<event load="SEPERATIST_BODY_SCAN_SOLDIER"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SUZERAIN">
+        <text>(Hive Elite) Entice him with your Elite Mantis.</text>
+        <event load="SEPERATIST_BODY_SCAN_SUZERAIN"/>
+    </choice>
+	<choice hidden="true" req="LIST_CREW_SABOTEUR">
+		<text>(Elite Slug) Entice him with your Elite Slug.</text>
+		<event load="SEPERATIST_BODY_SCAN_SABOTEUR"/>
+	</choice>
+	<choice hidden="true" req="zoltan_peacekeeper">
+		<text>(Peacekeeper) Entice him with your Peacekeeper.</text>
+		<event load="SEPERATIST_BODY_SCAN_PEACE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRUSADER">
+		<text>(Elite Rock) Entice him with your Elite Rock.</text>
+		<event load="SEPERATIST_BODY_SCAN_CRUSADER"/>
+	</choice>
+	<choice hidden="true" req="orchid_chieftain">
+		<text>(Chieftain) Entice him with your Chieftain.</text>
+		<event load="SEPERATIST_BODY_SCAN_CHIEFTAIN"/>
+	</choice>
+	<choice hidden="true" req="crystal_sentinel">
+		<text>(Sentinel) Entice him with your Sentinel.</text>
+		<event load="SEPERATIST_BODY_SCAN_SENTINEL"/>
+	</choice>
+	<choice hidden="true" req="lanius_welder">
+		<text>(Welder) Entice him with your Welder.</text>
+		<event load="SEPERATIST_BODY_SCAN_WELDER"/>
+	</choice>
+	<choice hidden="true" req="phantom_alpha">
+		<text>(Alpha Phantom) Entice him with your Phantom Alpha.</text>
+		<event load="SEPERATIST_BODY_SCAN_PHANTOMALPHA"/>
+	</choice>
+	<choice hidden="true" req="phantom_mare_alpha">
+		<text>(Alpha Mare) Entice him with your Mare Alpha.</text>
+		<event load="SEPERATIST_BODY_SCAN_MAREALPHA"/>
+	</choice>
+	<choice hidden="true" req="phantom_goul_alpha">
+		<text>(Alpha Goul) Entice him with your Goul Alpha.</text>
+		<event load="SEPERATIST_BODY_SCAN_GOULALPHA"/>
+	</choice>
+	<choice hidden="true" req="phantom_wraith_alpha">
+		<text>(Alpha Wraith) Entice him with your Wraith Alpha.</text>
+		<event load="SEPERATIST_BODY_SCAN_WRAITHALPHA"/>
+	</choice>
+	<choice hidden="true" req="shell_radiant">
+		<text>(Radiant) Entice him with your Radiant.</text>
+		<event load="SEPERATIST_BODY_SCAN_RADIANT"/>
+	</choice>
+	<choice hidden="true" req="zoltan_martyr">
+		<text>(Martyr) Entice him with your Martyr.</text>
+		<event load="SEPERATIST_BODY_SCAN_RADICAL"/>
+	</choice>
+	<choice hidden="true" req="mantis_warlord">
+		<text>(Warlord) Entice him with your Warlord.</text>
+		<event load="SEPERATIST_BODY_SCAN_WARLORD"/>
+	</choice>
+	<choice hidden="true" req="slug_ranger">
+		<text>(Ranger) Entice him with your Ranger.</text>
+		<event load="SEPERATIST_BODY_SCAN_RANGER"/>
+	</choice>
+	<choice hidden="true" req="leech_ampere">
+		<text>(Ampere) Entice him with your Ampere.</text>
+		<event load="SEPERATIST_BODY_SCAN_AMPERE"/>
+	</choice>
+	<choice hidden="true" req="human_technician">
+		<text>(Technician) Entice him with your Technician.</text>
+		<event load="SEPERATIST_BODY_SCAN_TECH"/>
+	</choice>		
+	<choice hidden="true" req="LIST_CREW_ENGI">
+		<text>(Engi) Encourage him to scan the Engi.</text>
+		<event>
+			<text>"You wish for me... to become identical to my current state? I fail to understand this logic. I will find someone of higher intelligence to scan."</text>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Refuse.</text>
+		<event>
+			<text>"Undesired result. Lethal mode engaged." 5 long knife-like appengadges appear from his body and he slices up one of the nearby crew before exploding, which rocks the entire ship!</text>
+			<damage amount="3" effect="fire"/>
+			<removeCrew>
+				<clone>true</clone>
+				<text>Your crew stumbles out of the Clone Bay, once again alive. From then on they'll always avoid knifes or other sharp objects as much as possible, but at least they aren't gone for good.</text>
+			</removeCrew>
+		</event>
+	</choice>
+</event>
+<eventList name="SEPERATIST_BODY_SCAN_ALLOW">
+    <event>
+        <text>"Yes, you are of peak physical condition. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of you and beams off the ship, leaving behind some droneparts.</text>
+        <autoReward level="MED">droneparts_only</autoReward>
+    </event>
+    <event>
+        <text>"Your body is ugly. I do not wish to take this form. Goodbye." He beams off of the ship.</text>
+    </event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_SOLDIER">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="human_soldier">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_SUZERAIN">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="mantis_suzerain">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_SABOTEUR">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="slug_saboteur">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_PEACE">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="zoltan_peacekeeper">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_CRUSADER">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="rock_crusader">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_CHIEFTAIN">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="orchid_chieftain">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_SENTINEL">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="crystal_sentinel">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_WELDER">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="lanius_welder">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_PHANTOMALPHA">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="phantom_alpha">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_GOULALPHA">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="phantom_goul_alpha">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_MAREALPHA">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="phantom_mare_alpha">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_WRAITHALPHA">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="phantom_wraith_alpha">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_RADIANT">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="shell_radiant">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_RADICAL">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="zoltan_martyr">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_WARLORD">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="mantis_warlord">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_RANGER">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="slug_ranger">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_AMPERE">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="leech_ampere">L-9678</crewMember>
+	</event>
+</eventList>
+<eventList name="SEPERATIST_BODY_SCAN_TECH">
+	<event>
+		<text>"Yes, this one will do. Satisfaction 98%. I can work out the last 2%. Thank you friend. Accept this gift as gratitude." He morphs into an exact copy of your crew and beams off the ship, leaving behind some droneparts.</text>
+		<autoReward level="MED">droneparts_only</autoReward>
+	</event>
+	<event>
+		<text>"This form is... magnificent. I shall begin the scan, but the details must be perfect. I shall stay around longer, so that I can shape myself in their form to perfection."</text>
+		<crewMember amount="1" class="human_technician">L-9678</crewMember>
+	</event>
+</eventList>
+
+<!--
+		HOSTILE!!!
+	Events that always have a fight
+-->
+<eventList name="HOSTILE_SEPERATIST">
+	<event load="ENCOUNTER_SEPERATIST"/>
+	<event load="ENCOUNTER_SEPERATIST"/>
+	<event load="ENCOUNTER_ENGI_SEPERATIST"/>
+	<event load="ENCOUNTER_MANTIS_SEPERATIST"/>
+	<event load="ENCOUNTER_ZOLTAN_AUTO_SEPERATIST"/>
+	
+	<event load="ENCOUNTER_REBEL"/>
+</eventList>
+
+<event name="ENCOUNTER_SEPERATIST">
+	<text load="TEXT_ENCOUNTER_SEPERATIST"/>
+	<ship load="SHIP_SEPERATIST_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_SEPERATIST">
+    <text>A short screech plays over the comms followed by a looping message of binary. You don't have time to translate before a Separatist ship fires a warning shot that ricochets off your defenses.</text>
+    <text>A strangely verbose Engi hails you. "Unfortunate time of encounter, Federation ship. I appear to have damaged the part of my system that encodes for reason and logic, and now have the burning desire to kill."</text>
+    <text>An enraged Separatist hails you. "Problem: You have accidentally stepped on lifelong friend of mine in microscopic state. Solution: die."</text>
+    <text>Though Separatists usually avoid other ships, the one at this beacon appears to be in critical condition, and in desperate need of scrap.</text>
+    <text>A Separatist ship moves in to attack. You aren't sure how you angered them, but it no longer matters.</text>
+    <text>You're hailed by a Separatist ship, who begins to speak a great deal about the works of some dead guy named Shakespeare. He suddenly stops his speech abruptly and attacks!</text>
+</textList>
+
+<event name="ENCOUNTER_ENGI_SEPERATIST" unique="true">
+	<text>A Separatist ship orbits the beacon, but before you can contact them they jump away and an Engi ship approaches. "Federation assisting enemies of Harmony? Dilemma... Federation ship: must be eliminated."</text>
+	<ship load="SHIP_ENGI_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_MANTIS_SEPERATIST">
+	<text load="TEXT_ENCOUNTER_MANTIS_SEPERATIST"/>
+	<ship load="SHIP_MANTIS_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_MANTIS_SEPERATIST">
+	<text>Separatist or not, the Mantis don't care about the source of their Engi slaves. A Mantis scouting out this sector decides to attack your ship!</text>
+	<text>A Mantis ship, most likely coming here under the assumption it would be a regular Engi sector, has grown aggravated from the lack of populated ships to fight. Finally greeted by a challenging battle in the form of your ship, they waste no time to move in and attack.</text>
+	<text>You're hailed by a Separatist ship, which briefly shouts "Watch out for killer bugs!" before jumping away. The pursuing Mantis ship decides to make you its prey instead.</text>
+	<text>A frustrated Mantis captain appears on the call screen. "Oh great, another ship. What wondrous horrors you greet us with? Perhaps flesh eating cloud? Maybe knife hand monster with long tentacles?" He quickly realizes you are in fact a Federation ship, and all of his doubts are cleared. He orders his crew to prepare for combat!</text>
+	<text>In this sector it can be hard to tell whether the flash of a red hull will bring an Engi or some other vessel. Unfortunately, this time it turns out to be a Mantis, longing for a fight.</text>
+</textList>
+
+<event name="ENCOUNTER_ZOLTAN_AUTO_SEPERATIST" unique="true">
+	<text>"We suggest you avoid the Auto-ship. It is broken." You notice the Separatist ship that hailed you hiding behind some large asteroids, as well as the Zoltan made Auto-ship barreling towards you!</text>
+	<ship load="SHIP_ZOLTAN_AUTO_FIGHT_SEPERATIST" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="ENCOUNTER_ZOLTAN_AUTO_SEPERATIST_KILL">
+	<text>The Separatists let out something that sounds like a robotic laugh. "Good, I see why others get much enjoyment out of watching gladitorial combat." They jump away, leaving you with the wreck of the Auto-ship.</text>
+	<autoReward level="LOW">standard</autoReward>
+</event>
+
+<!--
+		NEUTRAL!!!
+	Events that can have a fight
+-->
+<eventList name="NEUTRAL_SEPERATIST">
+	<event load="SEPERATIST_NANOCLOUD"/>
+	<event load="SEPERATIST_ENGI_CHOICE"/>
+	<event load="SEPERATIST_FLEET_DELAY"/>
+	<event load="SEPERATIST_DISGUISE"/>
+	
+	<event load="ASTEROID_EXPLORE"/>
+	<event load="BROKEN_REBEL_DRONE"/>
+	<event load="ALISON_MANTIS_CREW_MV"/>
+</eventList>
+
+<event name="SEPERATIST_ENGI_CHOICE" unique="true">
+	<text>Two ships, both Engi, are fighting at this beacon. One belongs to the Harmony, and the other to the Separatists.</text>
+	<choice hidden="true">
+		<text>Hail the ships.</text>
+		<event>
+			<text>The Harmony Engi tell you that they have been trying to convince the Separatists to come back to the Harmony and once again embrace sameness. The Separatists refuse, wanting to live their lives in peace.</text>
+			<choice hidden="true">
+				<text>Side with the Harmony.</text>
+				<event>
+					<text>Neither ship seems particularly disturbed at you getting involved, and the Separatist continues to fight as if nothing had changed.</text>
+					<ship load="SHIP_SEPERATIST_CHOICE" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Side with the Separatist.</text>
+				<event>
+					<text>"Impossible. Failure to honor truce. Federation has broken promise. Fight imminent."</text>
+					<ship load="SHIP_ENGI_CHOICE" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="MORALITY_UPDATE_ENGI_FIGHT"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Fly away.</text>
+		<event>
+			<text>You can hear the shots of the two ships echoing through your comms until you're a safe distance away.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SEPERATIST_SEPERATIST_CHOICE_WIN">
+	<text>"Success achieved. Gratitude is ours. Accept [Drone] as reward." The Engi ship jumps away, accepting the fate of the Separatist ship as necessary.</text>
+	<autoReward level="MED">standard</autoReward>
+	<drone name="RANDOM"/>
+</event>
+<event name="SEPERATIST_ENGI_CHOICE_WIN">
+	<text>"An unfortunate death. We wish the Harmony would leave this sector. Still, I thank you Federation. Perhaps if I take refuge on your ship, I will be safe from their scouts."</text>
+	<autoReward level="MED">standard</autoReward>
+	<crewMember amount="1" class="engi_separatist">L-6437</crewMember>
+</event>
+
+<event name="SEPERATIST_NANOCLOUD" unique="true">
+	<text>A Separatist ship floats around nearby, slowly distancing itself from you. You're somewhat baffled that quick scans show no crew aboard, but the ship seems fully functional and responsive.</text>
+	<ship load="SHIP_SEPERATIST_NANOCLOUD" hostile="false"/> 
+	<choice hidden="true">
+		<text>Attack.</text>
+		<event>
+			<text>The mystery of the ship doesn't matter to you. The only thing on your mind is the reward of blowing it up.</text>
+			<ship hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Try to communicate.</text>
+		<event>
+			<text>You try to reach out, but every time the ship picks up all you can hear is a faint buzzing noise.</text>
+			<choice hidden="true">
+				<text>Attack.</text>
+				<event>
+					<text>The mystery of the ship doesn't matter to you. The only thing on your mind is the reward of blowing it up.</text>
+					<ship hostile="true"/> 
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Ignore the ship.</text>
+				<event>
+					<text>You've lost interest in the mystery, and prepare to move on.</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(Slug Crew) Try to detect life signs.</text>
+		<event>
+			<text>Your Slug tries to sense some form of intelligence aboard the enemy ship. They detect faint signs of potential life, but it's near impossible for them to tell.</text>
+			<choice hidden="true">
+				<text>Attack.</text>
+				<event>
+					<text>The mystery of the ship doesn't matter to you. The only thing on your mind is the reward of blowing it up.</text>
+					<ship hostile="true"/> 
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Ignore the ship.</text>
+				<event>
+					<text>You've lost interest in the mystery, and prepare to move on.</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the ship.</text>
+		<event>
+			<text>You have no desire to deal with the ship.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SEPERATIST_NANOCLOUD_DESTROYED">
+	<text>The strange Separatist ship is dead, and you scrap its remains.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>You prepare to move on when a squeaky, high pitched voice speaks from behind you. You turn around to see a grey cloud of nanobots floating in random directions around the room. "Outcome: Wonderful. Appreciation: Maximum. Sarcasm: 100%. You have destroyed my ship. Now I have no choice but to integrate myself with yours."</text>
+			<augment name="NANOBOT_DEFENSE_SYSTEM"/>
+		</event>
+	</choice>
+</event>
+
+<event name="SEPERATIST_FLEET_DELAY" unique="true">
+	<text>A Separatist vessel hails you. "Your situation with the fleet is known. We have: proposition. Help us with killing hostile ship, and we will delay fleet."</text>
+	<choice hidden="true">
+		<text>Listen to their offer.</text>
+		<event>
+			<text>"Rebel Auto-ships, their AI is less than satisfactory. Always getting lost. Now, we must deal with lost ship in this sector. Will you help?"</text>
+			<choice hidden="true">
+				<text>Agree to kill the Auto-ship.</text>
+				<event>
+					<text>The Separatists lead you to the location of the Auto-ship.</text>
+					<ship load="SHIP_AUTO_SEPERATIST" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Refuse their offer.</text>
+				<event>
+					<text>"I am -dissatisfied- with your response, but I will tolerate it. Good day Captain."</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>No thanks.</text>
+		<event>
+			<text>"Fair = fair. Try not to die."</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SEPERATIST_FLEET_DELAY_WIN">
+	<text>"Very good. Now for your end of the offer. Please do not move your [ship]." The Separatists run a scan over your ship, giving you a tingly feeling all over your body. The Separatists hail you again, this time looking very similar to you. "My job is less than 100%, but it will work for now. I have masked your jump signature. The fleet will now follow me. Good day."</text>
+	<modifyPursuit amount="-2"/>
+</event>
+<event name="SEPERATIST_FLEET_DELAY_LOSE">
+	<text>"You have failed. Do not attempt to communicate with us again."</text>
+</event>
+
+<event name="SEPERATIST_DISGUISE" unique="true">
+	<text>An Engi ship hails you, though their camera has been turned off. "Federation, we request... Request: Aid in search for traitors. We require supplies."</text>
+	<ship load="SHIP_SEPERATIST_DISGUISE" hostile="false"/>
+	<choice>
+		<text>Agree to their absurd request.</text>
+		<event>
+			<text>A long mechanical arm unfolds from the ship's hull and grabs onto the supplies. The Engi promise you will receive a reward in return.</text>
+			<item_modify>
+				<item type="fuel" min="-5" max="-5"/>
+				<item type="scrap" min="-35" max="-35"/>
+				<item type="missiles" min="-3" max="-3"/>
+				<item type="drones" min="-7" max="-7"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue.</text>
+				<event load="SEPERATIST_DISGUISE_DONATE"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGI">
+		<text>(Engi Crew) Contact them and ask to negotiate further.</text>
+		<event>
+			<text>Your Engi requests to communicate with them. The Engi ship doesn't respond, and after continuous hails, their weapons go online!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Say you cannot help.</text>
+		<event>
+			<text>"Need for supplies unfulfilled. Decisive action required... Screw this voice, we'll just take everything we want."</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="SEPERATIST_DISGUISE_DONATE">
+	<event>
+		<text>You hear a fumbling noise and the camera turns on, revealing the captain of the ship is not a regular Engi, but a Separatist. He quickly turns it back off but the damage has already been done. "Look look, no need to do anything brash. We'll give you back half of what you paid us, and we don't have to fight. Fair?"</text>
+		<choice hidden="true">
+			<text>Agree to split the supplies.</text>
+			<event>
+				<text>The arm unfolds once again and deposits half of what you had paid them. You notice they rounded down in their favor, but it's too late to complain as they hastily jump away.</text>
+				<item_modify>
+					<item type="fuel" min="2" max="2"/>
+					<item type="scrap" min="17" max="17"/>
+					<item type="missiles" min="1" max="1"/>
+					<item type="drones" min="3" max="3"/>
+				</item_modify>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>Fight them.</text>
+			<event>
+				<text>The Separatist pleads for you to spare them, but you have no intentions on letting them live.</text>
+				<ship hostile="true"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>The camera feed flickers on, revealing a smug Separatist captain. "Sorry, but it appears you have been deceived. By me. I am very smart and clever. Ha ha. There is no reward, by the way."</text>
+		<choice hidden="true">
+			<text>Kill the bastards.</text>
+			<event>
+				<text>"Wait, what are you doing? No, no, stop. Wait. This is a [bad] idea!"</text>
+				<ship hostile="true"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>Accept that you have been tricked.</text>
+			<event>
+				<text>The Separatist seems surprised that you have chosen not to fight back. You end the call and ignore the ship.</text>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>"Your donation is appreciated, Captain. I'll be honest. We are no Harmony ship. This ship is now under control of the Separatists. Still, we [thank] you. Please accept this gift.</text>
+		<augment name="NANOBOT_DEFENSE_SYSTEM"/>
+	</event>
+</eventList>
+
+<!--
+		DISTRESS!!!
+	Events that have a distress beacon  
+-->
+<eventList name="DISTRESS_SEPERATIST">
+	<event load="DISTRESS_SEPERATIST_COMMUNITY_VIRUS"/>
+	
+	<event load="DISTRESS_CIVILIAN_ASTEROIDS_BEACON"/>  
+	<event load="DISTRESS_FRIENDLY_BEACON"/>
+	<event load="DISTRESS_TRAPPED_MINER"/>
+	<event load="DISTRESS_AUTO_REPAIRS"/>
+</eventList>
+
+<event name="DISTRESS_SEPERATIST_COMMUNITY_VIRUS" unique="true">
+	<text>Though Separatists usually prefer isolation, a rare example of a Separatist colony is hosted on a nearby planet. The distress beacon appears to be originating from the planet's surface.</text>
+	<distressBeacon/> 
+	<img planet="PLANET_POPULATED_SMALL"/>
+	<choice hidden="true">
+		<text>Contact them.</text>
+		<event>
+			<text>"Greetings unwelcome stranger. Consider yourself now welcome. We have request. We have recently been infected by [deadly] virus, casualties are over -1/4th- of population. Can you assist?</text>
+			<choice>
+				<text>Pay some supplies.</text>
+				<event>
+					<text>Though you can tell from their reactions it won't help much, the Engis are still grateful for your donation.</text>
+					<item_modify>
+						<item type="scrap" min="-20" max="-20"/>
+						<item type="drones" min="-4" max="-4"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>The Separatists have nothing to offer as far as a physical reward goes, but they are able to repair your hull.</text>
+							<damage amount="-10"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="hacking">
+				<text>(Hacking) Use your hacking to isolate the virus.</text>
+				<event>
+					<text>Your hacking is surprisingly effective, and you're able to remove all instances of the virus's code from several Separatists. With how effective your hacking has been, they request that you stay behind a little longer to cure even more of them.</text>
+					<item_modify>
+						<item type="drones" min="-1" max="-1"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Stay back and cure more.</text>
+						<event>
+							<text>It takes the rest of the day to cure the other Separatists, but at last it appears you have managed to cure the entire colony of the virus. They are extremely grateful, and gift you a piece of equipment for your ship. One of their workers also offers in secret to work aboard your crew, afraid of their fate in the colony if the virus resurfaces.</text>
+							<weapon name="RANDOM"/>
+							<crewMember amount="1" class="engi_separatist">L-8133</crewMember>
+							<modifyPursuit amount="1"/>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>You cannot stay.</text>
+						<event>
+							<text>"Calculating percentage of casualties resulting from failure to wait: 20%. Those who have been saved will surely be infected again. We will not keep you waiting, as if we were able to anyways."</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="engi">
+				<text>(Engi Crew) Send your Engi down to help.</text>
+				<event load="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_ENGI"/>
+			</choice>
+			<choice hidden="true" req="engi_separatist">
+				<text>(Separatist Crew) Send your Separatist down to help.</text>
+				<event load="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_SEPARATIST"/>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_DEFENDER">
+				<text>(Engi Defender Crew) Send your Defender down to help.</text>
+				<event load="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_DEFENDER"/>
+			</choice>
+			<choice hidden="true">
+				<text>We know nothing about infections.</text>
+				<event>
+					<text>"-ERROR: Logic not present- Infection is not biological, we are machi-" you end the call. They do not attempt to communicate again.</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the colony.</text>
+		<event>
+			<text>Too far away for them to notice you, you're left undisturbed in your current location.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_ENGI">
+	<event>
+		<text>Your Engi is sent down to the planet, where they successfully manage to find the source of the virus and purge it from some of the Separatist's systems. Once they're sure of how to do it on their own, they give your Engi a gift to bring back to the ship.</text>
+		<drone name="RANDOM"/>
+	</event>
+	<event>
+		<text>Your Engi attempts to debug the Separatists, but only ends up catching the virus themselves. It slowly erodes at the code that causes it to maintain a solid shape and evaporates as its nanobots scatter. The Separatists send their condolences but have nothing else to say.</text>
+		<removeCrew class="engi">
+			<clone>false</clone>
+			<text>You aren't sure if a virtual infection will carry over the Clone Bay, and attempt to revive your crew. Unfortunately the clone appears to be suffering many glitches and cannot keep a constant form. You put them out of their misery and delete their data from the clone bank.</text>
+		</removeCrew>
+	</event>
+</eventList>
+<eventList name="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_SEPARATIST">
+	<event>
+		<text>Your Engi is sent down to the planet, where they successfully manage to find the source of the virus and purge it from some of the Separatist's systems. Once they're sure of how to do it on their own, they give your Engi a gift to bring back to the ship.</text>
+		<drone name="RANDOM"/>
+	</event>
+	<event>
+		<text>Your Engi attempts to debug the Separatists, but only ends up catching the virus themselves. It slowly erodes at the code that causes it to maintain a solid shape and evaporates as its nanobots scatter. The Separatists send their condolences but have nothing else to say.</text>
+		<removeCrew class="engi_separatist">
+			<clone>false</clone>
+			<text>You aren't sure if a virtual infection will carry over the Clone Bay, and attempt to revive your crew. Unfortunately the clone appears to be suffering many glitches and cannot keep a constant form. You put them out of their misery and delete their data from the clone bank.</text>
+		</removeCrew>
+	</event>
+</eventList>
+<event name="DISTRESS_SEPERATIST_COMMUNITY_VIRUS_DEFENDER">
+	<text>Your Engi is sent down to the planet, where they successfully manage to find the source of the virus and purge it from some of the Separatist's systems. Once they're sure of how to do it on their own, they give your Engi a gift to bring back to the ship.</text>
+	<drone name="RANDOM"/>
+</event>
+
+<!--
+		QUEST!!!
+	Events that can have a quest
+-->
+<eventList name="QUESTS_SEPERATIST">
+	<event load="QUEST_SEPERATIST_ENGI_BOUNTY"/>
+</eventList>
+
+<event name="QUEST_SEPERATIST_ENGI_BOUNTY" unique="true">
+	<text>A squadron of Engi ships have set up a camp on a small nearby moon. They seem peaceful, and only their defensive drones are online for protection.</text>
+	<choice hidden="true">
+		<text>Hail them.</text>
+		<event>
+			<text>"Request for contact received. Timing is fortunate. We have an offer for you. Current objective: hunt down Separatists and convert back to Harmony. Location for dangerous Separatist ship is known, danger too high to engage. We ask you to capture the ship yourselves."</text>
+			<choice hidden="true">
+				<text>Agree.</text>
+				<event>
+					<text>The Engi transmit the location of the Separatist ship.</text>
+					<quest event="QUEST_SEPERATIST_ENGI_BOUNTY_QUEST"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Deny their request.</text>
+				<event>
+					<text>The Engi immediately end transmissions and will not respond to further hails.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>The Engi ships don't appear to be disturbed by your presence, and you leave them alone.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_SEPERATIST_ENGI_BOUNTY_QUEST">
+	<text>It doesn't take long for the Separatists to notice you. "So, you have come to kill me? Then prepare for a battle, Federation." You remember the Engi's orders to capture the ship without destroying it, knowing you'll have to kill their crew to do so.</text>
+	<ship load="SHIP_SEPERATIST_BOUNTY" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+</FTL>

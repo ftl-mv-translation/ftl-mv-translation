@@ -1,0 +1,300 @@
+<FTL>
+<!--UNUSED CREW EVENTS TO BE REPURPOSED LATER-->
+
+<event name="CREW_TALK_HUMAN_GIFT">
+	<text>Your Human knows it isn't much, but this mission is important and they wants to help in every way they can. They offer you some scrap from their own allowance.</text>
+	<item_modify>
+		<item type="scrap" min="3" max="10"/>
+	</item_modify>
+</event>
+
+<event name="CREW_TALK_HUMAN_ENGINE_RECYCLE">
+	<text>You catch your human tinkering with the engines. They explain that they might be able to recycle some of your used fuel, but it could damage the engines.</text>
+	<choice hidden="true">
+		<text>Go ahead.</text>
+		<event>
+			<text>Your human starts to extract some of the fuel, but half way through the fuel ignites! The human is able to shut it off quickly to preserve what you have, but the fire has spread to the rest of the engines.</text>
+			<item_modify>
+				<item type="fuel" min="3" max="5"/>
+			</item_modify>
+			<damage amount="2" system="engines" effect="fire"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Not worth the risk.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="CREW_TALK_ENGINEER_ENGINE_RECYCLE"> <!--just better-->
+	<text>You catch your Engineer tinkering with the engines. They explain that they might be able to recycle some of your used fuel, but it could damage the engines.</text>
+	<choice hidden="true">
+		<text>Go ahead.</text>
+		<event>
+			<text>Your Engineer starts to extract some of the fuel, but half way through the fuel ignites! They're is able to shut it off quickly to preserve what you have, but the fire has spread to the rest of the engines.</text>
+			<item_modify>
+				<item type="fuel" min="4" max="4"/>
+			</item_modify>
+			<damage amount="1" system="engines" effect="fire"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Not worth the risk.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="CREW_TALK_ENGI_GIFT">
+	<text>Your Engi presents you with some drone parts it worked on creating.</text>
+	<item_modify>
+		<item type="drones" min="2" max="3"/>
+	</item_modify>
+</event>
+
+<event name="CREW_TALK_BOMBER_FAITH" unique="true">
+	<text>You find your Devotee sitting in their quarters deep in thought.</text>
+	<choice hidden="true">
+		<text>Ask what they're thinking about.</text>
+		<event>
+			<text>"Hello... Captain." The Zoltan struggles to let out the word 'captain'. "I have been pondering my decision to work on this ship. Yes, the rebellion is a threat... but is it worth working with my enemies?"</text>
+			<choice hidden="true">
+				<text>Reassure them about the mission's importance.</text>
+				<event>
+					<text>"I suppose you speak the truth, though that is hard to admit." They say nothing more, and you leave.</text>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Lecture them on how the Duskbringer movement is wrong.</text>
+				<event>
+					<text>"You insult me like this? You should know I hold no loyalty to you, only the mission! I will not continue to support you when you treat me like this!"</text>
+					<boarders min="1" max="1" class="zoltan_devotee"/>
+					<removeCrew class="zoltan_devotee">
+						<clone>false</clone>
+						<text>You doubt cloning your ex-crew member would be a good idea in this context.</text>
+					</removeCrew>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Sit down and speak to them about it.</text>
+				<event>
+					<text>You sit on the other side of the room and attempt to speak with the Zoltan. You find yourself in a long conversation that helps both of you learn more about your respective beliefs. "I have never considered those points before... Do not think this changes what I believe, but it has helped my understanding of your erroneous ways. T...thanks you. Have some fuel I've been keeping for myself in-case I need to steal a ship and run away."</text>
+					<autoReward level="LOW">fuel_only</autoReward>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="CREW_TALK_ROCK_RITUAL">
+	<text>Your Rock seems overly excited about something. It turns out today is an important religious day in the Rock culture, centred around the crystals. He requests that you join him, though he warns the ritual takes some time to complete.</text>
+	<choice hidden="true">
+		<text>Agree to perform the ritual with him.</text>
+		<event>
+			<text>You gather all of the crew together in the lounge, and you all sit in a circle around your Rockman. Your Rockman is dressed in a light blue outfit and preaches to you all, telling Rock folklore and exciting adventures of mythical heros. Time ticks by, but its oddly captivating.</text>
+			<modifyPursuit amount="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>At the end of the ceremony, it is already far into your regular sleep-cycle. As you move back to your quarters, your Rockman pulls you aside and thanks you. "I know this is a burden on our mission, but it means a lot to me. I hope you will accept this gift."</text>
+					<item_modify>
+						<item type="scrap" min="5" max="15"/>
+						<item type="missiles" min="2" max="5"/>
+					</item_modify>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We don't have time.</text>
+		<event>
+			<text>Your Rockman is disappointed. "Yes... I suppose it is best to forget my old ways..."</text>
+		</event>
+	</choice>
+</event>
+
+<event name="CREW_TALK_SLUG_GAMBLE">
+	<text>As you wander the halls looking for your slug, you hear the jingle of scrap and poker tokens. You enter your Slug's private quarters to see it gambling with some of the other crew. Your slug looks at you nervously.</text>
+	<choice>
+		<text>Sit down and join them.</text>
+		<event>
+			<text>"O-Oh... You're joining Captain? Heheh, well I wont sssstop you..."</text>
+			<choice>
+				<text>Make a bet.</text>
+				<event>
+					<text>You place some scrap in the center of the table and draw your hand.</text>
+					<item_modify>
+						<item type="scrap" min="-10" max="-10"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="CREW_TALK_SLUG_GAMBLE_PLAY"/>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>Just watch the game.</text>
+				<event>
+					<text>You sit and watch. As excepted, your Slug wins almost every round. The other crew give up and leave the room. Your slug chuckles and gathers up its earnings.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Tell off your crew for gambling.</text>
+		<event>
+			<text>Your Slug mutters something undr its breath about you being a boring captain and cleans up the mess.</text>
+		</event>
+	</choice>
+</event>
+<event name="CREW_TALK_SLUG_GAMBLE_PLAY">
+	<text>You play for a while, but to no surprise, not one person other than your Slug makes any cash. Your Slug glances at you. "Faccccy another go, Captain?"</text>
+	<choice>
+		<text>Place another bet.</text>
+		<event>
+			<text>Your other crew grumble, but every one places their bets on the table.</text>
+			<item_modify>
+				<item type="scrap" min="-10" max="-10"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>Once again, your Slug comes out on top. Scooping up another handful of scrap, it has grown a smug expression. "Oh, you can't quit yet Captain! We're having sssso much fun. Pleassse play another round."</text>
+					<choice>
+						<text>Agree to play again.</text>
+						<event>
+							<text>Not quite believing yourself, you place another bet on the table and draw your cards once again.</text>
+							<item_modify>
+								<item type="scrap" min="-10" max="-10"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event>
+									<text>Growing accustom to your Slug's play style, you learn how to predict and even trick them. At last, you draw an incredible hand, which proves to outmatch the slug! Your slug tries to hide its fury, and moodily hands over its earnings. For everyone's sanity, you call an end to the game.</text>
+									<item_modify>
+										<item type="scrap" min="60" max="60"/>
+									</item_modify>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>Quit.</text>
+						<event>
+							<text>"Oh, you're ssssuch a sssquare. You go then, we'll jussssst be here having all the fun without you!"</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Quit.</text>
+		<event>
+			<text>"Oh come on Captain, we were jussst ssssstarting to have fun!" You say you have more important things to do and leave.</text>
+		</event>
+	</choice>
+</event>
+
+<event name="CREW_TALK_SABO_PROPHECY">
+	<text>Your Saboteur cuts you off mid-sentence and holds up a deck of tarot cards. "Ssssso captain, care to hear your fortune? I promissse, itsss legit. Only a sssmal fee too..."</text>
+	<choice>
+		<text>Hear your fortune.</text>
+		<event>
+			<text>You hand some scrap over to your Saboteur. This better be worth it...</text>
+			<item_modify>
+				<item type="scrap" min="-10" max="-10"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>The slug shuffles its cards, then lays 1 face down on the table and commands you to sit. "Let'ss sssee your card..."</text>
+					<choice hidden="true">
+						<text>Flip over the card.</text>
+						<event load="CREW_TALK_SABO_PROPHECY_PAY"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>No thanks.</text>
+		<event>
+			<text>The slug chuckles. "Next time, you don't get the captain'ssss dissscount..."</text>
+		</event>
+	</choice>
+</event>
+<eventList name="CREW_TALK_SABO_PROPHECY_PAY">
+	<event>
+		<text>"Ah yesss, the Wheel of Fortune. Thisss one ssshould be sstraight forward, yessss? You ssshall soon come across a great fortune..."</text>
+		<item_modify>
+			<item type="scrap" min="35" max="35"/>
+		</item_modify>
+	</event>
+	<event>
+		<text>"Interesssting, the Chariot... You will have great power ssssome day!"</text>
+		<upgrade amount="1" system="reactor"/>
+	</event>
+	<event>
+		<text>"How ssssweet, the Empress. Today you will make a new friend!"</text>
+		<crewMember amount="1">Friendship</crewMember>
+	</event>
+	<event>
+		<text>"Very fortunate for all of usss, you have drawn the Hierophant! Our misssion sssshall be blesssed by the guardian angelsss."</text>
+		<damage amount="-10"/>
+	</event>
+	<event>
+		<text>"Oh... thisss is the Hanged Man. Justicccce will be brought upon you for all your crimesss."</text>
+		<damage amount="7"/>
+	</event>
+	<event>
+		<text>"My... thisss is the card of Death! One of ussss will not make it to tomorrow alive..."</text>
+		<removeCrew>
+			<clone>false</clone>
+			<text>You rush to your clonebay but it's already too late. The other crew tell you that they fell ill with a mysterious illness and they had to shut off the clonebay to prevent the spread of the infection.</text>
+		</removeCrew>
+	</event>
+	<event>
+		<text>"The Moon, the dark ssside of coursssse... are you afraid Captain? Becausssse you ssshould be..."</text>
+		<boarders min="2" max="2" class="random"/>
+	</event>
+	<event>
+		<text>"Justice, the balanccccing force. Thingssss will be taken, but more will be given in return."</text>
+		<item_modify steal="true">
+			<item type="scrap" min="-20" max="-20"/>
+			<item type="missiles" min="3" max="3"/>
+			<item type="fuel" min="2" max="2"/>
+			<item type="drones" min="2" max="2"/>
+		</item_modify>
+	</event>
+</eventList>
+
+<event name="CREW_TALK_LANIUS_REQUEST">
+	<text>Your Lanius appears to have a request. It asks if you will allow it access to the cargo bay and all the scrap inside.</text>
+	<choice hidden="true">
+		<text>Let them in.</text>
+		<event load="CREW_TALK_LANIUS_REQUEST_ACCEPT"/>
+	</choice>
+	<choice hidden="true">
+		<text>Refuse.</text>
+		<event>
+			<text>You know why the Lanius wants in, and you aren't going to let it happen. They walk away pouting.</text>
+		</event>
+	</choice>
+</event>
+<eventList name="CREW_TALK_LANIUS_REQUEST_ACCEPT">
+	<event>
+		<text>You open up the cargo-hold's doors and the Lanius leaps inside. They, as you excepted, consume a large portion of the scrap inside. You have to pull them back out before they eat everything inside.</text>
+		<item_modify steal="true">
+			<item type="scrap" min="-10" max="-25"/>
+		</item_modify>
+	</event>
+	<event>
+		<text>You open up the cargo-hold's doors and the Lanius leaps inside. However to your surprise, instead of eating the scrap they reshape it into a sharp twisted structure. It appears your lanius has constructed a weapon!</text>
+		<weapon name="RANDOM"/>
+	</event>
+</eventList>
+</FTL>
