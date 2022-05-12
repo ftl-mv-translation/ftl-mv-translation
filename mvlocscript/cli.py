@@ -128,9 +128,6 @@ def sanitize(ctx, original, translated, empty_identical):
     Usage: mvloc sanitize --fuzzy locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po
     '''
 
-    config = ctx.obj['config']
-    stringSelectionXPath = config.get('stringSelectionXPath', [])
-
     sourcelocation = infer_sourcelocation(original)
     assert sourcelocation
 

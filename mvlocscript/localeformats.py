@@ -55,7 +55,13 @@ def generate_pot(entries: list[StringEntry], sourcelocation):
     return pot
 
 def merge_pot(path, pot):
-    print(path)
     po = polib.pofile(path)
     po.merge(pot)
+    def sortkey(entry):
+        if entry.occurrences:
+            return entry.occurrences[0][1]
+        assert entry.obsolete # Obsolete entries are rid of sourceline and written last anyway
+        return -1
+    po.sort(key=sortkey)
     po.save(path)
+
