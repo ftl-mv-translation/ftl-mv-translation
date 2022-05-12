@@ -9,7 +9,7 @@ def stringentries_to_dictionary(entries: list[StringEntry]) -> dict[str, StringE
 def readpo(path) -> list[StringEntry]:
     ret = []
     for entry in polib.pofile(path):
-        occurrences = entry.occurrences[0][1] if entry.occurrences else -1
+        occurrences = int(entry.occurrences[0][1]) if entry.occurrences else -1
         if occurrences == -1 and not entry.obsolete:
             raise RuntimeError("sourceline cannot be omitted for non-obsolete entries")
 
@@ -55,7 +55,13 @@ def generate_pot(entries: list[StringEntry], sourcelocation):
     return pot
 
 def merge_pot(path, pot):
-    print(path)
     po = polib.pofile(path)
     po.merge(pot)
+    def sortkey(entry):
+        if entry.occurrences:
+            return int(entry.occurrences[0][1])
+        assert entry.obsolete # Obsolete entries are rid of sourceline and written last anyway
+        return -1
+    po.sort(key=sortkey)
     po.save(path)
+
