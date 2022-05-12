@@ -1,0 +1,820 @@
+<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					FEDERATION SECTOR 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+
+<!--
+		ITEMS!!!
+	Events that give items
+-->
+<eventList name="ITEMS_FED">
+	<event load="FED_FREE_CREW"/>
+	<event load="FED_SUPPLY_STATION"/>
+	<event load="FED_ZOLTAN_RANT"/>
+	<event load="FED_AMMO_STATION"/>
+	
+	<event load="HELP_MINERS"/>
+	<event load="TRADER_UPGRADES_EXCHANGE"/>
+	<event load="CIVILIAN_ASTEROID_APPROACHING"/>
+</eventList>
+
+<event name="FED_AMMO_STATION" unique="true">
+	<text>A Federation station is sending out a request for ammunition, in return for scrap. Their high demand is likely due to the increasing number of Rebel blockades.</text>
+	<choice>
+		<text>Sell 3 missiles.</text>
+		<event>
+			<disableScrapAugments/>
+			<item_modify>
+				<item type="scrap" min="21" max="21"/>
+				<item type="missiles" min="-3" max="-3"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Sell 7 missiles.</text>
+		<event>
+			<disableScrapAugments/>
+			<item_modify>
+				<item type="scrap" min="49" max="49"/>
+				<item type="missiles" min="-7" max="-7"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Sell 12 missiles.</text>
+		<event>
+			<disableScrapAugments/>
+			<item_modify>
+				<item type="scrap" min="84" max="84"/>
+				<item type="missiles" min="-12" max="-12"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We don't have anything to sell.</text>
+		<event>
+			<text>You ignore the station.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="FED_ZOLTAN_RANT" unique="true">
+	<text>Not long after you jump in you're hailed by a Zoltan ship. "Life is a cycle, and this war has upset it. You must not mess with the balance. Does this make sense?"</text>
+	<ship load="SHIP_ZOLTAN_FIGHT" hostile="false"/>
+	<choice hidden="true">
+		<text>Absolutely.</text>
+		<event>
+			<text>"I see you are not blind as the others. Many have come to hear our message, and few have left with a proper understanding. You are blessed. May your trails be filled with fortune."</text>
+			<modifyPursuit amount="-1"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Not really.</text>
+		<event>
+			<text>"The balance must be preserved. You are not the one to preserve it." The Zoltan mute the comms and jump away.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We don't have time for a lecture.</text>
+		<event>
+			<text>"This is no lecture, but merely a lesson. It is those like you who refuse enlightenment who endanger the cycle. You must be purged."</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="FED_FREE_CREW" unique="true">
+	<text>A damaged Federation ship hails you. "Good, a friendly face for once. Our ship has taken catastrophic damage and there's no chance of repairing it. I don't suppose you'd be willing to allow me aboard? I'm a shield technician and I'm sure my skills could be of service to you."</text>
+	<choice hidden="true">
+		<text>Welcome aboard.</text>
+		<event load="FED_FREE_CREW_WELCOME"/>
+	</choice>
+	<choice hidden="true">
+		<text>We don't need any more crew, sorry.</text>
+		<event>
+			<text>"Oh... ok. Hopefully I'll be able to keep the shields under control so they don't implode before another ship arrives to help..."</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="FED_FREE_CREW_WELCOME">
+	<event>
+		<text>The Federation officer is thankful for your assistance.</text>
+		<crewMember amount="1" class="human" shields="1"/>
+	</event>
+	<event>
+		<text>As the human comes onto your ship, he draws a laser and shoots at you. Luckily, no one is hit, but a Rebel ship uncloaks nearby and attacks. It was a trap!</text>
+		<boarders min="1" max="1" class="human"/>
+		<ship load="SHIP_REBEL_FIGHT" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="FED_SUPPLY_STATION" unique="true">
+	<text>You discover a fully militarized Federation station here, though it appears they are selling supplies to passing Federation allied ships.</text>
+	<ship load="SHIP_FED_STATION_SUPPLIES" hostile="false"/>
+	<choice>
+		<text>Purchase fuel.</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="5" max="7"/>
+				<item type="scrap" min="-12" max="-20"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Purchase ammunition.</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="8" max="10"/>
+				<item type="scrap" min="-40" max="-55"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Purchase a weapon.</text>
+		<event>
+			<item_modify>
+				<item type="scrap" min="-40" max="-55"/>
+			</item_modify>
+			<weapon name="RANDOM"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the station!</text>
+		<event>
+			<text>No one is safe from you, not even allied Federation stations.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the station.</text>
+		<event>
+			<text>You aren't interested in the station. You ignore them.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FED_SUPPLY_STATION_KILL">
+	<text>Your unnecessary, unprovoked, barbaric attack on an allied Federation Station has been successful, if you could call killing them as success. You scrap what remains.</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+
+<!--
+		HOSTILE!!!
+	Events that call up a fight for sure
+-->
+<eventList name="HOSTILE_FED">
+	<event load="ENCOUNTER_REBEL_FED"/>
+	<event load="ENCOUNTER_REBEL_FED"/>
+	<event load="ENCOUNTER_REBEL_ELITE_FED"/>
+	
+	<event load="ENCOUNTER_FED_REBELTAKEOVER"/>
+	<event load="ENCOUNTER_FED_SALVAGE"/>
+</eventList>
+
+<event name="ENCOUNTER_FED_SALVAGE" unique="true">
+	<text>You find the wreck of a Federation ship nearby. Before you can even begin to consider salvaging it, another Federation ship jumps in, surveys the scene, and blames you for killing the ship!</text>
+	<ship load="SHIP_FED_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_FED_REBELTAKEOVER" unique="true">
+	<text>You receive an urgent hail from the nearby Federation ship. "You have to help, the Rebels, they've taken over the ship!" The call suddenly goes to static and the ship turns hostile!</text>
+	<ship load="SHIP_FED_REBELTAKEOVER" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="REBELTAKEOVER_SURRENDER">
+	<text>The new Rebel "captain" of the ship hails you. "Alright, you've caused enough damage. Let us go, and we'll spare the last survivor of the original crew."</text>
+	<choice>
+		<text>Agree to spare them.</text>
+		<event>
+			<crewMember amount="1" class="human"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice>
+		<text>The death of one more Fed is worth the death of even more Rebels.</text>
+		<event/>
+	</choice>
+</event>
+<event name="REBELTAKEOVER_DESTROY">
+	<text>You've destroyed the Federation ship, and with it the Rebel and Federation crew. You salvage what's left of the wreck.</text>
+	<autoReward level="LOW">standard</autoReward>
+</event>
+<event name="REBELTAKEOVER_DEADCREW">
+	<text>You've killed off all of the Rebel crew. As you salvage the ship, you notice the body of one of the old Federation crew. You find they're still alive, and help them to their feet. After some washing and first-aid they're good as new and ready to serve on your ship.</text>
+	<autoReward level="MED">standard</autoReward>
+	<crewMember amount="1" class="human"/>
+</event>
+
+<event name="ENCOUNTER_REBEL_FED">
+	<text load="TEXT_ENCOUNTER_REBEL_FED"/>
+	<ship load="SHIP_REBEL_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_FED">
+	<text>Your ship is hailed. "I knew I would find you here. It wasn't easy getting past the guard, but now it's all worth it!"</text>
+	<text>"Sorry captain that of all sectors you had to die here, but this is a chance I'm not passing up!"</text>
+	<text>A Rebel squadron is exploring this system. You try to evade them, but one of the ships spots you and locks onto your ship!</text>
+	<text>It appears you have found yourself in an unavoidable fight with a Rebel invader. Man the weapons!</text>
+	<text>This sector has been under attack from Rebels for ages, and it's no surprise why. A Rebel ship nearby sees you and raises its weapons. You should do the same.</text>
+	<text>You and the Rebel ship at this beacon discover each other at the same time, and waste no time attacking each other.</text>
+	<text>"GLORY TO THE REBELLION!" A Rebel ship speeds past, firing its entire salvo at you. Defensive positions!</text>
+	<text>"The Rebels are coming, the Rebels are coming!" A civilian ship flies past, jumping away quickly. Not long after a Rebel ship fast in pursuit flies by next!</text>
+	<text>"Should have stayed away from Federation territory. This is like the second Rebel Stronghold!" The Rebel captain nearby chuckles, but it's hard to hear under the sound of their weapons firing.</text>
+</textList>
+
+<event name="ENCOUNTER_REBEL_ELITE_FED" unique="true">
+	<text>A Rebel Elite, looking for a brawl, is scouting out this beacon. You turn pale when they spot you and their weapons come online.</text>
+	<ship load="SHIP_REBEL_ELITE_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--
+		NEUTRAL!!!
+	Events that give items
+-->
+<eventList name="NEUTRAL_FED_UNIQUE">
+	<event load="FED_REBEL_CHOICE"/>
+	<event load="FED_BROKEN_SUPPLY_DRONE"/>
+	<event load="FED_NODAMAGE_TEST"/>
+	<event load="FED_HANGAR_RAID"/>
+</eventList>
+<eventList name="NEUTRAL_FED_GENERIC">
+	<event load="REBEL_AUTO_SPY"/>
+	<event load="REBEL_REFUEL_STATION"/>
+	<event load="AUTO_REFUEL_STATION"/>
+	<event load="ROGUE_REBEL"/>
+	<event load="CIVILIAN_EXPLODED"/>
+</eventList>
+
+<event name="FED_REBEL_CHOICE">
+	<text load="TEXT_FED_REBEL_CHOICE"/>
+	<ship load="SHIP_REBEL_FIGHT" hostile="false"/>
+	<choice hidden="true">
+		<text>Fight the ship.</text>
+		<event>
+			<text>No Rebels will be allowed to live so long as you can help it.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Avoid the ship.</text>
+		<event>
+			<text>You have no interest in fighting the Rebel ship.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<textList name="TEXT_FED_REBEL_CHOICE">
+	<text>A Rebel ship is making minor repairs at this beacon. They're unaware of your presence.</text>
+	<text>A Rebel ship nearby is searching for Federation ships. Somehow they have not yet seen you.</text>
+	<text>This sector is a prime spot for Rebels. Despite their usual thirst for killing Feds, the Rebel ship here is ignoring you.</text>
+	<text>The Rebel ship at this beacon is scouting for Federation ships to fight. It has not yet seen you.</text>
+</textList>
+
+<event name="FED_BROKEN_SUPPLY_DRONE" unique="true">
+	<text>A Federation automated supply drone nearby is on the fritz, sparking and occasionally sending garbled, meaningless messages. It must have received serious damage.</text>
+	<ship load="SHIP_FED_BROKEN_DRONE" hostile="false"/>
+	<choice hidden="true">
+		<text>Attempt to contact the drone.</text>
+		<event load="FED_BROKEN_SUPPLY_DRONE_ACTIVATE"/>
+	</choice>
+	<choice hidden="true">
+		<text>Salvage the drone.</text>
+		<event load="FED_BROKEN_SUPPLY_DRONE_SALVAGE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGI">
+		<text>(Engi Crew) Fix the drone.</text>
+		<event>
+			<text>Your Engi is no stranger to working on Auto-ships and drones, and easily identifies the problem. Once the Auto-ship is fixed, it distributes supplies and patches up your hull.</text>
+			<autoReward level="RANDOM">stuff</autoReward>
+			<damage amount="-5"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGINEER">
+		<text>(Engineer Crew) Fix the drone.</text>
+		<event>
+			<text>Your Engineer tries to explain that they're only used to working on Rebel Auto-ships, but you convince them to try anyways. They manage to get the drone working long enough to repair some hull before something goes wrong and the ship turns hostile!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+			<damage amount="-5"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_DRONES_REPAIR_ALL">
+		<text>(Repair Drone) Fix the drone. [1|]</text>
+		<event>
+			<text>Your repair drone quickly patches up the Auto-ship. Once fixed, it distributes supplies and patches up your hull.</text>
+			<autoReward level="RANDOM">stuff</autoReward>
+			<damage amount="-5"/>
+			<item_modify>
+				<item type="drones" min="-1" max="-1"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_LANIUS">
+		<text>(Lanius Crew) Have your Lanius salvage the drone.</text>
+		<event>
+			<text>Your Lanius is able to salvage the drone with little difficulty, knowing exactly what to disassemble to prevent triggering its defenses.</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the Auto-ship.</text>
+		<event>
+			<text>You aren't interested by the malfunctioning automaton.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="FED_BROKEN_SUPPLY_DRONE_ACTIVATE">
+	<event>
+		<text>You attempt to transmit your ID to the ship, in hopes it will still be able to distribute supplies. However, it seems to struggle identifying your ship, and suddenly attacks!</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>Luckily, though the drone is heavily damaged, it is still able to scan your Federation ID and transmit some supplies.</text>
+		<autoReward level="LOW">stuff</autoReward>
+	</event>
+</eventList>
+<eventList name="FED_BROKEN_SUPPLY_DRONE_SALVAGE">
+	<event>
+		<text>While salvaging the drone, it suddenly turns hostile and attacks!</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>The drone remains mostly unresponsive. Its weapons even come online, but it remains unable to fire.</text>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+</eventList>
+
+<event name="FED_NODAMAGE_TEST" unique="true">
+	<text>This beacon is home to a Federation science station. They don't hail you, but everything appears in order and your scanners pick up regular activity inside. A few strange looking Federation Auto-drones are tethered to the exterior.</text>
+	<choice hidden="true">
+		<text>Contact them.</text>
+		<event>
+			<text>"Who are you, what do you wan- holy crap! You're the Multiverse ship. It's an honor, sir. We understand how important your mission is for all of us, but we must ask if you can do us a favor. We need a military ship to test out our latest combat AI. Just let it shoot at you for a bit until the test is complete. We'll repair any damage it causes after."</text>
+			<choice hidden="true">
+				<text>Agree to test the drone.</text>
+				<event>
+					<text>"Great! Just wait a moment, it'll be active shortly. Just remember, ion weapons or system damage is fine, but don't do any damage to the hull."</text>
+					<ship load="SHIP_FED_TEST_DRONE" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>No thanks.</text>
+				<event>
+					<text>"Fair enough."</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the station.</text>
+		<event>
+			<text>You aren't interested in the station. You ignore them.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FED_NODAMAGE_TEST_DESTROY">
+	<text>"What the hell was that! What did you not understand about DO NOT DAMAGE THE SHIP. Get out of here, now. Maybe next time you'll listen to instructions when they're given to you."</text>
+</event>
+<event name="FED_NODAMAGE_TEST_DAMAGE">
+	<text>"Careful, careful! I told you not to damage the ship! I don't think you were the best choice for this after all, it's probably best if you leave. Hopefully I'll find someone better at following instructions..."</text>
+	<ship hostile="false"/>
+</event>
+<event name="FED_NODAMAGE_TEST_WIN">
+	<text>The Auto-ship deactivates and the Federation engineer hails you again. "Perfect! Thank you so much for your help. I'll patch up your hull, and feel free to help yourself to some of our other tech."</text>
+	<ship hostile="false"/>
+	<damage amount="-30"/>
+	<autoReward level="MED">droneparts</autoReward>
+	<weapon name="RANDOM"/>
+</event>
+
+<event name="FED_HANGAR_RAID" unique="true">
+	<text>A large Federation hangar has been built on the nearby planet. Any Federation ship is allowed to dock.</text>
+	<choice hidden="true">
+		<text>Dock.</text>
+		<event>
+			<text>You transmit your ID and not long after are allowed to enter. A repair team moves in to refuel your ship and make some repairs.</text>
+			<autoReward level="HIGH">fuel_only</autoReward>
+			<damage amount="-7"/>
+			<choice hidden="true">
+				<text>Leave.</text>
+				<event>
+					<text>As you exit the hangar a blaring siren fills the air. A Rebel squadron is approaching! The planetary defense cannons are overwhelmed and most of the Rebel ships are able to get past. An Elite ship locks onto you and attacks!</text>
+					<ship load="SHIP_REBEL_ELITE_FIGHT" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the hangar.</text>
+		<event>
+			<text>It's tempting, but you can't waste any time.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		SPECIAL QUEST!!!!!
+		SPECIAL QUEST!!!!!
+		SPECIAL QUEST!!!!!
+-->
+<event name="STEALTH_UNLOCK_1" unique="true">
+	<text>You arrive near a small fleet of Federation and Engi ships. A simple decryption and translation of their comm frequency tells you that they are having a frantic discussion about something obviously troubling them.</text> 
+	<choice>
+		<text>Message them and ask if you can help.</text>
+		<event>
+			<text>Slightly shocked at your question, their leader quickly responds, "Declined offer with apologetic gratitude. Topic of discussion private matter, no concern of Multiverse vigilantes."</text>
+		</event>
+	</choice>
+	<choice>
+		<text>Ignore it and move on.</text>
+		<event>
+			<text>You can't help but wonder what they were discussing as you prepare to jump.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_ENGI" hidden="true">
+		<text>(Engi Crew) Have your Engi crewmember contact them.</text>
+		<event>
+			<text>Your crewmember syncs with the comm unit to communicate with them directly. You offer your help and a summary of the ship's mission. They respond, "Our goals have analogous elements. However, not all available for disclosure, discretion necessary."</text>
+			<choice>
+				<text>Offer your help.</text>
+				<event>
+					<text>"Secret prototype stolen by Mantis, initiating high profile trade with Rebels. Cargo ship location: unknown. Mantis Suzerain dispatched to Rebel base to deliver information on prototype whereabouts. Transmitting location of known data transfer location."</text>
+					<quest event="STEALTH_UNLOCK_2REAL"/>
+					<choice>
+						<text>Continue...</text>
+						<event>
+							<quest event="STEALTH_UNLOCK_2FAKE"/>
+							<text>"However, Mantis ship potentially stopped by second base on travel. Would calculate probability of transfer occuring here but data insufficient. Cannot risk obvious Rebel-Engi conflict. Also, need time to acquire military ships. Assist in finding technology?"</text>
+							<choice>
+								<text>Agree.</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_STEALTH_UNLOCK_FAKE" auto_blueprint="LIST_SHIPS_REBEL_ELITE_GENERIC">
+	<escape timer="40" min="18" max="18" >
+		<text>As soon as they see you, they power up their engines to jump away. Stop them!</text>
+		<ship hostile="true"/>
+	</escape>
+	<gotaway>
+		<text>With the ship gone you search through the abandoned base for any signs of their destination but find none.</text>
+	</gotaway>
+	<surrender  min="4" max="4" load="STEALTH_UNLOCK_2FAKE_SURRENDER"/>
+	<destroyed>
+		<text>You take what you can from the debris.</text>
+		<autoReward level="MED">standard</autoReward>
+	</destroyed>
+	<deadCrew>
+		<text>A quick search of their communication logs shows that the tech you were searching for never passed through this base... It must have been a decoy! You strip what you can and prepare to jump.</text>
+		<autoReward level="MED">standard</autoReward>
+	</deadCrew>
+</ship>
+<event name="STEALTH_UNLOCK_2FAKE">
+	<text>You arrive at one of the Rebel bases that the Engi told you about. It appears abandoned except for one well armed Elite ship. Perhaps you could extract information from them.</text>
+	<ship load="SHIP_STEALTH_UNLOCK_FAKE" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="STEALTH_UNLOCK_2FAKE_SURRENDER">
+	<text>"Stop! Stop! Why is the Federation so damn ravenous! Don't you have better things to do than hunting down random Rebel ships when you have other battles to fight?"</text>
+	<choice>
+		<text>Demand information on the stolen technology.</text>
+		<event>
+			<text>"Ah, so that's what you're after. Too bad, you followed the wrong ship. The envoy that passed through here was a fake, to trick fools like you. Now let us go!"</text>
+			<choice hidden="true">
+				<text>Let them go.</text>
+				<event>
+					<text>"Hah! And don't think the fleet won't hear about this!" The Rebels jump away.</text>
+					<ship hostile="false"/>
+					<modifyPursuit amount="1"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Ignore him and attack.</text>
+				<event>
+					<text>"No, wait!" You cut the transmission and continue the assault.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_STEALTH_UNLOCK_2REAL" auto_blueprint="LIST_SHIPS_SUZERAIN_FIGHT">
+	<escape timer="40" min="18" max="18" >
+		<text>As soon as they see you they power up their engines to jump away. Stop them!</text>
+		<ship hostile="true"/>
+	</escape>
+	<gotaway>
+		<text>With the ship gone, you search through the abandoned base for any signs of their destination but find none.</text>
+	</gotaway>
+	<surrender  min="5" max="5" load="STEALTH_UNLOCK_2REAL_SURRENDER"/>
+	<destroyed>
+		<text>You take what you can from the debris.</text>
+		<autoReward level="MED">standard</autoReward>
+	</destroyed>
+	<deadCrew>
+		<text>Once their crew is dead you scan the ship for the stolen blueprints but find none. Instead, you find recordings of a conversation with an MFK Ace... the Mantis must have already transfered off the data. You strip the ship and prepare to pursue.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<quest event="STEALTH_UNLOCK_3"/>
+	</deadCrew>
+</ship>
+<event name="STEALTH_UNLOCK_2REAL">
+	<text>You arrive at one of the Rebel bases that the Engi told you about. It appears mostly abandoned, save for a Suzerain ship. This must be the one the Engi were searching for!</text>
+	<ship load="SHIP_STEALTH_UNLOCK_2REAL" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="STEALTH_UNLOCK_2REAL_SURRENDER">
+	<text>"Eek! Me not want to die here! Many apologizing Federation, now stop firing!"</text>
+	<choice>
+		<text>Demand information on the stolen technology.</text>
+		<event>
+			<text>"Oh yes yes, that why you here. Yes, MFK ship arrive, paying much well for data! We give them location of envoy, and taking pay! You understanding it's just job, yes? You surely run mercenary job time to time!"</text>
+			<quest event="STEALTH_UNLOCK_3"/>
+			<choice>
+				<text>Let them go.</text>
+				<event>
+					<text>You prepare an FTL message containing the coordinates to send to the Engi and get ready to jump.</text>
+					<ship hostile="false"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_STEALTH_UNLOCK_3" auto_blueprint="LIST_SHIPS_REBEL_SELITE_FIGHT">
+	<destroyed load="STEALTH_UNLOCK_4"/>
+	<deadCrew>
+		<text>You strip what you can and contact the Engi ships.</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice>
+			<text>Continue...</text>
+			<event load="STEALTH_UNLOCK_4"/>
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="human_soldier" prop="0.5"/>
+		<crewMember type="human_mfk" prop="0.5"/>
+	</crew>
+</ship>
+<event name="STEALTH_UNLOCK_3">
+	<text>You have finally caught up with the MFK Ace ship. A hangar-sized Mantis cargo ship has stopped nearby, guarded by a mix of Mantis and Rebels. As you reconsider the assault, a squadron of Engi ships with pirate emblems jump in and assist you. You get involved and attack one of the nearby Rebels head-on.</text>
+	<ship load="SHIP_STEALTH_UNLOCK_3" hostile="true"/>
+	<img back="BACK_EVENT_STEALTHUNLOCK" planet="NONE"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="STEALTH_UNLOCK_4">
+	<text>The Engi emerge victorious from their battles with only minor losses. They message you, "Project X-ME56 commissioned by Federation military research division. Advanced Stealth Cruiser. Project finished during rebellion. Unable to reconnect with Federation military command."</text>
+	<choice>
+		<text>Ask about the Mantis ships.</text>
+		<event>
+			<text>"Likely ploy by Rebels to avoid breaking non-aggression pact with Engi. 97.56 percent likely. Your mission to assist last Federation fleet, correct? Coordinates?"</text>
+			<choice hidden="true">
+				<text>Transmit coordinates of Federation command.</text>
+				<event>
+					<text>"Satisfactory. Delivery of tech will assist in Federation cause. Gratitude alone insufficient. Commencing ship repair and compensation." Their crews deliver an advanced augmentation for installation but you're more pleased to hear that the Federation will have an improved arsenal.</text>
+					<unlockCustomShip silent="false">PLAYER_SHIP_CLOAK</unlockCustomShip>
+					<damage amount="-20"/>
+					<autoReward level="HIGH">standard</autoReward>
+					<augment name="SYSTEM_CASING_NEW"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="FED_MEMORIAL" unique="true"> <!--give special hyperspace beacon-->
+	<preventQuest/>
+	<text>It's clear from the minute you jump in that this is an important location. A massive, stunning memorial has been built here, so large it can easily be seen from space.</text>
+	<img back="BACK_EVENT_MEMORIAL" planet="PLANET_INVISIBLE"/>
+	<choice hidden="true">
+		<text>Inspect closer.</text>
+		<event>
+			<text>The memorial appears to have been constructed in honor of Universe 0, and more specifically the battle of Node 17. You exit your ship to observe a giant wall of names, a list of every Federation officer who gave their lives fighting in Node 17, whether they died from a kamikaze Auto, a Rebel ship, or a fatal injury sustained during battle. It moves you greatly, having come from Universe 0.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>A blazing siren screams throughout the city, and a monotone voice speaks. "This is not a drill. Repeat, this is not a drill. A Rebel squadron has been seen approaching the city. All civilians are to clear out of any unprotected areas and seek out shelter immediately. Any Federation personnel within the city limits are to report to command immediately to defend against the approaching threat."</text>
+					<ship load="SHIP_REBEL_SELITE_MEMORIAL" hostile="false"/>
+					<choice hidden="true">
+						<text>You won't stand for this. Do all you can to help!</text>
+						<event>
+							<text>At the lead of the Rebel squadron is an unusual Rebel ship, one unlike anything you've seen before. It wields a powerful artillery weapon. If you can take it down, maybe it'll discourage the rest of the fleet.</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Leave as fast as possible.</text>
+						<event>
+							<text>You aren't interested in getting caught up in this fight. You're certain the Federation ships here will be able to fend off the Rebels.</text>
+							<choice>
+								<text>Do something onboard the ship.</text>
+								<event load="STORAGE_CHECK"/>
+							</choice>
+							<choice>
+								<text>Do nothing.</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FED_MEMORIAL_INTERMEDIATE">
+	<text>Around you, you can see Rebel ships beginning to flee as the Federation forces push them back. Their last hope, the Gunboat and your target, has already taken critical damage. You have to keep fighting!</text>
+</event>
+<event name="FED_MEMORIAL_DESTROY">
+	<text>The Gunboat has received critical damage, too much for it to sustain. Its artillery system crackles and the engines explode. The ship goes spiraling down into the nearby lake. It explodes one last time once it collides with the water, showering the coast. The sight of their leading ship dispatched so efficiently is enough to chase away the rest of the Rebels. Every last hostile ship jumps away, leaving the Federation the undisputed victor.</text>
+	<choice>
+		<text>Continue...</text>
+		<event load="FED_MEMORIAL_WIN"/>
+	</choice>
+</event>
+<event name="FED_MEMORIAL_DEAD_CREW">
+	<text>The lifeless Gunboat begins to plummet towards the ground. It smashes into the coast, erupting into a glorious display of flames, though luckily it causes no damage to any of the infrastructure of the city. The sight of their leading ship dispatched so efficiently is enough to chase away the rest of the Rebels. Every last hostile ship jumps away, leaving the Federation the undisputed victor.</text>
+	<choice>
+		<text>Continue...</text>
+		<event load="FED_MEMORIAL_WIN"/>
+	</choice>
+</event>
+<event name="FED_MEMORIAL_WIN">
+	<text>You are hailed by a Federation officer in the city, who requests that you land. As you exit your vessel, all around civilians cheer for you. You recognize Vice Admiral Adara, the voice who spoke to you. "You have done us a great service today. I do not know how to thank you for protecting this city. I have heard stories, well, myths and legends really, of the Multiverse Renegades, and I've always been skeptical. Now, all of my doubts have been assuaged."</text>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>Adara puts a shiny medal around your neck, an honor that you will carry on for life, assuming you succeed in your mission. Every support ship in the district is dispatched to aid you in every way they can, and you're even given a fresh new Federation cruiser from one of their hangars. You don't really have a use for this ship, so you forward its blueprints to the hangar.</text>
+			<variable name="ach_boss_mfkgunboat" op="set" val="1"/>
+			<unlockCustomShip silent="false">PLAYER_SHIP_FEDERATION</unlockCustomShip>
+			<damage amount="-10"/>
+			<autoReward level="HIGH">standard</autoReward>
+			<weapon name="LIST_LOOT_FEDERATION"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>As you are leaving, Adara pulls you aside to tell you one last thing. "This package, it is extremely important that it arrives to Tully in time. I don't have time to bring it to him myself, but I know I can trust you with it. Godspeed, captain."</text>
+					<augment name="TULLY_PRESENT"/>
+					<choice>
+						<text>Continue...</text>
+						<event load="MORALITY_REMOVE_GENERAL"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>

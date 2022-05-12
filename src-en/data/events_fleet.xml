@@ -1,0 +1,593 @@
+<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+						THREAT LEVELS
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<eventList name="FLEET_THREAT_VLOW">
+	<event load="FLEET_ELITE"/>
+	<!--0% Ace chance-->
+</eventList>
+<eventList name="FLEET_THREAT_LOW">
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<!--10% Ace chance-->
+	<event load="FLEET_ACE"/>
+</eventList>
+<eventList name="FLEET_THREAT_MLOW">
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<!--20% Ace chance-->
+	<event load="FLEET_ACE"/>
+</eventList>
+<eventList name="FLEET_THREAT_MEDIUM">
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<event load="FLEET_ELITE"/>
+	<!--30% Ace chance-->
+	<event load="FLEET_ACE"/>
+	<event load="FLEET_ACE"/>
+	<event load="FLEET_ACE"/>
+</eventList>
+<eventList name="FLEET_THREAT_HIGH">
+	<event load="FLEET_ELITE"/>
+	<!--50% Ace chance-->
+	<event load="FLEET_ACE"/>
+</eventList>
+<eventList name="FLEET_THREAT_VHIGH">
+	<event load="FLEET_ELITE"/>
+	<!--75% Ace chance-->
+	<event load="FLEET_ACE"/>
+	<event load="FLEET_ACE"/>
+	<event load="FLEET_ACE"/>
+</eventList>
+<eventList name="FLEET_THREAT_CRITICAL">
+	<!--100% Ace chance-->
+	<event load="FLEET_ACE"/>
+</eventList>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+						STANDARD
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<event name="FINISH_BEACON_FLEET_ELITE">
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text>You've found the exit beacon but the Rebels got here first! You must survive long enough to be able to jump to the next sector.</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_REBEL_FLEET" hostile="true"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(Jerry) "Hello!"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Try to trick the Elite.</text>
+		<event load="FLEET_TRICK"/>
+	</choice>
+</event>
+<event name="FINISH_BEACON_FLEET_ACE">
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text>You've found the exit beacon but the Rebels got here first! You must survive long enough to be able to jump to the next sector.</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_REBEL_FLEET_S" hostile="true"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(Jerry) "Hello!"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Try to trick the Elite.</text>
+		<event load="FLEET_TRICK_BAD"/>
+	</choice>
+</event>
+
+<event name = "FLEET_ELITE">
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text>The Rebel fleet has found you, and a nearby ship turns to engage. The cruisers in the distance are firing on you!</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_REBEL_FLEET" hostile="true"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(Jerry) "Hello!"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Try to trick the Elite.</text>
+		<event load="FLEET_TRICK"/>
+	</choice>
+</event>
+
+<event name="FLEET_ACE">
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text>The Rebel fleet has found you, and a nearby ship turns to engage. The ship that approaches is no regular Elite, but rather an MFK Ace! Much stronger than most Rebel ships, if you can defeat it, it may delay the fleet a little longer.</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_REBEL_FLEET_S" hostile="true"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(Jerry) "Hello!"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Try to trick the Elite.</text>
+		<event load="FLEET_TRICK_BAD"/>
+	</choice>
+</event>
+
+<eventList name="FLEET_ESCAPE">
+	<event>
+		<text>You are unsuccessful in escaping the Elite. You prepare for battle.</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>You are unsuccessful in escaping the Elite. You prepare for battle.</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>You manage to outrun the fleet ship by some odds. You take a moment to catch your breath.</text>
+		<ship hostile="false"/>
+	</event>
+</eventList>
+
+<eventList name="FLEET_TRICK">
+	<event load="FLEET_TRICK_BAD"/>
+	<event load="FLEET_TRICK_BAD"/>
+	<event load="FLEET_TRICK_BAD"/>
+	<event load="FLEET_TRICK_BAD"/>
+	<event>
+		<text>By some odds, the Elite is indifferent enough to accept your ID and allow you through. You aren't sure how long until they realize what you've done, so you better get away quickly.</text>
+		<ship hostile="false"/>
+	</event>
+</eventList>
+<event name="FLEET_TRICK_BAD">
+	<text>As expected, the Elite fails to be tricked by your rudimentary attempt.</text>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+						NEBULA
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<eventList name="FLEET_THREAT_VLOW_NEBULA">
+	<event load="FLEET_ELITE_NEBULA"/>
+	<!--0% Ace chance-->
+</eventList>
+<eventList name="FLEET_THREAT_LOW_NEBULA">
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<!--10% Ace chance-->
+	<event load="FLEET_ACE_NEBULA"/>
+</eventList>
+<eventList name="FLEET_THREAT_MLOW_NEBULA">
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<!--20% Ace chance-->
+	<event load="FLEET_ACE_NEBULA"/>
+</eventList>
+<eventList name="FLEET_THREAT_MEDIUM_NEBULA">
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<event load="FLEET_ELITE_NEBULA"/>
+	<!--30% Ace chance-->
+	<event load="FLEET_ACE_NEBULA"/>
+	<event load="FLEET_ACE_NEBULA"/>
+	<event load="FLEET_ACE_NEBULA"/>
+</eventList>
+<eventList name="FLEET_THREAT_HIGH_NEBULA">
+	<event load="FLEET_ELITE_NEBULA"/>
+	<!--50% Ace chance-->
+	<event load="FLEET_ACE_NEBULA"/>
+</eventList>
+<eventList name="FLEET_THREAT_VHIGH_NEBULA">
+	<event load="FLEET_ELITE_NEBULA"/>
+	<!--75% Ace chance-->
+	<event load="FLEET_ACE_NEBULA"/>
+	<event load="FLEET_ACE_NEBULA"/>
+	<event load="FLEET_ACE_NEBULA"/>
+</eventList>
+<eventList name="FLEET_THREAT_CRITICAL_NEBULA">
+	<!--100% Ace chance-->
+	<event load="FLEET_ACE_NEBULA"/>
+</eventList>
+
+<event name = "FLEET_ELITE_NEBULA">
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text>The Rebel fleet has found you, and a nearby ship turns to engage. The cruisers in the distance are firing on you!</text>
+	<ship load="SHIP_REBEL_FLEET" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<variable name="loc_dives" op="add" val="1"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(Jerry) "Hello!"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Try to trick the Elite.</text>
+		<event load="FLEET_TRICK"/>
+	</choice>
+</event>
+
+<event name="FLEET_ACE_NEBULA">
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text>The Rebel fleet has found you, and a nearby ship turns to engage. The ship that approaches is no regular Elite, but rather an MFK Ace! Much stronger than most Rebel ships, if you can defeat it, it may delay the fleet a little longer.</text>
+	<ship load="SHIP_REBEL_FLEET_S" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<variable name="loc_dives" op="add" val="1"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(Jerry) "Hello!"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Try to trick the Elite.</text>
+		<event load="FLEET_TRICK_BAD"/>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+						FEDERATION
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<eventList name="FLEET_THREAT_VLOW_FEDERATION">
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<!--0% Ace chance-->
+</eventList>
+<eventList name="FLEET_THREAT_LOW_FEDERATION">
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<!--10% Ace chance-->
+	<event load="FLEET_ACE_FEDERATION"/>
+</eventList>
+<eventList name="FLEET_THREAT_MLOW_FEDERATION">
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<!--20% Ace chance-->
+	<event load="FLEET_ACE_FEDERATION"/>
+</eventList>
+<eventList name="FLEET_THREAT_MEDIUM_FEDERATION">
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<!--30% Ace chance-->
+	<event load="FLEET_ACE_FEDERATION"/>
+	<event load="FLEET_ACE_FEDERATION"/>
+	<event load="FLEET_ACE_FEDERATION"/>
+</eventList>
+<eventList name="FLEET_THREAT_HIGH_FEDERATION">
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<!--50% Ace chance-->
+	<event load="FLEET_ACE_FEDERATION"/>
+</eventList>
+<eventList name="FLEET_THREAT_VHIGH_FEDERATION">
+	<event load="FLEET_ELITE_FEDERATION"/>
+	<!--75% Ace chance-->
+	<event load="FLEET_ACE_FEDERATION"/>
+	<event load="FLEET_ACE_FEDERATION"/>
+	<event load="FLEET_ACE_FEDERATION"/>
+</eventList>
+<eventList name="FLEET_THREAT_CRITICAL_FEDERATION">
+	<!--100% Ace chance-->
+	<event load="FLEET_ACE_FEDERATION"/>
+</eventList>
+
+<event name = "FLEET_ELITE_FEDERATION">
+	<customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text>The Rebel fleet has taken control of this beacon, but they have been met with opposition from Federation forces. As the ships rage on in combat in the distance, an Elite ship breaks off to fight you.</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_REBEL_FLEET" hostile="true"/>
+	<environment type="PDS" target="both"/>
+	<fleet>rebel</fleet>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(Jerry) "Hello!"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Try to trick the Elite.</text>
+		<event load="FLEET_TRICK"/>
+	</choice>
+</event>
+
+<event name = "FLEET_ACE_FEDERATION">
+	<customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text>The Rebel fleet has taken control of this beacon, but they have been met with opposition from Federation forces. As the ships rage on in combat in the distance, an MFK Ace ship breaks off to fight you.</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_REBEL_FLEET_S" hostile="true"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="both"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(Jerry) "Hello!"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Try to trick the Elite.</text>
+		<event load="FLEET_TRICK_BAD"/>
+	</choice>
+</event>
+
+<event name="FINISH_BEACON_FLEET_ELITE_FEDERATION">
+	<customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text>You've found the exit beacon, but the Rebels have already arrived, and an Elite is dispatched to track you! The Federation forces are retaliating, but you must still jump as soon as possible to the next sector.</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_REBEL_FLEET" hostile="true"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="both"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(Jerry) "Hello!"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Try to trick the Elite.</text>
+		<event load="FLEET_TRICK"/>
+	</choice>
+</event>
+<event name="FINISH_BEACON_FLEET_ACE_FEDERATION">
+	<customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<text>You've found the exit beacon, but the Rebels have already arrived, and an MFK Ace ship is tracking you down! The Federation forces are retaliating, but you must still jump as soon as possible to the next sector.</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_REBEL_FLEET_S" hostile="true"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="both"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(Jerry) "Hello!"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+			<ship hostile="false"/> 
+		</event>
+	</choice>
+	<choice hidden="true" req="REBEL_ID">
+		<text>(Forged ID) Try to trick the Elite.</text>
+		<event load="FLEET_TRICK_BAD"/>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+						AUTO
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<ship name="SHIP_AUTO_FLEET" auto_blueprint="LIST_SHIPS_ESTATE_AUTO">
+	<destroyed>
+		<text>You've managed to defeat the fleet ship, but you hardly have enough time to salvage more than a single fuel canister.</text>
+		<item_modify>
+			<item type="fuel" min="1" max="1"/>
+		</item_modify>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event/>
+		</choice>
+		<choice req="MAGNET_ARM">
+			<text>(Magnet Arm) Salvage the wreck further.</text>
+			<event>
+				<autoReward level="LOW">standard</autoReward>
+			</event>
+		</choice>
+	</destroyed>
+</ship>
+<event name = "FLEET_AUTO">
+	<customFleet right="false" firing="true" autoDarkening="true">CUSTOM_FLEET_ENGINEER</customFleet>
+	<text>Though the background ships suggest heavy Rebel presence, not many Elites linger. It appears they merely function as carriers for the massive fleet of Auto-ships now swarming towards you. Uh oh...</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_AUTO_FLEET" hostile="true"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Auto.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+</event>
+<event name="FINISH_BEACON_FLEET_AUTO">
+	<customFleet right="false" firing="true" autoDarkening="true">CUSTOM_FLEET_ENGINEER</customFleet>
+	<text>You've found the exit beacon, but the Rebels are already here. Though the background ships suggest heavy Rebel presence, not many Elites linger. It appears they merely function as carriers for the massive fleet of Auto-ships now swarming towards you. Uh oh...</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_AUTO_FLEET" hostile="true"/>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Auto.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+</event>
+<event name = "FLEET_AUTO_NEBULA">
+	<customFleet right="false" firing="true" autoDarkening="true">CUSTOM_FLEET_ENGINEER</customFleet>
+	<text>Though the background ships suggest heavy Rebel presence, not many Elites linger. It appears they merely function as carriers for the massive fleet of Auto-ships now swarming towards you. Uh oh...</text>
+	<variable name="loc_dives" op="add" val="1"/>
+	<ship load="SHIP_AUTO_FLEET" hostile="true"/>
+	<environment type="PDS" target="player"/>
+	<fleet>rebel</fleet>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(Adv. Engines) Try to escape the Elite.</text>
+		<event load="FLEET_ESCAPE"/>
+	</choice>
+</event>
+</FTL>

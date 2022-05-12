@@ -1,0 +1,127 @@
+<FTL>
+<event name="OPTION_INVALID">
+	<text>Dude, that's cheating. How are you seeing this right now?</text>
+	<item_modify>
+		<item type="fuel" min="-99999" max="-99999"/>
+		<item type="scrap" min="-99999" max="-99999"/>
+		<item type="missiles" min="-99999" max="-99999"/>
+		<item type="drones" min="-99999" max="-99999"/>
+	</item_modify>
+</event>
+
+<event name="CANCEL">
+	<event/>
+</event>
+
+<event name="DEATH">
+	<metaVariable name="prof_deaths" op="add" val="1"/>
+	<loadEvent>THE_JUDGES_VARIABLE_CLEAR</loadEvent>
+</event>
+
+<event name="DETERGENT_MODE">
+	<text>DETERGENT MODE ACTIVATED!
+	Daring Renegade, you've proven your courage and chosen to activate DETERGENT MODE! And courage you will need, for many trials and tribulations await you in the journey ahead! You will need bravery, strength, cunning, and most importantly true grit to face the challenges that DETERGENT MODE will throw at you.
+	
+	Best of luck, Renegade. May you rise above the rest and stand true in the face of DETERGENT MODE.</text>
+	<playSound>unlock</playSound>
+	<variable name="detergent_mode" op="set" val="1"/>
+</event>
+
+<!--
+////////////////////////
+PROTO-MV CRUISERS
+////////////////////////
+-->
+<event name="ATM_MACHINE_WITHDRAW_CHECK">
+	<loadEventList seeded="false" first="true">
+		<event name="ATM_MACHINE_CLEAR" req="ATM_MACHINE" lvl="0" max_lvl="0"/>
+		<event name="ATM_MACHINE_WITHDRAW" req="ATM_MACHINE" lvl="1"/>
+	</loadEventList>
+</event>
+<event name="ATM_MACHINE_WITHDRAW">
+	<disableScrapAugments/>
+	<disableScrapScore/>
+	<item_modify>
+		<item type="scrap" min="2" max="2"/>
+	</item_modify>
+</event>
+<event name="ATM_MACHINE_CLEAR">
+	<clearTriggeredEvent name="ATM_CHECKER"/>
+</event>
+
+<event name="MV_DRIVE_EXPLODE">
+	<damage amount="1" system="engines"/>
+</event>
+
+<event name="EXTRA_LIFE_HEAL">
+	<text>"CATASTROPHIC HULL FAILURE IMMINENT - ACTIVATING EMERGENCY PROTOCOLS." Your hull has been repaired, and your resources have been restocked!</text>
+	<damage amount="-30"/>
+	<remove name="EXTRA_LIFE"/>
+	<item_modify>
+		<item type="fuel" min="5" max="5"/>
+		<item type="missiles" min="7" max="7"/>
+		<item type="drones" min="7" max="7"/>
+	</item_modify>
+</event>
+
+<event name="UNSTABLE_CHECKER">
+	<triggeredEvent event="UNSTABLE_COMBUST" playerDamage="5" clearOnJump="true"/>
+</event>
+<event name="UNSTABLE_COMBUST">
+	<triggeredEvent event="UNSTABLE_COMBUST" playerDamage="5" clearOnJump="true"/>
+	<damage amount="0" system="random" effect="fire"/>
+	<damage amount="0" system="random" effect="fire"/>
+	<damage amount="0" system="random" effect="fire"/>
+</event>
+
+<!--
+////////////////////////
+FLAGSHIP POWER SURGES
+////////////////////////
+-->
+<event name="FLAGSHIP_STAGE2_TRACKER">
+	<clearSuperDrones player="true"/>
+	<triggeredEvent event="POWER_SURGE_DRONES" seeded="false" loops="999999999" thisFight="true" minTime="20.0" maxTime="30.0">
+		<warningMessage id="warning_power_surge_player" x="444" y="46" time="5.0" r="120" g="255" b="120" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+	</triggeredEvent>
+</event>
+<event name="POWER_SURGE_DRONES">
+	<superDrones player="true"/>
+</event>
+
+<event name="FLAGSHIP_STAGE3_TRACKER">
+	<removeItem>HIDDEN MARKER_STAGE3_SURGE1</removeItem>
+	<removeItem>HIDDEN MARKER_STAGE3_SURGE2</removeItem>
+	<removeItem>HIDDEN MARKER_STAGE3_SURGE3</removeItem>
+	<clearSuperDrones player="true"/>
+	<triggeredEvent event="FLAGSHIP_POWER_SURGE_3" seeded="false" loops="999999999" thisFight="true" minTime="20.0" maxTime="30.0">
+		<warningMessage id="warning_power_surge_player" x="444" y="46" time="5.0" r="120" g="255" b="120" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+	</triggeredEvent>
+</event>
+<event name="FLAGSHIP_POWER_SURGE_3">
+	<loadEventList seeded="false">
+		<event name="POWER_SURGE_BARRAGE1" req="MARKER_STAGE3_SURGE1" lvl="0"/>
+		<event name="POWER_SURGE_BARRAGE2" req="MARKER_STAGE3_SURGE1"/>
+		<event name="POWER_SURGE_BARRAGE3" req="MARKER_STAGE3_SURGE2"/>
+		<event name="POWER_SURGE_SHIELD" req="MARKER_STAGE3_SURGE3"/>
+	</loadEventList> 
+</event>
+<event name="POWER_SURGE_BARRAGE1">
+	<hiddenAug>MARKER_STAGE3_SURGE1</hiddenAug>
+	<superBarrage player="true"/>
+</event>
+<event name="POWER_SURGE_BARRAGE2">
+	<hiddenAug>MARKER_STAGE3_SURGE2</hiddenAug>
+	<superBarrage player="true"/>
+</event>
+<event name="POWER_SURGE_BARRAGE3">
+	<hiddenAug>MARKER_STAGE3_SURGE3</hiddenAug>
+	<superBarrage player="true"/>
+</event>
+<event name="POWER_SURGE_SHIELD">
+	<removeItem>HIDDEN MARKER_STAGE3_SURGE1</removeItem>
+	<removeItem>HIDDEN MARKER_STAGE3_SURGE2</removeItem>
+	<removeItem>HIDDEN MARKER_STAGE3_SURGE3</removeItem>
+	<superShields player="true"/>
+</event>
+</FTL>

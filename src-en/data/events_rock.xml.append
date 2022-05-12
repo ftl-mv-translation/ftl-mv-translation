@@ -1,0 +1,3722 @@
+﻿<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					ROCK SECTOR 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<!--
+		ITEM!!!
+	Events that give stuff
+-->
+<eventList name="ITEMS_ROCK">
+	<event load="ROCK_PUNS"/>
+	<event load="ROCK_CRYOBSESSION"/>
+	<event load="ROCK_APOLOGY"/>
+	
+	<event load="TRADER_CIV"/>
+	<event load="PIRATE_SALESMAN"/>
+</eventList>
+
+<event name="ROCK_APOLOGY" unique="true">
+	<ship load="SHIP_ROCK_GENERIC" hostile="false"/>
+	<text>Moments after entering the system, you receive a message from the nearby ship; "We are sinners! Oh woe is us! Strike us down! Punish us! We do not deserve the gift of life!"</text>
+	<choice hidden="true">
+		<text>Ask them why they're upset.</text>
+		<event load="ROCK_APOLOGY_INTERROGATE"/>
+	</choice>
+	<choice hidden="true">
+		<text>Strike them down.</text>
+		<event load="ROCK_APOLOGY_ATTACK"/>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>The Rockman's pleading continues for some time, but you simply tune them out and fly away.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROCK_APOLOGY_INTERROGATE">
+    <event>
+        <text>"I have SINNED! I... used the restroom... and I was out of toilet paper... and I had a holy script nearby and... OH GOD! I'm a MONSTER! How could you make me relive my crimes? You are cruel! Too cruel for this world! First I will kill you, then myself!"</text>
+        <ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+    </event>
+    <event>
+        <text>"I have SINNED! I... used the restroom... and I was out of toilet paper... and I had a holy script nearby and... OH GOD! I'm a MONSTER! Oh please, allow me to redeem myself! In any way I can, perhaps there are favors I can serve to find my way to heaven once more!"</text>
+		<crewMember amount="1" class="rock"/>
+	</event>
+</eventList>
+<eventList name="ROCK_APOLOGY_ATTACK">
+    <event>
+        <text>"I have changed my mind! I no longer wish to die! I shall redeem myself by killing you instead!"</text>
+        <ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+    </event>
+    <event>
+        <text>"Oh thank you good captain! Only in death shall I find redemption!"</text>
+		<autoReward level="MED">standard</autoReward>
+		<enemyDamage amount="30"/>
+	</event>
+</eventList>
+
+<event name="ROCK_PUNS" unique="true">
+	<ship load="SHIP_ROCK_GENERIC" hostile="false"/>
+	<text>A stoic Rock Captain hails you. "Federation. I have an important question for you. Why can you not expect perfection from geologists?"</text>
+	<choice hidden="true">
+		<text>Uh... We don't know.</text>
+		<event>
+			<text>"Because they all have their FAULTS!" He breaks into intense laughter.</text>
+			<choice hidden="true">
+				<text>Laugh in return.</text>
+				<event>
+					<text>Your laughter mixes together with the Rockman. After a while, you both calm down. So grateful that you found humor in his pun, the Rockman feels compelled to gift you some missiles!</text>
+					<autoReward level="MED">missiles_only</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>End their pitiful existence.</text>
+				<event>
+					<text>"Wait... Wait no, it was just a joke!"</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_ZOLTAN">
+				<text>(Zoltan Crew) "What a shocker!"</text>
+				<event>
+					<text>The Rockman is so impressed by the retaliation of your own pun that he submits, promising to dedicate the rest of his existence to your servitude. As long as he can keep making puns along the way.</text>
+					<crewMember amount="1" class="rock">Comedian</crewMember>
+					<autoReward level="MED">missiles_only</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_CRYSTAL">
+				<text>(Crystal Crew) "Ahh, a wise crack!"</text>
+				<event>
+					<text>The Rockman is so impressed by the retaliation of your own pun that he submits, promising to dedicate the rest of his existence to your servitude. As long as he can keep making puns along the way.</text>
+					<crewMember amount="1" class="rock">Comedian</crewMember>
+					<autoReward level="MED">missiles_only</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_LEECH">
+				<text>(Leech Crew) "That joke sucks."</text>
+				<event>
+					<text>"Is that supposed to be a pun? I cannot tell if you are insulting me or making a pitiful attempt to join me. I hate Leeches. Get out of my sight!"</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_SLUG" hidden="true">
+		<text>(Slug Crew) Have your Slug predict the answer.</text>
+		<event>
+			<text>Your Slug grumbles. "It'ssss jussst a ssstupid pun." Your Slug repeats the answer to the Rockmen. "Because they all have faultssss..." The Rockman frowns that you predicted it, and turns off transmissions.</text>
+		</event>
+	</choice>
+</event>
+
+<event name="ROCK_CRYOBSESSION" unique="true">
+	<text planet="PLANET_POPULATED">A nearby Rock settlement, painted almost entirely light blue, hails you. "You are from the outside? You wouldn't happen to have anything originating from the Crystal race, would you?"</text>
+	<choice req="BLUELIST_WEAPONS_CRYSTAL" hidden="true">
+		<text>(Crystalline Weapon) We have a Crystal weapon.</text>
+		<event>
+			<text>"Amazing! Such a well crafted weapon too. I don't suppose you'd be willing to sell us one, would you?"</text>
+			<choice req="CRYSTAL_BURST_1" blue="false">
+				<text>Sell them a Crystal Burst MK I.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_BURST_1"/>
+					<item_modify>
+						<item type="scrap" min="65" max="65"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_BURST_1_RED" blue="false">
+				<text>Sell them an Elite Crystal Burst MK I.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_BURST_1_RED"/>
+					<item_modify>
+						<item type="scrap" min="75" max="75"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_BURST_2" blue="false">
+				<text>Sell them a Crystal Burst MK II.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_BURST_2"/>
+					<item_modify>
+						<item type="scrap" min="90" max="90"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_BURST_2_RED" blue="false">
+				<text>Sell them an Elite Crystal Burst MK II.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_BURST_2_RED"/>
+					<item_modify>
+						<item type="scrap" min="100" max="100"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_HEAVY_1" blue="false">
+				<text>Sell them a Heavy Crystal MK I.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_HEAVY_1"/>
+					<item_modify>
+						<item type="scrap" min="60" max="60"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_HEAVY_1_RED" blue="false">
+				<text>Sell them an Elite Heavy Crystal MK I.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_HEAVY_1_RED"/>
+					<item_modify>
+						<item type="scrap" min="70" max="70"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_HEAVY_2" blue="false">
+				<text>Sell them a Heavy Crystal MK II.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_HEAVY_2"/>
+					<item_modify>
+						<item type="scrap" min="85" max="85"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_HEAVY_2_RED" blue="false">
+				<text>Sell them an Elite Heavy Crystal MK II.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_HEAVY_2_RED"/>
+					<item_modify>
+						<item type="scrap" min="95" max="95"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_SHOTGUN" blue="false">
+				<text>Sell them a Crystal Scatter.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_CHARGEGUN"/>
+					<item_modify>
+						<item type="scrap" min="90" max="90"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_SHOTGUN_RED" blue="false">
+				<text>Sell them an Elite Crystal Scatter.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_SHOTGUN_RED"/>
+					<item_modify>
+						<item type="scrap" min="100" max="100"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_CHARGEGUN" blue="false">
+				<text>Sell them a Crystal Charger.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_CHARGEGUN"/>
+					<item_modify>
+						<item type="scrap" min="60" max="60"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_CHARGEGUN_RED" blue="false">
+				<text>Sell them an Elite Crystal Charger.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_CHARGEGUN_RED"/>
+					<item_modify>
+						<item type="scrap" min="70" max="70"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_STUN" blue="false">
+				<text>Sell them a Neural Crystal.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_STUN"/>
+					<item_modify>
+						<item type="scrap" min="65" max="65"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_STUN_RED" blue="false">
+				<text>Sell them an Elite Neural Crystal.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_STUN_RED"/>
+					<item_modify>
+						<item type="scrap" min="75" max="75"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="BOMB_LOCK" blue="false">
+				<text>Sell them a Lockdown Bomb.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="BOMB_LOCK"/>
+					<item_modify>
+						<item type="scrap" min="50" max="50"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="MINELAUNCHER_CRYSTAL" blue="false">
+				<text>Sell them a Shard Launcher.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="MINELAUNCHER_CRYSTAL"/>
+					<item_modify>
+						<item type="scrap" min="60" max="60"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="CRYSTAL_BURST_FIRE" blue="false">
+				<text>Sell them an Amber Launcher.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_BURST_FIRE"/>
+					<item_modify>
+						<item type="scrap" min="100" max="100"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>We aren't interested in selling anything.</text>
+				<event>
+					<text>"Ah... what a shame. Oh well, you must know that you are very lucky to wield such exotic tech!"</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="CRYSTAL_SHARDS" hidden="true">
+		<text>(Crystal Armor) We have Crystalline armor on our ship.</text>
+		<event>
+			<text>"Amazing! Such well crafted armor. I don't suppose you'd be willing to sell it to us?"</text>
+			<choice req="CRYSTAL_SHARDS" blue="false">
+				<text>Sell them the armor.</text>
+				<event>
+					<text>"Thank you so much! We will use this to decorate our shrine!"</text>
+					<remove name="CRYSTAL_SHARDS"/>
+					<item_modify>
+						<item type="scrap" min="95" max="95"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>We aren't interested in selling anything.</text>
+				<event>
+					<text>"Ah... what a shame. Oh well, you must know that you are very lucky to wield such exotic tech!"</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_CRYSTAL" hidden="true">
+		<text>(Crystal Crew) We have a Crystal aboard our ship.</text>
+		<event>
+			<text>The Rockman goes silent. Then, in a shaky tone, he says, "You... you must be gods! Please, take everything we have!"</text>
+			<weapon name="GIFTLIST_CRYSTAL"/>
+			<autoReward level="HIGH">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We don't, sorry.</text>
+		<event>
+			<text>The settlement immediately cuts transmissions.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		HOSTILE!!!
+	Events that call up a fight for sure
+-->
+<eventList name="HOSTILE_ROCK">
+	<event load="ENCOUNTER_ROCK"/>
+	<event load="ENCOUNTER_OUTCAST"/>
+	<event load="ROCK_FIGHT_ASTEROID"/>
+	<!--<event load="OUTCAST_ASTEROID"/> doesn't exist? -->
+	<event load="OUTCAST_SUN"/>
+	
+	<event load="ROCK_STARSHIP_MINE"/>
+</eventList>
+
+<event name="ENCOUNTER_ROCK">
+	<text load="TEXT_ENCOUNTER_ROCK"/>
+	<ship load="SHIP_ROCK_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_ROCK">
+	<text>You encounter a Rock vessel and attempt to open trading frequencies, but they take it as an act of cultural transgression and open fire.</text>
+	<text>You jump into the middle of a Rock excavation project on a nearby moon. Unimpressed with your intrusion they move to defend themselves!</text>
+	<text>You intercept chatter from an approaching Rock ship: "Weapons, moving in to engage, arm the tubes." There is no talking to these guys.</text>
+	<text>As you jump in, a vast figure appears on the view-screen. The Rock captain rubs the green, moss-like appendage on his chin and then orders his crew to open fire.</text>
+	<text>It looks quiet, but you realize your computer is being scanned. A hidden Rock vessel hails you: "Why do you fill your computer with lies?! These are not the holy words!" Before you can interject they open fire.</text>
+	<text>You notice a Rock ship performing combat exercises. However, they quickly change their course to engage your ship. They apparently treat unregistered alien ships as handy target practice.</text>
+	<text>A loud 'thud' resounds through the ship after jump completion - you've just shunted a Rock fighter and he's already preparing to fire!</text>
+	<text>You're intercepted by a Rock salvage operation. They don't seem to mind that you're still on board while they junk your ship.</text>
+</textList>
+
+<!--
+		ENVIRONMENT!!!
+	Events with unique environments
+-->
+<event name="ROCK_FIGHT_ASTEROID" unique="true">
+	<environment type="asteroid"/>
+	<text load="ROCK_FIGHT_ASTEROID"/>
+	<ship load="SHIP_ROCK_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="ROCK_FIGHT_ASTEROID">
+	<text>A Rock mining vessel is harvesting the mineral-rich asteroids in this locality, and their scouts take your presence to be a transgression. Battle stations!</text>
+	<text>A rookie Rock cargo ship has taken its orders too literally and took the most direct route to their destination... right through an asteroid field. They're confused and fire wildly as you jump in.</text>
+	<text>The captain of a Rock freighter lost in the asteroid field hails you: "Our co-ordinates led us here, but only death greets us. What must be must be. Death to all." You power up the battle systems and wonder how long they've been stuck here.</text>
+</textList>
+
+<!--
+		BOARDERS!!!
+	Events with boarder calls
+-->
+<eventList name="BOARDERS_ROCK">
+	<event load="BOARDERS_ROCK_ASTEROID"/>
+	<event load="BOARDERS_ROCK_SUN"/>
+</eventList>
+
+<event name="BOARDERS_ROCK_ASTEROID" unique="true">
+	<text load="BOARDERS_ROCK_ASTEROID"/>	
+	<boarders min="1" max="2" class="rock"/>
+	<environment type="asteroid"/>
+	<ship load="SHIP_ROCK_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="BOARDERS_ROCK_ASTEROID">
+	<text>You arrive in an asteroid field and immediately begin evasive maneuvers when a loud clunk reverberates through the ship. At first you think the hull has been hit, but the noise came from some Rock intruders teleporting aboard the ship!</text>
+	<text>Your shields are being taxed as they deflect the debris from an asteroid field. As you weave your way between the rocks, you happen upon a Rock pirate stronghold. You register teleport signatures and hear shouts aboard the ship.</text>
+</textList>
+
+<event name="BOARDERS_ROCK_SUN" unique="true">
+	<text load="BOARDERS_ROCK_SUN"/>	
+	<environment type="sun"/>
+	<boarders min="2" max="3" class="rock"/>
+</event>
+<textList name="BOARDERS_ROCK_SUN">
+	<text>As soon as you arrive you hear the telltale sounds of a teleporter and shouts reverberating through the ship, "Prepare to burn, fleshy meat-sack aliens!"</text>
+	<text>With their high resistance to heat, outlaw Rocks often settle very close to stars. That is why it is hardly surprising when your ship gets boarded as you stumble past a hidden settlement.</text>
+</textList>
+
+<!--
+		NEUTRAL!!!
+	Events that could have a fight
+-->
+<eventList name="NEUTRAL_ROCK">
+	<event load="ROCK_MANTIS_HUNTER"/>
+	<event load="ROCK_MANTIS_FREIGHTER"/>
+	<event load="ROCK_ZOLTAN_HELP"/>
+	<event load="ROCK_ATHIEST"/>
+	<event load="ROCK_LOOTING"/>
+	
+	<event load="ROCK_WEAPON_MEASURING"/>
+	<event load="ROCK_NEEDSMISSILES"/>
+	
+	<event load="SOLAR_WRECK"/>
+	<event load="PIRATE_CIVILIAN"/>
+	<event load="SLAVER_BETRAYAL"/>
+	
+	<event load="ROCK_SLUG_ARGUMENT"/>
+</eventList>
+
+<event name="ROCK_NEEDSMISSILES" unique="true">
+	<text>You're hailed by a Rock vessel, who is supposedly low on missiles. They offer to buy some from you.</text>
+	<choice>
+		<text>Sell 5 missiles.</text>
+		<event>
+			<disableScrapAugments/>
+			<item_modify>
+				<item type="missiles" min="-5" max="-5"/>
+				<item type="scrap" min="20" max="20"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Sell 10 missiles.</text>
+		<event>
+			<disableScrapAugments/>
+			<item_modify>
+				<item type="missiles" min="-10" max="-10"/>
+				<item type="scrap" min="40" max="40"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Sell 15 missiles.</text>
+		<event>
+			<disableScrapAugments/>
+			<item_modify>
+				<item type="missiles" min="-15" max="-15"/>
+				<item type="scrap" min="60" max="60"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We aren't interested in selling anything.</text>
+		<event>
+			<text>You apologize and continue on your way.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ROCK_WEAPON_MEASURING" unique="true"> <!--NEW MULTIVERSE-->
+	<text>"Hah! Look at your wee little ship! I bet your weapons are tiny! You must be so ashamed."</text>
+	<ship load="SHIP_ROCK_BIGGUNS" hostile="false"/> 
+	<choice hidden="true">
+		<text>The hell did you just say to us?</text>
+		<event>
+			<text>The Rockman arrogantly chuckles as you prepare to fight them.</text>
+			<ship hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="weapons" lvl="2">
+		<text>(Lvl 2 Weapons) You'd be surprised.</text>
+		<event>
+			<text>"Hah! You call that big weapons? Your brain must be even smaller!"</text>
+			<choice hidden="true" req="weapons" lvl="4">
+				<text>(Lvl 4 Weapons) What about this?</text>
+				<event>
+					<text>"Getting warmer, but that's still nothing compared to what we have!"</text>
+					<choice hidden="true" req="weapons" lvl="6">
+						<text>(Lvl 6 Weapons) How about this!</text>
+						<event>
+							<text>"Hmmm, not bad. Not many ships come here packing such heat. I'm sure a ship like yours will find a use for a powerful weapon like this!"</text>
+							<weapon name="LIST_WEAPONS_ROCK_BIGGUNS"/>
+							<choice hidden="true" req="weapons" lvl="8">
+								<text>(Lvl 8 Weapons) Oh, we can do better than that.</text>
+								<event>
+									<text>"Well now you're just showing off. I like it. I wish to sample your arsenal. I shall join you!"</text>
+									<crewMember amount="1" class="rock" weapons="2">McBash</crewMember>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Fine, you win.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Fine, you win.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="artillery">
+		<text>(Lvl 1 Artillery) You'd be surprised.</text>
+		<event>
+			<text>"Hah! You call that big weapons? Your brain must be even smaller!"</text>
+			<choice hidden="true" req="artillery" lvl="2">
+				<text>(Lvl 2 Artillery) What about this?</text>
+				<event>
+					<text>"Getting warmer, but that's still nothing compared to what we have!"</text>
+					<choice hidden="true" req="artillery" lvl="3">
+						<text>(Lvl 3 Artillery) How about this!</text>
+						<event>
+							<text>"Hmmm, not bad. Not many ships come here packing such heat. I'm sure a ship like yours will find a use for a powerful weapon like this!"</text>
+							<weapon name="LIST_WEAPONS_ROCK_BIGGUNS"/>
+							<choice hidden="true" req="artillery" lvl="4">
+								<text>(Lvl 4 Artillery) Oh, we can do better than that.</text>
+								<event>
+									<text>"Well now you're just showing off. I like it. I wish to sample your arsenal. I shall join you!"</text>
+									<crewMember amount="1" class="rock" weapons="2">McBash</crewMember>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Fine, you win.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Fine, you win.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="WEAPON_PREIGNITE">
+		<text>(Pre-Igniter) How about this!</text>
+		<event>
+			<text>"Well now you're just showing off. I like it. I wish to sample your arsenal. I shall join you!"</text>
+			<weapon name="LIST_WEAPONS_ROCK_BIGGUNS"/>
+			<crewMember amount="1" class="rock" weapons="2">McBash</crewMember>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>You ignore the egotistical Rockmen and continue on your way.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SURRENDER_ROCK_BIGGUNS">
+	<text>"Jeez man, we've heard it's not about the size but how you use it, and you sure know how to use your guns! You've proven your point, let us go and we'll pay you some ammunition to fuel those guns of yours."</text>
+	<choice>
+		<text>Accept their surrender.</text>
+		<event>
+			<ship hostile="false"/>
+			<autoReward level="RANDOM">missiles_only</autoReward>
+		</event>
+	</choice>
+	<choice>
+		<text>Screw you!</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="ROCK_LOOTING" unique="true">
+	<text>You find a disabled Rock transport floating near the beacon. You consider stripping it of useful parts but are uncertain why it's there in the first place.</text>
+	<choice hidden="true">
+		<text>Strip the ship.</text>
+		<event load="ROCK_LOOTING_STRIP"/>
+	</choice>
+	<choice hidden="true">
+		<text>Leave it alone.</text>
+		<event load="ROCK_LOOTING_LEAVE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(Slug Crew) Check for lifeforms and keep a lookout for ships while looting the wreck.</text>
+		<event load="ROCK_LOOTING_SLUG"/>
+	</choice>
+</event>
+<eventList name="ROCK_LOOTING_STRIP">
+	<event>
+		<text>You salvage what you can from the ship. No one bothers you during the operation.</text>
+		<autoReward level="low">standard</autoReward>
+	</event>
+	<event>
+		<text>A Rock patrol ship jumps in while you are salvaging the ship. They message you, "Filthy pirates! Prepare to die!" You doubt explaining your mission will convince them of your need.</text>
+		<ship load="SHIP_ROCK_FIGHT" hostile="true"/>
+		<autoReward level="low">standard</autoReward>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="ROCK_LOOTING_LEAVE">
+	<event>
+		<text>The Rock people are not known for setting traps but you hasten to leave anyway.</text>
+	</event>
+	<event>
+		<text>The Rock people are not known for setting traps but you hasten to leave anyway.</text>
+	</event>
+	<event>
+		<text>Before you have a chance to leave, a Rock patrol ship arrives and you intercept their comm chatter, "...appears we've finally found them. Their killing spree ends now!" Before you can plead your innocence they move in to attack.</text>
+		<ship load="SHIP_ROCK_FIGHT" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="ROCK_LOOTING_SLUG">
+	<event>
+		<text>You salvage what you can from the ship. No lifeforms or ships are detected nearby.</text>
+		<autoReward level="low">standard</autoReward>
+	</event>
+	<event>
+		<text>You begin the salvage operation but before long your crew warns you of an approaching ship. You hasten to leave before they get within firing range.</text>		
+		<autoReward level="low">standard</autoReward>
+	</event>
+</eventList>
+
+<event name="ROCK_MANTIS_HUNTER" unique="true">
+	<text>A Mantis ship here is adorned with Rock body parts! It would be a gorier display if they had internal organs, but the message is clear enough: this is a hunter of a very specialized kind.</text>
+	<ship load="SHIP_MANTIS_FIGHT" hostile="false"/>
+	<choice hidden="true">
+		<text>Attack!</text>
+		<event>
+			<text>No species deserves a Mantis hunter on their back - time to make the galaxy a little safer. Engage!</text>
+			<ship hostile="true"/>	
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>The Mantis take no interest in your ship - they're lying in wait for the next Rock ship to venture through. You're able to spin up the engines and jump at your leisure.</text>		
+			<choice>
+				<text>Do something on-board the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="ROCK_ARMOR">
+		<text>(Hull Armor) Ram the bastards.</text>
+		<event>
+			<text>Before they have a chance, you ram your ship into theirs, causing irreparable damage to their engines. Luckily, your ship's armored hull is hardly dented from the impact. The Mantis ship careens away and you move in to attack.</text>
+			<ship hostile="true"/>
+			<status type="limit" target="enemy" system="engines" amount="0"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ROCK">
+		<text>(Rock Crew) Put your Rock crewmember on the comm.</text>
+		<event>
+			<text>The two aliens face one another over the vidscreen. "Cave-dwelling pebble-man!" yells the furious Mantis captain. "See, I paint ship with your companions! I paint ship with you!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ROCK_MANTIS_FREIGHTER" unique="true">
+	<text>A curious sight greets you at this beacon: a disabled Rock freighter drifts in space while two Mantis craft battle it out - presumably over who deserves the spoils.</text>
+	<choice hidden="true">
+		<text>Wait, then attack the surviving Mantis.</text>
+		<event load="ROCK_MANTIS_FREIGHTER_LIST"/>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>	
+		<event>
+			<text>There's quite enough action here already - prepare for light speed.</text>
+		</event>
+	</choice>
+	<choice hidden="true" req="REPAIR">
+		<text>(Repair Drone) Repair the Rock ship.</text>
+		<event>
+			<text>While the two Mantis fight you approach the Rock ship and send a repair drone through one of the many breaches. It fixes the ship up enough to make at least a single jump. You're surprised when, instead, they embark on a kamikaze run on the two Mantis, which results in the obliteration of all three!</text>
+			<autoReward level="HIGH">standard</autoReward>
+			<item_modify>
+				<item type="drones" min="-1" max="-1"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="SHIP_REPAIR">
+		<text>(Hull Repair Drone) Repair their hull.</text>
+		<event>
+			<text>While the two Mantis fight you approach the Rock ship and use a drone to fix up the ship. Once the breaches are fixed the life support flickers back on. In a matter of moments they are already in pursuit of one of the Mantis ships. Meanwhile the second Mantis turns toward you.</text>
+			<item_modify>
+				<item type="drones" min="-1" max="-1"/>
+			</item_modify>
+			<ship load="SHIP_ROCK_MANTIS_FREIGHTER" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROCK_MANTIS_FREIGHTER_LIST">
+	<event>
+		<text>The Mantis craft are both too busy slaughtering one another to notice you. Eventually the smaller ship gets the upper hand, but they must have blown a fuse in the assault and their weapons system is inoperable. Now is the time to attack!</text>
+		<ship load="SHIP_ROCK_MANTIS_FREIGHTER" hostile="true"/>
+		<status type="loss" target="enemy" system="weapons" amount="2"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>The Mantis craft may have their differences, but when it comes to you they are of one mind. The smaller ship suffers a power failure as it moves to engage, but the larger one lets off a volley of fire and moves in to attack!</text>
+		<ship load="SHIP_ROCK_MANTIS_FREIGHTER" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="ROCK_ZOLTAN_HELP" unique="true">
+	<text>It seems a Zoltan ship came here to liberate a Rock settlement from their 'oppressive belief system', and that the settlement did not appreciate it - long-range scanners suggest the Zoltan and their pursuers will be here at any moment!</text>
+	<choice hidden="true">
+		<text>Stay and defend the Zoltan.</text>
+		<event>
+			<text>The... extreme nature of Rock faith is well-known; the Zoltan can hardly be blamed for trying to broaden their horizons. The pursuing Rock ship quickly assesses the situation and decides two captured alien ships are better than one.</text>
+			<ship load="SHIP_ROCK_HELP_ROCK" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Stay and capture the Zoltan.</text>
+		<event>
+			<text>This is Rock territory, and therefore Rock law - the Zoltan should have known better than to interfere. You'll have to disable their engines and piloting to ensure their safe capture.</text>
+			<ship load="SHIP_ROCK_HELP_ZOLTAN" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave.</text>
+		<event>
+			<text>This is none of your concern - power up the jump drive!</text>
+		</event>
+	</choice>
+</event>
+
+<event name="ROCK_ATHIEST" unique="true">
+	<text>You encounter a small craft with minimal propulsion; its Rock crew-member explains that the Rock home-world is run on lies and propaganda that keep the populace in check, and that they want no part of it.</text>
+	<ship load="SHIP_ROCK_GENERIC" hostile="false"/>
+	<choice hidden="true">
+		<text>Tell them their god sent them here to join your crew.</text>
+		<event>
+			<text load="ROCK_ATHIEST_BAD"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Promise to share with them the truths they've been denied.</text>
+		<event load="ROCK_ATHIEST_GOOD"/>
+	</choice>
+	<choice hidden="true" req="sensors" lvl="2">
+		<text>(Improved Sensors) Show them to your data suite.</text>
+		<event>
+			<text>The Rock captain is impressed by the data you've collected and agrees to stay with you until they find their footing in the galaxy.</text>
+			<crewMember amount="1" class="rock_outcast"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="rock_commando">
+		<text>(Lost Sun Commando) Teach them the ways of the Lost Suns.</text>
+		<event>
+			<text>The Rock captain is surprised, as he had previously thought the Lost Suns were a band of radical terrorists. Assured your ship will keep no secrets from them, he joins your crew.</text>
+			<crewMember amount="1" class="rock_outcast"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ORCHID">
+		<text>(Orchid Crew) Have your Orchid talk them into joining you.</text>
+		<event>
+			<text>The Orchids are not only a race trusted by the Rockmen, but their government is incredibly well known for its transparency. Soothed by your crew, the Orchid talks them into coming with you, promising it'll be a better life than that among the Elders' lies.</text>
+			<crewMember amount="1" class="rock_outcast"/>
+		</event>
+	</choice>
+</event>
+<textList name="ROCK_ATHIEST_BAD">
+	<text>They barely hear out your appeals before yelling, "These are the lies I sought to escape!" Looks like they're charging weapons!</text>
+	<text>They listen to your appeals and whisper, "Traitors to truth. You're no better than them!" Chaos ensues.</text>
+</textList>
+<eventList name="ROCK_ATHIEST_GOOD">
+	<event>
+		<text>Your promises gain their attention and they agree to serve with you, for a while.</text>
+		<crewMember amount="1" class="rock_outcast"/>
+	</event>
+	<event>
+		<text>They seem tempted by your offer, but decide they can't risk being lied to again. They close frequencies and jump away.</text>
+		<choice>
+			<text>Do something on-board the ship.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice>
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
+	</event>
+	<event>
+		<text>They seem tempted by your offer, but decide they can't risk being lied to again. They close frequencies and jump away.</text>
+		<choice>
+			<text>Do something on-board the ship.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice>
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="ROCK_STARSHIP_MINE" unique="true">
+	<text>The burnt out hull of a Rock Trapper drifts by. Behind the wreck drifts a live mine; an automated drone that drills into ships' hulls before exploding. However, it can't detect you from this range, and you wonder if it's even active. Still, it's risky...</text>
+	<choice hidden="true">
+		<text>Scrap the wreckage.</text>
+		<event>
+			<text>You pick apart the hull of the ship, and find some scrap, ammunition, and a Mine Launcher! However, before you can leave the mine activates, and begins to seek out your ship!</text>
+			<autoReward level="MED">missiles</autoReward>
+			<weapon name="GIFTLIST_MINELAUNCHERS_TRAPPER"/>
+			<choice hidden="true">
+				<text>Attempt evasive maneuvers!</text>
+				<event>
+					<text>The ship's turning circle proves too wide and the mine bites down onto the hull. You can hear it now, chewing through the armor.</text>
+					<choice hidden="true">
+						<text>Send someone out there to defuse it.</text>
+						<event load="ROCK_STARSHIP_MINE_DEFUSE"/>
+					</choice>
+					<choice hidden="true" req="BLUELIST_MISSILES_ALL">
+						<text>(Missile Weapon) Attempt a controlled detonation using a missile.</text>
+						<event>
+							<text>After drawing straws, a crewmember goes out to fix a modified warhead to the mine. You detonate the missile in a way that dislodges the mine. It blows up shortly after. The ship takes some damage in the blasts, but you're still sailing.</text>
+							<damage amount="3"/>
+							<damage amount="1" system="random"/>
+							<item_modify>
+								<item type="missiles" min="-1" max="-1"/>
+							</item_modify>
+							<autoReward level="LOW">scrap_only</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="BLUELIST_DRONES_BEAM">
+						<text>(Beam Drone) Use a drone to cut away the mine with a precision beam.</text>
+						<event>
+							<text>Carefully guided from the bridge, your Beam Drone removes the mine's grappling arms and sends it drifting off into space, where you shoot at it until it detonates at a safe distance.</text>
+							<item_modify>
+								<item type="drones" min="-1" max="-1"/>
+							</item_modify>
+							<autoReward level="LOW">scrap_only</autoReward>
+						</event>
+					</choice>				
+				</event>
+			</choice>
+			<choice hidden="true" req="engines" lvl="5">
+				<text>(Improved Engines) Reverse thrusters!</text>
+				<event>
+					<text>It stresses the inertial dampeners, but you reverse course and outrun the mine. You prepare to jump off.</text>
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_ARMOR">
+				<text>(Armor Plating) Your armor will protect you.</text>
+				<event>
+					<text>The mine struggles to even burrow into your ship. Its drill eventually runs out of power and drifts away, now rendered harmless.</text>
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_ENERGY_SHIELD">
+				<text>(Energy Shield) Your shield will protect you.</text>
+				<event>
+					<text>The mine is incapable of getting past your Energy Shield. It explodes without even touching your ship's hull.</text>
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_DRONES_DEFENSE">
+				<text>(Defense Drone) Shoot down the mine.</text>
+				<event>
+					<text>Fortunately, your Defense Drone quickly locks onto the mine and shoots it down before it can connect to the ship.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the wreck.</text>
+		<event/>
+	</choice>
+</event>
+<eventList name="ROCK_STARSHIP_MINE_DEFUSE">
+	<event>
+		<text>Your crewmember dons a space suit and exits the airlock. They make quick work of the basic device and return inside to relief all round. The mine makes good scrap pickings too.</text>
+		<autoReward level="MED">scrap_only</autoReward>
+	</event>
+	<event>
+		<text>Your crewmember dons a space suit and exits the airlock. When they open up the mine housing, though, they panic. The red wire or the blue?! 3... 2... 1...</text>
+		<choice hidden="true">
+			<text>Red!</text>
+			<event load="ROCK_STARSHIP_MINE_DEFUSE2"/>
+		</choice>
+		<choice hidden="true">
+			<text>Blue!</text>
+			<event load="ROCK_STARSHIP_MINE_DEFUSE2"/>
+		</choice>
+		<choice hidden="true" req="LIST_CREW_ELITE">
+			<text>(Elite Crew) Send your elite to defuse the bomb.</text>
+			<event>
+				<text>Your Elite doesn't hesitate. They pull off a second panel in the back, and cut the newly revealed green wire. Miraculously, the bomb deactivates!</text>
+				<autoReward level="MED">scrap_only</autoReward>
+			</event>
+		</choice>
+	</event>
+</eventList>
+<eventList name="ROCK_STARSHIP_MINE_DEFUSE2">
+	<event>
+		<text>You open your eyes and everything is still where it was a moment ago. You did it!</text>
+		<autoReward level="MED">scrap_only</autoReward>
+	</event>
+	<event>
+		<text>The weapon detonates. Everything goes dark, the bridge illuminated by flames pouring from the hull, your bomb disposal volunteer spinning off toward a nearby sun. You put out the fires and prepare to move on.</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>Fortunately, your crewmember was close enough to the ship for the Clone Bay to revive them. Sheepish and apologetic, they rejoin the crew.</text>
+		</removeCrew>
+		<damage amount="5"/>
+		<damage amount="1" system="room" effect="breach"/>
+	</event>
+</eventList>
+
+<!--
+		DISTRESS!!!
+	
+-->
+<eventList name="DISTRESS_BEACON_ROCK">
+	<event load="DISTRESS_FRIENDLY_BEACON"/>
+	<event load="DISTRESS_AUTO_REPAIRS"/>
+	<event load="DISTRESS_TRAP_BEACON"/>
+	<event load="DISTRESS_STRANDED_BEACON"/>
+	<event load="DISTRESS_PIRATE_CIVILIAN_BEACON"/>
+	<event load="DISTRESS_CIVILIAN_ASTEROIDS_BEACON"/>  
+	<event load="DISTRESS_REBEL_VS_FEDERATION"/> 
+	<event load="DISTRESS_ESCORT_BEACON"/>
+	<event load="DISTRESS_TRAPPED_MINER"/>
+	<event load="DISTRESS_SATELLITE_DEFENSE"/>
+	<event load="DISTRESS_STATION_FIRE"/>
+	<event load="DISTRESS_STATION_DISEASE"/>
+</eventList>
+
+<!--
+		QUESTS!!!
+-->
+<eventList name="QUESTS_ROCK">
+	<event load="QUEST_ESCORT"/>
+	<event load="QUEST_FEDERATION_PLANET_SIGNAL"/>
+	<event load="QUEST_MERCENARY_WORK_START"/>
+	<event load="QUEST_CREWDEAD_START"/>
+</eventList>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					ROCK HOMEWORLDS 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<event name="ROCK_CRYSTAL_DEVICE">
+	<text>It seems you've discovered the Crystalline Waystone, the device used to enter the Crystal Homeworlds. The beacon is shockingly empty, despite the boom in tourism that eventually lead to the exodus of the Crystal race back to the galactic scene.</text>
+	<img planet="PLANET_RINGS"/>
+	<choice hidden="true">
+		<text>Scrap it.</text>
+		<event load="ROCK_CRYSTAL_BEACON_LIST"/>
+	</choice>
+	<choice hidden="true">
+		<text>Leave it alone.</text>
+		<event>
+			<text>Better not risk it. The Rock people are unlikely to respond well to vandalism.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(Crystal Crew) Have your Crystal crew activate the device again.</text>
+		<event>
+			<text>Are you certain you want to do this? You will immediately be taken to the Crystal Homeworlds.</text>
+			<choice>
+				<text>Yes.</text>
+				<event load="ROCK_CRYSTAL_DEVICE_WARP"/>
+			</choice>
+			<choice>
+				<text>Nevermind.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROCK_CRYSTAL_BEACON_LIST">
+	<event>
+		<text>You break it apart and take it for scrap. No one will miss it.</text>
+		<autoReward level="HIGH">scrap_only</autoReward>
+	</event>
+	<event>
+		<text>As you start to break it apart a Rock military ship jumps nearby, "You think you can come into our sector and just steal whatever you please?! Prepare to die, vandals!"</text>
+		<ship load="SHIP_ROCK_FIGHT" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+<event name="ROCK_CRYSTAL_DEVICE_WARP">
+	<secretSector/>
+</event>
+
+<!--
+		ITEM!!!
+	Events that give stuff
+-->
+<eventList name="ITEMS_ROCKHOME">
+	<event load="ROCK_TEMPLE"/>
+	<event load="ROCK_PROPHECY"/>
+	<event load="ROCK_APOLOGY"/>
+	
+	<event load="ROCK_PUNS"/>
+	<event load="ROCK_CRYOBSESSION"/>
+</eventList>
+
+<event name="ROCK_PROPHECY" unique="true">
+	<text>A ship carrying several robed Rockmen carrying holy books and candles hails you. "A time of change is coming! Have you heard the news? The prophecy, it shall be fulfilled!"</text>
+	<choice hidden="true">
+		<text>What prophecy?</text>
+		<event>
+			<text>"Have you not heard? The ship from a future much brighter than ours, who will bring about a great change! A gift from the high heavens, bestowed upon us mortal-bound men by the benevolent Crystal ones!"</text>
+			<choice hidden="true">
+				<text>Could we be the ship from the prophecy?</text>
+				<event>
+					<text>One of the Rockmen pull down their cloak and stare for a long time deep into your eyes. "I am no expert, but you have the look of a creature driven by a force beyond your control. Your will is bent by a being from the great beyond, manipulated for the simple sake of amusement. If you are not the one spoken of in the prophecy, then surely you are important regardless. Perhaps this may be of aid."</text>
+					<autoReward level="MED">stuff</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>These people are crazy, let's leave.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>You have better things to than listen to the ravings of these religious loons.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ROCK_TEMPLE" unique="true">
+	<text>Nearby rests a Rockman temple dedicated to the Crystal race. A thick fog covers the planet and it's hard to see if there's anything protecting the shrine.</text>
+	<choice hidden="true">
+		<text>Raid the temple.</text>
+		<event load="ROCK_TEMPLE_RAID"/>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the temple.</text>
+		<event>
+			<text>You'd have to be insane to raid a Rockman temple in Rock territory.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROCK_TEMPLE_RAID">
+	<event>
+		<text>While attempting to rob the temple, you are stopped by a Rock vessel, who immediately attacks!</text>
+		<ship load="SHIP_ROCK_FIGHT" hostile="true"/> 
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>Inside the temple you find some supplies and a Crystal weapon.</text>
+		<autoReward level="MED">standard</autoReward>
+		<weapon name="GIFTLIST_CRYSTAL"/>
+	</event>
+</eventList>
+
+<!--
+		HOSTILE!!!
+	Events that call up a fight for sure
+-->
+<eventList name="HOSTILE_ROCKHOME">
+	<event load="ENCOUNTER_ROCK_HOMEWORLDS"/>
+	<event load="ENCOUNTER_OUTCAST"/>
+	<event load="ENCOUNTER_INQUISITION"/>
+	<event load="ENCOUNTER_LOSTSUN_ROCKHOME"/>
+	
+	<event load="ROCK_FIGHT_ASTEROID"/>
+	<!--<event load="OUTCAST_ASTEROID"/>-->
+	<event load="OUTCAST_SUN"/>
+	
+	<event load="ROCK_STARSHIP_MINE"/>
+</eventList>
+
+<event name="ENCOUNTER_ROCK_HOMEWORLDS">
+	<text load="TEXT_ENCOUNTER_ROCKHOME"/>
+	<ship load="SHIP_ROCK_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_ROCKHOME">
+	<text>You catch chatter on the nearby Rock ship. In a hush tone, they speak of your ship and what vile sins must be committed aboard it. Eager to enact out the Elders' law, they power up weapons and attack!</text>
+	<text>The Rock citizens are perhaps some of the best armed civilians of any race. Unfortunately, that means just about every ship you encounter here is more than willing to engage you in a brawl.</text>
+	<text>You've stepped foot in the Rock Homeworlds, the highly valued sanctuary for the Rock people. It is no wonder that the irate citizens of this sector seek your destruction so eagerly.</text>
+	<text>"This one, he is not covered in stone! We shall cut off his head, and mount it to our wall as a trophy!" It doesn't seem the Rockmen here are willing to negotiate.</text>
+	<text>There is a very thin line between civilians and military in the Rock Homeworlds. It's hard to tell the origins of the ship here, but nevertheless they're hostile and looking for a fight.</text>
+	<text>Your very presence in this sector is a tremendous insult to Rock-kind. The Rockmen in the nearby system aren't pleased with your presence and decide to deal with you themselves.</text>
+	<text>Rockmen aren't particularly friendly, but you know you've made a real mistake coming here when the civilians near this beacon go out of their way to initiate combat with you.</text>
+</textList>
+
+<event name="ENCOUNTER_INQUISITION" unique="true">
+	<text>The Rockman Crusaders were once recruited to enact the Inquisition, a brutal invasion of other worlds deemed full of heretics and instate the 'wisdom' of the Elders. The Federation has since put an end to the Inquisition, but the Crusader rank has not yet been disbanded. Now, they patrol the homeworlds as Elites and protect them from outsiders, such as yourself.</text>
+	<ship load="SHIP_ROCK_ELITE_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_LOSTSUN_ROCKHOME" unique="true">
+	<text>A Lost Sun ship, seeking out Rock citizens to capture and take back to the Stronghold as prisoners, identifies your ship. "Traitorous coward! A Federation vessel, out here, giving aid to the Rock Elders' followers? You are scum! I will roast all of you alive with only the holiest of fire." They aren't exactly correct, but you doubt arguing will help.</text>
+	<ship load="SHIP_LOSTSUN_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--
+		NEUTRAL!!!
+	Events that could have a fight
+-->
+<eventList name="NEUTRAL_ROCKHOME_UNIQUE">
+	<event load="ROCK_NURSERY"/>
+	<event load="ROCK_CRUSADE"/>
+	<event load="ROCK_RAVINE"/>
+	<event load="ROCK_ASTEROID_COLONY"/>
+	<event load="ASTEROID_DERELICT_SHIP"/>
+</eventList>
+<eventList name="NEUTRAL_ROCKHOME_GENERIC">
+	<event load="ROCK_MANTIS_HUNTER"/>
+	<event load="ROCK_MANTIS_FREIGHTER"/>
+	<event load="ROCK_ZOLTAN_HELP"/>
+	<event load="ROCK_ATHIEST"/>
+	<event load="ROCK_LOOTING"/>
+
+	<event load="ROCK_WEAPON_MEASURING"/>
+	<event load="ROCK_NEEDSMISSILES"/>
+	
+	<event load="SOLAR_WRECK"/>
+	
+	<event load="ROCK_SLUG_ARGUMENT"/>
+</eventList>
+
+<event name="ROCK_NURSERY" unique="true">
+	<text>Fluctuating life-signs are reported near the surface of a hazy, pock-marked moon in the vicinity. It seems this is a Rock nursery where the young are 'acclimatized' to their religion - only there's been some kind of coup and the students are running amok!</text>
+	<choice hidden="true">
+		<text>Transfer an away team to investigate.</text>
+		<event>
+			<text>Your away team reports combat between students and authorities - it seems some of the students were considered to have dissident personalities and were to be imprisoned pro-actively.</text>
+			<choice hidden="true">
+				<text>Order the away team to side with the students.</text>
+				<event>
+					<text>It's not long before the violence on the planet becomes a full-scale battle, your away team and their military-grade weaponry in the very center of it.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="ROCK_NURSERY_STUDENTS"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">	
+				<text>Order the away team to side with the authorities.</text>
+				<event>
+					<text>It's not long before the violence on the planet becomes a full-scale battle, your away team and their military-grade weaponry in the very center of it.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="ROCK_NURSERY_AUTHORITY"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>		
+	<choice hidden="true">
+		<text>Leave.</text>
+		<event>
+			<text>As long as they're not shooting at the ship it's best to leave them be.</text>
+			<choice>
+				<text>Do something on-board the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>		
+	<choice hidden="true" req="weapons" lvl="6">
+		<text>(Improved Weapons) Fire a warning shot near to the commotion to announce your arrival.</text>
+		<event>
+			<text>You dispatch a barrage of weapons fire that crashes home into an unused quarry near to the installation. Weapons fire on the surface ceases for as long as it takes for the moon's defense force to be dispatched to your location!</text>
+			<ship load="SHIP_ROCK_FIGHT" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROCK_NURSERY_STUDENTS">
+	<event> 
+		<text>Things, in the end, do not go well. The enemy succeeds in flanking your team and they're forced to retreat to the ship.</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>The staff and authorities subdue the last of the renegade students; prison transport ships are already in orbit.</text>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="ROCK_NURSERY_LOSE"/>
+				</choice>
+			</event>
+		</choice>
+	</event>  
+	<event>
+		<text>The fight goes poorly, and your team eventually finds itself out on the flank with a wounded Rock combatant in tow. They make a desperate push for the shuttle co-ordinates, but one falls. The survivor helps the injured Rock aboard.</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>Fortunately, your crewmember was close enough to the ship for the Clone Bay to revive them.</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>The staff and authorities subdue the last of the renegade students; prison transport ships are already in orbit.</text>
+				<crewMember amount="1" class="rock"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="ROCK_NURSERY_LOSE"/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>Your team hunkers down in the main quad and succeeds in holding off the enemy combatants and claiming control of the institution!</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>The students secure the remaining staff and prepare to leave the solar system - there is only one path open to them now, that of the outlaw.</text>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="ROCK_NURSERY_WIN"/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>Your team comes under heavy fire. One is blinded by a flash bomb and staggers past the lip of a quarry and to their death far below; the other succeeds in joining with friendly forces and ultimately claims control of the institution!</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>Fortunately, your crewmember was close enough to the ship for the Clone Bay to revive them.</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>The students secure the remaining staff and prepare to leave the solar system - there is only one path open to them now, that of the outlaw.</text>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="ROCK_NURSERY_WIN"/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>	
+		<text>As the battle proceeds the action moves away from your team's location. During the lull they're able to secure some abandoned weapons; by the time they're done the battle is largely over and they return to ship.</text>
+		<autoReward level="MED">weapon</autoReward>
+	</event>
+</eventList>
+<eventList name="ROCK_NURSERY_AUTHORITY">
+	<event>
+		<text>Things, in the end, do not go well. The enemy succeeds in flanking your team and they're forced to retreat to the ship.</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>The students secure the remaining staff and prepare to leave the solar system - there is only one path open to them now, that of the outlaw.</text>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="ROCK_NURSERY_LOSE"/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>The fight goes poorly, and your team eventually finds itself out on the flank with a wounded Rock combatant in tow. They make a desperate push for the shuttle co-ordinates, but one falls. The survivor helps the injured Rock aboard.</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>Fortunately, your crewmember was close enough to the ship for the Clone Bay to revive them.</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>The students secure the remaining staff and prepare to leave the solar system - there is only one path open to them now, that of the outlaw.</text>
+				<crewMember amount="1" class="rock"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="ROCK_NURSERY_LOSE"/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>Your team hunkers down in the main quad and succeeds in holding off the enemy combatants and claiming control of the institution!</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>The staff and authorities subdue the last of the renegade students; prison transport ships are already in orbit.</text>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="ROCK_NURSERY_WIN"/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>Your team comes under heavy fire. One is blinded by a flash bomb and staggers past the lip of a quarry and to their death far below; the other succeeds in joining with friendly forces and ultimately claims control of the institution!</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>Fortunately, your crewmember was close enough to the ship for the Clone Bay to revive them.</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>The staff and authorities subdue the last of the renegade students; prison transport ships are already in orbit.</text>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="ROCK_NURSERY_WIN"/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>	
+		<text>As the battle proceeds the action moves away from your team's location. During the lull they're able to secure some abandoned weapons; by the time they're done the battle is largely over and they return to ship.</text>
+		<autoReward level="MED">weapon</autoReward>
+	</event>
+</eventList>
+<event name="ROCK_NURSERY_WIN">
+	<text>In return for your support during the fight the survivors reward you with the funds set aside for prison transport. You leave before anyone changes their mind!</text>
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+<event name="ROCK_NURSERY_LOSE">
+	<text>Fully aware that their victory was threatened by your arrival, the survivors immediately dispatch a ship to eliminate you!</text>
+	<ship load="SHIP_ROCK_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ROCK_RAVINE" unique="true">
+	<text>On the surface of a nearby planet is a massive ravine. It all looks normal until you spot two Rock scouts flying past, deeper into the ravine.</text>
+	<img back="BACK_EVENT_ROCKRAVINE" planet="NONE"/>
+	<choice hidden="true">
+		<text>Follow them.</text>
+		<event>
+			<text>You trail the ships from far behind, making sure they can't see you but never losing them. Not too long after you reach a fork in the ravine, and the ships split up. If you don't want the Rebel fleet catching up, you'll only have time to explore one of the paths.</text>
+			<choice hidden="true">
+				<text>Follow the ship to the left.</text> <!--FACILITY-->
+				<event>
+					<text>The ship stops at what looks like a giant facility built into the face of the ravine's sheer drop. With nowhere to hide, the Rockmen inevitably spot you and prepare to defend whatever the facility may be.</text>
+					<ship load="SHIP_ROCK_RAVINE_LEFT" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>					
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Follow the ship to the right.</text> <!--WAR CAMP-->
+				<event>
+					<text>The ship lands near a giant prison camp built on the floor of the ravine. It looks abandoned, but you don't have much time to investigate before the Rockmen spot your ship and attacks.</text>
+					<ship load="SHIP_ROCK_RAVINE_RIGHT" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>	
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Nevermind, this is a bad idea.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the ships.</text>
+		<event>
+			<text>Those Rockmen could be doing anything down there, and it's none of your business.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROCK_RAVINE_LEFT">
+	<text>You've defeated the Rock vessel. You have some time to scrap the ship before investigating the facility.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>The entrance to the structure leads you to a deprecated lobby. A barely functional elevator suggests there must be a back-up generator running, because this facility has long since been abandoned. There's several different options for floors to explore, but you'll only have time for one.</text>
+			<choice hidden="true">
+				<text>Explore the floor marked as "control."</text>
+				<event>
+					<text>A floor marked control in a Rock facility is sure to be an interesting experience. You head there, wary of the elevator. Inside is a no-longer functional Mind Control system and a giant screen overlooking what looks to be a giant prison camp on the other side of the ravine. You begin to think there's nothing of actual use in this room until you notice a combat augment in the corner, as well as some discarded fuel cells.</text>
+					<autoReward level="MED">fuel_only</autoReward>
+					<augment name="GIFTLIST_AUGMENT_COMBAT"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Explore the floor marked as "security."</text>
+				<event>
+					<text>The security floor has piqued your interest. You head there, wary of the elevator. Heavy blast doors protect the way in, but something has managed to bend them back far enough for you to squeeze by. Several monitors overlooks the other rooms of the facility, proving it to be completely empty of staff. Not much here is of value to a military ship, other than a Long-Ranged Scanners augmentation and some droneparts.</text>
+					<autoReward level="MED">droneparts_only</autoReward>
+					<augment name="ADV_SCANNERS"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Explore the floor marked as "armory."</text>
+				<event>
+					<text>The armory seems like the obvious choice. You head there, wary of the elevator. Inside you find several racks of supplies and various weapons. With limited manpower, you take one of the weapons at random as well as a few missiles.</text>
+					<autoReward level="MED">missiles_only</autoReward>
+					<weapon name="RANDOM"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROCK_RAVINE_RIGHT">
+	<text>You've defeated the Rock vessel. You have some time to scrap the ship before investigating the camp.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>The Rock prison camp appears to be primarily abandoned, but a lone camp fire that's still burning suggests there may still be some life left behind. You're proven correct when further exploration reveals a small band of prisoners of various races. They explain that the prisoners revolted and managed to kill off most of the Rock guards. The Rockmen retreated and the surviving prisoners starved to death. This small group are the only ones who remain. You don't have enough space on the ship to take them all with you, but you can probably bring one of them.</text>
+			<choice hidden="true">
+				<text>Bring one of the Rock prisoners.</text>
+				<event>
+					<text>The Rock bears the markings of an outcast, likely a fugitive from the Rock government who was recently captured. They don't speak much, but you can tell they're glad you've chosen to rescue them.</text>
+					<crewMember amount="1" class="rock_outcast"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Bring one of the Human prisoners.</text>
+				<event>
+					<text>The human turns out to be a Rebel Engineer, captured by the Rockmen with the intent to be used as a hostage to bargain with the Rebels. Unfortunately for them, the Rebels had no interest in buying back the prisoner. They were locked into this camp. Despite being of Rebel origins, they are more than glad to come with you and leave behind this place.</text>
+					<crewMember amount="1" class="human_engineer"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Bring one of the Slug prisoners.</text>
+				<event>
+					<text>The Slug was a tourist captured by the Rockmen based purely on suspicion. Not wanting to admit to their mistake, they simply chose to lock the Slug away in this prison for the rest of eternity. They're vibrant with energy at the prospect of finally being free.</text>
+					<crewMember amount="1" class="slug"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ROCK_ASTEROID_COLONY" unique="true">
+	<text>It appears complete chaos has broken out on the nearby Rock colony. It seems a large asteroid collided with the planet and caused extreme damage, and now hundreds of ships are swarming back and forth from the planet's surface.</text>
+	<img planet="PLANET_POPULATED"/>
+	<choice hidden="true">
+		<text>Apprehend the pirate raiders.</text>
+		<event>
+			<text>You fly towards the planet's surface and engage a pirate ship currently firing on unarmed Rock civilians.</text>
+			<ship load="SHIP_ASTEROID_COLONY_PIRATE" hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Try to rescue the civilians.</text>
+		<event load="ROCK_ASTEROID_COLONY_RESCUE"/>
+	</choice>
+	<choice hidden="true">
+		<text>Try to salvage the wreckage.</text>
+		<event load="ROCK_ASTEROID_COLONY_SALVAGE"/>
+	</choice>
+	<choice hidden="true">
+		<text>This is chaos. We should leave.</text>
+		<event>
+			<text>You avoid the colony and the ships around it.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROCK_ASTEROID_COLONY_PIRATE" unique="true">
+	<text>The pirate vessel crashes down into the ground, but luckily the civilians are unharmed. No one protests as you salvage the wreckage of the pirate ship.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Contact the civilians.</text>
+		<event>
+			<text>Most of the Rockmen are too panicked and flee as you approach. A few of the more sensible individuals stop to hear you out. You offer to transport as many of them as you can carry, an offer which most of them refuse. One young Rockman however accepts, even going so far as to join your crew.</text>
+			<crewMember amount="1" class="rock"/>
+		</event>
+	</choice>
+</event>
+<eventList name="ROCK_ASTEROID_COLONY_RESCUE">
+	<event>
+		<text>Most of the Rockmen are too panicked and flee as you approach. A few of the more sensible individuals stop to hear you out. You offer to transport as many of them as you can carry, an offer which most of them refuse. One young Rockman however accepts, even going so far as to join your crew.</text>
+		<crewMember amount="1" class="rock"/>
+	</event>
+	<event>
+		<text>As you approach, a pirate ship locks onto you and fires a few shots across your hull. You're forced to pull away, but the pirates follow in pursuit!</text>
+		<ship load="SHIP_PIRATE_ALL" hostile="true"/> 
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+		<damage amount="3"/>
+	</event>
+	<event>
+		<text>The only place safe for you to land is near empty patch of land that was once a residential complex. Now reduced to rubble, you salvage what little hasn't already been taken.</text>
+		<autoReward level="LOW">stuff</autoReward>
+	</event>
+</eventList>
+<eventList name="ROCK_ASTEROID_COLONY_SALVAGE">
+	<event>
+		<text>The Rock Enforcers are too busy dealing with the pirates to notice you. You swoop in and collect as much as you can.</text>
+		<autoReward level="HIGH">stuff</autoReward>
+	</event>
+	<event>
+		<text>It seems one of the Elite rock vessels trying to fend off the pirates has noticed you. You're chased by the ship, and it seems a fight is unavoidable.</text>
+		<ship load="SHIP_ROCK_ELITE_FIGHT" hostile="true"/> 
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="ROCK_CRUSADE" unique="true">
+	<text>A cluster of Inquisition ships are resting nearby, making minor repairs. They haven't noticed you.</text>
+	<choice hidden="true">
+		<text>Hail them.</text>
+		<event>
+			<text>"Federation ship, you are not welcome here! Do not contact us again, unless you have a death wish."</text>
+			<choice hidden="true">
+				<text>Contact them again.</text>
+				<event>
+					<text>"Gah! Now you've asked for it."</text>
+					<ship load="SHIP_ROCK_ELITE_FIGHT" hostile="true"/> 
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_ROCK_FAITHFUL">
+				<text>(Rock Crew) Have your Rockman contact them.</text>
+				<event>
+					<text>"One of us? Perhaps I was mistaken of your origins. We have encountered an unpredicted obstacle in our usual duties. A Mantis vessel, full of heretics and scum, has made the fatal mistake of entering our sector! Unfortunately, it seems we're not fully prepared for their boarding tactics. Are you able to fulfill our mission and destroy the Mantis?"</text>
+					<choice hidden="true">
+						<text>Agree to kill the Mantis.</text>
+						<event>
+							<text>The Inquisition ships give you the co-ordinates of the Mantis. To your surprise, they aren't far away, so close in fact that they inhabit the same beacon. Another unexpected turn is that they are no Hive Mantis ship, but rather Free Mantis! "Oh, Federation! Hello! We glad to see you. This sector weird, yes? Not long ago, we chased by big blue ship with angry stone man. Very scary."</text>
+							<choice hidden="true">
+								<text>Follow through with your promise and kill the Free Mantis.</text>
+								<event>
+									<text>You have a mission to follow through with. You arm your weapons and engage the Free Mantis.</text>
+									<ship load="SHIP_CRUSADE_FREEMANTIS" hostile="true"/> 
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>We can't fight our allies.</text>
+								<event>
+									<text>The Rockmen are enraged at your betrayal. "This is an insult beyond anything I have ever experienced! You are weak, and must be punished."</text>
+									<ship load="SHIP_CRUSADE_ROCK" hostile="true"/> 
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>We cannot.</text>
+						<event>
+							<text>"Then you are of no use to us. Leave at once."</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Abide their warning and leave.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>You put some distance between you and the Rockmen, just to be safe.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROCK_CRUSADE_FREEMANTIS">
+	<text>You've defeated the Free Mantis ship. You salvage the remains.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Confirm your success with the Inquisition.</text>
+		<event>
+			<text>"A worthy display of your honor and prowess. I applaud you. Accept this as a token of gratitude."</text>
+			<weapon name="GIFTLIST_MISSILES"/>
+		</event>
+	</choice>
+</event>
+<event name="ROCK_CRUSADE_ROCK">
+	<text>You've defeated the Rockmen. You salvage the remains.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>Contact the Free Mantis.</text>
+		<event>
+			<text>"Scary stone man dead now? Wow... this sector very not friendly. I come with you now, and bring twin brother."</text>
+			<crewMember amount="2" class="mantis_free"/>
+		</event>
+	</choice>
+</event>
+
+<event name="ASTEROID_DERELICT_SHIP" unique="true">
+	<text>A ship without life forms within a nearby dense asteroid field is giving off the distress call. Shall we investigate? It could be dangerous.</text>	
+	<distressBeacon/>
+	<choice hidden="true">
+		<text>Search for the ship.</text>
+		<event load="ASTEROID_DERELICT_SHIP_SEARCH"/>
+	</choice>
+	<choice hidden="true">
+		<text>Avoid the area.</text>
+		<event>
+			<text>Discretion is the better part of valor. Better not risk it.</text>
+		</event>
+	</choice>
+	<choice hidden="true" req="ROCK_ARMOR">
+		<text>(Rock Plating) Make a thorough search for the ship without fear of stray asteroids.</text>
+		<event load="ASTEROID_DERELICT_SHIP_ROCK"/>
+	</choice>
+</event>
+<eventList name="ASTEROID_DERELICT_SHIP_SEARCH">
+	<event>
+		<text>You find what appears to be pieces of a derelict Crystal station. Before you have a chance to dock, a few asteroids get past your shields and partially damage your engines. You'll have to pull out!</text>
+		<damage amount="4"/>
+		<damage amount="1" system="engines"/>  <!--DLC-->
+	</event>
+	<event>
+		<text>You find a pirate ship, damaged and abandoned. You salvage what you can and move on.</text>
+		<autoReward level="RANDOM">standard</autoReward>
+	</event>
+	<event>
+		<text>You find the decaying remains of a derelict Crystalline station. There's a weird sense of deja vu, and in the corner is a stasis pod and a Crystal weapon.</text>
+		<ship load="SHIP_CRYSTAL_STATION" hostile="false"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>It looks like a massive asteroid is in a direct collision course with the station! You have to pull your crew out but they want to grab what they can first. What do they take?</text>
+				<choice hidden="true">
+					<text>Take the weapon and any spare resources.</text>
+					<event>
+						<text>Your crew grabs what they can and returns to the ship before the asteroid hits. You take a look at what you've recovered once you move clear of the asteroid field.</text>
+						<autoReward level="LOW">stuff</autoReward>
+						<weapon name="GIFTLIST_CRYSTAL"/>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>Grab the stasis chamber.</text>
+					<event>
+						<text>Your crew drags the pod back to your ship before the asteroid smashes into the ship, shattering through the crystal coating and destroying the ship.</text>
+						<choice hidden="true">
+							<text>Continue...</text>
+							<event>
+								<text>You're able to activate the stasis chamber once again and find the Crystal inside still alive. They're confused and wondering what year it is, so you give them a very simple explanation as to your current situation and hurry to leave the asteroid field.</text>
+								<crewMember amount="1" class="crystal">Deja</crewMember>
+								<autoReward level="LOW">scrap_only</autoReward>
+							</event>
+						</choice>
+					</event>
+				</choice>
+			</event>
+		</choice>
+	</event>
+</eventList>
+<eventList name="ASTEROID_DERELICT_SHIP_ROCK">
+	<event>
+		<text>You find the decaying remains of a derelict Crystalline station. There's a weird sense of deja vu, and in the corner is a stasis pod and a crystal weapon.</text>
+		<ship load="SHIP_CRYSTAL_STATION" hostile="false"/>
+		<status type="limit" target="enemy" system="teleporter" amount="0"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>It looks like a massive asteroid is in a direct collision course with the station! You have to pull your crew out but they want to grab what they can first. What do they take?</text>
+				<choice hidden="true">
+					<text>Take the weapon and any spare resources.</text>
+					<event>
+						<text>Your crew grabs what they can and returns to the ship before the asteroid hits. You take a look at what you've recovered once you move clear of the asteroid field.</text>
+						<autoReward level="LOW">stuff</autoReward>
+						<weapon name="GIFTLIST_CRYSTAL"/>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>Grab the stasis chamber.</text>
+					<event>
+						<text>Your crew drags the pod back to your ship before the asteroid smashes into the ship, shattering through the crystal coating and destroying the ship.</text>
+						<choice hidden="true">
+							<text>Continue...</text>
+							<event>
+								<text>You're able to activate the stasis chamber once again and find the Crystal inside still alive. They're confused and wondering what year it is, so you give them a very simple explanation as to your current situation and hurry to leave the asteroid field.</text>
+								<crewMember amount="1" class="crystal">Deja</crewMember>
+								<autoReward level="LOW">scrap_only</autoReward>
+							</event>
+						</choice>
+					</event>
+				</choice>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<!--
+		DISTRESS!!!
+	Events that could have a fight
+-->
+<eventList name="DISTRESS_BEACON_ROCKHOME">
+	<event load="DISTRESS_REFUGEE_ROCK"/>
+	
+	<event load="DISTRESS_FEDERATION_LOST"/>
+	<event load="DISTRESS_STRANDED_BEACON"/>
+</eventList>
+
+<event name="DISTRESS_REFUGEE_ROCK">
+	<text>You have encountered a refugee ship drifting in space. It looks as if it was fleeing the Rebel advance and ran out of fuel. Its distress beacon is active, but you're not sure anyone is on board.</text>
+	<choice>
+		<text>Hail them.</text>
+		<event load="REFUGEE_HAIL_LIST_ROCK"/>
+	</choice>
+	<choice>
+		<text>Ignore the refugees.</text>
+		<event/>
+	</choice>
+	<distressBeacon/>
+</event>  
+<eventList name="REFUGEE_HAIL_LIST_ROCK">
+	<event load="REFUGEE_TRADER"/>
+	<event>
+		<text>As you hail the refugee ship, a Rock ship suddenly jumps into the system... The Rockmen accuse you of protecting heretics and gives you no time to argue before it raises its weapons.</text>
+		<ship load="SHIP_ROCK_REFUGEE" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+<!--
+		QUESTS!!!
+-->
+<eventList name="QUESTS_ROCKHOME">
+	<!--<event load="QUEST_ROCK_MARRIAGE_START"/>-->
+	<event load="ROCK_SUN_CHALLENGE"/>
+</eventList>
+
+<event name="QUEST_ROCK_MARRIAGE_START" unique="true">
+	<text>A Rock captain hails you: "It is improper of me to contact off-worlders, but this is an emergency. We were on our way to deliver our passenger to her new husband - the Grand Basilisk of Numa V - when our engines broke down. Will you take possession of her and make haste to Numa V?"</text>
+	<choice hidden="true">
+		<text>Accept the passenger.</text>
+		<event>
+			<text>"You surprise me, off-worlder. Thank you. The passenger will be with you momentarily." She refuses to enter the main hold and prefers to wait in the cargo bay.</text>
+			<quest event="ROCK_QUEST_MARRIAGE"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Refuse.</text>
+		<event>
+			<text>Arranged marriages aren't on your list of worthy causes. You leave the Rock to their business.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROCK_QUEST_MARRIAGE">
+	<text>A vast tunnel network near the surface of Numa V indicates an advanced Rock civilization. This must be where you were asked to deliver the passenger.</text>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>Realizing arrival is imminent, the passenger - silent so far - pleads with you not to hand her over. She's interrupted by the Grand Basilisk's Chief Aid: "To the alien vessel holding the Basilisk's wife. Deliver her to us. You will be rewarded... well."</text>
+			<choice hidden="true">
+				<text>Hand her over.</text>
+				<event>
+					<text>"May your children erode into dust!" she screams as she's bundled into the waiting shuttle. The Rock guards on board hurriedly drop off an exotic piece of technology and return to the Grand Basilisk.</text>
+					<weapon name="CRYSTAL_BURST_2"/>
+					<autoReward level="LOW">scrap_only</autoReward>
+				</event>					
+			</choice>
+			<choice hidden="true">
+				<text>Refuse to comply.</text>
+				<event>
+					<text>"I was led to believe your kind did not know mercy. I will join you. But quickly, we must jump away - they will not tolerate..." She's interrupted by weapons fire from the Basilisk's escort!</text>
+					<crewMember amount="1" class="rock">Ariadne</crewMember>  
+					<ship load="SHIP_ROCK_QUEST_MARRIAGE" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ROCK_SUN_CHALLENGE" unique="true">
+	<text>You are immediately messaged by an imposing looking Rock war vessel, "You're the ship off to 'save the Federation,' aren't you? And you expect to survive with that hunk of junk?"</text>
+	<ship load="SHIP_ROCK_SUN_CHALLENGE" hostile="false"/>
+	<choice hidden="true">
+		<text>"We're going to save them or die trying."</text>
+		<event>
+			<text>"The latter being more likely. Still... we can potentially help you and your precious fleet, but you'll need to prove yourself first. Meet us at these coordinates." They jump away.</text>
+			<quest event="ROCK_SUN_CHALLENGE2"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>"We're strong enough to destroy you!"</text>
+		<event>
+			<text>"One ship is not the same as a fleet, but at least you've got some fire. Meet us at these coordinates if you want to prove to us that the Federation is worth saving." They jump away.</text>
+			<quest event="ROCK_SUN_CHALLENGE2"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>"Heh. Like I expected. If the Federation is as weak as you it deserves to fall." They jump away without another word.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROCK_SUN_CHALLENGE2">
+	<text>You arrive at the coordinates given and find yourself dangerously close to an M-class star! The other ship messages you, "Let's see how long your puny ship can handle this heat! Prepare for a challenge!"</text>
+	<ship load="SHIP_ROCK_SUN_CHALLENGE2" hostile="true"/>
+	<environment type="sun"/>	
+</event>
+<event name="ROCK_SUN_CHALLENGE3">
+	<text>You arrive at a massive Rockman shipyard and notice the ship that had just tried to kill you is docked and already being repaired. "Well fought! I must say I did not expect you to survive."</text>
+	<ship load="SHIP_ROCK_SUN_CHALLENGE" hostile="false"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>"I am convinced of your strength and pledge to assist your cause. Let us patch up your hull, and provide you with some supplies."</text>
+			<damage amount="-15"/>
+			<autoReward level="HIGH">standard</autoReward>
+			<crewMember amount="1" class="rock_crusader" all_skills="1">Hadroch</crewMember>
+		</event>
+	</choice>
+</event>
+
+<!--
+		SYMBIOTE!!!!!
+-->
+<event name="ROCK_ZOLTAN_PARASITE" unique="true">
+	<text>A Rock station nearby is mass-broadcasting a request for medical aid. "Medical assistance required at Station R-0735Q. Need help extracting parasite. Will pay."</text>
+	<distressBeacon/>
+	<choice hidden="true">
+		<text>Offer to help.</text>
+		<event>
+			<text>The Rockmen are mildly confused that a Federation ship is offering to help, but don't complain. "We are representatives for Zulfiqar Industries. Yesterday, CMO Rig Bramston arranged a meeting on these premises with a Zoltan envoy named Tintan to discuss means of distribution and marketing within the Ministry. However, we did not anticipate a Slug vessel to arrive shortly after and deploy a 'prank' on the meeting, mind controlling Rig to consume Tintan whole. As you can understand, we are now in quite the dilemma and need to operate immediately."</text>
+			<choice hidden="true">
+				<text>Suggest they simply put them out of their collective misery.</text>
+				<event>
+					<text>"Your advice is worthless. We cannot simply assassinate both a high ranking Zoltan official and our own commander. We ask that you leave, and we will wait for a more helpful ship to arrive."</text>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Offer to try and perform surgery.</text>
+				<event>
+					<text>"Do you have any training in operating of either of the two species? Or any species at all?" You shake your head. "Then get lost. We will wait for someone who knows what they are doing to arrive."</text>
+				</event>
+			</choice>
+			<choice hidden="true" req="mind">
+				<text>(Mind Control) Convince the two to live in symbiosis aboard your ship.</text>
+				<event>
+					<text>Even under the effects of the mind control, it takes a lot of convincing to get the two to agree with forever existing among one another. Their life forever changed, now remarkably for the better, they thank you, and even ask to join your crew. The Rock station is confused as to what has happened, but Rig seems certain this is the right option in his stupor and the Rockmen agree to let him go.</text>
+					<autoReward level="MED">standard</autoReward>
+					<crewMember amount="1" all_skills="1" class="symbiote">Tintan and Rig</crewMember>
+					<variable name="ach_crew_symbiote" op="set" val="1"/>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_MANTIS">
+				<text>(Mantis Crew) Perform "surgery" on the Rockman.</text>
+				<event>
+					<text>Your Mantis, ever assured of its abilities, pushes past the Rockmen and marches into the room where the "infected" Rockman is being held. In a single swipe, it cuts straight through the stomach. The convulsing Zoltan falls out, quivering on the ground. The makeshift Rock medical team rushes in to fix the injured Rockman and physiologically evaluate the Zoltan. They aren't pleased with your solution, but they pay you as promised anyways.</text>
+					<autoReward level="LOW">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="unique_tonysr">
+				<text>(Tony Sr.) "Rig, is that you?"</text>
+				<event>
+					<text>"My god... Tony? Is that you? How are you here?" You have no idea what's going on, but Tony explains. "7 years ago, Tony's was nothing but a small chain local only to the Republic and quite small. I hoped to change that around by selling Zulfiqar goods. I met with Rig to discuss the terms, when out of nowhere a Slug ship arrived and mind controlled me into sticking myself up Rig's... uh... asshole. The surgeons had no idea how to handle the situation. For 3 years we lived like that, stuck together. I was forced to eat Rig's waste to survive. Eventually we found a professional capable of separating us, but it was too late to save either of us from the permanent trauma."</text>
+					<choice hidden="true">
+						<text>Uh...</text>
+						<event>
+							<text>The Rock station owners are completely baffled as to what is happening, but together you, Tony, Rig, and Tintan discuss the situation. It becomes clear Rig and Tintan won't be free of each other any time soon, but with Tony's help you might just be able to track down the Slugs responsible and get revenge.</text>
+							<variable name="ach_crew_symbiote" op="set" val="1"/>
+							<crewMember all_skills="1" amount="1" class="symbiote">Tintan and Rig</crewMember>
+							<quest event="BUTT_BUDDIES"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We cannot help.</text>
+		<event>
+			<text>You ignore the Rock station and carry on your way.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+		SPECIAL QUEST!!!!!
+		SPECIAL QUEST!!!!!
+		SPECIAL QUEST!!!!!
+-->
+<event name="ROCK_HOMEWORLDS" unique="true">
+	<preventQuest/>
+	<text>This beacon has landed you concerningly close to a densely populated Rock planet. You double-take when the ship computer informs you that this is no ordinary Rock planet, but rather Vrachos IV, the home planet of the Rock race.</text>
+	<img back="BACK_EVENT_ROCKHOME" planet="PLANET_INVISIBLE"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>The ship computer informs you on a few other details. Vrachos IV was largely abandoned because the massive industrial mining on the planet's surface led to a disastrous lack of necessary natural resources. This city, the capital of the Rock civilization, is one of the only few that remains populated. It is under strict control by one of the five Rock Elders, Stonewall. His incredibly uncreative name goes well in line with his uncreative methods of punishing dissidents, which usually involve torture and public executions.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>The city below is bustling with activity, and far in the distance lays Stonewall's palace, blocking out the sunrise. It's not the biggest building here, but it commands the most attention.</text>
+					<choice hidden="true">
+						<text>Attack the palace.</text>
+						<event>
+							<text>You came to this reality to make a change and the Rock government is no better than the Rebels. As you approach the palace however, a gigantic Rock cruiser exits, ready to combat you.</text>
+							<ship load="SHIP_ROCK_CRUISER_BOSS" hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>We should leave.</text>
+						<event>
+							<text>A giant Rock city is no place for a Federation ship. You power up the thrusters and back away from the planet's surface.</text>
+							<choice>
+								<text>Do something on-board the ship.</text>
+								<event load="STORAGE_CHECK"/>
+							</choice>
+							<choice>
+								<text>Do nothing.</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROCK_HOMEWORLDS_VICTORY">
+	<text>No ship can outmatch you, not even a mighty Elite Rock Cruiser. Now defeated, the remains of the cruiser go down into flames, destroying the vast garden leading up to the Palace's entrance. It's plenty to scrap, but you don't have much time with the Rock soldiers running out to meet you.</text>
+	<variable name="ach_boss_rockcruiser" op="set" val="1"/>
+	<autoReward level="HIGH">item</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>Along with the Rockmen comes Stonewall himself, extremely irate at the damage you caused. "What have you done! You have proven your point, everywhere you go you only bring destruction and disrupt our ways of life! What is it that you want, why have you come here to ruin this day? Will simple money be enough to make you leave?"</text>
+			<choice>
+				<text>Accept their pay.</text>
+				<event>
+					<text>Reluctantly, the Rock soldiers put down their guns and a hefty sum of scrap is brought out for you. This won't have much lasting effect on the Rock government other than an increase in security, but atleast this will help with your primary mission.</text>
+					<autoReward level="MED">scrap_only</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Use Stonewall as a hostage and bargain for an even greater reward.</text>
+				<event load="ROCK_HOMEWORLDS_VICTORY_HOSTAGE"/>
+			</choice>
+			<choice hidden="true">
+				<text>We came here to make a change. Assassinate Stonewall now.</text>
+				<event load="ROCK_HOMEWORLDS_VICTORY_KILL"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROCK_HOMEWORLDS_VICTORY_HOSTAGE">
+	<event>
+		<text>You're far quicker than any of the guards, and in only a couple of seconds your blaster is held directly against Stonewall's head. It's a dangerous and nerve-racking exchange, but everything goes as 'planned' and a Rock transport delivers a large supply of goods.</text>
+		<autoReward level="HIGH">weapon</autoReward>
+	</event>
+	<event>
+		<text>It was a risky move, and things don't go nearly as 'planned'. The Rock guards are quicker than anticipated and one of your crew is shot in the chest. You still manage to grab Stonewall around his massive neck and hold a blaster to his moss-covered face. As your crew lies dying on the floor, a Rock transport is called in to deliver the larger amount of supplies. Once you're satisfied, you hurry back to the ship, making sure to keep your gun pointed at Stonewall the entire way back.</text>
+		<autoReward level="HIGH">weapon</autoReward>
+		<choice hidden="true" req="medbay" lvl="2">
+			<text>(Upg. Medbay) Provide medical assistance to your crew.</text>
+			<event>
+				<text>Luckily your crew is able to be treated in time. You pull away from the city, glad at the success of the mission.</text>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>There's nothing we can do to save our crew.</text>
+			<event>
+				<text>Your crew perishes in front of you, a casualty that could have been prevented if you simply hadn't tried something so daring.</text>
+				<removeCrew>
+					<clone>true</clone>
+					<text>Luckily your crew is cloned, relieving you of some of your guilt.</text>
+				</removeCrew>
+			</event>
+		</choice>
+	</event>
+</eventList>
+<event name="ROCK_HOMEWORLDS_VICTORY_KILL">
+	<text>You swiftly draw your blaster and blast Stonewall straight in the chest. The mighty titan of a creature falls to the ground in a thud, and the Rock soldiers are sent into chaos. You rush back to the ship but are stopped by the surge of Rock citizens breaking down the palace gates. A large horde of onlookers, witnessing your brave execution of their long-time brutal dictator, have been pushed to revolt, and they are stampeding to take down the soldiers.</text>
+	<unlockCustomShip silent="false">PLAYER_SHIP_ROCKMAN</unlockCustomShip>
+	<choice hidden="true">
+		<text>Stay and help fight.</text>
+		<event>
+			<text>It's a violent fight, and there's heavy casualties on both sides, but with your trained military crew you help sway the tide in the civilians' favor. Once the battle is for certain over, the civilians thank you for your help. Most march on to take control of Stonewall's palace, but one Rock, a Crusader who turned on his masters, stays behind. "You have done us a considerable service, and I cannot let this go without thanks. Our kind may finally be free from this oppression, and this could very well be the start. I want to stay behind and keep fighting, but I also know a Federation ship passing through here with such a powerful loadout has a very important mission awaiting them, and they can use all of the manpower they can get."</text>
+			<crewMember amount="1" all_skills="2" class="rock_crusader">Ihatsno</crewMember> <!--very poorly made easter egg for ih8ih8sn0w-->
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave now.</text>
+		<event>
+			<text>Hopefully this newfound spark of hope you've started among the Rock people won't be smothered by the reinforcements the other Elders are bound to send. You can't risk your mission any further, so you power up the engines and fly away from the city.</text>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					OUTCAST SECTOR 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+
+<!--
+		ITEM!!!
+	Events that give stuff
+-->
+<eventList name="ITEMS_OUTCAST">
+	<event load="OUTCAST_SHIELD"/>
+	<event load="OUTCAST_STORIES"/>
+	<event load="OUTCAST_RECRUITMENT"/>
+	<event load="OUTCAST_PROPAGANDA"/>
+	
+	<event load="ASTEROID_EXPLORE"/>
+	<event load="ROCK_SLUG_ARGUMENT"/>
+	<event load="TAVERN_HIRE"/>
+</eventList>
+
+<event name="OUTCAST_STORIES" unique="true">
+	<text>Orbiting the nearby planet is an old Theocracy mining colony, established to harvest materials from the planet's rings. Now, it seems to have been converted into an Outcast camp, where several Rocks and even a few SSLG agents have gathered.</text>
+	<img planet="PLANET_RINGS"/>
+	<choice hidden="true">
+        <text>Visit the colony.</text>
+        <event>
+            <text>No one pays you any mind as you dock, so it's safe to assume they must be used to visitors. You enter the antechamber, where you find a small atmospheric fire has been lit and residents sit in a circle around one tall, robed Rockman with spears of yellow paint down his arms who looks to be telling stories.</text>
+			<choice hidden="true">
+				<text>Join them.</text>
+				<event>
+					<text>The robed Outcast turns to face you, smiling wide. "Esteemed guests, won't you join us! You're just in time to hear the tales of the Dread Pirate Tuco! Tell me, since you don't seem to be from here, which story would you like to hear?" He presents several options.</text>
+					<choice hidden="true">
+						<text>Tell the first tale of Tuco, the Vrachos IV Protests.</text>
+						<event load="OUTCAST_STORIES_PROTEST"/>
+					</choice>
+					<choice hidden="true">
+						<text>Tell the second tale of Tuco, the Kitpak Slave Camps.</text>
+						<event load="OUTCAST_STORIES_SLAVE"/>
+					</choice>
+					<choice hidden="true">
+						<text>Tell the third tale of Tuco, his legacy today.</text>
+						<event load="OUTCAST_STORIES_LEGECY"/>
+					</choice>
+					<choice hidden="true">
+						<text>I'm not familiar with who Tuco is.</text>
+						<event>
+							<text>"Ahhh, I see. Tuco is a legend, a hero, but most of all, not just one, but many people. It is a title inherited through honor and circumstance. We Outcasts pay respects to the many Tucos of history, who have always stood in the name of justice, whether that enemy be the fallen Rock-Crystal empire of long ago, or the modern day Theocracy. Now that you know this, would you like to hear one of my stories?"</text>
+							<choice hidden="true">
+								<text>Tell the first tale of Tuco, the Vrachos IV Protests.</text>
+								<event load="OUTCAST_STORIES_PROTEST"/>
+							</choice>
+							<choice hidden="true">
+								<text>Tell the second tale of Tuco, the Kitpak Slave Camps.</text>
+								<event load="OUTCAST_STORIES_SLAVE"/>
+							</choice>
+							<choice hidden="true">
+								<text>Tell the third tale of Tuco, his legacy today.</text>
+								<event load="OUTCAST_STORIES_LEGECY"/>
+							</choice>
+							<choice hidden="true" req="FEDERATION_DATABASE">
+								<text>[Federation Database] See what the database says on Tuco.</text>
+								<event>
+									<text>The Dread Pirate Tuco, true to what the Outcast claims, is not so much a singular person but rather a title. The original Tuco for which the moniker was derived lived during the days of the archaic Rock-Crystal Empire and fought against Toarde and the other 4 Rock Elders during the collapse of the Empire. While Tuco's side inevitably lost and the Theocracy rose from the ashes of that war, stories of the ventures of Tuco continued to be shared by Rock school-children even after the Elders forbade them from being told. Several Rockmen have picked up the title of Tuco since then, giving the name even more infamy and immortality. The current holder of the title is believed to once have been known as Rowbad, and currently works as a bodyguard for Ocym, the Aquarian co-founder of the Argeonn smuggler clan.</text>
+									<choice hidden="true">
+										<text>Tell the first tale of Tuco, the Vrachos IV Protests.</text>
+										<event load="OUTCAST_STORIES_PROTEST"/>
+									</choice>
+									<choice hidden="true">
+										<text>Tell the second tale of Tuco, the Kitpak Slave Camps.</text>
+										<event load="OUTCAST_STORIES_SLAVE"/>
+									</choice>
+									<choice hidden="true">
+										<text>Tell the third tale of Tuco, his legacy today.</text>
+										<event load="OUTCAST_STORIES_LEGECY"/>
+									</choice>
+									<choice hidden="true">
+										<text>We don't have time for stories.</text>
+										<event>
+											<text>"A shame. I assure you, they're good ones. If you shall not humor my storytelling, then perhaps you will at least accept a gift? It is customary that we welcome new visitors in such a fashion."</text>
+											<autoReward level="MED">standard</autoReward>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>We don't have time for stories.</text>
+								<event>
+									<text>"A shame. I assure you, they're good ones. If you shall not humor my storytelling, then perhaps you will at least accept a gift? It is customary that we welcome new visitors in such a fashion."</text>
+									<autoReward level="MED">standard</autoReward>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>We don't have time for stories.</text>
+						<event>
+							<text>"A shame. I assure you, they're good ones. If you shall not humor my storytelling, then perhaps you will at least accept a gift? It is customary that we welcome new visitors in such a fashion."</text>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Interrupt and ask for supplies.</text>
+				<event>
+					<text>The robed Outcast turns to you, his smile quickly fading. "I see you are not one for stories. You Federation officers, you're always about getting right to the point. What's the point of your journey if you take no time to enjoy it? I will not turn down your request, that would be rude. But I will ask that you leave once your ship has been restocked, so that we may enjoy our night in peace."</text>
+					<autoReward level="LOW">stuff</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Leave them alone.</text>
+				<event>
+					<text>These people seem to be enjoying themselves - best not to disturb them.</text>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice req="SCRAP_COLLECTOR">
+        <text>(Scrap Arm) Ignore the colony and salvage some of the asteroids yourself.</text>
+        <event>
+			<autoReward level="MED">fuel</autoReward>
+        </event>
+    </choice>
+    <choice>
+        <text>Ignore the colony.</text>
+        <event>
+            <text>You doubt there's much point in visiting the colony.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="OUTCAST_STORIES_PROTEST">
+	<text>"An excellent choice." The Outcast stretches out his arms to the crowd as you take a seat, then begins to tell his story. "Not too long ago, on the cusp of the revolution, protestors had begun to gather on Vrachos IV, the homeworlds of the Rock species and capital planet of the Theocracy! Though they started peacefully, Stonewall (the residing Elder and leader of the Inquisitions) would not dare have anyone question himself or the other Elders, and so he dispatched his Crusader forces to handle the crowds."</text>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>"Among them was a young Outcast whom today we know as Tuco, a fiery spirit who would not let the Theocracy continue to spit in the face of freedom! Soon, the conflict grew so large that the Paladins from Numa V had to be called, a rare but significant show of force from the Elders. So numerous were the arrests made that it was clear executions would be inefficient, and so the leaders of the protests were killed and the rest exiled. Tuco, with nowhere left to go, journeyed with the countless thousands of other Outcasts to the Badlands, where they founded the first of the Outcast settlements that we live in today."</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="OUTCAST_STORIES_REWARD"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTCAST_STORIES_SLAVE">
+	<text>"An excellent choice." The Outcast stretches out his arms to the crowd as you take a seat, then begins to tell his story. "It is no secret that the Tiiikaka slavers are only present in our sectors because they have been employed by the Theocracy to capture our brothers and sisters for use in the Coalition construction yards. Tuco himself was one of the many victims of these raids, and so he was taken to the Tiiikaka camps. But Tuco cared not for chains and cuffs, and so at night he put together a resistance effort to defeat their cruel masters. This is where he adopted his title as Tuco, a codename between resistance coordinators so as not to leak the identities of those involved.</text>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>"Tuco and the other escapees overwhelmed the slavers and escaped by stealing a Hephaestus-built vessel. Tuco gained infamy among pirates and Theocracy citizens alike. He returned to the Badlands, and together with the forces of Admiral Ariadne of the Lost Sun fleet drove Tiiikaka from the Badlands once again. Tuco stayed with us Outcasts for some time until he grew restless, and once again departed to seek greater adventures in the starry beyond!"</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="OUTCAST_STORIES_REWARD"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTCAST_STORIES_LEGECY">
+	<text>"An excellent choice." The Outcast stretches out his arms to the crowd as you take a seat, then begins to tell his story. "After rescuing the Badlands from Tiiikaka forces, Tuco grew restless living in the Badlands. A life of quiet complacency within the Theocracy, and months trapped in a filthy cell in a Tiiikaka slave camp had filled him with a deep yearning for adventure. Fear not, for the great Tuco lives on to this day! They say he works a position of protection for Ocym, founder of Argeonn! Tuco has not abandoned us yet brothers and sisters - never fear. Before he left, he made a promise that should the Badlands ever be under threat again, we only need to call him back and he will come."</text>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="OUTCAST_STORIES_REWARD"/>
+	</choice>
+</event>
+<eventList name="OUTCAST_STORIES_REWARD">
+	<event>
+		<text>You didn't even realize it, but time slipped away from you faster than you thought. With the story over, you apologize but explain you have to leave. "I understand the importance of your mission, and won't keep you any longer. But I speak for everyone when I say that I appreciated your company with us today. It is not often we get visitors, much less ones so interested in tales of our history. Please, accept this gift."</text>
+		<weapon name="RANDOM"/>
+		<modifyPursuit amount="1"/>
+	</event>
+	<event>
+		<text>You didn't even realize it, but time slipped away from you faster than you thought. With the story over, you apologize but explain you have to leave. "I understand the importance of your mission, and won't keep you any longer. But I speak for everyone when I say that I appreciated your company with us today. It is not often we get visitors, much less ones so interested in tales of our history. Please, accept this gift."</text>
+		<augment name="RANDOM"/>
+		<modifyPursuit amount="1"/>
+	</event>
+	<event>
+		<text>You didn't even realize it, but time slipped away from you faster than you thought. With the story over, you apologize but explain you have to leave. "I understand the importance of your mission, and won't keep you any longer. But I speak for everyone when I say that I appreciated your company with us today. It is not often we get visitors, much less ones so interested in tales of our history. Please, accept this gift."</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<modifyPursuit amount="1"/>
+	</event>
+</eventList>
+
+<event name="OUTCAST_RECRUITMENT" unique="true">
+	<text>You're startled by the presence of a Lost Sun outpost nearby, but you quickly realize it's nothing malicious. A few patrol ships orbit the outpost, broadcasting messages to nearby vessels advertising a recruitment campaign for the Suns.</text>
+	<ship load="SHIP_LOSTSUN_STATION" hostile="false"/>
+	<choice hidden="true">
+        <text>Enter the recruitment center.</text>
+        <event>
+			<text>As you step aboard the Lost Sun station, several security guards run over but relax once they realize you're with the Federation.</text>
+			<choice>
+				<text>Hire a commando.</text>
+				<event>
+					<crewMember amount="1" class="rock_commando"/>
+					<item_modify>
+						<item type="scrap" min="-40" max="-50"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice req="rock_outcast">
+				<text>(Outcast Crew) Pay to use their training facilities to convert your outcast into a commando.</text>
+				<event>
+					<transformRace class="rock_outcast">rock_commando</transformRace>
+					<item_modify>
+						<item type="scrap" min="-20" max="-25"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Offer to trade instead.</text>
+				<event>
+					<text>The commander of the outpost thinks it over for a moment but eventually agrees.</text>
+					<store>STORE_ROCK</store>
+				</event>
+			</choice>
+	    </event>
+    </choice>
+	<choice hidden="true" req="LIST_CREW_ROCK_FAITHFUL">
+        <text>(Theocracy Crew) Slander the Lost Suns.</text>
+        <event>
+			<text>Your Rockman storms to the comms, unleashing a series of violent slurs against the Lost Suns and all of their members. As any rational person would expect... this does not go over well with them at all.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+	    </event>
+    </choice>
+	<choice hidden="true" req="rock_commando">
+        <text>(Commando Crew) Request supplies.</text>
+        <event>
+			<text>Fortunately for you, it seems the recruitment center doubles as a supply depot for Lost Sun ships passing through. With your crew's aid you easily get through security and receive some supplies and repairs.</text>
+			<autoReward level="MED">standard</autoReward>
+			<damage amount="-7"/>
+        </event>
+    </choice>
+	<choice hidden="true" req="unique_ariadne">
+        <text>(Ariadne) Request supplies.</text>
+        <event>
+			<text>Fortunately for you, it seems the recruitment center doubles as a supply depot for Lost Sun ships passing through. With Ariadne's aid you easily get through security and receive some supplies and repairs.</text>
+			<autoReward level="MED">standard</autoReward>
+			<damage amount="-15"/>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Engage the outpost.</text>
+        <event>
+			<text>Maybe there's a reason to justify this violence - but you can ponder that later. Time to murder!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Ignore the colony.</text>
+        <event>
+            <text>You doubt there's much point in visiting the colony.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="OUTCAST_SHIELD" unique="true">
+	<text>The nearby moon appears to have a small village of Outcasts enclosed by a protective shield. Surely that thing must take a lot of power to keep running, and other than the shield it seems they don't have much other means of protection.</text>
+	<img planet="PLANET_MOONS"/>
+	<choice hidden="true">
+        <text>Land and request aid.</text>
+        <event>
+            <text>The villagers are more than willing to provide you with supplies. It's not a lot, but it's still free.</text>
+			<autoReward level="LOW">stuff</autoReward>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Attack the village to try and access the shield's powersource.</text>
+        <event load="OUTCAST_SHIELD_ATTACK"/>
+    </choice>
+	<choice hidden="true" req="weapons" lvl="5">
+        <text>(Upg. Weapons) Fire everything you have on the shield.</text>
+        <event>
+           <text>Your arsenal is more than enough to break through the defenses, and several shots even strike the buildings within. The Outcasts begin to evacuate immediately, allowing you enough time to land and secure the power source.</text>
+			<choice hidden="true">
+				<text>Install it into your reactor.</text>
+				<event>
+					<text>This should allow your reactor to run at even higher capacity than before!</text>
+					<upgrade amount="1" system="reactor"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Install it into your own shield system.</text>
+				<event>
+					<text>This should allow your shields to run at even higher capacity than before!</text>
+					<upgrade amount="1" system="shields"/>
+				</event>
+			</choice>
+			<choice>
+				<text>Break it down into fuel.</text>
+				<event>
+					<text>With no need for any upgrades, you simply convert the power source into fuel for the next several jumps.</text>
+					<autoReward level="HIGH">fuel_only</autoReward>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true" req="BYPASS_AND_TELEPORT">
+        <text>(Bypass + Teleporter) Send your crew in through the shield.</text>
+        <event>
+           <text>Your crew beam through the shields and raise their weapons. You expect some kind of resistance, but the Outcasts seem more interested in avoiding your crew. You storm the center of the village and secure the power source.</text>
+			<choice hidden="true">
+				<text>Install it into your reactor.</text>
+				<event>
+					<text>This should allow your reactor to run at even higher capacity than before!</text>
+					<upgrade amount="1" system="reactor"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Install it into your own shield system.</text>
+				<event>
+					<text>This should allow your shields to run at even higher capacity than before!</text>
+					<upgrade amount="1" system="shields"/>
+				</event>
+			</choice>
+			<choice>
+				<text>Break it down into fuel.</text>
+				<event>
+					<text>With no need for any upgrades, you simply convert the power source into fuel for the next several jumps.</text>
+					<autoReward level="HIGH">fuel_only</autoReward>
+				</event>
+			</choice>
+        </event>
+    </choice>
+    <choice>
+        <text>Ignore the village.</text>
+        <event>
+            <text>You have no reason to go around disturbing these people.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="OUTCAST_SHIELD_ATTACK">
+	<event>
+		<text>You fire as much as you can onto the village, but the shield is stronger than you expected. Your attacks result in nothing but your own embarassment as the Outcasts watch you in bemusement.</text>
+	</event>
+	<event>
+		<text>Your attack manages to keep the shield down long enough that the Outcasts are sent into panic and surrender. You aren't certain if you would be able to actually get through the shield entirely, so you settle for accepting their surrender instead.</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>Fortunately, powerful as the shield may be, a few lucky shots from your attack manage to break through and strike the buildings within. The Outcasts begin to evacuate immediately, allowing you enough time to land and secure the power source.</text>
+		<choice hidden="true">
+			<text>Install it into your reactor.</text>
+			<event>
+				<text>This should allow your reactor to run at even higher capacity than before!</text>
+				<upgrade amount="1" system="reactor"/>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>Install it into your own shield system.</text>
+			<event>
+				<text>This should allow your shields to run at even higher capacity than before!</text>
+				<upgrade amount="1" system="shields"/>
+			</event>
+		</choice>
+		<choice>
+			<text>Break it down into fuel.</text>
+			<event>
+				<text>With no need for any upgrades, you simply convert the power source into fuel for the next several jumps.</text>
+				<autoReward level="HIGH">fuel_only</autoReward>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<event name="OUTCAST_PROPAGANDA" unique="true">
+	<text>A broadcast station established by the SSLG has been constructed near the beacon, just close enough for its propaganda to reach new arrivals. "The era of the Theocracy is over! Rock brothers, put down your holy texts and join us Crystals in our open arms! Welcome the approaching days of the mighty Rock-Crystal Empire once more! The Lost Suns nor the Federation will show you the way, only we can guide you!"</text>
+	<ship load="SHIP_SSLG_STATION" hostile="false"/>
+	<choice hidden="true">
+        <text>Hail and request to use the broadcast to your benefit.</text>
+        <event load="OUTCAST_PROPAGANDA_REQUEST"/>
+    </choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+        <text>(Crystal Crew) Convince them to aid you.</text>
+        <event>
+			<text>It's tough breaking through the stubborn nature of a Crystal but you manage to convince them to periodically broadcast lies about your location.</text>
+			<modifyPursuit amount="-2"/>
+		</event>
+    </choice>
+    <choice hidden="true" req="hacking" lvl="1" max_lvl="2">
+        <text>(Hacking) Hijack the broadcast.</text>
+        <event>
+			<text>You take control over the station's signal and replace it with an announcement of your own ship's arrival - at a very different location. The Crystals take notice and aren't pleased, but hopefully by the time they fix it the Rebels will have caught the word.</text>
+			<modifyPursuit amount="-2"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+			</choice>
+		</event>
+    </choice>
+	<choice hidden="true" req="hacking" lvl="3">
+        <text>(Adv. Hacking) Hijack the broadcast.</text>
+        <event>
+			<text>You deploy a malicious virus into the station's systems that will periodically replace the broadcast with an announcement of your own ship's arrival - at a very different location. The Crystals shouldn't take notice for a while so hopefully the Rebels will catch the word.</text>
+			<modifyPursuit amount="-3"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL"/>
+			</choice>
+		</event>
+    </choice>
+	<choice hidden="true">
+        <text>Propaganda of any kind is bad. We have to take down the station.</text>
+        <event>
+			<text>The Theocracy is vile, yes, but these defamatory lies will only damage the reputation of the Federation with the Outcasts. We can't let these lies be spread!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+        <text>Ignore the station.</text>
+        <event>
+            <text>This propaganda might make some unfavorable accusations about the Federation, but at least it isn't calling the Outcasts to arms against you. Better not to get involved with the SSLG.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="OUTCAST_PROPAGANDA_REQUEST">
+	<event>
+		<text>It's tough breaking through the stubborn nature of a Crystal but you manage to convince them to periodically broadcast lies about your location.</text>
+		<modifyPursuit amount="-2"/>
+	</event>
+	<event>
+		<text>The Crystals merely laugh in your face at such a proposition. "This might be what YOU desire, but it is not what WE desire. We want the Rebels out of here as soon as possible, and the longer they spend looking for you the longer we have to deal with them."</text>
+		<choice>
+			<text>Bribe them into helping.</text>
+			<event>
+				<text>The Crystal looks down at the scrap then instinctively scoops it up. "Perhaps our interests do align after all..."</text>
+				<modifyPursuit amount="-2"/>
+				<item_modify>
+					<item type="scrap" min="-25" max="-25"/>
+				</item_modify>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>Accept their answer and leave.</text>
+			<event/>
+		</choice>
+	</event>
+</eventList>
+
+<!--
+		NEUTRAL!!!
+	Events that have fights
+-->
+<eventList name="NEUTRAL_OUTCAST">
+	<event load="OUTCAST_TEAMWORK"/>
+	<event load="OUTCAST_VICTIM"/>
+	<event load="OUTCAST_ANNOYING"/>
+	<event load="OUTCAST_CHUNGUS"/>
+	<event load="OUTCAST_MAKESHIFT"/>
+	
+	<event load="SOLAR_WRECK"/>
+	<event load="SLAVER_FRIENDLY"/>
+	<event load="ROCK_MANTIS_HUNTER"/>
+</eventList>
+
+<event name="OUTCAST_VICTIM" unique="true">
+	<text>A small Outcast village appears to be under occupation by slavers, who have chained up several Rockmen but are firing at a band of Outcasts who seemed to have escaped.</text>
+	<choice hidden="true">
+        <text>Intervene.</text>
+        <event>
+            <text>You land nearby and walk towards them, when the slavers suddenly drop their weapons and their leader falls to his knees and pleads before you. "Ooooh great Federation Captain you have come to save us from these cruel brutes! They have killed my men and I had no choice but to slaughter their families! It was only self defense! I have restrained them here so they can kill no one else! Please oh please, will you help us arrest these evil men and women?" You look at the Outcasts at the other end of the town who merely shrug.</text>
+			<choice hidden="true">
+				<text>Aid the Outcasts.</text>
+				<event>
+					<text>These guys aren't fooling anyone. When the slavers see their "clever trick" has failed they scramble for their guns and prepare to fight you.</text>
+					<ship load="SHIP_VICTIM_SLAVER" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Aid the Slavers.</text>
+				<event>
+					<text>It's pretty obvious the slavers are lying but that doesn't mean you can't take advantage of the situation. You prepare to fight off the remaining Outcast survivors.</text>
+					<ship load="SHIP_VICTIM_OUTCAST" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Don't get involved.</text>
+        <event>
+            <text>It's not worth the effort coming between the outcasts and Tiiikaka.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="OUTCAST_SLAVERS_WIN">
+	<text>"Thank you captain. For a moment I feared you might actually side with the slavers. You have all of our thanks."</text>
+	<autoReward level="LOW">item</autoReward>
+</event>
+<event name="OUTCAST_OUTCAST_WIN">
+	<text>"See, I knew you'd follow through in the name of justice! Hooray for the Federation! Three cheers!" The slaver looks around but sees no one is clapping and gives up. "Alright whatever. Take a slave or something I dunno."</text>
+	<crewMember amount="1" class="rock_outcast"/>
+</event>
+
+<event name="OUTCAST_TEAMWORK" unique="true"> <!--technically hostile but it fits neutral better-->
+	<text>As soon as you catch sight of the ship at this beacon you regret coming here. Looks like the Coalition has penetrated into this territory. You promptly receive a hail from the ship.</text>
+	<choice hidden="true">
+        <text>Respond.</text>
+        <event>
+            <text>The captain of the vessel, a Slug dressed in a cheap lab coat, appears on the screen. "Now, I know thisss iss unconventional, but the Coalition can wait. I am on a quessst... for SSSSCIENCCCE! Sssspeccifically, I wisssh to underssstand what about the Outcassstsss grantsss them sssuch amplified abilitiesss in the pressssenccce of each other. My own crew is not ssso willing to asssissst me, the lazy bassstardsss, so I requessst you go and obtain a few bodiesss from the nearby Outcassst colony. For pay, of courssse. No one doesss ssshit for free anymore."</text>
+			<choice hidden="true">
+				<text>Accept.</text>
+				<event>
+					<text>Following the directions from the Coalition vessel, you're guided to a small Outcast colony with a few ships docked. Wasting no time, you power up your weapons and engage! No need to target the crew - even after an explosion the resilient bodies of Rockmen will stay intact.</text>
+					<ship load="SHIP_OUTCAST_TEAMWORK" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Decline.</text>
+				<event>
+					<text>"Wow, even money couldn't coax you greedy bassstardsss into doing sssomething? What hassss the world come too... Oh well, guessss I have to kill you now."</text>
+					<ship load="SHIP_COALITION_GENERIC" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_HUMAN">
+				<text>(Human Crew) "Teamwork makes the dream work."</text>
+				<event>
+					<text>"Uhhh, what the hell did you jussst sssay to me? Uegh, humansss and their ssstupid cheesssy phrasssess. What doess that have to do with anything anywaysss?"</text>
+					<choice hidden="true">
+						<text>Outcasts get their abilities from teamwork.</text>
+						<event>
+							<text>"What? Teamwork? I've heard of that, but I have yet to identify the genome. Issss that ssome kind of genetic trait ssshared by Outcassstss? I ssshall resssearch thisss further. Thissss hass been a massssive help."</text>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Attack pre-emptively.</text>
+        <event>
+            <text>There's no way you're risking falling into a trap from the Coalition. Arm the weapons!</text>
+			<ship load="SHIP_COALITION_GENERIC" hostile="true"/>
+            <choice hidden="true">
+                <text>Continue...</text>
+                <event load="COMBAT_CHECK"/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="OUTCAST_ANNOYING" unique="true">
+	<text>An outcast vessel is approaching, their captain wearing a bright yellow leotard and carrying a harp in his hand. "Halt, Federation! I hath taken a noble voyage to the lands of the Dynasty and learned from the finest of poets the art of story telling. I demand thee listen to mine tale, or I shall come and squish your puny skull between my thighs!"</text>
+	<ship load="SHIP_OUTCAST_FIGHT" hostile="false"/>
+	<choice hidden="true">
+        <text>Listen to his story.</text>
+        <event>
+            <text>The Rockman strums his harp, then begins to speak in a strange accent. "My story begins with darkness and a scream, as my infantile body exits the womb of my mother. How I cried! How she cried! We all cried! I think! I don't really know, I was just born. I'm just guessing. People normally cry after childbirth, I think."</text>
+			<modifyPursuit amount="1"/>
+			<choice hidden="true">
+				<text>Continue listening.</text>
+				<event>
+					<text>The outcast isn't off to a great start, but it only gets worse. He takes you through all of the experiences of his early, teenaged, and adult life. He complains of old girlfriends, bad teachers, idiotic co-workers, some weird story about eating one of the statues outside of his church, how he became vegetarian after visiting the Orchids, an affair with a Separatist, and some other even more outlandish stories you're certain are fake.</text>
+					<modifyPursuit amount="1"/>
+					<choice hidden="true">
+						<text>He should be almost done.</text>
+						<event>
+							<text>Somehow, the poet continues all the way past the current day and onto the lives of his children. Most of your crew have already fallen asleep but somehow, by some miracle, the poet finally finishes his story. "I do hope thou enjoyed it! I'll be publishing the written work and even an audiobook soon! Rate it 5 stars if thou liked it! I'm not really sure what else to say!" There's a few moments of awkward silence, but the outcast transfers over some scrap and a weapon as 'thanks' and to help 'encourage' you to promote him to your friends.</text>
+							<modifyPursuit amount="1"/>
+							<autoReward level="HIGH">scrap_only</autoReward>
+							<weapon name="RANDOM"/>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Cut him off and leave.</text>
+						<event>
+							<text>No way you're wasting even more time listen to this weirdo and his life story. Better fight your way out!</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Stop him and try to leave.</text>
+				<event>
+					<text>No way you're wasting even more time listen to this weirdo and his life story. Better fight your way out!</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Sounds like his story is a long one. We better fight through this.</text>
+        <event>
+            <text>No way you're wasting time listen to this weirdo and his life story. Better fight your way out!</text>
+            <ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+        </event>
+    </choice>
+</event>
+
+<event name="OUTCAST_CHUNGUS" unique="true">
+	<text>A crowd of ships have gathered around a large battleship with a floating sign besides it that reads "Come see the one and only Chung Bungalung, the Rock who lived!" Excited chatter takes place between the different ships, sharing tales of Chung's seemingly impossible escape from the clutches of the Theocracy.</text>
+	<ship load="SHIP_OUTCAST_FAT" hostile="false"/>
+	<choice>
+        <text>Pay the entrance fee.</text>
+        <event>
+            <text>You're annoyed about having to pay to enter, but it's cheap enough. Inside you see several paintings of a Rockman so overweight that his head has merged with his torso, and a commemorative set of souvenirs of replica bullet casings. A repurposed Anti-Personnel drone greets you. "Welcome to the esteemed home of Mr. Chung Bungalung, the Rockman who Lived!"</text>
+			<item_modify>
+				<item type="scrap" min="-5" max="-5"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Follow the drone.</text>
+				<event>
+					<text>The drone guides you to a new room where you find none other than Chung Bungalung himself. "A renegade?! Wasn't expecting Feds to come here. Greetings! I am Chung Bungalung, the Rockman who Lived!"</text>
+					<choice hidden="true">
+						<text>Yeah, I've heard. Why do they call you that anyways?</text>
+						<event>
+							<text>"Well, you see, it's illegal in the Theocracy to offend a Rock Priest by being ugly, and ugly I very much am! I was sentenced to death, but it takes more than a bullet to stop Chung Bungalung, the Rockman who Lived! They shot me not once, not twice, but five times! Eventually they gave up and simply dumped me out here! I've become a living legend amongst the Outcasts. And, if you can best me in a duel, then I'll even tell you my secret on how I survived the bullets!"</text>
+							<choice hidden="true">
+								<text>Challenge him to a duel.</text>
+								<event>
+									<text>"Haha, now that's what I like to hear. Commence the battle!"</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>No thanks.</text>
+								<event>
+									<text>"Disappointing! Oh well then, I understand. But you'll never learn my secret, haha!"</text>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+		<text>Ignore the ships.</text>
+		<event>
+			<text>This all seems like some kind of scam or tourist trap. Not that those are mutually exclusive. No point in stopping here.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTCAST_CHUNGUS_WIN">
+	<text>"Congratulations, you have bested me! My secret is yours!" Chung powers down his weapons.</text>
+	<clearTriggeredEvent name="BUNGALUNG_WIN"/>
+	<choice hidden="true">
+        <text>Stop the fight.</text>
+        <event>
+            <text>Chung leans forward and whispers in your ear; "My secret, is this... my girth."</text>
+			<clearTriggeredEvent name="BUNGALUNG_LOSE"/>
+			<ship hostile="false"/>
+			<choice hidden="true">
+				<text>Your... what?</text>
+				<event>
+					<text>"HAHAHAH! MY GIRTH! Those dumbasses couldn't penetrate my skull because it was protected by layers upon layers of fat. Now, for being such a good sport and being the first to ever best me in combat, have this!"</text>
+					<achievement silent="false">ACH_EVENT_CHUNG</achievement>
+					<autoReward level="HIGH">standard</autoReward>
+					<augment name="EX_LAB_ROCK_SKIN"/>
+					<surrender/>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Keep on fighting anyways.</text>
+        <event>
+            <text>"Wait, wait- what are you doing?!"</text>
+        </event>
+    </choice>
+</event>
+<event name="OUTCAST_CHUNGUS_LOSE">
+	<text>"It seems you have lost this battle! Alas, you shall not learn my secret. Apologies, captain!"</text>
+	<clearTriggeredEvent name="BUNGALUNG_LOSE"/>
+	<clearTriggeredEvent name="BUNGALUNG_WIN"/>
+	<ship hostile="false"/>
+	<surrender/>
+</event>
+
+<event name="OUTCAST_MAKESHIFT" unique="true">
+	<text>A small makeshift Tiiikaka outpost has been constructed nearby for holding slaves. Judging from the fact they don't hail you, it's pretty clear they aren't open to trading.</text>
+	<choice hidden="true">
+        <text>Attack the camp.</text>
+        <event>
+            <text>Even if they were open to selling to you, you wouldn't care. Slavery is immoral, and you're going to free these people.</text>
+			<ship load="SHIP_OUTCAST_MAKESHIFT_SLAVER" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true" req="teleporter" lvl="1" max_lvl="1">
+        <text>(Teleporter) Beam in a crew member to try and liberate some slaves.</text>
+        <event load="OUTCAST_MAKESHIFT_TELEPORT"/>
+    </choice>
+	<choice hidden="true" req="teleporter" lvl="2">
+        <text>(Upg. Teleporter) Beam in a crew member to try and liberate some slaves.</text>
+        <event>
+			<text>Your crew beams into the camp and managed to free several of the slaves being kept there. Your crew and the slaves beam back immediately before the slavers can catch them and you slip away undetected.</text>
+			<crewMember amount="1"/>
+		</event>
+    </choice>
+	<choice hidden="true">
+		<text>Ignore the slave camp.</text>
+		<event>
+			<text>Slavers are known to be dangerous, especially when you threaten their 'cargo'. Better not enter their space.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="OUTCAST_MAKESHIFT_TELEPORT">
+	<event>
+		<text>Your crew beams into the camp and managed to free several of the slaves being kept there.</text>
+		<crewMember amount="1"/>
+		<choice>
+			<text>Continue...</text>
+			<event>
+				<text>However, on their way back to the ship the slavers catch them and open fire! Your crew is shot, but the slaves manage to make it back to the ship alive. A noble sacrifice.</text>
+				<removeCrew>
+					<clone>true</clone>
+					<text>Fortunately the Clone Bay is able to revive your crew, and they are welcomed back with cheers from the now liberated slaves.</text>
+				</removeCrew>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>Your crew beams into the camp and managed to free several of the slaves being kept there. However, on their way back to the ship the slavers catch them and open fire! It's a struggle and several of the slaves die, but you're able to repel the slavers long enough to make it back to the ship with your crew still alive.</text>
+		<crewMember amount="1"/>
+	</event>
+</eventList>
+
+<!--
+		HOSTILE!!!
+	Events that have fights
+-->
+
+<eventList name="HOSTILE_OUTCAST">
+	<event load="ENCOUNTER_OUTCAST"/>
+	<event load="ENCOUNTER_SSLG"/>
+	<event load="ENCOUNTER_ROCK"/>
+	
+	<event load="OUTCAST_SUN"/>
+	<event load="OUTCAST_ASTEROID_SLAVER"/>
+	<event load="ROCK_FIGHT_ASTEROID"/>
+	
+	<event load="ROCK_STARSHIP_MINE"/>
+</eventList>
+
+<event name="ENCOUNTER_OUTCAST" unique="true">
+	<text load="TEXT_ENCOUNTER_OUTCAST"/>
+	<ship load="SHIP_OUTCAST_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_OUTCAST">
+	<text>When Rockmen go against the Elders, there is not much left for them to become other than outcast pirates or refugees without a future. One such ship patrols the nearby system, and upon spotting you decide your ship would make an excellent target for them!</text>
+	<text>A ship full of Rock outcasts sees you first. Apparently they are no longer satisfied with the condition of their vessel, because now they're looking to take yours instead.</text>
+	<text>Outcasts are refugees from the Rock Government. Now forced to live the life of a pirate, they have no choice but to prey on ships such as yours to survive.</text>
+</textList>
+
+<event name="ENCOUNTER_SSLG">
+	<text load="TEXT_ENCOUNTER_SSLG"/>
+	<ship load="SHIP_SSLG_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_SSLG">
+	<text>The SSLG's agents have little beef with the Federation, but they've always been suspicious that it might try to intervene with their movement. One overly cautious ship nearby spots you and isn't taking any chances!</text>
+	<text>You catch radio chatter on a nearby SSLG ship and an unseen outpost some distance away. "By the glory of Dianesh, it's so damn boring here. We're supposed to be overthrowing brutal dictators, not sitting on our asses singing kumbaya with a bunch of hippies! Er, hold on. Someone's watching me... oh what the hell, I'll just go kill them and say they were a spy. Finally something to do!"</text>
+	<text>"Hey, you! You aren't meant to be here! This sector is under occupation of the SSLG!" Last time you checked, the SSLG has as little authority here as you do, but looks like these guys are intent on beating you up. Get ready for combat!</text>
+</textList>
+
+<event name="OUTCAST_ASTEROID_SLAVER" unique="true">
+	<environment type="asteroid"/>
+	<text>Seems nowhere is safe from the influence of Tiiikaka, including this beacon. As you enter the asteroid field, you spot a slaver vessel on the prowl for Outcasts. However, they spot you at the same time and attack, not risking you blowing their cover!</text>
+	<ship load="SHIP_SLAVER_ALL" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="OUTCAST_SUN" unique="true">
+	<environment type="sun"/>
+	<text>Much like Rocks anywhere else in the galaxy, the Outcasts don't seem to show much regard to the threat of solar flares. You however, do, but the ship nearby spots your unusual movement and suspects you of foul play!</text>
+	<ship load="SHIP_OUTCAST_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--
+		DISTRESS!!!
+	Events that have fights
+-->
+<eventList name="DISTRESS_OUTCAST">
+	<event load="DISTRESS_OUTCAST_TENSIONS"/>
+	<event load="DISTRESS_OUTCAST_LOSTCARGO"/>
+	
+	<event load="DISTRESS_STATION_FIRE"/>
+	<event load="DISTRESS_REFUGEE"/>
+	<event load="DISTRESS_TRAPPED_MINER"/>
+</eventList>
+
+<event name="DISTRESS_OUTCAST_TENSIONS" unique="true">
+	<text>One of the Outcasts' signature ramshackle villages has been constructed aboard an old mining platform, abandoned after the diminished density of nearby asteroid fields. Seems they have a request for you.</text>
+	<distressBeacon/>
+	<choice hidden="true">
+        <text>Listen.</text>
+        <event>
+            <text>"Please, you must help us! The SSLG and Lost Suns are in a constant feud, and it is driving us mad! Now, they've come concerningly close to our village, and if a conflict breaks out we will be caught in the middle! Could you please defuse the tensions between them before it escalates? We'll pay you in advance - we trust you to do the right thing."</text>
+			<choice>
+				<text>Accept.</text>
+				<event>
+					<text>You travel not too much further until you find a standoff between two vessels. Their captains are currently engaged in a furious shouting match, calling each other creative insults such as "Son of a faux stone" and "Sediment for brains". No kidding when they said it was heated.</text>
+					<autoReward level="MED">standard</autoReward>
+					<choice hidden="true">
+						<text>Try and talk it out.</text>
+						<event load="OUTCAST_TENSIONS_TALK"/>
+					</choice>
+					<choice hidden="true">
+						<text>Attack the SSLG ship.</text>
+						<event>
+							<text>You open fire on the Crystals, and like cowards the Lost Sun ship jumps away. Disappointing, but at least you'll be able to reap the rewards from this fight.</text>
+							<ship load="SHIP_SSLG_FIGHT" hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Attack the Lost Sun ship.</text>
+						<event>
+							<text>You open fire on the Rockmen, and like cowards the SSLG ship jumps away. Disappointing, but at least you'll be able to reap the rewards from this fight.</text>
+							<ship load="SHIP_LOSTSUN_FIGHT" hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="mind">
+						<text>(Mind Control) Convince them to calm down.</text>
+						<event>
+							<text>Only able to mind control one of the two, you choose the Crystals as they're known to be more stubborn. The sudden switch in the Crystal's tone confuses the Rockman, but he isn't going let up. Eventually you just give up and tell the two to cut it out and they seem to finally give up. Though the Outcasts paid you already, they're so impressed by you being able to end the conflict without any bloodshed they offer a second reward.</text>
+							<augment name="RANDOM"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Refuse.</text>
+				<event>
+					<text>You apologize but explain you are not the right person for this.</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+</event>
+<eventList name="OUTCAST_TENSIONS_TALK">
+	<event>
+		<text>Both the Crystal and the Rockman turn to you in confusion, and you try to explain your point to them. However, seems it's too late as the two have already mutually muted you and gone back to shouting. Seems this won't work.</text>
+		<choice hidden="true">
+			<text>Attack the SSLG ship.</text>
+			<event>
+				<text>You open fire on the Crystals, and like cowards the Lost Sun ship jumps away. Disappointing, but at least you'll be able to reap the rewards from this fight.</text>
+				<ship load="SHIP_SSLG_FIGHT" hostile="true"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>Attack the Lost Sun ship.</text>
+			<event>
+				<text>You open fire on the Rockmen, and like cowards the SSLG ship jumps away. Disappointing, but at least you'll be able to reap the rewards from this fight.</text>
+				<ship load="SHIP_LOSTSUN_FIGHT" hostile="true"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>Give up.</text>
+			<event/>
+		</choice>
+	</event>
+	<event>
+		<text>You try and convince the two to stop their arguing. They won't listen, so you divert your efforts to convincing them to go elsewhere. This works, and though the Outcasts paid you already, they're so impressed by you being able to end the conflict without any bloodshed they offer a second reward.</text>
+		<augment name="RANDOM"/>
+	</event>
+</eventList>
+
+<event name="DISTRESS_OUTCAST_LOSTCARGO" unique="true">
+	<text>A group of Theocracy vessels have gathered together near the beacon. They're concerningly well armed and protected, but they barely pay any attention to your presence.</text>
+	<ship load="SHIP_OUTCAST_LOSTCARGO_INQUISITION" hostile="false"/>
+	<distressBeacon/>
+	<choice hidden="true">
+        <text>Hail and ask about the distress beacon.</text>
+        <event>
+            <text>A rather annoyed Rockman responds, seemingly not at all grateful for your quick response to their distress call. "We were tasked with transporting military supplies to a Theocracy outpost at the end of this sector, but an SSLG squadron raided our convoy. If you can assist us in recovering it, we will give you the leftover supplies."</text>
+			<choice hidden="true">
+				<text>Accept their request and inquire about coords.</text>
+				<event>
+					<text>The Rockman grunts and grants you access to the coords broadcast by a tracking chip on the stolen cargo.</text>
+					<quest event="OUTCAST_LOSTCARGO_QUEST"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Refuse.</text>
+				<event>
+					<text>"Fine, then stop bothering us." The Rockman hangs up.</text>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Attack the convoy.</text>
+        <event>
+            <text>You've decided to engage the Rockmen.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Avoid the convoy.</text>
+        <event>
+            <text>You aren't sure who these Rocks are hoping to get help from, but it certainly isn't you.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="OUTCAST_LOSTCARGO_QUEST">
+	<text>As you approach the beacon, the tracker chip's signal lets out a beep of confirmation and goes silent. This must be the right place; you can see a couple SSLG ships docked with a small green station.</text>
+	<ship load="SHIP_OUTCAST_LOSTCARGO_SSLG" hostile="false"/>
+	<choice hidden="true">
+        <text>Attack the station for the cargo.</text>
+        <event>
+            <text>You've decided to attack the SSLG to get the cargo! Prepare for battle.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true" req="weapons" lvl="5">
+        <text>(Adv. Weapons) Demand they surrender.</text>
+        <event>
+            <text>The Crystals are both terrified and furious. "Do you have any idea what you're doing? The Theocracy aren't your allies! They'll stab you in the back the first chance they get! Don't do this!"</text>
+			<choice hidden="true">
+				<text>Ignore them and demand they hand over the cargo.</text>
+				<event>
+					<text>With no other choice, the Crystals hand over the cargo and jump away. Not too long after the Theocracy convoy arrives and inspects the cargo. Satisfied, they transfer over a reward, but as you're leaving hostile boarders spring up on your ship! Seems the SSLG was right about you being stabbed in the back.</text>
+					<boarders min="2" max="3" class="rock"/>
+					<autoReward level="MED">standard</autoReward>
+				</event>
+			</choice>
+			<choice>
+				<text>Propose setting a trap with the cargo.</text>
+				<event>
+					<text>The Crystals seem to think this proposition over, but eventually accept. They swap the valuable items inside for explosives.</text>
+					<item_modify>
+						<item type="missiles" min="-5" max="-5"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>They thank you one last time and offer a gift before jumping away. Moments later the Theocracy convoy arrives, but as soon as you hand over the cargo it explodes! It mortally wounds the leaders of the Crusaders and cripples their systems. With no other choice, the Theocracy flees.</text>
+							<autoReward level="LOW">scrap_only</autoReward>
+							<weapon name="GIFTLIST_CRYSTAL"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="MORALITY_REMOVE_CRYSTAL"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Choose not to fight.</text>
+        <event>
+            <text>On a second thought, maybe helping the Theocracy isn't in your best interest. You turn the ship around and fly away.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<!--
+		UNLOCK QUESTS
+		UNLOCK QUESTS
+		UNLOCK QUESTS
+-->
+<ship name="SHIP_RUWEN" auto_blueprint="MU_RUWEN_SCOUT">
+	<destroyed load="OPTION_INVALID"/>
+	<deadCrew load="OPTION_INVALID"/>
+</ship>
+<event name="RUWEN_ENCOUNTER" unique="true">
+	<text>A strange, yellow colored Crystal vessel is flying nearby, clearly the origin of the distress call. Despite this, the ship is very well protected and in seemingly no duress.</text>
+	<distressBeacon/>
+	<preventQuest/>
+	<ship load="SHIP_RUWEN" hostile="false"/>
+	<choice hidden="true">
+        <text>Hail.</text>
+        <event>
+            <text>On your screen appears a lavishly dressed Crystal painted gold sitting aboard a jagged command chair chiseled out of citrine. "Ah, so someone has finally responded. You foreigners are quite... erm... nevermind. Salutations! I am Sir Ruwen Argote, standing Foreign Ambassador of the Great Crystalline Empire. I have been sent here by her majesty Empress Dianesh Kryel. Quite a mouthful of names, yes? I understand you foreigners just love to share your names with all that you meet. Strange, strange... oh, but please take no offense!"</text>
+			<choice hidden="true">
+				<text>None taken.</text>
+				<event>
+					<text>"Wonderful! If you wish you can just call me Ruwen. That is my name, after all. You foreigners do call each other by your first names, right? It gets so confusing with all these 'misters' and 'misses' and 'doctors' and what not."</text>
+					<choice hidden="true">
+						<text>Yeah...</text>
+						<event load="RUWEN_ENCOUNTER_MISSION"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>I'm exceptionally offended.</text>
+				<event>
+					<text>"Ohoho! A fine joke! I... I think that is a joke. You can never really be quite sure with you aliens. OH. Oh my, I am sorry. I understand foreigners do not like it when we address you as... erm... the 'a-word'. My apologies. I've been so rather clumsy, but old habits die hard!"</text>
+					<choice hidden="true">
+						<text>Yeah...</text>
+						<event load="RUWEN_ENCOUNTER_MISSION"/>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Ignore the ship.</text>
+        <event>
+            <text>Clearly no one here was under serious distress, and so there's no point in sticking around.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="RUWEN_ENCOUNTER_MISSION">
+	<text>Ruwen glances at his forearm where an ornate digital watch sits upon his wrist and projects the time into the air. "Erm, yes, sorry. Ycathine's crypt knows, I've gotten carried away with my ramblings again. Where was I? Oh, yes. I have been sent here by Empress Dianesh on an important diplomatic mission to recover a sacred object! Very boring political stuff, you wouldn't care much about it. But what you might care about is a job offer! I am in need of an escort. As you can see, my ship is very poorly armed. I require a ship that is... hum, how to put it... ready to put the fecal matter back up the rectums of those who stand in its path? I think that is how you foreigners say it?"</text>
+	<choice hidden="true">
+		<text>Uhm, sure.</text>
+		<event>
+			<text>"Good, because I do like saying that one! I will use it more often. Anyways, you look like an expert fecal-matter-putter-upper. With a small downpayment now and larger reward upon arrival, I request you help deliver me and my crew to an arranged meeting with the Lost Sun Admiral. As long as it's not too much of a burden for you, that is!"</text>
+			<choice>
+				<text>Accept.</text>
+				<event>
+					<text>"Truly wonderful! You foreigners are so kind! I wish my people acted in such manners, but we keep to ourselves so often I think many of us have forgotten what generosity even means. But that's besides the matter. I've sent the coordinates, just clear the path and we'll be right behind you! Try not to commit too many warcrimes in our presense, heh! But no really, please don't commit any warcrimes."</text>
+					<quest event="RUWEN_DESTINATION"/>
+					<autoReward level="MED">scrap_only</autoReward>
+				</event>
+			</choice>
+			<choice>
+				<text>Decline.</text>
+				<event>
+					<text>"Oh, terribly disappointing. Never matter, I understand! You foreigners come and go, always busy busy! Well, I'll be here then, waiting I suppose. Idi Tukala! Erm, sorry. That's... that's goodbye in my native language. Apologies."</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_PALADIN_RUWEN" auto_blueprint="LIST_SHIPS_ROCK_SELITE_LARGE">
+	<destroyed load="RUWEN_SAVE"/>
+	<deadCrew load="RUWEN_SAVE"/>
+	<crew>
+		<crewMember type="rock_crusader" prop="0.60"/>
+		<crewMember type="rock_paladin_enemy" prop="0.40"/>
+	</crew>
+</ship>
+<event name="RUWEN_DESTINATION">
+	<beaconType id="map_icon_ruwenquest" global="true">
+		<color r="248" g="196" b="55" a="1.0"/>
+		<unvisitedTooltip>Location of Ruwen's destination.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+	</beaconType>
+	<preventQuest/>
+	<preventFleet/>
+	<text>You've arrived at the destination Ruwen provided you with. Moments later, the Crystal arrives, jubilant as ever. "We meet again! You have my thanks, captain! As promised, your reward. Now, if you don't mind, I must hurry to my meeting. Idi Tukala! Erm, sorry. That's... that's goodbye in my native language. Apologies."</text>
+	<autoReward level="MED">scrap_only</autoReward>
+	<choice hidden="true">
+		<text>Stay and watch the meeting from a distance covertly.</text>
+		<event>
+			<text>You watch as Ruwen approaches a strangely colored Rock vessel. Seems to be a Paladin, a very rare and dangerous segment of the Inquisition usually tasked with protecting important clergy members. Based on the conversation you're eavesdropping in on, Ruwen seems equally confused. "Oh erm... pardon me. I was expecting Admiral Ariadne's envoy to be here. I don't believe I had any business with the Theocracy today!"</text>
+			<ship load="SHIP_PALADIN_RUWEN" hostile="false"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>The fully armored Rockman barely moves as he speaks to Ruwen, his voice bitter. "The traitors whom you were sent to negotiate with have been apprehended by the Theocracy. The Lost Suns are criminals, and it reflects poorly on your Empire when you come into Theocracy territory and begin to make talks of peace with enemies of the Elders. There shall be harsh consequences for these actions."</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>Ruwen gulps nervously, and shifts uncomfortably in his crystalline chair. "Hahah, surely you're joking! Yes, the Lost Suns are your enemies, but it is not as though the Empire is looking to draw arms against the Elders! We merely wish to settle this ongoing feud between the SSLG and Lost Sun forces for occupancies of the Badlands! That is all. No need for hostility."</text>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event>
+									<text>The Rockman squints, his gaze focused firmly on Ruwen. "Do not lie to me. We have already interrogated the criminals for the reason of your meeting. You wish to assist them in their attack on Numa V - in return to gaining access to the waystone device that you wish to rob from us. These are acts of war. The Theocracy might be involved in many other conflicts at this moment, but do not think we will take kindly to such insults." Suddenly, weapons spring from the hull of the Rock ship! They're going to attack Ruwen!</text>
+									<choice hidden="true">
+										<text>Interfere.</text>
+										<event>
+											<text>You won't stand for this. You raise your weapons and engage the Paladin ship.</text>
+											<ship hostile="true"/>
+											<choice hidden="true">
+												<text>Continue...</text>
+												<event load="COMBAT_CHECK"/>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>We can't risk getting involved.</text>
+										<event>
+											<text>It's cruel, but this was the Empire's blunder, not yours. You can't risk angering the Theocracy like this.</text>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+        <text>Accept the reward and leave.</text>
+        <event>
+            <text>Eventually Ruwen leaves your sight as he passes behind a distant moon.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="RUWEN_SAVE">
+	<text>The Paladin vessel has been defeated. A substantial amount of scrap remains behind to take.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<status type="limit" target="enemy" system="mind" amount="0"/>
+	<choice hidden="true">
+		<text>Hail Ruwen.</text>
+		<event>
+			<text>It seems Ruwen's substantial defenses protected him from any major damage during the fight. Still, he's quite shaken. "By the Empress, oh dear. Had it not been for you, I doubt I would still be standing here. It would be against tradition for me to not extend an even greater reward as thanks to you and the Federation. Though my initial diplomatic mission here has failed, perhaps we have achieved new ground instead!"</text>
+			<autoReward level="MED">standard</autoReward>
+			<weapon name="GIFTLIST_CRYSTAL_ELITE"/>
+			<unlockCustomShip silent="false">PLAYER_SHIP_SSLG</unlockCustomShip>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event> <!--CHANGE THIS FOR ROCK UPDATE, SHOULD NOT GO DIRECTLY TO ORIGINS-->
+					<text>"Now, erm, it seems there's little point in keeping past pretenses so let me begin again. I needn't waste your time which much historical mumble, but in short the Empire has been so tolerant of the SSLG's more radical motions as the Empress sees great benefit in gaining access to Theocracy grounds. We seek access to the Waystone, the device originally used to seal our homeworlds away from the galaxy. At first, we hoped the Lost Suns might retrieve it for us in return for more dedicated support. But now it seems those plans have faltered. Now, I must go at it alone. It will be perilous, but I wonder if you might be up for the task?"</text>
+					<recallBoarders/>
+					<choice>
+						<text>Agree to escort Ruwen to the Crystalline Origins.</text>
+						<event>
+							<text>"Most wonderful! Then, with haste we must go! There isn't a second to lose!"</text>
+							<crewMember amount="1" all_skills="2" class="unique_ruwen">Ruwen</crewMember>
+							<variable name="ach_crew_ruwen" op="set" val="1"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event>
+									<secretSectorWarp>SECTOR_ORIGINS_RUWEN</secretSectorWarp>
+									<secretSector/>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Decline.</text>
+						<event>
+							<text>"Ah, no bother then. You've done quite enough. Now, hopefully for the final time, Idi Tukala! Best of luck with your journeys."</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="TURBAN" unique="true">
+	<text>Before you is a grand spectacle, a giant sprawling city so tall it blocks out the sun. Massive bridges span artificial ravines with walls lined with store fronts. Half of the city seems to resemble traditional Rock architecture, but many connected segments are only half complete and are seemingly cobbled together out of scrap metal. This is Turban, one of the largest centers for trade, commerce, and culture in the modern galaxy, created quite ironically from the former site of a Chrysolic Church and Inquisition stronghold.</text>
+	<beaconType id="map_icon_turban" global="true">
+		<color r="255" g="130" b="85" a="1.0"/>
+		<unvisitedTooltip>Location of Turban.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+	</beaconType>
+	<preventQuest/>
+	<preventFleet/>
+	<img back="BACK_EVENT_TURBAN" planet="NONE"/>
+	<choice hidden="true">
+        <text>Visit.</text>
+        <event>
+            <text>You fly through the city, taking in truly just how massive it is, compared to all of the much smaller Outcast villages you've seen. As a newcomer and a renegade you are welcomed warmly, and your time in the city is a pleasant one. You meet a humble Aquarian fisherman who convinces you to try a sample of some exotic octopus, an exceptionally elderly Orchid Chieftain whom crafts dreamcatchers from his own twigs, and even share an awkward encounter with a very drunken ex-Rebel who claims to be Admiral Vance's long lost brother, who buys you 3 rounds of drinks before passing out. You also find a number of stores selling military supplies with an incredible variety of items to choose from.</text>
+			<store>STORE_TURBAN</store>
+			<jumpEvent>TURBAN_BOMBING</jumpEvent>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>We don't need to stop here.</text>
+        <event>
+            <text>To many this is place would be worth visiting for the sights alone, but to you it's nothing but another store, and you don't need to go shopping right now.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="TURBAN_BOMBING">
+	<text>As you begin to leave, you catch sight of a shooting star in the sky. Quite strange, considering it's not night time... Then it dawns on you what this is, just in time for you to take cover as a missile barrage strikes one of the nearby towers and sends it crashing down. The attack is followed by a flurry of more missile strikes as Theocracy and Coalition Bombers begin to jump in. The city is under attack!</text>
+	<resetFtl/>   
+	<choice hidden="true">
+        <text>Get back to your ship and flee as soon as possible.</text>
+        <event>
+            <text>You take off at once, but you aren't fast enough to escape unharmed. A missile strikes your engines, damaging them badly, while a Coalition Elite spots you and engages!</text>
+			<ship load="SHIP_COALITION_ELITE_FIGHT" hostile="true"/>
+			<damage amount="3" system="engines" effect="breach"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Stay and try to aid the other civilians.</text>
+        <event>
+            <text>You came here to save the Federation, but what good is that if you abandon everyone else on your path in doing so? You help pull several civilians out from beneath collapsed debris, but after a missile strike almost costs you your life, you realize if you stay on the surface any longer you'll die. Fortunately, a strangely dressed Rockman in worn priest clothing motions for you to follow him. "Come with me, quickly! We must get to the sewers, we'll be safe from the bombardement there."</text>
+			<choice hidden="true">
+				<text>Retreat into the sewers.</text>
+				<event>
+					<text>You trek through the sewers in silence with your crew, following the Rockman and his lantern through the labyrinth beneath the streets. Eventually, he breaks the silence. "You are noble to stay and help these people. There are few who would. Come, not much further now until we reach the sanctuary." True to his word, only a few turns later and you arrive at a crudely constructed door which you slide out of the way. A repugnant smell assaults your senses but you stifle the urge to gag and take a seat next to a sleeping outcast.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>The people in the room pay you little attention, but your companion draws many nasty looks. "Turns out you are a bad omen, Argo. We were warned of your curse, and now look where we are. We should never have given you asylum", spits a young female Mantis with a blood-soaked bandana over her left eye. This insult is met by murmurs of agreement by the rest of the room, who turn their backs to Argo. In defeat, he stumbles over to where you are.</text>
+							<choice hidden="true">
+								<text>Why is everyone mad at you?</text>
+								<event>
+									<text>Argo sighs and slumps back, pulling a small canteen from his belt and taking a sip. "Not long ago, I was in nothing but the highest graces of the Theocracy. My father sat at the table of victors when the Elders divided the Rock-Crystal Empire and seized power, but he was denied a place as an Elder. He warned me that the Elders would not be kind to our heritage unless we continued to prove our loyalty. I served as a Chrysolic priest for many years before I married my wife, Iri. Together we had two children, a son and a daughter."</text>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event>
+											<text>"We both knew that neither of their lives would be easy, but we tried as hard as possible to place them in positions of security. Our son was sent to the Inquisition to be trained as a Crusader, while our daughter was promised a hand in marriage with Toarde, the head Elder. She was but a young child at the time, but what were we to do? The Rock people hated us, they saw us as exactly what we were. My daughter hated me too, and one day she simply vanished from her room in Toarde's palace along with her brother. Toarde was furious, and he blamed me because he had no one else to blame."</text>
+											<choice hidden="true">
+												<text>Continue...</text>
+												<event>
+													<text>"I was exiled from the Theocracy and abandoned by my wife, who chose to pledge herself to Toarde instead. With nowhere to go I traveled to the Badlands, where I found Turban. The outcasts who lived here hated me, but I was able to survive by proving my usefulness as a guide through the unexplored halls of the buildings. I had helped in the planning for the original construction of Turban before it was abandoned, you see. After the outcasts had established full control I was allowed to stay, but they began to call me the 'cursed one'. A homeless prophet who wandered the streets claimed that I would bring destruction to this place. And... well, here we are I suppose."</text>
+													<choice hidden="true">
+														<text>Continue...</text>
+														<event>
+															<text>Argo falls silent, staring at the floor. He sheathes his canteen and the room turns silent once again.</text>
+															<choice hidden="true">
+																<text>Continue to sit in silence.</text>
+																<event load="TURBAN_BOMBING_COALITION"/>
+															</choice>
+														</event>
+													</choice>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Continue to sit in silence.</text>
+								<event load="TURBAN_BOMBING_COALITION"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+</event>
+<ship name="SHIP_COALITION_CRUISER" auto_blueprint="MU_COALITION_CRUISER">
+	<destroyed load="TURBAN_BOMBING_COALITION_WIN"/>
+	<deadCrew load="TURBAN_BOMBING_COALITION_WIN"/>
+</ship>
+<event name="TURBAN_BOMBING_COALITION">
+	<text>There is a palpable feeling of unease in the room, but every attempt to break the tension goes nowhere. Through the silence you can hear the distant thuds and feel the violent shaking as the bombardment of the city above continues without relent. At this rate, nothing will be left. Hours pass, and you're certain the fleet is making progress on your location. Several times footsteps can be heard outside the room, but no one ever enters.</text>
+	<modifyPursuit amount="1"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>Argo begins to hum a tune, some old Rock folk-song, but he's interrupted by an announcement over an old radio in the corner of the room. "Attention all those who remain: return to the surface at once and surrender yourselves. Those who have taken refuge in the sewers or ravines will be quickly snuffed out." You remotely check your ship's radar and see a concerningly large new blip appear. Seems the Theocracy has deployed a cruiser vessel of some kind.</text>
+			<ship load="SHIP_COALITION_CRUISER" hostile="false"/>
+			<choice hidden="true">
+				<text>Stay and protect the sanctuary.</text>
+				<event>
+					<text>It seems, despite the silence, that the room has unanimously decided to stand together. As the Theocracy search parties draw near, the door to the room is violently torn from its unstable hinges and you soon find your face on the floor with a gun to your head. Barely any sort of fight is put up as the Theocracy outnumbers your group by almost another 10 soldiers. You're drawn out to the surface, where you find the city is now little more than rubble.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>The Theocracy team transporting the group splits you and your crew off from the others, handing you over to the Coalition troops by the side. During the transfer however, Argo breaks free from his restraints and takes down one of the Crusaders. In the panic, your crew escape and make it back to your ship while the survivors draw arms and battle against the Theocracy ground troops. You trust them to hold their own this time, but they won't stand a chance unless you can take down that cruiser! Not like you have a choice, because it's already locked onto your vessel and is approaching fast.</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Try to escape through the sewers.</text>
+				<event>
+					<text>You and your crew take off through the sewers, trying to avoid capture. There's a few very close calls but you manage to make it back to your ship and slip away without anyone noticing. You know you should feel guilty, but you can't risk your primary mission.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="TURBAN_BOMBING_COALITION_WIN">
+	<text>The Coalition Cruiser has been defeated. There's little reason to worry about the wreckage hitting anything - Turban's already at its worst.</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>It seems the Theocracy's mission is complete, even if some survived. Most of the ships have jumped away, and visibly the survivors managed to scrape through the fire-fight. Among them is Argo, carrying a bloodied staff typically carried by priests such as he used to be. "I am in no way qualified to speak in such manners, but I think it goes without saying we people of Turban thank you. We Outcasts never expected the Federation to aid us in such a way. Assuming it has survived the bombardment, you should find a Rock cruiser on the landing pads outside of the city. It belongs to me, but I want you to have it. I must stay here and help repair the city. Turban will stand once again, I am certain of it."</text>
+			<weapon name="MISSILES_ROCK"/>
+			<unlockCustomShip silent="false">PLAYER_SHIP_OUTCAST</unlockCustomShip>
+		</event>
+	</choice>
+</event>
+</FTL>

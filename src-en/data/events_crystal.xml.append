@@ -1,0 +1,1523 @@
+﻿<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					CRYSTAL SECTOR 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+
+<!--ITEMS!!!
+	Events that give items
+-->
+<eventList name="ITEMS_CRYSTAL">
+	<event load="CRYSTAL_CACHE"/>
+	<event load="CRYSTAL_SCRAP_EXCITED"/>
+	<event load="CRYSTAL_FOREIGNER_MAP"/>
+
+	<event load="CRYSTAL_HUMAN_TESTS"/>
+	<event load="CRYSTAL_CHATTY"/>
+
+	<event load="FREE_CRYSTAL"/>
+
+	<event load="REFUEL_STATION"/>
+	<event load="REPAIR_STATION"/>
+</eventList>
+
+<event name="FREE_CRYSTAL" unique="true">
+	<text load="TEXT_FREE_CRYSTAL"/>
+	<weapon name="GIFTLIST_CRYSTAL"/>
+	<choice>
+		<text>Do something onboard the ship.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice>
+		<text>Do nothing.</text>
+		<event/>
+	</choice>
+</event>
+<textList name="TEXT_FREE_CRYSTAL">
+	<text>You notice the barebones wreckage of a nearby Crystalline vessel; though little scrap matter remains, it appears the scavengers overlooked a single Crystal weapon!</text>
+	<text>A small Crystalline trader with a squeaky high-pitched voice hails you. "Foreigners! It is important we make peace with barbaric aliens, perhaps this free weapon of war will soothe you?"</text>
+	<text>A Crystalline trading outpost hails you, requesting a trade. You look through your supply count until you realise their offer is a sample of foreign rocks in return for a military grade weapon... an offer you take in a heartbeat.</text>
+</textList>
+
+<event name="CRYSTAL_FOREIGNER_MAP" unique="true">
+	<text>You notice another foreigner nearby, a ship of scout classification. They hail you and make a brief offer to sell you the map data they have been collecting from this sector.</text>
+	<ship load="SHIP_FOREIGNER_SCOUT" hostile="false"/>
+	<choice>
+		<text>Buy the map data.</text>
+		<event load="CRYSTAL_FOREIGNER_MAP_BUY"/>
+	</choice>
+	<choice hidden="true">
+		<text>We can't verify the quality of their maps. Decline.</text>
+		<event>
+			<text>You decline the scout's offer and carry on.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_FOREIGNER_MAP_BUY">   
+	<event> 
+		<text>The ship transfers over the map data to your ship's computer.</text>
+		<reveal_map/>
+		<item_modify>
+			<item type="scrap" min="-20" max="-20"/>
+		</item_modify>
+	</event>
+	<event>
+		<text>The ship transfers over the map data to your ship's computer.</text>
+		<item_modify>
+			<item type="scrap" min="-20" max="-20"/>
+		</item_modify>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>You briefly inspect the map but are confused as to what you're seeing. The data is warbled, and in many spots it's obviously incorrect. You doubt they intentionally scammed you, but this data is worthless!</text>
+				<choice hidden="true">
+					<text>Confront them about it.</text>
+					<event>
+						<text>"What! Those maps are perfectly fine. We aren't refunding you for perfectly good data!"</text>
+						<choice hidden="true">
+							<text>Get your refund with force!</text>
+							<event>
+								<text>You arm the weapons and prepare to force the refund out of them, one way or another.</text>
+								<ship hostile="true"/>
+								<choice hidden="true">
+									<text>Continue...</text>
+									<event load="COMBAT_CHECK"/>
+								</choice>
+							</event>
+						</choice>
+						<choice hidden="true" req="mind">
+							<text>(Mind Control) 'Convince' them to give a full refund.</text>
+							<event>
+								<text>"You are right. These are bad maps. You deserve your money back. I am very ashamed of myself. Boo hoo."</text>
+								<item_modify>
+									<item type="scrap" min="20" max="20"/>
+								</item_modify>
+							</event>
+						</choice>
+						<choice hidden="true">
+							<text>Whatever, let's just leave.</text>
+							<event/>
+						</choice>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>Whatever, let's just leave.</text>
+					<event/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<event name="CRYSTAL_CACHE" unique="true">
+	<text>Odd radar pings from a huge, orbiting asteroid here reveal a Crystalline cache of some kind. A deep crater has been sealed over with a thick layer of crystal to keep whatever's inside safe - it'd take some serious firepower to break though.</text>
+	<choice hidden="true">
+		<text>Attempt to break through with the weapons you have.</text>
+		<event load="CRYSTAL_CACHE_BREAK"/>
+	</choice>
+	<choice hidden="true" req="BLUELIST_WEAPONS_HEAVY">
+		<text>(Heavy Weapon) Use your gun.</text>
+		<event>
+			<text>Your powerful weapon dislodges and shatters a massive shard of crystal, leaving your away team enough space to climb down and take a look.</text>
+			<choice hidden="true">
+				<text>Investigate the cache.</text>
+				<event load="CRYSTAL_CACHE_LIST"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(Crystal Crew) Have your Crystal crew recalibrate your weapons.</text>
+		<event>
+			<text>Your Crystalline crew-member is able to adjust the detonation frequency of your weapons to resonate with this type of crystal, and the barrier gives little resistance.</text>
+			<choice hidden="true">
+				<text>Investigate the cache.</text>
+				<event load="CRYSTAL_CACHE_LIST"/>
+			</choice>
+		</event>
+	</choice>	
+	<choice hidden="true">
+		<text>Ignore the cache.</text>
+		<event>
+			<text>You ignore the cache and do something onboard the ship.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_CACHE_BREAK">
+	<event>
+		<text>You fire everything you have, but the crystal barrier remains strong. After a time you give up and move on.</text>
+	</event>
+	<event>
+		<text>You fire everything you have, but the crystal barrier remains strong. After a time you give up and move on.</text>
+	</event>
+	<event>
+		<text>Against all odds, a lucky shot strikes an existing fracture in the crystal, compounding it into a crack that grows until an entire section of the barrier falls away!</text>
+		<choice hidden="true">
+			<text>Investigate the cache.</text>
+			<event load="CRYSTAL_CACHE_LIST"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="CRYSTAL_CACHE_LIST">
+	<event>
+		<text>On arriving at the base of the crater, your team discovers a long-forgotten weapons cache. Most of the equipment is out of action, but not all of it!</text>
+		<weapon name="GIFTLIST_CRYSTAL"/>
+		<autoReward level="LOW">stuff</autoReward>
+	</event>
+	<event>	
+		<text>Your away team is greeted at the crater by the owners of the cache, who are none too happy. You grab what you can and run back to the ship, but not before they teleport aboard!</text>
+		<weapon name="GIFTLIST_CRYSTAL"/>
+		<autoReward level="LOW">stuff</autoReward>
+		<boarders min="2" max="3" class="crystal"/>
+	</event>
+	<event>
+		<text>You send a crewmember down to check out the cache. The comm goes dead, and shortly thereafter massive gravity readings are detected on the asteroid. You must have triggered some kind of singularity booby trap! We've got to leave now before we're pulled in!</text>
+		<choice hidden="true">
+			<text>Pull out now!</text>
+			<event>
+				<text>You push the impulse engines to their limit and are able to break out of the gravity well. Your crewmember, along with the stockpile, is reduced to the size of a tennis ball - but you're left in one piece.</text>
+				<removeCrew>
+					<clone>true</clone>
+					<text>Luckily, your Clone Bay is able to revive your crewmember.</text>
+				</removeCrew>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>Detonate your entire fuel reserves to escape with your crew and the cargo.</text>
+			<event>
+				<text>You swoop into the heart of the distortion and pick up your crewmember and the cargo. You then eject your FTL fuel and ignite it, sending a shock wave that thrusts your ship well beyond the event horizon of the singularity. That was close.</text>
+				<item_modify steal="true">
+					<item type="fuel" min="-999" max="-999"/>
+				</item_modify>
+				<weapon name="RANDOM"/>
+				<autoReward level="MED">scrap_only</autoReward>
+			</event>
+		</choice>
+		<choice hidden="true" req="teleporter" lvl="2">
+			<text>(Improved Teleporter) Beam your crewmember back on board.</text>
+			<event>
+				<text>You floor the engines to escape the gravity well while trying to get a teleporter lock on your crewmember despite the massive interference. You're barely able to get them back on board before the entire area is consumed into the singularity.</text>
+			</event>
+		</choice>
+		<choice hidden="true" req="engines" lvl="7">
+			<text>(Advanced Engines) Rescue your crewmember and the cargo.</text>
+			<event>
+				<text>You swoop into the heart of the distortion and pick up your crewmember and the cargo. Your top of the line impulse engines are barely able to get your ship out of the gravity well before the whole ship is consumed. That was close.</text>
+				<weapon name="RANDOM"/>
+				<autoReward level="LOW">stuff</autoReward>
+			</event>
+		</choice>
+	</event>
+</eventList>
+		
+<event name="CRYSTAL_SCRAP_EXCITED" unique="true">
+	<text>You receive a signal from a private relay on a nearby inhabited planet. "Oh goodness, an Alien vessel! I was wondering how long until I would see one now that we've left the homeworlds! Please, I am a collector of many artifacts, I'm sure what is scrap to you is priceless to me."</text>
+	<choice hidden="true">
+		<text>Offer 35 scrap.</text>
+		<event>
+			<text>"My word! Is this... a 25th century Rockman thrust stabilizer?! What do you want for it? Wait, I have a better proposal. I long to see the galaxy. I propose I come with you. What do you say?"</text>
+			<item_modify>    
+				<item type="scrap" min="-35" max="-35"/>
+			</item_modify>	
+			<choice hidden="true">
+				<text>Accept.</text>
+				<event>
+					<text>"I shan't even gather my belongings - only permit me to leave my family a message." The Crystalline being joins your crew.</text>
+					<crewMember amount="1" class="crystal"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Request another payment.</text>
+				<event load="CRYSTAL_SCRAP_EXCITED_LIST"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Turn him down.</text>
+		<event>
+			<text>Scrap is priceless no matter where you are in the galaxy. You hold onto your goods and prepare to jump.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_SCRAP_EXCITED_LIST">
+	<event>
+		<text>"Very well, a payment in kind. I have these explosives that emulate our race's innate ability. Perhaps that would interest you."</text>
+		<weapon name="BOMB_LOCK"/>
+	</event>
+	<event>
+		<text>"Very well, a payment in kind. I have an extra ship weapon laying around here somewhere. Perhaps you could make use of it?"</text>
+		<weapon name="CRYSTAL_BURST_2"/>
+	</event>
+</eventList>
+
+<event name="CRYSTAL_HUMAN_TESTS" unique="true">
+	<text>You arrive near what appears to be a Crystalline research facility. A scientist quickly messages you, "Ah! Some more aliens. Please, I've heard so much about all the different races in this galaxy and I am really curious about your physiology! Would you let us run a few simple tests?"</text>
+	<choice hidden="true">
+		<text>Allow them to run tests on a crewmember.</text>
+		<event load="CRYSTAL_HUMAN_TESTS_ACCEPT"/>
+	</choice>
+	<choice hidden="true">
+		<text>Refuse.</text>
+		<event load="CRYSTAL_HUMAN_TESTS_REFUSE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ROCK">
+		<text>(Rock Crew) Send your Rockman crew.</text>
+		<event>
+			<text>"Ah! My dear evolutionary cousin! This is truly wonderful! We have countless historical records of your kind but we lack information on the past few hundreds of years. We can learn so much from these scans, we must get to analyzing them as soon as possible! Please, take this."</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+		<choice hidden="true" req="salt">
+		<text>(Saltman Crew) Send your Saltman crew.</text>
+		<event>
+			<text>"Is that... ? Impossible... The missing link between Crystal and Rock kind! This is truly wonderful! We have so little records of your kind. We have a lot to learn from these scans, we must get to analyzing them as soon as possible! Please, take this."</text>
+			<autoReward level="HIGH">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(Crystal Crew) Send your Crystal crew.</text>
+		<event>
+			<text>"Oh... you're one of us. I'm afraid you must not have understood. I asked for an alien volunteer. I have no need for one of my own." They cut comms.</text>
+		</event>
+	</choice>
+	<choice hidden="true" req="BACKUP_DNA"> <!--DLC-->
+		<text>(Backup DNA Bank) Send your crew's data.</text>
+		<event>
+			<text>"What is this? Full genetic and personal profiles stored digitally? I did not think this possible... This will help our research immeasurably. Please, take this in exchange for your help."</text>
+			<autoReward level="MED">weapon</autoReward>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_HUMAN_TESTS_ACCEPT">
+	<event>
+		<text>After a short time the scientist returns, "We... must regret... we have made a grave miscalculation. Your bodies are considerably more fragile than we expected and your companion is... broken. We apologize and offer a fine military-grade weapon as consolation."</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>You accept their apology and decide it's better not to mention that your Clone Bay is in the process of reviving the lost crewmember.</text>
+		</removeCrew>
+		<autoReward level="LOW">weapon</autoReward>
+	</event>
+	<event>
+		<text>Your crewmember is brought on board their station and forced to undergo a few quick scans and tests. "Thank you for this opportunity! We hope to learn much from your kind." They transfer some supplies as payment.</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>The large Crystalline Beings escort your crew onto the station and gingerly help them into a scanning chamber. After a few seconds, they inform you they have mapped their entire genome and have everything they need. They give you a schematic as compensation.</text>
+		<autoReward level="LOW">drone</autoReward>
+	</event>
+</eventList>
+<eventList name="CRYSTAL_HUMAN_TESTS_REFUSE">
+	<event>
+		<text>"I see. That is a shame. Perhaps the next aliens we meet will have some respect for the advancement of science."</text>
+		<choice>
+			<text>Do something onboard the ship.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice>
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
+	</event>
+	<event>
+		<text>"I see. That is a shame. Perhaps the next aliens we meet will have some respect for the advancement of science."</text>
+		<choice>
+			<text>Do something onboard the ship.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice>
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
+	</event>
+	<event>
+		<text>"I see. That is a shame. However we must not let this opportunity pass us by. Submit and you will be treated reasonably well!" A military ship docked nearby detaches and charges you.</text>
+		<ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<event name="CRYSTAL_CHATTY" unique="true">
+	<text>A small civilian vessel messages you, "Wow! You're one of the Federation, aren't you! Are you busy? Can I ask you a question?"</text>
+	<choice hidden="true">
+		<text>Yes.</text>
+		<event>
+			<text>"What do you eat? What is your culture like? How long do your people live?"</text>
+			<choice hidden="true">
+				<text>Try to answer his questions.</text>
+				<event load="CRYSTAL_CHATTY_LIST"/>
+			</choice>
+			<choice hidden="true">
+				<text>"I don't have time for this."</text>
+				<event>
+					<text>"I see. Oh well. Maybe the next alien I meet will be nicer..." You prepare to jump.</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>No.</text>
+		<event>
+			<text>"I see... I guess you're busy."</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(Crystal Crew) Have your crew speak to them.</text>
+		<event>
+			<text>"Wow, you're one of us! I didn't know we already made an alliance with the Federation. I guess I won't bother you, but here, have some of our extra supplies!"</text>
+			<autoReward level="RANDOM">fuel</autoReward>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_CHATTY_LIST">
+	<event>
+		<text>You speak at length about nothing particularly interesting. "Wow, thanks. Oh look, another alien ship! I wonder if they're as nice as you." Seeing the Rebel decals you doubt they're friendly. They spot you and move in to attack, while the Crystalline civilian jumps away.</text>
+		<ship load="SHIP_REBEL_FIGHT" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>You speak at length about nothing particularly interesting. "Wow, thanks! I don't know if this is of any use to you, but we have some supplies we can offer you. Perhaps you can use them on your trip!"</text>
+		<autoReward level="RANDOM">stuff</autoReward>
+	</event>
+	<event>
+		<text>You speak at length about nothing particularly interesting. "Wow, thanks! Perhaps we can fix up a bit of your hull for sating my curiosity. We're pretty handy with repairs."</text>
+		<damage amount="-6"/>
+	</event>
+</eventList>
+
+<!--HOSTILE!!!
+	Events that call up a fight for sure
+-->
+<eventList name="HOSTILE_CRYSTAL">
+	<event load="ENCOUNTER_CRYSTAL"/>
+	<event load="ENCOUNTER_CRYSTAL"/>
+	<event load="ENCOUNTER_CRYSTAL_STATION"/>
+	
+	<event load="CRYSTAL_CONVOY"/>
+	<event load="CRYSTAL_HUNTER"/>
+	
+	<event load="ENCOUNTER_REBEL_CRYSTAL"/>
+	<event load="ENCOUNTER_ROCK_CRYSTAL"/>
+	<event load="ENCOUNTER_COALITION_CRYSTAL"/>
+</eventList>
+
+<event name="ENCOUNTER_CRYSTAL" unique="false">
+	<text load="TEXT_ENCOUNTER_CRYSTAL"/>
+	<ship load="SHIP_CRYSTAL_FIGHT" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_CRYSTAL">
+	<text>You arrive near a fleet of crystal ships, civilian or mercantile from the looks of them. You pause to scan one but they react immediately and send an escort to fight you off. Prepare to engage!</text>
+	<text>You arrive at the Beacon and are immediately greeted by an automatic message or warning of some kind. The translator can't seem to discern its purpose but after a few short moments an alarm goes off and a hostile ship jumps in!</text>
+	<text>You receive a message, "Hah. It looks like another worthless alien-filled craft. Prepare to meet your maker!" Weapon locks detected.</text>
+	<text>A Crystalline ship messages you, "I have not yet seen an Alien ship of such caliber as yours! As a warrior I demand to test my skills against you!" Before you can respond they move in to attack.</text>
+	<text>You arrive in a busy sector. At first no one pays any mind to your foreign ship but soon you're registering a number of scan signatures. You get the feeling you're not wanted here just seconds before registering enemy weapon locks!</text>
+	<text>You jump next to a node busy with traffic, but before long all nearby ships notice you and keep their distance, uncertain of your allegiance. After an awkward standoff, a military ship breaks away from the rest and charges you.</text> 
+	<text>A barrage of rasps and clicks is broadcast over the comm; the universal translator understands little, but the words 'aliens', 'allowed' and 'no' come through quite clearly. You'll have to prove your right to be here in combat!</text>
+</textList>
+
+<event name="ENCOUNTER_CRYSTAL_STATION" unique="true">
+	<text>A Crystal station nearby notices your ship. "We do not welcome outsiders here! Get out, now!" It appears they're willing to backup their threats with their weapons.</text>
+	<ship load="SHIP_CRYSTAL_STATION" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="CRYSTAL_CONVOY" unique="true">
+	<text>A large convoy of lumbering civilian ships appears to be passing through this region. You show no hostile intentions, but they are taking no chances, immediately sending their escort to attack!</text>
+	<ship load="SHIP_CRYSTAL_CONVOY" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="CRYSTAL_HUNTER" unique="true">
+	<text>Crystal shards fly past your ship as soon as you jump. You scan to find the assailant and discover a Crystalline ship carrying a number of humans in its cargo bay. It must be hunting the alien ships!</text>
+	<ship load="SHIP_CRYSTAL_HUNTER" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_REBEL_CRYSTAL">
+	<text load="TEXT_ENCOUNTER_REBEL_CRYSTAL"/>
+	<ship load="SHIP_REBEL_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_CRYSTAL">
+    <text>You see a Rebel ship approaching. "Ack, I can't tell if this sector is any worse than the time we were stationed in that Slug hellhole. Maybe if we kill you, we can finally be stationed somewhere nice!"</text>
+    <text>The Rebels haven't been pleased with the return of yet another alien race. A particularly agitated Rebel ship wastes no time locking onto you and attacking!</text>
+    <text>A Rebel ship, hot on your tail, approaches. Its weapons are armed and there's no doubt a fight is about to ensue.</text>
+</textList>
+
+<event name="ENCOUNTER_ROCK_CRYSTAL">
+	<text load="TEXT_ENCOUNTER_ROCK_CRYSTAL"/>
+	<ship load="SHIP_ROCK_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_ROCK_CRYSTAL">
+	<text>A Rock fanatic, here to watch and study the Crystals, notices you. Thinking you've come to harm its idols, it attacks.</text>
+	<text>"You are not welcome here! This sector has been chosen by the gods, and you are intruding! We are their divine prophets, and we will remove you!"</text>
+	<text>A group of egotistical Rockmen hail you, claiming they have been chosen by the Crystals to destroy your ship.</text>
+</textList>
+
+<event name="ENCOUNTER_COALITION_CRYSTAL">
+	<text load="TEXT_ENCOUNTER_COALITION_CRYSTAL"/>
+	<ship load="SHIP_COALITION_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_COALITION_CRYSTAL">
+	<text>It appears you've had the misfortune of running into a Coalition ship travelling through this territory. They spot you almost immediately and attack!</text>
+	<text>A Coalition vessel is salvaging the remains of a nearby Crystal station. However, upon spotting you they quickly undock and attack!</text>
+</textList>
+
+<!--NEUTRAL!!!
+	Events that could have a fight
+-->
+<eventList name="NEUTRAL_CRYSTAL">
+	<event load="CRYSTAL_MONTY"/>
+	<event load="CRYSTAL_TORTURE"/>
+	<event load="CRYSTAL_AUTO_SURVEYOR"/>
+	
+	<event load="CRYSTAL_REBEL_CRYSTAL"/>
+	<event load="CRYSTAL_REBEL_CRYSTAL2"/>
+	<event load="CRYSTAL_MANTIS_CRYSTAL"/>
+	<event load="CRYSTAL_PIRATE_CRYSTAL"/>
+	<event load="CRYSTAL_FED"/>
+	<event load="CRYSTAL_FED_DESERTER"/>
+	<event load="CRYSTAL_REQUEST"/>
+	<event load="CRYSTAL_HELP_DIG"/>
+</eventList>
+
+<event name="CRYSTAL_MONTY" unique="true">
+	<text>As you arrive at this beacon, you are stopped by a Crystalline vessel. "Stop! Who would cross the beacon of death must answer me these questions three, ere the other side he see."</text>
+	<ship load="SHIP_CRYSTAL_FIGHT" hostile="false"/>
+	<choice hidden="true">
+		<text>Ask me the questions. I am not afraid.</text>
+		<event>
+			<text>"What... is your name?"</text>
+			<choice hidden="true">
+				<text>Tell him your name.</text>
+				<event>
+					<text>"What... is your quest?"</text>
+					<choice hidden="true">
+						<text>To defeat the Flagship.</text>
+						<event load="CRYSTAL_MONTY_FINAL"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We don't have time for this, attack!</text>
+		<event>
+			<text>You ignore the Crystal's questions and attack!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_MONTY_FINAL">
+	<event>
+		<text>"What... is the name of the Mantis queen?"</text>
+		<choice hidden="true" req="LIST_CREW_MANTIS">
+			<text>(Mantis Crew) The answer is Leikonpliiinakra.</text>
+			<event load="CRYSTAL_MONTY_CORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Karaplinka.</text>
+			<event load="CRYSTAL_MONTY_INCORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Leikonpliiinakra.</text>
+			<event load="CRYSTAL_MONTY_CORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Kawarliiinka.</text>
+			<event load="CRYSTAL_MONTY_INCORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Liekonpokawara.</text>
+			<event load="CRYSTAL_MONTY_INCORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>I don't know that!</text>
+			<event load="CRYSTAL_MONTY_UNKNOWN"/>
+		</choice>
+	</event>
+	<event>
+		<text>"What... is the name of the grand Orchid Gardens?"</text>
+		<choice hidden="true" req="LIST_CREW_ORCHID">
+			<text>(Orchid Crew) The answer is Rt'lak Et.</text>
+			<event load="CRYSTAL_MONTY_CORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Kat'ar Lek.</text>
+			<event load="CRYSTAL_MONTY_INCORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Part O'ek.</text>
+			<event load="CRYSTAL_MONTY_INCORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Rt'lak Et.</text>
+			<event load="CRYSTAL_MONTY_CORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Tret Ye.</text>
+			<event load="CRYSTAL_MONTY_INCORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>I don't know that!</text>
+			<event load="CRYSTAL_MONTY_UNKNOWN"/>
+		</choice>
+	</event>
+	<event>
+		<text>"What... is the name of the Zoltan religion?"</text>
+		<choice hidden="true" req="LIST_CREW_ZOLTAN">
+			<text>(Zoltan Crew) The answer is Illesctrianism.</text>
+			<event load="CRYSTAL_MONTY_CORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Illesctrianism.</text>
+			<event load="CRYSTAL_MONTY_CORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Ascentrianism.</text>
+			<event load="CRYSTAL_MONTY_INCORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>Chrysolism.</text>
+			<event load="CRYSTAL_MONTY_INCORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>The Church of the Great Eye.</text>
+			<event load="CRYSTAL_MONTY_INCORRECT"/>
+		</choice>
+		<choice hidden="true">
+			<text>I don't know that!</text>
+			<event load="CRYSTAL_MONTY_UNKNOWN"/>
+		</choice>
+	</event>
+</eventList>
+<event name="CRYSTAL_MONTY_CORRECT">
+	<text>"Right. Off you go!" The Crystals wave you past. As you leave, you find the wreckage of several ships who failed the test before you. You feel a little guilty about it, but you don't waste the opportunity and scrap the ships.</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+<event name="CRYSTAL_MONTY_INCORRECT">
+	<text>"Hee hee, wrong!" The Crystal fires a large shard from one of their weapons straight into the ships hull, and moves in to attack.</text>
+	<damage amount="3"/>
+	<ship hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="CRYSTAL_MONTY_UNKNOWN">
+	<text>"Oh well!" The Crystals move in to attack.</text>
+	<ship hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="CRYSTAL_AUTO_SURVEYOR" unique="true">
+	<text>An Auto-Surveyor vessel is patrolling the nearby area, likely sent by the Rebels to scout out the new Crystal territory.</text>
+	<ship load="SHIP_CRYSTAL_AUTO_SURVEYOR" hostile="false"/> 
+	<choice hidden="true">
+		<text>Attack the ship, if we can get its black box we can download the data!</text>
+		<event>
+			<text>You prepare to engage the automated vessel.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="hacking">
+		<text>(Hacking) Download the data remotely.</text>
+		<event>
+			<text>You successfully download the data without alerting the ship.</text>
+			<reveal_map/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the Auto-ship.</text>
+		<event>
+			<text>The ship poses no interest to you.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="CRYSTAL_TORTURE" unique="true">
+	<text>This beacon welcomes you with a gruesome and unnerving sight. A Crystalline station has several different creatures embedded in its hull, slowly suffocating or crushed under the weight of the crystalline plating.</text>
+	<ship load="SHIP_CRYSTAL_STATION_TORTURE" hostile="false"/>
+	<choice hidden="true">
+		<text>Attack them!</text>
+		<event>
+			<text>"Ah, so you wish to join the likes of these pitiful creatures? Let it be so!"</text>
+			<boarders min="2" max="2" class="crystal"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the station.</text>
+		<event>
+			<text>The station doesn't attempt to contact you as your FTL charges.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DEAD_CREW_CRYSTAL_TORTURE">
+	<text load="TEXT_DEAD_CREW_CRYSTAL"/>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>While scrapping the station, you notice that the crew encased in the ship are still barely alive... but they won't for long.</text>
+			<choice hidden="true" req="medbay" lvl="2">
+				<text>(Upg. Medbay) Heal them.</text>
+				<event>
+					<text>The Medbay heals their wounds, but it cannot bring them back from the dead. Many of the ex-prisoners do not make it, but one lucky soul was able to be revived.</text>
+					<crewMember amount="1"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>There's too little we can do to help.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--vanilla ones-->
+<event name="CRYSTAL_REBEL_CRYSTAL" unique="true">
+	<text>Crystal shards fly past the screen as soon as you arrive. Checking the scanners, it looks like a Crystalline ship is engaged with a Rebel!</text>
+	<choice hidden="true">
+		<text>Attack the Rebel.</text>
+		<event>
+			<text>You message the Crystalline ship your intentions and move in to intercept the Rebel ship.</text>
+			<ship load="SHIP_REBEL_CRYSTAL_REBEL_CRYSTAL" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the Crystalline ship.</text>
+		<event>
+			<text>You move in to intercept the Crystalline ship. As soon as the Rebel scans your ship it takes the opportunity to jump. You have the sneaking suspicion they will inform the fleet of your position, but that's the least of your current concerns.</text>
+			<modifyPursuit amount="1"/>
+			<ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>With the two ships engaged in combat, you sneak by unnoticed.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CRYSTAL_REBEL_CRYSTAL2" unique="true">
+	<text>You're greeted by an unwelcome sight - a Rebel advance ship is laying down fire on a Crystalline vessel in the distance.</text>
+	<choice hidden="true">
+		<text>Engage the Rebel ship.</text>
+		<event>
+			<text>Before you can engage, the Crystalline ship scores a direct hit and obliterates the Rebel ship! They hail: "You, you are like these other aliens! You brought them here!" With that they turn their cannons on you!</text>
+			<ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave them alone.</text>
+		<event>
+			<text>It's best to take advantage of the rare occasions when the Rebels aren't shooting at you. You prepare to jump.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="CRYSTAL_MANTIS_CRYSTAL" unique="true">
+	<text>You discover a number of civilian ships fleeing the area. Shots are fired and you find the assailant; a Mantis ship is attacking one of the smaller ships!</text>
+	<choice hidden="true">
+		<text>Attack the Mantis.</text>
+		<event>
+			<text>You activate your impulse engines and fly between the Mantis and their prey, weapons charging. You appear to have their full attention.</text>
+			<ship load="SHIP_MANTIS_CRYSTAL" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>You try to keep a low profile and quickly prepare to jump.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="CRYSTAL_PIRATE_CRYSTAL" unique="true">
+	<text>A pirate ship jumps in right after you arrive at the beacon. It almost charges a small Crystalline transport ship, weapons armed.</text>
+	<choice hidden="true">
+		<text>Attack the pirate.</text>
+		<event>
+			<text>You chase down the pirate before it has a chance to engage the civilian ship. When it detects the real threat, it turns to face you.</text>
+			<ship load="SHIP_PIRATE_CRYSTAL" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>You assume the Crystalline ship can handle itself. You have enough of your own problems.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_SAVED">
+	<event>
+		<text>You contact the Crystalline ship to hear, "We never should have returned. All around us, there is war and chaos. Do not speak to us again." They cut communications.</text>
+	</event>
+	<event>
+		<text>The Crystalline ship messages you, "You are among the Federation, yes? It was one of you bastards who opened the jump beacon in the first place!" They quickly jump away.</text>
+	</event>
+	<event>
+		<text>You contact the other ship, "Thank you for your assistance. It's good to know that not all of you foreigners are so barbaric. Take this as a reward."</text>
+		<autoReward level="RANDOM">stuff</autoReward>
+	</event>
+	<event>
+		<text>The Crystalline ship hails you, "It's a good thing you came when you did. We appreciate the assistance. Please take this for your help."</text>
+		<autoReward level="RANDOM">stuff</autoReward>
+	</event>
+	<event>
+		<text>The Crystalline ship messages you, "Thank you. We were not prepared for the savagery with which you aliens battle. We will give you one of our weapons if you intend on assisting our kind in the future."</text>
+		<weapon name="GIFTLIST_CRYSTAL"/>
+	</event>
+</eventList>
+
+<event name="CRYSTAL_FED" unique="true">
+	<text>There appears to be a fight going on nearby. A Crystalline border guard is chasing a small Federation ship!</text>
+	<choice hidden="true">
+		<text>Save the Federation ship.</text>
+		<event>
+			<text>It doesn't look like the Fed ship can stand much more pressure. You fly in and intercept the Crystalline ship.</text>
+			<ship load="CRYSTAL_FED" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Prepare to leave.</text>
+		<event>
+			<text>With the Federation ship distracting the guard, you are free to continue on your mission.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_FED_LIST">
+	<event>
+		<text>"Thank you! We were sent here to try and recruit some Crystals to the Federation cause. We had no idea we would be received so poorly..." They transfer some excess materials for your trouble.</text>
+		<autoReward level="RANDOM">stuff</autoReward>
+	</event>
+	<event>
+		<text>The ship looks battered and ready to break apart. You quickly move in to help rescue the survivors, but it looks like only one person made it. They offer to join your crew as thanks.</text>
+		<crewMember amount="1"/>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+</eventList>
+
+<event name="CRYSTAL_FED_DESERTER" unique="true">
+	<text>For a moment you assume it's a glitch, but no... you've found a rare Elite Federation military ship! They hail you and, after some probing, reveal that they deserted the Federation fleet and decided to hide among the Crystals, figuring there would be few other Federation ships here to find them.</text>
+	<ship load="SHIP_FED_ELITE_ALL" hostile="false"/>
+	<choice hidden="false">
+		<text>Offer supplies.</text>
+		<event>
+			<text>You send over some supplies to help them on their way and in return they upload their flight plan to your computer, allowing you to map the sector! "The Federation fleet's still standing - get there while you can!"</text>
+			<item_modify>
+				<item type="fuel" min="-3" max="-1"/>
+				<item type="scrap" min="-25" max="-15"/>
+			</item_modify>
+			<reveal_map/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the traitors.</text>
+		<event>
+			<text>Deserters cannot be tolerated. You open fire on the cowards - though it doesn't please you to do so. The Federation needs every soldier it can get.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave them be.</text>
+		<event>
+			<text>You send them a friendly warning regarding the armada of Rebel ships pursuing you, and then get underway lest they catch you up.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="CRYSTAL_REQUEST" unique="true">
+    <text>The moment you arrive you notice a Crystalline ship in the vicinity keeping its distance. They message you, "The 'Rebels' that are trying to hunt YOU down are creating havoc everywhere they go. Bah, we came here to escape this crap..."</text>
+    <ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="false"/>
+    <choice hidden="true">
+        <text>Continue...</text>
+        <event>
+            <text>"To minimize their impact on our people, we would like you to give them your flight path out of our sector. We would like to remain civil and are willing to pay you in 'scrap' for the increased danger it poses."</text>
+            <choice hidden="true">
+                <text>Give them your flight plans.</text>
+                <event>
+                    <text>It was never your intention to lead the Rebels here, and frankly you could do with the scrap. The Crystalline ship immediately jumps off to inform the Rebels, leaving you with a fleet to outrun!</text>
+                    <autoReward level="HIGH">scrap_only</autoReward>
+                    <modifyPursuit amount="1"/>
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>Accept the scrap but give them false flight plans.</text>
+                <event load="CRYSTAL_REQUEST_LIST"/>
+            </choice>
+            <choice hidden="true" req="DISTRACTION_BUOY"> <!--DLC-->
+                <text>(Distraction Buoys) Accept the scrap but give them falsified flight plans.</text>
+                <event>
+                    <text>Your distraction buoys allows you to create very convincing flight plans. They accept it as true and give you the scrap. The deception may not be the most honorable tactic, but staying ahead of the fleet is your highest priority.</text>
+                    <autoReward level="HIGH">scrap_only</autoReward>
+                    <modifyPursuit amount="-1"/>
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>Refuse.</text>
+                <event>
+                    <text>You apologize for the trouble you've brought them, but explain that you have no choice. They seem to understand, and break the comm link to set about preparing defenses.</text>
+                    <choice>
+                        <text>Do something onboard the ship.</text>
+                        <event load="STORAGE_CHECK"/>
+                    </choice>
+                    <choice>
+                        <text>Do nothing.</text>
+                        <event/>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="CRYSTAL_REQUEST_LIST">
+    <event>
+        <text>Unable to interpret it themselves, the Crystalline Beings assume your data will mean something to the Rebels. It should see the pursuing fleet taking a leisurely cruise before they get back on track.</text>
+        <autoReward level="HIGH">scrap_only</autoReward>
+        <modifyPursuit amount="-1"/>
+    </event>
+    <event>
+        <text>They take one look at your fake telemetry and realize what you've done. They apparently do not take being lied to well - they immediately attack!</text>
+        <ship hostile="true"/>
+        <boarders min="1" max="2" class="crystal"/>
+        <choice hidden="true">
+            <text>Continue...</text>
+            <event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+        </choice>
+    </event>
+</eventList>
+		
+<event name="CRYSTAL_HELP_DIG" unique="true">
+	<text>A large Crystalline ship is floating in space here. They hail: "Aliens?! How curious. We request your aid. We have men buried on a nearby planet and we must dig them out."</text>
+	<ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="false"/>
+	<choice hidden="true">
+		<text>Send a crewmember to help.</text>
+		<event>
+			<text>You do as you're asked and send a crewmember down to the planet to assist. They discover a massive Crystal excavation operation and it quickly becomes clear this is a task that will take days, not hours.</text>
+			<choice hidden="true">
+				<text>Leave your crewmember behind.</text>
+				<event>
+					<text>You're committed to both saving the Federation and upholding the principles it worked to maintain. Your crewmember will remain and make good on the promise - you still have a galaxy to save. They give you some supplies for your trouble.</text>
+					<autoReward level="MED">fuel</autoReward>
+					<removeCrew>
+						<clone>false</clone>
+						<text></text>
+					</removeCrew>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Pull your guy out.</text>
+				<event>
+					<text>The Crystalline captain contacts you urgently: "What is the meaning of this?! Had you no wish to aid us you might simply have declined, but THIS... is an insult!" He turns his massive ship on yours and you prepare to fight for your life.</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>Wait.</text>
+				<event>
+					<text>You've made a commitment, and that still means something. You wait one jump cycle and then inquire with the Crystalline captain about the status of the operation. "We respect your strength. The operation will take one more cycle."</text>
+					<modifyPursuit amount="1"/>
+					<choice hidden="true">
+						<text>Leave your crewmember behind.</text>
+						<event>
+							<text>You're committed to both saving the Federation and upholding the principles it worked to maintain. Your crewmember will remain and make good on the promise - you still have a galaxy to save. They give you some supplies for your trouble.</text>
+							<autoReward level="HIGH">fuel</autoReward>
+							<removeCrew>
+								<clone>false</clone>
+								<text></text>
+							</removeCrew>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Pull your guy out.</text>
+						<event>
+							<text>The Crystalline captain contacts you urgently: "What is the meaning of this?! Had you no wish to aid us you might simply have declined, but THIS... is an insult!" He turns his massive ship on yours and you prepare to fight for your life.</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Wait.</text>
+						<event>
+							<text>Another cycle passes while the Rebel fleet draws ever nearer. You contact the captain again. "Alien Captain, your knowledge of our customs has most impressed us. Your crewmember is on their way back to you now, along with a token of our respect."</text>
+							<modifyPursuit amount="1"/>
+							<autoReward level="HIGH">augment</autoReward>
+							<weapon name="CRYSTAL_HEAVY_2"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Refuse.</text>
+		<event>
+			<text>"We understand. You rely on machines for so much. Yours is a soft and weak species - we would hardly even have noticed your presence. Fly well."</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--DISTRESS!!!
+	Events that could have a fight
+-->
+<eventList name="DISTRESS_CRYSTAL">
+	<event load="DISTRESS_REFUGEE_CRYSTAL"/>
+	
+	<event load="DISTRESS_REFUGEE_ABANDONED"/>
+	<event load="DISTRESS_TRAP_BEACON"/>
+	<event load="DISTRESS_FRIENDLY_BEACON"/>
+</eventList>
+
+<event name="DISTRESS_REFUGEE_CRYSTAL">
+	<text>You have encountered a refugee ship drifting in space. It looks as if it was fleeing the Rebel advance and ran out of fuel. Its distress beacon is active, but you're not sure anyone is on board.</text>
+	<choice>
+		<text>Hail them.</text>
+		<event load="REFUGEE_HAIL_LIST_CRYSTAL"/>
+	</choice>
+	<choice>
+		<text>Ignore the refugees.</text>
+		<event/>
+	</choice>
+	<distressBeacon/>
+</event>  
+<eventList name="REFUGEE_HAIL_LIST_CRYSTAL">
+	<event load="REFUGEE_TRADER"/>
+	<event>
+		<text>As you hail the refugee ship, a Crystal ship suddenly jumps into the system... it's clear the Crystals don't approve of their presence in this sector, and they don't approve of yours either!</text>
+		<ship load="SHIP_CRYSTAL_REFUGEE" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<!--NEBULA!!!
+	Events that have nebulas
+-->
+<eventList name="NEBULA_CRYSTAL">
+	<event load="NEBULA_ENCOUNTER_CRYSTAL"/>
+	<event load="NEBULA_ENCOUNTER_CRYSTAL"/>
+	<event load="NEBULA_ENCOUNTER_CRYSTAL"/>
+	
+	<event load="NEBULA_REBEL_UNDETECTED"/>
+	<event load="NEBULA_PIRATE_SMUGGLE"/>
+	<event load="NEBULA_ROCK_RACIST"/>
+	
+	<event load="NEBULA_ENCOUNTER_COALITION"/>
+	<event load="NEBULA_ENCOUNTER_PIRATE"/>
+</eventList>
+
+<event name="NEBULA_ENCOUNTER_CRYSTAL" unique="false">
+	<text load="TEXT_NEBULA_ENCOUNTER_CRYSTAL"/>
+	<ship load="SHIP_CRYSTAL_FIGHT" hostile="true"/>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_NEBULA_ENCOUNTER_CRYSTAL">
+	<text>It seems the Crystalline people have adjusted well to the nebulas found throughout the galaxy. A hunter hiding in the depths of the clouds here descends, weapons ready!</text>
+	<text>It makes sense for the Crystals, lovers of solitude, to take refuge deep in the nebulous clouds. A ship here, unhappy that you've disturbed them, attacks!</text>
+	<text>You spot a Crystalline vessel sneaking through the nebula. "Gah, I came here to escape you aliens! Now you chase us down?" It seems conflict is inevitable.</text>
+	<text>You aren't alone in this nebula. A Crystalline vessel approaches, ready to attack.</text>
+</textList>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					CRYSTAL HOMEWORLDS NEW
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<!--SPECIAL!!!
+	Events that are special
+-->
+<eventList name="SPECIAL_CRYSTALHOME">
+	<event load="CRYSTALHOME_ZOLTENVOY"/>
+</eventList>
+
+<event name="CRYSTALHOME_ZOLTENVOY" unique="true">
+	<text>It appears a brave Zoltan ship has pushed deep into Crystalline space, but their hull has received critical damage, with several massive breaches in the hull.</text>
+	<choice hidden="true">
+		<text>Help them.</text>
+		<event>
+			<text>You board the ship, but it's already too late. A dying Zoltan in the corner manages to cough out some final words to you. "The Crystals- they were here... take this to them... You know what to do with it." The Zoltan slides over a package containing a large Zoltan-made bomb, and a letter noting some coordinates, then dissipates into nothing.</text>
+			<quest event="CRYSTALHOME_ZOLTENVOY_DELIVERY"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the wreck.</text> 
+		<event>
+			<text>It's probably too late anyways, and not worth the effort. You ignore the Zoltan ship.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CRYSTALHOME_ZOLTENVOY_DELIVERY">
+	<text>You've arrived at the destination given to you by the Zoltan. A Sentinel vessel is guarding an outpost where a military operation appears to be run.</text>
+	<choice hidden="true">
+		<text>Give them the bomb - the Zoltans must have been delivering this.</text>
+		<event load="CRYSTALHOME_ZOLTENVOY_DELIVERY_GIFT"/>
+	</choice>
+	<choice hidden="true">
+		<text>Detonate the bomb - the Zoltans must have wanted revenge for being attacked.</text>
+		<event load="CRYSTALHOME_ZOLTENVOY_DELIVERY_EXPLODE"/>
+	</choice>
+	<choice hidden="true">
+		<text>Avoid the outpost.</text>
+		<event>
+			<text>You don't know what the Zoltan wanted, but better not to get involved. You break down the bomb into some ammunition.</text>
+			<autoReward level="LOW">missiles_only</autoReward>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTALHOME_ZOLTENVOY_DELIVERY_GIFT">
+	<event>
+		<text>You hail the outpost and deliver the bomb. The Crystals inside are deeply confused, but not long after Zoltan reinforcements jump in! It seems you've misunderstood - the Zoltan were here to attack the Crystals! The peace-keeper vessel approaching seems to think you're working against them and attacks!</text>
+		<ship load="SHIP_ZOLTENVOY_PEACE" hostile="true"/> 
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>You hail the outpost and deliver the bomb. It appears you understood correctly, because the Crystals thank you. Whatever attacked the Zoltan must have been a pirate, probably using the Crystal weapons so commonly found around here. As thanks for finishing the delivery, the Crystals pay you handsomely.</text>
+		<autoReward level="HIGH">standard</autoReward>
+	</event>
+</eventList>
+<eventList name="CRYSTALHOME_ZOLTENVOY_DELIVERY_EXPLODE">
+	<event>
+		<text>You sneak into the outpost and place the bomb where it looks like it'll cause the most damage, then detonate it from a distance. It has a disastrous effect, and the Crystals are obviously not pleased. You hear them shouting, "Damn it, pirates must have taken out the envoy, and now they're attacking us too! Prepare for battle!" It seems you've misunderstood the Zoltan's intentions.</text>
+		<ship load="SHIP_ZOLTENVOY_SENTINEL" hostile="true"/> 
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>You sneak into the outpost and place the bomb where it looks like it'll cause the most damage, then detonate it from a distance. It has a disastrous effect, and the Crystals are obviously not pleased. But before they can send a ship to defend themselves, Zoltan reinforcements jump in and destroy their hangar, forcing the Crystals to surrender. The Zoltans recognize your help, and extend a reward.</text>
+		<autoReward level="LOW">item</autoReward>
+	</event>
+</eventList>
+
+<!--ITEMS!!!
+	Events that give items
+-->
+<eventList name="ITEMS_CRYSTALHOME">
+	<event load="CRYSTAL_CACHE"/>
+	<event load="CRYSTAL_SCRAP_EXCITED"/>
+	<event load="CRYSTAL_FOREIGNER_MAP"/>
+
+	<event load="CRYSTAL_HUMAN_TESTS"/>
+	<event load="CRYSTAL_CHATTY"/>
+	
+	<event load="FREE_CRYSTAL"/>
+</eventList>
+
+<!--HOSTILE!!!
+	Events that call up a fight for sure
+-->
+<eventList name="HOSTILE_CRYSTALHOME">
+	<event load="ENCOUNTER_CRYSTAL"/>
+	<event load="ENCOUNTER_CRYSTAL"/>
+	<event load="ENCOUNTER_CRYSTAL_STATION"/>
+	<event load="ENCOUNTER_SENTINEL"/>
+	
+	<event load="CRYSTAL_CONVOY"/>
+	<event load="CRYSTAL_HUNTER"/>
+	
+	<event load="ENCOUNTER_REBEL_CRYSTAL"/>
+	<event load="ENCOUNTER_ROCK_CRYSTAL"/>
+	<event load="ENCOUNTER_COALITION_CRYSTAL"/>
+</eventList>
+
+<event name="ENCOUNTER_SENTINEL" unique="true">
+	<text>Crystal Sentinels are the protectors of the Crystal sectors, and are much stronger than their civilian brothers. By entering into their new Homeworlds with a military-tier cruiser the Crystal people have deemed you a threat worthy of the retribution of a Sentinel vessel!</text>
+	<ship load="SHIP_CRYSTAL_ELITE_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--NEUTRAL!!!
+	Events that could have a fight
+-->
+<eventList name="NEUTRAL_CRYSTALHOME">
+	<event load="CRYSTAL_MONTY"/>
+	<event load="CRYSTAL_TORTURE"/>
+	<event load="CRYSTAL_AUTO_SURVEYOR"/>
+	
+	<event load="CRYSTAL_REBEL_CRYSTAL"/>
+	<event load="CRYSTAL_REBEL_CRYSTAL2"/>
+	<event load="CRYSTAL_PIRATE_CRYSTAL"/>
+	<event load="CRYSTAL_FED"/>
+	<event load="CRYSTAL_FED_DESERTER"/>
+	<event load="CRYSTAL_REQUEST"/>
+	<event load="CRYSTAL_HELP_DIG"/>
+</eventList>
+
+<!--
+		SPECIAL QUEST!!!!!
+		SPECIAL QUEST!!!!!
+		SPECIAL QUEST!!!!!
+-->
+<ship name="SHIP_CRYSTAL_BOSS" auto_blueprint="MU_CRYSTAL_BOSS">
+	<surrender min="1" max="2" load="CRYSTAL_BOSS_SURRENDER"/>
+	<destroyed load="CRYSTAL_BOSS_DEFEAT"/>
+	<deadCrew load="CRYSTAL_BOSS_DEFEAT"/>
+	<crew>
+		<crewMember type="crystal" prop="0.5"/>
+		<crewMember type="crystal_sentinel" prop="0.5"/>
+	</crew>
+</ship>
+<event name="CRYSTAL_SANCTUARY" unique="true">
+	<preventQuest/>
+	<img back="BACK_EVENT_CRYSTALCONSTRUCTION" planet="NONE"/>
+	<text>You've discovered a massive Crystalline society, well furnished and protected. In the center is a small village surrounding a massive contraption... it looks like a gateway of some sort?</text>
+	<choice hidden="true">
+		<text>Investigate the gateway.</text>
+		<event>
+			<text>The contraption seems to resemble a much larger version of the Waystone, the device that the Crystalline people used to seal off their old homeworlds. As you approach, a massive Crystalline cruiser approaches, its weapons aiming straight at you!</text>
+			<ship load="SHIP_CRYSTAL_BOSS" hostile="false"/>
+			<choice hidden="true">
+				<text>Uh oh...</text>
+				<event>
+					<text>A ceremoniously painted purple Crystal stands before you, far taller than those in the background. "I am Empress Dianesh Kryel. You... are a foreigner, and foreigners are unwelcome. The Federation has given us its aid, and for that we are grateful. But we are no longer in need of the Federation, and you need nothing of us. We shall negotiate terms."</text>
+					<choice hidden="true">
+						<text>Negotiate what?</text>
+						<event>
+							<text>"The terms on which you leave this place. Your presence here is not sanctioned. I know people like you. Ambassador Ruwen has told me the stories. You are barbarians, murderers. Renegades like you were the ones who first stole our home from us. And I refuse to allow such things to transpire again. I will satisfy whatever vain desires you might have to ensure you leave and never return. My people do not want you here."</text>
+							<choice hidden="true">
+								<text>Request a weapon.</text>
+								<event>
+									<text>Dianesh gestures for a small transport ship to approach and deliver a specialized Crystal weapon. "We have met your demands, now you will abide by ours and leave." You figure it's best not to press further and follow their instructions.</text>
+									<weapon name="GIFTLIST_CRYSTAL"/>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Request crew.</text>
+								<event>
+									<text>Dianesh gestures for a small transport ship to approach. It delivers a Crystalline prisoner, who eagerly joins your crew as long as it brings an end to their sentence. "We have met your demands, now you will abide by ours and leave." You figure it's best not to press further and follow their instructions.</text>
+									<crewMember amount="1" class="crystal_sentinel"/>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Request repairs.</text>
+								<event>
+									<text>Dianesh gestures for a support ship to come by and give a full repair. "We have met your demands, now you will abide by ours and leave." You figure it's best not to press further and follow their instructions.</text>
+									<damage amount="-45"/>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>We did not come here to harm you. We are not as bad as you say.</text>
+								<event>
+									<text>"Oh but you see, only by making such claims do you prove your intentions. Were you of true heart, you would have already left. But you persist. Persistence is a threat. And my people do not take kindly to threats." You try to protest further but Dianesh will not listen. She waves and her cruiser moves forth to strike you down. This doesn't have to necessarily end in bloodshed, but the Crystals aren't going to listen easily.</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the place.</text>
+		<event>
+			<text>Diving so deep into a Crystalline city is generally not a good idea. You distance yourself from the planet.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CRYSTAL_BOSS_DEFEAT">
+	<text>You have defeated the cruiser, and with it have killed the Crystalline empress. Though this can only spell bad news for the future, you content yourself with salvaging the remains of the ship.</text>
+	<variable name="ach_boss_dianesh" op="set" val="1"/>
+	<autoReward level="HIGH">standard</autoReward>
+	<weapon name="GIFTLIST_CRYSTAL_ELITE"/>
+	<choice hidden="true">
+		<text>Nothing left but to leave...</text>
+		<event>
+			<text>This will no doubt only hurt the Crystalline people's views on foreigners, but it's too late to change it now. Perhaps, in a future reality, there might be a better way to resolve this...</text>
+		</event>
+	</choice>
+</event>
+<event name="CRYSTAL_BOSS_SURRENDER">
+	<text>The Crystal cruiser, and the crew on-board, are on their last breath. The ship's engines flare as it rocks back and forth, barely able to keep up with you any longer.</text>
+	<choice hidden="true">
+		<text>Show them mercy.</text>
+		<event>
+			<text>You power down your weapons. A little while later, the Crystals do the same. Dianesh appears onscreen, breathing heavily with a long crack down her once smooth face. "So... so you have chosen mercy. I must say, I did not expect this..."</text>
+			<ship hostile="false"/>
+			<choice>
+				<text>Continue...</text>
+				<event load="CRYSTAL_BOSS_MERCY"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Finish this.</text>
+		<event>
+			<text>There will be no mercy for the Crystals, not today.</text>
+			<status type="limit" target="enemy" system="engines" amount="0"/>
+		</event>
+	</choice>
+</event>
+<event name="CRYSTAL_BOSS_MERCY">
+	<text>You land your ship nearby the city, guided by Dianesh. The large Crystalline being steps out of her battered cruiser and comes to face you.</text>
+	<variable name="ach_boss_dianesh" op="set" val="1"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>"It seems I might have been misguided in my assumptions. You have... my most sincere apologies for this aggression. I am an honorable woman, and I have disgraced myself by attacking you. I will not have this be. With Ruwen away, there is no one but myself to offer their services to you. Maybe when this is through, we can see if there is a place for my people among the Federation..."</text>
+			<unlockCustomShip silent="false">PLAYER_SHIP_CRYSTALLINE</unlockCustomShip>
+			<variable name="ach_crew_dianesh" op="set" val="1"/>
+			<crewMember amount="1" class="unique_dianesh" all_skills="2">Dianesh</crewMember>
+			<autoReward level="HIGH">standard</autoReward>
+			<weapon name="GIFTLIST_CRYSTAL"/>
+		</event>
+	</choice>
+</event>
+<event name="CRYSTAL_BOSS_TELEPORT">
+	<secretSector/>
+</event>
+</FTL>

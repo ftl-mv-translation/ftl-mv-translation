@@ -1,0 +1,133 @@
+<FTL>
+<!-- 
+
+Events For Testing
+-->
+<event name="FUEL_ESCAPE_PULSAR">
+	<text>Taking advantage of the last of your fuel reserves, you were able to navigate to a safe distance from the pulsar.</text>
+</event>
+
+<event name="FUEL_ESCAPE_PDS">
+	<text>Using your impulse engines, you were able to pull to a safe distance from the hostile planet.</text>
+</event>
+
+<event name="FUEL_ESCAPE_FLEET">
+	<text>Your pilot deftly avoids the artillery fire from the surrounding fleet while you try to sort out exactly what your plan is....</text>
+</event>
+
+<!-- 
+New Item Events
+-->
+
+
+<!-- 
+HOSTILE ENVIRONMENT! 
+ Environment Events - Added into standard rotations
+-->
+
+
+<event name="REBEL_PULSAR" unique="true">
+	<text load="REBEL_PULSAR_TEXT"/>
+	<ship load="SHIP_REBEL_FIGHT" hostile="true"/>
+	<environment type="pulsar"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="REBEL_PULSAR_TEXT">
+	<text>A Rebel captain appears on the screen. "I thought we had been doomed to backwater assignments. This is my chance to get back in Command's good graces! Charge the weapons!"</text>
+	<text>A small rebel research station overlooks a pulsating star. Before you can react a Rebel ship spots you and moves in to attack.</text>
+	<text>You arrive at an infrequently used beacon close to a pulsar. Before long a Rebel ship happens to jump nearby. Looks like you'll have to fight.</text>
+</textList>
+
+<event name="PIRATE_PULSAR" unique="true">
+	<text load="PIRATE_PULSAR_TEXT"/>
+	<ship load="SHIP_PIRATE_ALL" hostile="true"/>
+	<environment type="pulsar"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="PIRATE_PULSAR_TEXT">
+	<text>Sensors go wild as a nearby pulsar is detected. While you are attempting to recalibrate the FTL drive, a pirate sneaks up on your ship, weapons charging. Prepare for a fight!</text>
+	<text>You arrive to find a pulsar dominating the view screen. You see a small silhouette pass in front of the star. Before you can ponder what it is, warning signals go off. It appears to be a ship in a firing trajectory!</text>
+	<text>A small research station orbits a nearby pulsar. It appears largely abandoned, but you detect power signatures flaring up as soon as you're in scanning distance. A small combat ship launches from the station. Pirates!</text>
+</textList>
+
+<event name="REBEL_PDS" unique="true">
+	<text load="REBEL_PDS_TEXT"/>
+	<environment type="PDS" target="player"/>
+	<ship load="SHIP_REBEL_FIGHT" hostile="true"/>
+	<choice>
+		<text>Prepare to fight.</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice req="hacking" lvl="1">
+		<text>(Simple Hacking) Confuse the Anti-Ship Battery's targets.</text>
+		<event>
+			<text>You spot a weakness in the targeting satellites. Your crew is able to launch a hacking drone to confuse the Anti-Ship Battery's targeting matrix. It should also fire on the Rebel ship now.</text>
+			<environment type="PDS" target="all"/>
+			<item_modify>
+				<item type="drones" min="-1" max="-1"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="hacking" lvl="3">
+		<text>(Advanced Hacking) Overwrite the Anti-Ship Battery's target.</text>
+		<event>
+			<text>You spot a weakness in the targeting satellites. Your crew is able to launch an improved hacking drone to overwrite the Anti-Ship Battery's targeting matrix. It will fire on the Rebel ship instead!</text>
+			<environment type="PDS" target="enemy"/>
+			<item_modify>
+				<item type="drones" min="-1" max="-1"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<textList name="REBEL_PDS_TEXT">
+	<text>You're shocked to discover a Rebel forward base on this planet. A patrol ship moves in to intercept and sensors indicate an Anti-Ship Battery is about to fire. We've got to get out of here!</text>
+</textList>
+
+
+<event name="REBEL_AUTO_PDS" unique="true">
+	<text load="REBEL_AUTO_PDS_TEXT"/>
+	<environment type="PDS" target="player"/>
+	<ship load="SHIP_AUTO_FIGHT" hostile="true"/>
+	<choice>
+		<text>Prepare to fight.</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+	<choice req="hacking" lvl="1">
+		<text>(Simple Hacking) Confuse the Anti-Ship Battery's targets.</text>
+		<event>
+			<text>You spot a weakness in the targeting satellites. Your crew is able to launch a hacking drone to periodically confuse the ASB's lock signal. It should sometimes fire on the Rebel ship now.</text>
+			<environment type="PDS" target="all"/>
+			<item_modify>
+				<item type="drones" min="-1" max="-1"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="hacking" lvl="3">
+		<text>(Advanced Hacking) Override the ASB's target.</text>
+		<event>
+			<text>You spot a weakness in the targeting satellites. Your crew is able to launch an improved hacking drone to overwrite the ASB's target locks. It will fire on the Rebel ship instead!</text>
+			<environment type="PDS" target="enemy"/>
+			<item_modify>
+				<item type="drones" min="-1" max="-1"/>
+			</item_modify>
+		</event>
+	</choice>
+</event>
+<textList name="REBEL_AUTO_PDS_TEXT">
+	<text>As soon as you arrive multiple warnings go off. A hostile automated ship is detected and an Anti-Ship Battery begins firing. This doesn't look good!</text>
+</textList>
+</FTL>
