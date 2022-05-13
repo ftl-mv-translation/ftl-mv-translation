@@ -14,7 +14,7 @@ def readpo(path) -> list[StringEntry]:
             raise RuntimeError("sourceline cannot be omitted for non-obsolete entries")
 
         ret.append(
-            StringEntry(entry.msgid, entry.msgstr, occurrences, entry.fuzzy, entry.obsolete)
+            StringEntry(entry.msgid, entry.msgstr, occurrences, entry.fuzzy, bool(entry.obsolete))
         )
     return ret
 
