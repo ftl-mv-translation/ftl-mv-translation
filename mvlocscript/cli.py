@@ -15,6 +15,8 @@ from mvlocscript.localeformats import (
     generate_pot, infer_sourcelocation, merge_pot, stringentries_to_dictionary, readpo, writepo, StringEntry
 )
 
+######################## FTLMV-SPECIFIC XML LOGICS ################################
+
 FTL_XML_NAMESPACES = ['mod']
 
 class FtlShipIconMatcher(MatcherBase):
@@ -49,6 +51,7 @@ class FtlShipIconMatcher(MatcherBase):
 def ftl_xpath_matchers():
     return [AttributeMatcher('name'), FtlShipIconMatcher()]
 
+################################# CLI CODE ########################################
 
 @click.group()
 @click.option('--config', '-c', default='mvloc.config.jsonc', show_default=True, help='config file')
