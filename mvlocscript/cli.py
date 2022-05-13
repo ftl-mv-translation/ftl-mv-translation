@@ -16,7 +16,7 @@ FTL_XML_NAMESPACES = ['mod']
 FTL_XML_UNIQUE_ATTRIBUTES = ['name']
 
 @click.group()
-@click.option('--config', '-c', default='mvloc.config.jsonc', help='config file')
+@click.option('--config', '-c', default='mvloc.config.jsonc', show_default=True, help='config file')
 @click.pass_context
 def main(ctx, config):
     simulate_pythonioencoding_for_pyinstaller()
@@ -29,7 +29,7 @@ def main(ctx, config):
 @main.command()
 @click.argument('a')
 @click.argument('b')
-@click.option('--mismatch', '-m', default=10, help='show N mismatches')
+@click.option('--mismatch', '-m', default=10, show_default=True, help='show N mismatches')
 @click.pass_context
 def unhandled(ctx, a, b, mismatch):
     '''Find unhandled diff from two XML files.'''
@@ -68,7 +68,7 @@ def generate(ctx, xml, output, prefix, location):
     '''
     Generate gettext .po file from XML.
 
-    Usage: mvloc generate src-ko/data/blueprints.xml.append locale/data/blueprints.xml.append/ko.po
+    Example: mvloc generate src-ko/data/blueprints.xml.append locale/data/blueprints.xml.append/ko.po
     '''
     config = ctx.obj['config']
     stringSelectionXPath = config.get('stringSelectionXPath', [])
@@ -125,7 +125,7 @@ def sanitize(ctx, original, translated, empty_identical):
     '''
     Given two locale files, sanitize them to be properly flagged in Weblate.
 
-    Usage: mvloc sanitize --fuzzy locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po
+    Example: mvloc sanitize --empty_identical locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po
     '''
 
     sourcelocation = infer_sourcelocation(original)
@@ -172,8 +172,7 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
     '''
     Apply locale to XML, generating a translated XML file.
 
-    Usage: mvloc apply src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/en.po
-           locale/data/blueprints.xml.append/ko.po output/data/blueprints.xml.append
+    Example: mvloc apply src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po output/data/blueprints.xml.append
     '''
     print(f'Reading {inputxml}...')
     tree = parse_illformed(inputxml, FTL_XML_NAMESPACES)
@@ -219,7 +218,197 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
     ensureparent(outputxml)
     with open(outputxml, 'wb') as outputfile:
         outputfile.write(result)
+
+@main.command()
+@click.argument('inputa')
+@click.argument('inputb')
+@click.argument('output')
+@click.option(
+    '--sanitize', '-s', 'sanitize_arg', default='',
+    help='Run sanitize with a given original locale file.'
+)
+@click.option(
+    '--empty-identical', '-e', is_flag=True, default=False,
+    help='(Requires --sanitize) Empty each translated string from output if it is identical to the original.'
+)
+@click.option(
+    '--criteria', '-c', default='!o!e:!o:vf', show_default=True,
+    help='Specify the criteria of copying. See help for details.'
+)
+@click.option(
+    '--copy-sourcelocation', '-l', is_flag=True, default=False,
+    help='Allow merging locales from different sources, using the location from INPUTB.'
+)
+@click.pass_context
+def merge(ctx, inputa, inputb, output, sanitize_arg, empty_identical, criteria, copy_sourcelocation):
+    '''
+    Copy translation from the first argument (A) to the second (B), writing out the third. All arguments are .po files.
     
+    This command is designed for merging two translation files from the same language.
+    If you want to merge changes from English to other languages, use `sanitize` command instead.
+
+    ---
+
+    --criteria limits the condition of entries and the attributes that are copied over. It's specified in `X:Y:Z` format,
+    where X specifies the condition for the elements in INPUTA, Y specifies the condition for the elements in INPUTB,
+    and Z specifies which attributes are copied over from INPUTA.
+    
+    X and Y are a combination of f (select entries) or !f (exclude entries) where f can be one of:
+
+    o: obsolete entries, f: fuzzy entries, e: empty entries, n: new entries (i.e. entries which only exist in INPUTA)
+
+    (Note: flag `n` can only be specified in X, not Y.)
+
+    And Z is a combination of:
+
+    v: the translated string, l: lineno, o: obsolete flag, f: fuzzy flag
+
+    (Note: new entries will always be copied with line number and obsolete flag regardless of this option,
+    as mvloc always requires a line number for non-obsolete entries.)
+
+    The default setting is "!o!e:!o:vf", which copies all non-empty, non-obsolete entries from INPUTA to INPUTB,
+    while preserving the line numbers and and obsolete flags in INPUTB.
+
+    ---
+
+    * Example 1: Merge a.ko.po with b.ko.po using default setting (copy translated strings from A to B)
+
+    mvloc merge a.po b.po output.po
+    
+    * Example 1: Copy translated strings from A to B, but only if they're empty in B
+
+    mvloc merge -s !o!e:!oe:vf a.po b.po output.po
+
+    * Example 2: Merge entries using default setting, then sanitize the output (including emptying untranslated)
+
+    mvloc merge --sanitize a.en.po --empty-identical a.ko.po b.ko.po output.ko.po
+
+    * Example 3: Copy only new entries from A to B
+
+    mvloc merge -c n::vlof a.po b.po output.po
+    
+    * Example 4: Mark each entry fuzzy in B if and only if it's fuzzy in A
+
+    mvloc merge -c !n!o:-o:f a.po b.po output.po
+
+    * Example 5: Create keys for new entries in B, but initialize them as empty (like msgmerge)
+
+    mvloc merge -c n!o:: a.po b.po output.po
+
+    * Example 6: Merge two files from different source XMLs, where A's source is integrated into B's
+
+    mvloc merge --copy-sourcelocation -c ::vlof a.po b.po output.po
+    '''
+
+    def parse_criteria(criteria, keys_a, keys_b):
+        CONDFUNCS = {
+            'o': lambda entry: entry.obsolete,
+            'f': lambda entry: entry.fuzzy,
+            'e': lambda entry: entry.value == '',
+            'n': lambda entry: (entry.key in keys_a) and (entry.key not in keys_b)
+        }
+        FIELDS = {
+            'v': 'value',
+            'l': 'lineno',
+            'o': 'obsolete',
+            'f': 'fuzzy'
+        }
+
+        def condfunc(condstr, exclude_n):
+            ret = []
+            while condstr:
+                if condstr[0] == '!':
+                    notflag = True
+                    condchar = condstr[1]
+                    condstr = condstr[2:]
+                else:
+                    notflag = False
+                    condchar = condstr[0]
+                    condstr = condstr[1:]
+                if exclude_n and condchar == 'n':
+                    raise RuntimeError('invalid criteria')
+                f = CONDFUNCS.get(condchar, None)
+                if f is None:
+                    raise RuntimeError('invalid criteria')
+                ret.append((notflag, f))
+            return ret
+
+        splits = criteria.split(':')
+        if len(splits) != 3:
+            print(criteria)
+            raise RuntimeError('invalid criteria')
+        
+        cond_a, cond_b, copy_fields = splits
+        condfunc_a = condfunc(cond_a, False)
+        condfunc_b = condfunc(cond_b, False)
+        copy_fields = [FIELDS[f] for f in copy_fields]
+        return condfunc_a, condfunc_b, copy_fields
+
+    def evaluate_cond(condfunc, entry):
+        return all(f(entry) != n for n, f in condfunc)
+
+    def copied(entry_a, entry_b, copy_fields):
+        return entry_b._replace(**{field: getattr(entry_a, field) for field in copy_fields})
+
+    ############################
+
+    if empty_identical and not sanitize_arg:
+        raise RuntimeError('--empty-identical works only if --sanitize is specified')
+
+    sourcelocation_a = infer_sourcelocation(inputa)
+    assert sourcelocation_a
+    sourcelocation_b = infer_sourcelocation(inputb)
+    assert sourcelocation_b
+
+    if not copy_sourcelocation and (sourcelocation_a != sourcelocation_b):
+        raise RuntimeError(
+            f'sourcelocation mismatch: {sourcelocation_a} != {sourcelocation_b}.'
+            ' Use --copy-sourcelocation to merge between locales of different sources.'
+        )
+
+    entries_a = readpo(inputa)
+    entries_b = readpo(inputb)
+    
+    # Unify the sourcelocation
+    if copy_sourcelocation:
+        entries_a = [
+            entry._replace(key=f'{sourcelocation_b}${entry.key[len(sourcelocation_a + 1):]}')
+            for entry in entries_a
+        ]
+    
+    dict_a = stringentries_to_dictionary(entries_a)
+    dict_b = stringentries_to_dictionary(entries_b)
+    condfunc_a, condfunc_b, copy_fields = parse_criteria(criteria, dict_a.keys(), dict_b.keys())
+
+    stats_skipped, stats_added, stats_overwritten = 0, 0, 0
+    for key, entry in dict_a.items():
+        if not evaluate_cond(condfunc_a, entry):
+            stats_skipped += 1
+            continue
+        is_entry_new = key not in dict_b
+        if (not is_entry_new) and (not evaluate_cond(condfunc_b, dict_b[key])):
+            stats_skipped += 1
+            continue
+        
+        if is_entry_new:
+            # Default for copying a new entry
+            dest = StringEntry(key, '', entry.lineno, False, entry.obsolete)
+            dest = copied(entry, dest, copy_fields)
+            dict_b[key] = dest
+            stats_added += 1
+        else:
+            dict_b[key] = copied(entry, dict_b[key], copy_fields)
+            stats_overwritten += 1
+    
+    new_entries_b = sorted(dict_b.values(), key=lambda entry: entry.lineno)
+    writepo(output, new_entries_b, sourcelocation_b)
+    print(
+        f'Stats: {stats_skipped} strings skipped, {stats_added} strings created'
+        f' and {stats_overwritten} string overwritten.'
+    )
+    if sanitize_arg:
+        print('Performing sanitization...')
+        ctx.invoke(sanitize, original=sanitize_arg, translated=output, empty_identical=empty_identical)
 
 def runproc(desc, reportfile, configpath, *args):
     newenv = dict(os.environ)
@@ -258,7 +447,7 @@ def batch_generate(ctx, targetlang, diff, clean, empty_identical):
     Assumes "src-en/" and "src-<TARGETLANG>/" directory to be present.
     Generates "locale/**/<TARGETLANG>.po" files and "report.txt" file.
 
-    Usage: mvloc batch-generate --diff --clean --empty-identical ko
+    Example: mvloc batch-generate --diff --clean --empty-identical ko
     '''
 
     configpath = ctx.obj['configpath']
@@ -340,7 +529,7 @@ def batch_apply(ctx, targetlang):
     Batch operation for applying translation.
     Assumes "src-en/" and "locale/" directory to be present. Updates result to "output/" directory and "report.txt".
 
-    Usage: mvloc batch-apply ko
+    Example: mvloc batch-apply ko
     '''
 
     configpath = ctx.obj['configpath']
