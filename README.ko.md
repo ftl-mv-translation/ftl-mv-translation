@@ -4,7 +4,7 @@
 
 [![batch-apply](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml/badge.svg)](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
 
-[최근 빌드의 `Artifacts` 섹션에서 받을 수 있습니다.](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
+[(GitHub 로그인 필요) 최근 빌드의 `Artifacts` 섹션에서 받을 수 있습니다.](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
 
 ## 스크립트 실행하기
 
