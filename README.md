@@ -1,5 +1,11 @@
 # FTL: Multiverse Translation Project
 
+## Link to the latest nightly translation (XML files)
+
+[![batch-apply](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml/badge.svg)](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
+
+[Download from `Artifacts` section of the latest run.](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
+
 ## Running the script
 
 The script is written in Python and managed by poetry. A standard setuptools may install it as a package,
