@@ -1,4 +1,3 @@
-from collections import defaultdict
 from lxml import etree
 from io import BytesIO, StringIO
 
@@ -104,54 +103,6 @@ def xpath(tree_or_element, expr):
 
     return list(map(convert_xpath_result, xpath_result))
 
-def _get_tag_as_written(e):
-    tag, prefix = e.tag, e.prefix
-    if prefix is None:
-        return tag
-    else:
-        return f'{prefix}:{tag[tag.find("}") + 1:]}'
-
-class MatcherBase:
-    def prepare(self, tree):
-        pass
-
-    def getsegment(self, tree, element):
-        raise NotImplementedError
-    
-    def isuniquefromroot(self, tree, element, segment):
-        results = tree.xpath(f'//{segment}', namespaces=tree.getroot().nsmap)
-        assert len(results) > 0 and element in results
-        return len(results) == 1
-    
-    def isuniquefromparent(self, tree, element, segment):
-        results = element.xpath(f'../{segment}', namespaces=tree.getroot().nsmap)
-        assert len(results) > 0 and element in results
-        return len(results) == 1
-
-class AttributeMatcher(MatcherBase):
-    '''Match specific attribute name for identification'''
-    def __init__(self, attribute):
-        self._attribute = attribute
-        self._cache = defaultdict(int)
-
-    def prepare(self, tree):
-        for element in tree.xpath(f'//*[@{self._attribute}]'):
-            tagname = _get_tag_as_written(element)
-            attrval = element.get(self._attribute)
-            if '"' not in attrval:
-                self._cache[(tagname, attrval)] += 1
-
-    def getsegment(self, tree, element):
-        attrval = element.get(self._attribute)
-        if (attrval is not None) and ('"' not in attrval):
-            return f'{_get_tag_as_written(element)}[@{self._attribute}="{attrval}"]'
-        return None
-    
-    def isuniquefromroot(self, tree, element, segment):
-        tagname = _get_tag_as_written(element)
-        attrval = element.get(self._attribute)
-        return self._cache[(tagname, attrval)] == 1
-
 class UniqueXPathGenerator:
     '''
     Similar to lxml.etree.ElementTree.getpath(), but
@@ -159,23 +110,29 @@ class UniqueXPathGenerator:
     * Condense redundant elements around unique attributes.
     * Supports attributes and AttributeProxy.
     '''
-    def __init__(self, tree, matchers: list[MatcherBase]):
-        self._tree = tree
-        self._matchers = matchers
-        for matcher in self._matchers:
-            matcher.prepare(self._tree)
+    def __init__(self, tree, unique_attr=None):
+        self.tree = tree
+        self.unique_attr = unique_attr or []
+        self.tagname_to_elements = {}
 
     def _check_xpath(self, rootobj, xpathexpr, expected_element):
-        results = rootobj.xpath(xpathexpr, namespaces=self._tree.getroot().nsmap)
+        results = rootobj.xpath(xpathexpr, namespaces=self.tree.getroot().nsmap)
         return len(results) == 1 and results[0] == expected_element
+    
+    def _get_tag_as_written(self, e):
+        tag, prefix = e.tag, e.prefix
+        if prefix is None:
+            return tag
+        else:
+            return f'{prefix}:{tag[tag.find("}") + 1:]}'
     
     def getpath(self, element_or_attribute_or_attributeproxy):
         attrname = getattr(element_or_attribute_or_attributeproxy, 'attrname', None)
         if attrname:
-            return self.getpath(self._tree, element_or_attribute_or_attributeproxy.getparent()) + f'/@{attrname}'
+            return self.getpath(self.tree, element_or_attribute_or_attributeproxy.getparent()) + f'/@{attrname}'
 
         element = element_or_attribute_or_attributeproxy
-        path = self._tree.getpath(element)
+        path = self.tree.getpath(element)
 
         segments = path.split('/')
         if segments[0] == '':
@@ -186,40 +143,45 @@ class UniqueXPathGenerator:
         new_xpath = ''
         curelement = None
         for segment in segments:
-            curelement = (
-                self._tree.getroot()
-                if curelement is None else
-                curelement.xpath(segment, namespaces=self._tree.getroot().nsmap)[0]
-            )
+            curelement = self.tree.getroot() if curelement is None else curelement.xpath(segment, namespaces=self.tree.getroot().nsmap)[0]
 
-            for matcher in self._matchers:
-                new_segment = matcher.getsegment(self._tree, curelement)
-                if new_segment is None:
+            for attrname in self.unique_attr:
+                attrval = curelement.get(attrname)
+                if attrval is None:
                     continue
-                
-                try:
-                    if matcher.isuniquefromroot(self._tree, curelement, new_segment):
-                        new_xpath = f'//{new_segment}'
-                        break
-                except etree.XPathEvalError:
-                    pass
 
-                try:
-                    if matcher.isuniquefromparent(self._tree, curelement, new_segment):
-                        new_xpath = f'{new_xpath}/{new_segment}'
-                        break
-                except etree.XPathEvalError:
-                    pass
+                tagname = self._get_tag_as_written(curelement)
+                new_segment = f'{tagname}[@{attrname}="{attrval}"]'
+
+                cached_elements = self.tagname_to_elements.get(tagname, None)
+                if cached_elements is None:
+                    cached_elements = self.tree.xpath(f'//{tagname}', namespaces=self.tree.getroot().nsmap)
+                    self.tagname_to_elements[tagname] = cached_elements
+                
+                if all(
+                    cachedelement.get(attrname) != attrval
+                    for cachedelement in cached_elements
+                    if cachedelement != curelement
+                ):
+                    # //tag[@attr="value"]
+                    new_xpath = f'//{new_segment}'
+                    break
+                
+                results = curelement.xpath(f'../{new_segment}', namespaces=self.tree.getroot().nsmap)
+                if len(results) == 1 and results[0] == curelement:
+                    # /.../tag[@attr="value"]
+                    new_xpath = f'{new_xpath}/{new_segment}'
+                    break
             else:
                 # /.../tag[ordinal]
                 new_xpath = f'{new_xpath}/{segment}'
         
         return new_xpath
 
-def xmldiff(atree, btree, *args, **kwargs):
+def xmldiff(atree, btree, unique_attr=None):
     '''Compare atree and btree'''
 
-    uniqueXPathGenerator = UniqueXPathGenerator(atree, *args, **kwargs)
+    uniqueXPathGenerator = UniqueXPathGenerator(atree, unique_attr)
     
     differences = []
     def normalized_text(elem):

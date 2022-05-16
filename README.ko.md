@@ -1,11 +1,5 @@
 # FTL: Multiverse 번역 프로젝트
 
-## 최신 번역 (XML 파일, 일일 갱신)
-
-[![batch-apply](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml/badge.svg)](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
-
-[(GitHub 로그인 필요) 최근 빌드의 `Artifacts` 섹션에서 받을 수 있습니다.](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
-
 ## 스크립트 실행하기
 
 스크립트는 Python으로 작성되어 있고, poetry로 관리됩니다. 다른 패키지처럼 setuptools로 직접 설치할 수도 있고, 혹은 poetry를 사용해서 virtualenv 및 설치과정을 간소화할 수도 있습니다.

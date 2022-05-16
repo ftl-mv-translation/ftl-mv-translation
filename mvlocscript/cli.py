@@ -1,4 +1,3 @@
-from collections import defaultdict
 import sys
 import os
 import click
@@ -7,51 +6,14 @@ import subprocess
 from functools import reduce
 from pathlib import Path
 from lxml import etree
-from mvlocscript.xmltools import (
-    AttributeMatcher, MatcherBase, xpath, UniqueXPathGenerator, xmldiff, getsourceline, parse_illformed
-)
+from mvlocscript.xmltools import xpath, UniqueXPathGenerator, xmldiff, getsourceline, parse_illformed
 from mvlocscript.fstools import ensureparent, simulate_pythonioencoding_for_pyinstaller, glob_posix
 from mvlocscript.localeformats import (
     generate_pot, infer_sourcelocation, merge_pot, stringentries_to_dictionary, readpo, writepo, StringEntry
 )
 
-######################## FTLMV-SPECIFIC XML LOGICS ################################
-
 FTL_XML_NAMESPACES = ['mod']
-
-class FtlShipIconMatcher(MatcherBase):
-    '''hyperspace.xml: match /FTL/ships/shipIcons/shipIcon elements using the child <name> element'''
-    def __init__(self):
-        self._element_to_name = {}
-        self._name_count = defaultdict(int)
-
-    def prepare(self, tree):
-        for element in tree.xpath('/FTL/ships/shipIcons/shipIcon'):
-            nameelements = element.xpath('name')
-            if len(nameelements) != 1:
-                continue
-            name = nameelements[0].text
-            if '"' in name:
-                continue
-            
-            self._element_to_name[element] = name
-            self._name_count[name] += 1
-
-    def getsegment(self, tree, element):
-        name = self._element_to_name.get(element, None)
-        if (name is not None) and (self._name_count[name] == 1):
-            return f'shipIcon[name="{name}"]'
-    
-    def isuniquefromroot(self, tree, element, segment):
-        # Disable condensing path as there are many <shipIcon> elements serving different purposes
-        return False
-    
-    # In most cases we're safe to short-circuit isuniquefromparent() to True, but lets leave it for XPath validation.
-
-def ftl_xpath_matchers():
-    return [AttributeMatcher('name'), FtlShipIconMatcher()]
-
-################################# CLI CODE ########################################
+FTL_XML_UNIQUE_ATTRIBUTES = ['name']
 
 @click.group()
 @click.option('--config', '-c', default='mvloc.config.jsonc', show_default=True, help='config file')
@@ -84,7 +46,7 @@ def unhandled(ctx, a, b, mismatch):
     )
 
     print('Comparing files...')
-    diff = xmldiff(atree, btree, matchers=ftl_xpath_matchers())
+    diff = xmldiff(atree, btree, FTL_XML_UNIQUE_ATTRIBUTES)
     print()
     print(f'#differences (all): {len(diff)}')
     diff = [(p, m) for p, m in diff if not excluded.issuperset(xpath(atree, p))]
@@ -127,7 +89,7 @@ def generate(ctx, xml, output, prefix, location):
         )
     )
 
-    uniqueXPathGenerator = UniqueXPathGenerator(tree, ftl_xpath_matchers())
+    uniqueXPathGenerator = UniqueXPathGenerator(tree, FTL_XML_UNIQUE_ATTRIBUTES)
 
     def getkey(entity):
         path = uniqueXPathGenerator.getpath(entity)
