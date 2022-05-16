@@ -4,7 +4,7 @@
 
 [![batch-apply](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml/badge.svg)](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
 
-[(Requires to be logged in GitHub) Download from `Artifacts` section of the latest run.](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
+[(Requires to be logged into GitHub) Download from `Artifacts` section of the latest run.](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
 
 ## Running the script
 
