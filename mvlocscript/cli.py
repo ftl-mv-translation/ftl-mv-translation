@@ -48,8 +48,25 @@ class FtlShipIconMatcher(MatcherBase):
     
     # In most cases we're safe to short-circuit isuniquefromparent() to True, but lets leave it for XPath validation.
 
+class FtlEventChoiceReqAttributeMatcher(MatcherBase):
+    '''events_*.xml: match <choice req="...">'''
+    def __init__(self):
+        self._inner = AttributeMatcher('req')
+
+    def getsegment(self, tree, element):
+        if element.tag != 'choice':
+            return None
+        return self._inner.getsegment(tree, element)
+    
+    def isuniquefromroot(self, tree, element, segment):
+        # Disable condensing path
+        return False
+    
+    def isuniquefromparent(self, tree, element, segment):
+        return self._inner.isuniquefromparent(tree, element, segment)
+
 def ftl_xpath_matchers():
-    return [AttributeMatcher('name'), FtlShipIconMatcher()]
+    return [AttributeMatcher('name'), FtlEventChoiceReqAttributeMatcher(), FtlShipIconMatcher()]
 
 ################################# CLI CODE ########################################
 
