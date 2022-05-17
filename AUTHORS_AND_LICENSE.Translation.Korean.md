@@ -12,6 +12,7 @@ The Korean translation is provided by:
 * Byeol_Lor (metagrams _AT_ gmail _DOT_ com)
 * 생선왕머킹: (youtube: https://www.youtube.com/channel/UCJewtI9FxWLB2Qf1Tam83UQ/videos)
 * nedsociety (nedsociety _AT_ gmail _DOT_ com)
+* laniusb
 
 ... and 4 anonymous contributors.
 
