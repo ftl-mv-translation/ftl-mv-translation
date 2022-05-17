@@ -1,62 +1,6 @@
 from collections import defaultdict
+from functools import reduce
 from lxml import etree
-from io import BytesIO, StringIO
-
-XSLT_ADD_NAMESPACE_TEMPLATE = '''
-<xsl:stylesheet
-    version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:%NAMESPACE_NAME%="http://dummy/%NAMESPACE_NAME%"
->
-    <xsl:output indent="yes" method="xml"/>
-    <xsl:param name="namespaces"/>
-
-    <xsl:template match="@*|node()">
-        <xsl:copy>
-            <xsl:apply-templates select="@*|node()"/>
-        </xsl:copy>
-    </xsl:template>
-
-    <xsl:template match="/*" priority="1">
-        <xsl:element name="{name()}">
-            <xsl:attribute name="%NAMESPACE_NAME%:XMLTOOLSDUMMY">XMLTOOLSDUMMY</xsl:attribute>
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates/>
-        </xsl:element>
-    </xsl:template>
-</xsl:stylesheet>
-'''
-
-def parse_illformed(path, namespaces=None):
-    '''
-    Read ill-formed XML with undefined namespaces and double-hypen comments.
-    '''
-    namespaces = namespaces or []
-    
-    tree = etree.parse(path, etree.XMLParser(recover=True))
-
-    if namespaces:
-        # Apply XSLT multiple times to add namespace definitions
-        for namespace in namespaces:
-            xslt_content = XSLT_ADD_NAMESPACE_TEMPLATE.replace('%NAMESPACE_NAME%', namespace)
-            xslt = etree.parse(StringIO(xslt_content))
-            tree = tree.xslt(xslt)
-        
-        # Reparse since the old "recovered" namespaces are not actually processed in the tree
-        tree = etree.parse(BytesIO(etree.tostring(tree, encoding='utf-8')), etree.XMLParser(recover=True))
-
-        # Remove attributes added by XSLT
-        for namespace in namespaces:
-            tree.getroot().attrib.pop(f'{{http://dummy/{namespace}}}XMLTOOLSDUMMY')
-
-    # Remove double-hypen comments
-    for comment in tree.xpath('//comment()'):
-        comment.text = comment.text.replace('--', '__')
-
-    # Reparse once again with no recover option
-    tree = etree.parse(BytesIO(etree.tostring(tree, encoding='utf-8')))
-
-    return tree
 
 class AttributeProxy:
     def __init__(self, attrib):
@@ -215,6 +159,20 @@ class UniqueXPathGenerator:
                 new_xpath = f'{new_xpath}/{segment}'
         
         return new_xpath
+
+class XPathInclusionChecker:
+    '''
+    Given a predetermined set of XPath queries on a tree, check if an XPath query is contained in that set.
+    '''
+    def __init__(self, tree, queries):
+        self._tree = tree
+        self._entities = reduce(
+            lambda s1, s2: s1 | s2,
+            (set(xpath(tree, xpathexpr)) for xpathexpr in queries)
+        )
+
+    def contains(self, query):
+        return set(xpath(self._tree, query)).issubset(self._entities)
 
 def xmldiff(atree, btree, *args, **kwargs):
     '''Compare atree and btree'''
