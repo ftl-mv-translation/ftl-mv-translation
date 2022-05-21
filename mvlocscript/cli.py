@@ -33,7 +33,7 @@ def main(ctx, config):
     with open(config, encoding='utf-8') as f:
         ctx.obj['configpath'] = config
         ctx.obj['config'] = json5.load(f)
-    
+
 @main.command()
 @click.argument('a')
 @click.argument('b')
@@ -52,7 +52,7 @@ def unhandled(ctx, a, b, mismatch):
 
     Example: mvloc unhandled src-en/data/blueprints.xml.append src-ko/data/blueprints.xml.append --mismatch 20
     '''
-    
+
     config = ctx.obj['config']
     stringSelectionXPath = config.get('stringSelectionXPath', [])
 
@@ -94,12 +94,12 @@ def generate(ctx, xml, output, prefix, location, prune_empty_strings, delete_ide
 
 
     Usage notes:
-    
+
     * Use `{filename}$` for `--prefix` and `src-en/{filename}` for ``--location``. This scheme is pretty much assumed
     in any other commands.
 
     * `--prune-empty-string` is best used for generating .po files for the original locale (i.e. English).
-    
+
     * `--delete-identical-strings-with` is best used when followed by `sanitize` call to recover the deleted entries.
 
 
@@ -131,7 +131,7 @@ def generate(ctx, xml, output, prefix, location, prune_empty_strings, delete_ide
     def getkey(entity):
         path = uniqueXPathGenerator.getpath(entity)
         return f'{prefix}{path}'
-    
+
     def getvalue(entity):
         if getattr(entity, 'value', None) is not None:
             # AttributeProxy
@@ -178,7 +178,7 @@ def sanitize(ctx, target, original_xml, original_po, copy_source_template_arg):
 
     * Add new entries, or mark existing entries obsolete so that its non-obsolete catalog matches to that of the
     original .po file.
-    
+
     * Obsolete entries are deleted if the string is empty.
 
     * By default new entries have an empty string. If `--copy-source-template` is specified, each new entry is copied
@@ -228,7 +228,7 @@ def sanitize(ctx, target, original_xml, original_po, copy_source_template_arg):
         else:
             # An existing entry
             dict_new[key] = entry_original._replace(value=entry_translated.value, fuzzy=entry_translated.fuzzy)
-    
+
     for key, entry_translated in dict_translated.items():
         if key in dict_new:
             continue
@@ -236,7 +236,7 @@ def sanitize(ctx, target, original_xml, original_po, copy_source_template_arg):
         if entry_translated.value == '':
             # Empty obsolete entries are not really useful in any sense
             continue
-        
+
         # A deleted entry
         dict_new[key] = entry_translated._replace(lineno=-1, obsolete=True)
 
@@ -261,10 +261,10 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
     Perform 3-way merging on a translated .po file to apply changes from the original locale. In specific,
 
     * ID relocation are detected and applied.
-    
+
     * Updates to the same-strings are applied.
 
-    
+
     Usage notes:
 
     * Use this command to apply changes from an original (English) file to a translated file.
@@ -273,9 +273,80 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
     Example: mvloc update locale/data/blueprints.xml.append/en.po.old locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po --original-xml src-en/data/blueprints.xml.append --copy-source-template ko
     '''
 
-    # TODO: issue #18
-    # For now just redirect to sanitize.
-    print('WARNING: not yet implemented. Switching to sanitize command for the best effort.')
+    def find_new_id_candidates(entry, dict_original_new):
+        """ Helper returning entries with an identical value,
+        and sort them by their proximity in the new file.
+        """
+        candidates = []
+
+        for new_id, new_entry in dict_original_new.items():
+            if new_entry.value == entry.value:
+                candidates.append({
+                    'new_id': new_id,
+                    'entry': new_entry,
+                    'offset': abs(new_entry.lineno - entry.lineno),
+                })
+        return sorted(candidates, key=lambda c: c['offset'])
+
+    dict_original_old, _, src_og_old = readpo(oldoriginal)
+    dict_original_new, _, _ = readpo(neworiginal)
+
+    id_changes = defaultdict(dict)
+    used_ids = []
+
+    for old_id, entry in dict_original_old.items():
+        if old_id not in dict_original_new.keys() or entry.value != dict_original_new[old_id].value:
+
+            print(f"{old_id}")
+            print("  ↓  ↓  ↓")
+
+            # Assume first choice was the good one, even if it's not always true,
+            # it should not matter in the end as the texts are the same anyway
+            candidates = find_new_id_candidates(entry, dict_original_new)
+            candidates = list(filter(lambda c: c['new_id'] not in used_ids, candidates))
+
+            if candidates:
+                id_changes[old_id] = candidates[0]
+                used_ids.append(candidates[0]['new_id'])
+                print(f"{candidates[0]['new_id']}")
+                print(f'Best match among {len(candidates)} possibilities.\n')
+            else:
+                id_changes[old_id] = None
+                print("No candidates entries found in the new file.\n")
+
+    # Applying ID changes to the translated PO file
+    dict_translated_old, _, src_tl_old = readpo(target)
+    dict_translated_new = dict_translated_old
+
+    for old_id, new_data in id_changes.items():
+
+        # Skipping already non-existent ids
+        if old_id not in dict_translated_old.keys():
+            continue
+
+        old_entry = dict_translated_old[old_id]
+        if new_data:
+            # Get the original as template and fill with the recovered entry
+            updated_entry = StringEntry(
+                new_data['entry'].key,
+                old_entry.value,
+                new_data['entry'].lineno,
+                False,
+                False
+            )
+            new_id = new_data['new_id']
+
+            dict_translated_new.update({new_id: updated_entry})
+            dict_translated_new.pop(old_id)
+        else:
+            # Mark not recovereable one as obselete
+            dict_translated_new[old_id]._replace(lineno=-1, obsolete=True)
+
+    updated_entries = sorted(dict_translated_new.values(),
+                             key=lambda entry: entry.lineno)
+    writepo(target, updated_entries, src_tl_old)
+
+    # Sanitizing file in post-process
     ctx.invoke(
         sanitize,
         target=target,
@@ -304,7 +375,7 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
     dict_original, _, _ = readpo(originalpo)
     dict_translated, _, _ = readpo(translatedpo)
     dict_translated = {key: entry for key, entry in dict_translated.items() if not entry.obsolete}
-    
+
     # Use keys from the original locale
     for key in dict_original:
         entry_translated = dict_translated.get(key, None)
@@ -326,7 +397,7 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
                 setattr(entity, 'value', string_translated)
             else:
                 setattr(entity, 'text', string_translated)
-    
+
     ensureparent(outputxml)
     write_ftlxml(outputxml, tree)
 
@@ -346,7 +417,7 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
 def merge(ctx, inputa, inputb, output, criteria, copy_sourcelocation):
     '''
     Copy translation from the first argument (A) to the second (B), writing out the third. All arguments are .po files.
-    
+
     This command is designed for merging two translation files from the same language.
     If you want to merge changes from English to other languages, use `sanitize` command instead.
 
@@ -355,7 +426,7 @@ def merge(ctx, inputa, inputb, output, criteria, copy_sourcelocation):
     --criteria limits the condition of entries and the attributes that are copied over. It's specified in `X:Y:Z`
     format, where X specifies the condition for the elements in INPUTA, Y specifies the condition for the elements
     in INPUTB, and Z specifies which attributes are copied over from INPUTA.
-    
+
     X and Y are a combination of f (select entries) or !f (exclude entries) where f can be one of:
 
     o: obsolete entries, f: fuzzy entries, e: empty entries, n: new entries (i.e. entries which only exist in INPUTA)
@@ -385,7 +456,7 @@ def merge(ctx, inputa, inputb, output, criteria, copy_sourcelocation):
     * Example 1: Merge a.po with b.po using default setting (copy translated strings from A to B)
 
     mvloc merge a.po b.po output.po
-    
+
     * Example 2: Copy translated strings from A to B, but only if they're empty in B
 
     mvloc merge -c !o!e:!oe:vf a.po b.po output.po
@@ -393,7 +464,7 @@ def merge(ctx, inputa, inputb, output, criteria, copy_sourcelocation):
     * Example 3: Copy only new entries from A to B
 
     mvloc merge -c n::vlof a.po b.po output.po
-    
+
     * Example 4: Mark each entry fuzzy in B if and only if it's fuzzy in A
 
     mvloc merge -c !n!o:!o:f a.po b.po output.po
@@ -444,7 +515,7 @@ def merge(ctx, inputa, inputb, output, criteria, copy_sourcelocation):
         if len(splits) != 3:
             print(criteria)
             raise RuntimeError('invalid criteria')
-        
+
         cond_a, cond_b, copy_fields = splits
         condfunc_a = condfunc(cond_a, False)
         condfunc_b = condfunc(cond_b, False)
@@ -489,7 +560,7 @@ def merge(ctx, inputa, inputb, output, criteria, copy_sourcelocation):
         if (not is_entry_new) and (not evaluate_cond(condfunc_b, dict_b[key])):
             stats_skipped += 1
             continue
-        
+
         if is_entry_new:
             # Default for copying a new entry
             dest = StringEntry(key, '', entry.lineno, False, entry.obsolete)
@@ -499,7 +570,7 @@ def merge(ctx, inputa, inputb, output, criteria, copy_sourcelocation):
         else:
             dict_b[key] = copied(entry, dict_b[key], copy_fields)
             stats_overwritten += 1
-    
+
     new_entries_b = sorted(dict_b.values(), key=lambda entry: entry.lineno)
     ensureparent(output)
     writepo(output, new_entries_b, sourcelocation_b)
@@ -561,7 +632,7 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
 
     * Use `--clean` when constructing a whole new language locale from a set of raw XMLs. Conversely, omit `--clean` to
     import only a subset of XML files in `src-<TARGETLANG>/`.
-    
+
     * Use `--update` when upgrading a Multiverse version. The `--update` option alters the postprocessing command used
     for syncing each translation file to the English changes, from the `sanitize` command to the `update` command.
     Though `sanitize` command still generates a valid output, it lacks smarter 3-way merge features like ID relocation
@@ -626,7 +697,7 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
         # Delete all en.po.old if remaining
         for oldlocale in glob_posix(f'locale/**/{targetlang}.po.old'):
             Path(oldlocale).unlink()
-        
+
         # Then rename all en.po to en.po.old
         for oldlocale in glob_posix(f'locale/**/{targetlang}.po'):
             path = Path(oldlocale)
@@ -635,7 +706,7 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
         # Just delete all {targetlang}.po if remaining
         for oldlocale in glob_posix(f'locale/**/{targetlang}.po'):
             Path(oldlocale).unlink()
-    
+
     try:
         with open('report.txt', 'w', encoding='utf-8', newline='\n', buffering=1) as reportfile:
             for filepath in filepaths_xml_targetlang:
@@ -658,7 +729,7 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
                 )
                 if not success:
                     continue
-                
+
                 # Sync phase: sanitize / update
                 if Path(en_locale).exists():
                     en_old_locale = f'locale/{filepath}/en.po.old'
@@ -700,7 +771,7 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
                             reportfile, configpath,
                             *command_args
                         )
-                
+
                 # Generate a diff report
                 if diff and (filepath in filepaths_xml_en):
                     # Run diff report
@@ -773,7 +844,7 @@ def batch_apply(ctx, targetlang):
             if not xmlpath.exists():
                 print('=> skipped: XML not found')
                 continue
-            
+
             runproc(
                 f'Applying translation: {targetpath}',
                 reportfile, configpath,
