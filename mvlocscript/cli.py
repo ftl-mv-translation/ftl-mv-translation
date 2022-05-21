@@ -1,4 +1,4 @@
-from collections import defaultdict
+import logging
 import sys
 import os
 import click
@@ -6,12 +6,16 @@ import json5
 import subprocess
 from functools import reduce
 from pathlib import Path
-from mvlocscript.ftl import ftl_xpath_matchers, parse_ftlxml, write_ftlxml
+from mvlocscript.ftl import ftl_xpath_matchers, handle_id_relocations, handle_same_string_updates, parse_ftlxml, write_ftlxml
 from mvlocscript.xmltools import (
     XPathInclusionChecker, xpath, UniqueXPathGenerator, xmldiff, getsourceline
 )
 from mvlocscript.fstools import ensureparent, simulate_pythonioencoding_for_pyinstaller, glob_posix
 from mvlocscript.potools import parsekey, readpo, writepo, StringEntry
+
+logging.basicConfig()
+logging.getLogger().setLevel(logging.INFO)
+
 
 def get_copy_source_checker(config, templatename, xmlpath):
     if not templatename:
@@ -273,80 +277,23 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
     Example: mvloc update locale/data/blueprints.xml.append/en.po.old locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po --original-xml src-en/data/blueprints.xml.append --copy-source-template ko
     '''
 
-    def find_new_id_candidates(entry, dict_original_new):
-        """ Helper returning entries with an identical value,
-        and sort them by their proximity in the new file.
-        """
-        candidates = []
+    print('Reading files...')
+    
+    dict_oldoriginal, _, sourcelocation = readpo(oldoriginal)
+    dict_neworiginal, _, _ = readpo(neworiginal)
+    dict_target, _, _ = readpo(target)
 
-        for new_id, new_entry in dict_original_new.items():
-            if new_entry.value == entry.value:
-                candidates.append({
-                    'new_id': new_id,
-                    'entry': new_entry,
-                    'offset': abs(new_entry.lineno - entry.lineno),
-                })
-        return sorted(candidates, key=lambda c: c['offset'])
+    assert sourcelocation
 
-    dict_original_old, _, src_og_old = readpo(oldoriginal)
-    dict_original_new, _, _ = readpo(neworiginal)
+    print('Handling ID relocations...')
+    dict_target = handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_target)
+    print('Handling same-string updates...')
+    dict_target = handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_target)
 
-    id_changes = defaultdict(dict)
-    used_ids = []
+    entries_target = sorted(dict_target.values(), key=lambda entry: entry.lineno)
+    writepo(target, entries_target, sourcelocation)
 
-    for old_id, entry in dict_original_old.items():
-        if old_id not in dict_original_new.keys() or entry.value != dict_original_new[old_id].value:
-
-            print(f"{old_id}")
-            print("  ↓  ↓  ↓")
-
-            # Assume first choice was the good one, even if it's not always true,
-            # it should not matter in the end as the texts are the same anyway
-            candidates = find_new_id_candidates(entry, dict_original_new)
-            candidates = list(filter(lambda c: c['new_id'] not in used_ids, candidates))
-
-            if candidates:
-                id_changes[old_id] = candidates[0]
-                used_ids.append(candidates[0]['new_id'])
-                print(f"{candidates[0]['new_id']}")
-                print(f'Best match among {len(candidates)} possibilities.\n')
-            else:
-                id_changes[old_id] = None
-                print("No candidates entries found in the new file.\n")
-
-    # Applying ID changes to the translated PO file
-    dict_translated_old, _, src_tl_old = readpo(target)
-    dict_translated_new = dict_translated_old
-
-    for old_id, new_data in id_changes.items():
-
-        # Skipping already non-existent ids
-        if old_id not in dict_translated_old.keys():
-            continue
-
-        old_entry = dict_translated_old[old_id]
-        if new_data:
-            # Get the original as template and fill with the recovered entry
-            updated_entry = StringEntry(
-                new_data['entry'].key,
-                old_entry.value,
-                new_data['entry'].lineno,
-                False,
-                False
-            )
-            new_id = new_data['new_id']
-
-            dict_translated_new.update({new_id: updated_entry})
-            dict_translated_new.pop(old_id)
-        else:
-            # Mark not recovereable one as obselete
-            dict_translated_new[old_id]._replace(lineno=-1, obsolete=True)
-
-    updated_entries = sorted(dict_translated_new.values(),
-                             key=lambda entry: entry.lineno)
-    writepo(target, updated_entries, src_tl_old)
-
-    # Sanitizing file in post-process
+    # Pass to sanitize for the rest
     ctx.invoke(
         sanitize,
         target=target,
