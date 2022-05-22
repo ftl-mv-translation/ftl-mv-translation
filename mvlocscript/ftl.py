@@ -1,7 +1,8 @@
-import logging
+from loguru import logger
 from collections import defaultdict
 from lxml import etree
 from io import BytesIO, StringIO
+from mvlocscript.potools import StringEntry
 from mvlocscript.xmltools import AttributeMatcher, MatcherBase, MultipleAttributeMatcher
 
 logger = logging.getLogger(__name__)
@@ -202,7 +203,7 @@ def _shorten(obj):
 
 def _shorten_seq(seq):
     seq = tuple(seq)
-    ret = ', '.join(str(item) for item in seq[:3])
+    ret = ', '.join(f'"{item}"' for item in seq[:3])
     if len(seq) > 3:
         ret += f', ... <{len(seq) - 3}>'
     return f'({ret})'
@@ -214,43 +215,65 @@ def handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_oldtranslated
     for value, oldoriginal_keys, neworiginal_keys in possible_id_relocations:
         if len(neworiginal_keys) > len(oldoriginal_keys):
             logger.info(
-                f'relocation("{_shorten(value)}"):'
-                f' new {_shorten_seq(neworiginal_keys)} > old {_shorten_seq(oldoriginal_keys)}.'
-                ' Skipping due to possibility of entirely new entries.'
+                '"{value:<40}" SKIP, #new > #old'
+                f' {_shorten_seq(neworiginal_keys - oldoriginal_keys)}'
+                f' > {_shorten_seq(oldoriginal_keys - neworiginal_keys)}',
+                value=_shorten(value)
             )
             continue
 
-        possible_translations = set()
+        possible_translations: dict[str, list[StringEntry]] = defaultdict(list)
         for key in oldoriginal_keys:
             entry_oldtranslated = dict_oldtranslated.get(key, None)
-            if (entry_oldtranslated is not None) and (not entry_oldtranslated.obsolete):
-                possible_translations.add((entry_oldtranslated.value, entry_oldtranslated.fuzzy))
+            if entry_oldtranslated is not None:
+                possible_translations[entry_oldtranslated.value].append(entry_oldtranslated)
         
         if len(possible_translations) == 0:
             logger.warning(
-                f'relocation("{_shorten(value)}"): no translation exists.'
-                ' Skipping. Possible desync between the old-original and the target.'
+                '"{value:<40}" SKIP, no translation exists (possible desync).',
+                value=_shorten(value)
             )
             continue
         if len(possible_translations) > 1:
+            # Assumes no empty strings in obsolete entries because sanitize does that.
             logger.info(
-                f'relocation("{_shorten(value)}"): translation conflicts'
-                f' {_shorten_seq(_shorten(t) for t in possible_translations)}.'
-                ' Skipping due to inability to determine which translation is copied over.'
+                '"{value:<40}"'
+                + (
+                    ' SKIP, partially untranslated.'
+                    if '' in possible_translations else
+                    f' SKIP, translation conflicts. {_shorten_seq(_shorten(t) for t in possible_translations)}.'
+                ),
+                value=_shorten(value)
             )
             continue
+
+        new_value, matching_entries = next(iter(possible_translations.items()))
+        if new_value == '':
+            continue
+
+        if any(entry.fuzzy for entry in matching_entries):
+            fuzzy = True
+            fuzzy_comment = 'some translations are flagged fuzzy.'
+        elif all(entry.obsolete for entry in matching_entries):
+            fuzzy = True
+            fuzzy_comment = 'all relocated translations are obsolete entries.'
+        else:
+            fuzzy = False
+            fuzzy_comment = ''
+        
         logger.info(
-            f'relocation("{_shorten(value)}"):'
-            f' {_shorten_seq(oldoriginal_keys - neworiginal_keys)}'
-            f' -> {_shorten_seq(neworiginal_keys - oldoriginal_keys)}'
+            '"{value:<40}"'
+            + (f' FUZZY, {fuzzy_comment}' if fuzzy else '')
+            + f' {_shorten_seq(oldoriginal_keys - neworiginal_keys)}'
+            + f' -> {_shorten_seq(neworiginal_keys - oldoriginal_keys)}',
+            value=_shorten(value)
         )
 
-        value, fuzzy = next(iter(possible_translations))
         for key in (neworiginal_keys - oldoriginal_keys):
             dict_newtranslated[key] = dict_neworiginal[key]._replace(value=value, fuzzy=fuzzy)
         
         # Don't delete/obsolete (oldoriginal_keys - neworiginal_keys) as it may accidently remove translation
-        # that are already processed by another relocation. Sanitization should handle the useless entries anyway.
+        # that were already processed by another relocation. Sanitization should handle the useless entries anyway.
     
     return dict_newtranslated
 
@@ -259,13 +282,13 @@ def handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_oldtrans
 
     updated_keys = set(dict_oldoriginal) & set(dict_neworiginal)
     def is_same_string(key, entry_oldtranslated):
+        if key not in updated_keys:
+            return False
         if entry_oldtranslated.obsolete:
             logger.warning(
-                f'same-string-updates({key}):'
-                f' obsoleted in translation while valid in both versions of the original locale.'
+                f'{key}: SKIP, obsoleted in translation but valid in both versions of the original locale'
+                ' (possible desync).'
             )
-            return False
-        if key not in updated_keys:
             return False
         entry_oldoriginal = dict_oldoriginal[key]
         return entry_oldtranslated.value == entry_oldoriginal.value
@@ -281,8 +304,7 @@ def handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_oldtrans
                 )
             
                 logger.info(
-                    f'same-string-updates({key}):'
-                    f'{_shorten(entry_oldtranslated.value)} -> {_shorten(entry_neworiginal.value)}'
+                    f'{key}: "{_shorten(entry_oldtranslated.value)}" -> "{_shorten(entry_neworiginal.value)}"'
                 )
         else:
             # Copy otherwise

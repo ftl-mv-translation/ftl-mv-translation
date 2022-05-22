@@ -1,9 +1,9 @@
-import logging
 import sys
 import os
 import click
 import json5
 import subprocess
+from loguru import logger
 from functools import reduce
 from pathlib import Path
 from mvlocscript.ftl import ftl_xpath_matchers, handle_id_relocations, handle_same_string_updates, parse_ftlxml, write_ftlxml
@@ -13,9 +13,11 @@ from mvlocscript.xmltools import (
 from mvlocscript.fstools import ensureparent, simulate_pythonioencoding_for_pyinstaller, glob_posix
 from mvlocscript.potools import parsekey, readpo, writepo, StringEntry
 
-logging.basicConfig()
-logging.getLogger().setLevel(logging.INFO)
-
+logger.remove()
+logger.add(sys.stderr, format=(
+    '<level>{level: <8}</level> |'
+    ' <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>'
+))
 
 def get_copy_source_checker(config, templatename, xmlpath):
     if not templatename:
