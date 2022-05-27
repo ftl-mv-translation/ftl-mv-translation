@@ -57,17 +57,15 @@ Edit `mvloc.config.jsonc` file, then and follow the "Updating the English string
 
 ### Applying the translation
 
-1. Unzip the latest FTL: Multiverse into `src-en/` directory
-2. Run `mvloc batch-apply <langname>` -- Example: `mvloc batch-apply ko`
+1. Run `mvloc batch-apply <langname>` -- Example: `mvloc batch-apply ko`
 
 The command transforms XMLs in `src-en/` using translation files on `locale/`,
 then writes them out to `output/<langname>` directory.
 
 ### Bootstrapping
 
-1. Unzip the original FTL: Multiverse into `src-en/` directory
-2. Create `src-<langname>/` directory and place the translated XMLs there -- Example: `src-ko/`.
-3. Run `mvloc batch-generate --diff --clean <langname>`
+1. Create `src-<langname>/` directory and place the translated XMLs there -- Example: `src-ko/`.
+2. Run `mvloc batch-generate --diff --clean <langname>`
 
 The bootstrapping process tries to reverse the applying process: extracting the strings out of already translated
 XML files. This is useful when migrating from an ongoing translation project.
