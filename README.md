@@ -57,7 +57,7 @@ Edit `mvloc.config.jsonc` file, then and follow the "Updating the English string
 
 ### Applying the translation
 
-1. Run `mvloc batch-apply <langname>` -- Example: `mvloc batch-apply ko`
+Run `mvloc batch-apply <langname>` -- Example: `mvloc batch-apply ko`
 
 The command transforms XMLs in `src-en/` using translation files on `locale/`,
 then writes them out to `output/<langname>` directory.
