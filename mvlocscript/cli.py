@@ -289,13 +289,18 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
 
     print('Handling ID relocations...')
     dict_target = handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_target)
+    
     print('Handling same-string updates...')
     dict_target = handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_target)
-
+    
+    print('Sorting...')
     entries_target = sorted(dict_target.values(), key=lambda entry: entry.lineno)
+    
+    print('Writing...')
     writepo(target, entries_target, sourcelocation)
 
     # Pass to sanitize for the rest
+    print('Sanitizing...')
     ctx.invoke(
         sanitize,
         target=target,

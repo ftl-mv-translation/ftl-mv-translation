@@ -297,12 +297,11 @@ def handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_oldtrans
         if is_same_string(key, entry_oldtranslated):
             # Perform same-string update
             entry_neworiginal = dict_neworiginal[key]
+            dict_newtranslated[key] = entry_oldtranslated._replace(
+                value=entry_neworiginal.value,
+                fuzzy=entry_oldtranslated.fuzzy or entry_neworiginal.fuzzy
+            )
             if entry_oldtranslated.value != entry_neworiginal.value:
-                dict_newtranslated[key] = entry_oldtranslated._replace(
-                    value=entry_neworiginal.value,
-                    fuzzy=entry_oldtranslated.fuzzy or entry_neworiginal.fuzzy
-                )
-            
                 logger.info(
                     f'{key}: "{_shorten(entry_oldtranslated.value)}" -> "{_shorten(entry_neworiginal.value)}"'
                 )
