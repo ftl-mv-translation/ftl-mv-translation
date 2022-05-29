@@ -206,7 +206,7 @@ def _shorten_seq(seq):
         ret += f', ... <{len(seq) - 3}>'
     return f'({ret})'
 
-def handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_oldtranslated):
+def handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_oldtranslated, aggressive):
     possible_id_relocations = _group_id_relocations_by_value(dict_oldoriginal, dict_neworiginal)
     dict_newtranslated = dict(dict_oldtranslated)
 
@@ -221,7 +221,7 @@ def handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_oldtranslated
             continue
 
         possible_translations: dict[str, list[StringEntry]] = defaultdict(list)
-        for key in oldoriginal_keys:
+        for key in ((oldoriginal_keys - neworiginal_keys) if aggressive else oldoriginal_keys):
             entry_oldtranslated = dict_oldtranslated.get(key, None)
             if entry_oldtranslated is not None:
                 possible_translations[entry_oldtranslated.value].append(entry_oldtranslated)
@@ -232,46 +232,80 @@ def handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_oldtranslated
                 value=_shorten(value)
             )
             continue
+
+        # Used for lineno matching strategy (the last resort)
+        use_lineno_match_strategy = False
+        lineno_to_oldtranslated = None
+        
         if len(possible_translations) > 1:
-            # Assumes no empty strings in obsolete entries because sanitize does that.
+            # This is mostly the case we're facing an ambiguity.
+            # There's one last escape pod: we may be able to match 1:1 if lineno matches exactly between moved entries.
+            # Of course this should be the last resort, only allowed for aggressive mode.
+            if aggressive:
+                # Note: if elements happens to share lineno,
+                # this would make len(lineno_to_oldtranslated) < len(neworiginal_keys - oldoriginal_keys)
+                # so it will automatically stop lineno matching strategy
+                lineno_to_oldtranslated = {
+                    entry.lineno: entry
+                    for ptl in possible_translations.values()
+                    for entry in ptl
+                    if not entry.obsolete
+                }
+                use_lineno_match_strategy = (
+                    sorted(list(lineno_to_oldtranslated))
+                    == sorted(dict_neworiginal[key].lineno for key in (neworiginal_keys - oldoriginal_keys))
+                )
+
+            if not use_lineno_match_strategy:
+                # Assumes no empty strings in obsolete entries because sanitize does that.
+                logger.info(
+                    '"{value:<40}"'
+                    + (
+                        ' SKIP, partially untranslated.'
+                        if '' in possible_translations else
+                        f' SKIP, translation conflicts. {_shorten_seq(_shorten(t) for t in possible_translations)}.'
+                    ),
+                    value=_shorten(value)
+                )
+                continue
+
+        if not use_lineno_match_strategy:
+            new_value, matching_entries = next(iter(possible_translations.items()))
+            if new_value == '':
+                continue
+
+            if any(entry.fuzzy for entry in matching_entries):
+                fuzzy = True
+                fuzzy_comment = 'some translations are flagged fuzzy.'
+            elif all(entry.obsolete for entry in matching_entries):
+                fuzzy = True
+                fuzzy_comment = 'all relocated translations are obsolete entries.'
+            else:
+                fuzzy = False
+                fuzzy_comment = ''
+            
             logger.info(
                 '"{value:<40}"'
-                + (
-                    ' SKIP, partially untranslated.'
-                    if '' in possible_translations else
-                    f' SKIP, translation conflicts. {_shorten_seq(_shorten(t) for t in possible_translations)}.'
-                ),
+                + (f' FUZZY, {fuzzy_comment}' if fuzzy else '')
+                + f' {_shorten_seq(oldoriginal_keys - neworiginal_keys)}'
+                + f' -> {_shorten_seq(neworiginal_keys - oldoriginal_keys)}',
                 value=_shorten(value)
             )
-            continue
 
-        new_value, matching_entries = next(iter(possible_translations.items()))
-        if new_value == '':
-            continue
-
-        if any(entry.fuzzy for entry in matching_entries):
-            fuzzy = True
-            fuzzy_comment = 'some translations are flagged fuzzy.'
-        elif all(entry.obsolete for entry in matching_entries):
-            fuzzy = True
-            fuzzy_comment = 'all relocated translations are obsolete entries.'
+            for key in (neworiginal_keys - oldoriginal_keys):
+                dict_newtranslated[key] = dict_neworiginal[key]._replace(value=new_value, fuzzy=fuzzy)
+            
+            # Don't delete/obsolete (oldoriginal_keys - neworiginal_keys) as it may accidently remove translation
+            # that were already processed by another relocation. Sanitization should handle the useless entries anyway.
         else:
-            fuzzy = False
-            fuzzy_comment = ''
-        
-        logger.info(
-            '"{value:<40}"'
-            + (f' FUZZY, {fuzzy_comment}' if fuzzy else '')
-            + f' {_shorten_seq(oldoriginal_keys - neworiginal_keys)}'
-            + f' -> {_shorten_seq(neworiginal_keys - oldoriginal_keys)}',
-            value=_shorten(value)
-        )
-
-        for key in (neworiginal_keys - oldoriginal_keys):
-            dict_newtranslated[key] = dict_neworiginal[key]._replace(value=new_value, fuzzy=fuzzy)
-        
-        # Don't delete/obsolete (oldoriginal_keys - neworiginal_keys) as it may accidently remove translation
-        # that were already processed by another relocation. Sanitization should handle the useless entries anyway.
+            logger.info('"{value:<40}" AGGRESSIVE, using lineno-matching strategy.', value=_shorten(value))
+            # Use 1:1 matching lineno (this is checked above) to recover strings
+            for key in (neworiginal_keys - oldoriginal_keys):
+                entry_neworiginal = dict_neworiginal[key]
+                entry_oldtranslated = lineno_to_oldtranslated[entry_neworiginal.lineno]
+                new_value = entry_oldtranslated.value
+                fuzzy = entry_oldtranslated.fuzzy
+                dict_newtranslated[key] = entry_neworiginal._replace(value=new_value, fuzzy=fuzzy)
     
     return dict_newtranslated
 

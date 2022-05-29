@@ -262,12 +262,20 @@ def sanitize(ctx, target, original_xml, original_po, copy_source_template_arg):
     '--copy-source-template', '-t', 'copy_source_template_arg', default='',
     help='A copySourceTemplate name to specify which entries are copied from the original locale.'
 )
+@click.option(
+    '--aggressive', '-a', is_flag=True, default=False,
+    help='Use a more aggressive strategy for ID relocation.'
+)
 @click.pass_context
-def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_template_arg):
+def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_template_arg, aggressive):
     '''
     Perform 3-way merging on a translated .po file to apply changes from the original locale. In specific,
 
     * ID relocation are detected and applied.
+
+    * --aggressive tries more ID relocation by narrowing checks for ambiguous translation.
+    Without this option every possible translation for an original string is checked for candidates and ambiguity,
+    where specifying this option results in checking only entries that are potentially moved by ID relocation.
 
     * Updates to the same-strings are applied.
 
@@ -275,6 +283,9 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
     Usage notes:
 
     * Use this command to apply changes from an original (English) file to a translated file.
+
+    * Use --aggressive if there are no differences betweeen old and new except for changes in ID.
+    This option is best used when the source XML is unchanged but the ID generation logic has changed.
 
 
     Example: mvloc update locale/data/blueprints.xml.append/en.po.old locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po --original-xml src-en/data/blueprints.xml.append --copy-source-template ko
@@ -289,7 +300,7 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
     assert sourcelocation
 
     print('Handling ID relocations...')
-    dict_target = handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_target)
+    dict_target = handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_target, aggressive)
     
     print('Handling same-string updates...')
     dict_target = handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_target)
@@ -569,8 +580,12 @@ def runproc(desc, reportfile, configpath, *args):
     help='A copySourceTemplate name to specify which entries are copied from the original locale.'
          ' If unspecified, each translation file of language L is synced with the template whose name matches L.'
 )
+@click.option(
+    '--aggressive-update', '-a', is_flag=True, default=False,
+    help='Use a more aggressive strategy for ID relocation in the update mode.'
+)
 @click.pass_context
-def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_template_arg):
+def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_template_arg, aggressive_update):
     '''
     Batch operation for bootstrapping (for translation) and updating (for original).
     Assumes `src-en/` and `src-<TARGETLANG>/` directory to be present.
@@ -624,6 +639,9 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
 
     if update_mode and (targetlang != 'en'):
         raise RuntimeError('--update can only be used when TARGETLANG is "en".')
+
+    if aggressive_update and (not update_mode):
+        raise RuntimeError('--aggressive-update can only be used with --update.')
 
     configpath = ctx.obj['configpath']
     config = ctx.obj['config']
@@ -702,6 +720,8 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
                         if update_mode and Path(en_old_locale).exists():
                             command_title = 'Updating locale: %s'
                             command_args = ['update', en_old_locale, en_locale, command_target]
+                            if aggressive_update:
+                                command_args.append('-a')
                             assert targetlang == 'en'
                         else:
                             command_title = 'Sanitizing locale: %s'
