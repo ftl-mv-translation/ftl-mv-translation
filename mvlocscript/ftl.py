@@ -268,7 +268,7 @@ def handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_oldtranslated
         )
 
         for key in (neworiginal_keys - oldoriginal_keys):
-            dict_newtranslated[key] = dict_neworiginal[key]._replace(value=value, fuzzy=fuzzy)
+            dict_newtranslated[key] = dict_neworiginal[key]._replace(value=new_value, fuzzy=fuzzy)
         
         # Don't delete/obsolete (oldoriginal_keys - neworiginal_keys) as it may accidently remove translation
         # that were already processed by another relocation. Sanitization should handle the useless entries anyway.
