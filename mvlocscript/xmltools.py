@@ -96,6 +96,130 @@ class AttributeMatcher(MatcherBase):
         attrval = element.get(self._attribute)
         return self._cache[(tagname, attrval)] == 1
 
+def _get_multiple_values_from_dict(dictionary, keys):
+    return tuple(dictionary.get(key, None) for key in keys)
+
+class MultipleAttributeMatcher(MatcherBase):
+    '''Match specific attributes for identification'''
+
+    _UNIQUE_FROM_ROOT = 2
+    _UNIQUE_FROM_PARENT = 1
+    _UNIQUE_NONE = 0
+
+    def __init__(self, attributes, attribute_selection='exhaustive'):
+        '''
+        @attribute_selection can be one of:
+            'exhaustive': use every possible combinations for attribute selection
+            'prioritized': use attribute only if all other preceding attributes are used as well.
+        '''
+        self._attributes = attributes
+        self._elementscache = []
+        self._resultcache = {} # element -> (segment, UNIQUE_*)
+        if attribute_selection not in ('exhaustive', 'prioritized'):
+            raise RuntimeError(f'Unknown attribute_selection: {attribute_selection}')
+        self._attribute_selection_exhaustive = (attribute_selection == 'exhaustive')
+
+    def prepare(self, tree):
+        condition_expr = ' or '.join(f'@{attribute}' for attribute in self._attributes)
+        self._elementscache = tree.xpath(f'//*[{condition_expr}]')
+
+    def _candidates(self, element):
+        attrvals = _get_multiple_values_from_dict(element, self._attributes)
+        num_attributes = len(self._attributes)
+        
+        if self._attribute_selection_exhaustive:
+            # 000001, 000010, 000011, ..., 111110, 111111
+            # Start from 1 because we don't want condition-less rewrites to be considered
+            check_targets = list(range(1, 1 << num_attributes))
+            # Check in order of least popcounts
+            check_targets = sorted(check_targets, key=lambda bits: bin(bits).count('1'))
+        else:
+            # 000001, 000011, 000111, ..., 011111, 111111
+            check_targets = list(
+                (1 << num_selected_attributes) - 1
+                for num_selected_attributes in range(1, num_attributes + 1)
+            )
+
+        for i in check_targets:
+            candidate = {}
+            for j in range(num_attributes):
+                if i & (1 << j):
+                    candidate[j] = attrvals[j]
+            
+            # Can't use '"' in XPath, at least in an easy and representative way
+            if all(((attrval is None) or ('"' not in attrval)) for attrval in candidate.values()):
+                yield candidate
+
+    def _count_matches(self, elements, tagname, candidate):
+        ret = 0
+        for other_element in elements:
+            if _get_tag_as_written(other_element) != tagname:
+                continue
+            
+            attrvals = _get_multiple_values_from_dict(other_element, self._attributes)
+            if all(attrvals[idx] == value for idx, value in candidate.items()):
+                ret += 1
+        return ret
+
+    def _evaluate_candidate(self, element, candidate):
+        tagname = _get_tag_as_written(element)
+        fromroot = self._count_matches(self._elementscache, tagname, candidate)
+        assert fromroot > 0
+        if fromroot == 1:
+            return MultipleAttributeMatcher._UNIQUE_FROM_ROOT
+        
+        parent = element.getparent()
+        if parent is None:
+            # This is unlikely because it means the element is the root.
+            # Anyway technically speaking it's unique in this case
+            return MultipleAttributeMatcher._UNIQUE_FROM_PARENT
+        
+        fromparent = self._count_matches(set(parent) & set(self._elementscache), tagname, candidate)
+        assert fromparent > 0
+        if fromparent == 1:
+            return MultipleAttributeMatcher._UNIQUE_FROM_PARENT
+        
+        return MultipleAttributeMatcher._UNIQUE_NONE
+
+    def _candidate_to_segment(self, tagname, candidate):
+        condition_expr = ' and '.join(
+            f'not(@{self._attributes[attridx]})' if attrval is None else f'@{self._attributes[attridx]}="{attrval}"'
+            for attridx, attrval in candidate.items()
+        )
+        return f'{tagname}[{condition_expr}]'
+
+    def getsegment(self, tree, element):
+        if element not in self._elementscache:
+            return None
+
+        # In case if it's already computed
+        result = self._resultcache.get(element, None)
+        if result is not None:
+            return result[0]
+        
+        best_candidate = None
+        best_candidate_uniquity = -1
+        for candidate in self._candidates(element):
+            uniquity = self._evaluate_candidate(element, candidate)
+            if uniquity > best_candidate_uniquity:
+                best_candidate = candidate
+                best_candidate_uniquity = uniquity
+                if uniquity == MultipleAttributeMatcher._UNIQUE_FROM_ROOT:
+                    break
+        
+        assert best_candidate is not None
+        segment = self._candidate_to_segment(_get_tag_as_written(element), best_candidate)
+        self._resultcache[element] = (segment, best_candidate_uniquity)
+        return segment
+    
+    def isuniquefromroot(self, tree, element, segment):
+        _, uniquity = self._resultcache[element]
+        return uniquity >= MultipleAttributeMatcher._UNIQUE_FROM_ROOT
+    
+    def isuniquefromparent(self, tree, element, segment):
+        _, uniquity = self._resultcache[element]
+        return uniquity >= MultipleAttributeMatcher._UNIQUE_FROM_PARENT
+
 class UniqueXPathGenerator:
     '''
     Similar to lxml.etree.ElementTree.getpath(), but
