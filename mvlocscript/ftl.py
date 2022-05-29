@@ -5,8 +5,6 @@ from io import BytesIO, StringIO
 from mvlocscript.potools import StringEntry
 from mvlocscript.xmltools import AttributeMatcher, MatcherBase, MultipleAttributeMatcher
 
-logger = logging.getLogger(__name__)
-
 ### Reading and writing FTL XMLs
 
 _XSLT_ADD_NAMESPACE_TEMPLATE = '''
