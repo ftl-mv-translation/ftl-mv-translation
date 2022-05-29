@@ -1,3 +1,4 @@
+from collections import defaultdict
 import sys
 import os
 import click
@@ -778,6 +779,51 @@ def batch_apply(ctx, targetlang):
                 reportfile, configpath,
                 'apply', str(xmlpath), str(localepath_en), str(localepath_targetlang), str(outputpath)
             )
+
+@main.command()
+@click.argument('targetlang')
+@click.pass_context
+def stats(ctx, targetlang):
+    '''
+    Show brief stats for the number of translated strings.
+
+    Example: mvloc stats ko
+    '''
+
+    locale_en = [
+        Path(path).parent.as_posix()
+        for path in glob_posix('**/en.po', root_dir='locale')
+    ]
+    locale_targetlang = [
+        Path(path).parent.as_posix()
+        for path in glob_posix(f'**/{targetlang}.po', root_dir='locale')
+    ]
+
+    print(f'Number of files: {len(locale_targetlang)} / {len(locale_en)}')
+    if set(locale_en) != set(locale_targetlang):
+        print(f'Missing: {", ".join(set(locale_en) - set(locale_targetlang))}')
+    print()
+
+    stats = defaultdict(int) # key: (obsolete, empty, fuzzy)
+
+    for path in locale_targetlang:
+        dict_entries, _, _ = readpo(f'locale/{path}/{targetlang}.po')
+        for entry in dict_entries.values():
+            stats[(entry.obsolete, entry.value == '', entry.fuzzy)] += 1
+    
+    total = sum(stats.values())
+    print('*' + '-' * 42 + '*')
+    for i in range(8):
+        columnname = ('Obsolete' if i & 4 else '') + ('Empty' if i & 2 else '') + ('Fuzzy' if i & 1 else '')
+        if columnname == '': columnname = 'Translated'
+        
+        count = stats[(bool(i & 4), bool(i & 2), bool(i & 1))]
+        print('| {:>20} | {:<7} ({:5.1f} %) |'.format(columnname, count, count / total * 100))
+    print('*' + '-' * 42 + '*')
+    print('| {:>20} | {:<7} ({:5.1f} %) |'.format("Total", total, 100))
+    print('*' + '-' * 42 + '*')
+    
+
 
 if __name__ == '__main__':
     main()
