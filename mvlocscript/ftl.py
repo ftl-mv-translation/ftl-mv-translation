@@ -1,7 +1,7 @@
 from collections import defaultdict
 from lxml import etree
 from io import BytesIO, StringIO
-from mvlocscript.xmltools import AttributeMatcher, MatcherBase
+from mvlocscript.xmltools import AttributeMatcher, MatcherBase, MultipleAttributeMatcher
 
 ### Reading and writing FTL XMLs
 
@@ -113,10 +113,13 @@ class FtlShipIconMatcher(MatcherBase):
     
     # In most cases we're safe to short-circuit isuniquefromparent() to True, but lets leave it for XPath validation.
 
-class FtlEventChoiceReqAttributeMatcher(MatcherBase):
+class FtlEventChoiceMatcher(MatcherBase):
     '''events_*.xml: match <choice req="...">'''
     def __init__(self):
-        self._inner = AttributeMatcher('req')
+        self._inner = MultipleAttributeMatcher(['req', 'lvl'], 'prioritized')
+
+    def prepare(self, tree):
+        return self._inner.prepare(tree)
 
     def getsegment(self, tree, element):
         if element.tag != 'choice':
@@ -130,5 +133,35 @@ class FtlEventChoiceReqAttributeMatcher(MatcherBase):
     def isuniquefromparent(self, tree, element, segment):
         return self._inner.isuniquefromparent(tree, element, segment)
 
+class FtlCustomStoreMatcher(MatcherBase):
+    '''hyperspace.xml: match <customStore id="...">'''
+    def __init__(self):
+        self._inner = AttributeMatcher('id')
+
+    def prepare(self, tree):
+        return self._inner.prepare(tree)
+
+    def getsegment(self, tree, element):
+        if element.tag != 'customStore':
+            return None
+        return self._inner.getsegment(tree, element)
+    
+    def isuniquefromroot(self, tree, element, segment):
+        # Disable condensing path
+        return False
+    
+    def isuniquefromparent(self, tree, element, segment):
+        return self._inner.isuniquefromparent(tree, element, segment)
+
 def ftl_xpath_matchers():
-    return [AttributeMatcher('name'), FtlEventChoiceReqAttributeMatcher(), FtlShipIconMatcher()]
+    return [
+        # Most elements use @name for key.
+        # @auto_blueprint also serves as a complementary key for <ship> elements
+        MultipleAttributeMatcher(['name', 'auto_blueprint'], 'prioritized'),
+        # Use @req and @lvl for <choice> elements in events
+        FtlEventChoiceMatcher(),
+        # Use child <name> element as a key for <shipIcon> elements
+        FtlShipIconMatcher(),
+        # Use @id for <customStore> elements
+        FtlCustomStoreMatcher(),
+    ]
