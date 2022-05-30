@@ -117,25 +117,16 @@ class FtlShipIconMatcher(MatcherBase):
     
     # In most cases we're safe to short-circuit isuniquefromparent() to True, but lets leave it for XPath validation.
 
-class FtlEventChoiceMatcher(MatcherBase):
-    '''events_*.xml: match <choice req="...">'''
+class FtlEventChoiceMatcher(MultipleAttributeMatcher):
+    '''events_*.xml: match <choice req="..." [lvl="..."]>'''
     def __init__(self):
-        self._inner = MultipleAttributeMatcher(['req', 'lvl'], 'prioritized')
-
-    def prepare(self, tree):
-        return self._inner.prepare(tree)
+        super().__init__(['req', 'lvl'], 'prioritized', disable_condensing=True)
 
     def getsegment(self, tree, element):
         if element.tag != 'choice':
             return None
-        return self._inner.getsegment(tree, element)
+        return super().getsegment(tree, element)
     
-    def isuniquefromroot(self, tree, element, segment):
-        # Disable condensing path
-        return False
-    
-    def isuniquefromparent(self, tree, element, segment):
-        return self._inner.isuniquefromparent(tree, element, segment)
 
 class FtlCustomStoreMatcher(MatcherBase):
     '''hyperspace.xml: match <customStore id="...">'''

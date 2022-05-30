@@ -106,7 +106,7 @@ class MultipleAttributeMatcher(MatcherBase):
     _UNIQUE_FROM_PARENT = 1
     _UNIQUE_NONE = 0
 
-    def __init__(self, attributes, attribute_selection='exhaustive'):
+    def __init__(self, attributes, attribute_selection='exhaustive', disable_condensing=False):
         '''
         @attribute_selection can be one of:
             'exhaustive': use every possible combinations for attribute selection
@@ -118,6 +118,7 @@ class MultipleAttributeMatcher(MatcherBase):
         if attribute_selection not in ('exhaustive', 'prioritized'):
             raise RuntimeError(f'Unknown attribute_selection: {attribute_selection}')
         self._attribute_selection_exhaustive = (attribute_selection == 'exhaustive')
+        self._disable_condensing = disable_condensing
 
     def prepare(self, tree):
         condition_expr = ' or '.join(f'@{attribute}' for attribute in self._attributes)
@@ -163,10 +164,11 @@ class MultipleAttributeMatcher(MatcherBase):
 
     def _evaluate_candidate(self, element, candidate):
         tagname = _get_tag_as_written(element)
-        fromroot = self._count_matches(self._elementscache, tagname, candidate)
-        assert fromroot > 0
-        if fromroot == 1:
-            return MultipleAttributeMatcher._UNIQUE_FROM_ROOT
+        if not self._disable_condensing:
+            fromroot = self._count_matches(self._elementscache, tagname, candidate)
+            assert fromroot > 0
+            if fromroot == 1:
+                return MultipleAttributeMatcher._UNIQUE_FROM_ROOT
         
         parent = element.getparent()
         if parent is None:
