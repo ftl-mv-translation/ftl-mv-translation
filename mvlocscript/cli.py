@@ -263,32 +263,59 @@ def sanitize(ctx, target, original_xml, original_po, copy_source_template_arg):
     help='A copySourceTemplate name to specify which entries are copied from the original locale.'
 )
 @click.option(
-    '--aggressive', '-a', is_flag=True, default=False,
-    help='Use a more aggressive strategy for ID relocation.'
+    '--id-relocation-strategy', '-i', default='gs', show_default=True,
+    help='An algorithm used for ID relocation.'
 )
 @click.pass_context
-def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_template_arg, aggressive):
+def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_template_arg, id_relocation_strategy):
     '''
     Perform 3-way merging on a translated .po file to apply changes from the original locale. In specific,
 
     * ID relocation are detected and applied.
 
-    * --aggressive tries more ID relocation by narrowing checks for ambiguous translation.
-    Without this option every possible translation for an original string is checked for candidates and ambiguity,
-    where specifying this option results in checking only entries that are potentially moved by ID relocation.
-
     * Updates to the same-strings are applied.
+
+    There are multiple number of available ID relocation strategies that can be choosed by `--id-relocation-strategy`:
+    `lld`, `gs`, `gsa`, and `el`.
+
+    * `lld` (least lineno difference): Match each old and new entries as long as their string are identical.
+    If there are multiple of such entries, use a translation whose lineno is closest to the changed lineno.
+    The matching is greedy.
+
+    * `gs` (group substitution): Match each old and new entries as long as their string are identical.
+    If there are multiple of such entries, check if:
+    
+    1) The translated strings are consistent, i.e. all target strings for the source string is identical.
+
+    2) There are no potential `new` entries, i.e. the number of new entries for that source string
+    is no more than that of old ones.
+    
+    If they are, use them. Otherwise, matching fails for those entries. 
+
+    * `gsa` (group substitution, aggressive): A variant of `gs`. It relieves the condition by not requiring
+    the consistency of translation among unchanged entries in the source. It only checks consistency only for entries
+    whose source strings are potentially relocated, i.e. changed or removed.
+
+    * `elm` (exact lineno matching): Match 1:1 from old to new entries in order of appearance. Fails if there are
+    difference in the number of entries between old and new, or their lineno differs.
 
 
     Usage notes:
 
     * Use this command to apply changes from an original (English) file to a translated file.
 
-    * Use --aggressive if there are no differences betweeen old and new except for changes in ID.
-    This option is best used when the source XML is unchanged but the ID generation logic has changed.
+    * ID relocation strategies
+    
+    - `gs` is the default and the most conservative strategy. It performs ID relocation only if it is likely there are
+    no ambiguity in translation. `gsa` is similar but might recover some more.
+
+    - `lld` is quirky in that it tries to match lineno in a greedy manner. It's the best strategy if the content is
+    inserted or deleted at the end of the file.
+
+    - `elm` is best used when the content did not change but there's a difference in ID generation.
 
 
-    Example: mvloc update locale/data/blueprints.xml.append/en.po.old locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po --original-xml src-en/data/blueprints.xml.append --copy-source-template ko
+    Example: mvloc update locale/data/blueprints.xml.append/en.po.old locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po --original-xml src-en/data/blueprints.xml.append --copy-source-template ko --id-relocation-strategy gsa
     '''
 
     print('Reading files...')
@@ -300,7 +327,7 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
     assert sourcelocation
 
     print('Handling ID relocations...')
-    dict_target = handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_target, aggressive)
+    dict_target = handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_target, id_relocation_strategy)
     
     print('Handling same-string updates...')
     dict_target = handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_target)
@@ -581,11 +608,11 @@ def runproc(desc, reportfile, configpath, *args):
          ' If unspecified, each translation file of language L is synced with the template whose name matches L.'
 )
 @click.option(
-    '--aggressive-update', '-a', is_flag=True, default=False,
-    help='Use a more aggressive strategy for ID relocation in the update mode.'
+    '--id-relocation-strategy', '-i', default='gs', show_default=True,
+    help='An algorithm used for ID relocation in update mode.'
 )
 @click.pass_context
-def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_template_arg, aggressive_update):
+def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_template_arg, id_relocation_strategy):
     '''
     Batch operation for bootstrapping (for translation) and updating (for original).
     Assumes `src-en/` and `src-<TARGETLANG>/` directory to be present.
@@ -639,9 +666,6 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
 
     if update_mode and (targetlang != 'en'):
         raise RuntimeError('--update can only be used when TARGETLANG is "en".')
-
-    if aggressive_update and (not update_mode):
-        raise RuntimeError('--aggressive-update can only be used with --update.')
 
     configpath = ctx.obj['configpath']
     config = ctx.obj['config']
@@ -719,9 +743,9 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
                     for command_target in command_targets:
                         if update_mode and Path(en_old_locale).exists():
                             command_title = 'Updating locale: %s'
-                            command_args = ['update', en_old_locale, en_locale, command_target]
-                            if aggressive_update:
-                                command_args.append('-a')
+                            command_args = [
+                                'update', en_old_locale, en_locale, command_target, '-i', id_relocation_strategy
+                            ]
                             assert targetlang == 'en'
                         else:
                             command_title = 'Sanitizing locale: %s'
@@ -858,6 +882,10 @@ def stats(ctx, targetlang):
             stats[(entry.obsolete, entry.value == '', entry.fuzzy)] += 1
     
     total = sum(stats.values())
+    if total == 0:
+        print('No translation found.')
+        return
+    
     print('*' + '-' * 42 + '*')
     for i in range(8):
         columnname = ('Obsolete' if i & 4 else '') + ('Empty' if i & 2 else '') + ('Fuzzy' if i & 1 else '')
