@@ -610,7 +610,7 @@ def runproc(desc, reportfile, configpath, *args):
 )
 @click.option(
     '--id-relocation-strategy', '-i', default='gs', show_default=True,
-    help='An algorithm used for ID relocation in update mode.'
+    help='An algorithm used for ID relocation in update mode. See help for `update` command for more information.'
 )
 @click.pass_context
 def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_template_arg, id_relocation_strategy):
