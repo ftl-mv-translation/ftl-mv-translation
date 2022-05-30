@@ -287,7 +287,7 @@ class IdRelocGroupSubstitution(IdRelocStrategyBase):
                 fuzzy = 'all relocated translations are from obsolete entries.'
 
             self._log_success(value, oldoriginal_unique_keys, neworiginal_unique_keys, fuzzy)
-            relocation_history.append((oldoriginal_keys, neworiginal_keys, value, fuzzy is not None))
+            relocation_history.append((oldoriginal_unique_keys, neworiginal_unique_keys, value, fuzzy is not None))
         
         # Apply changes
         dict_unmoved = dict(dict_oldtranslated)
