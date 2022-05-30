@@ -1,9 +1,7 @@
 import polib
-import logging
+from loguru import logger
 from collections import namedtuple
 from collections.abc import Iterable
-
-logger = logging.getLogger(__name__)
 
 # mvloc uses a strict subset of .po format where each entry has following constraints:
 #
