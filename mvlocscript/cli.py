@@ -285,16 +285,17 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
     * `gs` (group substitution): Match each old and new entries as long as their string are identical.
     If there are multiple of such entries, check if:
     
-    1) The translated strings are consistent, i.e. all target strings for the source string is identical.
+    1) The translated strings are consistent, i.e. ALL the translated strings whose source string
+    matches to that of the relocated entry are identical.
 
-    2) There are no potential `new` entries, i.e. the number of new entries for that source string
-    is no more than that of old ones.
+    2) There are no potential `new` entries, i.e. the number of entries whose source string
+    matches to that of the relocated entry is no more than that of the old ones.
     
-    If they are, use them. Otherwise, matching fails for those entries. 
+    If they are, use them. Otherwise, matching fails for those entries.
 
     * `gsa` (group substitution, aggressive): A variant of `gs`. It relieves the condition by not requiring
-    the consistency of translation among unchanged entries in the source. It only checks consistency only for entries
-    whose source strings are potentially relocated, i.e. changed or removed.
+    the consistency of translation among the unchanged entries in the source. It only checks consistency for translation
+    of the old entries that are potentially relocated, i.e. changed or removed.
 
     * `elm` (exact lineno matching): Match 1:1 from old to new entries in order of appearance. Fails if there are
     difference in the number of entries between old and new, or their lineno differs.
