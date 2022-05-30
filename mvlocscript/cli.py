@@ -307,13 +307,13 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
 
     * ID relocation strategies
     
-    - `gs` is the default and the most conservative strategy. It performs ID relocation only if it is likely there are
-    no ambiguity in translation. `gsa` is similar but might recover some more.
+    - `gs` is the default and the most conservative strategy. It performs each relocation only if it is likely there are
+    no ambiguity in translation. `gsa` is similar but might recover some more by narrowing the definition of ambiguity.
 
     - `lld` is quirky in that it tries to match lineno in a greedy manner. It's the best strategy if the content is
     inserted or deleted at the end of the file.
 
-    - `elm` is best used when the content did not change but there's a difference in ID generation.
+    - `elm` is best used when the content did not change but there's a difference in ID generation algorithm.
 
 
     Example: mvloc update locale/data/blueprints.xml.append/en.po.old locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po --original-xml src-en/data/blueprints.xml.append --copy-source-template ko --id-relocation-strategy gsa
