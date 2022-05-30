@@ -258,7 +258,7 @@ class IdRelocGroupSubstitution(IdRelocStrategyBase):
             if len(neworiginal_keys) > len(oldoriginal_keys):
                 self._log_skip(
                     value,
-                    f'#new > #old {_shorten_seq(neworiginal_unique_keys)} > {_shorten_seq(oldoriginal_unique_keys)}'
+                    f'#new > #old. {_shorten_seq(neworiginal_unique_keys)} > {_shorten_seq(oldoriginal_unique_keys)}'
                 )
                 continue
 
@@ -363,16 +363,6 @@ class IdRelocLeastLinenoDiff(IdRelocStrategyBase):
         return dict_unmoved
 
 class IdRelocExactLinenoMatch(IdRelocStrategyBase):
-    def _is_identical_except_keys(self, dict_oldoriginal, dict_neworiginal):
-        if len(dict_oldoriginal) != len(dict_neworiginal):
-            return False
-        return all(
-            entry_oldoriginal._replace(key='') == entry_neworiginal._replace(key='')
-            for entry_oldoriginal, entry_neworiginal in zip_longest(
-                dict_oldoriginal.values(), dict_neworiginal.values()
-            )
-        )
-
     def do(self, dict_oldoriginal, dict_neworiginal, dict_oldtranslated):
         # Check if everything is same except for keys
         if not (
@@ -385,18 +375,26 @@ class IdRelocExactLinenoMatch(IdRelocStrategyBase):
             )
         ):
             logger.warning('SKIP, elm strategy requires same content between old and new.')
-            
-        if not self._is_identical_except_keys(dict_oldoriginal, dict_neworiginal):
             return dict_oldtranslated
-
+            
+        dict_oldtranslated_copy = dict(dict_oldtranslated)
         dict_newtranslated = {}
         for entry_oldoriginal, entry_neworiginal in zip_longest(dict_oldoriginal.values(), dict_neworiginal.values()):
-            entry_oldtranslated = dict_oldtranslated.get(entry_oldoriginal.key, None)
+            entry_oldtranslated = dict_oldtranslated_copy.pop(entry_oldoriginal.key, None)
             if entry_oldtranslated is None:
                 logger.warning(f'{entry_oldoriginal.key} -> SKIP, has no translation, possible desync.')
                 continue
 
             dict_newtranslated[entry_neworiginal.key] = entry_oldtranslated._replace(key=entry_neworiginal.key)
+
+        # Recover remaining entries. Should be obsolete ones if there's no desync. 
+        for key, entry_oldtranslated in dict_oldtranslated_copy.items():
+            if key in dict_newtranslated:
+                continue
+            if not entry_oldtranslated.obsolete:
+                logger.warning(f'{key} -> SKIP, a residual entry is non-obsolete, possible desync.')
+                continue
+            dict_newtranslated[key] = entry_oldtranslated
         
         return dict_newtranslated
 
