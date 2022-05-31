@@ -17,7 +17,7 @@ For the lost and changed strings, Weblate provides tools to ease manual recovery
 Originally there were 21100 translated strings in 5.2.1. It reduced to 20300, which makes the total loss rate of 3.8%.
 This includes 430 lost strings and 370 changed strings.
 
-Note that there are some differences in the rate between update algorithms with estimated lost rates as follows:
+Note that there are some differences in the rate between update algorithms with estimated loss rates as follows:
 
 * Without `--update` (sanitization only): 5.4%
 * `--id-relocation-stragety gs`: 3.9%
