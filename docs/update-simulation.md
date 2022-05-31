@@ -1,6 +1,16 @@
+## Summary
+
+Tried a update simulation from 5.2.1 to 5.2.3 hotfix, using Korean 5.2.1 distribution.
+
+About 94.6% of the strings were preserved, 1.6% were automatically updated by the 3-way update algorithm, and 3.8% were lost/changed during update.
+
+For the lost and changed strings, Weblate provides tools to ease manual recovery.
+
 ## Test setup
 
-Updated Korean 5.2.1 to 5.2.3 hotfix, with `mvloc batch-generate --update --id-relocation-stragety gsa en`.
+1. Start with Korean 5.2.1 distribution.
+2. Generate both locales (English, Korean) via `mvloc batch-generate --clean <lang>` with `<lang>` being `en` and `ko`.
+3. Update them to 5.2.3 hotfix, with `mvloc batch-generate --update --id-relocation-stragety gsa en`.
 
 ## Total stats
 
