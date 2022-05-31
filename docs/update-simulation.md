@@ -31,13 +31,13 @@ From top to bottom it gets increased risk of translation being relocated to impr
 370 changed strings are automatically marked as fuzzy (aka "Needs Editing") in Weblate,
 and they can be searched by `state:needs-editing`.
 
-Each changed entry visually shows how the source changed:
+Each changed entry visually shows how the source is changed:
 
 ![](fuzzy_update_edits.png)
 
 ## Lost strings
 
-Lost strings that could not get recovered by ID relocation algorithm are stored in the translation memory,
+Lost strings that aren't recovered by 3-way update are stored in the translation memory,
 and can be recovered manually via Automatic suggestions tab:
 
 ![](automatic_suggestion.png)
