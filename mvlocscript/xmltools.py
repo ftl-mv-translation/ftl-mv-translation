@@ -242,7 +242,7 @@ class UniqueXPathGenerator:
     def getpath(self, element_or_attribute_or_attributeproxy):
         attrname = getattr(element_or_attribute_or_attributeproxy, 'attrname', None)
         if attrname:
-            return self.getpath(self._tree, element_or_attribute_or_attributeproxy.getparent()) + f'/@{attrname}'
+            return self.getpath(element_or_attribute_or_attributeproxy.getparent()) + f'/@{attrname}'
 
         element = element_or_attribute_or_attributeproxy
         path = self._tree.getpath(element)
