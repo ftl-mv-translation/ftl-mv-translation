@@ -17,7 +17,7 @@ Exceptions to following these steps:
 2. Click "Lock" to prevent further edits.
    > ### Why?
    > Weblate is quite bad in merging the changes. There was a case in one of the relatively small edits where a file
-   > was corrupted (desynced from English) by Weblate because it tried to merge simultaneous edits from Weblate
+   > was corrupted (desynced from English) by Weblate because it tried to merge simultaneous edits from the site
    > and the repository.
 3. Click "Maintenance" -> "Force synchronization" to commit the changes to Weblate's local repository.
    > #### Why?
