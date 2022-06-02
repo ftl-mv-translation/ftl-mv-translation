@@ -9,7 +9,21 @@ on:
 
 
 jobs:
+  purge_previous_packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Rclone
+        uses: AnimMouse/setup-rclone@v1
+        with:
+          rclone_config: ${{ secrets.RCLONE_CONFIG }}
+      
+      - name: Empty ftl-multiverse directory
+        run: |
+          rclone delete GoogleDrive:ftl-multiverse
+
   build:
+    needs: purge_previous_packages
+
     runs-on: ubuntu-latest
     container: python:3.10
     strategy:
@@ -36,7 +50,7 @@ jobs:
         mvloc batch-apply ${{ matrix.language }}
         mvloc package ${{ matrix.language }}
 
-    - name: Upload XML files
+    - name: Upload XML files as Artifact
       uses: actions/upload-artifact@v3
       with:
         name: xml-${{ matrix.language }}
@@ -44,9 +58,13 @@ jobs:
           output-${{ matrix.language }}/
           report.txt
 
-    - name: Upload the mod
-      uses: actions/upload-artifact@v3
+    - name: Setup Rclone
+      uses: AnimMouse/setup-rclone@v1
       with:
-        name: full-${{ matrix.language }}
-        path: |
-          packages/*
+        rclone_config: ${{ secrets.RCLONE_CONFIG }}
+
+    - name: Upload the mod to GDrive
+      run: |
+        rclone copy report.txt GoogleDrive:ftl-multiverse/batch-apply-report-${{ matrix.language }}.txt
+        rclone copy packages GoogleDrive:ftl-multiverse
+
