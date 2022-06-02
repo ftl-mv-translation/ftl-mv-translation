@@ -1,4 +1,4 @@
-name: nightly
+name: batch-apply
 
 on:
   schedule:
@@ -11,7 +11,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: python:3.10
     strategy:
       matrix:
         language: [ko, fr, de, zh_Hans]
@@ -20,33 +19,23 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+      
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install .
 
-    - name: Cache .cache directory (used for packaging)
-      uses: actions/cache@v3
-      with:
-        path: .cache
-        key: ${{ hashFiles('mvloc.config.jsonc') }}
-
-    - name: Build packages
+    - name: Run batch-apply
       run: |
         mvloc batch-apply ${{ matrix.language }}
-        mvloc package ${{ matrix.language }}
-
-    - name: Upload XML files
-      uses: actions/upload-artifact@v3
+    
+    - uses: actions/upload-artifact@v3
       with:
-        name: xml-${{ matrix.language }}
+        name: output-${{ matrix.language }}
         path: |
           output-${{ matrix.language }}/
           report.txt
-
-    - name: Upload the mod
-      uses: actions/upload-artifact@v3
-      with:
-        name: full-${{ matrix.language }}
-        path: |
-          packages/*
