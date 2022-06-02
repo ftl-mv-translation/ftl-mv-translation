@@ -1,13 +1,19 @@
-from collections import defaultdict
+import shutil
 import sys
 import os
-import click
-import json5
 import subprocess
-from loguru import logger
+import tempfile
+import click
+import zipfile
+import json5
+import requests
+from collections import defaultdict
 from functools import reduce
 from pathlib import Path
-from mvlocscript.ftl import apply_postprocess, ftl_xpath_matchers, handle_id_relocations, handle_same_string_updates, parse_ftlxml, write_ftlxml
+from loguru import logger
+from mvlocscript.ftl import (
+    apply_postprocess, ftl_xpath_matchers, handle_id_relocations, handle_same_string_updates, parse_ftlxml, write_ftlxml
+)
 from mvlocscript.xmltools import (
     XPathInclusionChecker, xpath, UniqueXPathGenerator, xmldiff, getsourceline
 )
@@ -901,6 +907,94 @@ def stats(ctx, targetlang):
     print('| {:>20} | {:<7} ({:5.1f} %) |'.format("Total", total, 100))
     print('*' + '-' * 42 + '*')
     
+@main.command()
+@click.argument('targetlang')
+@click.pass_context
+def package(ctx, targetlang):
+    '''
+    Package translated XMLs into a full mod.
+    Assumes "output-<TARGETLANG>/" and optionally "auxfiles-<TARGETLANG>/" directory to be present.
+    Creates "packages/FTL-Multiverse-<VERSION>-<TARGETLANG>+<GITCOMMITID>.<BUILDDATE>.zip" where,
+
+    * `<VERSION>` denotes the version of Multiverse as specified in configuration.
+    * if `git` command is available, `<GITCOMMITID>` denotes the git commitid. Otherwise it's `xxxxxxx`.
+    * `<BUILDDATE>` denotes the build date in UTC, using YYYYMMDD format.
+    
+    Example: mvloc package ko
+    '''
+
+    def get_gitcommitid():
+        try:
+            return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode().strip()
+        except:
+            print('WARNING: failed to fetch git commitid. Using xxxxxxx as replacement.')
+            return 'xxxxxxx'
+
+    def write_directories_into_zip(zipf, target_directories):
+        writelist = {}
+        for pathbase in target_directories:
+            pathbase = Path(pathbase)
+            writelist.update({
+                path: pathbase / path
+                for path in glob_posix('**', root_dir=pathbase)
+            })
+
+        for arcname, path in writelist.items():
+            zipf.write(path, arcname=arcname)
+
+    def download(url, dst):
+        try:
+            tmppath = Path(f'{dst}.downloading')
+            ensureparent(tmppath)
+
+            req = requests.get(url, stream=True)
+            with tmppath.open('wb') as f:
+                for chunk in req.iter_content(chunk_size=128):
+                    f.write(chunk)
+            
+            Path(dst).unlink(missing_ok=True)
+            tmppath.rename(dst)
+        except:
+            tmppath.unlink(missing_ok=True)
+            raise
+
+    config = ctx.obj['config']
+    url = config['packaging']['fullOriginal']
+    version = config['packaging']['version']
+
+    original_path = Path(f'.cache/{version}.ftl')
+    if not original_path.exists():
+        print(f'Downloading source to {original_path}...')
+        download(url, original_path)
+
+    # Extract files
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as extracted_pathbase:
+        print(f'Extracting source...')
+        with zipfile.ZipFile(original_path) as zipf:
+            zipf.extractall(path=extracted_pathbase)
+        
+        translated_path = Path(
+            f'packages/FTL-Multiverse-{version}-{targetlang}+{get_gitcommitid()}.ftl'
+        )
+        working_path = Path(f'{str(translated_path)}.working')
+
+        ensureparent(working_path)
+        try:
+            with zipfile.ZipFile(working_path, 'w') as zipf:
+                print(f'Assembling {translated_path}...')
+                
+                target_directories = [extracted_pathbase, f'output-{targetlang}']
+                auxfiles_pathbase = f'auxfiles-{targetlang}'
+                if Path(auxfiles_pathbase).is_dir():
+                    target_directories.append(auxfiles_pathbase)
+                
+                write_directories_into_zip(zipf, target_directories)
+            
+            translated_path.unlink(missing_ok=True)
+            working_path.rename(translated_path)
+        except:
+            working_path.unlink(missing_ok=True)
+            raise
 
 
 if __name__ == '__main__':
