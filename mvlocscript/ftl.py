@@ -449,10 +449,9 @@ class ApplyPostProcessHullNumbersFontSubstitution(ApplyPostProcessBase):
         for attribute in attributes:
             attribute.value = '0'
 
-
 def apply_postprocess(tree, path, postprocess):
     POSTPROCESS_FACTORIES = {
-        'hull-numbers-font-substitution': (lambda: ApplyPostProcessHullNumbersFontSubstitution()),
+        'substitute-font-for-hull-numbers': (lambda: ApplyPostProcessHullNumbersFontSubstitution()),
     }
     factory = POSTPROCESS_FACTORIES.get(postprocess, None)
     if factory is None:
