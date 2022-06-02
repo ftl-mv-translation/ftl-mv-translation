@@ -130,17 +130,26 @@
         "/metadata/description"
     ],
 
-    "copySourceTemplate": {
-        // Specifies which entries are 1:1-copied from English by default when syncing the English changes.
-        // Used for `--copy-source-template` option in various commands.
-        // Each entry whose name matches a language name is used as a default template in `batch-generate`.
+    "languageSpecifics": {
+        "ko": {
+            "copySourceTemplate": [
+                // Aka wont-translate.
+                // Specify which entries are 1:1-copied from English by default when syncing the English changes.
 
-        "ko": [
-            "//crewBlueprint/short",
-            "//droneBlueprint/short",
-            "//weaponBlueprint/short",
-            "//weaponBlueprint/tooltip",
-            "//crewMember"
-        ]
+                "//crewBlueprint/short",
+                "//droneBlueprint/short",
+                "//weaponBlueprint/short",
+                "//weaponBlueprint/tooltip",
+                "//crewMember",
+            ],
+            "applyPostprocesses": [
+                // Specify additional logics to transform each XML in the `apply` command. These are implemented on
+                // per-need basis. For the list of postprocessing, see apply_postprocess() in the code for more info.
+                
+                // Korean distribution doesn't include a type 3 font for displaying hull hit points.
+                // This patch makes it to use type 0 instead.
+                "hull-numbers-font-substitution",
+            ]
+        }
     }
 }

@@ -4,8 +4,7 @@ from loguru import logger
 from collections import defaultdict, namedtuple
 from lxml import etree
 from io import BytesIO, StringIO
-from mvlocscript.potools import StringEntry
-from mvlocscript.xmltools import AttributeMatcher, MatcherBase, MultipleAttributeMatcher
+from mvlocscript.xmltools import AttributeMatcher, MatcherBase, MultipleAttributeMatcher, xpath
 
 ### Reading and writing FTL XMLs
 
@@ -396,10 +395,10 @@ def handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_oldtranslated
         'lld': (lambda: IdRelocLeastLinenoDiff()),
         'elm': (lambda: IdRelocExactLinenoMatch()),
     }
-    stratfactory = STRATEGY_FACTORIES.get(id_relocation_strategy, None)
-    if stratfactory is None:
+    factory = STRATEGY_FACTORIES.get(id_relocation_strategy, None)
+    if factory is None:
         raise RuntimeError(f'Unknown strategy {id_relocation_strategy}')
-    return stratfactory().do(dict_oldoriginal, dict_neworiginal, dict_oldtranslated)
+    return factory().do(dict_oldoriginal, dict_neworiginal, dict_oldtranslated)
 
 def handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_oldtranslated):
     dict_newtranslated = {}
@@ -435,4 +434,27 @@ def handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_oldtrans
 
     return dict_newtranslated
 
+### Apply logics
 
+class ApplyPostProcessBase:
+    def do(self, tree, targetlang, path, postprocess):
+        raise NotImplementedError
+
+class ApplyPostProcessHullNumbersFontSubstitution(ApplyPostProcessBase):
+    '''Change /FTL/hullNumbers//@type to 0 for hull hit point numbers.'''
+    def do(self, tree, path):
+        if 'data/hyperspace.xml' not in path:
+            return
+        attributes = xpath(tree, '/FTL/hullNumbers//@type')
+        for attribute in attributes:
+            attribute.value = '0'
+
+
+def apply_postprocess(tree, path, postprocess):
+    POSTPROCESS_FACTORIES = {
+        'hull-numbers-font-substitution': (lambda: ApplyPostProcessHullNumbersFontSubstitution()),
+    }
+    factory = POSTPROCESS_FACTORIES.get(postprocess, None)
+    if factory is None:
+        raise RuntimeError(f'Unknown postprocess {postprocess}')
+    factory().do(tree, path)

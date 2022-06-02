@@ -7,7 +7,7 @@ import subprocess
 from loguru import logger
 from functools import reduce
 from pathlib import Path
-from mvlocscript.ftl import ftl_xpath_matchers, handle_id_relocations, handle_same_string_updates, parse_ftlxml, write_ftlxml
+from mvlocscript.ftl import apply_postprocess, ftl_xpath_matchers, handle_id_relocations, handle_same_string_updates, parse_ftlxml, write_ftlxml
 from mvlocscript.xmltools import (
     XPathInclusionChecker, xpath, UniqueXPathGenerator, xmldiff, getsourceline
 )
@@ -19,16 +19,6 @@ logger.add(sys.stderr, format=(
     '<level>{level: <8}</level> |'
     ' <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>'
 ))
-
-def get_copy_source_checker(config, templatename, xmlpath):
-    if not templatename:
-        return None
-    assert xmlpath
-
-    template = config.get('copySourceTemplate', {}).get(templatename, None)
-    if template is None:
-        raise RuntimeError(f'Unknown copySourceTemplate: {templatename}')
-    return XPathInclusionChecker(parse_ftlxml(xmlpath), template)
 
 @click.group()
 @click.option('--config', '-c', default='mvloc.config.jsonc', show_default=True, help='config file')
@@ -171,15 +161,17 @@ def generate(ctx, xml, output, prefix, location, prune_empty_strings, delete_ide
 @click.argument('target')
 @click.option(
     '--original-xml', '-x', default='',
-    help='Path to the XML for the original locale. Required if --copy-source-template is specified.'
+    help='Path to the XML for the original locale.'
+         ' Required if the config specifies copySourceTemplate for the target language.'
 )
 @click.option('--original-po', '-p', required=True, type=str, help='Path to the .po file for the original locale.')
 @click.option(
-    '--copy-source-template', '-t', 'copy_source_template_arg', default='',
-    help='A copySourceTemplate name to specify which entries are copied from the original locale.'
+    '--targetlang', '-t', default='',
+    help='The language of target.'
+         ' The copySourceTemplate configuration will be applied only when this option is specified.'
 )
 @click.pass_context
-def sanitize(ctx, target, original_xml, original_po, copy_source_template_arg):
+def sanitize(ctx, target, original_xml, original_po, targetlang):
     '''
     Sanitize a translated .po file for a new translation. In details,
 
@@ -188,8 +180,9 @@ def sanitize(ctx, target, original_xml, original_po, copy_source_template_arg):
 
     * Obsolete entries are deleted if the string is empty.
 
-    * By default new entries have an empty string. If `--copy-source-template` is specified, each new entry is copied
-    from its original counterpart as long as it matches to `copySourceTemplate` rules in config.
+    * By default new entries are set to an empty string. If `--targetlang` and `--original-xml` is specified, and
+    `copySourceTemplate` rule is specified for the target language, then each new entry is copied from its source
+    counterpart as long as it matches to the rule.
 
 
     Usage notes:
@@ -203,14 +196,22 @@ def sanitize(ctx, target, original_xml, original_po, copy_source_template_arg):
     * This command covers pretty much what `msgmerge` command does in the gettext package.
 
 
-    Example: mvloc sanitize locale/data/blueprints.xml.append/ko.po --original-xml src-en/data/blueprints.xml.append --original-po locale/data/blueprints.xml.append/en.po --copy-source-template ko
+    Example: mvloc sanitize locale/data/blueprints.xml.append/ko.po --original-xml src-en/data/blueprints.xml.append --original-po locale/data/blueprints.xml.append/en.po --targetlang ko
     '''
 
-    if copy_source_template_arg and not original_xml:
-        raise RuntimeError('--copy-source-template must be used with --original-xml')
+    def get_copy_source_checker(config, targetlang, xmlpath):
+        if not targetlang:
+            return None
+        template = config.get('languageSpecifics', {}).get(targetlang, {}).get('copySourceTemplate', [])
+        if not template:
+            return None
+
+        if not xmlpath:
+            raise RuntimeError('copySourceTemplate detected but --original-xml is not specified.')
+        return XPathInclusionChecker(parse_ftlxml(xmlpath), template)
 
     config = ctx.obj['config']
-    copy_source_checker = get_copy_source_checker(config, copy_source_template_arg, original_xml)
+    copy_source_checker = get_copy_source_checker(config, targetlang, original_xml)
 
     dict_original, _, sourcelocation = readpo(original_po)
     assert sourcelocation
@@ -256,18 +257,20 @@ def sanitize(ctx, target, original_xml, original_po, copy_source_template_arg):
 @click.argument('target')
 @click.option(
     '--new-original-xml', '-x', default='',
-    help='Path to the XML for the original locale. Required if --copy-source-template is specified.'
+    help='Path to the XML for the original locale.'
+         ' Required if the config specifies copySourceTemplate for the target language.'
 )
 @click.option(
-    '--copy-source-template', '-t', 'copy_source_template_arg', default='',
-    help='A copySourceTemplate name to specify which entries are copied from the original locale.'
+    '--targetlang', '-t', default='',
+    help='The language of target.'
+         ' The copySourceTemplate configuration will be applied only when this option is specified.'
 )
 @click.option(
     '--id-relocation-strategy', '-i', default='gs', show_default=True,
     help='An algorithm used for ID relocation.'
 )
 @click.pass_context
-def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_template_arg, id_relocation_strategy):
+def update(ctx, oldoriginal, neworiginal, target, new_original_xml, targetlang, id_relocation_strategy):
     '''
     Perform 3-way merging on a translated .po file to apply changes from the original locale. In specific,
 
@@ -316,7 +319,7 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
     - `elm` is best used when the content did not change but there's a difference in ID generation algorithm.
 
 
-    Example: mvloc update locale/data/blueprints.xml.append/en.po.old locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po --original-xml src-en/data/blueprints.xml.append --copy-source-template ko --id-relocation-strategy gsa
+    Example: mvloc update locale/data/blueprints.xml.append/en.po.old locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po --original-xml src-en/data/blueprints.xml.append --targetlang ko --id-relocation-strategy gsa
     '''
 
     print('Reading files...')
@@ -346,7 +349,7 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
         target=target,
         original_xml=new_original_xml,
         original_po=neworiginal,
-        copy_source_template_arg=copy_source_template_arg
+        targetlang=targetlang
     )
 
 
@@ -355,13 +358,24 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, copy_source_
 @click.argument('originalpo')
 @click.argument('translatedpo')
 @click.argument('outputxml')
+@click.option(
+    '--targetlang', '-t', default='',
+    help='The language of target.'
+         ' The applyPostprocesses configuration will be applied only when this option is specified.'
+)
 @click.pass_context
-def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
+def apply(ctx, inputxml, originalpo, translatedpo, outputxml, targetlang):
     '''
     Apply locale to XML, generating a translated XML file.
 
     Example: mvloc apply src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po output/data/blueprints.xml.append
     '''
+
+    if targetlang:
+        config = ctx.obj['config']
+        postprocesses = config.get('languageSpecifics', {}).get(targetlang, {}).get('applyPostprocesses', [])
+    else:
+        postprocesses = []
 
     print(f'Reading {inputxml}...')
     tree = parse_ftlxml(inputxml)
@@ -391,6 +405,9 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml):
                 setattr(entity, 'value', string_translated)
             else:
                 setattr(entity, 'text', string_translated)
+
+    for postprocess in postprocesses:
+        apply_postprocess(tree, Path(outputxml).as_posix(), postprocess)
 
     ensureparent(outputxml)
     write_ftlxml(outputxml, tree)
@@ -604,16 +621,11 @@ def runproc(desc, reportfile, configpath, *args):
     '--update', '-u', 'update_mode', is_flag=True, default=False, help='Run in update mode.'
 )
 @click.option(
-    '--copy-source-template', '-t', 'copy_source_template_arg', default='',
-    help='A copySourceTemplate name to specify which entries are copied from the original locale.'
-         ' If unspecified, each translation file of language L is synced with the template whose name matches L.'
-)
-@click.option(
     '--id-relocation-strategy', '-i', default='gs', show_default=True,
     help='An algorithm used for ID relocation in update mode. See help for `update` command for more information.'
 )
 @click.pass_context
-def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_template_arg, id_relocation_strategy):
+def batch_generate(ctx, targetlang, diff, clean, update_mode, id_relocation_strategy):
     '''
     Batch operation for bootstrapping (for translation) and updating (for original).
     Assumes `src-en/` and `src-<TARGETLANG>/` directory to be present.
@@ -671,14 +683,6 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
     configpath = ctx.obj['configpath']
     config = ctx.obj['config']
     filePatterns = config.get('filePatterns', [])
-    copySourceTemplate = config.get('copySourceTemplate', {})
-
-    def get_copy_source_template_name_for(lang):
-        if copy_source_template_arg:
-            return copy_source_template_arg
-        if lang in copySourceTemplate:
-            return lang
-        return None
 
     filepaths_xml_en = [
         path
@@ -753,18 +757,15 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, copy_source_templa
                             command_args = ['sanitize', command_target, '-p', en_locale]
 
                         # Both sanitize and update shares -x and -t usage
-                        copy_source_template_name = get_copy_source_template_name_for(Path(command_target).stem)
-                        if copy_source_template_name is None:
-                            pass
-                        elif filepath not in filepaths_xml_en:
+                        if filepath not in filepaths_xml_en:
                             if not en_xml_missing_warning_shown:
                                 print(
-                                    f'WARNING: {filepath}: en.po exists but XML file is missing from src-en/.'
+                                    f'WARNING: {filepath}: en.po exists but the XML file is missing from src-en/.'
                                     ' copySourceTemplate settings will NOT be applied.'
                                 )
                                 en_xml_missing_warning_shown = True
                         else:
-                            command_args += ['-x', f'src-en/{filepath}', '-t', copy_source_template_name]
+                            command_args += ['-x', f'src-en/{filepath}', '-t', Path(command_target).stem]
 
                         runproc(
                             command_title % command_target,
@@ -848,7 +849,8 @@ def batch_apply(ctx, targetlang):
             runproc(
                 f'Applying translation: {targetpath}',
                 reportfile, configpath,
-                'apply', str(xmlpath), str(localepath_en), str(localepath_targetlang), str(outputpath)
+                'apply', str(xmlpath), str(localepath_en), str(localepath_targetlang), str(outputpath),
+                '-t', targetlang
             )
 
 @main.command()
