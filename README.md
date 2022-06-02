@@ -1,10 +1,10 @@
 # FTL: Multiverse Translation Project
 
-## Link to the latest nightly translation (XML files)
+## Link to the latest nightly translation
 
-[![batch-apply](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml/badge.svg)](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
+[![nightly](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/nightly.yml/badge.svg)](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/nightly.yml)
 
-[(Requires to be logged into GitHub) Download from `Artifacts` section of the latest run.](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/batch-apply.yml)
+[(Requires to be logged into GitHub) Download from `Artifacts` section of the latest run.](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/nightly.yml)
 
 ## Running the script
 
