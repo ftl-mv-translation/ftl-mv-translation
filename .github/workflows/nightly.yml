@@ -1,0 +1,65 @@
+name: nightly
+
+on:
+  schedule:
+    # 00:00 UTC every day
+    - cron: '0 0 * * *' 
+  workflow_dispatch:
+    # Manual run
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: python:3.10
+    strategy:
+      matrix:
+        language: [ko, fr, de, zh_Hans]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install .
+
+    - name: Cache .cache directory (used for packaging)
+      uses: actions/cache@v3
+      with:
+        path: .cache
+        key: ${{ hashFiles('mvloc.config.jsonc') }}
+
+    - name: Build packages
+      run: |
+        mvloc batch-apply ${{ matrix.language }}
+        mvloc package ${{ matrix.language }}
+
+    - name: Upload XML files
+      uses: actions/upload-artifact@v3
+      with:
+        name: xml-${{ matrix.language }}
+        path: |
+          output-${{ matrix.language }}/
+          report.txt
+
+    - name: Check built package
+      id: package_check
+      run: >
+        python -c "import sys;
+        from pathlib import Path;
+        from mvlocscript.fstools import glob_posix;
+        zl = [Path(p) for p in glob_posix('*.ftl', root_dir='packages')];
+        sys.exit(1) if len(zl) != 1 else print(f'::set-output name=stem::{zl[0].stem}')"
+
+    - name: Unzip package (to prevent double-zip from Artifact upload)
+      run: |
+        unzip packages/${{ steps.package_check.outputs.stem }}.ftl -d packages-unzipped
+
+    - name: Upload the mod
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ steps.package_check.outputs.stem }}
+        path: |
+          packages-unzipped/**
