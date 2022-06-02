@@ -59,8 +59,17 @@ Edit `mvloc.config.jsonc` file, then and follow the "Updating the English string
 
 Run `mvloc batch-apply <langname>` -- Example: `mvloc batch-apply ko`
 
-The command transforms XMLs in `src-en/` using translation files on `locale/`,
+This command transforms XMLs in `src-en/` using translation files on `locale/`,
 then writes them out to `output-<langname>` directory.
+
+### Packaging the translation
+
+1. Follow the "Applying the translation" workflow first
+2. Run `mvloc package <langname>` -- Example: `mvloc package ko`
+
+This command automatically packages the translation. It downloads the English Multiverse, overwrites it with
+translated XMLs, (optionally overwrites it with contents in `auxfiles-<langname>/` if any), and zip it to create
+a package suitable for Slipstream Mod Manager.
 
 ### Bootstrapping
 
