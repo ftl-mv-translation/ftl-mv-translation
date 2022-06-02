@@ -437,7 +437,7 @@ def handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_oldtrans
 ### Apply logics
 
 class ApplyPostProcessBase:
-    def do(self, tree, targetlang, path, postprocess):
+    def do(self, tree, path):
         raise NotImplementedError
 
 class ApplyPostProcessHullNumbersFontSubstitution(ApplyPostProcessBase):
