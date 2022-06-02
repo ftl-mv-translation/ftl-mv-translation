@@ -368,7 +368,7 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml, targetlang):
     '''
     Apply locale to XML, generating a translated XML file.
 
-    Example: mvloc apply src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po output/data/blueprints.xml.append
+    Example: mvloc apply src-en/data/blueprints.xml.append locale/data/blueprints.xml.append/en.po locale/data/blueprints.xml.append/ko.po output-ko/data/blueprints.xml.append
     '''
 
     if targetlang:
@@ -803,7 +803,8 @@ def batch_generate(ctx, targetlang, diff, clean, update_mode, id_relocation_stra
 def batch_apply(ctx, targetlang):
     '''
     Batch operation for applying translation.
-    Assumes "src-en/" and "locale/" directory to be present. Updates result to "output/" directory and "report.txt".
+    Assumes "src-en/" and "locale/" directory to be present.
+    Updates result to "output-<TARGETLANG>/" directory and "report.txt".
 
     Example: mvloc batch-apply ko
     '''
@@ -825,7 +826,7 @@ def batch_apply(ctx, targetlang):
 
     xmlbasepath_en = Path('src-en')
     localebasepath = Path('locale')
-    outputbasepath = Path('output') / targetlang
+    outputbasepath = Path(f'output-{targetlang}')
 
     with open('report.txt', 'w', encoding='utf-8', newline='\n', buffering=1) as reportfile:
         for targetpath in locale_either:
