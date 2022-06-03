@@ -4,7 +4,7 @@ This doc is for the administrators of Weblate and this repository. Following the
 on Weblate when you're pushing changes from the repository. Some might seem overkill, but given the experience
 I can confindently say they are nonetheless necessity.
 
-Exceptions to following these steps:
+Exceptions:
 * If the changes don't involve `locale/` directory at all, you may freely push or merge PRs without problem.
   Weblate doesn't really care for them as long as it can rebase its local repo.
 * If you're not editing but creating only new files in `locale/`, it also doesn't matter because Weblate may pick
