@@ -1,10 +1,10 @@
 ## The drill for repo edits on `locale/` directory.
 
 This doc is for the administrators of Weblate and this repository. Following these steps will ensure there's no errors
-on Weblate when you're pushing changes from the repository. Some might seem overkill, but given the experience
-I can confindently say they are nonetheless necessity.
+on Weblate when you're pushing changes or merging PRs from the repository. Some might seem overkill, but given the
+experience I can confindently say they are nonetheless necessary.
 
-Exceptions:
+Exceptions to these steps:
 * If the changes don't involve `locale/` directory at all, you may freely push or merge PRs without problem.
   Weblate doesn't really care for them as long as it can rebase its local repo.
 * If you're not editing but creating only new files in `locale/`, it also doesn't matter because Weblate may pick
@@ -20,7 +20,7 @@ Exceptions:
    > was corrupted (desynced from English) by Weblate because it tried to merge simultaneous edits from the site
    > and the repository.
 3. Click "Maintenance" -> "Force synchronization" to commit the changes to Weblate's local repository.
-   > #### Why?
+   > ### Why?
    > The "Commit" button is not enough for this purpose. One of the issues in applying #23 was a merge conflict from
    > .po file headers, remaining in Weblate's internal memory but not in a pushed repo.
    > The Commit button did not push all the changes, but the Force synchronization button did.
