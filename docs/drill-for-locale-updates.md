@@ -31,7 +31,7 @@ Exceptions to these steps:
    **DO NOT UNLOCK** the repository yet.
 8. **IMPORTANT**: If your changes involve addition, deletion or renaming ID of entries, click "Maintenance" -> "Reset".
    That will make sure of Weblate to sync with the changes.
-   * Do not worry about things like Needs editing, suggestions and comments as they are be preserved even with Reset.
+   * Do not worry about things like suggestions and comments as they are preserved even on Reset.
    > ### Why?
    > #23 had a major problem for this. Weblate refused to chew ID changes of a handful number of components
    > for no apparent reasons, desyncing itself from what's actually in the .po files. Reset forces it to reparse
