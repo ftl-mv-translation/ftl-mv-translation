@@ -914,11 +914,10 @@ def package(ctx, targetlang):
     '''
     Package translated XMLs into a full mod.
     Assumes "output-<TARGETLANG>/" and optionally "auxfiles-<TARGETLANG>/" directory to be present.
-    Creates "packages/FTL-Multiverse-<VERSION>-<TARGETLANG>+<GITCOMMITID>.<BUILDDATE>.zip" where,
+    Creates "packages/FTL-Multiverse-<VERSION>-<TARGETLANG>+<GITCOMMITID>.zip" where,
 
     * `<VERSION>` denotes the version of Multiverse as specified in configuration.
-    * if `git` command is available, `<GITCOMMITID>` denotes the git commitid. Otherwise it's `xxxxxxx`.
-    * `<BUILDDATE>` denotes the build date in UTC, using YYYYMMDD format.
+    * If `git` command is available, `<GITCOMMITID>` denotes the git commitid. Otherwise it's `xxxxxxx`.
     
     Example: mvloc package ko
     '''
