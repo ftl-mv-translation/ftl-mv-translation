@@ -16,8 +16,8 @@ Exceptions to these steps:
 1. Go to the [Repository maintenance](https://weblate.hyperq.be/projects/ftl-multiverse/#repository) of the project.
 2. Click "Lock" to prevent further edits.
    > ### Why?
-   > Weblate is quite bad in merging the changes. There was a case in one of the relatively small edits where a file
-   > was corrupted (desynced from English) by Weblate because it tried to merge simultaneous edits from the site
+   > Weblate is quite bad at merging the changes. In one of the relatively smaller edits, a file was corrupted
+   > (desynced from English) by Weblate because it tried to merge simultaneous edits from the site
    > and the repository.
 3. Click "Maintenance" -> "Force synchronization" to commit the changes to Weblate's local repository.
    > ### Why?
@@ -44,5 +44,5 @@ Exceptions to these steps:
      If the latest activity was about a minute ago, it's safe to assume that the process is over.
    > ### Why?
    > If you press Reset and prematurely unlock the project, while it doesn't "desync" the content or repo, new edits happening
-   > meanwhile don't persist after reparse, leading to loss of translation if any.
+   > meanwhile don't persist after reparse, leading to a loss of translation.
 10. Hit "Unlock", finally. Announce that the job is done.
