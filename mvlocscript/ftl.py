@@ -80,7 +80,10 @@ def write_ftlxml(path, tree):
     result = etree.tostring(tree, encoding='utf-8', pretty_print=True)
 
     # Note that `xmlns:mod="http://dummy/mod"` part is added by parse_ftlxml().
-    result = result.replace(b'<FTL xmlns:mod="http://dummy/mod">', b'<FTL>')
+    result = result.replace(
+        f'<{tree.getroot().tag} xmlns:mod="http://dummy/mod">'.encode(encoding='utf-8'),
+        f'<{tree.getroot().tag}>'.encode(encoding='utf-8')
+    )
 
     with open(path, 'wb') as f:
         f.write(result)
