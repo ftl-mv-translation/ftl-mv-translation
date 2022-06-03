@@ -2,9 +2,10 @@
 
 ## Link to the latest nightly translation
 
-[![nightly](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/nightly.yml/badge.svg)](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/nightly.yml)
+Download from [HERE](https://drive.google.com/drive/folders/1N7I6_p7aFBGchcuSyw0b3_WvdBLFJUlZ?usp=sharing). (Updated every UTC 00:00)
 
-[(Requires to be logged into GitHub) Download from `Artifacts` section of the latest run.](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/nightly.yml)
+If you want only XML files, [follow this link](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/nightly.yml) and download from `Artifacts` section of the latest run. (Requires to be logged into GitHub)
+
 
 ## Running the script
 
