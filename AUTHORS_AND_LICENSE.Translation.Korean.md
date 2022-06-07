@@ -13,6 +13,10 @@ The Korean translation is provided by:
 * 생선왕머킹: (youtube: https://www.youtube.com/channel/UCJewtI9FxWLB2Qf1Tam83UQ/videos)
 * nedsociety (nedsociety _AT_ gmail _DOT_ com)
 * laniusb
+* 땡닢
+* 김총기의샷건교실
+* 히든트롤
+* BlueRain
 
 ... and 4 anonymous contributors.
 
