@@ -141,7 +141,7 @@ for path in glob('locale/data/autoBlueprints.xml.append/fr.po'):
     changed = False
 
     for k in list(dictt):
-        fuz = False
+        fuz = True
         idt = dictt[k]
 
         if idt.obsolete or idt.fuzzy or idt.value != "": #not gonna overwrite something already done 
@@ -164,6 +164,7 @@ for path in glob('locale/data/autoBlueprints.xml.append/fr.po'):
 
         if end is not None and start is not None: 
             ido_val = start + " " + end
+            fuz = False
             changed = True
 
         elif end is not None:
@@ -172,13 +173,15 @@ for path in glob('locale/data/autoBlueprints.xml.append/fr.po'):
                 ido_val = ido_val + " " + end
             else:
                 ido_val = end
-            fuz = True
+
             changed = True
 
         elif start is not None:
             ido_val = start + " " + ido_val
-            fuz = True
             changed = True
+            
+        else:
+            continue
         
 
         dictt[k] = idt._replace(value=ido_val)
