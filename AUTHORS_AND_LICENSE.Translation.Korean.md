@@ -17,6 +17,7 @@ The Korean translation is provided by:
 * 김총기의샷건교실
 * 히든트롤
 * BlueRain
+* 거기서그걸왜
 
 ... and 4 anonymous contributors.
 
