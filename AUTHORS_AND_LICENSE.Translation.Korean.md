@@ -18,6 +18,7 @@ The Korean translation is provided by:
 * 히든트롤
 * BlueRain
 * 거기서그걸왜
+* Jin sik park
 
 ... and 4 anonymous contributors.
 
