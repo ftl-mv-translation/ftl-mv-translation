@@ -20,8 +20,9 @@ The Korean translation is provided by:
 * 거기서그걸왜
 * Jin sik park
 * Elendi
+* 'Pataphy
 
-... and 4 anonymous contributors.
+... and 3 anonymous contributors.
 
 # License for FTL: Multiverse translation
 
