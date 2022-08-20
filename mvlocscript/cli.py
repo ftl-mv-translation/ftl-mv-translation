@@ -1,3 +1,5 @@
+from glob import glob
+import pickle
 import shutil
 import sys
 import os
@@ -14,6 +16,7 @@ from loguru import logger
 from mvlocscript.ftl import (
     apply_postprocess, ftl_xpath_matchers, handle_id_relocations, handle_same_string_updates, parse_ftlxml, write_ftlxml
 )
+from mvlocscript.update import TranslationMemory, generate_translation_memory
 from mvlocscript.xmltools import (
     XPathInclusionChecker, xpath, UniqueXPathGenerator, xmldiff, getsourceline
 )
@@ -272,7 +275,7 @@ def sanitize(ctx, target, original_xml, original_po, targetlang):
          ' The copySourceTemplate configuration will be applied only when this option is specified.'
 )
 @click.option(
-    '--id-relocation-strategy', '-i', default='gs', show_default=True,
+    '--id-relocation-strategy', '-i', default='',
     help='An algorithm used for ID relocation.'
 )
 @click.pass_context
@@ -336,8 +339,9 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, targetlang, 
 
     assert sourcelocation
 
-    print('Handling ID relocations...')
-    dict_target = handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_target, id_relocation_strategy)
+    if id_relocation_strategy:
+        print('Handling ID relocations...')
+        dict_target = handle_id_relocations(dict_oldoriginal, dict_neworiginal, dict_target, id_relocation_strategy)
     
     print('Handling same-string updates...')
     dict_target = handle_same_string_updates(dict_oldoriginal, dict_neworiginal, dict_target)
@@ -906,7 +910,7 @@ def stats(ctx, targetlang):
     print('*' + '-' * 42 + '*')
     print('| {:>20} | {:<7} ({:5.1f} %) |'.format("Total", total, 100))
     print('*' + '-' * 42 + '*')
-    
+
 @main.command()
 @click.argument('targetlang')
 @click.pass_context
@@ -958,19 +962,23 @@ def package(ctx, targetlang):
             raise
 
     config = ctx.obj['config']
-    url = config['packaging']['fullOriginal']
+    urls = config['packaging']['fullOriginal']
     version = config['packaging']['version']
 
-    original_path = Path(f'.cache/{version}.ftl')
-    if not original_path.exists():
-        print(f'Downloading source to {original_path}...')
-        download(url, original_path)
+    original_paths = []
+    for idx, url in enumerate(urls):
+        original_path = Path(f'.cache/{version}-file{idx}.ftl')
+        if not original_path.exists():
+            print(f'Downloading {url} to {original_path}...')
+            download(url, original_path)
+        original_paths.append(original_path)
 
     # Extract files
     with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as extracted_pathbase:
-        print(f'Extracting source...')
-        with zipfile.ZipFile(original_path) as zipf:
-            zipf.extractall(path=extracted_pathbase)
+        print('Extracting source...')
+        for original_path in original_paths:
+            with zipfile.ZipFile(original_path) as zipf:
+                zipf.extractall(path=extracted_pathbase)
         
         translated_path = Path(
             f'packages/FTL-Multiverse-{version}-{targetlang}+{get_gitcommitid()}.ftl'
@@ -996,5 +1004,153 @@ def package(ctx, targetlang):
             raise
 
 
+@main.command()
+@click.option(
+    '--first-pass', is_flag=True, default=False,
+    help='Perform the first pass of the major update.'
+)
+@click.option(
+    '--second-pass', is_flag=True, default=False,
+    help='Perform the second pass of the major update.'
+)
+@click.pass_context
+def major_update(ctx, first_pass, second_pass):
+    '''
+    Perform a major update.
+
+    `--first-pass` and `--second-pass` are mutually exclusive options. Each pass should be done separately, and each
+    result should be pushed onto Weblate separately to catch the difference created by the fuzzy string relocation.
+
+    Usage notes:
+    
+    * Updating with global relocation is a 9-step process:
+    
+    \b
+    1. Create a global translation memory from the old locale.
+    2. Bootstrap a new set of original (en.po.new).
+    3. Perform relocation on en.po. Do NOT update the string value if changed.
+    4. Perform relocation on other *.po files.
+    5. -- Push to repo, then update -> force sync from weblate --
+    6. Perform same-string update.
+    7. Sanitize.
+    8. Replace en.po.new to en.po, updating every changes.
+    9. -- Push to repo, then update -> force sync from weblate --
+
+    The `--first-pass` option handles 1-4 and the `--second-pass` handles 6-8 respectively.
+    The repo must be pushed twice, and each push must be visible to Weblate as a separate push.
+    This way Weblate can show which change happened for fuzzy matches.
+
+    Example: mvloc major-update --first-pass
+    '''
+
+    def relocate_strings(dict_neworiginal, dict_oldtranslated, tm: TranslationMemory, is_original):
+        dict_newtranslated = {}
+        for key, entry_neworiginal in dict_neworiginal.items():
+            match_result = tm.match(entry_neworiginal.value, key)
+            if match_result:
+                value_translated, fuzzy = match_result
+            else:
+                entry_oldtranslated = dict_oldtranslated.get(key, None)
+                if entry_oldtranslated:
+                    value_translated = entry_oldtranslated.value
+                    fuzzy = entry_oldtranslated.fuzzy
+                else:
+                    value_translated = entry_neworiginal.value if is_original else ''
+                    fuzzy = False
+            dict_newtranslated[key] = entry_neworiginal._replace(
+                value=value_translated,
+                fuzzy=fuzzy and (not is_original)
+            )
+        return dict_newtranslated
+
+    # -------------
+
+    if first_pass == second_pass:
+        raise RuntimeError('Must be call with exactly one of the --first_pass or --second-pass.')
+
+    configpath = ctx.obj['configpath']
+    config = ctx.obj['config']
+    filePatterns = config.get('filePatterns', [])
+
+    filepaths_xml = [
+        path
+        for file_pattern in filePatterns
+        for path in glob_posix(file_pattern, root_dir='src-en')
+    ]
+    
+    list_of_languages = set(Path(path).stem for path in glob_posix('locale/**/*.po'))
+
+    with open('report.txt', 'w', encoding='utf-8', newline='\n', buffering=1) as reportfile:
+        if first_pass:
+            # Cleanup removed files if any
+            for filepath_po in glob_posix('**/*.po', root_dir='locale'):
+                if Path(filepath_po).parent.as_posix() not in filepaths_xml:
+                    print(f'Cleanup: removing locale/{filepath_po}...')
+                    (Path('locale') / filepath_po).unlink()
+
+            tm = {}
+            for lang in list_of_languages:
+                print(f'Generating TM for {lang}...')
+                tm[lang] = generate_translation_memory('locale/**/en.po', f'locale/**/{lang}.po')
+            
+            for filepath_xml in filepaths_xml:
+                print(f'Generating en.po.new for {filepath_xml}...')
+
+                # Generate en.po.new
+                success = runproc(
+                    f'Generating locale: {filepath_xml}, en',
+                    reportfile, configpath,
+                    'generate', f'src-en/{filepath_xml}', f'locale/{filepath_xml}/en.po.new',
+                    '-p', f'{filepath_xml}$', '-l', f'src-en/{filepath_xml}', '-r'
+                )
+                if not success:
+                    continue
+
+                dict_neworiginal, _, sourcelocation = readpo(f'locale/{filepath_xml}/en.po.new')
+                assert sourcelocation
+
+                for lang in list_of_languages:
+                    print(f'Relocating strings for {filepath_xml}, {lang}...')
+
+                    filepath_po = f'locale/{filepath_xml}/{lang}.po'
+
+                    if Path(filepath_po).exists():
+                        dict_oldtranslated, _, _ = readpo(filepath_po)
+                    elif lang == 'en':
+                        dict_oldtranslated = dict(dict_neworiginal)
+                    else:
+                        dict_oldtranslated = {
+                            entry_neworiginal.key: entry_neworiginal._replace(value='', fuzzy=False)
+                            for entry_neworiginal in dict_neworiginal.values()
+                        }
+                    dict_newtranslated = relocate_strings(dict_neworiginal, dict_oldtranslated, tm[lang], lang == 'en')
+                    entries_newtranslated = sorted(dict_newtranslated.values(), key=lambda entry: entry.lineno)
+                    writepo(filepath_po, entries_newtranslated, sourcelocation)
+
+        elif second_pass:
+            for filepath_xml in filepaths_xml:
+                en_old_locale = f'locale/{filepath_xml}/en.po'
+                en_new_locale = f'locale/{filepath_xml}/en.po.new'
+                assert Path(en_old_locale).exists() and Path(en_new_locale).exists()
+
+                other_locales = glob_posix(f'locale/{filepath_xml}/*.po')
+                other_locales.remove(en_old_locale)
+
+                for other_locale in other_locales:
+                    assert Path(en_old_locale).exists()
+
+                    print(f'Processing {other_locale}...')
+
+                    runproc(
+                        f'Updating locale: {other_locale}',
+                        reportfile, configpath,
+                        'update', en_old_locale, en_new_locale, other_locale,
+                        '-x', f'src-en/{filepath_xml}',
+                        '-t', Path(other_locale).stem
+                    )
+                
+                print(f'Overwriting  {en_old_locale}...')
+                shutil.move(en_new_locale, en_old_locale)
+    
 if __name__ == '__main__':
     main()
