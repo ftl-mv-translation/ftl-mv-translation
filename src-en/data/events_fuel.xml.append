@@ -50,7 +50,7 @@
 	<event load="FUEL_EXPLORE"/>
 	<event load="FUEL_APPROACH"/>
 	<event load="FUEL_OFF_ENGI_DUBIOUS"/>
-	<event load="FUEL_OFF_ROCK_WRECK"/>
+	<event load="FUEL_ROCK"/>
 	
 	<event load="NO_FUEL_REFUGEE_FRIENDLY"/>
 </eventList>
@@ -129,7 +129,7 @@
 <textList name="FUEL_TRADER_TEXT_LIST">
 	<text>A merchant ship jumps into the sector and you quickly hail them asking for help. They respond, "Perhaps we could work out an exchange..."</text>
 	<text>A number of ships pass through the sector. You relay your message to each, and one finally responds. "I can't help much right now but perhaps we can trade."</text>
-	<text>A nearby settlement sends a small ship in your direction. It keeps its distance and hails you, "We can give you fuel for a price. Just don't even think of doing anything rash. We've got a teleporter at our base and a squad ready to defend us.</text>
+	<text>A nearby settlement sends a small ship in your direction. It keeps its distance and hails you, "We can give you fuel for a price. Just don't even think of doing anything rash. We've got a teleporter at our base and a squad ready to defend us."</text>
 	<text>A large caravan of merchant ships jumps to a location near your position. Sensing an opportunity, one ship breaks off from the fleet to offer you an exchange.</text>
 	<text>A modified YT-1300 freighter jumps to an area near your sector. Your gut tells you these people are smugglers, but they seem to be feeling altruistic and present an offer of assistance.</text>
 </textList>
@@ -748,7 +748,7 @@
 	</event>
 </eventList>
 <event name="NO_FUEL_REFUGEE_PIRATE">
-	<text>A refugee ship fleeing the Rebel advance enters the system, having picked up your distress beacon. While it doesn't have much fuel to spare, it is bad need of armaments and is willing to trade for them.</text>
+	<text>A refugee ship fleeing the Rebel advance enters the system, having picked up your distress beacon. While it doesn't have much fuel to spare, it is in bad need of armaments and is willing to trade for them.</text>
 	<choice>
 		<text>Offer some missiles for fuel.</text>
 		<event load="NO_FUEL_REFUGEE_PIRATE_ACCEPT"/>
@@ -884,7 +884,7 @@
 		</choice>
 	</event>
 	<event>
-		<text>The Engi respond to your signal. "Your need: fuel. This unit's need: scrap. Exchange beneficial. Exchange permitted?</text>
+		<text>The Engi respond to your signal. "Your need: fuel. This unit's need: scrap. Exchange beneficial. Exchange permitted?"</text>
 		<choice>
 			<text>Make the trade.</text>
 			<event>	
@@ -935,6 +935,13 @@
 		ROCK
 \\\\\\\\\\\\\\\\\\\\\\\\
 -->
+<event name="FUEL_ROCK">
+	<loadEventList seeded="false" first="false" generate="true">
+		<event name="FUEL_OFF_ROCK_CURIOUS" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0"/>
+		<event name="FUEL_OFF_ROCK_WRECK" req="LIST_CHECK_ANY_CREW" lvl="1"/>
+	</loadEventList>
+</event>
+
 <event name="FUEL_OFF_ROCK_WRECK">
 	<text>As you await either salvation or death, your attention is drawn to a sea of debris drifting past the starboard view port. The chunks gliding by grow bigger in size until the stern of a Rock frigate, gutted in some distant war, comes into view.</text>
 	<choice hidden="true">
@@ -1130,7 +1137,7 @@
 	<choice hidden="true">
 		<text>Ignore the offer.</text>
 		<event>
-			<text>You know better than to do business with a Slugman who seems like he knows something you don't. He jumps off with another chuckle.</text>
+			<text>You know better than to do business with a Slug who seems like he knows something you don't. He jumps off with another chuckle.</text>
 			<choice>
 				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
@@ -1145,6 +1152,16 @@
 		<text>(Slug Crew) Have your Slug make the purchase.</text>
 		<event>
 			<text>As soon as he sees your crewmember the Slug stops his incessant chuckling. The exchange appears to go smoothly although you wonder what mental battles are telepathically occurring between the two Slugs.</text>
+			<item_modify>
+				<item type="scrap" min="-15" max="-15"/>
+				<item type="fuel" min="5" max="5"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+		<text>(Telepathic Shell) Have your Shell make the purchase.</text>
+		<event>
+			<text>The Slug continues chuckling for a little moment, but soon stops when he realizes something isn't quite right. The exchange appears to go smoothly, although you wonder what mental battles are telepathically occurring between the two species.</text>
 			<item_modify>
 				<item type="scrap" min="-15" max="-15"/>
 				<item type="fuel" min="5" max="5"/>
@@ -1180,7 +1197,7 @@
 </eventList>
 
 <event name="FUEL_ON_SLUG_OVERPRICED">
-	<text>A mobile Slugman fuel depot enters scanning range. "My prices are fair, but I ask one thing - do not insult me with negotiation!" You check out his price list.</text>
+	<text>A mobile Slug fuel depot enters scanning range. "My pricccesss are fair, but I asssk one thing - do not insssult me with negotiation!" You check out his price list.</text>
 	<ship load="SHIP_SLUG_OVERPRICED" hostile="false"/>
 	<choice hidden="false">
 		<text>Buy 5 fuel for 50 scrap.</text>
@@ -1205,7 +1222,7 @@
 	<choice hidden="true">
 		<text>Negotiate.</text>
 		<event>
-			<text>You offer a more reasonable price but the Slugman is outraged! He moves in to attack!</text>
+			<text>You offer a more reasonable price but the Slug is outraged! He moves in to attack!</text>
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>Continue...</text>

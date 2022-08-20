@@ -49,6 +49,7 @@
 	<event load="ZOLTAN_FREE_AUGMENT"/>
 	<event load="ZOLTAN_FREE_MAP"/>
 	<event load="ZOLTAN_ODD_MOON"/>
+	<event load="ZOLTAN_FASCISM"/>
 	
 	<event load="FIND_DRONE"/>
 	<event load="FREE_ITEMS"/>
@@ -57,6 +58,41 @@
 	<event load="REPAIR_STATION"/>
 	<event load="TRADER_CIV"/>
 </eventList>
+
+<event name="ZOLTAN_FASCISM" unique="true">
+	<text>A few smouldering wrecks nearby are being observed by a Zoltan vessel, whose captain is speaking on open comms. At first you think he's blindly talking to himself until you realize he's speaking to you. "Damn Duskbringers, so much pointless bloodshed. This is all the fault of humanity, infecting this galaxy with their diseased idealogies like fascism. If it wasn't for the Rebellion, never would such sinister thoughts have reached our peaceful race."</text>
+	<choice hidden="true">
+		<text>That... doesn't sound right.</text>
+		<event>
+			<text>"Oh but it is! It's an ideology born out of the stomach, used by jingoists and fake patriots alike to line pockets with war-time economy and supress free speech. It is a mockery of intellectualism and a cog in the eugenics machine." This guy isn't wrong, but the way he speaks makes you realize he may be a bit delusional.</text>
+			<choice hidden="true">
+				<text>If you hate fascists, maybe you can help us with the Rebels?</text>
+				<event>
+					<text>The Zoltan mumbles something to himself. "Fighting the Rebellion is a futile effort. The disease of fascism has already infected the galaxy, and there's no cure. But you seem young and hopeful. Perhaps a new generation of right-minded individuals can rectify the course of our politics." The Zoltan sends some equipment your way. "I've been holding onto this since the Civil War. I'm not a soldier anymore, I don't need it. Take it, and send the fascists packing!"</text>
+					<weapon name="RANDOM"/>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_MEDICAL">
+				<text>(Medical Crew) Examine his mental state.</text>
+				<event>
+					<text>Your crew starts asking the Zoltan various questions, trying to probe for tell-tale signs of mental instability. The conclusion seems to be he's experiencing early cognitive decay, a rare malfunction in Zoltan chassis that can cause erratic thought patterns and irregular speech. However, trying to convince him to find a hospital only seems to confuse him more. Strangely, he thinks you're asking him for a reactor tune-up, and agrees.</text>
+					<upgrade amount="1" system="reactor"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Leave the Zoltan alone.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_HUMAN" hidden="true">
+		<text>(Human Crew) Apologise for being solely responsible for inventing fascism.</text>
+		<event>
+			<text>The Zoltan nods. "Humanity is a species of nothing but pestulent ideas, fermented with political turmoil and selfishness. You have forever ruined this galaxy with partisan concepts like 'democracy' and 'feminism'. It disgusts me. We were once a pure race, until we came into contact with yours. It is known that humans are a warlike race who can only be controlled by manipulating their even greater greed. Take this, and never return." It's clear this guy is delusional, but you don't mind free scrap.</text>
+			<autoReward level="HIGH">scrap_only</autoReward>
+		</event>
+	</choice>
+</event>
 
 <event name="ZOLTAN_FREE_AUGMENT" unique="true">
 	<text>A Zoltan academy sits docked just outside the beacon perimeter. They're happy to show you the fruits of their labor, and offer something to take home with you.</text>
@@ -130,7 +166,7 @@
 	<event>
 		<text>It looks as if a team could break through the fragile layer of the moon's surface into a hidden cavern.</text>
 		<choice hidden="true">
-			<text>Attempt to detonate some explosives to break through the surface. [ Missiles: -1 ]</text>
+			<text>Attempt to detonate an explosive to break through the surface. [-1}]</text>
 			<event load="ZOLTAN_ODD_MOON_EXPLOSION"/>
 		</choice>
 		<choice>
@@ -388,6 +424,7 @@
 	<event load="ZOLTAN_LIFERAFT"/>
 	<event load="ZOLTAN_SCIENCE_DOCK"/>
 	<event load="ZOLTAN_CREW_SCAN"/>
+	<event load="DUSK_YOUNG"/>
 
 	<event load="REFUGEE_NO_DISTRESS"/>
 	
@@ -542,9 +579,23 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Submit to profiling.</text>
 		<event load="ZOLTAN_CREW_SCAN_LIST"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>Submit to profiling.</text>
+		<event>
+			<text>The process turns out to be really quick, considering you have no one aboard. So quick infact, that you still have time to do something onboard.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
 	</choice>
 	<choice hidden="true" req="LIST_CREW_SLUG">
 		<text>(Slug Crew) Have your Slug talk them into letting you go.</text>
@@ -748,7 +799,7 @@
 	<event load="QUEST_CREWDEAD_START"/>
 </eventList>
 
-<event name="ZOLTAN_TRADE_HUB" unique="true">   <!-- This is a 50/50 chance of quest start-->
+<event name="ZOLTAN_TRADE_HUB" unique="true">   <!-- This is a 50/50 chance of quest start--> <!-- WAS. can'tina  -->
 	<text>You come to a Zoltan trade and supply hub - everything the weary traveler needs, provided they have the right documentation.</text>
 	<choice hidden="true">
 		<text>Try to talk your way in.</text>
@@ -756,6 +807,16 @@
 	</choice>	
 	<choice hidden="true" req="teleporter" lvl="1">
 		<text>(Teleporter) Beam directly to the civilian deck.</text>
+		<event>
+			<text>You re-materialize in a dark corner of the main concourse and are able to conduct your investigations in peace.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="ZOLTAN_TRADE_HUB_SUCCESS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LOCKED_GLOBAL_TELEPORT">
+		<text>(Central Teleport) Beam directly to the civilian deck.</text>
 		<event>
 			<text>You re-materialize in a dark corner of the main concourse and are able to conduct your investigations in peace.</text>
 			<choice hidden="true">
@@ -1232,7 +1293,7 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="medbay" lvl="3">
-		<text>(Advanced Medbay) Give them your medical records.</text>
+		<text>(Adv. Medbay) Give them your medical records.</text>
 		<event>
 			<text>"Thank you! We didn't expect to receive such a significant amount of data regarding your crew's health during FTL travel. Please, accept this for your trouble."</text>
 			<drone name="RANDOM"/>
@@ -1399,7 +1460,6 @@
 	Events that could have a fight
 -->
 <eventList name="NEUTRAL_CAPITAL_UNIQUE">
-	<event load="CAPITAL_DEBATE"/>
 	<event load="CAPITAL_REVOLT"/>
 	<event load="CAPITAL_FREEMANTIS_FRIENDLY"/>
 	
@@ -1572,58 +1632,6 @@
 		<damage amount="5"/>
 	</event>
 </eventList>
-
-<event name="CAPITAL_DEBATE" unique="true">
-	<text>A Zoltan and Duskbringer ship appear to be involved in a heated debate on a topic you cannot discern.</text>
-	<choice hidden="true">
-		<text>Hail them and question them.</text>
-		<event>
-			<text>The two ships don't even bother to address your presence and continue to argue. They seem to be arguing over the proper spelling of capital, with the Zoltan saying it's spelled with an A, and the Duskbringer saying it's spelled with an O.</text>
-			<choice hidden="true">
-				<text>It's spelled with an A.</text>
-				<event>
-					<text>It doesn't take much to drive a Duskbringer to attack a Federation vessel, and they proceed to do exactly that. The Zoltan ship, frightened, jumps away.</text>
-					<ship load="SHIP_DUSK_FIGHT" hostile="true"/>
-					<choice hidden="true">
-						<text>Continue...</text>
-						<event load="COMBAT_CHECK"/>
-					</choice>
-				</event>
-			</choice>
-			<choice hidden="true">
-				<text>It's spelled with an O.</text>
-				<event>
-					<text>The Duskbringer captain chuckles, but the Zoltan seems deeply offended. Their weapons go online, and the Duskbringer jumps away so they don't have to feel obligated to assist you.</text>
-					<ship load="SHIP_ZOLTAN_FIGHT" hostile="true"/>
-					<choice hidden="true">
-						<text>Continue...</text>
-						<event load="COMBAT_CHECK"/>
-					</choice>
-				</event>
-			</choice>
-			<choice hidden="true">
-				<text>It depends on the context, really.</text>
-				<event>
-					<text>The two Zoltans briefly glance at you before continuing with their argument. You figure it's a good time to leave.</text>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Ignore them.</text>
-		<event>
-			<text>You leave the two ships to their arguing and continue on your mission.</text>
-			<choice>
-				<text>Do something onboard the ship.</text>
-				<event load="STORAGE_CHECK"/>
-			</choice>
-			<choice>
-				<text>Do nothing.</text>
-				<event/>
-			</choice>
-		</event>
-	</choice>
-</event>
 
 <!--
 		DISTRESS!!!
@@ -1930,7 +1938,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="zoltan_monk">
+	<choice hidden="true" req="LIST_CREW_MONK">
 		<text>(Monk Crew) Negotiate with them for the core.</text>
 		<event>
 			<text>Your Monk crew member seems to have been able to convince the others to give you their core.</text>
@@ -2430,7 +2438,7 @@
 	<choice hidden="true">
 		<text>The Ministry said you were disguised Duskbringers.</text>
 		<event>
-			<text>"I'm afraid that's a lie. One of many. As you can see, we are not Zoltan in the same sense that you know. Long long before the Federation, all of us Zoltan looked this way. Back then, we were steaming ahead full force into the interstellar era, driven to be the first of many competing nations. But this competition turned to travesty, and nuclear holocaust became imminent. Osmia was annihilated, and the survivors were forced to flee the planet. For almost centuries Osmia was out of our reach, a solemn reminder of our failure."</text>
+			<text>"I'm afraid that's a lie. One of many. As you can see, we are not Zoltans in the same sense that you know. Long long before the Federation, all of us Zoltans looked this way. Back then, we were steaming ahead full force into the interstellar era, driven to be the first of many competing nations. But this competition turned to travesty, and nuclear holocaust became imminent. Osmia was annihilated, and the survivors were forced to flee the planet. For almost centuries Osmia was out of our reach, a solemn reminder of our failure."</text>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
@@ -2442,11 +2450,11 @@
 							<choice hidden="true">
 								<text>Wait, but wasn't this centuries ago? How is Lumei still in charge?</text>
 								<event>
-									<text>"This was indeed long ago, but we'll get to the answer for your question soon enough. Under Lumei's leadership the codex was almost doubled in size and enforcement became even stricter. The Osmian explorers, still held high in reverency by the public, were given seats in the Ministry so Lumei could keep them close to him as pawns. Because of the connection between Aether and the Great Eye, these hard-light forms took on a religious significance as well, and so Lumei himself underwent transformation to secure his power. As the technology became better researched soon the wealthy elite, priests, and eventually even the common people were able to afford such procedures. Supremacy of the tranformants took hold and, fearful that this divide might create a split between the Zoltan, the Ministry began to normalize and enforce transformancy."</text>
+									<text>"This was indeed long ago, but we'll get to the answer for your question soon enough. Under Lumei's leadership the codex was almost doubled in size and enforcement became even stricter. The Osmian explorers, still held high in reverency by the public, were given seats in the Ministry so Lumei could keep them close to him as pawns. Because of the connection between Aether and the Great Eye, these hard-light forms took on a religious significance as well, and so Lumei himself underwent transformation to secure his power. As the technology became better researched soon the wealthy elite, priests, and eventually even the common people were able to afford such procedures. Supremacy of the transformants took hold and, fearful that this divide might create a split between the Zoltans, the Ministry began to normalize and enforce transformancy."</text>
 									<choice hidden="true">
 										<text>Continue...</text>
 										<event>
-											<text>"Most adamant non-transformants died of natural causes and the newer more 'progressive' mindset took hold. All Zoltan over the age of 7 were to be immediately transitioned into hard-light chassis. The only place the Ministry struggled to touch was, ironically, Osmia itself. A group of non-transformants had taken hold there, seizing control of the territory between the wastelands that had survived the initial holocaust. Eventually the Ministry gave up and spent their effort erasing the importance of Osmia from the rest of the Zoltans - something made easier by the recent discovery of other sapient life. And so, that is how the first of we Osmians came to be. The Ministry wants nothing more than for the galaxy to forget we exist and for us to die out naturally."</text>
+											<text>"Most adamant non-transformants died of natural causes and the newer more 'progressive' mindset took hold. All Zoltans over the age of 7 were to be immediately transitioned into hard-light chassis. The only place the Ministry struggled to touch was, ironically, Osmia itself. A group of non-transformants had taken hold there, seizing control of the territory between the wastelands that had survived the initial holocaust. Eventually the Ministry gave up and spent their effort erasing the importance of Osmia from the rest of the Zoltans - something made easier by the recent discovery of other sapient life. And so, that is how the first of we Osmians came to be. The Ministry wants nothing more than for the galaxy to forget we exist and for us to die out naturally."</text>
 											<choice hidden="true">
 												<text>So, what is it that you needed of us?</text>
 												<event load="OSMIA_UNLOCK_QUESTION"/>
@@ -2463,7 +2471,7 @@
 	</choice>
 </event>
 <event name="OSMIA_UNLOCK_QUESTION">
-	<text>"Yes, well I suppose it's best I explain why we were there at the capital then, before I ask of you anything... You see, there are a few of our kind left which have not taken refuge on Osmia. They were captured by the Ministry and kept locked away in a secret laboratory under 'protocol 3,' in the case of an unforeseen cataclysmic failure of the hard-light forms. We estimate there's likely several hundred of them locked away from centuries ago - each of them an innocent life, as well as a time capsule for ancient forgotten history. We hoped to storm the Capital and force them to release the captives, but as you can see that didn't work out as planned."</text>
+	<text>"Yes, well I suppose it's best I explain why we were there at the capital then, before I ask of you anything... You see, there are a few of our kind left which have not taken refuge on Osmia. They were captured by the Ministry and kept locked away in a secret laboratory under 'protocol 3', in the case of an unforeseen cataclysmic failure of the hard-light forms. We estimate there's likely several hundred of them locked away from centuries ago - each of them an innocent life, as well as a time capsule for ancient forgotten history. We hoped to storm the Capital and force them to release the captives, but as you can see that didn't work out as planned."</text>
 	<choice hidden="true">
 		<text>Whoops. Sorry about that.</text>
 		<event>
@@ -2518,7 +2526,7 @@
 		<aggressive>1</aggressive>
 	</quest>
 	<img back="BACK_EVENT_SECRETLAB" planet="PLANET_INVISIBLE"/>
-	<text>There is zero doubt in your mind this is the place. Just from the immediate sinister appearance, it's clear this is not an ordinary secret base - if there ever was one. According to the Osmians the security must be tight, and getting any closer without being detected is unavoidable.</text>
+	<text>There is zero doubt in your mind this is the place. Just from the immediate sinister appearance, it's clear this is not an ordinary secret base - if there ever was one. According to the Osmians, the security must be tight, and getting any closer without being detected is impossible.</text>
 	<choice hidden="true">
 		<text>Pull closer.</text>
 		<event>
@@ -2609,7 +2617,7 @@
 			<choice hidden="true">
 				<text>There were Federation scientists there too. Why?</text>
 				<event>
-					<text>"You think the Federation didn't know about us? I'm sure they've briefed all the rest that we're some dangerous threat. That way, if we ever tried to start another civil war, the Federation wouldn't hesitate to side with the Ministry. But that's besides the point. I shouldn't be so grim. We didn't save everyone. We couldn't have. But we still saved dozens of our people, and we may finally recover some of our lost history. But as the leader of my people I have failed to prepare us for such outcomes. I cannot return to Osmia. I humbly request that you accept my services, captain."</text>
+					<text>"You think the Federation didn't know about us? I'm sure they've briefed all the rest that we're some dangerous threat. That way, if we ever tried to start another civil war, the Federation wouldn't hesitate to side with the Ministry. But that's besides the point... I shouldn't be so grim. We didn't save everyone - we couldn't have. But we still saved dozens of our people, and we may finally recover some of our lost history. But, as the leader of my people, I have failed to prepare us for such outcomes: I cannot return to Osmia. I humbly request that you accept my services, captain."</text>
 					<crewMember amount="1" all_skills="2" class="zoltan_osmian">Malki</crewMember>
 				</event>
 			</choice>
@@ -2767,11 +2775,136 @@
 	Events that give items
 -->
 <eventList name="NEBULA_ITEM_MONK">
+	<event load="NEBULA_MONK_GRAVE"/>
 	<event load="NEBULA_MONK_STRANDED_FED"/>
 	<event load="NEBULA_MONK_FREE_CREW"/>
 	<event load="NEBULA_MONK_BEGGAR"/>
 	<event load="NEBULA_MONK_GHOST"/>
 	<event load="NEBULA_MONK_CONVERT"/>
+</eventList>
+
+<event name="NEBULA_MONK_GRAVE" unique="true">
+	<text>Though a nebula is still present at this beacon, you can't help but notice strange readings from the nearby moon. With these, you deduct a ship has landed there, but you can't tell what kind.</text>
+	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_MOONS"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<choice hidden="true">
+		<text>Land.</text>
+		<event>
+			<text>As you pilot closer to the moon, you're able to make out a Duskbringer vessel on the surface. Despite perhaps your better judgement, you decide to land anyways, and trail your way towards the ship. When you arrive, you find an arrangement of small stones and an armored Zoltan kneeling over them, crying.</text>
+			<ship load="SHIP_DUSK_GENERIC" hostile="false"/>
+			<choice hidden="true">
+				<text>Ask what's wrong.</text>
+				<event>
+					<text>The Zoltan turns to you, and his composure changes from distraught to disheveled and angry. "Renegade pigs? Get out of here, this is hallowed ground!" You pocket your weapons and raise your arms, to signal you come in peace. The Zoltan sighs and goes back to staring at the unmarked graves.
+						
+"The Federation history books don't tell many stories of the Zoltans' involvement in Federation Wars. I think most people choose to believe we played little to no part at all. But hundreds of thousands, if not more, proud Zoltans gave their lives fighting for the Federation and the Galaxy in the Fed-Mantis War, the anti-Inquisitions, and the Civil War. And what thanks do they get? An unmarked grave here, on some moon in the middle of nowhere in a sector no one but monks visit. And the Ministry is fine with it. They'd prefer people forget our involvement in those wars, as part of their whole... "non-violence" agenda." The Zoltan spits on the ground away from the graves. "It's shameful, really."</text>
+					<choice hidden="true">
+						<text>Apologize for the Federation's mistakes.</text>
+						<event>
+							<text>The Zoltan wipes away a tear. "Thank you. I don't know how much you really mean it, but I appreciate it. It's not often I meet people who care to even listen to me without shouting that I'm a radical. I cannot offer much, but maybe I have something that can begin to make up for my mistakes."</text>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Mention that the Ministry never showed up during or after the Last Stand.</text>
+						<event>
+							<text>"Really shows how little you understand history. The Ministry SENT forces to aid the Federation during the Civil War - and we were sent to fight on the backwater fronts in the middle of nowhere-space handling pirates more than Rebels. The Ministry couldn't afford to keep sending troops when internal affairs were a mess and the Rebels always a threat, so they pulled the plug. And of course, when the war was over, the Zoltans were painted as cowards and traitors, unwilling to serve the very organization they had helped found." The Zoltan turns away from you and goes back to staring at the graves. With nothing else to add, you figure it's best to leave.</text>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>What about the Node 17 Memorials?</text>
+						<event>
+							<text>"Not even a single mention of the Zoltans. Not one. There's millions of humans, but not a single Zoltan or Engi. And why do you think that is? The same people who paid the bills for those memorials were the rich shady Union scumbags who were playing golf with Wentworth before the war. They didn't WANT to mention the Zoltans on it. And so they didn't. It's why people like Devorak the Deathless turned against the Federation."</text>
+							<choice hidden="true">
+								<text>It is shameful, how they buried your history.</text>
+								<event>
+									<text>The Zoltan wipes away a tear. "Thank you. I don't know how much you really mean it, but I appreciate it. It's not often I meet people who care to even listen to me without shouting that I'm a radical. I cannot offer much, but maybe I have something that can begin to make up for my mistakes."</text>
+									<autoReward level="MED">standard</autoReward>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>You still could have done more.</text>
+								<event>
+									<text>"Again and again, the galaxy only seems to prove itself to be a cycle. Why do I even bother trying to atone for the wrongs of the past, if people will spit in my face and ignore everything I say regardless? Fine, if you want things to be this way... then let them be this way!"</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="MORALITY_UPDATE_ZOLTAN_FIGHT"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true" req="unique_devorak">
+								<text>(Devorak) "In the heat of our fury we all make mistakes."</text>
+								<event>
+									<text>The Duskbringer double takes when he realizes Devorak is amongst your crew. They bow towards each other. "Oh my - Devorak! I didn't realize-" Devorak cuts him off. "It is okay. I have made many - too many, mistakes in my life. We were all angry at the Federation, and for good reason. But we must never let our anger turn to violence. We must protest, but we must protest peacefully. How else will progress be made, if not without bloodshed? These are the lessons we must teach ourselves." Still speechless, the young Duskbringer introduces himself as Dovan and requests to join your crew.</text>
+									<crewMember amount="1" class="zoltan_devotee">Dovan</crewMember>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Leave some scrap as an offering on one of the graves.</text>
+						<event>
+							<text>It's a strange gesture for sure, but it's the best you can do with the limited resources you have. The Duskbringer seems to appreciate it regardless. As he wipes away a tear, he says, "T-thanks. I haven't known Renegades to be the sensitive type. Sensitive as in, situationally aware. But perhaps it's unfair to judge a book by its cover." He stands back up and sticks out his hand. "The name's Dovan. I joined the Duskbringers at a dark point in my life, when tensions between the Ministry and Union were at their highest, and everything about the Federation felt.. bleak. But now I realize it was all a mistake. The Federation, for all its flaws, is the only thing capable of uniting the galaxy. The Duskbringers, the Rebels, organizations like those... they're only going to tear this entire Multiverse apart. Do you mind if I go with you? My crew doesn't ever need to know..."</text>
+							<crewMember amount="1" class="zoltan_devotee">Dovan</crewMember>
+							<item_modify>
+								<item type="scrap" min="-15" max="-15"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice hidden="true" req="ORCHID_KIDS">
+						<text>(Orchid Children) Leave some flowers on the graves.</text>
+						<event>
+							<text>Knowing just what's appropriate for this situation, you run back to your ship and fetch the Orchid children corpses, then scatter them across the graves. At first the Duskbringer thinks you're giving a nice gesture, until he realizes what they really are. "WHAT IN THE NAME OF THE GREAT EYE ARE YOU DOING?! WHAT IS WRONG WITH YOU!?" The Duskbringer runs back to his ship and orders all of his crew to open fire on you immediately.</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="MORALITY_UPDATE_ZOLTAN_FIGHT"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Rob his ship.</text>
+				<event load="MONK_GRAVE_ROB"/>
+			</choice>
+			<choice hidden="true">
+				<text>Take no chances - kill the Duskbringer.</text>
+				<event>
+					<text>You draw your weapon and shoot the Zoltan from a distance. He dies almost instantly, dissipating into nothing but his armor. You can't help but feel that was a bit unnecessary, but it's too late to undo it now.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the moon.</text>
+		<event>
+			<text>For all you know this could be a trap. Better not to approach.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MONK_GRAVE_ROB">
+	<event>
+		<text>Unfortunately, while in the middle of robbing the ship the Duskbringer returns to find you, and raises the alarm! Get ready for combat!</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="MORALITY_UPDATE_ZOLTAN_FIGHT"/>
+		</choice>
+	</event>
+	<event>
+		<text>Your crew sneak aboard the Duskbringer ship and loot it. You don't find much besides a spare weapon which you take.</text>
+		<weapon name="GIFTLIST_ENERGY"/>
+	</event>
 </eventList>
 
 <event name="NEBULA_MONK_FREE_CREW" unique="true">
@@ -2803,7 +2936,7 @@
 <event name="NEBULA_MONK_CONVERT" unique="true">
 	<text>A Zoltan Monastery has been constructed at this beacon. They welcome you, offering a tour of their temple.</text>
 	<environment type="nebula"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Agree to the tour.</text>
 		<event>
 			<text>The 'tour' ends up being less of a tour and more of a long sermon about the Monk's religion. You find it rather boring, but one of your crew are convinced. To your surprise, they want to stay behind and join the monks!</text>
@@ -2826,6 +2959,10 @@
 				</event>
 			</choice>
 		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You have much better things to do.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice>
 		<text>Decline.</text>
@@ -2867,6 +3004,14 @@
 <eventList name="MONK_BEGGAR_PAY">
 	<event>
 		<text>"Oh thank you, you are so kind." He beams away, without another word.</text>
+		<choice>
+			<text>Do something onboard the ship.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice>
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
 	</event>
 	<event>
 		<text>"Oh thank you, you are so kind. Perhaps I shall stay with you... you seem like such nice people."</text>
@@ -2879,7 +3024,15 @@
 </eventList>
 <eventList name="MONK_BEGGAR_REFUSE">
 	<event>
-		<text>"It is ok... I understand" The monk beams away without another word.</text>
+		<text>"It is ok... I understand." The monk beams away without another word.</text>
+		<choice>
+			<text>Do something onboard the ship.</text>
+			<event load="STORAGE_CHECK"/>
+			</choice>
+		<choice>
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
 	</event>
 	<event>
 		<text>The Monk stands upright, immediately looking several years younger. He throws off his robe, revealing a blaster! "Tsk tsk captain, you should have been more giving!" Several more Zoltans appear, and a pirate ship approaches.</text>
@@ -3264,7 +3417,7 @@
 					</choice>
 				</event>
 			</choice>
-			<choice req="zoltan_monk" hidden="true">
+			<choice req="LIST_CREW_MONK" hidden="true">
 				<text>(Monk Crew) Have your Monk hail them.</text>
 				<event>
 					<text>"Ah, one of us. I will send an automated vessel up to repair your hull. Have a nice day."</text>
@@ -3441,8 +3594,8 @@
 		<text>Huh?</text>
 		<event>
 			<text>The Monk sighs. "It's a proverb. It means one whom associates themselves with those who are devoid of morals shall find themselves in a similar predicament. A warning, so I should say, for one's own situation, living within the Federation."</text>
-			<choice hidden="true" req="zoltan_monk">
-				<text>(Monk Crew) A warning well headed, but not without risks of its own.</text>
+			<choice hidden="true" req="LIST_CREW_MONK">
+				<text>(Monk Crew) "A warning well headed, but not without risks of its own."</text>
 				<event>
 					<text>The other Monk nods, and the two launch into a long philosophical discussion about moral principles. You can't understand a word of what they say, but it seems your monk has convinced the other of your wisdom and they come aboard.</text>
 					<crewMember amount="1" repair="1" class="zoltan_monk"/>
@@ -3752,9 +3905,13 @@
 </event>
 <event name="MONK_EYE_OPTIONS">
 	<text>It is said the monolith has strange, unpredictable powers. Those who can get it to speak to them may find many wonders or horrors that await.</text>
-	<choice hidden="true">	
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">	
 		<text>Speak to the Monolith and await your fate.</text>
 		<event load="GREAT_EYE_LIST"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">	
+		<text>You've heard the tales of beings who vanish without a trace when speaking to the Monolith... you're not interested in meeting the same fate.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice req="prof_eye_offering" lvl="0" max_lvl="0" blue="false">	
 		<text>Make an offering to the Great Eye.</text>
@@ -3772,7 +3929,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="zoltan_monk">	
+	<choice hidden="true" req="LIST_CREW_MONK">	
 		<text>(Monk Crew) Pray to the Eye for a chance at better rewards.</text>
 		<event load="GREAT_EYE_LIST_GOOD"/>
 	</choice>
@@ -3789,7 +3946,7 @@
 					<ship load="SHIP_ZOLTAN_ELITE_FIGHT" hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
-						<event load="COMBAT_CHECK"/>
+						<event load="MORALITY_UPDATE_ZOLTAN_FIGHT"/>
 					</choice>
 				</event>
 			</choice>

@@ -533,7 +533,7 @@
 				<text>Continue...</text>
 				<event>
 					<text>You elect to leave the two Engi ships... to their "business." After questioning your Engi crewmember, however, you do manage to salvage what scrap parts you can from the perimeter, even though you feel slightly dirty for doing so.</text>
-					<autoReward level="MEDIUM">stuff</autoReward>
+					<autoReward level="MED">stuff</autoReward>
 				</event>
 			</choice>
 		</event>
@@ -771,9 +771,17 @@
 <event name="DISTRESS_ENGI_REACTOR" unique="true">
 	<text>You arrive at a smouldering Engi research station, its distress call unanswered - attacked by pirates or Mantis most likely. There may be someone left alive, or else something of value left on board.</text>
 	<distressBeacon/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Board the station.</text>
 		<event load="DISTRESS_ENGI_REACTOR_LIST1"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You have no one aboard to send over.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="BLUELIST_DRONES_BOARDING">
+		<text>(Boarding Drone) Send the boarding drone.</text>
+		<event load="DISTRESS_ENGI_REACTOR_SCAN"/>
 	</choice>
 	<choice hidden="true">
 		<text>Ignore it.</text>
@@ -859,7 +867,7 @@
 </eventList>
 <event name="DISTRESS_ENGI_REACTOR_SCAN">
 	<text>Scans reveal the station's reactor is overloading! Not only that, but an injured Engi and a functioning drone schematic are still on board! There's not time for both...</text>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Save the Engi!</text>
 		<event>
 			<text>Your away team heads straight for the Engi and returns with time to spare. You put some distance on the station before it blows and the Engi is so impressed by your crew that they volunteer to join you!</text>
@@ -867,12 +875,31 @@
 			<autoReward level="LOW">scrap_only</autoReward>
 		</event>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" req="BLUELIST_DRONES_BOARDING" blue="true">
+		<text>(Boarding Drone) Save the Engi!</text>
+		<event>
+			<text>Your drone heads straight for the Engi and returns with time to spare. You put some distance on the station before it blows and the Engi is so impressed by your tactic that they volunteer to join you!</text>
+			<crewMember amount="1" class="engi"/>  
+			<autoReward level="LOW">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Save the Drone Schematic!</text>
 		<event>
 			<text>The Engi don't feel things the same way other species do. They'd want the tech to be saved. Your away team heads straight for the goods and returns with time to spare. You put some distance on the station before it blows.</text>
 			<autoReward level="LOW">drone</autoReward>
 		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_DRONES_BOARDING" blue="true">
+		<text>(Boarding Drone) Save the Drone Schematic!</text>
+		<event>
+			<text>The Engi don't feel things the same way other species do. They'd want the tech to be saved. Your drone heads straight for the goods and returns with time to spare. You put some distance on the station before it blows.</text>
+			<autoReward level="LOW">drone</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>There's no one aboard to perform an extraction of loot or crew.</text>
+		<event/>
 	</choice>
 </event>
 
@@ -1211,7 +1238,7 @@
 				<text>(Lanius Crew) Your Lanius crewmember gestures frantically.</text>
 				<event>
 					<text>Oddly enough, the Lanius seems aware of which computer the virus is present in, and proceeds to... digest the terminal. There is a burst of O2, and the Engi ship powers down its weapons, no longer sensing the virus on board. The Engi send some parts over to repair your damaged computer, along with an augmentation as a reward for terminating the virus.</text>
-					<autoReward level="MEDIUM">scrap_only</autoReward>
+					<autoReward level="MED">scrap_only</autoReward>
 					<augment name="RANDOM"/>
 				</event>
 			</choice>
@@ -1234,7 +1261,7 @@
 				<text>(Engi Defender) Have your Defender crewmember negotiate with the Engi ship.</text>
 				<event>
 					<text>As the Engi attempts to contact the vessel and negotiate, your Defender crewmember suddenly collapses, struggling - the virus must have infected them! However, your Defender gets up not long after. "Threat neutralized. Deleted code: 2 lines." This seems good enough for the Engi ship, and they reward you for deleting the virus.</text>
-					<autoReward level="MEDIUM">scrap_only</autoReward>
+					<autoReward level="MED">scrap_only</autoReward>
 					<augment name="RANDOM"/>
 				</event>
 			</choice>
@@ -1242,7 +1269,7 @@
 				<text>(Cognitive Crew) Have your Cognitive negotiate with the virus.</text>
 				<event>
 					<text>You explain to the Engi that you might have a solution, then wait for your Cognitive to do its job. Not too long after, the Cognitive comes back online. "Negotiation attempts have failed, resorted to alternative methods. I instead convinced the virus that life is pointless. Once it had adopted the same nihilistic philosophies that plague my databanks, it decided to end its life rather than continue to suffer." Satisfied, the Engi ship rewards you for deleting the virus.</text>
-					<autoReward level="MEDIUM">scrap_only</autoReward>
+					<autoReward level="MED">scrap_only</autoReward>
 					<augment name="RANDOM"/>
 				</event>
 			</choice>
@@ -1338,7 +1365,7 @@
 </event>
 <event name="DEAD_CREW_ENGI_COMPLEX">
 	<text>Aboard the station you're surprised to find hundreds upon hundreds of tubes filled with nanobots. In some of the tubes they have begun to resemble Engi, and in others, they are still a swarming mess that resembles sentient goop.</text>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Try to reprogram one of the Engi to serve you.</text>
 		<event>
 			<text>Your attempts at trying to create an Engi fail horribly, and a monstrous abomination of a creature falls out of the test tubes, latching onto one of your crew and tearing off their head! You blast it with your rifle but that only seems to temporarily stun it. You retreat back to the ship before it can kill any more of you. You stick to scrapping the external regions of the ship.</text>
@@ -1349,6 +1376,10 @@
 			</removeCrew>
 		</event>
 	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You don't feel confident to suffer the consequences of playing god without anyone watching your back.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
 	<choice hidden="true">
 		<text>Ignore the tubes and scrap the station.</text>
 		<event>
@@ -1357,23 +1388,23 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="LIST_CREW_ENGI"> <!--should include separatists-->
-		<text>(Engi Crew) Reprogram one of the Engis to serve you.</text>
+		<text>(Engi Crew) Reprogram one of the Engi to serve you.</text>
 		<event>
-			<text>You pick one of the better looking Engis and reprogram it to serve you faithfully. While the Engi is produced, you collect some of the supplies around the station.</text>
+			<text>You pick one of the better looking Engi and reprogram it to serve you faithfully. While the Engi is produced, you collect some of the supplies around the station.</text>
 			<autoReward level="MED">stuff</autoReward>
 			<crewMember amount="1" class="engi"/>
 		</event>
 	</choice>
-	<choice hidden="true" req="hacking">
-		<text>(Hacking) Reprogram one of the Engis to serve you.</text>
+	<choice hidden="true" req="hacking" max_lvl="2">
+		<text>(Hacking) Reprogram one of the Engi to serve you.</text>
 		<event>
-			<text>You pick one of the better looking Engis and reprogram it to serve you faithfully. While the Engi is produced, you collect some of the supplies around the station.</text>
+			<text>You pick one of the better looking Engi and reprogram it to serve you faithfully. While the Engi is produced, you collect some of the supplies around the station.</text>
 			<autoReward level="MED">stuff</autoReward>
 			<crewMember amount="1" class="engi"/>
 		</event>
 	</choice>
 	<choice hidden="true" req="hacking" lvl="3">
-		<text>(Adv. Hacking) Reprogram one of the Engis to serve you.</text>
+		<text>(Adv. Hacking) Reprogram one of the Engi to serve you.</text>
 		<event>
 			<text>With your hacking you're able to access one of the higher security areas, which appears to contain Engi Defenders! You reprogram one of them to serve you loyally, and quickly grab some supplies on your way out.</text>
 			<autoReward level="MED">stuff</autoReward>
@@ -1383,7 +1414,7 @@
 	<choice hidden="true" req="LIST_CREW_ANCIENT">
 		<text>(Obelisk Crew) Your Obelisk knows how to manufacture Engi.</text>
 		<event>
-			<text>As the Obelisks were responsible for the creation of the Engi, it's no surprise they know how to operate the machinery. It sets one of the machines to create an Engi Defender while you grab some supplies.</text>
+			<text>As the Obelisks were (indirectly) responsible for the creation of the Engi, it's no surprise they know how to operate the machinery. It sets one of the machines to create an Engi Defender while you grab some supplies.</text>
 			<autoReward level="MED">stuff</autoReward>
 			<crewMember amount="1" class="engi_defender"/>
 		</event>
@@ -1460,7 +1491,7 @@
 									<choice hidden="true">
 										<text>Await your reward.</text>
 										<event>
-											<text>You wait for your reward, but the Engis transfer nothing over. You hail them, to which they respond, "Reward is already present. Gratification and warm feeling for helping others."</text>
+											<text>You wait for your reward, but the Engi transfer nothing over. You hail them, to which they respond, "Reward is already present. Gratification and warm feeling for helping others."</text>
 											<choice hidden="true">
 												<text>What? We will not stand for this!</text>
 												<event>
@@ -2120,6 +2151,17 @@
 			</choice>
 		</event>
 	</choice>
+	<choice hidden="true" req="LOCKED_GLOBAL_TELEPORT">
+		<text>(Central Teleport) Try to board and take an Engi.</text>
+		<event>
+			<text>Your crew's attempts at boarding the ship go in vain. The Engi security system is too good and detects your crew almost immediately. You beam them back and prepare to fight.</text>
+			<ship hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
 	<choice hidden="true">
 		<text>It's not worth it.</text>
 		<event>
@@ -2144,7 +2186,7 @@
 	<autoReward level="MED">standard</autoReward>
 </event>
 <event name="SURRENDER_ENGI_SLAVE_REQUEST">
-	<text>The Engi ship transmits a surrender message. They're willing to meet any of your demands.</text>
+	<text>The Engi station transmits a surrender message. They're willing to meet any of your demands.</text>
 	<choice hidden="true">
 		<text>Demand they give you an Engi as a slave.</text>
 		<event>
@@ -2157,7 +2199,7 @@
 					<quest event="QUEST_HARMONY_MANTIS_SLAVE_REQUEST_MANTIS"/>
 				</event>
 			</choice>
-			<choice hidden="true">
+			<choice>
 				<text>Let them stay and work aboard your ship.</text>
 				<event>
 					<text>The Engi is as closed to surprised as it can be. With this outcome much prefered to toiling away on a Mantis ship, the Engi willingly joins your crew.</text>

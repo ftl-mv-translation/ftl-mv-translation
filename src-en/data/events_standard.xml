@@ -936,6 +936,7 @@
 </event>
 <event name="STORE_LOAD_AUTO">
 	<store>STORE_AUTO</store>
+	<ship hostile="false"/>
 	<text>Before you shop, you still have some time to do something else aboard the ship.</text>
 	<choice>
 		<text>Do something onboard the ship.</text>
@@ -1603,16 +1604,16 @@
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>Trade with the Zoltan.</text>
+		<text>Trade with the Zoltans.</text>
 		<event>
-			<text>The Zoltan reads off a long list of rules of conduct, then lets you browse his goods.</text>
+			<text>The Zoltan captain reads off a long list of rules of conduct, then lets you browse his goods.</text>
 			<ship load="SHIP_ZOLTAN_GENERIC" hostile="false"/>
 			<choice hidden="true">
 				<text>Shop.</text>
 				<event load="STORE_LOAD_ZOLTAN"/>
 			</choice>
 			<choice hidden="true">
-				<text>Attack the Zoltan!</text>
+				<text>Attack the Zoltans!</text>
 				<event>
 					<text>Your sudden attack sends the other ships running. They probably won't be too willing to trade with you any longer.</text>
 					<ship hostile="true"/>
@@ -2130,9 +2131,19 @@
 				</event>
 			</choice>
 			<choice req="LIST_CREW_SLUG" hidden="true">
-				<text>(Slug Crew) The Slug senses distress among the citizens. He advises we hurry.</text>
+				<text>(Slug Crew) Your Slug senses distress among the citizens. They advise we hurry.</text>
 				<event>
 					<text>With the knowledge your Slug provides, you're able to gauge that an asteroid storm will strike soon. You quickly hurry into the store and get what you need and leave before the storm hits.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="STORE_LOAD_GENERIC"/>
+					</choice>
+				</event>
+			</choice>
+			<choice req="BLUELIST_CREW_SNAIL" hidden="true">
+				<text>(Telepathic Shell) Your Shell senses distress among the citizens. They advise we hurry.</text>
+				<event>
+					<text>With the knowledge your Shell provides, you're able to gauge that an asteroid storm will strike soon. You quickly hurry into the store and get what you need and leave before the storm hits.</text>
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event load="STORE_LOAD_GENERIC"/>
@@ -2190,7 +2201,11 @@
 			<text>The Auto-ship recognizes you as a registered Federation vessel and opens its trading menu.</text>
 			<store>STORE_NOCREW</store>
 			<choice>
-				<text>Shop.</text>
+				<text>Do something on-board the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
 				<event/>
 			</choice>
 			<choice req="LIST_CREW_HARMONY">
@@ -2814,7 +2829,7 @@
 	<beaconType id="map_icon_store_monk" global="false">
 		<color r="215" g="255" b="200" a="1"/>
 	</beaconType>
-	<text>The local market looks to be Zoltan run and well protected. Around it are several Monks collecting their pension as part of the clergy. One of the ship is trying to hail you.</text>
+	<text>The local market looks to be Zoltan run and well protected. Around it are several Monks collecting their pension as part of the clergy. One of the ships is trying to hail you.</text>
 	<ship load="SHIP_MONK" hostile="false"/>
 	<choice hidden="true">
 		<text>Ignore the Monks and visit the market.</text>
@@ -2841,7 +2856,7 @@
 				<text>Give them a generous amount of scrap.</text>
 				<event load="STOREEVENT_ZOLTAN_MONK_DONATE"/>
 			</choice>
-			<choice hidden="true" req="zoltan_monk">
+			<choice hidden="true" req="LIST_CREW_MONK">
 				<text>(Monk Crew) "We are monks, just as you. There is nothing to be shared but good feelings."</text>
 				<event load="STOREEVENT_ZOLTAN_MONK_CREW"/>
 			</choice>
@@ -2941,7 +2956,7 @@
 	</beaconType>
 	<text>A lone Zoltan trading vessel awaits you at the beacon. Its crew sends you a simple message: "We have military goods available for sale."</text>
 	<ship load="SHIP_ZOLTAN_TRANSPORT" hostile="false"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Dock.</text>
 		<event>
 			<text>As soon as you dock, a swarm of Zoltan military guards grab your crew and pin them to the ground. One of the guards pulls out a scanner and starts to analyze them.</text>
@@ -2960,6 +2975,16 @@
 						<event load="COMBAT_CHECK"/>
 					</choice>
 				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>Dock.</text>
+		<event>
+			<text>The Zoltans are baffled to see an entirely automated vessel dock with them. One of the guards pulls out a scanner and starts his investigation, but in the end you're cleared for trade regardless.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORE_LOAD_ZOLTAN"/>
 			</choice>
 		</event>
 	</choice>
@@ -2998,7 +3023,7 @@
 		<choice hidden="true">
 			<text>Let them take your crew.</text>
 			<event>
-				<text>The Zoltan drag off your crew. "Against my better judgement, you will still be permitted to shop here. Do not let us catch you harboring fugitives again, understand?"</text>
+				<text>The Zoltans drag off your crew. "Against my better judgement, you will still be permitted to shop here. Do not let us catch you harboring fugitives again, understand?"</text>
 				<choice hidden="true">
 					<text>Continue...</text>
 					<event load="STORE_LOAD_ZOLTAN"/>
@@ -3184,7 +3209,7 @@
 		<event>
 			<text>"Oh... that's been ablaze for days. We've done all we can to supress it with what we have... which isn't much..."</text>
 			<choice req="FIRE_EXTINGUISHERS" hidden="true">
-				<text>(Fire Supressors) Use the supressors.</text>
+				<text>(Extinguishers) Use the suppressors.</text>
 				<event>
 					<text>Fortunately, your tech proves to be opportune in this situation. You manage to keep the fire contained to a smaller area of the market so the Orchids can take care of it. They pay you in thanks, and of course the marketplace is still open to be visited.</text>
 					<autoReward level="HIGH">standard</autoReward>
@@ -3397,7 +3422,7 @@
 			</choice>
         </event>
     </choice>
-    <choice req="ORCHID_KIDS">
+    <choice hidden="true" req="ORCHID_KIDS">
         <text>(Orchid Children) Sell him this "artifact".</text>
         <event>
             <text>The Crystal jumps up and down in excitement. "Ooooh, I had no idea piles of child corpses were of high value! One with a greater ethical compass than mine might be concerned, but I will buy these for a handsome price!"</text>
@@ -3564,7 +3589,7 @@
 		</choice>
 	</event>
 	<event>
-		<text>You step aboard, only to find a band of pirates huddled around a garbage fire while a cage of Crystals look on in despair. As soon as you aproach, the pirates draw their guns. "Who the hell are you, identify yourself!"</text>
+		<text>You step aboard, only to find a band of pirates huddled around a garbage fire while a cage of Crystals look on in despair. As soon as you approach, the pirates draw their guns. "Who the hell are you, identify yourself!"</text>
 		<choice hidden="true">
 			<text>Calm down, we're here to trade.</text>
 			<event>
@@ -5123,16 +5148,13 @@
 <ship name="SHIP_AUTO_STOREEVENT_VENDER" auto_blueprint="MU_AUTO_SUPPORT">
 	<surrender chance="0.5" min="3" max="4">
 		<text>Looks like you've caused some heavy damage to the ship's scanners, because suddenly it turns neutral, and enters vending mode for you.</text>
-		<ship hostile="false"/>
 		<choice hidden="true">
 			<text>Trade with it.</text>
 			<event load="STORE_LOAD_AUTO"/>
 		</choice>
 		<choice hidden="true">
 			<text>Keep shooting!</text>
-			<event>
-				<ship hostile="true"/>
-			</event>
+			<event/>
 		</choice>
 	</surrender>
 	<destroyed load="DESTROYED_AUTO"/>
@@ -5259,7 +5281,7 @@
 	<choice hidden="true">
 		<text>Attack the Duskbringers!</text>
 		<event>
-			<text>The Duskbringers are your enemies. It doesn't matter if they're open to other Zoltan or not - they're still fascists and xenophobes, and that's enough in your book to warrant their death.</text>
+			<text>The Duskbringers are your enemies. It doesn't matter if they're open to other Zoltans or not - they're still fascists and xenophobes, and that's enough in your book to warrant their death.</text>
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -5339,7 +5361,7 @@
 	<choice hidden="true" req="LIST_CREW_ZOLTAN">
 		<text>(Zoltan Crew) Your crew understand the rules.</text>
 		<event>
-			<text>The Zoltan are raised to understand these kinds of things quickly. It only takes a minute of skimming the hundred page list of rules to understand everything you need to do, and fortunately their knowledge pays off.</text>
+			<text>The Zoltans are raised to understand these kinds of things quickly. It only takes a minute of skimming the hundred page list of rules to understand everything you need to do, and fortunately their knowledge pays off.</text>
 			<store>STORE_DUSK</store>
 		</event>
 	</choice>
@@ -6074,6 +6096,13 @@
 					<modifyPursuit amount="-2"/>
 				</event>
 			</choice>
+			<choice hidden="true" req="unique_dessius">
+				<text>(Dessius) Request that he help you with the fleet.</text>
+				<event>
+					<text>To your surprise, Yethredi is more than willing, despite the implications. "Doomsday approaches everfast. I fought the demons on the frontlines once, and many of my brothers I witnessed fall. When the time came, it was going to be my honor to stand one final fight against them. So yes, traveler, I will help you. I will help all of us. Reaper have mercy on our metaphorical souls."</text>
+					<modifyPursuit amount="-2"/>
+				</event>
+			</choice>
 		</event>
 	</choice>
 	<choice hidden="true">
@@ -6253,6 +6282,22 @@
 							<autoReward level="MED">standard</autoReward>
 						</event>
 					</choice>
+					<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+						<text>(Telepathic Shell) Our Shell senses someone aboard the ship. Investigate it.</text>
+						<event>
+							<text>It looks like the merchant was trying to stall you while someone teleported on board. You catch him before he could finish and he teleports away. You expect a battle, but the merchant seems frightened more than anything. "I wasssn't doing anything! I was uh... bringing you a gift! Yessss! Please don't kill me, who'sss going to hoard my money otherwissse?"</text>
+							<store>STORE_SLUG</store>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="LIFE_SCANNER">
+						<text>(Lifeform Scanner) Your scanners have picked up activity aboard the ship. Investigate it.</text>
+						<event>
+							<text>It looks like the merchant was trying to stall you while someone teleported on board. You catch him before he could finish and he teleports away. You expect a battle, but the merchant seems frightened more than anything. "I wasssn't doing anything! I was uh... bringing you a gift! Yessss! Please don't kill me, who'sss going to hoard my money otherwissse?"</text>
+							<store>STORE_SLUG</store>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
 				</event>
 			</choice>
 		</event>
@@ -6346,7 +6391,7 @@
 				<event>
 					<text>The Slug pauses, then continues to wave the watch. "Uh. You are going to give me all of your money, then play the Federation national anthem with your own flatulencccce!"</text>
 					<choice hidden="true">
-						<text>No, I don't think I am.</text>
+						<text>No, I don't think I will.</text>
 						<event>
 							<text>The Slug growls. "YOU WILL GIVE ME ALL OF YOUR MONEY AND THEN YOU WILL DANCE LIKE A BALLERINA!"</text>
 							<choice hidden="true">
@@ -7212,6 +7257,14 @@
 		<event>
 			<text>Some smugglers welcome you inside, and offer some less-than-legal services and goods.</text>
 			<store>STORE_PIRATE</store>
+			<choice>
+				<text>Do something on-board the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
 		</event>
 	</choice>
 	<choice hidden="true" req="hacking" lvl="3">
@@ -7221,14 +7274,14 @@
 			<autoReward level="HIGH">weapon</autoReward>
 		</event>
 	</choice>
-	<choice hidden="true" req="COMBAT_WEAPON_JAMMER">
+	<!--<choice hidden="true" req="COMBAT_WEAPON_JAMMER"> shutting down an entire network with a 40 scrap augment? And the pirate ships not defending themselves? seems legit
 		<text>(Targeting Jammer) Keep their turrets offline.</text>
 		<event>
 			<text>Without their turrets to defend them, the pirates are unable to defend themselves. At first you pretend everything is normal and shop, but as you leave you make it clear they're at your mercy.</text>
 			<autoReward level="LOW">weapon</autoReward>
 			<store>STORE_PIRATE</store>
 		</event>
-	</choice>
+	</choice>-->
 	<choice hidden="true">
 		<text>Try and rob the market.</text>
 		<event>
@@ -7353,7 +7406,7 @@
 				</event>
 			</choice>
 			<choice>
-				<text>Buy a crew with synthetized memories.</text>
+				<text>Buy a crew with synthesized memories.</text>
 				<event>
 					<crewMember amount="1" all_skills="2"/>
 					<store>STORE_SHELL</store>
@@ -7640,7 +7693,7 @@
 	<loadEventList seeded="false" first="true" generate="true" default="DEBT_COLLECTOR_NORMAL">
 		<event name="DEBT_COLLECTOR_EASY" req="loc_loan_25" lvl="1"/>
 		<event name="DEBT_COLLECTOR_NORMAL" req="loc_loan_50" lvl="1"/>
-		<event name="DEBT_COLLECTOR_HARD" req="loc_loan_50" lvl="1"/>
+		<event name="DEBT_COLLECTOR_HARD" req="loc_loan_100" lvl="1"/>
 	</loadEventList>
 </event>
 <!--easy-->
@@ -7796,8 +7849,10 @@
 	</choice>
 </event>
 <event name="DEBT_COLLECTOR_DEFEAT">
-    <text>"Ah shit, I ain't getting myself out of this one are I? Well played, Renegade. Well... played..."</text>
-    <variable name="loc_loan_any" op="set" val="0"/>
+    <text>"Ah shit, I ain't getting myself out of this one am I? Well played, Renegade. Well... played..."</text>
+	<variable name="loc_loan_25" op="set" val="0"/>
+	<variable name="loc_loan_50" op="set" val="0"/>
+	<variable name="loc_loan_100" op="set" val="0"/>
 	<autoReward level="HIGH">standard</autoReward>
 	<augment name="ATM_MACHINE"/>
 	<triggeredEvent name="ATM_CHECKER" event="ATM_MACHINE_WITHDRAW_CHECK" loops="999999999">
@@ -7982,6 +8037,10 @@ slug karen fighting for last item on shelf
 				<text>(Slug Crew) Track down the child.</text>
 				<event load="TONY_CHILD_FOUND"/>
 			</choice>
+			<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+				<text>(Telepathic Shell) Track down the child.</text>
+				<event load="TONY_CHILD_FOUND"/>
+			</choice>
 			<choice hidden="true" req="ADV_SCANNERS">
 				<text>(LRS) Track down the child.</text>
 				<event load="TONY_CHILD_FOUND"/>
@@ -8147,6 +8206,7 @@ slug karen fighting for last item on shelf
 <event name="TONY_HQ_SAVE">
 	<text>The strange pirate ship is defeated. You scrap its remains.</text>
 	<autoReward level="HIGH">item</autoReward>
+	<variable name="loc_angels_killed" op="add" val="1"/>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -8190,7 +8250,7 @@ slug karen fighting for last item on shelf
 													<autoReward level="HIGH">stuff</autoReward>
 												</event>
 											</choice>
-											<choice hidden="true" req="symbiote">
+											<choice hidden="true" req="unique_symbiote">
 												<text>(Symbiote) "You aren't the only one who's been miserable those 7 years."</text>
 												<event>
 													<text>"My god... Rig? Is that you? How are you here?" You have no idea what's going on, but Tony explains. "7 years ago, Tony's was nothing but a small chain local only to the Republic and quite small. I hoped to change that around by selling Zulfiqar goods. I met with Rig to discuss the terms, when out of nowhere a Slug ship arrived and mind controlled me into sticking myself up Rig's... uh... asshole. The surgeons had no idea how to handle the situation. For 3 years we lived like that, stuck together. I was forced to eat Rig's waste to survive. Eventually we found a professional capable of separating us, but it was too late to save either of us from the permanent trauma."</text>
@@ -8246,11 +8306,11 @@ slug karen fighting for last item on shelf
 	<choice hidden="true" req="SYMBIOTE_AND_TONY" lvl="1" max_group="0" blue="false">
 		<text>Approach with Tony and Rig.</text>
 		<event>
-			<text>You hail the Slugs and put Tony and Rig on the screen. "Bet you didn't expect to see US! We've found you at last, and now it's time you finally tell us what this was all about."</text>
+			<text>You hail the Slugs and put Tony and Rig on the screen. Tony slams his tongue on the table, finally ready to get his vengeance after all of these years. "You rotten, despicable slime balls. After all this time I- WE'VE finally caught up with you! Now you're going to finally explain what the point of ALL of this is!"</text>
 			<choice hidden="true">
 				<text>Wait for a response.</text>
 				<event>
-					<text>The Slug captain looks utterly confused but soon realizes what is going on. "O-Oh. OH. OH. OHHAHAHAHAHHAHAHAHAH! HAHAHAHAHAHAHAHAHAH! HAH! HAHAHAHAHAH! HAHHAHAHAH! OH. MY. GOD. You're that Rock guy, and you're that-that Leech guy! HAH! Oh my thisss isss GOLDEN! HAHAHAH! You- you really thought thisss wasss sssome grand ssscheme? Sssome epic plot? HAHAHAHAH! NO! It wasss a pure coincccidenccce! We do thisss all the tiiiime. We really got you TWICE? That isss incredible! You're sssuch a lossser! HAHAHAH! Heh..."</text>
+					<text>The Slug captain looks utterly confused but soon realizes what is going on. "Oh-OH! It'sss YOU! HAHAHAHAHAH! HAAAAAAAAAAAAAAAAAAAAAHAAAAAHAHAH! Oh my god! Thisss isss hilarioussss! Gersssslin, get the recorder, I need an archive of thisss. Oh... oh boy. Look, weirdo. It ain't nothing persssonal, alright? Long time ago, we were approached by thisss ssstrange Ssslug in a suit and tie, who told usss you were gonna be resssponsssible for some kind of uh... extinction-level event Multiverssse-wide."</text>
 					<choice hidden="true">
 						<text>Attack them.</text>
 						<event>
@@ -8291,6 +8351,7 @@ slug karen fighting for last item on shelf
 </event>
 <event name="BUTT_BUDDIES_REVENGE">
 	<text>It seems during the fight the two main Slugs escaped on a lifepod, but you quickly scoop it up before they can get away. You bring them back on board to deliberate what to do with them. Rig and Tony both propose one simple punishment- treat them with their own medicine.</text>
+	<achievement>ACH_EVENT_BUTTBUDDIES</achievement>
 	<choice hidden="true">
 		<text>Agree.</text>
 		<event>
@@ -8889,6 +8950,58 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
+<event name="STOREEVENT_NNNN">
+	<beaconType id="map_icon_nnnn" global="false">
+		<color r="215" g="255" b="200" a="1"/>
+		<unvisitedTooltip>Something is off about this beacon.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<preventQuest/>
+	<text>Lured here by the strange beacon, you see nothing immediately out of the ordinary. Cautious of some kind of trap set by Hackers or maybe something worse, you ease closer to the nearby station. It makes no attempts to hail you, and no activity can be detected aboard.</text>
+	<ship load="SHIP_STATION_GENERIC" hostile="false"/>
+	<choice hidden="true">
+		<text>Hail the station.</text>
+		<event>
+			<text>You attempt to hail the station several times, but receive no response. They never block your hails, so they seem to be ringing on deaf ears. You're about to give up when finally, you are picked up from the other side. "Wah? Huh? The station owner looks groggy, as if they just woke up from a nap. What's going on? Is everything alright?"</text>
+			<choice hidden="true">
+				<text>Why are you broadcasting a bunch of N's?</text>
+				<event>
+					<text>"Wh-what are you talking about?" The station owner glances at something on the monitor next to them and their eyes go wide. "Oh... shit. I fell asleep on the N key! Damn it, I'm going to get sued for this! Please, don't tell anyone! I'll pay you to keep your mouth shut."</text>
+					<choice hidden="false">
+						<text>Accept the bribe.</text>
+						<event>
+							<text>"Well, this is awfully embarassing. Please never mention this to anyone. I honestly dread being made fun of more than the fine."</text>
+							<autoReward level="HIGH">standard</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Do you happen to have anything to trade instead?</text>
+						<event>
+							<text>"Oh... er, yeah. We are a market after-all, not an... 'NNNNNNNN'. But please, still don't tell anyone about this. I can't handle the embarassment."</text>
+							<store>STORE_STANDARD</store>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave while you still can.</text>
+		<event>
+			<text>You can't be sure if a trap is waiting for you here, but you don't want to find out.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
 <eventList name="STORELIST_CIVILIAN">
 	<event load="STOREEVENT_ALIENS"/>
 	<event load="STOREEVENT_OUTPOST"/>
@@ -9438,6 +9551,101 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
+<event name="STOREEVENT_SECTOR_DUSK_SEARCH" unique="true">
+    <preventQuest/>
+	<beaconType id="map_icon_store_zoltan" global="false">
+		<color r="215" g="255" b="200" a="1"/>
+	</beaconType>
+	<text>A seemingly ordinary Ministry marketplace is broadcasting a looping store message. Upon approach, it seems to be a mixture of bored and nervous, but as far as you can tell any ships are welcome to dock. Is it worth it - considering how deep into Duskbringer space you are?</text>
+    <choice hidden="true">
+        <text>Dock.</text>
+        <event>
+            <text>Fortunately, no Duskbringers chase after you while you dock and stroll the markets, though you do notice a few regiments patrolling the corridors. You also happen to pass by a strange group which you can tell are Feds in disguise. If their cover gets blown, it could be disastrous for you, but there isn't much you can do but hope nothing else happens.</text>
+            <store>STORE_ZOLTAN</store>
+			<jumpEvent loop="false">STOREEVENT_SECTOR_DUSK_SEARCH_LEAVE</jumpEvent>
+        </event>
+    </choice>
+    <choice>
+        <text>Avoid the store.</text>
+        <event>
+            <text>It's not worth the risk docking. You pull away from the station just in case there's some kind of trap.</text>
+            <choice>
+                <text>Do something on-board the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="STOREEVENT_SECTOR_DUSK_SEARCH_LEAVE">
+	<event/>
+	<event>
+		<text>As you're getting ready to leave, you hear numerous sirens and a very threatening elite Duskbringer ship reveals itself. A Duskbringer squadron, armed to the teeth, rushes in and orders everyone to the center of the station for a mandatory inspection.</text>
+		<resetFtl/>
+		<ship load="SHIP_DUSK_ELITE_FIGHT" hostile="false"/>
+		<choice hidden="true">
+			<text>Report for inspection.</text>
+			<event>
+				<text>You and your crew follow the soldiers and other citizens to the center of the station. A Zoltan wearing a dazzling set of medals and other distinguished awards paces back and forth before the diverse crowd, shaking an electric baton in his hands. "Alright, listen up! Command's received word that Federation insiders have boarded this station! The Federation has come to defile our lands, and undo the dream that the Zoltan race has worked so hard to fulfill!" The crowd murmurs amongst itself, and suspicious eyes dart across the crowd. This could get nasty if you're found out - but chances are they're looking for the group you saw earlier in the market.</text>
+				<choice hidden="true">
+					<text>Throw the other Feds under the bus.</text>
+					<event>
+						<text>You step forward and point towards the other group. There's a commotion and the Feds, with no other choice, draw their weapons and try to stand their ground. Clearly, they were't a combat group, because they don't last very long before they're arrested. The Duskbringer captain nods towards you. "Thank you, good citizens. Heheh. For helping create a better galaxy, I think a reward should be in store! Down with the Federation, glory to the Zoltan race forever!"</text>
+						<autoReward level="MED">stuff</autoReward>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>Reveal yourself to save the other group.</text>
+					<event>
+						<text>You aren't sure who these other Feds are, or what they're here for, but you decide it's worth standing up for them. You step forward and draw your blaster and fire it at the Duskbringers. As the crowd runs away, you notice the Feds from before make it back to their ship and take off safely. You can only hope this good deed will go a long way.</text>
+						<modifyPursuit amount="-1"/>
+						<ship hostile="true"/>
+						<choice hidden="true">
+							<text>Continue...</text>
+							<event load="MORALITY_REMOVE_GENERAL_FIGHT"/>
+						</choice>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>Stay silent and see what happens.</text>
+					<event load="SECTOR_DUSK_SEARCH_WAIT"/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>Attempt to flee.</text>
+			<event>
+				<text>With such a rushed and ill-prepared action, it's no surprise you don't get very far before you're spotted. Get ready to fight for your life!</text>
+				<ship hostile="true"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="MORALITY_UPDATE_ZOLTAN_FIGHT"/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true" req="cloaking" lvl="2">
+			<text>(Upg. Cloaking) Cloak and escape.</text>
+			<event/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="SECTOR_DUSK_SEARCH_WAIT">
+	<event>
+		<text>When no one steps forward or volunteers information, the Duskbringers are forced to resort to physical searching. They march up and down the isles, turning over boxes, emptying pockets, and frisking people. The scene quickly becomes mayhem, and the only reason it doesn't become full-on rioting are the bomb vests around the guards. Eventually, the other Feds get found out, and are arrested on the spot. Satisfied with the discovery, the Duskbringers finally let everyone go, your crew included. Looks like you got out, just barely.</text>
+	</event>
+	<event>
+		<text>When no one steps forward or volunteers information, the Duskbringers are forced to resort to physical searching. They march up and down the isles, turning over boxes, emptying pockets, and frisking people. The scene quickly becomes mayhem, and the only reason it doesn't become full-on rioting are the bomb vests around the guards. Eventually, the Duskbringers make their way to your crew, and it's no question you'll be found out. With no other options, you draw your weapons and get ready to fight your way out.</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="MORALITY_UPDATE_ZOLTAN_FIGHT"/>
+		</choice>
+	</event>
+</eventList>
+
 <eventList name="STORELIST_DUSK">
 	<event load="STOREEVENT_ALIENS"/>
 	<event load="STOREEVENT_DAMAGED"/>
@@ -9454,6 +9662,8 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 	<event load="STOREEVENT_REBEL_FRIENDLY"/>
 	
 	<event load="STORE_HOSTILE_REBEL"/>
+	
+	<event load="STOREEVENT_SECTOR_DUSK_SEARCH"/>
 </eventList>
 
 <!--
@@ -10260,7 +10470,7 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 	<text>A light asteroid field is entering the atmosphere of a nearby planet - a fireworks show on a galactic scale. There's little for it but to take in the ambience and program the next jump.</text>
 	<text>You stumble upon some Zoltan military vessels engaging in combat training. Their Energy Shields are impressive, but you note how quickly beam and ion weaponry take them down.</text>
 	<text>You don't have time to hail the Zoltan ship that was waiting at this beacon before it jumps away. They are a careful race.</text>
-	<text>A Zoltan shipyard is stationed at this beacon. You admire the display of hundreds of glowing Zoltan performing delicate exterior work on a massive transport ship.</text>
+	<text>A Zoltan shipyard is stationed at this beacon. You admire the display of hundreds of glowing Zoltans performing delicate exterior work on a massive transport ship.</text>
 	<text>A message broadcast from a nearby planet announces the presence of an ancient Zoltan monastery available for visiting. Likely just a tourist trap, but still too bad you don't have the time to visit.</text>
 </textList>
 
@@ -10563,7 +10773,7 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 	<text>The Rock Elders keep a very strict eye on all of their systems. It seems their authoritarian ways have had a very negative effect on the nearby system, because there isn't a single ship roaming about.</text>
 	<text>Despite your very presence in this sector being a crime, no Rock ships stop you. A few civilians linger before jumping away, but you are undisturbed.</text>
 	<text>It's a miracle to find an empty beacon here, one free from the brutal enforcers who patrol this sector and the ever hostile citizens.</text>
-	<text>You can't remember many tales of the Rock Inquisition from Universe 0, but you're sure just a horribly violent war had terrible causalities on the Rock population. This beacon is unnervingly empty of all life, and you can only wonder if it is a consequence of the warmongering of the Elders' pre-Federation years.</text>
+	<text>You can't remember many tales of the Rock Inquisition from Universe 0, but you're sure just a horribly violent war had terrible casualties on the Rock population. This beacon is unnervingly empty of all life, and you can only wonder if it is a consequence of the warmongering of the Elders' pre-Federation years.</text>
 	<text>A Rock patrol orbits around the beacon, but luckily they seem rather laid back. They hail you, "We won't tell if you don't either."</text>
 	<text planet="PLANET_POPULATED">A Rock settlement lays far in the distance, but they refuse to respond to any hails. This beacon may as well be empty, because nothing can counter the stubbornness of the Rockmen.</text>
 </textList>

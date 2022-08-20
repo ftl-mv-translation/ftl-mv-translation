@@ -395,9 +395,13 @@
 	<text>Nearby is a pristine Slug science station. There's no visible damage on the outside, but there appears to be no activity from the station.</text>
 	<environment type="nebula"/>
 	<ship load="SHIP_SLUG_STATION" hostile="false"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Dock with the station.</text>
 		<event load="NEBULA_SLUG_BIOLAB_INVESTIGATE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>Stepping aboard on your own without further information is a terrible idea.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true" req="sensors" lvl="2" max_lvl="2">
 		<text>(Upg. Sensors) Scan the station.</text>
@@ -565,7 +569,7 @@
 						<event>
 							<text>"Fantassstic, we'll take thisss one." The process takes a while, but eventually your crew member, considerably altered, returns, escorted by the Slugs scientists from earlier.</text>
 							<item_modify>
-								<item type="scrap" min="-55" max="-65"/>
+								<item type="scrap" min="-45" max="-55"/>
 							</item_modify>
 							<transformRace class="human">human_soldier</transformRace>
 						</event>
@@ -757,7 +761,7 @@
 <eventList name="NEBULA_HOSTILE_SLUG">
 	<event load="NEBULA_ENCOUNTER_SLUG"/>
 	
-	<event load="NEBULA_SLUG_INFECTOR"/>
+	<event load="NEBULA_SLUG_POISON"/>
 	
 	<event load="NEBULA_SLUG_MANTIS"/>
 	<event load="NEBULA_SLUG_PIRATE"/>
@@ -814,7 +818,14 @@
 	</choice>
 </event>
 
-<event name="NEBULA_SLUG_INFECTOR" unique="true">
+<event name="NEBULA_SLUG_POISON" unique="true">
+	<loadEventList seeded="false" first="false" generate="true">
+		<event name="NEBULA_ENCOUNTER_SLUG" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0"/>
+		<event name="NEBULA_SLUG_INFECTOR" req="LIST_CHECK_ANY_CREW" lvl="1"/>
+	</loadEventList>
+</event>
+
+<event name="NEBULA_SLUG_INFECTOR">
 	<text>You hear a shout from your crew and come running. A Slug has injected them with a long needle and promptly beams away. They hail you, claiming to have injected your crew with a deadly chemical, and unless you pay them for the antidote, your crew will die.</text>
 	<triggeredEvent name="TIMER_SLUG_INFECTOR_POISON" event="SLUG_INFECTOR_DEATH" jumps="1">
 		<triggeredEventBox load="DEFAULT_JUMPS">
@@ -937,6 +948,7 @@
 		<text>(Anti-Virus) Counter the remote hacking.</text>
 		<event>
 			<text>Your Anti-virus module automatically counters the digital assault and you move in to fight the ship.</text>
+			<status type="clear" target="player" system="oxygen" amount="100"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="COMBAT_CHECK"/>
@@ -945,14 +957,14 @@
 	</choice>
 </event>
 <event name="NEBULA_SLUG_MEDBAY" unique="true"> 
-	<text>A Slug ship hails you: "We've detected some worrying radiation coming from your medical unit, perhaps you should take a look?" As he signs off, your system shuts off and their crew teleports aboard from a nearby station. They don't look like engineers.</text>
+	<text>A Slug ship hails you: "We've detected sssome worrying radiation coming from your medical unit, perhapsss you ssshould take a look?" As he signs off, your system shuts off and their crew teleports aboard from a nearby station. They don't look like engineers.</text>
 	<ship load="SHIP_SLUG_STATUS_MEDBAY" hostile="true"/>
 	<boarders min="2" max="2" class="slug"/>
 	<environment type="nebula"/>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
-			<text>Your medical system shuts off. You prepare to defend your ship</text>
+			<text>Your medical system shuts off. You prepare to defend your ship.</text>
 			<status type="limit" target="player" system="medbay" amount="0"/>
 			<status type="limit" target="player" system="clonebay" amount="0"/>
 			<choice hidden="true">
@@ -962,10 +974,21 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="medbay" lvl="2">
-		<text>(Improved Medbay) Try to squeeze some extra power to the system.</text>
+		<text>(Upg. Medbay) Try to squeeze some extra power to the system.</text>
 		<event>
-			<text>Fearing the imminent battle you desperately try to get the medbay working again. Its lights flicker back on and you turn to face the intruders.</text>
+			<text>Fearing the imminent battle you desperately try to get the Medbay working again. Its lights flicker back on and you turn to face the intruders.</text>
 			<status type="divide" target="player" system="medbay" amount="2"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="clonebay" lvl="2">
+		<text>(Upg. Clone Bay) Try to squeeze some extra power to the system.</text>
+		<event>
+			<text>Fearing the imminent battle you desperately try to get the Clone Bay working again. Its lights flicker back on and you turn to face the intruders.</text>
+			<status type="divide" target="player" system="clonebay" amount="2"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="COMBAT_CHECK"/>
@@ -1645,9 +1668,13 @@
 	<environment type="nebula"/>
 	<distressBeacon/>
 	<ship load="SHIP_SLUG_GENERIC" hostile="false"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Send some crew to help.</text>
 		<event load="SLUG_DISTRESS_TRICK_LIST"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You have no crew to help.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true">
 		<text>Ignore them.</text>
@@ -1663,10 +1690,17 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="mantis">
+	<choice hidden="true" req="LIST_CREW_MANTIS">
 		<text>(Mantis Crew) Have your Mantis oversee the repairs.</text>
 		<event>
 			<text>Once on board, it becomes clear that nothing is wrong with their O2 system. Almost expecting this, your Mantis calmly responds to the trap. Once a couple of the Slugs have been spread across the walls of their ship, the rest surrender.</text>
+			<autoReward level="HIGH">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_DRONES_REPAIR_CREW">
+		<text>(Repair Drone) Send a drone to solve their problem.</text>
+		<event>
+			<text>Your drone easily handles the situation. In no time at all, it is able to make the necessary repairs, and you head off with some extra scrap in your hold.</text>
 			<autoReward level="HIGH">scrap_only</autoReward>
 		</event>
 	</choice>
@@ -1917,6 +1951,14 @@
 		<text>Ignore them.</text>
 		<event>
 			<text>You have no interest in anything the Slugs could make business out of. Time to move on.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
 		</event>
 	</choice>
 </event>
@@ -2297,13 +2339,17 @@
 		<text>Come back in to see what's happening.</text>
 		<event>
 			<text>The situation inside is much worse than you thought. It appears someone found out the machines were rigged, and now the customers want their money refunded... but the casino staff aren't going to surrender their money without a fight.</text>
-			<choice hidden="true">
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 				<text>Aid the customers.</text>
 				<event load="SLUGHOME_CASINO_CUSTOMER"/>
 			</choice>
-			<choice hidden="true">
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 				<text>Aid the staff.</text>
 				<event load="SLUGHOME_CASINO_STAFF"/>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>You're not going to help anyone all alone on your own.</text>
+				<event load="OPTION_INVALID"/>
 			</choice>
 			<choice hidden="true" req="LIST_CREW_ZOLTAN">
 				<text>(Zoltan Crew) Convince them to reach a peaceful solution.</text>
@@ -2356,12 +2402,12 @@
 		<event>
 			<text>"Assss you know, the sshort-sssighted Federation hasss decccided to outlaw the cloning of ssstill living organissssmssss. Luckily for ussss, thisss iss not Federation territory. For a sssmall fee, we would be willing to duplicate one of your crew, though the clone will not ssshare the sssame memoriesss or ssskillss asss the original."</text>
 			<choice req="LIST_CREW_HUMAN" blue="false" hidden="true">
-				<text>Clone your Human crew. [-30~]</text>
+				<text>Clone your Human crew. [-25~]</text>
 				<event>
 					<text>"Remember to tell your friendssss!" The Slugs drop off the clone before disappearing back into their ship.</text>
 					<crewMember amount="1" class="human"/>
 					<item_modify>
-						<item type="scrap" min="-30" max="-30"/>
+						<item type="scrap" min="-25" max="-25"/>
 					</item_modify>
 				</event>
 			</choice>
@@ -2501,7 +2547,7 @@
 					<text>"Remember to tell your friendssss!" The Slugs drop off the clone before disappearing back into their ship.</text>
 					<crewMember amount="1" class="spider"/>
 					<item_modify>
-						<item type="scrap" min="-30" max="-30"/>
+						<item type="scrap" min="-20" max="-20"/>
 					</item_modify>
 				</event>
 			</choice>
@@ -2671,7 +2717,13 @@
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true">	
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="0" max_lvl="0">	
+				<text>We need to get out of here!</text>
+				<event>
+					<text>You quickly pilot away from the station before the Slugs attempt to pull any other tricks on you.</text>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">	
 				<text>We need to get out of here!</text>
 				<event load="SLUGHOME_MINDSLAVES_ESCAPE"/>
 			</choice>
@@ -2727,9 +2779,15 @@
 			</event>
 		</choice>
 		<choice req="LIST_CREW_SLUG" hidden="true">
-			<text>(Slug Crew) Have your slug speak to them telepathically.</text>
+			<text>(Slug Crew) Have your Slug speak to them telepathically.</text>
 			<event>
 				<text>Luckily your Slug is able to help your crew keep sane long enough, and you escape quickly.</text>
+			</event>
+		</choice>
+		<choice req="BLUELIST_CREW_SNAIL" hidden="true">
+			<text>(Telepathic Shell) Have your Shell speak to them telepathically.</text>
+			<event>
+				<text>Luckily your Shell is able to help your crew keep sane long enough, and you escape quickly.</text>
 			</event>
 		</choice>
 		<choice req="engines" lvl="4" hidden="true">
@@ -2761,7 +2819,7 @@
 	<event load="NEBULA_ENCOUNTER_SLUG_ELITE"/>
 	<event load="NEBULA_ENCOUNTER_SLUGHOME_HACKER"/>
 	
-	<event load="NEBULA_SLUG_INFECTOR"/>
+	<event load="NEBULA_SLUG_POISON"/>
 	
 	<event load="NEBULA_SLUG_DOORS"/>
 	<event load="NEBULA_SLUG_OXYGEN"/>
@@ -2931,6 +2989,13 @@
 			<quest event="SLUGHOME_PLEASURE_2"/>
 		</event>
 	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+		<text>(Telepathic Shell) Track their jump signatures.</text>
+		<event>
+			<text>You might not be able to fight it here, but your Shell is able to lock onto the ship's jump signatures. You'll be able to follow it with ease now.</text>
+			<quest event="SLUGHOME_PLEASURE_2"/>
+		</event>
+	</choice>
 	<choice hidden="true" req="ADV_SCANNERS">
 		<text>(Long-Ranged Scanners) Track their jump signatures.</text>
 		<event>
@@ -3025,10 +3090,7 @@
 				<text>"Ok, ok! I will beam the ssssuppliesss over now."</text>
 				<ship hostile="false"/>
 				<autoReward level="HIGH">standard</autoReward>
-				<choice hidden="true">
-					<text>Continue...</text>
-					<event load="SLUGHOME_PLEASURE_HIDDENAUG"/>
-				</choice>
+				<variable name="ach_boss_pleasurebarge" op="set" val="1"/>
 			</event>
 		</choice>
 		<choice hidden="true">
@@ -3041,10 +3103,7 @@
 						<text>The Slug teleports over, reluctant to work among you but realizing it's the only way to save the civilians from your wrath.</text>
 						<ship hostile="false"/>
 						<crewMember amount="1" pilot="2" class="slug_saboteur"/>
-						<choice hidden="true">
-							<text>Continue...</text>
-							<event load="SLUGHOME_PLEASURE_HIDDENAUG"/>
-						</choice>
+						<variable name="ach_boss_pleasurebarge" op="set" val="1"/>
 					</event>
 				</choice>
 				<choice hidden="true">
@@ -3054,7 +3113,7 @@
 						<choice hidden="true">
 							<text>Now that's an offer we can't refuse.</text>
 							<event>
-								<text>The rest of the civilians clear out of the pleasure barge. You raze the interior, salvaging as much as you can. It would be a shame to let this ship go to waste. You reprogram the ship's FTL drive to direct the ship back to the nearest Federation base, where it will be scanned and rebuilt for future Multiverse travelers..</text>
+								<text>The rest of the civilians clear out of the pleasure barge. You raze the interior, salvaging as much as you can. It would be a shame to let this ship go to waste. You reprogram the ship's FTL drive to direct the ship back to the nearest Federation base, where it will be scanned and rebuilt for future Multiverse travelers.</text>
 								<ship hostile="false"/>
 								<drone name="BUTLER_DEFENSE"/>
 								<autoReward level="HIGH">stuff</autoReward>
@@ -3081,10 +3140,7 @@
 			<event>
 				<text>As you fly away, you spot a single life-pod that survived the explosion. Inside is a slave who was forced to work aboard the barge. Now free, they join your crew.</text>
 				<crewMember amount="1"/>
-				<choice hidden="true">
-					<text>Continue...</text>
-					<event load="SLUGHOME_PLEASURE_HIDDENAUG"/>
-				</choice>
+				<variable name="ach_boss_pleasurebarge" op="set" val="1"/>
 			</event>
 		</choice>
 	</destroyed>
@@ -3165,6 +3221,7 @@
 																		<text>I assume you are the Engi in the story?</text>
 																		<event>
 																			<text>"Yes. But we are that Engi no more. We have been separated from the Harmony for so long we can hardly remember what it was like. We are nothing but guardians of this place. Many ships come and go. We do not mind them, as long as they do not disturb the equinoids..."</text>
+																			<achievement>ACH_EVENT_STORYTELLER</achievement>
 																			<choice hidden="true">
 																				<text>Continue...</text>
 																				<event load="PONY_WORLD_HUNTERS"/>
@@ -3255,7 +3312,7 @@
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
-					<text>You watch as the Story Teller floats back to his ship, where it waits for you. "It is unusual that you chose to assist us. It is true you found this place because of our vessel, correct? Then take it. We have no need for it any more."</text>
+					<text>You watch as the Story Teller floats back to their ship, where it waits for you. "It is unusual that you chose to assist us. It is true you found this place because of our vessel, correct? Then take it. We have no need for it any more."</text>
 					<unlockCustomShip silent="false">PLAYER_SHIP_CLAN</unlockCustomShip>
 					<autoReward level="HIGH">standard</autoReward>
 					<choice hidden="true">
@@ -3268,8 +3325,9 @@
 						<text>(Jerry) "I think I'm the boy in your story..."</text>
 						<event>
 							<text>The Story Teller drifts over to Jerry, and slowly begins to condense into the form of a crimson Engi. "Our friend. It has been so long since we have seen you... How have the stars aligned to grant us this reunion? We can still see the innocence in your eyes. We apologize for our ramblings. How we wish we could join you, but we cannot. What we can offer is a gift. We wish you the best of journeys, Jerry, and your friends. Now this story can finally have a happy ending..."</text>
+							<achievement>ACH_JERRY_CRYSTALPONY</achievement>
 							<crewMember amount="1" combat="2" class="ponyc"/>
-							<unlockCustomShip silent="false">PLAYER_SHIP_PONY_2</unlockCustomShip>
+							<!--<unlockCustomShip silent="false">PLAYER_SHIP_PONY_2</unlockCustomShip>-->
 						</event>
 					</choice>
 					<choice hidden="true">
@@ -3280,6 +3338,118 @@
 					</choice>
 				</event>
 			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="SYLVAN_SALT_QUEST_INTRO_LOAD">
+	<loadEventList seeded="false" first="true">
+		<event name="SYLVAN_SALT_QUEST_INTRO_CHAOS" req="chaos_mode" lvl="1"/>
+		<event name="SYLVAN_SALT_QUEST_INTRO"/>
+	</loadEventList>
+</event>
+<event name="SYLVAN_SALT_QUEST_INTRO_CHAOS">
+	<text>You step aboard the lodge, feeling almost as if you're meant to expect someone here. Yet, no one steps forward. You wander around until you catch an intriguing conversation between a Clansman and a pirate concerning an individual called the "Saltman". You sit down at the table adjacent to them and lean in closer to hear what they're saying.</text>
+	<choice hidden="true">
+		<text>Listen.</text>
+		<event>
+			<text>Suddenly, you hear a loud and obnoxious voice ringing in your ear, that causes you to fall out of your chair. You look up and see the gnome has mysteriously appeared on the table and is now yelling at you. Annoyed at your strange behavior, the station owners ask you to leave. You apologize and blame it on the gnome, which only confuses them more. After some arguing back and forth whether the gnome is real or not, you head back to the ship and find a mysterious set of coordinates pinned to your dashboard with a note. "Please find him for me. -S"</text>
+			<playSound>gm_obyn</playSound>
+			<quest event="NEBULA_SALT_QUEST_CHAOS"/>
+		</event>
+	</choice>
+</event>
+
+<event name="SYLVAN_SALT_QUEST_INTRO">
+	<text>You start to move around the lodge, when you notice a familiar face in the back of the crowd. "Sssstranger! Well what are the oddsss! What are the oddssss indeed... Looking for ssssomething to buy? I can take you 'round to my ssship and ssshow you what I've got..."</text>
+	<choice hidden="true">
+		<text>Follow Sylvan.</text>
+		<event>
+			<text>You follow Sylvan out back, where he makes small talk on the way. "You know, I wasss onccce a Ranger amongssst the Guild. Then we got over thisss dissspute with this fellow called the Sssalt Man. Lasssst of hisss kind, and a fearsssome bounty hunter to boot. But the Guild wantsss him dead, a terrible ssshame. Jusssst couldn't bring mysssself to it, you know? Anywayssss, about that ssstuff..."</text>
+			<choice hidden="true">
+				<text>Tell me more about the Salt Man.</text>
+				<event>
+					<text>Sylvan looks down at the ground for a moment. "Heh, piqued your interessst, have I? A fassscinating fellow he wasss, and perhapsss the only reason I left the clan and became a merchant insssstead. You could cccertainly call usss... friendsss... but I haven't spoken with him in yearsss..."</text>
+					<choice>
+						<text>Continue...</text>
+						<event>
+							<text>"Truth be told ssstranger, I came here to find him again... hmmm... think you could do me a favor ssstranger, and ssstop by these coordinatesss would you? I've heard thatss where he'sss holding out currently. Onccce you're there, make sssure he ain't dead, alright? And put in a good word for me... I would really appreccciate it ssstranger."</text>
+							<choice hidden="true">
+								<text>Accept.</text>
+								<event load="SYLVAN_SALT_QUEST_ACCEPT"/>
+							</choice>
+							<choice hidden="true">
+								<text>Why don't you do it yourself?</text>
+								<event>
+									<text>"Ah... well, I'm a very busssy Sssslug ssstranger. You know how it issss, travelling the realitiessss vassst and all that jazz. It'sss jussst a little check in anywaysss, you know? It'ssss not like he'sss in any danger. I jussst want to make sure he'sss okay. And he'sss going to be okay. Of courssse. Heheh..." Sylvan doesn't sound too sure of himself but says nothing more.</text>
+									<choice hidden="true">
+										<text>Accept.</text>
+										<event load="SYLVAN_SALT_QUEST_ACCEPT"/>
+									</choice>
+									<choice hidden="true">
+										<text>Decline.</text>
+										<event load="SYLVAN_SALT_QUEST_DECLINE"/>
+									</choice>
+								</event>
+							</choice>
+							<!--<choice hidden="true" req="unique_obyn">
+								<text>(Obyn) *Cough*</text>
+								<event>
+									<text>"Oh... Obyn! You're- you're here? Oh... uhm. Well, not my Obyn."</text>
+									
+								</event>
+							</choice>-->
+							<choice hidden="true">
+								<text>Decline.</text>
+								<event load="SYLVAN_SALT_QUEST_DECLINE"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>See what he's got.</text>
+				<event>
+					<text>"Aaaah ssstranger, you're in luck. I've got my handssss on sssome high quality gear I have a feeling you'll be interesssted in!" Sylvan pulls some weapons out of his ship and shows them to you.</text>
+					<choice>
+						<text>Agree.</text>
+						<event load="SYLVAN_TRADES"/>
+					</choice>
+					<choice>
+						<text>Decline.</text>
+						<event>
+							<text>"Aaaah, oh well then Sssstranger. For another time then, perhapsss? I have faith we'll ssssee each other again down the line!"</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SYLVAN_SALT_QUEST_ACCEPT">
+	<text>"Ah! Now that'ssss grand, ssstranger! You Renegadesss, ssso reliable. That'sss why I like you, ssstranger. Now, how do you feel about a little trade?"</text>
+	<quest event="NEBULA_SALT_QUEST"/>
+	<choice>
+		<text>Agree.</text>
+		<event load="SYLVAN_TRADES"/>
+	</choice>
+	<choice>
+		<text>Decline.</text>
+		<event>
+			<text>"Aaaah, oh well then Sssstranger. For another time then, perhapsss? I have faith we'll ssssee each other again down the line!"</text>
+		</event>
+	</choice>
+</event>
+<event name="SYLVAN_SALT_QUEST_DECLINE">
+	<text>"Ah... yessss my bad... shouldn't mix busssinesss and persssonal mattersss, yess..." Sylvan frowns, but keeps up his chipper tone. "Well, how about a trade anywayssss, sstranger?"</text>
+	<choice>
+		<text>Agree.</text>
+		<event load="SYLVAN_TRADES"/>
+	</choice>
+	<choice>
+		<text>Decline.</text>
+		<event>
+			<text>"Really jussst in the mood for sssaying no today, eh ssstranger? Oh well... Next time maybe." Sylvan quickly heads back to the lodge.</text>
 		</event>
 	</choice>
 </event>
@@ -3331,10 +3501,47 @@
 		<variable name="ach_boss_salt" op="set" val="1"/>
 	</deadCrew>
 </ship>
+<ship name="SHIP_SALT_ABANDONED_CHAOS" auto_blueprint="MU_SALT_CRUISER">
+	<surrender min="3" max="4">
+		<text>"Damn you all to hell, you rotten mold spores! What'll it take to ward you off? The boss ain't here I said, there's no reason to kill us, the Guild doesn't give two damns about us!"</text>
+		<choice hidden="true">
+			<text>We didn't come here to kill you.</text>
+			<event>
+				<text>"You... oh... It appears I've made a severe lapse in my judgment. Then why are you here?"</text>
+				<ship hostile="false"/>
+				<variable name="ach_boss_salt" op="set" val="1"/>
+				<choice hidden="true">
+					<text>The Gnome told us to come here. Also, someone gave us coordinates to here.</text>
+					<event>
+						<text>"The... the what told you to come here? Nevermind, I don't want to know. Whoever sent you, I'm afraid the boss ain't here anymore."</text>
+						<choice hidden="true">
+							<text>Where's your boss then?</text>
+							<event load="SALT_QUEST_COORDS_CHAOS"/>
+						</choice>
+					</event>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>*%$##@*%!</text>
+			<event load="OPTION_INVALID"/>
+		</choice>
+	</surrender>
+	<destroyed>
+		<text>It appears you've destroyed the Salt Man's ship. While it's true he wasn't aboard, you doubt you'll be able to find his location now.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<variable name="ach_boss_salt" op="set" val="1"/>
+	</destroyed>
+	<deadCrew>
+		<text>It appears you've killed the Salt Man's crew. While it's true he wasn't aboard, you doubt you'll be able to find his location now.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<variable name="ach_boss_salt" op="set" val="1"/>
+	</deadCrew>
+</ship>
 <event name="NEBULA_SALT_QUEST">
 	<beaconType id="map_icon_merchantquest_major" global="true">
         <color r="155" g="90" b="205" a="1.0"/>
-        <unvisitedTooltip>This is the location of a quest from the Traveling Merchant.</unvisitedTooltip>
+        <unvisitedTooltip>This is the location of a quest.</unvisitedTooltip>
         <visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
     </beaconType>
 	<preventFleet/>
@@ -3384,15 +3591,80 @@
 		</event>
 	</choice>
 </event>
+<event name="NEBULA_SALT_QUEST_CHAOS">
+	<beaconType id="map_icon_merchantquest_major" global="true">
+        <color r="155" g="90" b="205" a="1.0"/>
+        <unvisitedTooltip>This is the location of a quest.</unvisitedTooltip>
+        <visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+    </beaconType>
+	<preventFleet/>
+	<quest>
+		<nebulaBeacon>true</nebulaBeacon>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
+	<text>Through a clearing in the nebula you find, of all things, a massive crystallized asteroid, but nothing of the Salt Man you're looking for. Still, this is where the coordinates led...</text>
+	<img back="BACK_EVENT_LIGHTNEBULA" planet="NONE"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<environment type="asteroid"/>
+	<choice hidden="true">
+		<text>The Salt Man might not be here, but we can take advantage of this asteroid.</text>
+		<event>
+			<text>You approach the asteroid, marveling at the sheer size of it. It's almost as large as your ship! That's when you come to a realization - it IS a ship! It remains motionless as you approach, and you suspect it might be empty.</text>
+			<playSound>gm_asteroididiot</playSound>
+			<ship load="SHIP_SALT_ABANDONED_CHAOS" hostile="false"/>
+			<choice hidden="true">
+				<text>Test out your theory and send some crew aboard.</text>
+				<event>
+					<text>It seems much like your previous asteroid theory, the empty ship theory is also untrue. A skeleton crew of various races rises to meet you. "Crap, looks like one of the Guild's bounty hunters found us while the boss is out! Rally up men, we'll put these mercs in their place!" You can probably get out of this without killing them, but you doubt they'll be willing to talk until you rough up their hull a bit.</text>
+					<playSound>gm_liver</playSound>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Not worth the risk, pull out.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Guess he's gone, no reason to stick around.</text>
+		<event>
+			<text>Not like Sylvan to ever have wrong information, but what do you know. You don't even know where his information comes from anyways.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
 <event name="SALT_QUEST_COORDS">
-	<text>"We were running a mission to take out one of the Guild's less... hospitable dissection centers, when the boss ran into some trouble. He got captured and is held there currently, but we escaped. His last orders were for us to stay here in the ship and hide. We're in no condition for a jailbreak, especially not after this little brawl, but you might just be the man for the job. Here's the coords, good luck."</text>
+	<text>"We were running a mission to take out one of the Guild's less... hospitable dissection centers, when the boss ran into some trouble. He got captured and is held there currently, but we escaped. His last orders were for us to stay here in the ship and hide. We're in no condition for a jailbreak, especially not after this little brawl, but you might just be the Renegade for the job, especially with Sylvan on your side!"</text>
+	<choice hidden="true">
+		<text>Sylvan isn't coming.</text>
+		<event>
+			<text>"He's... not coming? Oh. Well uhm... I guess you're good enough. Not as good as Sylvan, but I'm at least moderately confident you could pull something off. Well, here's the coords. Good luck, try not to die!"</text>
+			<quest event="NEBULA_SALT_QUEST_2"/>
+		</event>
+	</choice>
+</event>
+<event name="SALT_QUEST_COORDS_CHAOS">
+	<text>"We were running a mission to take out one of the Guild's less... hospitable dissection centers, when the boss ran into some trouble. He got captured and is held there currently, but we escaped. His last orders were for us to stay here in the ship and hide. We're in no condition for a jailbreak, especially not after this little brawl, but you might just be the Renegade for the job! Well, here's the coords. Good luck, try not to die!"</text>
 	<quest event="NEBULA_SALT_QUEST_2"/>
 </event>
 
 <event name="NEBULA_SALT_QUEST_2">
 	<beaconType id="map_icon_merchantquest_major" global="true">
         <color r="155" g="90" b="205" a="1.0"/>
-        <unvisitedTooltip>This is the location of a quest from the Traveling Merchant.</unvisitedTooltip>
+        <unvisitedTooltip>This is the location of a quest.</unvisitedTooltip>
         <visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
     </beaconType>
 	<quest>
@@ -3466,17 +3738,6 @@
 							</choice>
 						</event>
 					</choice>
-					<choice hidden="true" req="cloaking">
-						<text>(Cloaking) Hide!</text>
-						<event>
-							<text>Somehow, you had the most brilliant idea of cloaking... indoors. Though your ship vanishes from sight, there's literally nowhere for you to go. The cannon blasts a hole in your ship, and you're forced to uncloak and land where an angry team of guards meet you.</text>
-							<damage amount="5" system="random" effect="breach"/>
-							<choice hidden="true">
-								<text>Continue...</text>
-								<event load="SALT_QUEST_2_STUPID"/>
-							</choice>
-						</event>
-					</choice>
 					<choice hidden="true">
 						<text>Nah.</text>
 						<event>
@@ -3534,49 +3795,112 @@
 	</choice>
 </event>
 
+<ship name="SHIP_CLAN_CRUISER" auto_blueprint="MU_CLAN_CRUISER">
+	<destroyed>
+		<text>You've taken out the Clansman cruiser, but you hardly have time to celebrate. Another cruiser jumps in nearby, followed by another, and another, and an even larger fleet of Clansmen behind even them! There's no way you can take ALL of these ships out...</text>
+		<choice hidden="true">
+			<text>Oh boy...</text>
+			<event load="SYLVAN_DOES_AN_EX_MACHINA"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>You've taken out the Clansman cruiser, but you hardly have time to celebrate. Another cruiser jumps in nearby, followed by another, and another, and an even larger fleet of Clansmen behind even them! There's no way you can take ALL of these ships out...</text>
+		<choice hidden="true">
+			<text>Oh boy...</text>
+			<event load="SYLVAN_DOES_AN_EX_MACHINA"/>
+		</choice>
+	</deadCrew>
+</ship>
+<ship name="SHIP_CLAN_CRUISER_CHAOS" auto_blueprint="MU_CLAN_CRUISER">
+	<destroyed>
+		<text>You've taken out the Clansman cruiser, but you hardly have time to celebrate. Another cruiser jumps in nearby, followed by another, and another, and an even larger fleet of Clansmen behind even them! There's no way you can take ALL of these ships out...</text>
+		<choice hidden="true">
+			<text>Oh boy...</text>
+			<event load="GNOME_DOES_AN_EX_MACHINA"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>You've taken out the Clansman cruiser, but you hardly have time to celebrate. Another cruiser jumps in nearby, followed by another, and another, and an even larger fleet of Clansmen behind even them! There's no way you can take ALL of these ships out...</text>
+		<choice hidden="true">
+			<text>Oh boy...</text>
+			<event load="GNOME_DOES_AN_EX_MACHINA"/>
+		</choice>
+	</deadCrew>
+</ship>
 <event name="SALT_QUEST_2_SUCCESS">
-	<text>You've finally made your way to the prison hold, labeled "Exotic Creature Containment." You shoot a couple guards on the way, picking up a keycard from one of them, which you use to unlock the Salt Man's cell.</text>
+	<loadEventList seeded="false" first="true">
+		<event name="SALT_QUEST_2_SUCCESS_CHAOS" req="chaos_mode" lvl="1"/>
+		<event name="SALT_QUEST_2_SUCCESS_NORMAL"/>
+	</loadEventList>
+</event>
+<event name="SALT_QUEST_2_SUCCESS_NORMAL">
+	<text>You've finally made your way to the prison hold, labeled "Exotic Creature Containment." You shoot a couple guards on the way, picking up a keycard from one of them, which you use to unlock the Salt Man's cell, where you find a massive gray creature leaning against a wall as if waiting for you. "I'm going to take a shot in the dark and say you aren't with the Guild, considering that green ooze all over your chest seems like it belongs to someone else." He sticks out his massive hand. "Name's Obyn, though most just call me 'Salt Man'. Take the view in while you can, I'm not a sight you see often."</text>
 	<choice hidden="true">
-		<text>Continue...</text>
+		<text>You'd be right, Sylvan sent us to find you.</text>
 		<event>
-			<text>You open the cell door, where you find a massive gray creature leaning against a wall as if waiting for you. "I'm going to take a shot in the dark and say you aren't with the Guild, considering that green ooze all over your chest seems like it belongs to a Slug." He sticks out his massive hand. "Name's Obyn, though most just call me 'Salt Man'."</text>
+			<text>"I- did I hear you correctly? Sylvan, as in THE Sylvan? The traveling merchant? That's the one?" The Salt Man seems to have an air of both excitement and reservation.</text>
 			<choice hidden="true">
-				<text>You'd be right, Sylvan sent us to find you.</text>
+				<text>Yeah, that one. With the big spooky ship who says stranger a lot.</text>
 				<event>
-					<text>"I- did I hear you correctly? Sylvan, as in THE Sylvan? The traveling merchant? That's the one?" The Salt Man seems to have an air of both excitement and reservation.</text>
+					<text>"My dearest is here? Oh heavens, I am hardly prepared for such a reunion... I- wait, well where is he?"</text>
 					<choice hidden="true">
-						<text>Yeah, that one. With the big spooky ship who says stranger a lot.</text>
+						<text>Oh... well he's not actually here.</text>
 						<event>
-							<text>"My dearest is here? Oh heavens, I am hardly prepared for such a reunion... I- wait, well where is he?"</text>
+							<text>"Of course not. I mean, figures. What's several years fighting side by side, friends and more, hiding amongst a bunch of lizards and seeing the galaxy? All's well until you want to embark on a quest to find the rest of your species, and suddenly it's time for a break up. That little slimeball's too much of a coward to leave behind his comfy little life selling weapons to murder hobos, so of course he can't even show his face to me for the last 6 years!"</text>
 							<choice hidden="true">
-								<text>Oh... well he's not actually here.</text>
+								<text>Calm down, we have to get you out of here first.</text>
 								<event>
-									<text>"Oh. That seems fitting. Oh, Sylvan... Regardless, I appreciate the effort you have gone through to save me. Is my crew aware that I am alive, or will you have to be my ride out of here?"</text>
+									<text>"Right, right. Fine. Did you happen to meet my crew? Considering my cowardly ex couldn't be bothered to find me, I doubt he knew I was here, so you must have got my coords from somewhere." You inform Obyn you have in fact met his crew. "Great. At least I can count on them not to leave me behind. Alright, let's get out of here quick. You broke your way in quite fine, but I doubt the Guild's going to let us waltz out either."</text>
 									<choice hidden="true">
-										<text>We met them on the way, but no idea if they're coming.</text>
+										<text>Continue...</text>
 										<event>
-											<text>"They'd be smart not to, it's unwise to challenge the orders of their captain, though I would be a little disappointed... Now, let's hurry out of here before the Guild sends in some tougher firepower to stop you."</text>
+											<text>Obyn follows you through the corridors of the facility, where you make your way back to the hangar where your ship is held. You hurry inside and take off from the massive facility and make your way back down to the market. You begin to think you might actually make it out of here without a fight, when a Clansman cruiser jumps in out of nowhere! "Ah, there you are you little fecal droppingsss! Ssstealing from the Guild only endssss you up in one ssspot! A shallow grave!"</text>
+											<jumpEvent>TEMP_OBYN_JUMP</jumpEvent>
+											<crewMember amount="1" class="unique_obyn_temp">Obyn</crewMember>
+											<ship load="SHIP_CLAN_CRUISER" hostile="true"/>
 											<choice hidden="true">
 												<text>Continue...</text>
-												<event>
-													<text>Obyn follows you through the corridors of the facility, where you make your way back to the hangar where your ship is held. You hurry inside and take off from the massive facility and make your way back down to the market.</text>
-													<crewMember amount="1" class="salt">Obyn</crewMember>
-													<choice hidden="true">
-														<text>Continue...</text>
-														<event>
-															<text>You begin to think you might actually make it out of here without a fight, when a Clansman cruiser jumps in out of nowhere! "Ah, there you are you little fecal droppingsss! Ssstealing from the Guild only endssss you up in one ssspot! A shallow grave!"</text>
-															<ship load="SHIP_CLAN_CRUISER" hostile="true"/>
-															<choice hidden="true">
-																<text>Continue...</text>
-																<event load="COMBAT_CHECK"/>
-															</choice>
-														</event>
-													</choice>
-												</event>
+												<event load="COMBAT_CHECK"/>
 											</choice>
 										</event>
 									</choice>
 								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="TEMP_OBYN_JUMP">
+	<loadEventList first="false">
+		<event name="TEMP_OBYN_JUMP_CONVERT" req="unique_obyn_temp"/>
+	</loadEventList>
+</event>
+<event name="TEMP_OBYN_JUMP_CONVERT">
+	<transformRace class="unique_obyn_temp">unique_obyn</transformRace>
+</event>
+<event name="SALT_QUEST_2_SUCCESS_CHAOS">
+	<text>You've finally made your way to the prison hold, labeled "Exotic Creature Containment." You shoot a couple guards on the way, picking up a keycard from one of them, which you use to unlock the Salt Man's cell, where you find a massive gray creature leaning against a wall as if waiting for you. "I'm going to take a shot in the dark and say you aren't with the Guild, considering that green ooze all over your chest seems like it belongs to someone else." He sticks out his massive hand. "Name's Obyn, though most just call me 'Salt Man'. Take the view in while you can, I'm not a sight you see often."</text>
+	<choice hidden="true">
+		<text>I think you're right. Unless this Gnome works for the Guild.</text>
+		<event>
+			<text>"The... what? What gnome? Mind me asking what the hell a 'Gnome' is?"</text>
+			<choice hidden="true">
+				<text>Show him the gnome.</text>
+				<event>
+					<text>Obyn just looks confused as you try to wave the gnome in front of him. "I... what? You're not holding anything. You know what, I don't care enough. I've worked with enough lunatics to know when it's not worth dealing with the ramblings. If the gnome sent you here then thank god for the gnome. Did you happen to meet my crew?" You inform Obyn you have in fact met his crew. "Great. At least I can count on them not to leave me behind. Alright, let's get out of here quick. You broke your way in quite fine, but I doubt the Guild's going to let us waltz out either."</text>
+					<playSound>gm_gnobyn</playSound>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>Obyn follows you through the corridors of the facility, where you make your way back to the hangar where your ship is held. You hurry inside and take off from the massive facility and make your way back down to the market. You begin to think you might actually make it out of here without a fight, when a Clansman cruiser jumps in out of nowhere! "Ah, there you are you little fecal droppingsss! Ssstealing from the Guild only endssss you up in one ssspot! A shallow grave!"</text>
+							<crewMember amount="1" class="unique_obyn_temp">Obyn</crewMember>
+							<ship load="SHIP_CLAN_CRUISER_CHAOS" hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
 							</choice>
 						</event>
 					</choice>
@@ -3587,140 +3911,141 @@
 </event>
 
 <event name="SYLVAN_DOES_AN_EX_MACHINA">
-	<text>As more ships approach, underneath the shadow of the massive dissection center, it becomes apparent this is the end. "The EHG hasss had enough of you messsing around in our sssector! Ssssurrender the Sssalt Man or be annihilated!"</text>
+	<text>As more ships approach, underneath the shadow of the massive dissection center, it becomes apparent this is the end. "The EHG hasss had enough of you messsing around in our sssector! You Renegades hold no regard for the sssanctity of the Kleptocracccy's control over thessse nebulas or our right to exploit the resssourccces within them! Ssssurrender the Sssalt Man or be annihilated!"</text>
 	<variable name="ach_boss_clancruiser" op="set" val="1"/>
 	<choice hidden="true" req="pilot" blue="false" max_group="0">
-		<text>No, screw you! You guys can't even keep a consistent accent!</text>
+		<text>No, screw you! I'm tired of listening to your dumb accents!</text>
 		<event>
-			<text>"Oi! Lad, you don't have to be rude! Anywaysss, you've made your choiccce mate. Time to sssuffer the consssequencc-" The Clansman doesn't get a chance to finish his sentence when an 18 burst salvo takes out his shields then engines, causing him to spiral into a nearby ship and crash into the market below in a fiery ball of destruction!</text>
-			<choice hidden="true">
+			<text>"Oi! Mate, you don't have to be rude! Anywaysss, you've made your choiccce. Time to sssuffer the consssequencc-" The Clansman doesn't get a chance to finish his sentence when a salvo of lasers takes out his shields then engines, causing him to spiral into a nearby ship and crash into the market below in a fiery ball of destruction! From the sky descends Sylvan's ship, followed by the Salt Man's own cruiser, firing away into the fleet. "Crap crap crap it'sssss HIM! RUN!" The Clansmen scatter. You knew Sylvan had a particularly... well armed ship, but you didn't think he was strong enough to scare away an entire fleet. Evidently, his departure from the Guild left quite the impression.</text>
+			<choice hidden="true" req="unique_obyn_temp" blue="false" lvl="1">
 				<text>Continue...</text>
 				<event>
-					<text>From the sky descends Sylvan's ship, followed by the Salt Man's own cruiser, firing away into the fleet. "Crap crap crap it'sssss Ssssylvan! RUN!" The Clansmen scatter. You knew Sylvan had a particularly... well armed ship, but you didn't think he was strong enough to scare away an entire fleet. Evidently, his departure from the Guild left quite the impression.</text>
-					<choice hidden="true" req="salt" blue="false" lvl="1">
+					<text>You watch as Sylvan and the Salt cruiser land in front of you. "I hope I'm not too late sssstranger!" Sylvan laughs nervously, then faces Obyn, but before he can speak he's cut off. "If you dare address me as 'stranger', I'll crack open your skull." "Heheh, I wouldn't dream of it Obyn. It'ssss been a long time. How'ssss life?"</text>
+					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
-							<text>You watch as Sylvan and the Salt cruiser land in front of you. "Sssstranger ssstranger, I knew I could count on you!" Sylvan laughs nervously, then faces Obyn, but before he can speak he's cut off. "If you dare address me as 'stranger' I'll crack open your skull." "Heheh, I wouldn't dream of it Obyn. It'ssss been a long time. How'ssss life?"</text>
+							<text>"Oh you know, just wandering this scum infested sector and being held captive in labs where they mutilate people for the fun of it." Obyn pauses. "6. Years. And you ask me 'how's life?!'" Sylvan laughs nervously. "I think they call that taxidermy. I did alwayssss find it dissstasssteful..." Sylvan pauses. "I'm ssssorry Obyn, for leaving. I didn't think I could bear to sssee you again, after ssso much time, but when I heard you might be in trouble, I came. But I... I wassss sstill too much of a coward, ssso I sssent thessse friendssss of mine inssstead."</text>
 							<choice hidden="true">
-								<text>Continue...</text>
+								<text>Keep listening.</text>
 								<event>
-									<text>"Oh you know, just wandering this scum infested sector and being held captive in labs where they mutilate people for the fun of it." "Ah, I think they call that taxidermy. I did alwayssss find it dissstasssteful..." Sylvan pauses. "I'm ssssorry Obyn, for leaving. I didn't think I could bear to sssee you again, after ssso much time, but when I heard you might be in trouble, I came. But I... I wassss sstill too much of a coward, ssso I sssent thessse friendssss of mine inssstead."</text>
+									<text>Obyn sighs. "It's hard to be mad at you. But you have a lot of making up to do. But in the end, you did come. And that's worth something, I guess. We can talk the rest out later. Now, come here." The two lean in for a hug, though Sylvan keeps enough distance away from their bodies to prevent his flesh from being singed from Obyn's salty exterior. This is quite the ironic relationship, you realize.</text>
 									<choice hidden="true">
-										<text>Keep listening.</text>
-										<event>
-											<text>Obyn sighs. "You know, I can't blame you. The life of a ruthless killer and the life of a merchant are... well not that different in this climate, but I'm sure there's some differences somewhere. Now, come here." The two lean in for a hug, though Sylvan keeps enough distance away from their bodies to prevent his flesh from being singed from Obyn's salty exterior. This is quite the ironic relationship, you realize.</text>
-											<choice hidden="true">
-												<text>Continue...</text>
-												<event load="SYLVAN_SALT_REWARD"/>
-											</choice>
-										</event>
+										<text>Continue...</text>
+										<event load="SYLVAN_SALT_REWARD_OBYN"/>
 									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Look guys, this is sweet and all, but could you save the personal stuff for later please?</text>
+								<event>
+									<text>The two glare at you for a moment, but then Sylvan chuckles. "Ah yesss, I got lossst in the moment again. You have my mossst sssincere thanksss ssstranger! What kind of man would I be if I didn't give you a reward for your efforts!"</text>
 									<choice hidden="true">
-										<text>Look guys, this is sweet and all, but could you save the personal stuff for later please?</text>
-										<event>
-											<text>The two glare at you for a moment, but then Sylvan chuckles. "Ah yesss, I got lossst in the moment again. You have my mossst sssincere thanksss ssstranger! What kind of man would I be if I didn't give you a reward for your efforts!</text>
-											<choice hidden="true">
-												<text>Continue...</text>
-												<event load="SYLVAN_SALT_REWARD"/>
-											</choice>
-										</event>
+										<text>Continue...</text>
+										<event load="SYLVAN_SALT_REWARD_OBYN"/>
 									</choice>
 								</event>
 							</choice>
 						</event>
 					</choice>
-					<choice hidden="true" req="salt" blue="false" lvl="0" max_lvl="0">
-						<text>Continue...</text>
-						<event load="SYLVAN_SALT_REWARD_NOCREW"/>
-					</choice>
 				</event>
+			</choice>
+			<choice hidden="true" req="unique_obyn_temp" blue="false" lvl="0" max_lvl="0">
+				<text>Continue...</text>
+				<event load="SYLVAN_SALT_REWARD_NOCREW"/>
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="salt" blue="false" max_group="1">
+	<choice hidden="true" req="unique_obyn_temp" blue="false" max_group="1">
 		<text>Give up the Salt Man.</text>
 		<event>
 			<text>The Salt Man turns to you in shock, but you have little choice. You can't take on an entire fleet! You push him forward, where a team of Clansmen pick him up. "Wissse choiccce ssson. Looksss like you'll live to sssee tomorrow after all. But do usss a favor, and don't come back."</text>
-			<removeCrew class="salt">
+			<removeCrew class="unique_obyn_temp">
 				<clone>false</clone>
 				<text>You literally got the Salt Man a few minutes ago and you've already given him up. Good going.</text>
 			</removeCrew>
 		</event>
 	</choice>
 </event>
-<event name="SYLVAN_SALT_REWARD">
-	<loadEventList seeded="true" first="true" generate="true">
-		<event name="SYLVAN_SALT_REWARD_OBYN" req="salt" lvl="1"/>
-		<event name="SYLVAN_SALT_REWARD_NOCREW" req="salt" lvl="0" max_lvl="0"/>
-	</loadEventList>
+<event name="GNOME_DOES_AN_EX_MACHINA">
+	<text>As more ships approach, underneath the shadow of the massive dissection center, it becomes apparent this is the end. "The EHG hasss had enough of you messsing around in our sssector! You Renegades hold no regard for the sssanctity of the Kleptocracccy's control over thessse nebulas or our right to exploit the resssourccces within them! Ssssurrender the Sssalt Man or be annihilated!"</text>
+	<variable name="ach_boss_clancruiser" op="set" val="1"/>
+	<choice hidden="true" req="pilot" blue="false" max_group="0">
+		<text>No, screw you! I'm tired of listening to your dumb accents!</text>
+		<event>
+			<text>"Oi! Mate, you don't have to be rude! Anywaysss, you've made your choiccce. Time to sssuffer the consssequencc-" The Clansman doesn't get a chance to finish his sentence when suddenly his ship collapses in on itself, crumpling up into a small fold of metal oozing green blood. The floating chunk of metal flickers out of existence and you glance over at the gnome, which seems to be jiggling excitedly and breathing heavily. Terrified, the other ships turn tail and jump away immediately.</text>
+			<playSound>gm_evillaugh</playSound>
+			<choice hidden="true" req="unique_obyn_temp" blue="false" lvl="1">
+				<text>Continue...</text>
+				<event load="CHAOS_SALT_REWARD_OBYN"/>
+			</choice>
+			<choice hidden="true" req="unique_obyn_temp" blue="false" lvl="0" max_lvl="0">
+				<text>Continue...</text>
+				<event load="CHAOS_SALT_REWARD_NOCREW"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_obyn_temp" blue="false" max_group="1">
+		<text>Give up the Salt Man.</text>
+		<event>
+			<text>The Salt Man turns to you in shock, but you have little choice. You can't take on an entire fleet! You push him forward, where a team of Clansmen pick him up. "Wissse choiccce ssson. Looksss like you'll live to sssee tomorrow after all. But do usss a favor, and don't come back."</text>
+			<removeCrew class="unique_obyn_temp">
+				<clone>false</clone>
+				<text>You literally got the Salt Man a few minutes ago and you've already given him up. Good going.</text>
+			</removeCrew>
+		</event>
+	</choice>
 </event>
 <event name="SYLVAN_SALT_REWARD_NOCREW">
-	<text>You watch as Sylvan and the Salt cruiser land in front of you. Sylvan understandably remains silent at the moment, but with the help of Obyn's former crew, carry over a large crate of scrap. They transfer over some blueprints for Obyn's vessel as well to you, figuring the Federation might have some use for them. You can tell Sylvan is distraught about losing Obyn, but it's too late now. "Sssstranger, I ssstill have an old gun of hisss on hand. I... I don't think I can keep it around any longer. Sssso, perhapsss it isss bessst if you take it. I don't blame you for thisss, but... oh well."</text>
+	<text>You watch as Sylvan and the Salt cruiser land in front of you. Sylvan understandably remains silent at the moment, but with the help of Obyn's former crew, carry over a large crate of scrap. They transfer over some blueprints for Obyn's vessel as well to you, figuring the Federation might have some use for them. You can tell Sylvan is distraught about losing Obyn, but it's too late now. "Sssstranger, I ssstill have an old gun of hisss on hand. I... I don't think I can keep it around any longer. Sssso, perhapsss it isss bessst if you take it. I don't blame you for thisss, but... oh well. What ussse isss having a ssship like mine when I can't even sssave my friendsss, huh? Hmph."</text>
 	<unlockCustomShip silent="false">PLAYER_SHIP_SALT</unlockCustomShip>
 	<autoReward level="HIGH">scrap_only</autoReward>
 	<weapon name="SALT_LAUNCHER"/>
 </event>
+<event name="CHAOS_SALT_REWARD_NOCREW">
+	<text>Unfortunately, Obyn didn't survive the fight. Terrified the gnome may actually eat your liver, you look back at it but can't seem to find it anywhere. Worried you may have lost it, you look around for a while but slowly start to forget what you were looking for. Eventually you come to a stop and realize you have no idea what you're doing. Confused why you're here at all, you head back to the bridge and prepare to leave.</text>
+	<variable name="chaos_mode" op="set" val="0"/>
+	<removeCrew class="gnome">
+		<clone>false</clone>
+		<text></text>
+	</removeCrew>
+</event>
 <event name="SYLVAN_SALT_REWARD_OBYN">
-	<text>Sylvan, with the help of Obyn and his crew, carry over a large crate of scrap. Obyn transfers over some blueprints for his vessel as well to you, figuring the Federation might have some use for them. Sylvan heads back to his ship, but Obyn stands between the three ships with a look of indecision on his face.</text>
+	<text>Sylvan, with the help of Obyn and his crew, carry over a large crate of scrap. Obyn transfers over some blueprints for his vessel as well to you, figuring the Federation might have some use for them. Sylvan heads back to his ship, but Obyn stands between the three ships with a look of indecision on his face. Sylvan turns to look at him but Obyn shakes his head. "I can't go with you, old friend. We just... well you know how it went. I can forgive, but I can't forget. You're a merchant, and I'm a bounty hunter. In this climate, I guess they're sort of the same thing, but there's a difference somewhere. And I still haven't given up on my quest. There's more of my people out there, I'm sure of it. I still remember the day I fled my colony... well, I have to keep looking. I can't just give up."</text>
 	<unlockCustomShip silent="false">PLAYER_SHIP_SALT</unlockCustomShip>
 	<autoReward level="HIGH">scrap_only</autoReward>
 	<choice hidden="true">
-		<text>Continue...</text>
+		<text>You could come with us, be a hero, then continue your quest after.</text>
 		<event>
-			<text>Sylvan faces Obyn again. "Sssomething wrong Obyn? You look like you've got a Calthorian brain parasssite. Again." Obyn shrugs. "I've got three choices of ships. To be honest... I'm not sure where my journeys should go next."</text>
-			<choice hidden="true">
-				<text>Entice him to go with Sylvan and work out whatever weird relationship they have.</text>
-				<event>
-					<text>Obyn glances at Sylvan. "Well, I'm not one to object, but it'sss your choiccce Obyn." Obyn shrugs. "Sure, why the hell not. I'll see what life is like, wandering the cosmos selling guns to strangers." Obyn turns to his crew, and addresses the same Rockman from earlier that you spoke with. "Garter, I'm trusting you with my ship. Take good care of it. And you, Federation captain. You have my gratitude. And since I know gratitude is all but an accepted currency in these parts, maybe this weapon will satisfy you as well. Till next time." Obyn salutes, then walks off with Sylvan into his ship, then flies away.</text>
-					<weapon name="SALT_LAUNCHER"/>
-					<removeCrew class="salt">
-						<clone>false</clone>
-						<text>The Salt Man cannot be cloned as he is no longer part of your crew, nor dead.</text>
-					</removeCrew>
-					<choice hidden="true">
-						<text>Continue...</text>
-						<event load="SALT_CHOICE_SYLVAN"/>
-					</choice>
-				</event>
-			</choice>
-			<choice hidden="true">
-				<text>Entice him to stay with you and become a Federation hero.</text>
-				<event>
-					<text>"A hero of the Federation? You know how to win me over... I've tried being a bounty hunter, but things obviously didn't work well, and the life of a merchant isn't for me. I'm sure we'll see each other again Sylvan. As for you, Garter." Obyn turns to face the Rockman you spoke with earlier. "I'm trusting you with my ship. Take good care of it." Obyn turns to you. "Now, shall we go? I see adventure on the horizon!"</text>
-					<variable name="ach_crew_obyn" op="set" val="1"/>
-					<choice hidden="true">
-						<text>Continue...</text>
-						<event load="SALT_CHOICE_SELF"/>
-					</choice>
-				</event>
-			</choice>
-			<choice hidden="true">
-				<text>Entice him to go with his old crew and continue on as he was.</text>
-				<event>
-					<text>"Yes, for the best we don't go together Sylvan. Your life as a merchant suits you well, but I'll always be a fighter at heart. I'm certain we'll reunite again. And as for you, Federation captain. You have my gratitude. And since I know gratitude is all but an accepted currency in these parts, maybe this weapon will satisfy you as well. Till next time." Obyn salutes, then heads back to his ship and flies away.</text>
-					<weapon name="SALT_LAUNCHER"/>
-					<removeCrew class="salt">
-						<clone>false</clone>
-						<text>The Salt Man cannot be cloned as he is no longer part of your crew, nor dead.</text>
-					</removeCrew>
-					<choice hidden="true">
-						<text>Continue...</text>
-						<event load="SALT_CHOICE_CREW"/>
-					</choice>
-				</event>
-			</choice>
+			<text>"A hero of the Federation? You know how to win me over... I've tried being a bounty hunter, but things obviously didn't work well, and the life of a merchant isn't for me. I'm sure we'll see each other again Sylvan. As for you, Pepper." Obyn turns to face the Rockman you spoke with earlier. "I'm trusting you with my ship. Take good care of it." Obyn turns to you. "Now, shall we go? I see adventure on the horizon! Who knows, maybe on the way I'll find a clue. Only way to go is to stay hopeful." With that, he salutes to Sylvan and the two depart.</text>
+			<transformRace class="unique_obyn_temp">unique_obyn</transformRace>
+			<variable name="ach_crew_obyn" op="set" val="1"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Entice him to go with his old crew and continue his quest.</text>
+		<event>
+			<text>"Yes, I suppose there's no time to waste. Goodbye, Sylvan. I'm certain we'll reunite again. And as for you, Renegade. You have my gratitude. And since I know gratitude is all but an accepted currency in these parts, maybe this weapon will satisfy you as well. Till next time." With that, he salutes to Sylvan and the two depart, flying away in their ships.</text>
+			<weapon name="SALT_LAUNCHER"/>
+			<removeCrew class="unique_obyn_temp">
+				<clone>false</clone>
+				<text></text>
+			</removeCrew>
 		</event>
 	</choice>
 </event>
-<event name="SALT_CHOICE_SYLVAN">
-	<text>That was... quite the adventure all in all. In the end, you reunited Sylvan with his lost partner, figured out what the hell a Salt Man is, probably solved some ancient biological mystery, and pissed off an entire guild of Slugs. Doesn't sound particularly out of place for you.</text>
-	<variable name="loc_sylvanboyfriend" op="set" val="1"/>
-</event>
-<event name="SALT_CHOICE_CREW">
-	<text>That was... quite the adventure all in all. In the end, you saved the Salt Man and helped Sylvan face his fears at being personal, figured out what the hell a Salt Man is, probably solved some ancient biological mystery, and pissed off an entire guild of Slugs. Doesn't sound particularly out of place for you.</text>
-</event>
-<event name="SALT_CHOICE_SELF">
-	<text>That was... quite the adventure all in all. In the end, you recruited an exotic alien bounty hunter, helped Sylvan face his fears at being personal, figured out what the hell a Salt Man is, probably solved some ancient biological mystery, and pissed off an entire guild of Slugs. Doesn't sound particularly out of place for you.</text>
+<event name="CHAOS_SALT_REWARD_OBYN">
+	<text>Obyn looks on in shock at what just happened. For once, he finally looks down and seems to be aware of the gnome's presence. "In all my years exploring the galaxy looking for more of my kind I have seen many, many strange things. But never once have I ever seen something like this. What ARE you? Gods? Is this gnome a god?" Obyn wavers, wobbling slightly in the legs.</text>
+	<autoReward level="HIGH">scrap_only</autoReward>
+	<choice hidden="true">
+		<text>I have no idea what's happening either, but the gnome wants you to come with us.</text>
+		<event>
+			<text>"If the gnome wants me to come, then I guess I'm coming. God help us all. I guess I have no need for my ship anymore, so you can have it. Maybe it'll appease the gnome, who knows."</text>
+			<playSound>gnome_keepliver</playSound>
+			<unlockCustomShip silent="false">PLAYER_SHIP_SALT</unlockCustomShip>
+			<transformRace class="unique_obyn_temp">unique_obyn</transformRace>
+			<variable name="ach_crew_obyn" op="set" val="1"/>
+		</event>
+	</choice>
 </event>
 
 <!--
@@ -3734,7 +4059,7 @@
 </eventList>
 
 <event name="CLAN_TOURISTS" unique="true">
-	<text>Some Crystals tend be xenophobic and hostile, but others can be very friendly and hospitable. Crystals such as these are often found in tourist locations such as these, like the ship here.</text>
+	<text>Some Crystals tend be xenophobic and hostile, but others can be very friendly and hospitable. Crystals such as these are often found in tourist locations.</text>
 	<ship load="SHIP_CRYSTAL_GENERIC" hostile="false"/>
 	<choice hidden="true">
 		<text>These Crystals make easy targets. Attack!</text>
@@ -3743,7 +4068,7 @@
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>Continue...</text>
-				<event load="COMBAT_CHECK"/>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
 			</choice>
 		</event>
 	</choice>
@@ -3759,12 +4084,16 @@
 		<event>
 			<text>"By the crypt! No need to be so hostile! We'll give you anything you want!" The Crystals send over some supplies.</text>
 			<autoReward level="LOW">stuff</autoReward>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL"/>
+			</choice>
 		</event>
 	</choice>
 	<choice hidden="true" req="LIST_CREW_CRYSTAL">
 		<text>(Crystal Crew) Request supplies.</text>
 		<event>
-			<text>"Oh, hello friend! I assume there's some lovely souvenir you're dying to buy but short on cash, and I'm happy to help!" The Crystals send over some scrap, and you don't bother mentioning you're a military vessel.</text>
+			<text>"Oh, hello friend! I assume there's some lovely souvenir you're dying to buy, but are short on cash, and I'm happy to help!" The Crystals send over some scrap, and you don't bother mentioning you're a military vessel.</text>
 			<autoReward level="MED">scrap_only</autoReward>
 		</event>
 	</choice>
@@ -4008,13 +4337,14 @@
 </eventList>
 <event name="CLAN_RODEO_JERRY">
 	<text>As soon as Jerry mounts the wild beast, the Equinoid is immediately calmed, standing passively while Jerry gently strokes its mane. There's an outroar from the crowd calling you a cheater, but after a quick drug test to verify you didn't subdue the horse you're declared the winner and the prize is brought out!</text>
+	<achievement>ACH_JERRY_RODEO</achievement>
 	<weapon name="GIFTLIST_BIG_BEAM"/>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
 			<text>As you prepare to leave the rodeo, you see an Equinoid running towards you dragging the Ranger by its lead. "Woah, woah! Ssstop!" The Clansmen brings the Equinoid to a halt, but only because the horse has stopped right before Jerry. "Thisss one broke out of containment and chasssed you all the way out here. Guesss ssshe really likesss your friend. Might asss well keep her, we got plenty more."</text>
 			<crewMember amount="1" combat="2" class="pony_tamed"/>
-			<unlockCustomShip silent="false">PLAYER_SHIP_PONY</unlockCustomShip>
+			<!--<unlockCustomShip silent="false">PLAYER_SHIP_PONY</unlockCustomShip>-->
 		</event>
 	</choice>
 </event>
@@ -4139,7 +4469,7 @@
 	<choice hidden="true">
 		<text>Excuse me, is this the Mantis store?</text>
 		<event>
-			<text>It takes a few silent moments until you remember Ghosts can't actually speak. You wait until a written message flashes on your screen - "Yes, and welcome. We sell used Mantis ships. Our stock is low after a large shipment ordered by some Clansmen, but there's probably some stuff still lying around you can use."</text>
+			<text>It takes a few silent moments until your translator can work out the quirks of Ghost dialect - "Yes, and welcome. We sell used Mantis ships. Our stock is greatly diminished after a large shipment was ordered by the members of a renowned Guild, but there's surely a pleasant model still available for your needs."</text>
 			<choice>
 				<text>Buy a Mantis ship.</text>
 				<event>
@@ -4292,7 +4622,7 @@
 					<choice hidden="true">
 						<text>Look at the horse plushie.</text>
 						<event>
-							<text>"That there'ss an Equinoid! They got 6 legsss, and they ain't technically a horssse. Heard there'sss even a couple of them scattered around thisss ssector! Not that I'm sssuprissed."</text>
+							<text>"That there'ss an Equinoid! They got 6 legsss, and they ain't technically a horssse. Heard there'sss even a couple of them ssscattered around thisss ssector! Not that I'm sssuprissed."</text>
 							<choice hidden="true">
 								<text>Buy the plushie. [7~]</text>
 								<event>
@@ -4441,10 +4771,10 @@
 </event>
 <eventList name="CLAN_SHELLANGRY_REASON">
 	<event>
-		<text>You talk to the Shells and try to reason with them. Luckily, Shells are creatures of science and logic, and not usually stubborn or malicious like Zoltan or Slugs. They seem to understand they were mistaken and let you past.</text>
+		<text>You talk to the Shells and try to reason with them. Luckily, Shells are creatures of science and logic, and not usually stubborn or malicious like Zoltans or Slugs. They seem to understand they were mistaken and let you past.</text>
 	</event>
 	<event>
-		<text>You talk to the Shells and try to reason with them. Luckily, Shells are creatures of science and logic, and not usually stubborn or malicious like Zoltan or Slugs. They seem to understand they were mistaken and let you past.</text>
+		<text>You talk to the Shells and try to reason with them. Luckily, Shells are creatures of science and logic, and not usually stubborn or malicious like Zoltans or Slugs. They seem to understand they were mistaken and let you past.</text>
 	</event>
 	<event>
 		<text>In the end, it seems your reasoning doesn't work. The Shells still accuse you of being a murderer (of which you technically are) and attack!</text>
@@ -4508,7 +4838,7 @@
 			<choice hidden="true" req="LIST_CREW_SHELL">
 				<text>(Shell Crew) Request help.</text>
 				<event>
-					<text>"I have a feeling you aren't part of the Geniocracy... buuuuuut we Shells must stick togethhhher. Maybe thhhhis will help?"</text>
+					<text>"I have a feeling you aren't part of thhhhe Geniocracy... buuuuuut we Shells must stick togethhhher. Maybe thhhhis will help?"</text>
 					<autoReward level="MED">standard</autoReward>
 				</event>
 			</choice>
@@ -5131,9 +5461,9 @@
 <event name="SLOCKNOG_REVEAL">
 	<text>"Oh, heheh, yessss. I lied about the wandering hero part, I am but in fact Sssssir Ssslocknog Dssilli. I WASSS king of thissss placce, until that bassstard Nightsss cheated and ssstole the crown, then exiled me!"</text>
 	<choice hidden="true">
-		<text>Nights? Isn't that a reference to a different event?</text>
+		<text>Nights? As in, the pirate captain?</text>
 		<event>
-			<text>"Event? The hell iss an event? Anywaysss, Nightsss isss a pirate and a ssself proclaimed 'badassss'. Every 4 yearsss the Sssslugs hold their Crown Theft Fesssstival, where thievesss compete to sssteal the crown and become the next king. It isss a time honored and non-violent tradition, at leasssst until Nightsss came and killed my men and forced me into giving the crown to him!"</text>
+			<text>"Yesss, that Nightsss, who's alssso a ssself proclaimed 'badassss'. Every 4 yearsss the Sssslugs hold their Crown Theft Fesssstival, where thievesss compete to sssteal the crown and become the next king. It isss a time honored and non-violent tradition, at leasssst until Nightsss came and killed my men and forced me into giving the crown to him!"</text>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
@@ -5254,7 +5584,7 @@
 							<text>You cloak the ship and pilot closer to the wreckage. Now, you'll need to be able to teleport your crew onto the Raven without being seen.</text>
 							<choice hidden="true" req="teleporter">
 								<text>(Teleporter) Beam the crew aboard.</text>
-								<event>
+								<event name="KNIGHT_PALACE_RESOLUTION_SLOCKNOG_BOARD">
 									<text>Now that your crew are aboard, the stakes are a lot higher. Unfortunately, it's not easy to see in the dark corridors.</text>
 									<choice hidden="true" req="sensors" lvl="2">
 										<text>(Upg. Sensors) Guide them.</text>
@@ -5276,6 +5606,10 @@
 										</event>
 									</choice>
 								</event>
+							</choice>
+							<choice hidden="true" req="LOCKED_GLOBAL_TELEPORT">
+								<text>(Central Teleport) Beam the crew aboard.</text>
+								<event load="KNIGHT_PALACE_RESOLUTION_SLOCKNOG_BOARD"/>
 							</choice>
 							<choice hidden="true">
 								<text>Nevermind.</text>
@@ -5299,7 +5633,7 @@
 							<text>You cloak the ship and pilot closer to the wreckage. Now, you'll need to be able to teleport your crew onto the Raven without being seen.</text>
 							<choice hidden="true" req="teleporter">
 								<text>(Teleporter) Beam the crew aboard.</text>
-								<event>
+								<event name="KNIGHT_PALACE_RESOLUTION_SLOCKNOG_BEANS_BOARD">
 									<text>Now that your crew are aboard, the stakes are a lot higher. Unfortunately, it's not easy to see in the dark corridors.</text>
 									<choice hidden="true" req="sensors" lvl="2">
 										<text>(Upg. Sensors) Guide them.</text>
@@ -5321,6 +5655,10 @@
 										</event>
 									</choice>
 								</event>
+							</choice>
+							<choice hidden="true" req="LOCKED_GLOBAL_TELEPORT">
+								<text>(Central Teleport) Beam the crew aboard.</text>
+								<event load="KNIGHT_PALACE_RESOLUTION_SLOCKNOG_BEANS_BOARD"/>
 							</choice>
 							<choice hidden="true">
 								<text>Nevermind.</text>
@@ -5707,6 +6045,14 @@
 					<text>"Oh... how unfortunate." The ship jumps away, leaving you with nothing to do.</text>
 				</event>
 			</choice>
+			<choice hidden="true" req="unique_slocknog">
+				<text>(Slocknog) "Yesss, it isss indeed that ssship."</text>
+				<event>
+					<text>"My liege! I ssswear to follow you wherever you ssshall tread." The Clairvoyants offer supplies and one of them even join your crew.</text>
+					<autoReward level="MED">stuff</autoReward>
+					<crewMember amount="1" all_skills="1" class="slug_saboteur"/>
+				</event>		
+			</choice>	
 		</event>
 	</choice>
 	<choice hidden="true">
@@ -5720,14 +6066,6 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="unique_slocknog">
-		<text>(Slocknog) "Yesss, it isss indeed that ssship."</text>
-		<event>
-			<text>"My liege! I ssswear to follow you wherever you ssshall tread." The Clairvoyants offer supplies and one of them even join your crew.</text>
-			<autoReward level="MED">stuff</autoReward>
-			<crewMember amount="1" all_skills="1" class="slug_saboteur"/>
-		</event>		
-	</choice>	
 </event>
 
 <event name="NEBULA_KNIGHT_TRAP" unique="true">
@@ -5941,6 +6279,15 @@
 		<text>(Dessius) Have Dessius take the duel.</text>
 		<event>
 			<text>Being a perfect match for such opportunity, Dessius accepts the challenge and unsheaths his own blade. Both fighters give their all, and this chivalrous clash results in the Slug getting disarmed! "Alright, a deal isss a deal. Your companion's prowesss and ssstyle is remarkable, and you do dessserve thisss ssscrap."</text>
+			<item_modify>
+				<item type="scrap" min="75" max="85"/>
+			</item_modify>
+		</event>		
+	</choice>
+	<choice hidden="true" req="unique_devorak"> <!-- because he literally has a sword -->
+		<text>(Devorak) Have Devorak take the duel.</text>
+		<event>
+			<text>Being a perfect match for such opportunity, Devorak accepts the challenge and unsheaths his own blade. Both fighters give their all, and this chivalrous clash results in the Slug getting disarmed! "Alright, a deal isss a deal. Your companion's prowesss and ssstyle is remarkable, and you do dessserve thisss ssscrap."</text>
 			<item_modify>
 				<item type="scrap" min="75" max="85"/>
 			</item_modify>
@@ -6408,7 +6755,7 @@
 	</choice>
 </event>
 <event name="SURRENDER_KNIGHT_JAILER"> 
-	<text>"Crap, you're better armed than predicted. Uh, will take you take thissss prisssoner if you let usss go?"</text>
+	<text>"Crap, you're better armed than predicted. Uh, will you let usss go if you take thissss prisssoner?"</text>
 	<environment type="nebula"/>
 	<choice>
 		<text>Accept a prisoner.</text>
@@ -6503,7 +6850,7 @@
 	<autoReward level="HIGH">weapon</autoReward>
 </event>
 <event name="KNIGHT_TAXES_KNIGHTHELP">
-	<text>Without their ship, the colony surrenders to the Knights. After their taxes have been collected and a few fugitives rounded up, the Knights contact you next. "The hell wasss that? You're probably looking for a reward. Uh... here, have one of the criminalssss. We'll just tell Knightsss they died of some obssscure disssseasse that rapidly decaysss the body or sssomething."</text>
+	<text>Without their ship, the colony surrenders to the Knights. After their taxes have been collected and a few fugitives rounded up, the Knights contact you next. "The hell wasss that? You're probably looking for a reward. Uh... here, have one of the criminalssss. We'll just tell Nightsss they died of some obssscure disssseasse that rapidly decaysss the body or sssomething."</text>
 	<crewMember amount="1" weapons="1" class="slug"/>
 </event>
 

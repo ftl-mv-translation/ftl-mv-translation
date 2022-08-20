@@ -361,7 +361,10 @@
 </event>-->
 
 <event name="ANCIENT_LORE_DUMP">
-	<text>The creature begins to speak in the same garbled way as the Auto-scout before but stops. It scans the area where your translator is located, and the device lights up. You look at your translator to find its database entries have been updated even further - expanding on the entries given to you by the Augmented.</text>
+	<text>The creature begins to speak in the same garbled way as the Auto-scout before but stops. It scans the area where your translator is located, and the device lights up. You look at your translator to find its database entries have been updated even further - expanding on the entries given to you by the Augmented.
+	
+	NOTE FROM THE DEVS:
+	This questline is old and is currently planned for a total rework in a future update. Due to the large number of unlocks tied to it, we have left it in the game, but the questline is no longer considered canon.</text>
 	<recallBoarders/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -437,7 +440,10 @@
 					<choice hidden="true" req="unique_wither">
 						<text>(Aenwithe) "Hello, me."</text>
 						<event>
-							<text>"Ah, I see you have already encountered me from another timeline. Very well then, I'm sure you understand the situation. Shall we head to the Obelisk sector now, or do you have other things to do?"</text>
+							<text>"Ah, I see you have already encountered me from another timeline. Very well then, I'm sure you understand the situation. Shall we head to the Obelisk sector now, or do you have other things to do?"
+
+[NOTE: Wither will not occupy a crew slot and therefore doesn't require dismissal of a crew member, despite what the probable disclaimer below may claim.]
+							</text>
 							<choice>
 								<text>Let's go.</text>
 								<event>
@@ -468,7 +474,10 @@
 </event>
 
 <event name="ANCIENT_LORE_DUMP_CHALLENGE">
-	<text>"Not all is lost however. There's another sector whose vault is suspected to contain a similar component we can use. From what I have gathered from my stay here, I believe my goal is mutually beneficial for both of us. This bomb will save this reality from Rebel invasions, and could be the key to ending this war of yours. I understand if you don't wish to help however, you have already done more than enough by just awakening me. Should you decline, I will find some other way to pay you."</text>
+	<text>"Not all is lost however. There's another sector whose vault is suspected to contain a similar component we can use. From what I have gathered from my stay here, I believe my goal is mutually beneficial for both of us. This bomb will save this reality from Rebel invasions, and could be the key to ending this war of yours. I understand if you don't wish to help however, you have already done more than enough by just awakening me. Should you decline, I will find some other way to pay you."
+
+[NOTE: Wither will not occupy a crew slot and therefore doesn't require dismissal of a crew member, despite what the probable disclaimer below may claim.]
+	</text>
 	<choice>
 		<text>Accept.</text>
 		<event>
@@ -649,22 +658,23 @@
 
 <event name="VAULT_DESTROYED">
 	<text>As you're preparing to leave, a squadron of Obelisk ships approaches, drawn in by the explosion. They're led by a Royal ship, whose captain hails you. "You... You have destroyed the cache. You filthy mortal insect, you will suffer for this!" You shrug, and flick the weapons in their direction. None of the Obelisk squadron dares mess with the ship that killed the Dreadnaught, and so they quickly jump away, presumably to the homeworlds to spread the news of your approach.</text>
-		<choice hidden="true">
-			<text>Continue...</text>
-				<event>
-					<text>Aenwithe is very pleased. "Do not worry about the fleet, the Homeworlds are already on high alert anyways. We must move quickly, we need to head to our base and construct the bomb! We will head to the Homeworlds directly. Grab hold of something again, and try not to black out."</text>
-					<choice hidden="true">
-						<text>Continue...</text>
-						<event load="JUMP_TO_OBELISK"/>
-					</choice>
-				</event>
-		</choice>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>Aenwithe is very pleased. "Do not worry about the fleet, the Homeworlds are already on high alert anyways. We must move quickly, we need to head to our base and construct the bomb! We will head to the Homeworlds directly. Grab hold of something again, and try not to black out."</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="JUMP_TO_OBELISK"/>
+			</choice>
+		</event>
+	</choice>
 </event>
 <event name="JUMP_TO_OBELISK">
 	<secretSector/>
 </event>
 
 <event name="START_BEACON_ANCIENT">
+	<metaVariable name="juke_ancient" op="set" val="1"/>
 	<text>You pull yourself off the floor, in a daze. The ship cameras show most of the other crew doing the same, waking from their slumber. The only one who seems unfazed is Aenwithe, who hastens to check on you. "We've made it okay, but now we have a few things to be careful of. Though I doubt the Rebels will be able to follow us for now, they will catch up eventually if they truly are tracking you as you suspect. Additionally, it is very likely that this sector is protected by a guard ship. If so, I doubt they'll let us through unharmed."</text>
 	<variable name="loc_unique_sectors" op="add" val="1"/>
 	<modifyPursuit amount="-10"/>
@@ -975,7 +985,7 @@
     </event>
     <event>
         <text>At first the Obelisk doesn't stir, and you consider stashing it in the storage for later. But as you begin to move it, it suddenly activates and fires a laser which destroys your shields! You draw your blaster, but the Obelisk has already calmed down. "Oh, my bad. Truly sorry about your equipment. I hope you don't mind if I request to join your crew? It's been terribly boring drifting in space for eternity, and I'd like some action for once."</text>
-        <damage amount="8" system="shields" effect="fire"/>
+        <damage amount="5" system="shields" effect="fire"/>
         <choice hidden="true">
             <text>Continue...</text>
             <event>
@@ -1039,6 +1049,7 @@
             <status type="limit" target="player" system="battery" amount="1"/>
             <status type="limit" target="player" system="artillery" amount="1"/>
             <status type="limit" target="player" system="oxygen" amount="0"/>
+			<status type="limit" target="player" system="temporal" amount="0"/>
             <choice hidden="true">
 				<text>Wealth.</text>
 				<event>
@@ -1108,7 +1119,7 @@
 <eventList name="HOSTILE_ANCIENT">
 	<event load="ENCOUNTER_ANCIENT"/>
 	<event load="ENCOUNTER_ANCIENT_SURRENDER"/>
-	<event load="ENCOUNTER_ENGI_ELITE_ANCIENT"/>
+	<!--<event load="ENCOUNTER_ENGI_ELITE_ANCIENT"/>-->
 	<event load="ENCOUNTER_ANCIENT_AUTO"/>
 	
 	<event load="HAZARD_ANCIENT"/>
@@ -1523,7 +1534,7 @@
 
 <event name="ANCIENT_SCULPTER" unique="true">
 	<img back="BACKGROUND" planet="PLANET_ANCIENT"/>
-	<text>An Obelisk ship surrounded by a giant asteroid field hails you. "Do you like them? Every rock, hand crafted. I have spent a millenia creating this place. Please, enjoy my creation."</text>
+	<text>An Obelisk ship surrounded by a giant asteroid field hails you. "Do you like them? Every rock, hand crafted. I have spent a millennium creating this place. Please, enjoy my creation."</text>
 	<ship load="SHIP_ANCIENT_SCULPTER" hostile="false"/> 
 	<environment type="asteroid"/>
 	<choice hidden="true">
@@ -2219,11 +2230,11 @@
 							</item_modify>
 						</event>
 					</choice>
-					<choice req="symbiote">
+					<choice req="unique_symbiote">
 						<text>Sell Tintan and Rig.</text>
 						<event>
 							<text>"Oh, what a fine specimen. This will look quite nice amongst my other creatures. Take this payment."</text>
-							<removeCrew class="symbiote">
+							<removeCrew class="unique_symbiote">
 								<clone>false</clone>
 								<text>Your crew cannot be cloned, as you just sold them.</text>
 							</removeCrew>
@@ -2515,7 +2526,7 @@
 												<event>
 													<text>"These facilities were built several centuries ago, and are the primary manufacturing plant for Pandoran Boxes, also called Karthithes in the native language. They have small reality manipulators inside them, and when opened can unleash either divine wonders or unimaginable horrors. Mainly for use in gambling, of course. However, the factory was abandoned when the Obelisks got bored of the pastime, and it was left in my control ever since. Production continues to this day, but without anyone using the boxes our storage is now almost completely filled. This concludes the tour, you may leave."</text>
 													<choice hidden="true">
-														<text>Offer to buy a box. [-20 scrap]</text>
+														<text>Offer to buy a box. [-20~]</text>
 														<event>
 															<text>"You want to take a box? Go, take it."</text>
 															<augment name="PANDORA_BOX_ANCIENT"/>
@@ -2525,7 +2536,7 @@
 														</event>
 													</choice>
 													<choice hidden="true">
-														<text>Hire the Cognitive for yourself. [-40 scrap]</text>
+														<text>Hire the Cognitive for yourself. [-40~]</text>
 														<event>
 															<text>"You want me to go with you? Please, I will take this meaningless junk if it means I may leave this hell behind."</text>
 															<crewMember amount="1" class="cognitive"/>
@@ -2550,7 +2561,7 @@
 							</choice>
 						</event>
 					</choice>
-					<choice hidden="true">
+					<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 						<text>Keep going on your own.</text>
 						<event>
 							<text>You push forward, ignoring the voice. A little while longer, it speaks again. "It is apparent that you do not wish to make yourself welcome. Activating anti-intrusion systems." Suddenly, a laser comes out of the wall, melting one of your crew! To make matters worse, two Cognitives materialize and chase down your crew!</text>
@@ -2560,6 +2571,10 @@
 								<text>Fortunately, your crew has already cloned back on the ship and is ready to fight the cognitive intruders.</text>
 							</removeCrew>
 						</event>
+					</choice>
+					<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+						<text>You really should listen to what the voice just said.</text>
+						<event load="OPTION_INVALID"/>
 					</choice>
 				</event>
 			</choice>

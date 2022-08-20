@@ -127,6 +127,7 @@
 	<text>You have arrived in a Civilian sector. The civilian-run Militia here is competent enough, but they're a little suspicious of strangers. Keep your Federation ID ready just in case.</text>
 </textList>
 <event name="START_CIVILIAN">
+	<metaVariable name="juke_galactic" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -135,11 +136,11 @@
 	<ship load="SHIP_GUARD_CIVILIAN" hostile="false"/>
 	<changeBackground>BACK_SECTOR_CIVILIAN</changeBackground>
 	<playSound>lightspeed</playSound>
-	<choice hidden="true" req="rep_general" lvl="-2147483648" max_lvl="4" max_group="0" blue="false">
+	<choice hidden="true" req="rep_general" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_CIVILIAN"/>
 	</choice>
-	<choice hidden="true" req="rep_general" lvl="5" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_general" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_CIVILIAN_CRIMINAL"/>
 	</choice>
@@ -236,6 +237,13 @@
 			<weapon name="MINELAUNCHER_2"/>
 		</event>
 	</choice>
+	<choice req="unique_haynes" hidden="true">
+		<text>(Haynes) Request supplies.</text>
+		<event>
+			<text>The Militiamen immediately adopt a salute posture upon seeing Haynes aboard your ship, and transfer supplies over.</text>
+			<autoReward level="HIGH">stuff</autoReward>
+		</event>
+	</choice>
 	<choice hidden="true">
 		<text>Change your mind and leave the guard alone.</text>
 		<event>
@@ -326,7 +334,13 @@
 	<noQuestText/>
 	<removeHazards/>
 	<text>By killing the Militia guard, you have no doubt caused them to dispatch reinforcements to track you down. Watch your step as you explore the sector.</text>
-	<quest event="REINFORCEMENTS_CIVILIAN"/>
+	<quest event="REINFORCEMENTS_CIVILIAN">
+		<nebulaBeacon>true</nebulaBeacon>
+		<nextSector>false</nextSector>
+		<nebulaEvent>NEBULA_REINFORCEMENTS_CIVILIAN</nebulaEvent>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
 	<choice>
 		<text>Do something onboard the ship.</text>
 		<event load="STORAGE_CHECK"/>
@@ -346,6 +360,24 @@
 	</beaconType>
 	<text>A Militia ship moves in to attack! Based on the vengeful look in their captain's eye, this is no doubt the ship dispatched by the guard to hunt you down!</text>
 	<ship load="SHIP_CIVILIAN_REINFORCEMENTS" hostile="true"/>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="NEBULA_REINFORCEMENTS_CIVILIAN">
+	<preventQuest/>
+	<beaconType id="map_icon_reinforcements" global="true" req="LOOT_COMPASS">
+		<color r="200" g="55" b="82" a="1"/>
+		<unvisitedTooltip>An unvisited location.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<text>A Militia ship moves in to attack! Based on the vengeful look in their captain's eye, this is no doubt the ship dispatched by the guard to hunt you down!</text>
+	<ship load="SHIP_CIVILIAN_REINFORCEMENTS" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
 	<environment type="PDS" target="player"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -381,9 +413,13 @@
 	<changeBackground>BACK_SECTOR_FEDERATION</changeBackground>
 	<playSound>lightspeed</playSound>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true">
+	<choice hidden="true" req="rep_general" lvl="-2147483648" max_lvl="2" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_FEDERATION"/>
+	</choice>
+	<choice hidden="true" req="rep_general" lvl="3" max_lvl="999" max_group="0" blue="false">
+		<text>Continue...</text>
+		<event load="GUARD_FEDERATION_CRIMINAL"/>
 	</choice>
 </event>
 
@@ -416,6 +452,21 @@
 			<choice>
 				<text>Do nothing.</text>
 				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="GUARD_FEDERATION_CRIMINAL">
+	<text>Something seems off here. Usually, the Federation would certainly not bat an eye at a ship like yours, but now, you catch suspicious chatter on the guard ship.</text>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>It seems your track record has caught up to you. The guard's crew have heard enough of the crimes you've been committing, and they don't intend to let you into the sector!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
 			</choice>
 		</event>
 	</choice>
@@ -538,11 +589,11 @@
 	<changeBackground>BACK_SECTOR_MILITIA</changeBackground>
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_MILITIA" hostile="false"/>
-	<choice hidden="true" req="rep_general" lvl="-2147483648" max_lvl="2" max_group="0" blue="false">
+	<choice hidden="true" req="rep_general" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_MILITIA"/>
 	</choice>
-	<choice hidden="true" req="rep_general" lvl="3" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_general" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_MILITIA_CRIMINAL"/>
 	</choice>
@@ -636,6 +687,13 @@
 			<text>"A Federation soldier! You must be a very important vessel! I'm afraid we have little to give other than this spare Mine Launcher. I've never been a fan of the things myself, but maybe you'll find use in it."</text>
 			<autoReward level="HIGH">missiles</autoReward>
 			<weapon name="MINELAUNCHER_2"/>
+		</event>
+	</choice>
+	<choice req="unique_haynes" hidden="true">
+		<text>(Haynes) Request supplies.</text>
+		<event>
+			<text>The Militiamen immediately adopt a salute posture upon seeing Haynes aboard your ship, and transfer supplies over.</text>
+			<autoReward level="HIGH">stuff</autoReward>
 		</event>
 	</choice>
 	<choice hidden="true">
@@ -777,6 +835,7 @@
 	<text>You have arrived in Engi space. Technology has been the center of the Engi race's government for a long time, and they tend to value science over their own families.</text>
 </textList>
 <event name="START_ENGI">
+	<metaVariable name="juke_harmony" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -786,11 +845,11 @@
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_ENGI" hostile="false"/>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_engi" lvl="-2147483648" max_lvl="3" max_group="0" blue="false">
+	<choice hidden="true" req="rep_engi" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_ENGI"/>
 	</choice>
-	<choice hidden="true" req="rep_engi" lvl="4" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_engi" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_ENGI_CRIMINAL"/>
 	</choice>
@@ -1025,6 +1084,7 @@
 	<text>You appear to have entered a liberated Engi Sector. It's bound to be filled with Engi Separatists, celebrating their freedom from the Engi Harmony.</text>
 </textList>
 <event name="START_SEPERATIST">
+	<metaVariable name="juke_separatist" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -1066,6 +1126,7 @@
 	<text>You're far from Federation home space here in Zoltan territory, and it's not clear whether the authorities will have any goodwill remaining. Still, you have to push forward.</text>
 </textList>
 <event name="START_ZOLTAN">
+	<metaVariable name="juke_ministry" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -1075,11 +1136,11 @@
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_ZOLTAN" hostile="false"/>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_zoltan" lvl="-2147483648" max_lvl="2" max_group="0" blue="false">
+	<choice hidden="true" req="rep_zoltan" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_ZOLTAN"/>
 	</choice>
-	<choice hidden="true" req="rep_zoltan" lvl="3" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_zoltan" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_ZOLTAN_CRIMINAL"/>
 	</choice>
@@ -1160,7 +1221,7 @@
 			<autoReward level="LOW">stuff</autoReward>
 		</event>
 	</choice>
-	<choice req="zoltan_monk" hidden="true">
+	<choice req="LIST_CREW_MONK" hidden="true">
 		<text>(Monk Crew) Guilt them into giving you some scrap.</text>
 		<event>
 			<text>Your Monk gives a long speech about morals and living a life free of sin to the guard. Apparently it works, because the Zoltan crew feels enough guilt for whatever sins they might have committed in the past to pay your monk to free themselves of the weight.</text>
@@ -1220,7 +1281,7 @@
 </event>
 <eventList name="GUARD_ZOLTAN_THREATEN">
 	<event>
-		<text>The Zoltan make no attempt to respond to your threats, at least not verbally. Instead, they power up their weapons and move in to attack!</text>
+		<text>The Zoltans make no attempt to respond to your threats, at least not verbally. Instead, they power up their weapons and move in to attack!</text>
 		<ship hostile="true"/>
 		<choice hidden="true">
 			<text>Continue...</text>
@@ -1266,7 +1327,13 @@
 	<noQuestText/>
 	<removeHazards/>
 	<text>By killing the Zoltan guard, you have no doubt caused them to dispatch reinforcements to track you down. Watch your step as you explore the sector.</text>
-	<quest event="REINFORCEMENTS_ZOLTAN"/>
+	<quest event="REINFORCEMENTS_ZOLTAN">
+		<nebulaBeacon>true</nebulaBeacon>
+		<nextSector>false</nextSector>
+		<nebulaEvent>NEBULA_REINFORCEMENTS_ZOLTAN</nebulaEvent>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
 	<choice>
 		<text>Do something onboard the ship.</text>
 		<event load="STORAGE_CHECK"/>
@@ -1292,6 +1359,24 @@
         <event load="COMBAT_CHECK"/>
     </choice>
 </event>
+<event name="NEBULA_REINFORCEMENTS_ZOLTAN">
+	<preventQuest/>
+	<beaconType id="map_icon_reinforcements" global="true" req="LOOT_COMPASS">
+		<color r="200" g="55" b="82" a="1"/>
+		<unvisitedTooltip>An unvisited location.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<text>"Stop right there! You are fugitives of the law, wanted for destruction of this sector's guard ship!" The nearby Zoltan ship moves in to attack.</text>
+	<ship load="SHIP_ZOLTAN_REINFORCEMENTS" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
 
 <!--
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -1310,6 +1395,7 @@
 	<text>The Free Mantis reside in the outskirts of Zoltan territory, but have not been received well. Hopefully you can find assistance from your Mantis allies, but not have to engage any Zoltan.</text>
 </textList>
 <event name="START_FREEMANTIS">
+	<metaVariable name="juke_freemantis" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -1319,11 +1405,11 @@
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_FREEMANTIS" hostile="false"/>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_freemantis" lvl="-2147483648" max_lvl="3" max_group="0" blue="false">
+	<choice hidden="true" req="rep_freemantis" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_FREEMANTIS"/>
 	</choice>
-	<choice hidden="true" req="rep_freemantis" lvl="4" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_freemantis" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_FREEMANTIS_CRIMINAL"/>
 	</choice>
@@ -1554,6 +1640,7 @@
 	<text>The Crystals have been divided ever since they left their Homeworlds. Some have sought out the Federation while others have decided to establish new sectors around the galaxy, such as this one.</text>
 </textList>
 <event name="START_CRYSTAL">
+	<metaVariable name="juke_crystal" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -1563,11 +1650,11 @@
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_CRYSTAL" hostile="false"/>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_crystal" lvl="-2147483648" max_lvl="2" max_group="0" blue="false">
+	<choice hidden="true" req="rep_crystal" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_CRYSTAL"/>
 	</choice>
-	<choice hidden="true" req="rep_crystal" lvl="3" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_crystal" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_CRYSTAL_CRIMINAL"/>
 	</choice>
@@ -1746,7 +1833,13 @@
 	<noQuestText/>
 	<removeHazards/>
 	<text>By killing the Crystal guard, you have no doubt caused them to dispatch reinforcements to track you down. Watch your step as you explore the sector.</text>
-	<quest event="REINFORCEMENTS_CRYSTAL"/>
+	<quest event="REINFORCEMENTS_CRYSTAL">
+		<nebulaBeacon>true</nebulaBeacon>
+		<nextSector>false</nextSector>
+		<nebulaEvent>NEBULA_REINFORCEMENTS_CRYSTAL</nebulaEvent>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
 	<choice>
 		<text>Do something onboard the ship.</text>
 		<event load="STORAGE_CHECK"/>
@@ -1772,6 +1865,24 @@
 		<event load="COMBAT_CHECK"/>
 	</choice>
 </event>
+<event name="NEBULA_REINFORCEMENTS_CRYSTAL">
+	<preventQuest/>
+	<beaconType id="map_icon_reinforcements" global="true" req="LOOT_COMPASS">
+		<color r="200" g="55" b="82" a="1"/>
+		<unvisitedTooltip>An unvisited location.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<text>"Outsiders, we knew you were barbaric, but when we migrated here we had no idea you would intrude our sector and threaten our ways with such violent acts! We will avenge our fallen brothers aboard the guard ship you so ruthlessly destroyed!"</text>
+	<ship load="SHIP_CRYSTAL_REINFORCEMENTS" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
 
 <!--
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -1789,6 +1900,7 @@
 	<text>You've entered a sector populated by the reclusive but friendly Orchid race. They don't approve of the violent battles of the Civil War, but they've taken effort to aid the Federation where possible.</text>
 </textList>
 <event name="START_ORCHID">
+	<metaVariable name="juke_orchid" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -1798,11 +1910,11 @@
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_ORCHID" hostile="false"/>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_orchid" lvl="-2147483648" max_lvl="2" max_group="0" blue="false">
+	<choice hidden="true" req="rep_orchid" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_ORCHID"/>
 	</choice>
-	<choice hidden="true" req="rep_orchid" lvl="3" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_orchid" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_ORCHID_CRIMINAL"/>
 	</choice>
@@ -2160,11 +2272,11 @@
 		</choice>
 	</event>
 	<event>
-		<text>"Your people dare so much as call us the barbarians, but it is your actions that prove you are the savages! Had I any less desire to see my brothers and sisters again I wouldn't be so kind as to give in to your disgusting threats."</text>
+		<text>"Your people dare so much as call us the barbarians, but it is your actions that prove you are the savages! Had I any less desire to see my brothers and sisters again, I wouldn't be so kind as to give in to your disgusting threats."</text>
 		<autoReward level="LOW">stuff</autoReward>
 	</event>
 	<event>
-		<text>"Your people dare so much as call us the barbarians, but it is your actions that prove you are the savages! Had I any less desire to see my brothers and sisters again I wouldn't be so kind as to give in to your disgusting threats."</text>
+		<text>"Your people dare so much as call us the barbarians, but it is your actions that prove you are the savages! Had I any less desire to see my brothers and sisters again, I wouldn't be so kind as to give in to your disgusting threats."</text>
 		<autoReward level="LOW">stuff</autoReward>
 	</event>
 </eventList>
@@ -2470,6 +2582,7 @@
 	<text>You have arrived in a Shell sector. The Shells prefer to avoid conflict when they can, and their ships are usually very well protected. Make sure you'll be able to penetrate their defenses before you go trying to fight them.</text>
 </textList>
 <event name="START_SHELL">
+	<metaVariable name="juke_shell" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -2479,11 +2592,11 @@
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_SHELL" hostile="false"/>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_shell" lvl="-2147483648" max_lvl="2" max_group="0" blue="false">
+	<choice hidden="true" req="rep_shell" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_SHELL"/>
 	</choice>
-	<choice hidden="true" req="rep_shell" lvl="3" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_shell" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_SHELL_CRIMINAL"/>
 	</choice>
@@ -2660,6 +2773,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_SHELL</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -2752,7 +2866,7 @@
 	<choice hidden="true">
 		<text>Are you Commander Montgomery?</text>
 		<event>
-			<text>"What? Yes, but how did you get that name?" He pauses for a moment. "Are you the ship they told me was coming? Thank god, we're getting our asses handed to us. Senator Wright did not prepare the C.D.E.G. for the Brood and we've barely been able to keep the situation under control."</text>
+			<text>"What? Yes, but how did you get that name?" He pauses for a moment. "Are you the ship they told me was coming? Thank god, we're getting our asses handed to us. Senator Wright did not prepare the EDC for the Brood and we've barely been able to keep the situation under control."</text>
 			<choice hidden="true">
 				<text>We heard there was another Renegade here. What happened?</text>
 				<event>
@@ -3000,6 +3114,7 @@
     <text>This sector is one of the Automated Rebel Shipyards. All around are scattered scaffolding and Auto-ships, many of which are lying dormant. This won't be like most sectors.</text>
 </textList>
 <event name="START_AUTO">
+	<metaVariable name="juke_auto" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -3145,6 +3260,7 @@
 	<text>In many ways the Coalition is even more dangerous than the Rebellion themselves. Still, you must push forward and find your way out of this sector in one piece.</text>
 </textList>
 <event name="START_COALITION">
+	<metaVariable name="juke_coalition" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -3245,7 +3361,13 @@
 	<noQuestText/>
 	<removeHazards/>
 	<text>By killing the Coalition guard, you have no doubt caused them to dispatch reinforcements to track you down. Watch your step as you explore the sector.</text>
-	<quest event="REINFORCEMENTS_COALITION"/>
+	<quest event="REINFORCEMENTS_COALITION">
+		<nebulaBeacon>true</nebulaBeacon>
+		<nextSector>false</nextSector>
+		<nebulaEvent>NEBULA_REINFORCEMENTS_COALITION</nebulaEvent>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
 	<choice>
 		<text>Do something onboard the ship.</text>
 		<event load="STORAGE_CHECK"/>
@@ -3271,6 +3393,24 @@
 		<event load="COMBAT_CHECK"/>
 	</choice>
 </event>
+<event name="NEBULA_REINFORCEMENTS_COALITION">
+	<preventQuest/>
+	<beaconType id="map_icon_reinforcements" global="true" req="LOOT_COMPASS">
+		<color r="200" g="55" b="82" a="1"/>
+		<unvisitedTooltip>An unvisited location.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<text>"We will destroy you Federation scum! You will regret ever coming here!" A hostile Coalition ship approaches, and you suspect they're angry for a lot more than just the dead guard.</text>
+	<ship load="SHIP_COALITION_REINFORCEMENTS" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
 
 <!--
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -3289,6 +3429,7 @@
 	<text>Since the re-emergence of the Crystal race, the Rock Government has been in tatters. What this means for your mission, you can't say for certain.</text>
 </textList>
 <event name="START_ROCK">
+	<metaVariable name="juke_theocracy" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -3475,6 +3616,7 @@
 	<text>The Duskbringers are known for their radical ways of dealing with those who disagree with their views on the way the galaxy should be governed. Unless you're willing to surrender to your fascist Zoltan overlords, you'll need to watch your back as you traverse this sector.</text>
 </textList>
 <event name="START_DUSKBRINGER">
+	<metaVariable name="juke_dusk" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -3545,15 +3687,7 @@
 	</choice>
 	<choice hidden="true" req="mind">
 		<text>(Mind Control) Your mind control will not work, as the guard's Zoltan Shield is still functional.</text>
-		<event>
-			<text>NO</text>
-			<item_modify>
-				<item type="scrap" min="-999" max="-999"/>
-				<item type="fuel" min="-999" max="-999"/>
-				<item type="missiles" min="-999" max="-999"/>
-				<item type="drones" min="-999" max="-999"/>
-			</item_modify>
-		</event>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true" req="cloaking">
 		<text>(Cloaking) Cloak and try to escape.</text>
@@ -3587,10 +3721,6 @@
 	<surrender min="5" max="6" load="GUARD_SIGNAL"/>
 	<destroyed load="GUARD_DUSK_DESTROY"/>
 	<deadCrew load="GUARD_DUSK_DEADCREW"/>
-	<crew>
-		<crewMember type="zoltan" prop="0.80"/>
-		<crewMember type="zoltan_devotee" prop="0.20"/>	
-	</crew>
 </ship>
 
 <event name="GUARD_DUSK_DESTROY">
@@ -3619,7 +3749,13 @@
 	<noQuestText/>
 	<removeHazards/>
 	<text>By killing the Duskbringer guard, you have no doubt caused them to dispatch reinforcements to track you down. Watch your step as you explore the sector.</text>
-	<quest event="REINFORCEMENTS_DUSK"/>
+	<quest event="REINFORCEMENTS_DUSK">
+		<nebulaBeacon>true</nebulaBeacon>
+		<nextSector>false</nextSector>
+		<nebulaEvent>NEBULA_REINFORCEMENTS_DUSK</nebulaEvent>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
 	<choice>
 		<text>Do something onboard the ship.</text>
 		<event load="STORAGE_CHECK"/>
@@ -3637,8 +3773,26 @@
 		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
 		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
 	</beaconType>
-	<text>"You are not wanted here! You have intruded in our territory where you know you are not welcome, and you have killed our guard! Prepare to die!"</text>
+	<text>"Renegade, you are not welcome here! Long has the Federation interfered with the rightful destiny of Zoltankind, and soon your days will be numbered! You've killed our kin aboard the guard ship, and now we'll return the favor!"</text>
 	<ship load="SHIP_DUSK_REINFORCEMENTS" hostile="true"/>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="NEBULA_REINFORCEMENTS_DUSK">
+	<preventQuest/>
+	<beaconType id="map_icon_reinforcements" global="true" req="LOOT_COMPASS">
+		<color r="200" g="55" b="82" a="1"/>
+		<unvisitedTooltip>An unvisited location.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<text>"Renegade, you are not welcome here! Long has the Federation interfered with the rightful destiny of Zoltankind, and soon your days will be numbered! You've killed our kin aboard the guard ship, and now we'll return the favor!"</text>
+	<ship load="SHIP_DUSK_REINFORCEMENTS" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
 	<environment type="PDS" target="player"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -3663,6 +3817,7 @@
 	<text>You've entered a poorly charted area of space that's known to be home to the Mantis. You won't find many friendly faces here, or at least not many living ones.</text>
 </textList>
 <event name="START_MANTIS">
+	<metaVariable name="juke_hive" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -3864,6 +4019,7 @@
 </textList>
 
 <event name="START_GHOST_NOSHIP">
+	<metaVariable name="juke_haunted" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -3889,6 +4045,7 @@
 </event>
 
 <event name="START_GHOST_SHIP">
+	<metaVariable name="juke_haunted" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -3964,7 +4121,7 @@
 
 <event name="GUARD_GHOST_FOLLOWUP">
 	<noQuestText/>
-	<removeHazards/>
+	<!--<removeHazards/>-->
 	<text>By killing the makeshift Vagabond guard, you've probably upset the other clans here. They probably won't be so pleased with you after this.</text>
 	<quest event="REINFORCEMENTS_GHOST"/>
 	<choice>
@@ -4004,6 +4161,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_GHOSTWASTE">
+	<metaVariable name="juke_haunted" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -4106,8 +4264,8 @@
 </event>
 
 <event name="GUARD_GHOSTWASTE_FOLLOWUP">
-	<noQuestText/>
-	<removeHazards/>
+	<!--<noQuestText/>
+	<removeHazards/>-->
 	<text>You doubt the Dynasty's presence here is strong enough to really fight back after you've killed the guard. Hopefully, the resident Vagabonds don't stir up too much trouble either.</text>
 	<choice>
 		<text>Do something onboard the ship.</text>
@@ -4208,11 +4366,11 @@
 </event>
 <event name="GUARD_PIRATE_DEADCREW">
 	<text>You have defeated the Pirate guard. Without crew on-board to stop you, you can investigate their cargo. You find a lot of supplies to bring back to the ship, and move on to scrap their hull.</text>
-	<autoReward level="MED">standard</autoReward>
+	<autoReward level="HIGH">scrap_only</autoReward>
 	<item_modify>
-		<item type="fuel" min="4" max="5"/>
-		<item type="missiles" min="3" max="4"/>
-		<item type="drones" min="2" max="3"/>
+		<item type="fuel" min="5" max="5"/>
+		<item type="missiles" min="4" max="4"/>
+		<item type="drones" min="3" max="3"/>
 	</item_modify>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -4228,7 +4386,13 @@
 	<noQuestText/>
 	<removeHazards/>
 	<text>By killing the Pirate guard, you have no doubt caused them to dispatch reinforcements to track you down. Watch your step as you explore the sector.</text>
-	<quest event="REINFORCEMENTS_PIRATE"/>
+	<quest event="REINFORCEMENTS_PIRATE">
+		<nebulaBeacon>true</nebulaBeacon>
+		<nextSector>false</nextSector>
+		<nebulaEvent>NEBULA_REINFORCEMENTS_PIRATE</nebulaEvent>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
 	<choice>
 		<text>Do something onboard the ship.</text>
 		<event load="STORAGE_CHECK"/>
@@ -4248,6 +4412,24 @@
 	</beaconType>
 	<text>You receive a hail from a pirate ship. "Hope you understand this is nothin' personal, but you killed our guard and that's something we just can't allow!"</text>
 	<ship load="SHIP_PIRATE_REINFORCEMENTS" hostile="true"/>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="NEBULA_REINFORCEMENTS_PIRATE">
+	<preventQuest/>
+	<beaconType id="map_icon_reinforcements" global="true" req="LOOT_COMPASS">
+		<color r="200" g="55" b="82" a="1"/>
+		<unvisitedTooltip>An unvisited location.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<text>You receive a hail from a pirate ship. "Hope you understand this is nothin' personal, but you killed our guard and that's something we just can't allow!"</text>
+	<ship load="SHIP_PIRATE_REINFORCEMENTS" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
 	<environment type="PDS" target="player"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -4274,6 +4456,7 @@
 	<text>The Slugs developed on an ocean planet where the ability to telepathically sense another organism was more important than sight. Today they use this ability to navigate unfettered the depths of the nebulas they inhabit.</text>
 </textList>
 <event name="START_SLUG">
+	<metaVariable name="juke_kleptocracy" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -4381,6 +4564,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_SLUG</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -4450,6 +4634,7 @@
 	<text>The entry to this sector alone is littered with junk barely suitable for a Flak cannon in all directions. You've heard stories of the state of utter disrepair that these sectors are in, but this still comes as a shock. What else could await you here?</text>
 </textList>
 <event name="START_LEECH_NORMAL">
+	<metaVariable name="juke_leech" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -4466,6 +4651,7 @@
 	</choice>
 </event>
 <event name="START_LEECH_COALITION">
+	<metaVariable name="juke_leech" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -4668,6 +4854,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_LEECH</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -4717,6 +4904,7 @@
 
 
 <event name="START_LEECHCAP">
+	<metaVariable name="juke_leech" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -4733,7 +4921,7 @@
 	</choice>
 </event>
 <ship name="SHIP_GUARD_LEECH_ELITE" auto_blueprint="MU_LEECH_GUARD_ELITE">
-	<surrender min="5" max="6" load="GUARD_SIGNAL"/>
+	<surrender min="999" max="999" load="GUARD_SIGNAL"/>
 	<destroyed load="GUARD_LEECHCAP_DESTROY"/>
 	<deadCrew load="GUARD_LEECHCAP_DEADCREW"/>
 	<crew>
@@ -4775,6 +4963,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_LEECHCAP</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -4918,7 +5107,7 @@
 </event>
 <eventList name="GUARD_DYNASTY_TALK">
 	<event>
-		<text>"There exists no mercy in hell, so shant I not give it here? Cause erupt a mighty panic if allowing any of yours through these gates! One of us or not, you see not a glint of care in mine eyes!"</text>
+		<text>"There exists no mercy in hell, so shan't I not give it here? Cause erupt a mighty panic if allowing any of yours through these gates! One of us or not, you see not a glint of care in mine eyes!"</text>
 		<ship hostile="true"/>
 		<choice hidden="true">
 			<text>Continue...</text>
@@ -4970,6 +5159,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_DYNASTY</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -5096,6 +5286,17 @@
 		<text>(Slug Crew) Your Slug senses distress among the civilians. He advises we arm the weapons.</text>
 		<event>
 			<text>Noticing your silence, an impatient hacker ship uncloaks nearby. "Damn you, traitoroussss Sslug! One of our kind, working on a Federation vessssel? Heresssy!"</text>
+			<ship load="SHIP_GUARD_HACKER" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+		<text>(Telepathic Shell) Your Shell senses distress among the civilians. They advise we arm the weapons.</text>
+		<event>
+			<text>Noticing your silence, an impatient hacker ship uncloaks nearby. "Damn you, filthy Ssshell! Sssstealing our traitsss, and ssserving on a Federation vessssel? Unbelievably dessspicable!"</text>
 			<ship load="SHIP_GUARD_HACKER" hostile="true"/>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -5681,6 +5882,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_NEBULA">
+	<metaVariable name="juke_unexplored" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -5752,6 +5954,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_COREWORLDS">
+	<metaVariable name="juke_galactic" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -5761,11 +5964,11 @@
 	<ship load="SHIP_GUARD_CIVILIAN_COREWORLDS" hostile="false"/>
 	<changeBackground>BACK_SECTOR_CIVILIAN</changeBackground>
 	<playSound>lightspeed</playSound>
-	<choice hidden="true" req="rep_general" lvl="-2147483648" max_lvl="4" max_group="0" blue="false">
+	<choice hidden="true" req="rep_general" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_CIVILIAN_COREWORLDS"/>
 	</choice>
-	<choice hidden="true" req="rep_general" lvl="5" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_general" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_CIVILIAN_CRIMINAL"/>
 	</choice>
@@ -5774,19 +5977,19 @@
 <event name="GUARD_CIVILIAN_COREWORLDS">
 	<text>You're immediately hailed by the guard. "This is a vital sector to the Galactic Union which makes up the Civilian representation of the Federation. We must run a full background check and scan of your ship to allow you through." As you are already a Federation vessel, you should have no difficulty getting past.</text>
 	<status type="limit" target="enemy" system="teleporter" amount="0"/>
-	<choice hidden="true" req="symbiote" lvl="0" max_group="0" blue="false">
+	<choice hidden="true" req="unique_symbiote" lvl="0" max_group="0" blue="false">
 		<text>Undergo the inspection.</text>
 		<event>
 			<text>After long last you make your way to the checkpoint entrance. Your crew are taken one by one into a full-room scanning machine that examines everything from their chemical makeup to the contents of their stomach. Your crew might be a makeshift crew of all kinds, but the Militiamen don't seem to care and you're allowed to pass.</text>
 		</event>
 	</choice>
-	<choice hidden="true" req="symbiote" lvl="1" max_group="0" blue="false">
+	<choice hidden="true" req="unique_symbiote" lvl="1" max_group="0" blue="false">
 		<text>Undergo the inspection.</text>
 		<event>
 			<text>After long last you make your way to the checkpoint entrance. Your crew are taken one by one into a full-room scanning machine that examines everything from their chemical makeup to the contents of their stomach. There's some trouble where they think your Symbiote is trying to smuggle in a Zoltan refugee, but after you try to explain the complicated situation they just give up and let them through. The rest of your crew might be a makeshift crew of all kinds, but the Militiamen don't seem to care and you're all allowed to pass.</text>
 		</event>
 	</choice>
-	<choice hidden="true" max_group="1">
+	<choice hidden="true" req="pilot" blue="false" max_group="1">
 		<text>Forget the inspection, attack the checkpoint!</text>
 		<event>
 			<text>You could have easily gotten past the checkpoint, but instead you have decided to attack.</text>
@@ -5800,8 +6003,16 @@
 	<choice hidden="true" req="LIST_CREW_MILITIA_ELITE_RANDOM_PLAYER">
 		<text>(Soldier/Peacekeeper Crew) Submit your Federation ID quickly and request repairs.</text>
 		<event>
-			<text>It doesn't take long for your crewmember to get you though security, and with a little extra negotiation, they convince the Militia ships to patch up your hull.</text>
+			<text>It doesn't take long for your crewmember to get you through security, and with a little extra negotiation, they convince the Militia ships to patch up your hull.</text>
 			<damage amount="-7"/>
+		</event>
+	</choice>
+	<choice req="unique_haynes" hidden="true">
+		<text>(Haynes) Request to skip the checkpoint and ask for help.</text>
+		<event>
+			<text>It doesn't take long for Haynes to get you through security, and with a little extra negotiation, he convinces the Militia ships to patch up your hull and transfer supplies.</text>
+			<damage amount="-7"/>
+			<autoReward level="MED">stuff</autoReward>
 		</event>
 	</choice>
 </event>
@@ -5883,6 +6094,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_HARMONY">
+	<metaVariable name="juke_harmony" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -5893,11 +6105,11 @@
 	<changeBackground>BACK_SECTOR_ENGI</changeBackground>
 	<playSound>lightspeed</playSound>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_engi" lvl="-2147483648" max_lvl="3" max_group="0" blue="false">
+	<choice hidden="true" req="rep_engi" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_HARMONY"/>
 	</choice>
-	<choice hidden="true" req="rep_engi" lvl="4" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_engi" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_ENGI_CRIMINAL"/>
 	</choice>
@@ -6145,6 +6357,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_CAPITAL">
+	<metaVariable name="juke_ministry" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -6155,11 +6368,11 @@
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_ZOLTAN_CAPITAL" hostile="false"/>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_zoltan" lvl="-2147483648" max_lvl="2" max_group="0" blue="false">
+	<choice hidden="true" req="rep_zoltan" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_ZOLTAN_CAPITAL"/>
 	</choice>
-	<choice hidden="true" req="rep_zoltan" lvl="3" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_zoltan" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_ZOLTAN_CRIMINAL"/>
 	</choice>
@@ -6275,7 +6488,13 @@
 	<noQuestText/>
 	<removeHazards/>
 	<text>By killing the Zoltan guard, you have no doubt caused them to dispatch reinforcements to track you down. Watch your step as you explore the sector.</text>
-	<quest event="REINFORCEMENTS_ZOLTAN_CAPITAL"/>
+	<quest event="REINFORCEMENTS_ZOLTAN_CAPITAL">
+		<nebulaBeacon>true</nebulaBeacon>
+		<nextSector>false</nextSector>
+		<nebulaEvent>NEBULA_REINFORCEMENTS_ZOLTAN_CAPITAL</nebulaEvent>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
 	<choice>
 		<text>Do something onboard the ship.</text>
 		<event load="STORAGE_CHECK"/>
@@ -6301,6 +6520,24 @@
 		<event load="COMBAT_CHECK"/>
 	</choice>
 </event>
+<event name="NEBULA_REINFORCEMENTS_ZOLTAN_CAPITAL">
+	<preventQuest/>
+	<beaconType id="map_icon_reinforcements" global="true" req="LOOT_COMPASS">
+		<color r="200" g="55" b="82" a="1"/>
+		<unvisitedTooltip>An unvisited location.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<text>"Stop right there! You are fugitives of the law, wanted for destruction of this sector's guard ship!" The nearby Zoltan ship moves in to attack.</text>
+	<ship load="SHIP_CAPITAL_REINFORCEMENTS" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
 
 <!--
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -6314,6 +6551,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_HUNTGROUNDS">
+	<metaVariable name="juke_freemantis" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -6324,11 +6562,11 @@
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_HUNTGROUNDS" hostile="false"/>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_freemantis" lvl="-2147483648" max_lvl="4" max_group="0" blue="false">
+	<choice hidden="true" req="rep_freemantis" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_HUNTGROUNDS"/>
 	</choice>
-	<choice hidden="true" req="rep_freemantis" lvl="5" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_freemantis" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_FREEMANTIS_CRIMINAL"/>
 	</choice>
@@ -6424,6 +6662,17 @@
 					</removeCrew>
 				</event>
 			</choice>
+			<choice hidden="true" req="unique_anurak" blue="false">
+				<text>Let them take Anurak and proceed.</text>
+				<event>
+					<text>The Free Mantis shackle up your Zoltan crew and drag them off your ship. "Glad to clear up scum on Federation vessel! If needing another check, just stop by and we help out." The Free Mantis drop off some scrap to "compensate for the Zoltan's damage" and leave.</text>
+					<autoReward level="HIGH">weapon</autoReward>
+					<removeCrew class="unique_devorak">
+						<clone>false</clone>
+						<text>Your Zoltan cannot be cloned while they are still alive. For now, at least...</text>
+					</removeCrew>
+				</event>
+			</choice>
 			<choice hidden="true" req="mind">
 				<text>(Mind Control) These aren't the Zoltans you're looking for.</text>
 				<event>
@@ -6432,7 +6681,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" req="pilot" blue="false">
 		<text>Blast your way through!</text>
 		<event>
 			<text>You've decided to ignore any possibility of a peaceful resolution, and turn to destroying the Free Mantis ship immediately.</text>
@@ -6638,7 +6887,7 @@
 </eventList>
 
 <ship name="SHIP_GUARD_BADLANDS" auto_blueprint="MU_OUTCAST_GUARD_BADLANDS">
-	<surrender min="5" max="6" load="GUARD_SIGNAL"/>
+	<surrender min="999" max="999" load="GUARD_SIGNAL"/>
 	<destroyed load="GUARD_OUTCAST_DESTROY"/>
 	<deadCrew load="GUARD_OUTCAST_DEADCREW"/>
 </ship>
@@ -6655,18 +6904,18 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->
 <event name="START_DUSKCAP">
+	<metaVariable name="juke_dusk" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
 	</beaconType>
-	<text>You've arrived in the Duskbringer Capitol, not to be confused with the Zoltan Capital. The spelling of the sector is a difficult topic, but it's the least of your concerns. This sector is populated by the most devoted of the Duskbringers, dangerous radical Zoltans whose fascist beliefs hardly coincide with those of the Federation. Keep a watchful eye as you traverse this sector, and watch out for stray Rebels too!</text>
+	<text>You've arrived in the Duskbringer Stronghold. This sector is populated by the most devoted of the Duskbringers, dangerous radical Zoltans whose fascist beliefs hardly coincide with those of the Federation. Keep a watchful eye as you traverse this sector.</text>
 	<variable name="loc_unique_sectors" op="add" val="1"/>
 	<changeBackground>BACK_SECTOR_DUSKBRINGER</changeBackground>
 	<playSound>lightspeed</playSound>
 	<customFleet right="false" firing="false" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
 	<customFleet right="true" firing="true" autoDarkening="true">CUSTOM_FLEET_DUSK</customFleet>
 	<ship load="SHIP_GUARD_DUSK_ELITE" hostile="false"/>
-	<remove name="HIDDEN DUMMY"/>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event load="GUARD_DUSKCAP"/>
@@ -6674,7 +6923,7 @@
 </event>
 
 <event name="GUARD_DUSKCAP">
-	<text>This sector is in far worse condition than you ever expected. A Rebel fleet is firing on the Duskbringers, who are retaliating with their own squadron. The guard that would normally ward you off is busy handling Rebels, and there's a good chance you could sneak past.</text>
+	<text>This sector is in far worse condition than you ever expected. In the distance is a major skirmish between the interdimensional Rebel fleet from Universe 1 and the Duskbringers. The guards seem overwhelmed with the invaders; you might be able to slip past undetected if you're lucky.</text>
 	<status type="limit" target="enemy" system="teleporter" amount="0"/>
 	<choice>
 		<text>Take this opportunity to run!</text>
@@ -6732,11 +6981,6 @@
 <ship name="SHIP_GUARD_DUSK_ELITE" auto_blueprint="MU_DUSK_GUARD_ELITE">
 	<destroyed load="GUARD_DUSKCAP_DESTROY"/>
 	<deadCrew load="GUARD_DUSKCAP_DEADCREW"/>
-	<crew>
-		<crewMember type="zoltan" prop="0.30"/>
-		<crewMember type="zoltan_devotee" prop="0.30"/>
-		<crewMember type="zoltan_martyr" prop="0.30"/>
-	</crew>
 </ship>
 
 <event name="GUARD_DUSKCAP_DESTROY">
@@ -6760,17 +7004,18 @@
 <ship name="SHIP_DUSKCAP_REINFORCEMENTS" auto_blueprint="LIST_SHIPS_DUSKBRINGER_ELITE_FIGHT">
 	<destroyed load="DESTROYED_REINFORCEMENTS"/>
 	<deadCrew load="DEADCREW_REINFORCEMENTS"/>
-	<crew>
-		<crewMember type="zoltan" prop="0.30"/>
-		<crewMember type="zoltan_devotee" prop="0.30"/>
-		<crewMember type="zoltan_martyr" prop="0.30"/>
-	</crew>
 </ship>
 <event name="GUARD_DUSKCAP_FOLLOWUP">
 	<noQuestText/>
 <!---	<removeHazards/> -->
 	<text>By killing the Duskbringer guard, you have no doubt caused them to dispatch reinforcements to track you down. Watch your step as you explore the sector.</text>
-	<quest event="REINFORCEMENTS_DUSKCAP"/>
+	<quest event="REINFORCEMENTS_DUSKCAP">
+		<nebulaBeacon>true</nebulaBeacon>
+		<nextSector>false</nextSector>
+		<nebulaEvent>NEBULA_REINFORCEMENTS_DUSKCAP</nebulaEvent>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
 	<choice>
 		<text>Do something onboard the ship.</text>
 		<event load="STORAGE_CHECK"/>
@@ -6788,8 +7033,27 @@
 		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
 		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
 	</beaconType>
-	<text>"You are not wanted here! You have intruded in our territory where you know you are not welcome, and you have killed our guard! Prepare to die!"</text>
+	<text>"Renegade, you are not welcome here! Long has the Federation interfered with the rightful destiny of Zoltankind, and soon your days will be numbered! You've killed our kin aboard the guard ship, and now we'll return the favor!"</text>
 	<ship load="SHIP_DUSKCAP_REINFORCEMENTS" hostile="true"/>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="NEBULA_REINFORCEMENTS_DUSKCAP">
+	<preventQuest/>
+	<beaconType id="map_icon_reinforcements" global="true" req="LOOT_COMPASS">
+		<color r="200" g="55" b="82" a="1"/>
+		<unvisitedTooltip>An unvisited location.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<text>"Renegade, you are not welcome here! Long has the Federation interfered with the rightful destiny of Zoltankind, and soon your days will be numbered! You've killed our kin aboard the guard ship, and now we'll return the favor!"</text>
+	<ship load="SHIP_DUSKCAP_REINFORCEMENTS" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
 	<environment type="PDS" target="player"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -6809,6 +7073,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_GARDEN">
+	<metaVariable name="juke_orchid" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -6819,11 +7084,11 @@
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_GARDEN" hostile="false"/>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_orchid" lvl="-2147483648" max_lvl="2" max_group="0" blue="false">
+	<choice hidden="true" req="rep_orchid" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_GARDEN"/>
 	</choice>
-	<choice hidden="true" req="rep_orchid" lvl="3" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_orchid" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_ORCHID_CRIMINAL"/>
 	</choice>
@@ -7163,6 +7428,7 @@
 
 <event name="GUARD_ESTATE_DESTROY">
 	<text>You have defeated the Auto-guard. You salvage the remains.</text>
+	<weapon name="GIFTLIST_ESTATE"/>
 	<autoReward level="HIGH">standard</autoReward>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -7216,6 +7482,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->
 <event name="START_JERRY">
+	<metaVariable name="juke_jerry" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -7315,6 +7582,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_SHIPYARD">
+	<metaVariable name="juke_auto" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -7425,6 +7693,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_SLUGHOME">
+	<metaVariable name="juke_kleptocracy" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -7474,7 +7743,7 @@
 	<choice hidden="true" req="slug_knight">
 		<text>(Knight Crew) Your Knight has some discipline to teach to that Clairvoyant.</text>
 		<event>
-			<text>Your Knight makes their way towards the comms, and upon seeing them, the Saboteur at the other end falls in visible discomfort. Instead of exchanging words however, the Knight merely enters into what seems to be a transe state, joined in by the Clairvoyant at the other side.</text>
+			<text>Your Knight makes their way towards the comms, and upon seeing them, the Saboteur at the other end displays what seems to be discomfort. Instead of exchanging words however, the Knight merely enters into what seems to be a trance state, joined in by the Clairvoyant at the other side.</text>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
@@ -7611,6 +7880,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_SLUGHOME</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -7678,7 +7948,6 @@
 	<changeBackground>BACK_SECTOR_SLUG</changeBackground>
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_CLAN" hostile="false"/>
-	<remove name="HIDDEN DUMMY"/>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event load="GUARD_CLAN"/>
@@ -7694,82 +7963,16 @@
 			<text>You step into the lodge and are greeted by a pleasant aroma of exotic spices, most of which are illegal to own in Federation territory. There's pleasant chatter from the guests all around, and while most are Slugs, there's several other races here too. The crowd doesn't seem to notice or care you're here, which is a good sign.</text>
 			<choice hidden="true">
 				<text>See if anyone around the lodge has something to sell.</text>
-				<event>
-					<text>You start to move around the lodge, when you notice a familiar face in the back of the crowd. "Sssstranger! Well what are the oddsss! What are the oddssss indeed... Looking for ssssomething to buy? I can take you 'round to my ssship and ssshow you what I've got..."</text>
-					<choice hidden="true">
-						<text>Follow Sylvan.</text>
-						<event>
-							<text>You follow Sylvan out back, where he makes small talk on the way. "You know, I wasss onccce a Ranger amongssst the Guild. Then we got over thisss dissspute with this fellow called the Sssalt Man. Lasssst of hisss kind, I've heard, and a fearsssome bounty hunter to boot. But the Guild wantsss him dead, a terrible ssshame. Jusssst couldn't bring mysssself to it, you know? Anywayssss, about that ssstuff..."</text>
-							<choice hidden="true">
-								<text>Tell me more about the Salt Man.</text>
-								<event>
-									<text>Sylvan looks down at the ground for a moment. "Heh, piqued your interessst, have I? A fassscinating fellow he wasss, and perhapsss the only reason I left the clan and became a merchant insssstead. You could cccertainly call usss... friendsss... but I haven't spoken with him in yearsss..."</text>
-									<choice>
-										<text>Continue...</text>
-										<event>
-											<text>"Truth be told ssstranger, I came here to find him again... but I don't think I could look him in the eyessss after ssso long... ssso do me a favor ssstranger, and ssstop by these coordinatesss would you? I've heard thatss where he'sss holding out currently. Onccce you're there, make sssure he ain't dead, alright? And put in a good word for me... I would really appreccciate it ssstranger."</text>
-											<choice hidden="true">
-												<text>Accept.</text>
-												<event>
-													<text>"Ah! I knew I could count on you, sssstranger. Heheh... now, how'sss a trade feel right about now?"</text>
-													<quest event="NEBULA_SALT_QUEST"/>
-													<choice>
-														<text>Agree.</text>
-														<event load="SYLVAN_TRADES"/>
-													</choice>
-													<choice>
-														<text>Decline.</text>
-														<event>
-															<text>"Aaaah, oh well then Sssstranger. For another time then, perhapsss? I have faith we'll ssssee each other again down the line!"</text>
-														</event>
-													</choice>
-												</event>
-											</choice>
-											<choice hidden="true">
-												<text>Decline.</text>
-												<event>
-													<text>"Ah... yessss my bad... shouldn't mix busssinesss and persssonal mattersss, yess..." Sylvan frowns, but keeps up his chipper tone. "Well, how about a trade anywayssss, sstranger?"</text>
-													<choice>
-														<text>Agree.</text>
-														<event load="SYLVAN_TRADES"/>
-													</choice>
-													<choice>
-														<text>Decline.</text>
-														<event>
-															<text>"Really jussst in the mood for sssaying no today, eh ssstranger? Oh well... Next time maybe." Sylvan quickly heads back to the lodge.</text>
-														</event>
-													</choice>
-												</event>
-											</choice>
-										</event>
-									</choice>
-								</event>
-							</choice>
-							<choice hidden="true">
-								<text>See what he's got.</text>
-								<event>
-									<text>"Aaaah ssstranger, you're in luck. I've got my handssss on sssome high quality gear I have a feeling you'll be interesssted in!" Sylvan pulls some weapons out of his ship and shows them to you.</text>
-									<choice>
-										<text>Agree.</text>
-										<event load="SYLVAN_TRADES"/>
-									</choice>
-									<choice>
-										<text>Decline.</text>
-										<event>
-											<text>"Aaaah, oh well then Sssstranger. For another time then, perhapsss? I have faith we'll ssssee each other again down the line!"</text>
-										</event>
-									</choice>
-								</event>
-							</choice>
-						</event>
-					</choice>
-				</event>
+				<event load="SYLVAN_SALT_QUEST_INTRO_LOAD"/>
 			</choice>
 			<choice hidden="true">
 				<text>Start a bar fight for the hell of it.</text>
 				<event>
-					<text>You walk over to the bar, and pick up a glass of awful smelling liquid, then smash it over the head of one of the nearby Clansmen. "Oi lad, what the bloody hell are you doing?" The Clansman draws his rifle, followed by several of his friends. This was a really stupid idea.</text>
-					<boarders min="4" max="5" class="slug_clansman"/>
+					<text>You walk over to the bar, and pick up a glass of awful smelling liquid, then smash it over the head of one of the nearby Clansmen. "Oi lad, what the bloody hell are you doing?" The Clansman draws his rifle, followed by several of his friends, and they rough up your ship, bringing the bar fight back to you. This was a really stupid idea.</text>
+					<!--<boarders min="4" max="5" class="slug_clansman"/>-->
+					<damage amount="0" system="random" effect="breach"/>
+					<damage amount="0" system="random" effect="breach"/>
+					<damage amount="0" system="random" effect="breach"/>
 				</event>
 			</choice>
 			<choice hidden="true">
@@ -7791,7 +7994,7 @@
 	<choice hidden="true">
 		<text>Attack the Lodge!</text>
 		<event>
-			<text>"Ah bugger, we got a bogey on ussss! Matesss, arm the gunssss!"</text>
+			<text>"Ah bugger, we got a bogey on ussss! Arm the gunssss!"</text>
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -7800,7 +8003,7 @@
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>Ignore the lodge and go on your way.</text>
+		<text>Ignore the Lodge and go on your way.</text>
 		<event>
 			<text>You're undisturbed as you move past the lodge. Hopefully that bodes well for the rest of this sector.</text>
 			<choice>
@@ -7814,6 +8017,8 @@
 		</event>
 	</choice>
 </event>
+
+
 
 <ship name="SHIP_GUARD_CLAN" auto_blueprint="MU_CLAN_LODGE">
 	<surrender min="999" max="999" load="GUARD_SIGNAL"/>
@@ -7855,6 +8060,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_CLAN</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -8025,6 +8231,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_NIGHTS</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -8204,6 +8411,7 @@
 </event>-->
 
 <event name="START_SHELLHOME">
+	<metaVariable name="juke_shell" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -8214,9 +8422,28 @@
 	<changeBackground>BACK_SECTOR_SHELL</changeBackground>
 	<playSound>lightspeed</playSound>
 	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true">
+	<choice hidden="true" req="rep_shell" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_SHELLHOME"/>
+	</choice>
+	<choice hidden="true" req="rep_shell" lvl="2" max_lvl="999" max_group="0" blue="false">
+		<text>Continue...</text>
+		<event load="GUARD_SHELLHOME_CRIMINAL"/>
+	</choice>
+</event>
+
+<event name="GUARD_SHELLHOME_CRIMINAL">
+	<text>Something seems off here. Usually, the Shells wouldn't bat an eye at ships like yours, but now, you catch suspicious chatter on the guard ship.</text>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>It seems your track record has caught up to you. The guard's crew have heard enough of the crimes you've been committing, and they don't intend to let you into the sector!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
 	</choice>
 </event>
 
@@ -8240,7 +8467,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" req="pilot" blue="false">
 		<text>Blast your way through!</text>
 		<event>
 			<text>You've decided to ignore any possibility of a peaceful resolution, and turn to destroying the Shell ship immediately.</text>
@@ -8336,6 +8563,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_SHELLHOME</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -8531,6 +8759,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_COALITIONHOLD">
+	<metaVariable name="juke_coalition" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -8682,6 +8911,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_COALITIONHOLD</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -8740,13 +8970,13 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_HIVE">
+	<metaVariable name="juke_hive" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
 	</beaconType>
 	<text>You've arrived in the Mantis Hive, territory usually deemed forbidden for most. Regardless of whether you came here willingly or not, you're here now. Make sure you get out while you still have a crew to escape with.</text>
 	<variable name="loc_unique_sectors" op="add" val="1"/>
-	<replaceSector name="SECTOR_MANTIS_UNIQUE">SECTOR_MANTIS</replaceSector>
 	<changeBackground>BACK_SECTOR_MANTIS</changeBackground>
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_HIVE" hostile="false"/>
@@ -8874,11 +9104,6 @@
 	<surrender min="999" max="999" load="GUARD_SIGNAL"/>
 	<destroyed load="GUARD_HIVE_DESTROY"/>
 	<deadCrew load="GUARD_HIVE_DEADCREW"/>
-	<crew>
-		<crewMember type="mantis_bishop" prop="0.20"/>
-		<crewMember type="mantis_suzerain" prop="0.30"/>
-		<crewMember type="engi_defender" prop="0.50"/>	
-	</crew>
 </ship>
 
 <event name="GUARD_HIVE_DESTROY">
@@ -9153,6 +9378,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_DYNCAP</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -9173,7 +9399,7 @@
 		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
 	</beaconType>
 	<text>"Demons and Vagabonds whittle my sanity down to its core, and yet now I hear news that my brothers and cousins aboard the guard have been slain? What worse, than by the hand of the mongrel who stares into me now? Draw your weapon, breather, and fight me!"</text>
-	<ship load="SHIP_DYNASTY_REINFORCEMENTS" hostile="true"/>
+	<ship load="SHIP_DYNCAP_REINFORCEMENTS" hostile="true"/>
 	<environment type="PDS" target="player"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -9189,7 +9415,7 @@
 		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
 	</beaconType>
 	<text>"Demons and Vagabonds whittle my sanity down to its core, and yet now I hear news that my brothers and cousins aboard the guard have been slain? What worse, than by the hand of the mongrel who stares into me now? Draw your weapon, breather, and fight me!"</text>
-	<ship load="SHIP_DYNASTY_REINFORCEMENTS" hostile="true"/>
+	<ship load="SHIP_DYNCAP_REINFORCEMENTS" hostile="true"/>
 	<img back="BACK_EVENT_LIGHTNEBULA"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<environment type="PDS" target="player"/>
@@ -9211,6 +9437,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_ROCKHOME">
+	<metaVariable name="juke_theocracy" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -9380,6 +9607,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_CRYSTALHOME">
+	<metaVariable name="juke_crystal" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -9389,12 +9617,11 @@
 	<changeBackground>BACK_SECTOR_CRYSTAL_RED</changeBackground>
 	<playSound>lightspeed</playSound>
 	<ship load="SHIP_GUARD_CRYSTALHOME" hostile="false"/>
-	<remove name="HIDDEN DUMMY"/>
-	<choice hidden="true" req="rep_crystal" lvl="-2147483648" max_lvl="2" max_group="0" blue="false">
+	<choice hidden="true" req="rep_crystal" lvl="-2147483648" max_lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_CRYSTALHOME"/>
 	</choice>
-	<choice hidden="true" req="rep_crystal" lvl="3" max_lvl="999" max_group="0" blue="false">
+	<choice hidden="true" req="rep_crystal" lvl="2" max_lvl="999" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event load="GUARD_CRYSTAL_CRIMINAL"/>
 	</choice>
@@ -9513,7 +9740,13 @@
 	<noQuestText/>
 	<removeHazards/>
 	<text>By killing the Crystal guard, you have no doubt caused them to dispatch reinforcements to track you down. Watch your step as you explore the sector.</text>
-	<quest event="REINFORCEMENTS_CRYSTALHOME"/>
+	<quest event="REINFORCEMENTS_CRYSTALHOME">
+		<nebulaBeacon>true</nebulaBeacon>
+		<nextSector>false</nextSector>
+		<nebulaEvent>NEBULA_REINFORCEMENTS_CRYSTALHOME</nebulaEvent>
+		<createNebula>false</createNebula>
+		<aggressive>2</aggressive>
+	</quest>
 	<choice>
 		<text>Do something onboard the ship.</text>
 		<event load="STORAGE_CHECK"/>
@@ -9539,6 +9772,24 @@
 		<event load="COMBAT_CHECK"/>
 	</choice>
 </event>
+<event name="NEBULA_REINFORCEMENTS_CRYSTALHOME">
+	<preventQuest/>
+	<beaconType id="map_icon_reinforcements" global="true" req="LOOT_COMPASS">
+		<color r="200" g="55" b="82" a="1"/>
+		<unvisitedTooltip>An unvisited location.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<text>"Outsiders, we knew you were barbaric, but when we migrated here we had no idea you would intrude our sector and threaten our ways with such violent acts! We will avenge our fallen brothers aboard the guard ship you so ruthlessly destroyed!"</text>
+	<ship load="SHIP_CRYSTALHOME_REINFORCEMENTS" hostile="true"/>
+	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<environment type="PDS" target="player"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
 
 <!--
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -9552,11 +9803,12 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_LOSTSUN">
+	<metaVariable name="juke_lostsun" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
 	</beaconType>
-	<text>This sector appears to be the stronghold of the Lost Suns, formidable rock warriors who rebelled against their tyrannical government. Bittersweet allies with the Federation, the Lost Suns themselves shouldn't be too hostile towards you, but don't expect a warm welcome.</text>
+	<text>This sector appears to be the stronghold of the Lost Suns, formidable Rock warriors who rebelled against their tyrannical government. Bittersweet allies with the Federation, the Lost Suns themselves shouldn't be too hostile towards you, but don't expect a warm welcome.</text>
 	<variable name="loc_unique_sectors" op="add" val="1"/>
 	<ship load="SHIP_GUARD_LOSTSUN" hostile="false"/>
 	<changeBackground>BACK_SECTOR_LOSTSUN</changeBackground>
@@ -9741,6 +9993,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_LANIUS">
+	<metaVariable name="juke_lanius" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -9920,11 +10173,15 @@
 
 <event name="GUARD_BLACKMARKET">
 	<text>An incredibly well armed ship of originally Rebel design, marked in Smuggler pirate, is guarding the entry beacon. They demand you pass a quick inspection or pay a fee before you may enter. You've never seen this model of ship before, but they've got a large artillery cannon pointed right at you!</text>
-	<choice hidden="true">
+	<choice hidden="true" blue="false" req="LIST_CHECK_ANY_CREW" lvl="1">
 		<text>Undergo the inspection.</text>
 		<event load="GUARD_BLACKMARKET_INSPECT"/>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" blue="false" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0">
+		<text>Undergo the inspection.</text>
+		<event load="GUARD_BLACKMARKET_INSPECT_AUTO"/>
+	</choice>
+	<choice hidden="true" req="pilot" blue="false">
 		<text>Fight your way through!</text>
 		<event>
 			<text>The smugglers don't look surprised at all, as if this was a usual occurrence. You hurry to arm the weapons.</text>
@@ -9935,7 +10192,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice>
+	<choice req="pilot" blue="false">
 		<text>Pay the fee.</text>
 		<event>
 			<text>"Ah, got something to hide? Well, scrap is scrap..."</text>
@@ -9978,6 +10235,25 @@
 		</choice>
 	</event>
 </eventList>
+<eventList name="GUARD_BLACKMARKET_INSPECT_AUTO">
+	<event>
+		<text>"I've got my eyes on you, machine. We know better than to step aboard and discover whatever nasty surprises you usually harbor, so let's make it quick." Your vessel gets thorougly scanned. You suspect this might backfire, but you're eventually cleared to go.</text>
+	</event>
+	<event>
+		<text>"I've got my eyes on you, machine. We know better than to step aboard and discover whatever nasty surprises you usually harbor, so let's make it quick." Your vessel gets thorougly scanned. You suspect this might backfire, but you're eventually cleared to go.</text>
+	</event>
+	<event>
+		<text>"I've got my eyes on you, machine. We know better than to step aboard and discover whatever nasty surprises you usually harbor, so let's make it quick." Your vessel gets thorougly scanned. You suspect this might backfire, but you're eventually cleared to go.</text>
+	</event>
+	<event>
+		<text>The smugglers don't even inquire further as you thought they would. Instead, they arm their weapons! "We've had enough of you robotic vermins probing around our operations! Prepare to be swatted!"</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
 
 <ship name="SHIP_GUARD_SMUGGLER" auto_blueprint="MU_SMUGGLER_GUARD">
 	<surrender min="999" max="999" load="GUARD_SIGNAL"/>
@@ -10003,6 +10279,10 @@
 	</item_modify>
 	<choice hidden="true" req="teleporter">
 		<text>(Teleporter) Investigate the guard.</text>
+		<event load="SMUGGLER_UNLOCK_1"/>
+	</choice>
+	<choice hidden="true" req="LOCKED_GLOBAL_TELEPORT">
+		<text>(Central Teleport) Investigate the guard.</text>
 		<event load="SMUGGLER_UNLOCK_1"/>
 	</choice>
 	<choice hidden="true">
@@ -10058,6 +10338,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_MONK">
+	<metaVariable name="juke_monk" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -10115,6 +10396,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_HEKTAR">
+	<metaVariable name="juke_hektar" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -10234,6 +10516,7 @@
 		<nebulaBeacon>true</nebulaBeacon>
 		<nextSector>false</nextSector>
 		<nebulaEvent>NEBULA_REINFORCEMENTS_HEKTAR</nebulaEvent>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<choice>
@@ -10292,6 +10575,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <event name="START_AUGMENTED">
+	<metaVariable name="juke_augmented" op="set" val="1"/>
 	<preventQuest/>
 	<beaconType id="map_icon_start" global="false">
 		<color r="46" g="252" b="51" a="1"/>
@@ -10419,7 +10703,7 @@
 </ship>
 <event name="GUARD_AUGMENTED_FOLLOWUP">
 	<noQuestText/>
-	<removeHazards/>
+	<!--<removeHazards/>-->
 	<text>By killing the Augmented guard, you have no doubt caused them to dispatch reinforcements to track you down. Watch your step as you explore the sector.</text>
 	<quest event="REINFORCEMENTS_AUGMENTED"/>
 	<choice>

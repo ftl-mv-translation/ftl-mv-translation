@@ -40,7 +40,7 @@
 				<text>(Phasing Crew) Attempt to gain access.</text>
 				<event load="BILLY"/>
 			</choice>
-			<choice hidden="true" req="traitor">
+			<choice hidden="true" req="unique_metyunt">
 				<text>(Metyunt) Attempt to gain access.</text>
 				<event load="BILLY"/>
 			</choice>
@@ -78,7 +78,7 @@
 					<choice hidden="true">
 						<text>You trapped yourself in your office?</text>
 						<event>
-							<text>"What? No, you dumbassss. Hektar hasss alwaysss been the underdog, but when I inherited the company along with my brother, we hoped to make thissss company really sssshine! And then Zulfiqar came along and completely monopolizzzed the entire weapon indussstry. I tried to sssave the company, but my brother didn't appreccciate my methodssss. Sssso what if I enssslaved a ssspecies of primitive lizzzzardssss?!"</text>
+							<text>"What? No, you dumbassss. Hektar hasss alwaysss been the underdog, but when I inherited the company along with my brother, we hoped to make thissss company really sssshine! And then Zulfiqar came along and completely monopolized the entire weapon indussstry. I tried to sssave the company, but my brother didn't appreccciate my methodssss. Sssso what if I enssslaved a ssspecies of primitive lizardssss?!"</text>
 							<choice hidden="true">
 								<text>I don't see how that led to you being trapped in an office.</text>
 								<event>
@@ -97,22 +97,21 @@
 														<event>
 															<text>The man pauses as if contemplating how to respond. "Name's Taurus. One of Vael's 'enforcers'. Folks like you call us the Angels o' Death. Ain't that fitting?" He turns his attention to Billy. "Now now Billster, your time is up. Vael's tired of your malarkey. You oughta know by now when you mess with men like him, you better keep your promises." He turns back to you. "Now, last time I'm gonna ask. Hand over the Slug, and we can all walk away like nothing happened."</text>
 															<choice hidden="true">
-																<text>Hand over Billy.</text>
-																<event>
-																	<text>Taurus smiles smugly, mockingly shakes your hand, then handcuffs Billy and escorts him back to his ship. "This goes without saying, but you best hope we don't run into each other again, partner. There's one hell of a bounty on your head, and frankly, I'm making a mistake not cashing it in..."</text>
-																</event>
-															</choice>
-															<choice hidden="true">
 																<text>Refuse.</text>
 																<event>
 																	<text>"Ain't that sweet. I was hoping you'd refuse. You've got one sweet bounty on your skull and I'd love to cash you in." Taurus smiles menacingly then dashes back to his ship, whose engines have already powered up. This is going to be a rough one.</text>
-																	<variable name="ach_crew_billy" op="set" val="1"/>
 																	<crewMember amount="1" class="unique_billy" all_skills="2">Billy</crewMember>
 																	<ship hostile="true"/>
 																	<choice hidden="true">
 																		<text>Continue...</text>
 																		<event load="COMBAT_CHECK"/>
 																	</choice>
+																</event>
+															</choice>
+															<choice hidden="true">
+																<text>Hand over Billy.</text>
+																<event>
+																	<text>Taurus smiles smugly, mockingly shakes your hand, then handcuffs Billy and escorts him back to his ship. "This goes without saying, but you best hope we don't run into each other again, partner. There's one hell of a bounty on your head, and frankly, I'm making a mistake not cashing it in..."</text>
 																</event>
 															</choice>
 														</event>
@@ -138,6 +137,8 @@
 </event>
 <event name="BILLY_SAVE">
 	<text>With Billy now safe, you take one last trip past the wreckage. To your surprise, you dig out what appears to be a highly advanced weapon powered by bizarrely foreign yet similar tech. You aren't sure where it's from, but you'll take it. Billy also has a team come in to scan the ship and retrieve its blueprint, which will make a fine addition to your hangar.</text>
+	<variable name="loc_angels_killed" op="add" val="1"/>
+	<variable name="ach_crew_billy" op="set" val="1"/>
 	<weapon name="LIST_WEAPONS_NEWGEN"/>
 	<variable name="ach_boss_deathbringer" op="set" val="1"/>
 	<unlockCustomShip silent="false">PLAYER_SHIP_ANGEL</unlockCustomShip>
@@ -171,27 +172,50 @@
 	</choice>
 </event>
 
+<ship name="SHIP_HEKTAR_BOSS" auto_blueprint="MU_HEKTAR_BOSS">
+	<destroyed>
+		<text>The Hektar ship has been defeated. Maybe you should feel guilty, considering they were just employees following orders, but you don't feel any sympathy whatsoever.</text>
+		<autoReward level="HIGH">weapon</autoReward>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="HEKTAR_SHIPYARDS_WIN"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>The Hektar ship has been defeated. Maybe you should feel guilty, considering they were just employees following orders, but you don't feel any sympathy whatsoever.</text>
+		<autoReward level="HIGH">weapon</autoReward>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="HEKTAR_SHIPYARDS_WIN"/>
+		</choice>
+	</deadCrew>
+	<!--intentionally no lizards!-->
+</ship>
 <event name="HEKTAR_SHIPYARDS">
 	<preventQuest/>
-	<text>At first this beacon seems rather unassuming, until you spot the massive spherical shipyard hovering above the ground. Upon further inspection, beneath it appears to be a rural village of some sort, definitely not one of a space-faring species at least...</text>
+	<text>At first this beacon seems rather unassuming, until you spot the massive spherical shipyard hovering above the ground. Upon further inspection, beneath it appears to be a rural village of some sort, definitely not one of a space-faring species at least. The village below is bustling with what looks to be lizard creatures. You've noticed these guys working aboard Hektar ships before, but with an educated guess you can assume this is where they live. Very strange, but as you approach the shipyard, it becomes apparent there's more here than you first observed. An orange spectacled lizard with a suit and backwards tie is screaming into a megaphone trying to calm down a crowd of irate lizards with picket signs and armed weapons.</text>
 	<img back="BACK_EVENT_HEKTARSHIPYARD" planet="NONE"/>
 	<choice hidden="true">
-		<text>Pull closer.</text>
+		<text>Speak to the manager.</text>
 		<event>
-			<text>The village below is bustling with what looks to be lizard creatures. You've noticed these guys working aboard Hektar ships before, but this must be where they live. Very strange, but as you approach the shipyard, it becomes apparent there's more here than you first observed. An orange spectacled lizard with a suit and backwards tie is screaming into a megaphone trying to calm down a crowd of irate lizards with picket signs and armed weapons.</text>
+			<text>You land your ship nearby, unnoticed by the crowd. The lizard in charge turns to you, while you catch shouts of "traitor" and more offensive terms being hurled towards them. "Yes, yes, hello. I am Metyunt, the manager of this facility and caretaker of the Lizard... uh... population. Workforce. Yes, that's the word." Metyunt pushes the glasses back up onto his face, unfazed while a flaming stone is thrown nearby and some lizard rioters tear apart a Hektar ship in the background. You also notice a very large Slug ship hovering above the crowd. It's not firing yet, but you suspect if the crowd pushes things too far, this is their plan to suppress it.</text>
+			<ship load="SHIP_HEKTAR_BOSS" hostile="false"/>
 			<choice hidden="true">
-				<text>Speak to the manager.</text>
+				<text>Your 'workforce' doesn't seem too happy.</text>
 				<event>
-					<text>You land your ship nearby, unnoticed by the crowd. The lizard in charge turns to you, while you catch shouts of "traitor" and more offensive terms being hurled towards them. "Yes, yes, hello. I am Metyunt, the manager of this facility and caretaker of the Lizard demographic." Metyunt pushes the glasses back up onto his face, unfazed while a flaming stone is thrown nearby and some lizard rioters tear apart a Hektar ship in the background. You also notice a very large Slug ship hovering above the crowd. It's not firing yet, but you suspect if the crowd pushes things too far, this is their plan to suppress it.</text>
-					<ship load="SHIP_HEKTAR_BOSS" hostile="false"/>
+					<text>Metyunt seems slightly uncomfortable. "Yes, I am glad to see you are not in fact blind. These riots are common, but what can you do? They call me a traitor because I 'sold out my own species to a corporation', but look at it this way. It's paid labor, and they signed the contracts. We were living in squalor, but our queen-chief Thek and her council thought it wise to make some... trade agreements with Hektar after we were approached by two Slugs with a deal. I'm just the mediator, and we're better off with this path anyways. Hektar supplies our species with weapons and armaments, and we supply them with work. If we didn't arrange this, then soon enough we'd either be forced to migrate to some wasteland planet by a Ministry contractor looking to build a new law school, or left for dead when the Rebels come calling." 
+					
+					Metyunt reaches for a bottle of eye drops and drips them into his eye, then ducks as some alien fruit comes whirling by. "I'm doing my best to keep the working conditions fair and orderly, but they just can't see that! I need them to open their eye, because if it weren't for me, Hektar would be a hell of a lot crueler." 
+					
+					Metyunt makes a sideways glance up at the ship above you both.</text>
 					<choice hidden="true">
-						<text>Your employees don't seem too happy.</text>
+						<text>That doesn't sound like helping your species.</text>
 						<event>
-							<text>"Yes, I am glad to see you are not in fact blind. These riots are common, but what can you do? They call me a traitor because I 'sold out my own species to a corporation,' but look at it this way. I did them a favor, bringing them here. They would still be living in squalor back on their Homeworlds, and inevitable victims of some crazy Zoltan politician who wants to deforest their planet to make room for a new law school or something." Metyunt reaches for a bottle of eye drops and drips them into his eyes, then ducks as some alien fruit comes whirling by.</text>
+							<text>"Well I'm sorry if you don't agree, but as I may remind you, you're in debt to the Hektar corporation, so I'm not inclined to take advice from you. I suggest you leave, I have enough to handle at the present moment." Metyunt only barely finishes his sentence when an explosion sends you all flying forward as one of the rioters accidentally sets off an explosive charge in one of the ships stored in the hangar. The Hektar officers watching spring into action and Metyunt follows behind them latching onto the one in charge and trying to stop him from giving the order to fire. The Slug grabs the lizard by the tail and flings Metyunt away, then orders the vessel above to open fire on the crowd. The lizards scatter as lasers pelt them from above. If you're going to get involved, now is the time to do so!</text>
 							<choice hidden="true">
-								<text>You betrayed your own species?! Side with the protestors.</text>
+								<text>Protect the crowd.</text>
 								<event>
-									<text>"What are you doing? Have you gone mad?" You step down from the pedestal and begin chanting with the protestors. Seeing the support of a Federation captain, the lizards go wild, and the Hektar ship moves in to attack. In the fray, you swear you catch Metyunt calling for the ship not to open fire, but they don't listen. Looks like you'll have to step in and defend them!</text>
+									<text>You rush back to your ship as quick as possible and return to the hangar to fight the vessel.</text>
 									<ship hostile="true"/>
 									<choice hidden="true">
 										<text>Continue...</text>
@@ -200,23 +224,55 @@
 								</event>
 							</choice>
 							<choice hidden="true">
-								<text>They're just blind, you're right. Side with Metyunt.</text>
-								<event>
-									<text>Turns out, when a Federation officer gets involved, people tend to listen better. You waste no time with some elegant speech, Metyunt can do that himself. Instead, you encourage the crowds to head back to their homes and not let things turn ugly. They begrudgingly listen and shuffle away. Metyunt thanks you sheepishly and offers a reward.</text>
-									<autoReward level="MED">standard</autoReward>
-								</event>
-							</choice>
-							<choice hidden="true">
-								<text>This isn't our business. Stay uninvolved.</text>
+								<text>Hurry out of here.</text>
 								<event/>
 							</choice>
 						</event>
 					</choice>
+					<choice hidden="true">
+						<text>They're just blind, you're right. Side with Metyunt.</text>
+						<event>
+							<text>Using all the might in your voice that you can muster, you call out to the crowd and demand they stand down. They refuse, but using a charismatic technique in the Renegade business called "pointing your gun at someone", the lizards seem to see the reason in your words and go scurrying back to their huts. Strangely, Metyunt seems more perturbed than relieved by this, but the Hektar officers who were watching are grateful and offer a reward.</text>
+							<weapon name="GIFTLIST_MODULES"/>
+							<autoReward level="HIGH">standard</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="unique_guntput">
+						<text>(Guntput) "You are big idiot! Our species still in danger!"</text>
+						<event>
+							<text>Metyunt does a double take when he sees Guntput aboard your crew. "Shaman? Wh-what are you doing here?" Guntput wacks him on the top of his head with a large branch laying nearby.
+							
+							"Hektar has betrayed us, fool! The weapons never came, and the queen-chief has abandoned us! Now, we are being taken as slaves, yet you stand here and say we are better off? You are either naive idiot or malevolent jester! Take your pick!" Guntpunt swipes his spear at Metyunt, who leaps backwards as several Hektar employees shuffle forward and draw their guns in precaution, but Metyunt tells them to put their guns away.
+							"Shaman, I'm tr-"
+							"Do not call me that name! You do not owe me respect when you have abandoned our species for greedy capitalist slimemongers!"
+							"Okay, then Guntp-"
+							"No, do not call me by name either! You are not deserving to utter it!"
+							"Please, I'm trying to reason with you! I didn't abandon our species, I did my best to HELP us! Thek made up her mind on the deal, all I did was negotiate a more hospitable offer. It wasn't even going to be paid labor! There's only so much leeway I can get with Hektar, but I did everything I could!"
+							"Nonsense and malarkey! You are lying through teeth. If you did not abandon us, then why are you living here, wearing suit and backwards tie, monocle and carrying clipboard!"
+							
+							Metyunt is left at a loss for words, but before he can find any, an explosion sends you all flying forward as one of the rioters accidentally sets off an explosive charge in one of the ships stored in the hangar. The Hektar officers watching spring into action and Metyunt follows behind them latching onto the one in charge and trying to stop him from giving the order to fire. The Slug grabs the lizard by the tail and flings Metyunt away, then orders the vessel above to open fire on the crowd. The lizards scatter as lasers pelt them from above. If you're going to get involved, now is the time to do so!</text>
+							<choice hidden="true">
+								<text>Protect the crowd.</text>
+								<event>
+									<text>As you rush back to your ship Guntput turns around and yells one final insult at Metyunt, "Now we go to save our species, unlike you ever could! Maybe you can learn something from it!"</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Hurry out of here.</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>This isn't our business. Stay uninvolved.</text>
+						<event/>
+					</choice>
 				</event>
-			</choice>
-			<choice hidden="true">
-				<text>Leave now before things get ugly.</text>
-				<event/>
 			</choice>
 		</event>
 	</choice>
@@ -235,54 +291,29 @@
 		</event>
 	</choice>
 </event>
-<event name="METYUNT">
-	<text>With the ship out of the way, you return to the shipyard. During the battle, the rioters seem to have taken control of a good half of the place, but Metyunt and the remaining Hektar staff are pushing back. This could end in another firefight if you don't step in.</text>
+<event name="HEKTAR_SHIPYARDS_WIN">
+	<text>With the ship out of the way, you return to the shipyard. During the battle, the rioters seem to have taken control a large portion of the hangar, but the remaining Hektar staff are pushing back. This could end in even more bloodshed if you don't step in.</text>
 	<variable name="ach_boss_hektarloyalty" op="set" val="1"/>
 	<choice hidden="true">
-		<text>Send your crew to talk things out.</text>
+		<text>Convince Metyunt to talk them into standing down.</text>
 		<event>
-			<text>Looks like things are tense. The Hektar employees look ready to fire, and you suspect Metyunt's reluctance is the only thing keeping them on hold.</text>
+			<text>You call out to Metyunt, appealing to him to defuse the situation. He falters but calls out to Hektar, demanding they stand down. They refuse at first, but once Metyunt threatens to get Billy involved they stand down. Once Hektar has cleared out, the lizards swarm the rest of the place and capture Metyunt while cheering for your crew. All that seems in question now is the fate of Metyunt.</text>
 			<choice hidden="true">
-				<text>Convince the crowds to go back to their homes now that they've proven their point.</text>
+				<text>He deserves a second chance.</text>
 				<event>
-					<text>Your suggestion appears to be wildly unpopular. Chaos breaks out, and your crew is caught in the crossfire!</text>
-					<removeCrew>
-						<clone>true</clone>
-						<text>Fortunately your crew is able to be revived, but it's too late to go back in and talk things out.</text>
-					</removeCrew>
-				</event>
-			</choice>
-			<choice hidden="true">
-				<text>Convince Metyunt to stand down.</text>
-				<event>
-					<text>Metyunt wavers, but then gives orders for his men to evacuate the shipyard. He is captured by the lizards and taken back to the hangar, where they discuss what to do with him.</text>
+					<text>The lizards groan, but they aren't going to question you after how much you helped them. Metyunt seems shocked he hasn't been torn limb from limb yet. "Well uh, I uh... why did you spare me? Second chances? My kind doesn't believe in those, but I guess I'm too far displaced from our traditions to care." It's obvious the lizards don't want Metyunt around. You offer to drop him off somewhere else in the sector, but he declines. "I'm afraid it is best if I find a different occupation. Hektar will have to make do without my help, because I'm done. I guess I'll stick with you now. Oh, and before we go, let me repay you..."</text>
+					<unlockCustomShip silent="false">PLAYER_SHIP_HEKTAR</unlockCustomShip>
 					<choice hidden="true">
-						<text>He deserves a second chance.</text>
-						<event>
-							<text>The lizards groan, but they aren't going to question you after how much you helped them. Metyunt seems shocked he hasn't been torn limb from limb yet. "Well uh, I uh, I guess there's a moral in here somewhere. Don't sell your entire species into slavery? Yeah that sounds good..."</text>
-							<choice hidden="true">
-								<text>Continue...</text>
-								<event load="METYUNT_UNLOCK"/>
-							</choice>
-						</event>
-					</choice>
-					<choice hidden="true">
-						<text>He's had his chance. He shouldn't get any more.</text>
-						<event>
-							<text>The lizards agree, and Metyunt is executed. You didn't quite expect things to be taken that far, but it's too late now. The lizards applaud their new found freedom, though chances are it won't last as soon as you're gone and Hektar sends in reinforcements. Nevertheless, the lizards thank you and offer a reward "borrowed" from another Hektar ship.</text>
-							<autoReward level="MED">stuff</autoReward>
-						</event>
+						<text>Continue...</text>
+						<event load="DOOR_OPEN_SONG_METYUNT"/>
 					</choice>
 				</event>
 			</choice>
 			<choice hidden="true">
-				<text>Draw your own weapon and demand both sides put down theirs.</text>
+				<text>He's had his chance. He shouldn't get any more.</text>
 				<event>
-					<text>A bold move, and a stupid one. The second your crew draws attention to themselves and their now exposed weapon, hell breaks loose, and your crew is caught in the crossfire!</text>
-					<removeCrew>
-						<clone>true</clone>
-						<text>Fortunately your crew is able to be revived, but it's too late to go back in and talk things out.</text>
-					</removeCrew>
+					<text>The lizards agree, and a makeshift gallow is constructed from which Metyunt is hung. You didn't quite expect things to be taken that far, but it's too late now. The lizards applaud their new found freedom, though chances are it won't last as soon as you're gone and Hektar sends in reinforcements. Nevertheless, the lizards thank you and offer a reward "borrowed" from another Hektar ship.</text>
+					<autoReward level="MED">stuff</autoReward>
 				</event>
 			</choice>
 		</event>
@@ -291,12 +322,6 @@
 		<text>We can't risk it. Take what you've got and leave.</text>
 		<event/>
 	</choice>
-</event>
-<event name="METYUNT_UNLOCK">
-	<text>It's obvious the lizards don't want Metyunt around. You offer to drop him off somewhere else in the sector, but he declines. "I'm afraid it is best if I find a different occupation. Hektar will have to make do without my help, because I'm done. I guess I'll stick with you now. Oh, and before we go, let me repay you..."</text>
-	<unlockCustomShip silent="false">PLAYER_SHIP_HEKTAR</unlockCustomShip>
-	<variable name="ach_crew_metyunt" op="set" val="1"/>
-	<crewMember amount="1" repair="2" class="traitor">Metyunt</crewMember>
 </event>
 
 <event name="EXIT_HEKTAR">
@@ -326,7 +351,7 @@
 					<weapon name="HEKTAR_MODULAR_WEAPONS"/>
 				</event>
 			</choice>
-			<choice hidden="true" req="traitor">
+			<choice hidden="true" req="unique_metyunt">
 				<text>(Metyunt) Have Metyunt clear you for leaving.</text>
 				<event>
 					<text>Fortunately, it only takes a few minutes before Metyunt returns, and you're allowed to leave. Guess it pays to have the staff manager of a major corporation aboard your ship.</text>
@@ -352,7 +377,7 @@
 				<event load="FLEET_ESCAPE"/>
 			</choice>
 			<choice hidden="true" req="LIST_CREW_JERRY">
-				<text>(Jerry) Hello!</text>
+				<text>(Jerry) "Hello!"</text>
 				<event>
 					<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
 					<ship hostile="false"/> 
@@ -362,7 +387,7 @@
 	</choice>
 </event>
 <event name="NEBULA_EXIT_HEKTAR">
-	<text>Looks like you've arrived at the exit - except, a massive ship is blocking the way out! "Sssorry, but you may not leave thisss sssector! You sssstill owe Hektar Indusssstriessss a lot of money!"</text>
+	<text>You've finally found the exit to this dreadful sector.</text>
 	<variable name="loc_hektarexit" op="set" val="1"/>
 	<environment type="nebula"/>
 	<choice req="loc_hektarexit" lvl="0" max_group="0" hidden="true" blue="false"> <!--theoretically you can never get this except in the fleet so Im just going to make it that for simplisities sake-->
@@ -389,7 +414,7 @@
 					<weapon name="HEKTAR_MODULAR_WEAPONS"/>
 				</event>
 			</choice>
-			<choice hidden="true" req="traitor">
+			<choice hidden="true" req="unique_metyunt">
 				<text>(Metyunt) Have Metyunt clear you for leaving.</text>
 				<event>
 					<text>Fortunately, it only takes a few minutes before Metyunt returns, and you're allowed to leave. Guess it pays to have the staff manager of a major corporation aboard your ship.</text>
@@ -415,7 +440,7 @@
 				<event load="FLEET_ESCAPE"/>
 			</choice>
 			<choice hidden="true" req="LIST_CREW_JERRY">
-				<text>(Jerry) Hello!</text>
+				<text>(Jerry) "Hello!"</text>
 				<event>
 					<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
 					<ship hostile="false"/> 
@@ -487,6 +512,7 @@
 				<text>They're pretty good.</text>
 				<event>
 					<text>"Good you say? Marvelous! I'm no military man, but I'll take your word for it! I shall invest in Hektar. A remarkable chat, good fellow. Say, do me a service and take this worthless assistant of mine off of my hands. I think one of Hektar's lizard people will serve me better."</text>
+					<achievement>ACH_EVENT_COUNT</achievement>
 					<crewMember amount="1" class="engi"/>
 				</event>
 			</choice>
@@ -494,6 +520,7 @@
 				<text>They're awful.</text>
 				<event>
 					<text>"Oh, well that's certainly not good. I'm no military man, but I'll take your word for it! I shall not invest in Hektar. Here, you can have this worthless piece of junk, considering I certainly won't want it."</text>
+					<achievement>ACH_EVENT_COUNT</achievement>
 					<weapon name="SHOP_ITEM_HEKTAR_BASE"/>
 				</event>
 			</choice>
@@ -532,6 +559,7 @@
 				<text>They're pretty good.</text>
 				<event>
 					<text>"Good you say? Marvelous! I'm no military man, but I'll take your word for it! I shall invest in Hektar. A remarkable chat, good fellow. Say, do me a service and take this worthless assistant of mine off of my hands. I think one of Hektar's lizard people will serve me better."</text>
+					<achievement>ACH_EVENT_COUNT</achievement>
 					<crewMember amount="1" class="engi"/>
 				</event>
 			</choice>
@@ -539,6 +567,7 @@
 				<text>They're awful.</text>
 				<event>
 					<text>"Oh, well that's certainly not good. I'm no military man, but I'll take your word for it! I shall not invest in Hektar. Here, you can have this worthless piece of junk, considering I certainly won't want it."</text>
+					<achievement>ACH_EVENT_COUNT</achievement>
 					<weapon name="SHOP_ITEM_HEKTAR_BASE"/>
 				</event>
 			</choice>
@@ -724,11 +753,107 @@
 -->
 <eventList name="NEBULA_DISTRESS_HEKTAR">
 	<event load="NEBULA_DISTRESS_HEKTAR_CHILDREN"/>
-	<event load="NEBULA_DISTRESS_DEBTORS"/>
-	<event load="NEBULA_DISTRESS_CRISIS"/>
+	<event load="NEBULA_DISTRESS_HEKTAR_DEBTORS"/>
+	<event load="NEBULA_DISTRESS_HEKTAR_CRISIS"/>
 </eventList>
 
-<event name="NEBULA_DISTRESS_CRISIS" unique="true">
+<event name="NEBULA_DISTRESS_HEKTAR_FEMALE" unique="true"> <!--this one always spawns-->
+	<text>Seems a Hektar transport nearby is broadcasing the distress signal. Upon hailing, the frustrated captain appears to be wiping blood from his face. "A Renegade? Not really what I wassss looking for, but whatever. Our shipment isss in revolt and it'sss ssscrewing up our time ssschedule. Do usss a favor and calm it down, would you?"</text>
+	<environment type="nebula"/>
+	<distressBeacon/>
+	<ship load="SHIP_HEKTAR_FEMALE" hostile="false"/>
+	<choice hidden="true">
+		<text>Your shipment?</text>
+		<event>
+			<text>"Yeah. We're bringing in more lizardsss. Billy had ssssome dumb rule againsssst 'breeding them' but I don't know how he expectssss usss to get more workersss then. Luckily that idiot is bussssy, ssso HQ'ssss having usss bring ssssome more in under the radar ssso we don't have to pay them more. Uhm... maybe I sssshouldn't have told you that."</text>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+				<text>Help try to put down the revolt.</text>
+				<event load="HEKTAR_FEMALE_ASSIST"/>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>We have no crew to assist with.</text>
+				<event load="OPTION_INVALID"/>
+			</choice>
+			<choice hidden="true">
+				<text>Help the lizards.</text>
+				<event>
+					<text>"Man jussst our luck, I ran into the ONE Renegade who givesss a damn about sssslavery. Fine, guesss I'll take care of thisss revolt later."</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="unique_billy">
+				<text>(Billy) "Hey, I didn't authorize thisss!"</text>
+				<event>
+					<text>"Oohhhh. Oohhhhhh. Sssshit. You have... the bossss on your ssship. Well I guesssss I'm fired, huh?" Billy nods his head. "Welp. Off to the unemployment line I go." The Slug hangs up and an escape pod soon after ejects from the ship. Seems that was a rather quick way of handling that.</text>
+					<choice hidden="true">
+						<text>Check on the lizards.</text>
+						<event load="HEKTAR_FEMALE_SAVE"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>You disgust me.</text>
+				<event>
+					<text>"Oh, and the hired killer sssuddenly hasss a moral compasss? Get a grip. Fine, if you won't help then get losssst."</text>
+					<choice hidden="true">
+						<text>Check the storage.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice hidden="true">
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="HEKTAR_FEMALE_ASSIST">
+	<event>
+		<text>It's no wonder the Slugs needed help - the "shipment" of lizards put up quite the fight. In the end you make it out without any casualties on your end, though several lizards die. The Slugs are frustrated but reluctantly offer you a reward.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>It's no wonder the Slugs needed help - the "shipment" of lizards put up quite the fight. One of your crew doesn't make it out in the end but the lizards are otherwise contained. The Slug laughs upon hearing the news of your crew, but when you slap him and threaten to blow up his ship he relents and offers a reward.</text>
+		<autoReward level="HIGH">item</autoReward>
+		<removeCrew>
+			<clone>true</clone>
+			<text>Though you make no mention of it to the Slugs, fortunately your crew member is able to be revived by the Clone Bay.</text>
+		</removeCrew>
+	</event>
+</eventList>
+<event name="HEKTAR_FEMALE_SAVE">
+	<text>With the Slugs all gone, you board the transport to see what remains. Some of the lizards are wounded, dead, or dying, but a number still live. You go one by one freeing them until you stumble upon a giant creature in the very back of the cargo bay! It's a lizard for sure, but twice the size as all the others, and much more lethargic."</text>
+	<choice hidden="true">
+		<text>Are you one of them?</text>
+		<event>
+			<text>As the giant lizard speaks, its deep voice seems to reverberate with wisdom and age. "There is no need to be rude. I, am Vunk. A lizard I mostly certainly am, yes. But not of the kind you have seen thus far. We females of the species are much older, much wiser, and much larger. It seems though the Slugs have not yet stooped to the levels of systematic breeding, they are hoping we might reproduce naturally within their work camps."</text>
+			<choice hidden="true">
+				<text>That's awful.</text>
+				<event>
+					<text>"It is, isn't it. But for what use would Hektar have with morals? Come, would you please free me? These poor souls are without a leader, and it seems it is my natural duty now to guide them back to our home."</text>
+					<choice hidden="true">
+						<text>Free Vunk.</text>
+						<event>
+							<text>As you start to free Vunk from her cage, you inquire how come you've never seen any other female lizards. "Our species naturally breeds fewer females. Not to speak so... lowly of the others, but the gap in our intelligence is often paramount. Nevertheless, it is the matriarchy that used to thrive on our homeworlds. But poaching from the EHG, slavers even before the time of Hektar, and ancient wars within our species have reduced our numbers greatly. With so few of us left on the homeworlds, it is vital that I return. Thank you, strange but kind soul. I am forever indebted to you. I will send with you the most able of fighters among us to assist you. They will be loyal to your cause." Vunk motions with her giant leg to one of the younger lizards. "Go now, little one. This is your new duty."</text>
+							<variable name="door_female" op="set" val="1"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="DOOR_OPEN_SONG"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_DISTRESS_HEKTAR_CRISIS" unique="true">
 	<text>You see the distress call at this beacon, but you see no ship in distress. Instead, a lizard piloting a cargo ship hails you.</text>
 	<environment type="nebula"/>
 	<distressBeacon/>
@@ -750,18 +875,26 @@
 					<drone name="RANDOM"/>
 				</event>
 			</choice>
-			<choice hidden="true" req="zoltan_monk">
+			<choice hidden="true" req="LIST_CREW_MONK">
 				<text>(Monk Crew) "Life is a cycle yes - but which cycle you follow is up to you."</text>
 				<event>
 					<text>"I have a choice? I thought Hektar was all there was. That's what they told me - the rest of the galaxy was a barren wasteland and this was the last sector alive. But wait... you're from out there! I must come with you and taste freedom at long last!"</text>
-					<crewMember amount="1" repair="2" class="lizard"/>
+					<variable name="door_crisis" op="set" val="1"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="DOOR_OPEN_SONG"/>
+					</choice>
 				</event>
 			</choice>
 			<choice hidden="true" req="LIST_CREW_FREEMAN">
 				<text>(Free Mantis Crew) "Status Quo is only what big man upstair wanting you to follow!"</text>
 				<event>
 					<text>"I have a choice? I thought Hektar was all there was. That's what they told me - the rest of the galaxy was a barren wasteland and this was the last sector alive. But wait... you're from out there! I must come with you and taste freedom at long last!"</text>
-					<crewMember amount="1" repair="2" class="lizard"/>
+					<variable name="door_crisis" op="set" val="1"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="DOOR_OPEN_SONG"/>
+					</choice>
 				</event>
 			</choice>
 			<choice hidden="true">
@@ -782,7 +915,7 @@
 	</choice>
 </event>
 
-<event name="NEBULA_DISTRESS_DEBTORS" unique="true">
+<event name="NEBULA_DISTRESS_HEKTAR_DEBTORS" unique="true">
 	<text>The distress call appears to originate from a ship, lost in the clouds. "Please, help us! We are in debt to Hektar, but our chances of paying it off are hopeless! Is there anything you can spare us?"</text>
 	<ship load="SHIP_GENERIC" hostile="false"/>
 	<environment type="nebula"/>
@@ -837,7 +970,7 @@
 </event>
 
 <event name="NEBULA_DISTRESS_HEKTAR_CHILDREN" unique="true">
-	<text>A Hektar distress beacon is coming from this beacon. From the looks of it, it appears a crowd of Slugs has gathered at an Hektar factory.</text>
+	<text>A Hektar distress beacon is coming from this beacon. From the looks of it, it appears a crowd of Slugs has gathered at a Hektar factory.</text>
 	<environment type="nebula"/>
 	<distressBeacon/>
 	<choice hidden="true">
@@ -921,7 +1054,82 @@
 	<event load="NEBULA_HEKTAR_HOPE"/>
 	<event load="NEBULA_HEKTAR_TOYS"/>
 	<event load="NEBULA_HEKTAR_SYLVAN"/>
+	<event load="NEBULA_HEKTAR_RAIN"/>
 </eventList>
+
+<event name="NEBULA_HEKTAR_RAIN" unique="true">
+	<text>On the small nearby planet through the clearing you observe a small Hektar facility. It turns out to be some agricultural center, but the planet is otherwise barren and devoid of life. Scans show the facility is mostly being run by lizards.</text>
+	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_UNPOPULATED"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<choice hidden="true">
+		<text>Check it out.</text>
+		<event>
+			<text>As you approach the facility, your video feed shows a strange scene. A band of lizards are rotating around a small planter of unsprouted seeds, chanting a song. Their leader appears to be wearing a crudely made cardboard mask.</text>
+			<choice hidden="true">
+				<text>Inquire what they're doing.</text>
+				<event>
+					<text>"We sing the rain song, and hope the rain comes! Hektar has put us here, in this desolate place, and expects seeds to grow and make great bounty! But there is no water here!" The lizard grumbles. "I will sing the rain song till creation dies. But if rain does not come, I die first!"</text>
+					<choice hidden="true">
+						<text>Join them.</text>
+						<event>
+							<text>You dismount from the ship with your crew and join the lizards in chanting. Of course, the 'rain' never comes, but they seem happy you offered your help. After a while the lizards give up, but offer to upgrade your ship afterwards.</text>
+							<modifyPursuit amount="1"/>
+							<upgrade amount="1" system="oxygen"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="unique_guntput">
+						<text>(Guntput) Send Guntput down there with them.</text>
+						<event>
+							<text>The lizards seem shocked to see Guntput. "Oh great Shaman! I ashamed! We should have listened, your advice was most wise. Now, we are trapped, and there is no rain! What will become of us?" Guntput frowns and smacks the lizard with his shield. "There is no point in shame. What is done is done. Our people will live, the homeworlds are in shambles but we live. The rain will not come you fool. Come with us, we will make better use of you than rotting in Hektar's communes."</text>
+							<variable name="door_rain" op="set" val="1"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="DOOR_OPEN_SONG"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="unique_billy">
+						<text>(Billy) Send Billy down there with them.</text>
+						<event>
+							<text>Upon seeing Billy the lizards all bow, but he seems mostly confused. "Why... why are you guysss down here? Aren't you sssupposssed to be packing boxesss or running the cargo ssships?" The lizards shake their heads. "Box shipping full! Cargo ships all piloted! Still, more slaves come in. Too many workers, so we are placed here." Billy shudders upon hearing the word slave. "Mhm... I... Okay maybe I made a little missstake here. Uh... you guyssss are formally disssmissed. Go back to your homesss or whatever." The lizards are confused. "We... have no homes. You abducted us." Billy winces again. "Uhm... then you're working for usss now."</text>
+							<variable name="door_rain" op="set" val="1"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="DOOR_OPEN_SONG"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="BLUELIST_WEAPONS_FIRE_ALL">
+						<text>(Fire Weapon) Start a fire to turn on the sprinklers.</text>
+						<event>
+							<text>The lizards shriek as your weapons set the facility ablaze. Indeed, the sprinklers do come on, but are useless at stopping the blaze. Soon the whole building goes up in smoke and the lizards are forced to evacuate. "You are stupidest being! What did you expect to happen? Go, shoo! Hektar will be furious."</text>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Try to get them to give up.</text>
+						<event>
+							<text>"Did not hear me? I said I sing the rain song till the day creation dies or rain comes!" The lizard shakes his head in annoyance and goes back to chanting.</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the facility.</text>
+		<event>
+			<text>You doubt there's going to be anything of value to find at an agriculture facility.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
 
 <event name="NEBULA_HEKTAR_SYLVAN" unique="true">
 	<text>"Sssstranger, welcome to my beacon!" You jump, thinking you've somehow found Sylvan yet again, but instead it seems this is just another Hektar employee, not the infamous traveling merchant.</text>
@@ -939,9 +1147,9 @@
 				</event>
 			</choice>
 			<choice hidden="true">
-				<text>You're missing the 8 shields and 6 Burst Lasers.</text>
+				<text>You're not quite up to his level, shield and weaponry wise.</text>
 				<event>
-					<text>"Yeah... I'm not even sssure how he got thossse! Every time I try to inssstall that many ssshields I jussst get an obnoxious beep like I've hit a hardcoded limit or sssomething."</text>
+					<text>"Yeah... I'm not even sssure how he managed thisss! Every time I try to inssstall that many ssshields I jussst get an obnoxious beep like I've hit a hardcoded limit or sssomething."</text>
 					<choice>
 						<text>Offer him some scrap to spruce up his ship.</text>
 						<event>
@@ -1481,7 +1689,18 @@
 <!--
 		SYLVAN'S HOME
 -->
-<event name="NEBULA_SYLVANHOME" unique="true">
+<event name="NEBULA_SYLVANHOME">
+	<loadEventList first="true" generate="true" default="NEBULA_SYLVANHOME_REAL">
+		<event name="NEBULA_SYLVANHOME_QUARANTINE" req="quarantine" lvl="1"/>
+		<event name="NEBULA_SYLVANHOME_HER" req="prof_opened_nexus" lvl="1"/>
+	</loadEventList>
+</event>
+<event name="NEBULA_SYLVANHOME_QUARANTINE">
+	<preventQuest/>
+	<text>The clouds here are thicker than usual, and a violent storm rages on. You wander aimlessly hoping to find something, and eventually come across a very small Hektar pod drifting nearby, maybe only as large as two rooms. Its exterior is charred and the door busted open, and inspecting inside of it you find nothing but a small business card with the header "C.E.L." - The phone number on the back is impossible to call.</text>
+	<environment type="storm"/>
+</event>
+<event name="NEBULA_SYLVANHOME_REAL">
 	<preventQuest/>
 	<text>The clouds here are thicker than usual, and a violent storm rages on. You wander aimlessly hoping to find something, and eventually come across a very small Hektar pod drifting nearby, maybe only as large as two rooms. Your scans cannot penetrate its shell no matter what you do.</text>
 	<environment type="storm"/>
@@ -1489,17 +1708,25 @@
 		<text>Approach.</text>
 		<event>
 			<text>You move closer to the pod and find it is protected by a metal door with a passcode. On the bottom is written simply "property of S.H." There's no possible way to break it open without jeopardizing the structural integrity, and the security system is so advanced you doubt you could break through before the Rebel fleet arrived. Whoever built this clearly doesn't want people messing with their stuff.</text>
-			<choice hidden="true" req="salt">
-				<text>(Obyn) Obyn seems to know what this is.</text>
-				<event load="NEBULA_SYLVANHOME_OPEN"/>
+			<choice hidden="true" req="unique_obyn">
+				<text>(Obyn) Obyn knows how to open the door.</text>
+				<event load="NEBULA_SYLVANHOME_OPEN_OBYN"/>
+			</choice>
+			<choice hidden="true" req="unique_anurak">
+				<text>(Anurak) Anurak knows how to open the door.</text>
+				<event load="NEBULA_SYLVANHOME_OPEN_ANURAK"/>
 			</choice>
 			<choice hidden="true" req="unique_sylvan">
 				<text>(Sylvan) Sylvan seems to have something to say.</text>
 				<event>
 					<text>Sylvan glances at the pod for a moment but stops himself. "Heh, nevermind sssstranger. My bad. Ignore my rambling..."</text>
-					<choice hidden="true" req="salt">
-						<text>(Obyn) Obyn seems to know what this is.</text>
-						<event load="NEBULA_SYLVANHOME_OPEN"/>
+					<choice hidden="true" req="unique_obyn">
+						<text>(Obyn) Obyn knows how to open the door.</text>
+						<event load="NEBULA_SYLVANHOME_OPEN_OBYN"/>
+					</choice>
+					<choice hidden="true" req="unique_anurak">
+						<text>(Anurak) Anurak knows how to open the door.</text>
+						<event load="NEBULA_SYLVANHOME_OPEN_ANURAK"/>
 					</choice>
 					<choice hidden="true">
 						<text>Guess there's nothing to be done.</text>
@@ -1548,8 +1775,96 @@
 		</event>
 	</choice>
 </event>
-<event name="NEBULA_SYLVANHOME_OPEN">
+
+<event name="NEBULA_SYLVANHOME_HER">
+	<preventQuest/>
+	<text>The clouds here are thicker than usual, and a violent storm rages on. You wander aimlessly hoping to find something, and eventually come across a very small Hektar pod drifting nearby, maybe only as large as two rooms. Your scans cannot penetrate its shell no matter what you do.</text>
+	<environment type="storm"/>
+	<choice hidden="true">
+		<text>Approach.</text>
+		<event>
+			<text>You move closer to the pod and find it is protected by a metal door with a passcode. On the bottom is written simply "property of S.H." There's no possible way to break it open without jeopardizing the structural integrity, and the security system is so advanced you doubt you could break through before the Rebel fleet arrived. Whoever built this clearly doesn't want people messing with their stuff.
+			
+			Curiously, a note seems to have been written underneath the passcode. It seems to move with you, always following your gaze, with a faint red and blue glimmer. It reads, "Password: #!XX_sLuggyB0y_789 - You're welcome :)" You aren't sure who left this note, or why it looks the way it does, but it should allow you entry.</text>
+			<choice hidden="true" req="unique_obyn">
+				<text>(Obyn) Obyn knows how to open the door.</text>
+				<event load="NEBULA_SYLVANHOME_OPEN_OBYN"/>
+			</choice>
+			<choice hidden="true" req="unique_anurak">
+				<text>(Anurak) Anurak knows how to open the door.</text>
+				<event load="NEBULA_SYLVANHOME_OPEN_ANURAK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Use the password to open the door.</text>
+				<event load="NEBULA_SYLVANHOME_OPEN_PASSWORD"/>
+			</choice>
+			<choice hidden="true" req="unique_sylvan">
+				<text>(Sylvan) Sylvan seems to have something to say.</text>
+				<event>
+					<text>Sylvan glances at the pod for a moment but stops himself. "Heh, nevermind sssstranger. My bad. Ignore my rambling..."</text>
+					<choice hidden="true" req="unique_obyn">
+						<text>(Obyn) Obyn knows how to open the door.</text>
+						<event load="NEBULA_SYLVANHOME_OPEN_OBYN"/>
+					</choice>
+					<choice hidden="true" req="unique_anurak">
+						<text>(Anurak) Anurak knows how to open the door.</text>
+						<event load="NEBULA_SYLVANHOME_OPEN_ANURAK"/>
+					</choice>
+					<choice hidden="true">
+						<text>Use the password to open the door.</text>
+						<event load="NEBULA_SYLVANHOME_OPEN_PASSWORD"/>
+					</choice>
+					<choice hidden="true">
+						<text>Ignore the door and leave.</text>
+						<event>
+							<text>This is a very strange sighting, and you can't help but wonder if there's something of great significance here. However, today no mystery will be solved. Not here at least.</text>
+							<choice hidden="true">
+								<text>Check the storage.</text>
+								<event load="STORAGE_CHECK"/>
+							</choice>
+							<choice hidden="true">
+								<text>Do nothing.</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Ignore the door and leave.</text>
+				<event>
+					<text>This is a very strange sighting, and you can't help but wonder if there's something of great significance here. However, today no mystery will be solved. Not here at least.</text>
+					<choice hidden="true">
+						<text>Check the storage.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice hidden="true">
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the pod and leave.</text>
+		<event>
+			<text>This is a very strange sighting, and you can't help but wonder if there's something of great significance here. However, today no mystery will be solved. Not here at least.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEBULA_SYLVANHOME_OPEN_OBYN">
 	<text>Obyn brushes past you and walks up to the passcode. He types in a string of numbers you don't recognize and to your surprise the pod opens! You glance at Obyn, who shrugs. "S.H.; those are Sylvan's initials. He has a bad habit of using the same password for everything, so I figured I'd try it..."</text>
+	<metaVariable name="prof_opened_nexus" op="set" val="1"/>
 	<choice hidden="true">
 		<text>Enter.</text>
 		<event>
@@ -1561,10 +1876,51 @@
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
-							<text>You walk around the room, looking for nothing in particular, until you find a map pinned to the wall, showing a star system unlike anything you've ever seen. All kinds of strange labels are scattered around, and a single sticky-note carries coordinates which you mark on your own map. Nothing else here seems to be of any use to you, so you do one more once over and close the door behind you.</text>
+							<text>You walk around the room, looking for nothing in particular, until you find a compartment with a map in it, showing a star system unlike anything you've ever seen. All kinds of strange labels are scattered around, and a single sticky-note carries coordinates which you mark on your own map. Nothing else here seems to be of any use to you, so you do one more once over and close the door behind you.</text>
 							<quest event="NEXUS_PORTAL"/>
 						</event>
 					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="NEBULA_SYLVANHOME_OPEN_ANURAK">
+	<text>Anurak rambles on a bit about what he thinks this is and how he knows how to open it. "You see Shellskenbry, the initials S.H., I believe they are short for Sylvan Hektar! Sylvan being the traveling merchant - because he's a merchant who uh.. travels. And well, I knew Sylvan back in the day. He took refuge in my monastery while on the run from the EHG (that's the Exotic Hunter's Guild, Shellskenbry. I know, these acronyms are so confusing!) and set me up with a nice little spot on some lizard planet in the Ministry Capital! And while I was with that unusually nice Slug I learned his password! Apparently according to his boyfriend, he always uses the same one for everything! They were always arguing about it. They were arguing about everything, actually. Ah, young love. If only I was young..."
+	
+You motion for Anurak to hurry up and try the password. He does, and to your surprise it actually works!</text>
+	<metaVariable name="prof_opened_nexus" op="set" val="1"/>
+	<choice hidden="true">
+		<text>Enter.</text>
+		<event>
+			<text>The interior of the pod is decorated by all kinds of oddities. A messy bed with dark purple sheets conceals an array of stuffed animals with obvious wear from years of friendship. Much of the decorations seem strangely childish, with a few outliers that seem to have been added after the fact. Anurak looks around with a mixture of wonder, eventually eying a necklace with a symbol of the great eye, engraved with his name. "Sylvan kept this? Why, it's been years! I didn't think our friendship meant that much to him!"</text>
+			<choice hidden="true">
+				<text>What is this place?</text>
+				<event>
+					<text>Anurak spins around, trying to locate himself in the space time continuum. "Well, Shellskenbry, my memory isn't very good. I think so much cloning during my years as a Duskbringer have worn down my memory processor. But from what I can remember, I think Sylvan told us about this place once. It was a sanctuary, away from his parents and his brother! Terribly sad upbringing, it always pained me to hear about it. The poor Slug, he was so nice and yet so troubled... This place was his home away from home, or something like that! I think he wanted to bring his boyfriend here, but I'm no third wheel. Their secrets are my secrets too, so don't ask! I keep tight lips, nothing gets out." Anurak lifts a finger to his lips and pretends to seal a zipper with them.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>You walk around the room, looking for nothing in particular, until you find a compartment with a map in it, showing a star system unlike anything you've ever seen. All kinds of strange labels are scattered around, and a single sticky-note carries coordinates which you mark on your own map. Nothing else here seems to be of any use to you, so you do one more once over and close the door behind you.</text>
+							<quest event="NEXUS_PORTAL"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="NEBULA_SYLVANHOME_OPEN_PASSWORD">
+	<text>You punch the code into the keypad and the door buzzes a green light.</text>
+	<choice hidden="true">
+		<text>Enter.</text>
+		<event>
+			<text>The interior of the pod is decorated by all kinds of oddities. A messy bed with dark purple sheets conceals an array of stuffed animals with obvious wear from years of friendship. Much of the decorations seem strangely childish, with a few outliers that seem to have been added after the fact. You aren't quite sure what this place it, but based on the surroundings it seems like it belongs to Sylvan.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>You walk around the room, looking for nothing in particular, until you find a compartment with a map in it, showing a star system unlike anything you've ever seen. All kinds of strange labels are scattered around, and a single sticky-note carries coordinates which you mark on your own map. Nothing else here seems to be of any use to you, so you do one more once over and close the door behind you.</text>
+					<quest event="NEXUS_PORTAL"/>
 				</event>
 			</choice>
 		</event>

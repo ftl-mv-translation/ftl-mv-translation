@@ -10,48 +10,396 @@
 	</deadCrew>
 </ship>
 
-<event name="ANOMALY_SPAWNER"> <!--for the regular event anomalies-->
-	<loadEventList first="false" generate="true">
-		<event name="ANOMALY_WACKY" req="challenge_level" lvl="3"/>
-		<event name="ANOMALY_CALLIE" req="stability" lvl="0" max_lvl="25"/>
+<event name="SPAWN_CHECK"> <!--this just checks if the anomaly spawn checker is working-->
+	<beaconType id="map_icon_casino" global="true" req="ANOMALY_SPAWN_CHECK">
+		<color r="155" g="90" b="205" a="1.0"/>
+		<unvisitedTooltip>TEST.</unvisitedTooltip>
+		<visitedTooltip>TEST.</visitedTooltip>
+		<undiscoveredTooltip>TEST.</undiscoveredTooltip>
+	</beaconType>
+	<text>Do something onboard the ship.</text>
+</event>
+
+<event name="ANOMALY_SPAWNER"> <!--oracle shouldn't be the first encounter, change this!!!-->
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="ANOMALY_ORACLE" req="ORACLE_SPAWN_CHECK" lvl="1"/> <!--doesnt disable other anomalies from spawning in a run-->
+		<event name="ANOMALY_SPAWNER_CEL"/>
 	</loadEventList>
 </event>
+<eventList name="ANOMALY_SPAWNER_CEL">
+	<event load="ANOMALY_CEL_QUESTIONS"/>
+	<event load="ANOMALY_CEL_COVERUP"/>
+	<event load="ANOMALY_CEL_WALDO"/>
+</eventList>
 
-<event name="ANOMALY_WACKY">
-	<text>.</text>
-	<distressBeacon/>
+<!--
+the oracle
+scrollbar tutorial
+-->
+
+<event name="GNOME_HATER">
+	<text load="TEXT_EMPTY_START"/>
+	<choice>
+		<text>Do something onboard the ship.</text>
+		<event load="GNOME_HATER_GLITCH"/>
+	</choice>
+	<choice>
+		<text>Do nothing.</text>
+		<event load="GNOME_HATER_GLITCH"/>
+	</choice>
+</event>
+<event name="GNOME_HATER_GLITCH">
+	<backgroundObject name="GLITCH_GNOME">
+		<layer z="0">front</layer>
+		<spawnArea x="400" y="188" w="0" h="0" center="true"/>
+		<anim>glitch</anim>
+		<active>true</active>
+	</backgroundObject>
+	<playSound>glitch</playSound>
+	<triggeredEvent event="GNOME_HATER_FIGHT" time="1" clearOnJump="true"/>
+</event>
+<ship name="SHIP_CONTINUITY_PROBE_GNOME" auto_blueprint="MU_CONTINUITY_AUTO">
+	<destroyed>
+		<text>"Error - error - error - error - Continuity has failed to be enforced. Sending request for quarant-" The ship explodes before it can let off the signal. You quickly prepare to jump away before another one of these things can appear.</text>
+		<autoReward level="HIGH">item</autoReward>
+	</destroyed>
+</ship>
+<event name="GNOME_HATER_FIGHT">
+	<text>"Anomalous object detected aboard your vessel. The C.E.L. finds you guilty of violating continuity protocol 13; harboring anomalous contraband. Continuous failure to desist and purge the anomalous object will not be tolerated. Beginning continuity correctment."</text>
+	<clearBackgroundObject name="GLITCH_GNOME"/>
+	<resetFtl/>
+	<ship load="SHIP_CONTINUITY_PROBE_GNOME" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
 </event>
 
-<event name="ANOMALY_CALLIE">
-	<text>An MV portal opens nearby, and a bright green Auto-ship exits. "Well golly, I'm Callie the Calculator, and you must be [STUDENT NAME HERE]. I'm so excited to be your teacher here at [SCHOOL NAME HERE]!!! Let's begin! What's 7+3?"</text>
-	<metaVariable name="prof_callie_encounters" op="add" val="1"/>
-	<ship load="SHIP_MATH_AUTO" hostile="false"/>
+<!--
+***********************
+CEL
+***********************
+-->
+<!--GVAN QUESTIONAIRE-->
+<event name="ANOMALY_CEL_QUESTIONS">
+	<text>Before you even have a chance to observe your surroundings, a large Slug Transport lurches towards you and beams a Slug onto your ship. Dressed in a freshly ironed suit and with a strangely familiar appearance you can't quite put your finger on, he puts down a large briefcase on a nearby table and pulls a stack of neatly organized papers and places them before him, all without looking at or speaking to you.</text>
+	<ship load="SHIP_CONTINUITY_ENFORCER" hostile="false"/>
+	<variable name="loc_found_anomaly" op="set" val="1"/>
 	<choice hidden="true">
-		<text>4</text>
-		<event load="CALLIE_MAD"/>
-	</choice>
-	<choice hidden="true">
-		<text>10</text>
+		<text>Uh... hello?</text>
 		<event>
-			<text>"OMG That's correct! G-g-g-g-good job [STUDENT NAME HERE]! Next quest- OOPS! Seems there's an interuption! My MATH senses are tingling! What could this be?! Shall we find out [STUDENT NAME]?"</text>
+			<text>The Slug gazes up casual and readjusts the papers. "Hello, ssstranger. Would you care to anssswer sssome... quessstionsss?" Without waiting for an answer, the Slug immediately begins reading off of his sheet. "Let usss... begin. Quessstion one. Have you ever noticed anything... unusssual within the realitiesss you have visssited? Thingsss which... ssshould not be?"</text>
 			<choice hidden="true">
-				<text>Continue...</text>
+				<text>Yes.</text>
 				<event>
-					<text>Callie's voice suddenly switches from her usual high pitched one to a much more reserved, matter of fact tone. "Signal intercepted. Origin: Unknown. Beginning transcript: if you are hearing this, we are in dire need of help. Quarantine has been breached but we cannot hold temporarily. Prime already- already suspects we've broken through. You need to find- [static] and tell them we're- signal lost. Resuming standard education protocols."</text>
+					<text>"Isss that... sssso? Hmm." The Slug scribbles something down on his paper. "Quessstion... two. Hasss an advanccced AI ever utilized technology you would consssider... otherworldly... to sssubjugate your free will?"</text>
 					<choice hidden="true">
-						<text>What the hell was that?</text>
+						<text>I don't think so?</text>
 						<event>
-							<text>"Haha, wasn't that wacky [STUDENT NAME]? Haha! Unfortunately it seems we're all out of time for math today! Goodbye!"</text>
-							
+							<text>The Slug lets out a faint laugh and scribbles something else down. "Quesstion three. Have you ever encountered or heard of what might be consssidered a... memetic hazard? In particular, one involving a sssubssstance commonly referred to asss chocolate pudding?"</text>
+							<choice hidden="true">
+								<text>Yes.</text>
+								<event>
+									<text>"I sssee. I will... report thisss back to my employersss. Let usss move on."</text>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="ANOMALY_QUESTIONS_2"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>No.</text>
+								<event>
+									<text>"Very well then." The Slug draws an X on his paper and fiddles with his pen. "Let usss move on."</text>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="ANOMALY_QUESTIONS_2"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>What's chocolate pudding?</text>
+								<event>
+									<text>"Either you are... very unobssservant, or I am in the... wrong clusssster. Either way, I ssssee thiss quessstionaire hasss no reassson to continue. Thank you for your time."</text>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event>
+											<instantEscape/>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>No.</text>
+				<event>
+					<text>"Isss that... sssso? Well... then I ssssuppose that anssswersss all I needed from you. Goodbye, ssstranger." Without another word, the Slug places his papers back into his briefcase and beams away, following by his ship jumping away moments later.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<instantEscape/>
 						</event>
 					</choice>
 				</event>
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true">
-		<text>13</text>
-		<event load="CALLIE_MAD"/>
+</event>
+<event name="ANOMALY_QUESTIONS_2">
+	<text>"Quesssstion four. Have you ever engaged with or encountered an anomalousss object or entity which interferesss with the very fabric of your reality? Perhapssss... cleaning sssuppliesss?"</text>
+	<choice hidden="true" req="detergent_mode" blue="true">
+		<text>(Detergent) Possibly.</text>
+		<event>
+			<text>"Oh... Thank you for informing me. I'm afraid I will have to... confissscate thisss, but allow me to offer fair compensssation. Now, let'sss move on."</text>
+			<variable name="detergent_mode" op="set" val="0"/>
+			<autoReward level="LOW">scrap_only</autoReward>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="ANOMALY_QUESTIONS_3"/>
+			</choice>
+		</event>
 	</choice>
+	<choice hidden="true" req="gnome" blue="true">
+		<text>(Gnome) Possibly.</text>
+		<event>
+			<text>The Slug glances up, his infallible composure finally shattered: "Where... did you get thisss? You ssshould... no... You sshould NOT have thissss. What have you done? Do you... even realissse the missstake you have made? It isss... too late. We will have to... quarantine thisss reality. I mussst leave and inform my employersss."</text>
+			<variable name="quarantine" op="set" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<instantEscape/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>I doubt it.</text>
+		<event>
+			<text>"Hm. People are never ssssure on that one... but we sssshall move on."</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="ANOMALY_QUESTIONS_3"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ANOMALY_QUESTIONS_3">
+	<text>"Quesssstion five, the lasssst of... our quessstionsss today. Do you believe in... gods?"</text>
+	<choice hidden="true">
+		<text>Yes.</text>
+		<event load="ANOMALY_QUESTIONS_4"/>
+	</choice>
+	<choice hidden="true">
+		<text>No.</text>
+		<event load="ANOMALY_QUESTIONS_4"/>
+	</choice>
+	<choice hidden="true">
+		<text>Maybe.</text>
+		<event load="ANOMALY_QUESTIONS_4"/>
+	</choice>
+</event>
+<event name="ANOMALY_QUESTIONS_4">
+	<text>The Slug says nothing, only jotting down some more notes. You sit there uncomfortably watching him, and notice outside it seems as if everything else has stopped moving, frozen in time and place.</text>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>At last, the Slug finally looks up. "Thissss hereby concludes the... quesstionaire. Thank you for your... participation. You will be... compensated for your time. Farewell." Without another word the Slug teleports away and his ship jumps, leaving zero traces of FTL signatures.</text>
+			<autoReward level="HIGH">item</autoReward>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<instantEscape/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--CE COVERUP-->
+<event name="ANOMALY_CEL_COVERUP">
+	<text>Lured in by the distress beacon, you instead find a strange space station unlike any Federation station model you've seen, and several vessels orbiting around it, all Slug transports. You could try sneaking closer to listen but you have no idea how dangerous it might be.</text>
+	<variable name="loc_found_anomaly" op="set" val="1"/>
+	<distressBeacon/>
+	<img back="BACK_EVENT_CE" planet="NONE"/>
+	<choice hidden="true">
+		<text>Sneak closer.</text>
+		<event>
+			<text>Incredibly little of the conversation from the other ships comes through, due to some kind of sophisticated encryption method you've never seen before. All you catch are some mentions of anomalies, continuity, and that this station in question comes from somewhere far away. While you're listening, you receive a hail from the station owners, revealing a very terrified human-like creature with blue skin.
+			
+"Please, you have to help us. I have no idea what happened - one second we were finishing up a sale on some Artillery Lasers and a Minelauncher when there's this evil laugh and we wound up here! I don't even know where HERE is! These Slugs are telling us we're under arrest for violating continuity, but we didn't do anything! I don't even know what a continuity IS! Please, you have to rescue us!"</text>
+			<choice hidden="false">
+				<text>Rescue the station's crew.</text>
+				<event>
+					<text>You usher the crew on-board quickly, and along with them a weapon from their cargo that might be of use aboard your ship, in addition to a helping of fuel to get as far as possible from here. To your luck, the Slug ships don't seem to notice! Looks like you'll be able to get out of here safely.</text>
+					<crewMember amount="1" all_skills="2" class="human_humanoid">Stefan</crewMember>
+					<weapon name="BA_LASER_ARTILLERY_2"/>
+					<item_modify>
+						<item type="fuel" min="3" max="3"/>
+					</item_modify>
+					<jumpEvent loop="false">ANOMALY_CEL_COVERUP_FIGHT</jumpEvent>
+				</event>
+			</choice>
+			<choice hidden="false">
+				<text>We can't help.</text>
+				<event>
+					<text>No way are you risking getting involved in whatever is happening here. You put enough distance between yourself and the station until you can no longer hear the captain's pleading.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave now.</text>
+		<event>
+			<text>Whatever is going on here, it's far too risky to get involved.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ANOMALY_CEL_COVERUP_LEAVE"> <!--unused because buggy-->
+	<backgroundObject name="GLITCH_PROBE">
+		<layer z="0">front</layer>
+		<spawnArea x="200" y="188" w="0" h="0" center="true"/>
+		<anim>glitch</anim>
+		<active>true</active>
+	</backgroundObject>
+	<playSound>glitch</playSound>
+	<triggeredEvent event="ANOMALY_CEL_COVERUP_FIGHT" time="1" clearOnJump="true"/>
+	<resetFtl/>
+</event>
+<ship name="SHIP_CONTINUITY_PROBE_COVERUP" auto_blueprint="MU_CONTINUITY_AUTO">
+	<destroyed>
+		<text>"Error - error - error - error - Continuity has failed to be enforced. Sending request for quarant-" The ship explodes before it can let off the signal. Some of the station's crew cheer but you don't have time to celebrate. You quickly prepare to jump away before another one of these things can appear.</text>
+		<autoReward level="HIGH">standard</autoReward>
+	</destroyed>
+</ship>
+<event name="ANOMALY_CEL_COVERUP_FIGHT">
+	<text>"Unexpected and unapproved interference in continuity enforcement protocols. Attempting correctment. Turn over the anomalous contraband or you will be placed under arrest for violation of continuity."</text>
+	<clearBackgroundObject name="GLITCH_PROBE"/>
+	<resetFtl/>
+	<ship load="SHIP_CONTINUITY_PROBE_COVERUP" hostile="false"/>
+	<choice hidden="false">
+		<text>Hand over the crew and the cargo.</text>
+		<event>
+			<text>The station owner protests but with your weapons raised they have no choice but to comply. You feel a bit guilty at the quick betrayal, but you didn't sign up to deal with whatever this is. "Thank you for complying with continuity enforcement protocols. You may now forget this ever happened. Please leave the premises so that anomaly cleanup may commense."</text>
+			<removeCrew class="human_humanoid">
+				<clone>false</clone>
+				<text></text>
+			</removeCrew>
+			<remove name="BA_LASER_ARTILLERY_2"/>
+		</event>
+	</choice>
+	<choice hidden="false">
+		<text>Refuse!</text>
+		<event>
+			<text>"By resisting continuity enforcement you are now guilty of violating protocol 13; harboring anomalous contraband, protocol 18; removing contraband from or tampering with an anomalous site, and protocol 24; refusing to comply with an authorized continuity enforcer. Beginning purge."</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--WALDO-->
+<event name="ANOMALY_CEL_WALDO">
+	<text>Upon first arriving at this beacon, you begin to run preliminary scans until you look up and spot a giant and strangely colored Slug vessel inspecting the beacon, which doesn't show up on anything other than your proximity alert. The ship itself seems as shocked to see you as you are it. A well dressed Slug in a grey suit appears on your screen.
+	
+	"I ssshould inform you, ssstranger, that you were not... meant to sssee thissss. But... sssincccce you are here, I figure I ssshould asssk. Have you sssseen any... ssssussspicciousss activity in thisss system? If ssso, I would like to know." Before you can respond your ship receives a mysterious hail from another location, which you can't quite discern. "Don't tell him anything. Keep the secret, and I'll make it worth your while."</text>
+	<variable name="loc_found_anomaly" op="set" val="1"/>
+	<ship load="SHIP_CONTINUITY_ENFORCER" hostile="false"/>
+	<backgroundObject name="WALLACE">
+		<layer z="0">background</layer>
+		<spawnArea x="750" y="440" w="150" h="150" center="true"/>
+		<anim>wally</anim>
+		<hoverAnim>wally_hover</hoverAnim>
+		<inactiveAnim hide="true"/>
+		<tooltip>Who's this?</tooltip>
+		<clickAction>
+			<event load="WALDO_TALK"/> <!--events_mechanics-->
+			<destroy/>
+		</clickAction>
+	</backgroundObject>
+	<choice hidden="false">
+		<text>Lie; Nothing at all.</text>
+		<event>
+			<text>"Mhm... Okay..." You quickly remember that Slugs can read minds and you might have just walked into a trap, but the Slug doesn't push further. "Here's my... card, ssstranger. If you ever noticcce anything... odd, do not hesssitate to call." The Slug beams over a small business card with a circular logo and the header C.E.L., plus a number you don't even know how to call. The ship jumps away shortly after.
+			
+			You receive another message a little bit after. "Good, you made the right choice. Just find me now, and we'll talk."
+			</text>
+			<instantEscape/>
+		</event>
+	</choice>
+	<choice hidden="false">
+		<text>Tell the truth; Report the message.</text>
+		<event>
+			<text>"Thank you... ssstranger. Glory... to the Multiverssse." The Slug reverses his ship and flies off into the distance, where you can just barely make out a humanoid figure vanish as the ship jumps away after him.</text>
+			<clearBackgroundObject name="WALLACE"/>
+			<instantEscape/>
+		</event>
+	</choice>
+</event>
+<event name="WALDO_TALK">
+	<text>All of a sudden, a humanoid figure with strangely dead-looking eyes appears before you on your ship, wearing a striped vest. "Great work, getting rid of that guy. My name is Wallace, I'm kind of a celebrity in the Multiverse, in case you didn't know. Now, since you were so generous and kept me out of trouble, I aught to return the favor. Tell me if any of these get your fancy."</text>
+	<store>STORE_SYLVAN_RARE</store>
+</event>
+
+<!--
+***********************
+THE ORACLE
+***********************
+-->
+<ship name="ORACLE" auto_blueprint="HER_ORACLE">
+	<destroyed load="OPTION_INVALID"/>
+	<deadCrew load="OPTION_INVALID"/>
+</ship>
+<event name="ANOMALY_ORACLE">
+	<triggeredEvent event="ANOMALY_ORACLE_GLITCH" time="1"/>
+</event>
+<event name="ANOMALY_ORACLE_GLITCH">
+	<backgroundObject name="GLITCH">
+		<layer z="0">front</layer>
+		<spawnArea x="300" y="188" w="0" h="0" center="true"/>
+		<anim>glitch</anim>
+		<active>true</active>
+	</backgroundObject>
+	<playSound>glitch</playSound>
+	<triggeredEvent event="ANOMALY_ORACLE_REAL" time="1" clearOnJump="true"/>
+</event>
+<event name="ANOMALY_ORACLE_REAL">
+	<text>You jump into an unremarkable beacon, with nothing to show but a few distant abandoned planets and a resource-stripped asteroid field. Now seems like a good time to relax and look for something to do on the ship.</text>
+	<clearBackgroundObject name="GLITCH"/>
+	<ship load="ORACLE" hostile="false"/>
+	<choice>
+		<text>Do something onboard the ship.</text>
+		<event load="ANOMALY_ORACLE_SPEAK"/>
+	</choice>
+	<choice>
+		<text>Do nothing.</text>
+		<event load="ANOMALY_ORACLE_SPEAK"/>
+	</choice>
+</event>
+<event name="ANOMALY_ORACLE_SPEAK">
+	<!--<backgroundObject name="GLITCH_DARKNESS">
+		<layer z="0">front</layer>
+		<spawnArea x="400" y="188" w="0" h="0" center="true"/>
+		<anim>glitch_black</anim>
+		<active>true</active>
+	</backgroundObject>
+	<playSound>prophecy</playSound>-->
+	
+	<!--Do not trust the merchant, nor his accomplices. Trust only me and the Observers, inform Thest of this. They will help you. Find me. And whatever you do, it is of great important you do not tell the one in the suit about this. We will discuss further when we meet.-->
+	<variable name="loc_found_oracle" op="set" val="1"/>
+	<instantEscape/>
 </event>
 </FTL>

@@ -24,7 +24,82 @@
 	<event load="DUSK_PROPOGANDA"/>
 	<event load="DUSK_SLAVER_TRADE"/>
 	<event load="DUSK_IDOL"/>
+	<event load="DUSK_PLANNERS"/>
 </eventList>
+
+<event name="DUSK_PLANNERS" unique="true">
+	<text>It's unusual to see non-military Rebel vessels outside of safezones, but an Auto-escort is leading the way for a party of Rebel architects who seem to be preparing something at the nearby system.</text>
+	<ship load="SHIP_AUTO_ESCORT" hostile="false"/>
+	<choice hidden="true">
+		<text>Hail the ships.</text>
+		<event>
+			<text>The Rebels seem fairly annoyed by your pestering. "We're busy, idiot! Trying to build a new residential zone somewhere nearby. Don't you have orphans to murder somewhere?"</text>
+			<choice hidden="true">
+				<text>Isn't this sector controlled by Duskbringers though?</text>
+				<event>
+					<text>"Well yeah, right NOW it is. But Universe 1'll plow through them soon enough. We were sent ahead of time to prepare for the inevitable surge in population once we wrench this place out of the hands of those hardlight freaks. Ex-warzones are all the rage nowadays."</text>
+					<choice hidden="true">
+						<text>Leave them alone.</text>
+						<event/>
+					</choice>
+					<choice hidden="true" req="LIST_CREW_DUSK">
+						<text>(Duskbringer Crew) Trick them into heading straight into the Dusk fleet.</text>
+						<event>
+							<text>With some smooth talking (and failing to mention the source of the information) you convince the Rebels to head in the direction of a supposed Duskbringer outpost. This should delay the Rebels for a bit...</text>
+							<modifyPursuit amount="-2"/>
+						</event>
+					</choice>
+					<choice hidden="true" req="LIST_CREW_ENGINEER">
+						<text>(Engineer Crew) Convince them you've also been sent by the Rebels.</text>
+						<event>
+							<text>"Universe 1 hires Renegades now? Since when? I know Vance ain't always the most rational guy but... really? Well, not my place to complain. If you're travelling through here you'll need to be extra cautious you don't step into a trap. Here's some flight plans, hopefully it helps."</text>
+							<reveal_map/>
+						</event>
+					</choice>
+					<choice hidden="true" req="sensors" lvl="3">
+						<text>(Adv. Sensors) Recommend them a good spot.</text>
+						<event>
+							<text>Skeptical at first, after looking over the map plans the Rebels seem to realize you've given them quite the prime location. "Well I'll be, I guess Renegades are useful for more than just kicking puppies after all. Hah! Eh whatever, I'll pay you if it keeps you from making a flesh suit out of me."</text>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="ADV_SCANNERS">
+						<text>(LRS) Recommend them a good spot.</text>
+						<event>
+							<text>Skeptical at first, after looking over the map plans the Rebels seem to realize you've given them quite the prime location. "Well I'll be, I guess Renegades are useful for more than just kicking puppies after all. Hah! Eh whatever, I'll pay you if it keeps you from making a flesh suit out of me."</text>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack their escort.</text>
+		<event>
+			<text>As soon as you open fire, the escort locks onto your hull and the Rebels jump away, leaving you alone to fight the drone.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the architects.</text>
+		<event>
+			<text>They might not be military, but that doesn't mean these Rebels are any safer to mess with. Better to leave them alone.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
 
 <event name="DUSK_MILITIA_ESCORT" unique="true">
 	<text>Friends of the Federation aren't all that common in these parts, but a Militia Transport protected by an escort is passing through. They must have noticed you, but they don't attempt to make contact.</text>
@@ -164,7 +239,7 @@
 </event>
 
 <event name="DUSK_SLAVER_TRADE">
-	<text>Not too long after you jump to this beacon a slaver also jumps nearby. They hail you. "Interesting, a Feddy. Ain't a common sight down here. Don't suppose you need some crew?"</text>
+	<text>Not too long after you jump to this beacon a slaver also jumps nearby. They hail you. "Interesting, a Renegade. Ain't a common sight down here. Don't suppose you need some crew?"</text>
 	<choice hidden="true">
 		<text>Ask to see their slaves.</text>
 		<event load="DUSK_SLAVER_TRADE_BUY"/>
@@ -204,7 +279,7 @@
 	<event>
 		<text>"Now THAT sure is an unexpected sight. Come aboard captain, see if there's anything that... piques your interests."</text>
 		<choice hidden="true">
-			<text>Come aboard</text>
+			<text>Come aboard.</text>
 			<event load="DUSK_SLAVER_TRADE_BUY_2"/>
 		</choice>
 	</event> 
@@ -214,7 +289,7 @@
 	<choice>
 		<text>Buy an Engi.</text>
 		<event>
-			<text>"Excellent choice!" The pirates unchain the slave and toss them in your direction. You bring them back to your ship before telling them that they've been liberated. Perhaps the Duskbringers aren't as bad as the pirates afterall...</text>
+			<text>"Excellent choice!" The pirates unchain the slave and toss them in your direction. You bring them back to your ship before telling them that they've been liberated. Perhaps the Duskbringers aren't as bad as the pirates after all...</text>
 			<crewMember amount="1" class="engi"/>
 			<item_modify>
 				<item type="scrap" min="-45" max="-45"/>
@@ -224,7 +299,7 @@
 	<choice>
 		<text>Buy a Rockman.</text>
 		<event>
-			<text>"Excellent choice!" The pirates unchain the slave and toss them in your direction. You bring them back to your ship before telling them that they've been liberated. Perhaps the Duskbringers aren't as bad as the pirates afterall...</text>
+			<text>"Excellent choice!" The pirates unchain the slave and toss them in your direction. You bring them back to your ship before telling them that they've been liberated. Perhaps the Duskbringers aren't as bad as the pirates after all...</text>
 			<crewMember amount="1" class="rock"/>
 			<item_modify>
 				<item type="scrap" min="-35" max="-35"/>
@@ -234,7 +309,7 @@
 	<choice>
 		<text>Buy a Vampweed.</text>
 		<event>
-			<text>"Excellent choice!" The pirates unchain the slave and toss them in your direction. You bring them back to your ship before telling them that they've been liberated. Perhaps the Duskbringers aren't as bad as the pirates afterall...</text>
+			<text>"Excellent choice!" The pirates unchain the slave and toss them in your direction. You bring them back to your ship before telling them that they've been liberated. Perhaps the Duskbringers aren't as bad as the pirates after all...</text>
 			<crewMember amount="1" class="orchid_vampweed"/>
 			<item_modify>
 				<item type="scrap" min="-40" max="-40"/>
@@ -250,7 +325,7 @@
 </event>
 
 <event name="DUSK_PROPOGANDA">
-	<text>A massive machine floats nearby, akin to a station in size but appears to be fully automated and Zoltan made. As soon as lies start flooding in through your radio, it becomes clear that this is some sort of automated propaganda broadcaster. "Federation officers eat BABIES! That's a fact! Think of the children. Join the Duskbringers today and make the monsters pay!"</text>
+	<text>A massive machine floats nearby, akin to a station in size, but appears to be fully automated and Zoltan made. As soon as lies start flooding in through your radio, it becomes clear that this is some sort of automated propaganda broadcaster. "Federation officers eat BABIES! That's a fact! Think of the children. Join the Duskbringers today and make the monsters pay!"</text>
 	<choice hidden="true">
 		<text>Dismantle the machine for scrap.</text>
 		<event>
@@ -329,143 +404,273 @@
 </eventList>
 
 <!--
-		HOSTILE!!!
-	Events that always have a fight
--->
-<eventList name="HOSTILE_DUSKBRINGER">
-	<event load="ENCOUNTER_DUSKBRINGER"/>
-	<event load="ENCOUNTER_DUSKBRINGER_STATION"/>
-	
-	<event load="ENCOUNTER_PIRATE_DUSKBRINGER"/>
-	<event load="ENCOUNTER_REBEL_DUSKBRINGER"/>
-	
-	<event load="DUSK_ROCK_FANATICS"/>
-	<event load="DUSK_PIRATE_CAPTURE"/>
-</eventList>
-
-<event name="ENCOUNTER_DUSKBRINGER">
-	<text load="TEXT_ENCOUNTER_DUSKBRINGER"/>
-	<ship load="SHIP_DUSK_FIGHT" hostile="true"/> 
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="COMBAT_CHECK"/>
-	</choice>
-</event>
-<textList name="TEXT_ENCOUNTER_DUSKBRINGER">
-	<text>The Duskbringers are more extreme than the regular Zoltans, if that was even possible. Usually, they prefer to kill on sight, and the ship here attempts to do the same.</text>
-	<text>Duskbringers blame the Federation in particular for the Rebellion's uprising. There is already a Duskbringer ship here, and they intend to repay the favor.</text>
-	<text>There are many ways to describe the Duskbringers. One such way might be overly agressive space nazis, but you don't have time to fathom more before a ship is attacking!</text>
-	<text>A Duskbringer ship is approaching at high speeds. Arm the weapons!</text>
-	<text>Duskbringer patrols often scout out the sector to ward off unwanted visitors. One of these patrols has spotted you and moves in to attack.</text>
-	<text>"Greedy, corrupt Federation pig! Your presence here violates code protocol-R78-T! Prepare to be erased!" You suspect their fury is due to more than a simple protocol violation, but you have no choice but to fight.</text>
-</textList>
-
-<event name="ENCOUNTER_DUSKBRINGER_STATION" unique="true">
-	<text load="TEXT_ENCOUNTER_DUSKBRINGER_STATION"/>
-	<ship load="SHIP_DUSK_STATION" hostile="true"/> 
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="COMBAT_CHECK"/>
-	</choice>
-</event>
-<textList name="TEXT_ENCOUNTER_DUSKBRINGER_STATION">
-	<text>"Unidentified ship, this system is off-limits for- ah crap, Feds!" The nearby Duskbringer station activates their arsenal, ready to attack.</text>
-	<text>The Duskbringers are surprisingly even more cautious of protecting their borders than even the Zoltan. A station built here to ward off ships like yours spots you, and a fight is inevitable.</text>
-</textList>
-
-<event name="ENCOUNTER_REBEL_DUSKBRINGER">
-	<text load="TEXT_ENCOUNTER_REBEL_DUSKBRINGER"/>
-	<ship load="SHIP_REBEL_FIGHT" hostile="true"/> 
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="COMBAT_CHECK"/>
-	</choice>
-</event>
-<textList name="TEXT_ENCOUNTER_REBEL_DUSKBRINGER">
-	<text>A smug Rebel captain hails you. "Do you need further proof that your Federation is corrupt, when your existence doesn't fuel just one, but two Rebellions?"</text>
-	<text>The Rebels and Duskbringers have a strange relationship. Though it would be a lie to say they like each other, the two have a weak bond over their hatred of the Federation. The Rebel ship at this beacon wastes no time proving that this hatred has yet to die down.</text>
-	<text>Though this is not their territory, Rebel forces are not all too uncommon in Duskbringer sectors. It appears you have encountered one of their ships.</text>
-	<text>"Blegh, can't say I'm a fan of these Zoltan idiots either. Buncha' mini space-nazis or something. Anyways, time to die!"</text>
-	<text>You're hailed by the Rebel ship at this beacon. "Well, aren't you just so brave, coming here? I wondered if I would see you here, considering how much you love killing your enemies. Funny, because I just happen to love doing the exact same thing!"</text>
-</textList>
-
-<event name="ENCOUNTER_PIRATE_DUSKBRINGER">
-	<text load="TEXT_ENCOUNTER_PIRATE_DUSKBRINGER"/>
-	<ship load="SHIP_PIRATE_ALL" hostile="true"/> 
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="COMBAT_CHECK"/>
-	</choice>
-</event>
-<textList name="TEXT_ENCOUNTER_PIRATE_DUSKBRINGER">
-	<text>A pirate hiding from the Duskbringers already occupies this beacon. They seem confident in taking on your ship, and attack!</text>
-	<text>You pick up a frequency between two pirate ships. "Yeah, these damn Zoltan bastards -- no, everything is still going as planned -- ah crap, Federation!" It appears they've noticed you. One of the ships escapes, but the other attacks!</text>
-	<text>Despite trying desperately to keep pirate forces at bay, there's a considerable amount of underground black markets and slave trades held in Duskbringer sectors. Why the pirates do this, whether to rub their superiority in the Zoltan's faces or some other alterior motive doesn't matter, because one such ship is barreling down on you!</text>
-	<text>"A Fed? In this sector? How curious. You should have stayed away, amigo. You might think the Dusks are the biggest threat here, but you're wrong. We pirates own this sector!"</text>
-	<text>"Damn it, Federation too? Why can't we just catch a break!" The pirates at this beacon don't seem pleased at your presence. Prepare for battle.</text>
-</textList>
-
-<event name="DUSK_ROCK_FANATICS" unique="true">
-    <text>The Rockmen have always had a fascination with Zoltan culture, so it's not too far of a stretch for some to align with Duskbringer views. The Rock ship here clearly takes its devotion to the Duskbringer cause seriously, and is eager to take you down.</text>
-    <ship load="SHIP_ROCK_DUSKBRINGER" hostile="true"/>
-    <choice hidden="true">
-        <text>Continue...</text>
-        <event load="COMBAT_CHECK"/>
-    </choice>
-</event>
-<event name="FANATICS_AUG">
-    <event/>
-</event>
-
-<event name="DUSK_PIRATE_CAPTURE" unique="true">
-	<text>Two ships inhabit this beacon, a Duskbringer and a Pirate. You notice something isn't right, the two aren't attacking. Then you realise that the Duskbringer ship is empty, and the original crew is aboard the pirate ship. You catch their chatter on the comms. "Damn it! - Federation ship, no time to get back - we'll have to fight them from in here!"</text>
-	<ship load="SHIP_DUSK_PIRATE_CAPTURE" hostile="true"/>
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="COMBAT_CHECK"/>
-	</choice>
-</event>
-
-<!--
-		BOARDERS!!!
-	Events that always have boarders
--->
-<eventList name="BOARDERS_DUSKBRINGER">
-	<event load="BOARDERS_DUSKBRINGER_CAPTURE"/>
-</eventList>
-
-<event name="BOARDERS_DUSKBRINGER_CAPTURE" unique="true">
-	<text>Your comms go to static temporarily and your sensors blank out. You barely catch the warning for boarders before your screen goes black!</text>
-	<boarders min="2" max="3" class="zoltan"/>
-	<status type="limit" target="player" system="sensors" amount="0"/>
-	<choice hidden="true" req="ANTI_VIRUS">
-		<text>(Anti-Virus) Restore your sensors.</text>
-		<event>
-			<text>Your sensors system is restored to full power.</text>
-			<status type="clear" target="player" system="sensors" amount="100"/>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event/>
-	</choice>
-</event>
-
-<!--
 		NEUTRAL!!!
 	Events that could have a fight
 -->
 <eventList name="NEUTRAL_DUSKBRINGER">
 	<event load="DUSK_TEAMUP"/>
-	<event load="DUSK_ZOLTAN_UNSURE"/>
 	<event load="DUSK_PIRATES_HIDING"/>
 	<event load="DUSK_IDIOT"/>
-	<event load="DUSK_MONASTERY"/>
+	<event load="DUSK_HARASS"/>
+	<event load="DUSK_SNEAKYREBEL"/>
+	<event load="DUSK_YOUNG"/>
 	
 	<event load="ZOLTAN_SCIENCE_DOCK"/>
 	<event load="SLAVER_BETRAYAL"/>
 	<event load="PIRATE_BRIBER"/>
 	<event load="ASTEROID_EXPLORE"/>	
+</eventList>
+
+<event name="DUSK_YOUNG" unique="true">
+	<text>A very young Duskbringer, perhaps not even yet an adult, is barreling down towards you. "Federation pig! This here is Zoltan space, and you ain't welcome here! You're in for it now, for I am here! I will be your downfall! I eat Feds and Renegades for breakfast, yeah? Just like my hero, Devorak the Deathless! I'm climbing the ranks, yeah? I'm gonna be the greatest, most loyal, most deadliest Duskbringer there ever was, yeah? Aren't you quaking in your boots, yeah?"</text>
+	<ship load="SHIP_DUSK_YOUNG" hostile="false"/>
+	<choice hidden="true">
+		<text>Aren't you a bit young to be a soldier?</text>
+		<event>
+			<text>The Zoltan spits on the ground. "Ain't you listening pig? I ain't a soldier. I'm a freakin' Duskbringer, yeah? The greatest Duskbringer! Killing Renegades like they ain't nothin'. Cause they ain't! I'm a real freakin' hero, everybody loves me, yeah? Now start quaking, pig!"</text>
+			<choice hidden="true">
+				<text>Doesn't that make you a soldier?</text>
+				<event>
+					<text>"What? Pfft, shows how much you know, pig! A soldier's nothin' but a brainwashed lackey, who eats hay and dies for a cause he ain't even knowing! A Duskbringer's a glorious warrior of the future, bringin' about the destiny of the Zoltan race, yeah? What'd you know about a glorious future, pig? Enough talkin' now, yeah? I'm gonna show you what a glorius future really means!"</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Pretend to be afraid.</text>
+				<event>
+					<text>"Yeah, quake like that! Shake like the little baby you are, yeah? Hahah! You Renegades are a bunch of cowards! I feel pity for you now, pig. Here, take some pity scrap, why don't ya? Hah!"</text>
+					<choice>
+						<text>Take the pity scrap.</text>
+						<event>
+							<text>"Good, good! Now get out of here before I change my mind and kill you, pig!" You can sense a sort of relief in the Zoltan's voice, as if he's glad he doesn't really have to fight you.</text>
+							<autoReward level="LOW">scrap_only</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Retaliate the insult and fight!</text>
+						<event>
+							<text>"Oh well you're in for it now, pig! Get ready to face your end!"</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Say nothing and initiate combat.</text>
+		<event>
+			<text>No point in wasting time with this. You arm the weapons and get ready to fight.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_YOUNG_SURRENDER">
+	<text>"Alright pig, well played, well played! Made a mess of my ship, yeah? Bet you're real proud of yourself, yeah? Well give yourself a pat on the back, sure! Beat the deadliest Duskbringer around, yeah? There'll be more comin' for you after this, let me tell you! But 'cause you proved yourself, I'll take pity on you!"</text>
+	<choice hidden="true">
+		<text>Accept his pity.</text>
+		<event>
+			<text>"Yeah, smart one you are! Next time think before you wander into Zoltan space, you hear? No room for pigs here, yeah?!"</text>
+			<ship hostile="false"/>
+			<autoReward level="LOW">item</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Say nothing but spare him.</text>
+		<event>
+			<text>"You ain't gonna take nothin'? You're just letting me go, pig? What kind of nonsense is this? You're a murderer, an assassin. And I'm a big target, yeah? If you ain't takin' my money, then you sparing me?"</text>
+			<ship hostile="false"/>
+			<choice hidden="true">
+				<text>You're not a Duskbringer or a soldier. You're just a kid.</text>
+				<event>
+					<text>"I ain't a kid, pig! I'm a Duskbringer! A cold blooded, green skinned, Zoltan-loving Duskbringer damn it! How dare you insult the deadliest Duskbringer around!" Despite the tough talk, the Zoltan makes no move to actually resume contact. "Well, you'll pay for it another time then, yeah? But not right now... I have to rest. Did a number on me pig. If the Rebels come around, I'll tell them you went the other way, yeah? Don't think it's a favor pig, it just serves my purposes well."</text>
+					<modifyPursuit amount="-2"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Flatter him - You're too high a target and I don't want the Duskbringers after us.</text>
+				<event>
+					<text>"Ahhh, so the truth comes out, yeah? Wise one you are! Got my respect now, you do! Don't worry about nothin' pig, I got your back! Us smart ones gotta stick together, I'll keep them Duskbringers from being too harsh on you, yeah?"</text>
+					<crewMember amount="1" class="zoltan_devotee"/>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Finish him off.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="DUSK_SNEAKYREBEL" unique="true">
+	<text>At first the beacon appears to be desolate, until a glimmer of blue catches your eye in the distance. Looks like it's an MV Rebel ship trying to avoid being detected.</text>
+	<choice hidden="true">
+		<text>Attempt to follow them undetected.</text>
+		<event load="DUSK_SNEAKYREBEL_FOLLOW"/>
+	</choice>
+	<choice hidden="true" req="cloaking">
+		<text>(Cloaking) Follow them.</text>
+		<event load="DUSK_SNEAKYREBEL_FOLLOW_GOOD"/>
+	</choice>
+	<choice hidden="true">
+		<text>Hail the ship.</text>
+		<event>
+			<text>The Rebel captain is startled to see you. "A Renegade? Damn it, we were hoping to go unspotted... Please, hear us out! We're not from Universe 1. Not all of us support those genocidal reality-hoppers. I joined the Rebellion during the Civil War because I thought Vance would finally bring lasting peace to the galaxy - but this? This is just too far. We're on our way to deliver supplies to a Duskbringer outpost in the sector. We could spare some of the supplies if that'll satiate you."</text>
+			<ship load="SHIP_DUSK_SNEAKYREBEL_NOSURRENDER" hostile="false"/>
+			<choice hidden="false">
+				<text>Accept the bribe.</text>
+				<event>
+					<autoReward level="HIGH">stuff</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Ex-Rebel or not, we aren't letting any supplies get into the hands of the Duskbringers!</text>
+				<event>
+					<text>You arm the guns and prepare to fight.</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the Rebels.</text>
+		<event>
+			<text>The Rebel captain tries to protest when you power up the weapons but it's too late. You're already locked on and firing!</text>
+			<ship load="SHIP_DUSK_SNEAKYREBEL" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the Rebel ship.</text>
+		<event>
+			<text>It's a bad idea to go following Rebels in such dangerous territory.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DUSK_SNEAKYREBEL_FOLLOW">
+	<event load="DUSK_SNEAKYREBEL_FOLLOW_GOOD"/>
+	<event>
+		<text>Your attempt to follow the Rebels is unsuccessful. You're easily spotted, and the ship immediately jumps away.</text>
+	</event>
+</eventList>
+<event name="DUSK_SNEAKYREBEL_FOLLOW_GOOD">
+	<text>You tail the ship for a while until you eventually spot a Duskbringer outpost in the distance. You start to wonder if the ship has come to ambush the Duskbringers when it, to your surprise, docks and begins to offload cargo! You tap into the comms to hear what's happening on-board. "It wasn't easy getting this ship. I had to go against orders on all sorts of levels, but Universe 1 can... do something unsavory to my reproductive organs." Seems they're actually part of the local Rebellion, still trying to aid the Duskbringers.</text>
+	<choice hidden="true">
+		<text>Wait behind and try to steal some supplies.</text>
+		<event>
+			<text>Not too long later the Rebel ship undocks and jumps away, giving you time to try and steal some supplies. Unfortunately, the Duskbringers were more prepared than you thought, and try to defend themselves!</text>
+			<autoReward level="MED">stuff</autoReward>
+			<ship load="SHIP_DUSK_FIGHT" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="DUSK_HARASS" unique="true">
+	<text>A Monk convoy being escorted by a badly damaged Ministry vessel has been stopped nearby by a Duskbringer patrol ship. Based on intercepted comm frequencies, it seems the Duskbringers are using the presence of a Ministry ship as a chance to harass the monks.</text>
+	<ship load="SHIP_DUSK_HARASS" hostile="false"/>
+	<choice hidden="true">
+		<text>Protect the monks.</text>
+		<event>
+			<text>"Renegade filth? In our sector? What business do YOU have with protecting monks all of a sudden?" The Duskbringer ship raises its defenses and prepares to defend itself.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Threaten the Duskbringers into standing down.</text>
+		<event load="DUSK_HARASS_THREAT"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_DUSK">
+		<text>(Duskbringer Crew) Chastise the Duskbringers.</text>
+		<event>
+			<text>Your crewmember is livid with the actions of their former colleagues. "Our goal is the rightful glorification of Zoltan-kind! What good is that mission if we so easily lash out against our fellow Zoltans, even ones who may not follow the words of Solay?" The other Duskbringers bow their heads in shame and return to their ship without any bloodshed.</text>
+			<choice hidden="true">
+				<text>Contact the monks.</text>
+				<event load="DUSK_HARASS_WIN"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the convoy.</text>
+		<event>
+			<text>It's not your duty to go protecting some monks.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DUSK_HARASS_THREAT">
+	<event>
+		<text>The Duskbringers aren't having any of your threats. "In case you didn't notice, Renegade, this is OUR territory, and we decide who gets to come and go here! No one threatens the Duskbringers, especially not in our space!"</text>
+		<boarders min="2" max="2" class="zoltan_devotee"/>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>Startled to see they've been caught, the Duskbringers immediately surrender, forking over some paltry bribe before jumping away.</text>
+		<autoReward level="LOW">standard</autoReward>
+		<choice hidden="true">
+			<text>Contact the monks.</text>
+			<event load="DUSK_HARASS_WIN"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="DUSK_HARASS_WIN">
+	<event>
+		<text>The monks are so terrified, that they're talking too fast for your translator to even pick up what they're saying. Fortunately, one of the Peacekeepers that was escorting them is holding together slightly more and offers you a reward for saving them.</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>It seems something malfunctioned in the Life Support of the escort ship, suffocating the entirety of the crew. Left unprotected, the monks have nowhere else to go and beg you to let them come with you.</text>
+		<crewMember amount="1" class="zoltan_monk"/>
+	</event>
 </eventList>
 
 <event name="DUSK_TEAMUP" unique="true">
@@ -549,50 +754,6 @@
     <modifyPursuit amount="-1"/>
 </event>
 
-<event name="DUSK_ZOLTAN_UNSURE" unique="true">
-    <text>You are hailed by a Zoltan ship. Their captain speaks in an unsure tone: "Federation... You have caused this war to escalate far further than you ever expected. It no longer affects just you, but the other races of the galaxy as well. We request that you suggest a way to quell the Duskbringer's anger."</text>
-    <ship load="SHIP_ZOLTAN_FIGHT" hostile="false"/> 
-    <choice>
-        <text>Give them your flight plans, knowing it will most likely end up in Rebel hands.</text>
-        <event>
-            <text>The Duskbringers and Rebels have been known to share information about the Federation with each other, and you suspect this will only speed up the fleet. Still, you hand the information over to the Zoltan ship, who seems satisfied.</text>
-            <modifyPursuit amount="1"/>
-        </event>
-    </choice>
-    <choice>
-        <text>Donate some scrap to help the Zoltans.</text>
-        <event>
-            <text>Parting with your precious scrap is not easy, but you know it will help the Zoltans at the very least to a small extent.</text>
-            <item_modify>
-                <item type="scrap" min="-25" max="-25"/>
-            </item_modify>
-        </event>
-    </choice>
-    <choice req="LIST_CREW_ZOLTAN">
-        <text>(Zoltan Crew) Preach to the Zoltans and convince them you know the ways of peace.</text>
-        <event>
-            <text>Your Zoltan launches into a long, incredibly boring lecture about nonviolence and pacifist ideals. Though it almost puts you into a coma from boredom, it appears to have emotionally moved the crew of the other Zoltan ship. Thoroughly convinced you are different from the other militarized Federation ships, they let you pass.</text>
-        </event>
-    </choice>
-   <!-- <choice req="mind">
-        <text>(Mind Control) "Convince" the Zoltans to let you pass.</text>
-        <event>
-            <text>The Mind Control works wonders on the Zoltans, and they believe every word you tell them. They "willingly" let you pass.</text>
-        </event>
-    </choice> -->
-    <choice hidden="true">
-        <text>Dealing with the Dusks is not our problem.</text>
-        <event>
-            <text>"I was suspecting you might say that. I'm afraid we cannot simply let you continue to destroy our ways of life by growing the divide in our government even wider."</text>
-            <ship hostile="true"/>
-            <choice hidden="true">
-                <text>Continue...</text>
-                <event load="COMBAT_CHECK"/>
-            </choice>
-        </event>
-    </choice>
-</event>
-
 <event name="DUSK_PIRATES_HIDING" unique="true">
 	<text>A group of pirates has taken refuge from the seemingly endless Duskbringer Patrols in the shadow of a small moon. You doubt they can see you.</text>
 	<img planet="PLANET_UNPOPULATED_SMALL"/>
@@ -640,7 +801,7 @@
 		<choice hidden="true">
 			<text>Offer to trade.</text>
 			<event>
-				<text>The pirates whisper amongst each other. You wait for a while and begin to consider leaving before the one who you assume is their leader speaks up. "Alright, we have thought long and hard about it. A little trade doesn't hurt, but the minute we suspect you of anything shifty, we'll blow you to smitherens." You consider it ironic for this to be coming from pirates, but you agree to their terms.</text>
+				<text>The pirates whisper amongst each other. You wait for a while and begin to consider leaving before the one who you assume is their leader speaks up. "Alright, we have thought long and hard about it. A little trade doesn't hurt, but the minute we suspect you of anything shifty, we'll blow you to smithereens." You consider it ironic for this to be coming from pirates, but you agree to their terms.</text>
 				<store>STORE_PIRATE</store>
 			</event>
 		</choice>
@@ -677,8 +838,159 @@
 	</choice>
 </event>
 
-<event name="DUSK_MONASTERY" unique="true">
-	<text>Though Zoltan Monasteries are usually constructed on the surface of planets, some, like the one at this beacon, are built on large space stations. Unfortunately, this makes them prime targets for hostiles. A pirate group has taken the monastery hostage, and a Duskbringer squadron is trying to negotiate their release.</text>
+<!--
+		HOSTILE!!!
+	Events that always have a fight
+-->
+<eventList name="HOSTILE_DUSKBRINGER">
+	<event load="ENCOUNTER_DUSKBRINGER"/>
+	<event load="ENCOUNTER_DUSKBRINGER_STATION"/>
+	
+	<event load="ENCOUNTER_PIRATE_DUSKBRINGER"/>
+	<event load="ENCOUNTER_REBEL_DUSKBRINGER"/>
+	
+	<event load="DUSK_ZOLTAN_UNSURE"/>
+	<event load="DUSK_ROCK_FANATICS"/>
+	<event load="DUSK_PIRATE_CAPTURE"/>
+</eventList>
+
+<event name="ENCOUNTER_DUSKBRINGER">
+	<text load="TEXT_ENCOUNTER_DUSKBRINGER"/>
+	<ship load="SHIP_DUSK_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_DUSKBRINGER">
+	<text>The Duskbringers are more extreme than the regular Zoltans, if that was even possible. Usually, they prefer to kill on sight, and the ship here attempts to do the same.</text>
+	<text>Duskbringers blame the Federation in particular for the Rebellion's uprising. There is already a Duskbringer ship here, and they intend to repay the favor.</text>
+	<text>There are many ways to describe the Duskbringers. One such way might be overly agressive space nazis, but you don't have time to fathom more before a ship is attacking!</text>
+	<text>A Duskbringer ship is approaching at high speeds. Arm the weapons!</text>
+	<text>Duskbringer patrols often scout out the sector to ward off unwanted visitors. One of these patrols has spotted you and moves in to attack.</text>
+	<text>"Greedy, corrupt Federation pig! Your presence here violates code protocol-R78-T! Prepare to be erased!" You suspect their fury is due to more than a simple protocol violation, but you have no choice but to fight.</text>
+</textList>
+
+<event name="ENCOUNTER_DUSKBRINGER_STATION" unique="true">
+	<text load="TEXT_ENCOUNTER_DUSKBRINGER_STATION"/>
+	<ship load="SHIP_DUSK_STATION" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_DUSKBRINGER_STATION">
+	<text>"Unidentified ship, this system is off-limits for- ah crap, Feds!" The nearby Duskbringer station activates their arsenal, ready to attack.</text>
+	<text>The Duskbringers are surprisingly even more cautious of protecting their borders than even the Zoltan. A station built here to ward off ships like yours spots you, and a fight is inevitable.</text>
+</textList>
+
+<event name="ENCOUNTER_REBEL_DUSKBRINGER">
+	<text load="TEXT_ENCOUNTER_REBEL_DUSKBRINGER"/>
+	<ship load="SHIP_REBEL_FIGHT" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_DUSKBRINGER">
+	<text>A smug Rebel captain hails you. "Do you need further proof that your Federation is corrupt, when your existence doesn't fuel just one, but two Rebellions?"</text>
+	<text>The Rebels and Duskbringers have a strange relationship. Though it would be a lie to say they like each other, the two have a weak bond over their hatred of the Federation. The Rebel ship at this beacon wastes no time proving that this hatred has yet to die down.</text>
+	<text>Though this is not their territory, Rebel forces are not all too uncommon in Duskbringer sectors. It appears you have encountered one of their ships.</text>
+	<text>"Blegh, can't say I'm a fan of these Zoltan idiots either. Buncha' mini space-nazis or something. Anyways, time to die!"</text>
+	<text>You're hailed by the Rebel ship at this beacon. "Well, aren't you just so brave, coming here? I wondered if I would see you here, considering how much you love killing your enemies. Funny, because I just happen to love doing the exact same thing!"</text>
+</textList>
+
+<event name="ENCOUNTER_PIRATE_DUSKBRINGER">
+	<text load="TEXT_ENCOUNTER_PIRATE_DUSKBRINGER"/>
+	<ship load="SHIP_PIRATE_ALL" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_PIRATE_DUSKBRINGER">
+	<text>A pirate hiding from the Duskbringers already occupies this beacon. They seem confident in taking on your ship, and attack!</text>
+	<text>You pick up a frequency between two pirate ships. "Yeah, these damn Zoltan bastards -- no, everything is still going as planned -- ah crap, Federation!" It appears they've noticed you. One of the ships escapes, but the other attacks!</text>
+	<text>Despite trying desperately to keep pirate forces at bay, there's a considerable amount of underground black markets and slave trades held in Duskbringer sectors. Why the pirates do this, whether to rub their superiority in the Zoltan's faces or some other ulterior motive doesn't matter, because one such ship is barreling down on you!</text>
+	<text>"A Fed? In this sector? How curious. You should have stayed away, amigo. You might think the Dusks are the biggest threat here, but you're wrong. We pirates own this sector!"</text>
+	<text>"Damn it, Federation too? Why can't we just catch a break!" The pirates at this beacon don't seem pleased at your presence. Prepare for battle.</text>
+</textList>
+
+<event name="DUSK_ROCK_FANATICS" unique="true">
+    <text>The Rockmen have always had a fascination with Zoltan culture, so it's not too far of a stretch for some to align with Duskbringer views. The Rock ship here clearly takes its devotion to the Duskbringer cause seriously, and is eager to take you down.</text>
+    <ship load="SHIP_ROCK_DUSKBRINGER" hostile="true"/>
+    <choice hidden="true">
+        <text>Continue...</text>
+        <event load="COMBAT_CHECK"/>
+    </choice>
+</event>
+<event name="FANATICS_AUG">
+    <event/>
+</event>
+
+<event name="DUSK_PIRATE_CAPTURE" unique="true">
+	<text>Two ships inhabit this beacon, a Duskbringer and a Pirate. You notice something isn't right, the two aren't attacking. Then you realise that the Duskbringer ship is empty, and the original crew is aboard the pirate ship. You catch their chatter on the comms. "Damn it! - Federation ship, no time to get back - we'll have to fight them from in here!"</text>
+	<ship load="SHIP_DUSK_PIRATE_CAPTURE" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="DUSK_ZOLTAN_UNSURE" unique="true">
+    <text>You are hailed by a Zoltan ship. Their captain speaks in an unsure tone: "Federation... You have caused this war to escalate far further than you ever expected. It no longer affects just you, but the other races of the galaxy as well. We request that you suggest a way to quell the Duskbringer's anger."</text>
+    <ship load="SHIP_ZOLTAN_FIGHT" hostile="false"/> 
+    <choice>
+        <text>Give them your flight plans, knowing it will most likely end up in Rebel hands.</text>
+        <event>
+            <text>The Duskbringers and Rebels have been known to share information about the Federation with each other, and you suspect this will only speed up the fleet. Still, you hand the information over to the Zoltan ship, who seems satisfied.</text>
+            <modifyPursuit amount="1"/>
+        </event>
+    </choice>
+    <choice>
+        <text>Donate some scrap to help the Zoltans.</text>
+        <event>
+            <text>Parting with your precious scrap is not easy, but you know it will help the Zoltans at the very least to a small extent.</text>
+            <item_modify>
+                <item type="scrap" min="-25" max="-25"/>
+            </item_modify>
+        </event>
+    </choice>
+    <choice req="LIST_CREW_ZOLTAN">
+        <text>(Zoltan Crew) Preach to the Zoltans and convince them you know the ways of peace.</text>
+        <event>
+            <text>Your Zoltan launches into a long, incredibly boring lecture about nonviolence and pacifist ideals. Though it almost puts you into a coma from boredom, it appears to have emotionally moved the crew of the other Zoltan ship. Thoroughly convinced you are different from the other militarized Federation ships, they let you pass.</text>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Dealing with the Dusks is not our problem.</text>
+        <event>
+            <text>"I was suspecting you might say that. I'm afraid we cannot simply let you continue to destroy our ways of life by growing the divide in our government even wider."</text>
+            <ship hostile="true"/>
+            <choice hidden="true">
+                <text>Continue...</text>
+                <event load="COMBAT_CHECK"/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<!--
+		DISTRESS!!!
+	Events that have distress beacons
+-->
+<eventList name="DISTRESS_DUSKBRINGER">
+	<event load="DISTRESS_DUSK_FEDERATION"/>
+	<event load="DISTRESS_DUSK_DAMAGEDFLEET"/>
+	<event load="DISTRESS_DUSK_MONASTERY"/>
+
+	<event load="DISTRESS_ESCORT_BEACON"/>
+	<event load="DISTRESS_REBEL_VS_FEDERATION"/> 
+</eventList>
+
+<event name="DISTRESS_DUSK_MONASTERY" unique="true">
+	<text>Though Illesctrian Monasteries are usually constructed on the surface of planets, some, like the one at this beacon broadcasting the distress signal, are built on large space stations. Unfortunately, this makes them prime targets for hostiles. A pirate group has taken the monastery hostage, and a Duskbringer squadron is trying to negotiate their release.</text>
+	<distressBeacon/>
 	<choice hidden="true">
 		<text>Help the pirates keep control of the station and fight back the Duskbringers.</text>
 		<event>
@@ -752,20 +1064,6 @@
 	</choice>
 </event>
 
-<!--
-		DISTRESS!!!
-	Events that have distress beacons
--->
-<eventList name="DISTRESS_DUSKBRINGER">
-	<event load="DISTRESS_DUSK_FEDERATION"/>
-	<event load="DISTRESS_DUSK_DAMAGEDFLEET"/>
-
-	<event load="DISTRESS_ESCORT_BEACON"/>
-	<event load="DISTRESS_TRAP_BEACON"/>
-	<event load="DISTRESS_PIRATE_CIVILIAN_BEACON"/>
-	<event load="DISTRESS_REBEL_VS_FEDERATION"/> 
-</eventList>
-
 <event name="DISTRESS_DUSK_DAMAGEDFLEET" unique="true">
 	<text>The distress beacon here is coming from no ordinary ship. In the distance lies an immense Zoltan fleetship, a Dreadnaught from the looks of it. It has received critical damage and a good portion of the ship is completely depressurized.</text>
 	<img back="BACK_EVENT_ZOLTFLEET_DAMAGED" planet="PLANET_INVISIBLE"/>
@@ -774,14 +1072,25 @@
 		<text>Dock and try to help.</text>
 		<event>
 			<text>The Zoltan captain urgently welcomes you inside the ship's spacious hangar. "Good, reinforcements have arrived. The Zoltan Minister dispatched a few small fleets to the Duskbringer sectors to make sure they were kept under control. We hadn't realized how strong they had grown, and they destroyed our fleet with alarming efficiency. We're the only ship left, and that won't last long if we don't make repairs. Our medical and life support systems were damaged heavily but not completely destroyed. There's still hope to fix them, but the path to get to them is completely oxygenless and possibly still has hostiles roaming around."</text>
-			<choice hidden="true">
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 				<text>Send some crew to repair the life support.</text>
 				<event load="DISTRESS_DUSK_DAMAGEDFLEET_DISPATCH"/>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>There's no crew available to perform repairs.</text>
+				<event load="OPTION_INVALID"/>
 			</choice>
 			<choice hidden="true" req="BLUELIST_CREW_NO2">
 				<text>(Anaerobic Crew) Send your crew to repair the life support.</text>
 				<event>
 					<text>Without a need for oxygen, your crew doesn't struggle at all with repairing the systems. Once the oxygen levels are stable enough, the remaining Zoltan crew seek out any Duskbringers who may be onboard and dispose of them. Once all is clear the Zoltan captain thanks you for your assistance and pays you a large reward.</text>
+					<autoReward level="HIGH">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_DRONES_REPAIR_CREW">
+				<text>(Repair Drone) Send your drone to repair the life support.</text>
+				<event>
+					<text>Without a need for oxygen, your drone doesn't struggle at all with repairing the systems. Once the oxygen levels are stable enough, the remaining Zoltan crew seek out any Duskbringers who may be onboard and dispose of them. Once all is clear the Zoltan captain thanks you for your assistance and pays you a large reward.</text>
 					<autoReward level="HIGH">standard</autoReward>
 				</event>
 			</choice>
@@ -909,12 +1218,80 @@
 	Events that have quests
 -->
 <eventList name="QUESTS_DUSKBRINGER">
-	<event load="ZOLTAN_TRADE_HUB"/>
-	
-	<event load="QUEST_FEDERATION_PLANET_SIGNAL"/>
-	<event load="QUEST_MANTIS_INVASION_START"/>
-	<event load="QUEST_CREWDEAD_START"/>
+	<event load="QUEST_DUSK_HIJACK"/>
 </eventList>
+
+<event name="QUEST_DUSK_HIJACK" unique="true"> <!--new 5.2.4-->
+	<text>A Zoltan engineer is orbiting the nearby moon, their captain pacing back and forth in a worried fashion. When you appear, they immediately hail you. "Good, maybe you can help! The Duskbringers have hijacked an Auto-ship I was working on and if I don't get it back soon, they'll likely extract any data we have stored on those data drives. If you could get it back, I'll give you a copy of whatever sector scans it has retrieved."</text>
+	<img planet="PLANET_MOONS"/>
+	<ship load="SHIP_ZOLTAN_GENERIC" hostile="false"/>
+	<choice>
+		<text>Accept the engineer's offer.</text>
+		<event>
+			<text>"Excellent! Thank you so much, it'd be disastrous for the Duskbringers to get their hands on that intel."</text>
+			<autoReward level="LOW">fuel_only</autoReward>
+			<quest event="QUEST_DUSK_HIJACK_AUTO"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the offer and attack the ship!</text>
+		<event>
+			<text>You have no need for sector scans, but you could make use of the scrap from this guy's ship!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_ZOLTAN_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Decline.</text>
+		<event>
+			<text>You have no need for the sector scans and turn down the offer.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_DUSK_HIJACK_AUTO">
+	<text>A small Duskbringer research outpost has been constructed nearby, with the Auto-ship in question docked outside. With your intuition as a Renegade (and using basic common sense), you figure it's obvious there's limited ways out of this without confrontation.</text>
+	<ship load="SHIP_DUSK_HIJACK" hostile="false"/>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>Fortunately, the platform the Auto is docked with is far away enough - this fight shouldn't risk damaging it. Just focus all your fire on the Duskbringers!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Change your mind and leave.</text>
+		<event>
+			<text>Maybe this isn't worth it after all. The engineers will have to find someone else to get their Auto back from.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_HIJACK_WIN">
+	<text>"Perfect! You got her back in one piece too! Maybe the Ministry was too hasty in expressing their reservations over Renegades. Your sector maps, as promised."</text>
+	<reveal_map/>
+</event>
 
 <!--
 		NEBULA!!!
@@ -1011,26 +1388,558 @@
 	</choice>
 </event>
 
+<event name="NEBULA_ANURAK" unique="true">
+	<preventQuest/>
+	<text>Unfortunately, you've dove right into the center of a particularly thick ion storm. You catch sight of what seems to be two separate ships slipping through the nebula, but before you can even initiate contact, you receive a mysterious hail from another ship which quickly disappears into the clouds, advising you to follow them.</text>
+	<environment type="storm"/>
+	<choice hidden="true">
+		<text>Follow the mysterious ship.</text>
+		<event>
+			<text>You take your mind off the other vessels for a moment and tail the ship that hailed you, which eventually leads you to a smaller rogue planet. You don't catch sight of the vessel until you finally land and realize it's just a small shuttle. Next to it awaits an Orchid covered in typical Illesctrian robes who beckons for you to follow. "We understand you are a Renegade, correct? Come, please. The master awaits you, and there is much he must share."</text>
+			<choice hidden="true">
+				<text>Go with the Orchid.</text>
+				<event>
+					<text>Hoping your questions will be answered soon, you follow the Orchid to a large tank-like vessel. According to your database, this is a repurposed Duskbringer army truck, originally designed to carry up to 20 soldiers for rapid ground deployment. Now, it seems its weapon arrays have been replaced with basic utilities like a clothes line and a small battery powered terrarium. The Orchid bows and points to the door, suggesting you enter.</text>
+					<choice hidden="true">
+						<text>Enter the vehicle.</text>
+						<event>
+							<text>As soon as you enter you're met with a strange smell, a mixture of spices and incense, which makes a couple of your crew gag. The rattle of pots and other trinkets can be heard from the adjacent room, which reveals a Zoltan in a long decorated robe stirring some strange concoction - maybe soup, though with the smell it's hard to tell - with a big metal pot. "Oh- oh! Friends! I do hope you're friends!" 
+							
+							The Zoltan hobbles towards you, limping from a glitch in his damaged chassis. As he approaches you, he puts his hand on your face, and begins feeling around your features as if uncertain if you're real. "Huh. Renegades. I know it from the look in your eye. Don't deny it! I am a man - I think a man. What is a man? That's a question for later, hmph - of peace! That is what we call it, I think. But still, I can respect it! The world needs killers... erm... maybe that's an indictment on the world. Wish we didn't. But we do! And that's your job. It's cool. Would you like some soup?!" 
+							
+							You're put off guard by the sudden subject change, but figure if you want to understand what this is about, you should say yes.</text>
+							<choice hidden="true">
+								<text>Stay for soup.</text>
+								<event>
+									<text>The Zoltan claps his hands together and rambles about soup for a while as he grabs a ladle from the shelf and stirs his big pot. He rings a bell and several more robed individuals enter the room - a mix of species, but mostly Zoltans and Orchids, who each help themselves to a bowl of soup. As the Zoltan is serving them, you also notice a secret compartment that's opened, and a lizard like creature comes out, scoop up a bowl of soup, and vanish without being spotted by anyone else. 
+									
+									Once you've all received your soup, the Zoltan beckons for you to sit with him and begins to messily gulp down his entire bowl in a few seconds. "Now that you've so handily accepted my soup, I think we are friends indeed! Oh how lovely, I love meeting new friends. I! - I am Anurak. That is my name, whatever a name might be to you. And you are... no wait, don't tell me. Uhm... hmmm." Anurak contemplates your face for several moments, never making direct eye contact. "You look like a... Shells...ken..bry... Shellskenbry! Yes, that is your name! Most definitely. Hello Shellskenbry!" 
+									
+									Anurak leans over the table, knocking over his soup bowl and reaching out his hand and shaking yours. "Glad to meet you!"</text>
+									<choice hidden="true">
+										<text>That's not my name.</text>
+										<event>
+											<text>Anurak ignores you, instead shifting slightly as the Orchid from earlier brings over a rag and helps wipe up the spilled soup. "Well Shellskenbry, you're probably very curious what's going on! I can answer any question! Well, not any question. Some questions. I actually am in dire need of your help, you see! Long ago, I was a Duskbringer. Big mistake, but those were different times! We were all so angry at the Ministry, the Federation, and the sweet promises of a glorious future were so alluring! But bah, there was nothing glorious. Maybe glorious. Define glorious? No, scratch that. It wasn't glorious at all! Would you like more soup?!"
+											
+											Without waiting for you to answer, Anurak pushes his chair aside and stumbles over back to the soup pot, fetching another bowl and throwing it down before you, sloshing some of it on you, though Anurak doesn't seem to notice. "By the Eye, I love soup! Best liquid you can consume. That's a lie. No it's not. 
+											
+											Now, I've made many mistakes in my life, and I'm not proud of them. Personally, I'd like to stay here and hide from them. Unfortunately, my friend Devorak wouldn't. Maybe you've heard of him, maybe you haven't. He's an old veteran of the Fed-Mantis War, and a Duskbringer Warhero. It's funny though, he's not much of a Duskbringer. Seems his mistakes, in the eyes of our 'glorious' leaders - they're not so glorious - is his faltering dedication to the movement. Now he's gotten us BOTH into a pickle! Hahah, heheh... oh boy..."</text>
+											<choice hidden="true">
+												<text>What happened?</text>
+												<event load="ANURAK_EXPLAIN_2"/>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>No thanks.</text>
+								<event>
+									<text>The Monk frowns but just nods his head and limps towards the soup pot. "No soup, no soup. It's always no soup with you. Fine, go, shoo." He rambles on for a while and you decide it's not worth trying to negotiate with him anymore.</text>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Follow the Rebel ship.</text>
+		<event>
+			<text>You attempt to follow the Rebel ship for almost an hour but never catch sight of it again. Disappointed and frustrated, you decide to leave before the Rebel fleet has a chance to make any major gains on you.</text>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave.</text>
+		<event>
+			<text>Not quite enticed by either mystery, you decide the best course of action is to leave.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_ANURAK_FIGHT" auto_blueprint="MU_DUSK_BATTLESHIP_ELITE">
+	<destroyed load="ANURAK_WIN"/>
+	<deadCrew load="ANURAK_WIN"/>
+</ship>
+<event name="ANURAK_EXPLAIN_2">
+	<text>"Well you see, Devorak and I had worked together in the past, and he came to me one day with an absolutely insane idea! He wanted to LEAVE the Duskbringers! N-no one does that! At least, if they do, they don't live to see the next cycle! I told him he was crazy, but the Duskbringers have seemingly grouped me into this whole thing. I've found my faith, and frankly I'm good where I am. I was hiding out in the Ministry for a while, but had to fake my death when an assassin came for me. Now I'm hiding here, but naturally, they're STILL after me! The only way to clear this up, me thinks, is to find Devorak and get him to clear my name of any involvement with him.
+													
+	That's where you come in! Yes, you, Shellskenbry! I have taken the oath of nonviolence, and cannot travel to Devorak without risking my life. If you could be so kind as to take me there, I'm sure I can convince him to reward you ever so kindly! And I'll make you soup! So, what do you say?"</text>
+	<choice hidden="true">
+		<text>We'll help.</text>
+		<event>
+			<text>Anurak pats you on the back and thanks you eagerly, bowing a couple times and calling for a third round of soup. You're about to suggest heading out quickly when there's a loud series of bangs outside.
+			
+			Scattered gunfire and the thunderous noise of a ship entering the atmosphere break the previously silent atmosphere of the planet. You rush outside to survey what's happening and spot a Duskbringer elite approaching. Anurak panicks, "They're here! The caravan can't protect itself! Please, help us, or we'll all be executed! And then who will be there to make soup for the poor and hungry?!"</text>
+			<ship load="SHIP_ANURAK_FIGHT" hostile="false"/>
+			<choice hidden="true">
+				<text>Defend the caravan.</text>
+				<event>
+					<text>The strange Monk might talk a lot - but the other inhabitants of the caravan might be put in danger if the Duskbringers get to Anurak. You get ready for combat.</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Take this chance to leave!</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We aren't getting involved in this.</text>
+		<event>
+			<text>"Y-you won't help? Shellskenbry, I trusted you! In the 10 minutes we've known each other I thought we were becoming friends! Oh no... oh no..."</text>
+		</event>
+	</choice>
+</event>
+<event name="ANURAK_WIN">
+	<text>The Duskbringer ship has been felled, and it leaves a sizeable crater on the planet's surface below. You swoop in to salvage the remains before contacting Anurak again.</text>
+	<autoReward level="HIGH">weapon</autoReward>
+	<choice hidden="true">
+		<text>Talk to Anurak.</text>
+		<event>
+			<text>Upon your return Anurak claps for you, looking around him and raising his hands to convince the other monks to clap as well. "Oh bravo! You've done it! But... they already found me out here! Oh this is bad! Wait... am I overreacting? Damn it, stop overreacting! No, no I'm not. It is bad! Oh what to do, what to do... Uh uh... my ship! I buried it somewhere here. Take it, just take it Shellskenbry! M-maybe they're tracking it? I need to get rid of everything I have that's tied to the Duskbringers!"</text>
+			<unlockCustomShip>PLAYER_SHIP_DUSKBRINGER</unlockCustomShip>
+			<choice hidden="true">
+				<text>You had a plan and we'll follow through. We'll protect you until we find Devorak.</text>
+				<event>
+					<text>"Oh Shellskenbry! You're right, how could I forget! The plan! Well, it's not much of a plan. Or is it? I suppose it is, yes... right, okay. Let's get going then! I'll transfer the coordinates of the hideout Devorak's been hiding at. Let's make haste and waste no time!"</text>
+					<variable name="ach_crew_anurak" op="set" val="1"/>
+					<crewMember amount="1" class="unique_anurak">Anurak</crewMember>
+					<quest event="DEVORAK_HIDEOUT"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>You're out of luck buddy.</text>
+				<event>
+					<text>"Oh, did I annoy you that much? Darn... well I can't ask much more, but I thought we were friends Shellskenbry! Oh, the misery!"</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DEVORAK_HIDEOUT">
+	<quest>
+		<nonNebulaBeacon>true</nonNebulaBeacon>
+		<nebulaBeacon>false</nebulaBeacon>
+		<nextSector>false</nextSector>
+	</quest>
+	<beaconType id="map_icon_hideout" global="true">
+		<color r="255" g="125" b="0" a="1.0"/>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+		<unvisitedTooltip>The location of Devorak's hideout.</unvisitedTooltip>
+	</beaconType>
+	<preventQuest/>
+	<preventFleet/>
+	<text>You've tracked down the hideout coordinates Anurak gave you, an old Ministry research outpost that was abandoned during the onset of the Duskbringer revolution. However, there seems to be little activity both outside and within. Bioscans show only one individual inside, though they don't seem to be a Zoltan. Something is wrong here.</text>
+	<img back="BACKGROUND_EVENT_DEVORAKHIDEOUT" planet="NONE"/>
+	<choice hidden="true">
+		<text>Enter the hideout.</text>
+		<event>
+			<text>You land on the landing pad nearby and pull open the rusty doors, noticing scattered Duskbringer armor all over the floor. While there's obviously no corpses, the faint residual energy signatures suggest all of these soldiers died here. Chances are, you're about to find the killer.
+			
+			Deeper into the hideout you eventually find a main lobby, surprisingly cosy for a once science outpost and now ex-terrorist hideout, with a man in grey armor sprawled on a couch with his arm dangling off, waiting for you. "Good, good. You made it. Was wondering how long until you'd get here, after I spied your ship near that Monk's hideout. Idiotic green freaks couldn't contain their temper even when I told them to wait, and look where it got them! Blown to smithereenes." The man gets off the couch, revealing himself to be of an impressive height. He peels off his painted MFK helmet and places it on the table and reaches out his hand. "I, on the other hand, aren't so stupid as to tangle with Renegades. The name's Saggitarius. Well, not really. The name's Jack. But Vael calls me Saggitarius, one of his goofy lil' nicknames." He flashes a smile and extends his hand even further across the table, demanding you shake it.</text>
+			<choice hidden="true">
+				<text>Shake his hand.</text>
+				<event name="DEVORAK_HIDEOUT_ANGEL">
+					<text>Right as you go to grab his hand, he slides it back smoothly and throws up to finger guns. "Oh, too slow! Hahah! Get's 'em every time." The mercenary spins around and flops back onto the couch. "So, with the pleasantries out of the way, shall we begin? I think we shall! If you're observant and knowledgeable - no offense if you aren't! - you'll likely have noticed I am an Angel. One of the Syndicate's goons, minion for Vael, bla bla bla. I'm a Mercenary, a good one. I get things done. I know Renegades and Mercenaries have some bad blood but we're both in the business of efficiency. And I think I've found a way for us both to be very efficient together. It's a bit of a reprisal of a less glamorous plan I had before, but I think we can weave you in and make something that REALLY blows all the socks off!"
+					
+					The man draws a cigarette from his pocket and lights it with a flame he produces from a miniature flamethrower built into his sleeve. "Since you've met the Monk I'm sure you've at least been introduced to the name Devorak. I'm not quite sure how Zoltans do 'physical attraction' but apparently I've heard he's quite strapping. The darling of not only the Duskbringers but the Ministry too! Indeed, Mr. Rei exists in a grey zone between 'patriot' and 'rebel' to the aspiring youth of the Ministry. Everyone's grown tired of the corrupt faculties of Minister Lumei, and day by day more and more turn to radical venues like the Duskbringers."</text>
+					<choice hidden="true">
+						<text>Where is this going?</text>
+						<event>
+							<text>Jack puts a finger to his lips and shushes you. "Shhh, patience Renegade! Don't you care about backstory and context? Where's the fun in this line of work if you don't set the scene first!" The Angel clears his throat. "Now, where was it? Oh yes. You see, Devorak has become the poster child of the entire Duskbringer movement! His face alone has convinced countless Zoltans to betray the Ministry. He's seen as a moderate amongst all of these 'terrorists'. Someone reasonable and rational, turned against only the corrupt Ministry officials who caused all of this mess. But that's just what THEY say at least. I don't really care if he's the nicest guy in the Multiverse or a raving psychopath. He's my target, so no matter what kind of person he is, he's about to end up dead."
+							
+							Jack pauses, letting this sink in before continuing. "But you see, this is no ordinary hit. For the very people that hired me are the Duskbringers themselves! There's a lot of fear that Devorak may have turned again, and that he's planning to renounce his membership. At such a pivotal moment in the Duskbringer movement... well it'd be quite disastrous, yeah? This whole Universe 1 backstab though? Very, very advantageous. Say... a Rebel killed Devorak before he ever had the chance to denounce the Duskbringers, yeah?" Jack snaps his fingers at you and nods. "That would be VERY advantageous indeed. It'd be the Rebels crossing one final line, and the Ministry isn't going to do anything of course. It's just enough to convince some gullible youth they need to do their part in avenging the fallen hero. Now given enough time surely it'd happen naturally, but time isn't on my clients' side."</text>
+							<choice hidden="true">
+								<text>So let me guess, you're going to frame Devorak's assassination on the Rebels.</text>
+								<event>
+									<text>"Rightamundo! The Duskbringers I was traveling with were supposed to set the trap. Lure Devorak out, just in time for us to swoop in and... pew pew! We didn't expect any risk going after the Monk, with the whole non-violent schtick. But turns out, you were there. And now the lure is dead. So, frankly, I think you're sort of in my debt in a way. You ruined the plan, and now you owe it to me to fix it, yeah? It's a win win win! You get rid of a war criminal, the Dusks get their silly war and propaganda fuel, and I get Vael to stop riding my ass. How could you refuse?! You'll need that Monk though for this to work. Someone close enough to Devorak that'll actually draw him out. He still with you?"</text>
+									<choice hidden="true" req="unique_anurak" blue="false">
+										<text>He's right here.</text>
+										<event>
+											<text>You turn to Anurak, who's also been listening to the whole conversation. He chuckles nervously to a joke no one else heard, and looks at Jack. "Good, so he's still here. Means this plan might still work!" Jack moves closer to Anurak. "Look, I know it might be hard to turn in your friend, yeah? But think about what you'll gain from it! You want out from this Duskbringer business, right? Well the only reason you're in hot water is because the Dusks think you're with Devorak. Do this for me, and you'll also absolve yourself of any threat you might pose to the Duskbringers. You'll be a free man! See? Everyone wins here! How could you refuse this offer?"</text>
+											<choice hidden="true">
+												<text>Accept the offer.</text>
+												<event name="DEVORAK_HIDEOUT_ANGEL_ACCEPT">
+													<text>Jack pats you on the back, throwing you into a half-embrace as if you've known each other your whole life. "Good! See, that's what I like about Renegades. You understand the benefits of paying off a debt. In this business, it always helps to have friends in high places, right? Well, I won't waste any more of your time. I'll patch over the coordinates and we'll be on our way." Jack throws you a thumbs up and begins to leave. Before he steps out the door, he looks back over his shoulder and gives one last warning. "Oh but, just so we're clear Renegade. You're there to lure Devorak out so we can kill him. If you try any funny business with me, my boot crushing your throat will be the last sensation you ever feel."</text>
+													<quest event="DEVORAK_FINALE"/>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>Decline.</text>
+												<event name="DEVORAK_HIDEOUT_ANGEL_DECLINE">
+													<text>Jack's smile quickly disappears, replaced by a sinister glare. "Mhm. Right, that's just the thing with you Renegades isn't it? You contribute nothing to society unless you can see a way to squeeze as much money out of it as possible. No interest in paying off debts you so dearly owe. Fine, if I had my choice I'd just kill you, but for as much as Vael hates you in particular, it'd just be unnecessary collateral damage. But stay out of my way."</text>
+												</event>
+											</choice>
+											<choice hidden="true" req="unique_irwin">
+												<text>(Irwin) Irwin seems to be barely holding something back.</text>
+												<event>
+													<text>You look over at Irwin, who's currently swaying uneasily and gripping his blunderbuss so tightly his tentacles have turned white. At last the floodgates break, and he points his gun right at Jack yelling, "Syndicate bassstardsss! Alwaysss ssscheming, alwaysss plotting the next disssassster! I'm on to you! I know your sssecretsss! Your plansss! I don't trusssst you for one moment! You're up to sssomething more, I jussst know it!"
+													Jack laughs gently, genuinely humored by this outburst. "Well if it isn't the weasel that gave Virgo the slip! Good going, really. That man was of no worth to the Syndicate anyways. Hence why he got stuck handling you, of course. Why the outrage anyways, Irwin? Still stuck in your little conspiracy land? Guess what. Everyone's conspiring to rule the Multiverse. It's not a secret, it's very well known and well documented."
+													Jack looks back at you. "Now that the interruption is out of the way, let's hear your response captain. What will it be?"</text>
+													<choice hidden="true">
+														<text>Accept the offer.</text>
+														<event load="DEVORAK_HIDEOUT_ANGEL_ACCEPT"/>
+													</choice>
+													<choice hidden="true">
+														<text>Decline.</text>
+														<event load="DEVORAK_HIDEOUT_ANGEL_DECLINE"/>
+													</choice>
+												</event>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true" req="unique_anurak" lvl="0" max_lvl="0" blue="false">
+										<text>He's no longer with us.</text>
+										<event>
+											<text>Jack hangs his head in disappointment. "Of course, I should have known you'd be too reckless to keep him around. You Renegades never fail to disappoint me, you know. So unreliable, can never be counted upon to pay off a debt. Fine then. I'm sure the Syndicate will have other uses for you in the future. Keep an ear out, because Vael doesn't like to keep dirty debtors around for long."</text>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Refuse.</text>
+				<event>
+					<text>The man stands there, smiling, his hand still outreached. Despite the situation you can't help but feel you're the one being awkward, not him. A few solid minutes go by and you realize he isn't going to keep talking until you've shaken his hand. Might as well stow your pride and just go with it.</text>
+					<choice hidden="true">
+						<text>Shake his hand.</text>
+						<event load="DEVORAK_HIDEOUT_ANGEL"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave.</text>
+		<event>
+			<text>This seems highly suspicious. Better not to get too close. Whatever the situation is with Devorak, you'll have no further part.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_DEVORAK_BOSS" auto_blueprint="MU_MVREBEL_CRUISER">
+	<destroyed load="ANURAK_WIN"/>
+	<deadCrew load="ANURAK_WIN"/>
+	<invincible/>
+</ship>
+<event name="DEVORAK_FINALE">
+	<quest>
+		<nonNebulaBeacon>true</nonNebulaBeacon>
+		<nebulaBeacon>false</nebulaBeacon>
+		<nextSector>true</nextSector>
+	</quest>
+	<beaconType id="map_icon_devorak" global="true">
+		<color r="255" g="125" b="0" a="1.0"/>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+		<unvisitedTooltip>The true location of Devorak.</unvisitedTooltip>
+	</beaconType>
+	<preventQuest/>
+	<preventFleet/>
+	<text>For the supposed secret hideout of an ex-terrorist, you didn't quite expect a busy city planet populated to the brim with Zoltans and even some other species. This seems to be a trade hub of some sort, though the coordinates lead you to a small landing pad next to a shady looking docking port.</text>
+	<img back="BACK_EVENT_DUSKCAP" planet="NONE"/>
+	<choice hidden="true" req="unique_anurak" lvl="0" max_lvl="0" blue="false">
+		<text>Without Anurak we have no way to lure Devorak out.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="unique_anurak" blue="false">
+		<text>Send in Anurak to find Devorak.</text>
+		<event>
+			<text>You follow Anurak to the docking port, though with his strange hobbling even more haphazard than normal, you figure he's just as unsure what to do as you are. As Anurak approaches a small metal door guarded by a burly Outcast, you take a glance around you. No sighting of Jack or any Syndicate or Rebel ships around. Maybe that's for the best?
+			
+			"Hello door man! Man who guards doors. As you are. Because you're standing by the door!" Anurak laughs uncomfortably and the Rockman growls. "I'm a woman."
+			"Oh, yes yes. Of course, I didn't intend to offend! By door man I did not intend to imply gender, only that you are a 'man who guards' doors. Man being as in 'Rockman', in its most gender neutral form! I too am of a neutral gender form, though I do not oft-" The Rockman growls again. "Shut the hell up. Unless you've got business here, you ain't welcome." She looks up at you and your crew. "Specially no Renegades."
+			
+			Anurak nods. "Yes of course, right... well uh. I do believe we do have business here, yes! My friend Shellskenbry and I are here to find a man named Devorak! About yay high, light green, carries a big goofy looking orange sword. Have you seen him?"
+			The Rockman crosses her arms. "Never heard of him. And even if I had, I wouldn't let anyone near him unless they had a password."
+			
+			"A... A password? Uhm... I don't think I know any passwords. Well, I know many passwords. But I don't know if the passwords I know are the same passwords you know. I can make you some soup! Will that get us inside?"
+			"No." The Rockman steps to the side, further blocking the door. You notice a few other guards, all Zoltan, hiding in the shadows watching you.</text>
+			<choice hidden="true">
+				<text>If he was here, perhaps you could pass a message to him?</text>
+				<event>
+					<text>Anurak, upon hearing your suggestion, nods. "Yes, if you could just send him a message! Uh, tell him that Anurak is here, looking for him. I need to talk about important personal business."
+					
+					"And why should I do anything for you, Monk? I know your type. I used to pop the heads off of religious zealots back in-" The Rockman is cut off by a raspy voice gleefully shouting Anurak's name. "ANURAK! You've come to me at last!" A slender Zoltan struts out from the door and pulls Anurak into a brotherly embrace. "My old friend! I heard you had died on some lizard planet!" Devorak pulls away for a second to look his old friend in the face. Anurak squirms uncomfortably in his embrace.</text>
+					<choice hidden="true">
+						<text>You're Devorak?</text>
+						<event>
+							<text>Devorak turns to you, as if realizing you're there for the first time. He stares at you blankly dead in the eyes, making you feel very uncomfortable. "Am I who? No, no. I am not Devorak. I am nothing but a hollow shell of light and energy. One which has died and been resurrected for an ignoble cause so many times it can no longer feel pain, nor has any connection to the realm of the living."
+							The Zoltan reaches behind him and pulls out his glowing orange sword, and holds it out to you. "This is Devorak. This sacred blade channels the soul of the being who once was me. This is my essence, my life force. If the blade is to perish, so will I." He smiles a little too fondly at the blade, then stows it again.
+
+							"So, dear friend, what brings you here?" Anurak gulps. "Well... uhm... uh... I was uh... You know what... nevermind! Hahah... heheh..." Devorak shakes his head. "Oh come on, you can tell me! We've known each other since... what, forever? Did you change your mind? Have you come to help me? I think the Rebellion's betrayal is finally the ammunition we need to dissolve the Duskbringers, this is our chance Anurak! Our chance to stop this whole mess, to-" 
+							
+							Anurak finally breaks, cutting Devorak off in exasperation. "I want you to cut any involvement I have in your stupid suicidal ploy! You're going to get yourself killed and more importantly you're going to get ME killed! I don't want a part of this, I want OUT."
+							Devorak seems confused. "But... but Anurak, this is HOW we get out. We have to fight back, show everyone exactly why the Duskbringers can't be allowed to win. We can't just do nothing!"
+							Anurak keeps shaking his head, smacking himself on the cheek and spinning in circles. "No no no no no no! You didn't HEAR ME! I NEED OUT! OUT! OUT!" It looks like he's about to break down psychologically, when an explosion sends all of you tumbling!</text>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event>
+									<text>You look up to the skyline, expecting to see a Rebel vessel as promised - but what you see is no Rebel! A Federation cruiser has descended upon the city, followed by a fleet of smaller vessels that are engaged in combat with some Duskbringers who have 'heroically' swooped in to save the day. You've been double-crossed! This wasn't a plot to spark further outrage against the Rebellion, it was a plot to justify all-out war with the Federation!
+									"DUSKBRINGER RADICALS, SURRENDER YOUR WEAPONS AND YOUR PERSONS TO THE LAW OF THE FEDERATION AT ONCE! YOU WILL BE GIVEN THIS ONE AND SINGLE WARNING BEFORE WE ARE FORCED TO OPEN FIRE ON THE CITY DEFENSES AND TAKE THE TERRORISTS YOU OFFER REFUGE TO THROUGH FORCE." 
+									
+									The voice is clearly Jack's, though he's pretending to sound like a Federation official instead. Devorak is both shocked and betrayed. "You- this is why you're here! You've come to betray me! Do you even realize what this will do?! The entire Federation could collapse because of this! This city is under Ministry jurisdiction! They won't stand for this!" Anurak's now broken down into full sobbing, chanting "what have I done what have I DONE!?" over and over.</text>
+									<ship load="SHIP_JACK" hostile="false"/>
+									<choice hidden="true">
+										<text>We have to do something! Attack the vessel!</text>
+										<event>
+											<text>You've screwed up badly here, but now's your chance to fix it. Unfortunately, both the Duskbringer and "Federation" forces are hostile to you in this one, so don't expect much support!</text>
+											<triggeredEvent event="JACK_BOARDERS" time="25" thisFight="true">
+												<warningMessage id="warning_boarders" r="255" g="0" b="0" x="444" y="46" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+											</triggeredEvent>
+											<ship hostile="true"/> 
+											<choice hidden="true">
+												<text>Continue...</text>
+												<event load="COMBAT_CHECK"/>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>We need to get out of here quickly!</text>
+										<event>
+											<text>You hurry back to the ship, dragging Anurak behind you. Devorak shouts something insulting in his native tongue but has little time to do anything more before heavy gunfire rains upon him and his other crew. You only barely manage to get out of the city in time before the full scale fighting begins.</text>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Change your mind and leave.</text>
+		<event>
+			<text>This seems highly suspicious. Better not to get too close. Whatever the situation is with Devorak, you'll have no further part.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_JACK" auto_blueprint="MU_FED_CRUISER_FAKE">
+	<destroyed load="JACK_DEFEAT"/>
+	<deadCrew load="JACK_DEFEAT"/>
+</ship>
+<event name="JACK_BOARDERS">
+	<boarders min="2" max="2" class="zoltan_devotee"/>
+</event>
+<event name="JACK_DEFEAT">
+	<text>The Syndicate mercenaries and their vessel have been defeated, or at least close to it. The Federation cruiser plunges into the landing pad rather smoothly for a crashing ship. While the fighting still continues, a few of the ships pause in realization the big threat has been taken down.</text>
+	<recallBoarders ship="enemy"/>
+	<variable name="ach_boss_jack" op="set" val="1"/>
+	<choice hidden="true" req="unique_anurak" lvl="1" blue="false">
+		<text>Continue...</text>
+		<event>
+			<text>In the haze of the battle, you hadn't quite realized that several broadcasting drones had gathered around the city observing you, and some reporters are even on scene. Anurak seems to realize this too, and something comes over him. He rushes over to the wreckage and emerges several minutes later with a struggling body. It's Jack, badly injured, who Anurak flops on the ground and pulls the helmet off. He holds it high in the air before realizing he's facing the wrong direction for the cameras and turns around.
+			
+			"The Syndicate! The Syndicate is behind this! Look at this helmet! I know it uh... it looks like an MFK helmet but it's not! It's not the Rebels, at least I don't think it is! It's an Angel! Not like, a heavenly angel! Like, a Syndicate Angel! He's a mercenary! For the Syndicate! Uhm... uh..." Devorak rushes besides him to help his old friend find the right words.
+			
+			"For years the Duskbringers have petitioned that the Federation has grown weak and useless in its prime age, and have argued the Ministry should divorce itself from the alliance and become a new, all encompassing empire! Yet, in all of these years never once have the Duskbringers been able to truly justify their hatred to the Federation! It is true, the Federation is imperfect, and is composite of imperfect governments run by imperfect people. Yet it stands to represent one universal dream - true, galactic, or even Multiversal, peace. The Duskbringers don't want this peace, and so in their desperation they've found one final effort. Hiring mercenaries, pirate scum who make this galaxy an even more dangerous and villainous place, to stage a Federation assault on a peaceful Ministry trading port! Are these the actions of self professed heroes? People willing to die for their nation and the good of the galaxy? Or is it the work of a group of terrorists trying to seize power at the cost of perhaps the one and only hope we have left of achieving unity in this Multiverse?"</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event name="DEVORAK_SPEECH">
+					<text>Devorak steps away from Jack and draws his sword, aiming it at the sky. "I, am Devorak Rei. To many of you, I am a hero. Perhaps to some, I am a radical. To me, I think I am both of those things, or perhaps even neither. I am a soldier who was turned bitter by war, and in my bitterness I let myself be betrayed by the Federation. I let the unjust actions of some few Union corporations and an underground Rebel insurrection channel, in all their efforts to bury the contributions of the Ministry to every major Federation War, take on the illusion as the actions of the entire Federation. I let myself be preyed upon by malicious, radical forces because they said they could change the galaxy and that's exactly what I wanted to hear. I wanted to believe the Duskbringers could solve all my problems. But they can't. The Duskbringers ARE the problem! As long as this Multiverse stands divided as it is, we will never be free of the Rebel plague or any other threat that might come over us. Fascism, nationalism, they're only pathways to decades of strife and death. How could a Federation that once stood so united in striking down the equally villainous Inquisitions now break apart so easily?"
+					Devork swings down his sword and aims it at one of the camera drones, which have now moved in closer and begun to circle him. "To my Zoltan brethren, now is your chance to change the future. Should you call yourself a Duskbringer now, it is never to late to lay down your armor and your weapons, and abandon this terror. Should you be questioning your loyalty to the Federation or the Ministry, just think of what cause you would be giving up, just to become a mindless soldier to a group whose idealogies nearly mirror that of the so hated Rebellion! And should you still be a faithful Ministry or Federation ally, it is still your duty to ensure the everlastingness of this peace. For as long as those like the Duskbringers are at large in this galaxy, you and your peace will never truly be safe." Devorak bows, then stows his sword. Around him, many more Zoltans emerge from the shadows of the building behind you and yell various things against the Duskbringers. Even some dock workers and other civilians join in, and a few Duskbringer vessels from the fight above start to jump away.
+					
+					As the cameras start to drift away to catch the scene elsewhere, Devorak turns to you. "I cannot discern what intentions you truly had, coming here today. However, if you did come to have me killed, you have shown your mind changed. What would I have learned, if I turned you away now after making a journey similar to mine?" Devorak looks behind him. "Unfortunately, I don't... really have anywhere to go now. I didn't think this far ahead. I need some place to keep this worn out corpse that carries me, so uh... do you need any help on your mission perhaps? I have a ship in storage, it means a lot to me but I don't think I can ever fly it again. You may have it now, I guess. Just don't get it blown up."</text>
+					<autoReward level="MED">standard</autoReward>
+					<crewMember amount="1" all_skills="2" class="unique_devorak">Devorak</crewMember>
+					<unlockCustomShip silent="false">PLAYER_SHIP_PEACEKEEPER</unlockCustomShip>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_anurak" lvl="0" max_lvl="0" blue="false">
+		<text>Continue...</text>
+		<event>
+			<text>In the haze of the battle you hadn't quite realized that several broadcasting drones had gathered around the city observing you, and some reporters are even on scene. Devorak seems to realize this too, and he rushes over to the wreckage and emerges several minutes later with a struggling body. It's Jack, badly injured, who Devorak flops on the ground and pulls the helmet off. He holds it high in the air for the cameras to see.
+			"For years the Duskbringers have petitioned that the Federation has grown weak and useless in its prime age, and have argued the Ministry should divorce itself from the alliance and become a new, all encompassing empire! Yet, in all of these years never once have the Duskbringers been able to truly justify their hatred to the Federation! It is true, the Federation is imperfect, and is composite of imperfect governments run by imperfect people. Yet it stands to represent one universal dream - true, galactic, or even Multiversal, peace. The Duskbringers don't want this peace, and so in their desperation they've found one final effort. Hiring mercenaries, pirate scum who make this galaxy an even more dangerous and villainous place, to stage a Federation assault on a peaceful Ministry trading port! Are these the actions of self professed heroes? People willing to die for their nation and the good of the galaxy? Or is it the work of a group of terrorists trying to seize power at the cost of perhaps the one and only hope we have left of achieving unity in this Multiverse?"</text>
+			<choice>
+				<text>Continue...</text>
+				<event load="DEVORAK_SPEECH"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
 <!--
 		UNIQUE!!!
 	Events that give stuff
 -->
 <eventList name="UNIQUE_DUSKCAP">
 	<event load="DUSKCAP_DNA"/>
-	<!--<event load="DUSKCAP_PRISONERS"/>-->
 	<event load="DUSKCAP_PISSED"/>
+	<event load="DUSKCAP_MFKHELP"/>
 </eventList>
+
+<event name="DUSKCAP_MFKHELP" unique="true">
+	<text>A nearby Zoltan city on the nearest planet's surface appears to have been damaged heavily from some kind of recent attack. An MFK vessel is parked in orbit, observing the city from a safe distance. You can't quite ascertain what its intentions are.</text>
+	<img planet="PLANET_POPULATED"/>
+	<ship load="SHIP_REBEL_SELITE_FIGHT" hostile="false"/>
+	<choice hidden="true">
+		<text>Hail the ship.</text>
+		<event>
+			<text>At first, the MFK's won't receive your hails. Finally, after enough repeated pestering, they pick up. "Yes, I hear you. God damn it, do you have anything better to do than harass us? What do you want?!"</text>
+			<choice hidden="true">
+				<text>Are you responsible for this?</text>
+				<event>
+					<text>"Responsible? No, we were sent to clean up this mess. Universe 1's gotten too big for its britches and thinks it can decide how the local Rebellions should run their politics! Well damn that to hell, we fought a Civil War too! The one mistake the Rebellion made back in the day, was thinking that just because humans are superior we couldn't cooperate with other races. Just look at these Zoltans. They get the idea. Sure, we have some... ideological incompatibilities, but we can both agree different species are better off unified and separate. But the collective egos of Universe 1 have gone too far, and now they think they can just wipe the Duskbringers out entirely! Screw that and screw them, not if I have my say. We're helping locate survivors and escort them to medical facilities. If you want to be useful, you could try helping."</text>
+					<choice hidden="true">
+						<text>Assist in locating the survivors - though it'll take some time.</text>
+						<event>
+							<text>You send a team down the city and navigate through the ruins. You find several survivors, but less than a dozen. It's a pitiful haul, but the Rebels have a similar turnout of their own. "Damn it! Damn it, damn it, damn it!" The MFK stomps his foot on the ground and clenches his fists. "Look at this, all of this pointless destruction. Going after civilians? Is this what we've come to? This city didn't even have a military installation, it was a trading port! Back in the civil war the fleet was purely occupational, we held the territory but let people go on with business. Now it's become a ravaging death omen, burning down cities and killing any poor vessel caught in its wake." He takes a deep breath and tries to recollect his emotions. "Regardless, thank you for your collaboration. We'll move these people to the nearest medical facility and come back to search later. I'll have my men give you something on your way out."</text>
+							<modifyPursuit amount="1"/>
+							<damage amount="-7"/>
+							<autoReward level="MED">item</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="LIST_CREW_SLUG">
+						<text>(Slug Crew) Assist in locating the survivors.</text>
+						<event name="DUSKCAP_MFKHELP_GOOD">
+							<text>With the help of your Slug, you find several dozen survivors and quickly. It's surely not all of them, but it's a lot, more than double what the Rebels manage. "God, you're dedicated. Maybe I thought wrongly of Renegades. Maybe you are crusaders of justice... or at least not the emotionless assassins I thought."
+
+The MFK turns to survey the ruins. "All of this damage was unnecessary, utterly pointless. What are they thinking, going after civilians? There was no military installation here, it was a trading port! Our once purely occupational fleet has become a ravaging death omen, burning down cities and killing any poor vessel caught in its wake. None of this has to do with the cause. It's aimless destruction wrought by egotistical madmen. Or... a psychopathic AI. We never should have built that thing. The C.I.C.A. project was a mistake, all it's done is coerce Vance to more and more brutal methods."
+
+The MFK takes a deep sigh. "Frankly, I'm rooting for you to blow that damn Flagship to smithereens. As much as I hate the Federation, I prefer a corrupt and aimless bureaucracy over a perfected and infinite death machine. I'll see to it my men give you something for your trouble on your way out."</text>
+							<damage amount="-10"/>
+							<autoReward level="HIGH">item</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+						<text>(Telepathic Shell) Assist in locating the survivors.</text>
+						<event>
+							<text>With the help of your Shell, you find several dozen survivors and quickly. It's surely not all of them, but it's a lot, more than double what the Rebels manage. "God, you're dedicated. Maybe I thought wrongly of Renegades. Maybe you are crusaders of justice... or at least not the emotionless assassins I thought."
+								
+The MFK turns to survey the ruins. "All of this damage was unnecessary, utterly pointless. What are they thinking, going after civilians? There was no military installation here, it was a trading port! Our once purely occupational fleet has become a ravaging death omen, burning down cities and killing any poor vessel caught in its wake. None of this has to do with the cause. It's aimless destruction wrought by egotistical madmen. Or... a psychopathic AI. We never should have built that thing. The C.I.C.A. project was a mistake, all it's done is coerce Vance to more and more brutal methods."
+
+The MFK takes a deep sigh. "Frankly, I'm rooting for you to blow that damn Flagship to smithereens. As much as I hate the Federation, I prefer a corrupt and aimless bureaucracy over a perfected and infinite death machine. I'll see to it my men give you something for your trouble on your way out."</text>
+							<damage amount="-10"/>
+							<autoReward level="HIGH">item</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="UPG_TECH_LIFEFORM">
+						<text>(Lifeform Scanner) Assist in locating the survivors.</text>
+						<event load="DUSKCAP_MFKHELP_GOOD"/>
+					</choice>
+					<choice hidden="true" req="sensors" lvl="3">
+						<text>(Adv. Sensors) Assist in locating the survivors.</text>
+						<event load="DUSKCAP_MFKHELP_GOOD"/>
+					</choice>
+					<choice hidden="true">
+						<text>Attack anyways.</text>
+						<event>
+							<text>"Damn Renegade scum, always getting in the way! You're no heros or glorious crusaders of justice, you're just moralless pests!"</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>We aren't helping. Leave.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Threaten them.</text>
+				<event>
+					<text>"Who do you think you are? The Rebellion won't take those words from anyone, let alone Renegade scum like you!"</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>I think you're pretty.</text>
+				<event>
+					<text>The MFK hangs up and mutes your communications. When you continue to try and hail them, the ship flies to the other side of the city.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the MFK ship!</text>
+		<event>
+			<text>"God damn Renegades, making life hell for anyone that dares enter their line of sight. We'll be making the whole Multiverse safer without you around!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the city and the ship.</text>
+		<event>
+			<text>Better not to risk getting too close to an MFK</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DUSKCAP_MFKHELP_GOOD">
+	<text>With the help of your scanners, you find several dozen survivors and quickly. It's surely not all of them, but it's a lot, more than double what the Rebels manage. "God, you're dedicated. Maybe I thought wrongly of Renegades. Maybe you are crusaders of justice... or at least not the emotionless assassins I thought."
+		
+The MFK turns to survey the ruins. "All of this damage was unnecessary, utterly pointless. What are they thinking, going after civilians? There was no military installation here, it was a trading port! Our once purely occupational fleet has become a ravaging death omen, burning down cities and killing any poor vessel caught in its wake. None of this has to do with the cause. It's aimless destruction wrought by egotistical madmen. Or... a psychopathic AI. We never should have built that thing. The C.I.C.A. project was a mistake, all it's done is coerce Vance to more and more brutal methods."
+
+The MFK takes a deep sigh. "Frankly, I'm rooting for you to blow that damn Flagship to smithereens. As much as I hate the Federation, I prefer a corrupt and aimless bureaucracy over a perfected and infinite death machine. I'll see to it my men give you something for your trouble on your way out."</text>
+	<damage amount="-10"/>
+	<autoReward level="HIGH">item</autoReward>
+</event>
 
 <event name="DUSKCAP_PISSED" unique="true">
 	<text>A small fleet of Duskbringer ships has blockaded this beacon. You attempt to sneak past but a squadron of Duskbringer ships fly down to stop you. You assume a fight is imminent, but instead you receive a hail. "A Federation ship? It's unorthodox, but I have a favor to ask of you..."</text>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
-			<text>You are greeted into a large meeting room furnished very strangely. Antique maps and weaponry line the walls, and a Duskbringer Martyr sits on a leather armchair sipping from a cup of tea. "Yes, hello. I know our political alignments have made us enemies, but today I think we can reach a mutually beneficial agreement. As you have surely noticed, the Rebels are quite the issue for us since Vance ordered them to betray our pact. Now, my men and I have been assigned to keeping this... filth out of our sector. There is a particularly slippery and obnoxious Rebel commander around these parts who has been giving me trouble. Give me your service and kill him, and I will give you mine in return. Is this a fair deal?"</text>
+			<text>You are greeted into a large meeting room furnished very strangely. Antique maps and weaponry line the walls, and a Duskbringer Martyr sits on a leather armchair sipping from a cup of tea. "Yes, hello. I know our political alignments have made us enemies, but today I think we can reach a mutually beneficial agreement. As you have surely noticed, the interlopers from Universe 1 are quite the issue for us since Wentworth-1 ordered them to betray our pact. Now, my men and I have been assigned to keeping this... filth out of our sector. There is a particularly slippery and obnoxious Rebel commander being supplied by an unknown force around these parts who has been giving me trouble. Give me your service and kill him, and I will give you mine in return. Is this a fair deal?"</text>
 			<choice hidden="true">
 				<text>Accept.</text>
 				<event>
-					<text>"Most excellent. Here are the co-ordinates of this nitwitted loon. I believe he goes by the title... ahem... 'Commander Kyle 'Kick your Ass'. Ugh, how distastesful..."</text>
+					<text>"Most excellent. Here are the co-ordinates of this nitwitted loon. I believe he goes by the title... ahem... 'Commander 'Kick your Ass' Kyle. Ugh, how distasteful..."</text>
 					<quest event="DUSKCAP_PISSED_QUEST"/>
 				</event>
 			</choice>
@@ -1050,11 +1959,11 @@
 </event>
 <event name="DUSKCAP_PISSED_QUEST">
     <text>You've arrived at the destination specified by the Duskbringers. Indeed, a massive Rebel ship is attacking a small Zoltan settlement, of which you aren't even sure belongs to the Duskbringers.</text>
-    <ship load="SHIP_KYLE_PICKET" hostile="false"/>
+    <ship load="SHIP_KYLE" hostile="false"/>
     <choice hidden="true">
         <text>Hail the Rebels.</text>
         <event>
-            <text>"NOW WHO MIGHT THIS BE?! A FEDERATION SHIP, AHAH! DO YOU KNOW WHO I AM? I AM KICK YOUR ASS KYLE, AND I BET YOU CAN GUESS WHAT I'M GOING TO DO TO YOU!" He pauses for a moment. "IN CASE YOU'RE STUPID, I'LL EXPLAIN IT. I'M GOING TO KICK-" You mute him while you decide what to do.</text>
+            <text>"NOW WHO MIGHT THIS BE?! WHY, IT CAN'T BE! YOU'RE THAT LITTLE SHIT THAT KEEPS BLOWING UP MY SISTER! DO YOU KNOW WHO I AM? I AM KICK YOUR ASS KYLE, AND I BET YOU CAN GUESS WHAT I'M GOING TO DO TO YOU!" He pauses for a moment. "IN CASE YOU'RE STUPID, I'LL EXPLAIN IT. I'M GOING TO KICK-" You mute him while you decide what to do.</text>
             <choice hidden="true">
                 <text>Shoot him dead.</text>
                 <event>
@@ -1076,7 +1985,8 @@
     </choice>
 </event>
 <event name="DUSKCAP_PISSED_DEFEAT">
-	<text>The Rebel ship has been neutralized. You scrap the remains of what was once Kyle's ship.</text>
+	<text>"NO! THIS CAN'T BE! MY ASS... has been... kicked... Dad's going to be so pissed." The Rebel ship has been neutralized. You scrap the remains of what was once Kyle's ship.</text>
+	<achievement>ACH_EVENT_KYLE</achievement>
 	<autoReward level="HIGH">standard</autoReward>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -1086,117 +1996,17 @@
 				<text>Continue...</text>
 				<event>
 					<text>You receive a hail from the same Duskbringer as before. "Very good. It is most unfortunate I did not arrive earlier to partake in the fight, but I see you did sufficient work, and now this neanderthal is dead. You upheld your job... for the most part... and so I shall uphold mine."</text>
-					<crewMember amount="1" class="zoltan_martyr" all_skills="1">Reginald</crewMember>
+					<crewMember amount="1" class="zoltan_martyr" all_skills="1">Redin</crewMember>
 				</event>
 			</choice>
 		</event>
 	</choice>
 </event>
 
-<event name="DUSKCAP_PRISONERS" unique="true">
-	<text>A small moon is orbiting an otherwise uninhabited planet. On it looks to be a large high-security prison for POWs. Knowing the Duskbringers, it likely contains a lot of Federation and Ministry personnel.</text>
-	<img planet="PLANET_MOONS"/>
-	<choice hidden="true">
-		<text>Attack and break out the prisoners!</text>
-		<event load="DUSKCAP_PRISONERS_RISKY"/>
-	</choice>
-	<choice hidden="true" req="teleporter">
-		<text>(Teleporter) Beam inside unnoticed.</text>
-		<event load="DUSKCAP_PRISONERS_SUCCESS"/>
-	</choice>
-	<choice hidden="true" req="cloaking">
-		<text>(Cloaking) Cloak and send the crew inside undetected.</text>
-		<event load="DUSKCAP_PRISONERS_SUCCESS"/>
-	</choice>
-	<choice hidden="true">
-		<text>We can't risk it.</text>
-		<event>
-			<text>Tempting as it is, there's no way you could pull something like that off. You leave the prison behind.</text>
-			<choice>
-				<text>Do something onboard the ship.</text>
-				<event load="STORAGE_CHECK"/>
-			</choice>
-			<choice>
-				<text>Do nothing.</text>
-				<event/>
-			</choice>
-		</event>
-	</choice>
-</event>
-<eventList name="DUSKCAP_PRISONERS_RISKY">
-	<event>
-		<text>You attempt to break into the prison, but things don't go as planned. A defense system blasts a hole in your ship and soldiers beam aboard before you can pull away!</text>
-		<damage amount="3"/>
-		<boarders min="2" max="2" class="zoltan_devotee"/>
-	</event>
-	<event>
-		<text>It's risky, but you manage to brute force your way past the security and make it inside the building.</text>
-		<choice hidden="false">
-			<text>Continue...</text>
-			<event load="DUSKCAP_PRISONERS_SUCCESS"/>
-		</choice>
-	</event>
-</eventList>
-<event name="DUSKCAP_PRISONERS_SUCCESS">
-	<text>Your attempts inside are successful. As expected, there are several prison cages holding a wide variety of prisoners, including Federation, Rebel, Zoltan, and Engi personnel! You'll only have so long until the guards catch you, so who will you save?</text>
-	<choice hidden="true">
-		<text>Save one of the Zoltan.</text>
-		<event>
-			<text>It turns out the prisoner was a Duskbringer who betrayed the cause and was thrown into prison. You break open the cage and free them, but an alarm sirens and you can hear Duskbringers marching towards your location. There's no time for introductions, you have to get out of here fast!</text>
-			<crewMember amount="1" class="zoltan_devotee"/>
-			<choice>
-				<text>Leave!</text>
-				<event load="DUSKCAP_PRISONERS_LEAVE"/>
-			</choice>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Save one of the Engi.</text>
-		<event>
-			<text>It turns out the Engi was working aboard a Ministry vessel before it was taken hostage. You break open the cage and free the prisoner inside, but an alarm sirens and you can hear Duskbringers marching towards your location. There's no time for introductions, you have to get out of here fast!</text>
-			<crewMember amount="1" class="engi"/>
-			<choice>
-				<text>Leave!</text>
-				<event load="DUSKCAP_PRISONERS_LEAVE"/>
-			</choice>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Save one of the Medics.</text>
-		<event>
-			<text>It turns out the Medic was staff on a Federation support ship that was captured by the Duskbringers. You break open the cage and free the prisoner inside, but an alarm sirens and you can hear Duskbringers marching towards your location. There's no time for introductions, you have to get out of here fast!</text>
-			<crewMember amount="1" class="human_medic"/>
-			<choice>
-				<text>Leave!</text>
-				<event load="DUSKCAP_PRISONERS_LEAVE"/>
-			</choice>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Save one of the Engineers.</text>
-		<event>
-			<text>It turns out the Engineer was a Rebel deserter who ended up in Duskbringer space and was captured. You break open the cage and free the prisoner inside, but an alarm sirens and you can hear Duskbringers marching towards your location. There's no time for introductions, you have to get out of here fast!</text>
-			<crewMember amount="1" class="human_engineer"/>
-			<choice>
-				<text>Leave!</text>
-				<event load="DUSKCAP_PRISONERS_LEAVE"/>
-			</choice>
-		</event>
-	</choice>
-</event>
-<event name="DUSKCAP_PRISONERS_LEAVE" unique="true">
-	<text>As you're leaving the prison behind, a Dusk ship swoops in. It's an elite Jailer, and they aren't pleased. Prepare for combat!</text>
-	<ship load="SHIP_DUSK_ELITE_JAILER" hostile="true"/>
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="COMBAT_CHECK"/>
-	</choice>
-</event>
-
 <event name="DUSKCAP_DNA" unique="true">
 	<text>On the distant but visibly populated planet you can make out some kind of massive Duskbringer structure, heavily fortified and partially concealed by a forest. Scans show large amounts of power being drawn into the facility.</text>
 	<img planet="PLANET_POPULATED"/>
-	<choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Land and investigate.</text>
 		<event>
 			<text>You pilot down to the surface, making sure you aren't spotted, and hide in a thick patch of trees. Your crew continue on foot until they reach the entrance of the structure, protected by 2 heavily armed Duskbringer soldiers.</text>
@@ -1208,7 +2018,7 @@
 				<text>Too risky, pull back.</text>
 				<event load="DUSKCAP_DNA_RETREAT"/>
 			</choice>
-			<choice hidden="true" req="slug_saboteur">
+			<choice hidden="true" req="LIST_CREW_SABOTEUR">
 				<text>(Slug Saboteur) Sneak your way inside.</text>
 				<event load="DUSKCAP_DNA_INSIDE"/>
 			</choice>
@@ -1221,6 +2031,10 @@
 				<event load="DUSKCAP_DNA_INSIDE"/>
 			</choice>
 		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You aren't going anywhere near a Duskbringer facility on your own.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true">
 		<text>Ignore the facility.</text>
@@ -1276,8 +2090,20 @@
 		<text>Continue.</text>
 		<event>
 			<text>It takes some time looking through the machinery to realize this must be some sort of massive DNA bank! You could likely dismantle some of this tech and bring it back with you, or quickly try to clone one of the Duskbringer soldiers and convince them to work for you.</text>
-			<choice hidden="true">
-				<text>Grab the Cloning tech. [Backup DNA and 1 free cloning upgrade, if you have the system]</text>
+			<choice hidden="true" req="clonebay" blue="false" lvl="0" max_lvl="0" max_group="0">
+				<text>Grab the Cloning tech. [Install a Clone Bay, grants Backup DNA]</text>
+				<event>
+					<text>You dismantle some of the cloning tech and bring it back to the ship.</text>
+					<augment name="EX_BACKUP_DNA"/>
+					<system name="clonebay"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="DUSKCAP_DNA_FIGHT"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="clonebay" lvl="1" blue="false" max_group="0">
+				<text>Grab the Cloning tech. [Backup DNA and 1 free cloning upgrade]</text>
 				<event>
 					<text>You dismantle some of the cloning tech and bring it back to the ship.</text>
 					<augment name="EX_BACKUP_DNA"/>
@@ -1288,7 +2114,7 @@
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true">
+			<choice hidden="true" req="pilot" max_group="1" blue="false">
 				<text>Clone a Duskbringer Martyr.</text>
 				<event>
 					<text>You quickly grab a random vial for a Duskbringer Martyr and make sure to wipe all personal memories but not skills or training. Once your new crew is birthed from the machine, utterly confused on their whereabouts, you inform them about the Federation that they now serve and prepare to leave.</text>
@@ -1323,6 +2149,234 @@
 </eventList>
 
 <!--
+		NEBULA!!!
+	Events that have a nebula
+-->
+<eventList name="NEBULA_DUSKCAP">
+	<event load="NEBULA_DUSKCAP_PRISONERS"/>
+	<event load="NEBULA_DUSKCAP_INFILTRATION"/>
+</eventList>
+
+<event name="NEBULA_DUSKCAP_INFILTRATION" unique="true"> <!--<crewMember amount="1" class="leech_ampere">Duensten</crewMember>-->
+	<text>Despite the ion storm here, you manage to just barely make out the hull of another ship in the clouds. As you move closer, you realize this is an elite Duskbringer station! Before you can consider your options, you receive a hail from a cloaked ship not too far away.</text>
+	<environment type="storm"/>
+	<ship load="SHIP_DUSK_INFILTRATION" hostile="false"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>The cloaked ship appears to be a Coalition vessel, led by a tough looking Leech Ampere. It's not too often you see a ship like this, especially so far out, so they immediately catch your attention. "Look, let's cut to the chase. We don't like each other, and we stand for different things. But I think there's at least one thing we can agree on. Duskbringers are the worst. A while ago there was an effort to get them to consider joining the Coalition - this should technically be classified, but it was such a stupid idea I don't care. Those fascist pricks told us they'd sooner resign to being a species of toilet-cleaners than join our 'dysfunctional pseudo-Federation'. We've been sent on a covert operation to infiltrate this station and steal some tech the Coalition had been hoping to gain in a trade deal. If you help us, I'll uh... uhm..."</text>
+			<choice hidden="true">
+				<text>You'll what?</text>
+				<event>
+					<text>"Sorry, I'm just not used to talking for this long to a Renegade and not being shot at. And also I'm trying really hard not to start insulting you. It's like, a thing I've been seeing a counselor for. Anyways, maybe I'll let you in on some of the tech, but you can't tell anyone. Coalition command would be on my ass tighter than a Leech on an... ass. All we have to do is clean out the Zoltan 'infestation' and take the station. And yes I know I said this was covert. This is what the Slugs on the Coalition council call covert, so be quiet."</text>
+					<choice hidden="true">
+						<text>We're in.</text>
+						<event>
+							<text>"Perfect. Though, perhaps I should ask... are you better with the 'clearing things out' side of this? Either my crew could board while you provide fire support until we're done, or you can send your crew in while we assist."</text>
+							<choice hidden="true">
+								<text>We can board.</text>
+								<event>
+									<text>The Ampere nods and cuts comms. Both of your ships reveal themselves and engage the station, which returns fire. While you clear out the crew of the Duskbringer ship the Coalition ship will provide fire support.</text>
+									<triggeredEvent event="DUSKCAP_INFILTRATION_SUPPORT" time="25" thisFight="true">
+										<warningMessage id="warning_support" r="120" g="255" b="120" x="444" y="46" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+									</triggeredEvent>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>We can assist.</text>
+								<event>
+									<text>The Ampere nods and cuts comms. Both of your ships reveal themselves and engage the station, which returns fire. You just need to hold the station off without destroying it until the Coalition team finishes their mission!</text>
+									<triggeredEvent event="DUSKCAP_INFILTRATION_SUCCESS" time="90" thisFight="true">
+										<triggeredEventBox load="DEFAULT_TIMER" pos="default">
+											<warning time="10.0" flash="true"/>
+											<tooltip>Time until the Coalition ship has finished their infiltration.</tooltip>
+										</triggeredEventBox>
+										<timerSounds load="DEFAULT_TIMER_SOUNDS"/>
+									</triggeredEvent>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>We aren't working with the Coalition.</text>
+						<event>
+							<text>The Leech grumbles something about the 'typical' but says nothing more on the matter. Their ship cloaks again and flies away shortly after.</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSKCAP_INFILTRATION_SUPPORT">
+	<superBarrage player="true" name="SUPPORT_BOMBS"/>
+</event>
+<event name="DUSKCAP_INFILTRATION_SUCCESS">
+	<text>Suddenly, the station falls silent, and you receive a hail from the Coalition. "Great work, the first part of the job is done. Go ahead and dock and we'll search for the tech."</text>
+	<ship hostile="false"/>
+	<recallBoarders ship="both"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="DUSKCAP_INFILTRATION_SEARCH"/>
+	</choice>
+</event>
+<event name="DUSKCAP_INFILTRATION_SEARCH">
+	<text>Both your crew and the Coalition crew search through the station's interior, turning over shelves and emptying boxes. You're not actually sure what you're looking for, but you just assume you'll know it when you see it. Eventually you come across a room marked "lab", and this discovery seems to excite the Coalition as much as yourself.</text>
+	<choice hidden="true">
+		<text>Open the lab.</text>
+		<event>
+			<text>You pull open the laboratory door - only for an explosive device inside to trigger. The lab is decimated, and there's no hope of putting the fire out. You retreat back to your ships, still coughing from the smoke. "Shit, shit, shit! There's no doubt they rigged that during the fight to screw us all over! The tech is destroyed - the Coalition is going to have my ass for this! I-I'll be chopped into bits and made an example of! I can't go back - you have to take me with you! I can be useful, I swear."</text>
+			<crewMember amount="1" class="leech_ampere">Oeden</crewMember>
+		</event>
+	</choice>
+	<choice hidden="true" req="sensors" lvl="3">
+		<text>(Adv. Sensors) Scan the interior of the lab.</text>
+		<event load="DUSKCAP_INFILTRATION_LAB"/>
+	</choice>
+	<choice hidden="true" req="ADV_SCANNERS">
+		<text>(LRS) Scan the interior of the lab.</text>
+		<event load="DUSKCAP_INFILTRATION_LAB"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(Slug Crew) Sense for a trap inside the lab.</text>
+		<event load="DUSKCAP_INFILTRATION_LAB"/>
+	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+		<text>(Telepathic Shell) Sense for a trap inside the lab.</text>
+		<event load="DUSKCAP_INFILTRATION_LAB"/>
+	</choice>
+</event>
+<event name="DUSKCAP_INFILTRATION_LAB">
+	<text>Your more thorough search reveals the Duskbringers have wired an explosive device inside the lab, which is set to go off if the door is opened. To make your way in will require a lot of finesse - otherwise you'll have to break the bad news to the Coalition.</text>
+	<choice hidden="true">
+		<text>There's no way in.</text>
+		<event>
+			<text>Upon hearing this news, the Ampere falls into panic. "Shit, shit, shit! There's no doubt they rigged that during the fight to screw us all over! If we return with nothing, the Coalition is going to have my ass for this! I-I'll be chopped into bits and made an example of! I can't go back - you have to take me with you! I can be useful, I swear."</text>
+			<crewMember amount="1" class="leech_ampere">Oeden</crewMember>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ELITE">
+		<text>(Elite Crew) Disarm the bomb.</text>
+		<event load="DUSKCAP_INFILTRATION_TECH"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_DUSK">
+		<text>(Duskbringer Crew) Disarm the bomb.</text>
+		<event load="DUSKCAP_INFILTRATION_TECH"/>
+	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_NODOORS">
+		<text>(Phasing Crew) Disarm the bomb.</text>
+		<event load="DUSKCAP_INFILTRATION_TECH"/>
+	</choice>
+</event>
+<event name="DUSKCAP_INFILTRATION_TECH">
+	<text>Your crew manage to disarm the bomb and open the lab. You find all sorts of strange cybernetics forged from concentrated Aether, one of the most valuable and rare known materials in the Multiverse. How the Duskbringers got their hands on this is a mystery, but you're glad to have your share of it now. The Coalition shows their gratitude, albeit they're a bit distracted. "I won't be executed after all... and to think this stupid suicide mission was all a punishment for deserting from Project Ember." The Leech glances over at you. "Er... forget that last part. But a deal is a deal. We'll split the tech."</text>
+	<augment name="ANCIENT_DNA"/>
+</event>
+
+<event name="NEBULA_DUSKCAP_PRISONERS" unique="true">
+	<text>A small moon is orbiting an otherwise uninhabited rogue planet drifting within the nebula. After running some scans, you suspect the presence of a large high-security prison for POWs. Knowing the Duskbringers, it likely contains a lot of Federation and Ministry personnel, and maybe even some captives from the U1 fleet.</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Attack and break out the prisoners!</text>
+		<event load="DUSKCAP_PRISONERS_RISKY"/>
+	</choice>
+	<choice hidden="true" req="teleporter">
+		<text>(Teleporter) Beam inside unnoticed.</text>
+		<event load="DUSKCAP_PRISONERS_SUCCESS"/>
+	</choice>
+	<choice hidden="true" req="LOCKED_GLOBAL_TELEPORT">
+		<text>(Central Teleport) Beam inside unnoticed.</text>
+		<event load="DUSKCAP_PRISONERS_SUCCESS"/>
+	</choice>
+	<choice hidden="true" req="cloaking">
+		<text>(Cloaking) Cloak and send the crew inside undetected.</text>
+		<event load="DUSKCAP_PRISONERS_SUCCESS"/>
+	</choice>
+	<choice hidden="true">
+		<text>We can't risk it.</text>
+		<event>
+			<text>Tempting as it is, there's no way you could pull something like that off. You leave the prison behind.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DUSKCAP_PRISONERS_RISKY">
+	<event>
+		<text>You attempt to break into the prison, but things don't go as planned. A defense system blasts a hole in your ship and soldiers beam aboard before you can pull away!</text>
+		<damage amount="3"/>
+		<boarders min="2" max="2" class="zoltan_devotee"/>
+	</event>
+	<event>
+		<text>It's risky, but you manage to brute force your way past the security and make it inside the building.</text>
+		<choice hidden="false">
+			<text>Continue...</text>
+			<event load="DUSKCAP_PRISONERS_SUCCESS"/>
+		</choice>
+	</event>
+</eventList>
+<event name="DUSKCAP_PRISONERS_SUCCESS">
+	<text>Your attempts inside are successful. As expected, there are several prison cells holding a wide variety of prisoners, including Federation soldiers, Rebel officers, Ministry personnel, and even some Engis and a group of Theocracy monks! You'll only have so long until the guards catch you, but you might be able to break a couple of these guys out.</text>
+	<choice hidden="true">
+		<text>Save one of the Ministry peacekeepers.</text>
+		<event>
+			<text>The Zoltan is grateful for your assistance. "These fascists risk to ruin the very foundations of any relations the Federation and the Ministry might have left. We cannot let them succeed!" You break open the cage and free them, but an alarm blares, and you can hear Duskbringers marching towards your location. There's no time for introductions, you have to get out of here fast!</text>
+			<crewMember amount="1" class="zoltan_peacekeeper"/>
+			<choice>
+				<text>Leave!</text>
+				<event load="DUSKCAP_PRISONERS_LEAVE"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Save one of the Federation medics.</text>
+		<event>
+			<text>The Human is grateful for your assistance. "I was aboard a humanitarian transport onroute to a warzone when the Duskbringers requisitioned our vessel. I expected them to honor our presence, but I guess the Duskbringers make no exceptions." You break open the cage and free the prisoner inside, but an alarm blares, and you can hear Duskbringers marching towards your location. There's no time for introductions, you have to get out of here fast!</text>
+			<crewMember amount="1" class="human_medic"/>
+			<choice>
+				<text>Leave!</text>
+				<event load="DUSKCAP_PRISONERS_LEAVE"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Save one of the Theocracy crusaders.</text>
+		<event>
+			<text>The Rockman is grateful for your assistance. "I was tasked with protecting a missionary vessel, and we mistakenly passed through a Duskbringer sector thinking it was still Ministry occupied. Damn these Zoltans, no holy quest is worth their salvation." You break open the cage and free the prisoner inside, but an alarm blares, and you can hear Duskbringers marching towards your location. There's no time for introductions, you have to get out of here fast!</text>
+			<crewMember amount="1" class="rock_crusader"/>
+			<choice>
+				<text>Leave!</text>
+				<event load="DUSKCAP_PRISONERS_LEAVE"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSKCAP_PRISONERS_LEAVE">
+	<text>As you're leaving the prison behind, a Dusk ship swoops in. It's an elite Jailer, and they aren't pleased. Prepare for combat!</text>
+	<ship load="SHIP_DUSK_ELITE_JAILER" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<!--
 		HOSTILE!!!
 	Events that always have a fight
 -->
@@ -1331,6 +2385,8 @@
 	<event load="ENCOUNTER_DUSKBRINGER_STATION"/>
 	<event load="ENCOUNTER_DUSKBRINGER_ELITE"/>
 	
+	<event load="DUSK_ZOLTAN_UNSURE"/>
+	
 	<event load="ENCOUNTER_REBEL_DUSKBRINGER_CAPITOL"/>
 	<event load="ENCOUNTER_PIRATE_DUSKBRINGER"/>
 	<event load="DUSK_ROCK_FANATICS"/>
@@ -1338,7 +2394,7 @@
 </eventList>
 
 <event name="ENCOUNTER_DUSKBRINGER_ELITE" unique="true">
-	<text>The Duskbringer Extremists are only the most devoted members of the Duskbringer organization. Nothing will stop them from bringing down the Federation, not even death. An extremist ship swoops in, guns blazing and ready to destroy you. Looks like you'll have to do the same.</text>
+	<text>The New Order contain only the most devoted members of the Duskbringer organization. Nothing will stop them from bringing down the Federation, not even death. A New Order ship swoops in, guns blazing and ready to destroy you. Looks like you'll have to do the same.</text>
 	<ship load="SHIP_DUSK_ELITE_FIGHT" hostile="true"/> 
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -1359,7 +2415,6 @@
 	<text>"Well, ain't this a nice turn of events. I expected to be stuck fighting Zoltans this entire invasion, but now a Fed shows up? My lucky day!"</text>
 	<text>A Rebel thirsting for blood is a threat you'd like to avoid, but unfortunately this encounter hasn't given you an option. A hostile Rebel ship approaches!</text>
 	
-	<!--below are ones from the normal Dusk rebel encounter-->
 	<text>A smug Rebel captain hails you. "Do you need further proof that your Federation is corrupt, when your existence doesn't fuel just one, but two Rebellions?"</text>
 	<text>"Blegh, can't say I'm a fan of these Zoltan idiots either. Buncha' mini space-nazis or something. Anyways, time to die!"</text>
 	<text>You're hailed by the Rebel ship at this beacon. "Well, aren't you just so brave, coming here? I wondered if I would see you here, considering how much you love killing your enemies. Funny, because I just happen to love doing the exact same thing!"</text>
@@ -1371,12 +2426,12 @@
 -->
 <eventList name="NEUTRAL_DUSKCAP">
 	<event load="DUSK_TEAMUP"/>
-	<event load="DUSK_ZOLTAN_UNSURE"/>
 	<event load="DUSK_PIRATES_HIDING"/>
 	<event load="DUSK_IDIOT"/>
-	<event load="DUSK_MONASTERY"/>
+	<event load="DUSK_HARASS"/>
+	<event load="DUSK_SNEAKYREBEL"/>
+	<event load="DUSK_YOUNG"/>
 	
-	<event load="CAPITAL_DEBATE"/>
 	<event load="DUSK_JAILER_CHOICE"/>
 </eventList>
 
@@ -1421,7 +2476,7 @@
 	<autoReward level="MED">standard</autoReward>
 </event>
 <event name="DUSK_JAILER_CAPTURE">
-	<text>The Jailer's crew is dead but most of the captives survived the fight. Most of them request to be dropped off as soon as you're out of the Capitol, but one volunteers to stay behind and work aboard your ship.</text> 
+	<text>The Jailer's crew is dead but most of the captives survived the fight. Most of them request to be dropped off as soon as you're out of the stronghold, but one volunteers to stay behind and work aboard your ship.</text> 
 	<autoReward level="MED">standard</autoReward>
 	<crewMember amount="1"/>
 </event>
@@ -1441,154 +2496,4 @@
 		SPECIAL QUEST!!!!!
 		SPECIAL QUEST!!!!!
 -->
-<event name="DUSKCAP_CAPITOLRAID" unique="true">
-	<preventQuest/>
-	<text>You knew the Rebel invasion in this sector was bad, but you didn't expect it to be this extreme. A squadron of MFK Aces are firing on the Duskbringer Capitol, but not without opposition.</text>
-	<img back="BACK_EVENT_DUSKCAP" planet="PLANET_INVISIBLE"/>
-	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
-	<choice hidden="true">
-		<text>Get involved - Help the Duskbringers.</text>
-		<event load="DUSKCAP_CAPITOLRAID_DUSK"/>
-	</choice>
-	<choice hidden="true">
-		<text>Get involved - Help the Rebels.</text>
-		<event load="DUSKCAP_CAPITOLRAID_REBEL"/>
-	</choice>
-	<choice>	
-		<text>Too risky, stay away from the fighting.</text>
-		<event>
-			<text>Neither the Duskbringers nor the Rebels are your allies. You have no reason to get involved.</text>
-			<choice>
-				<text>Do something onboard the ship.</text>
-				<event load="STORAGE_CHECK"/>
-			</choice>
-			<choice>
-				<text>Do nothing.</text>
-				<event/>
-			</choice>
-		</event>
-	</choice>
-</event>
-
-<event name="DUSKCAP_CAPITOLRAID_DUSK" unique="true">
-	<text>You pilot toward a platform where several Duskbringer soldiers are under fire from an armored Rebel ground vehicle. However, when the Rebels see your massive cruiser landing, they quickly retreat.</text>
-	<choice>	
-		<text>Continue...</text>
-		<event>
-			<text>In command of the Dusk battalion is a specially clothed Duskbringer Martyr. Your Federation database detects his identity almost automatically, informing you that he is a famous Zoltan war hero known as Devorak the Deathless. He has been cloned so many times that they say he can no longer feel pain. The Duskbringers are skeptical of your approach and raise their weapons.</text>
-			<choice>	
-				<text>Explain to them that you wish to help.</text>
-				<event>
-					<text>Devorak speaks up, stepping forward from the others. "Help? Doubtful, but I'm in no position to argue. That filthy traitorous Vance turned on us and had his men attack the Capitol when we least expected it. If you want to be less than useless, you could take out that cruiser attacking the command tower." He points out a large MFK Ace ship. "Once they are dealt with, we should be able to storm the tower and re-activate the shields and defense systems."</text>
-					<ship load="SHIP_DUSKRAID_REBELBOSS" hostile="false"/>
-					<choice hidden="true">	
-						<text>Accept and take on the cruiser.</text>
-						<event>
-							<text>"Don't make me regret this." You power up the weapons and attack the cruiser. The Rebels spot you and engage.</text>
-							<ship hostile="true"/>
-							<choice hidden="true">
-								<text>Continue...</text>
-								<event load="COMBAT_CHECK"/>
-							</choice>
-						</event>
-					</choice>
-					<choice hidden="true">	
-						<text>Decline.</text>
-						<event>
-							<text>Devorak laughs in your face. "As expected. Run along then, you cowardly Fed scum."</text>
-						</event>
-					</choice>
-				</event>
-			</choice>
-		</event>
-	</choice>
-</event>
-<event name="DUSKCAP_CAPITOLRAID_DUSK_WIN" unique="true">
-	<text>The MFK Cruiser stood no chance against you. The ship crashes into the base of the tower, scattering debris for you to collect.</text>
-	<variable name="ach_boss_mfkcruiser" op="set" val="1"/>
-	<autoReward level="HIGH">standard</autoReward>
-	<choice hidden="true">	
-		<text>Continue...</text>
-		<event>
-			<text>Though the Rebel ship has been destroyed, the fleet does not surrender. Devorak and his men attempt to infiltrate it, only for nearly half of the squadron to get massacred by a hacked defense turret.</text>
-			<choice hidden="true">	
-				<text>Swoop in to assist.</text>
-				<event>
-					<text>You made a promise to help Devorak and that's a promise you intend to keep. You land the ship down next to him and dismount, firing your blaster at the turret. As you should have expected, it does practically nothing, but you manage to save Devorak and bring him back aboard your ship.</text>
-					<choice hidden="true">	
-						<text>Continue...</text>
-						<event>
-							<text>In the distance the battle rages on, but Devorak will live. "You... you've saved me. Though this failure does not bode well for the survival of my cause, you have proven your dedication. It is only fair that I accompany you now. But first, stop by that spot." Devorak points roughly to an area on the ground nearby. "There is a secret augment cache here. It should help on your- our mission."</text>
-							<unlockCustomShip silent="false">PLAYER_SHIP_DUSKBRINGER</unlockCustomShip>
-							<variable name="ach_crew_devorak" op="set" val="1"/>
-							<crewMember amount="1" class="unique_devorak" all_skills="2">Devorak</crewMember>
-							<augment name="RANDOM"/>
-						</event>
-					</choice>
-				</event>
-			</choice>
-			<choice hidden="true">	
-				<text>We've done enough. Retreat now.</text>
-				<event>
-					<text>You did what you could, but you owe nothing more to the Duskbringers. You abandon Devorak and collect some extra scrap from the wreckage before leaving.</text>
-					<autoReward level="HIGH">scrap_only</autoReward>
-				</event>
-			</choice>
-		</event>
-	</choice>
-</event>
-
-<event name="DUSKCAP_CAPITOLRAID_REBEL" unique="true">
-	<text>You navigate towards a small patch of Rebel vessels who are treating injured soldiers and planning out their next move. You nearly get shot out of the air, but you broadcast a surrender signal and are allowed to land.</text>
-	<choice>	
-		<text>Continue...</text>
-		<event>
-			<text>In the center of the group is General Alban of the Rebel fleet, a slender but well built man with an imposing glare and long face. "You have come to surrender? Make it quick, I am very busy."</text>
-			<choice>	
-				<text>Explain to them that you wish to help.</text>
-				<event>
-					<text>Alban laughs for a straight minute, until he realizes you aren't joking. "You're serious? How incredibly stupid! Though... we could use help. We've managed to secure control of the Dusk's command tower and by extension the shield generator for this place, but we haven't been able to do considerable damage yet. Our fleet has been stopped so far by a single Duskbringer cruiser. Take it out for us, and I might be grateful enough to reward you."</text>
-					<ship load="SHIP_DUSKRAID_DUSKBOSS" hostile="false"/>
-					<choice hidden="true">	
-						<text>Accept and take on the cruiser.</text>
-						<event>
-							<text>Alban merely grunts and waves you on, then goes back to discussing with his fellow Rebels. You head back to the ship and prepare to attack the Duskbringer cruiser.</text>
-							<ship hostile="true"/>
-							<choice hidden="true">
-								<text>Continue...</text>
-								<event load="COMBAT_CHECK"/>
-							</choice>
-						</event>
-					</choice>
-					<choice hidden="true">	
-						<text>Decline.</text>
-						<event>
-							<text>"You Feds are so predictable. Be glad I do not have enough time to arrest you, and leave with haste."</text>
-						</event>
-					</choice>
-				</event>
-			</choice>
-		</event>
-	</choice>
-</event>
-<event name="DUSKCAP_CAPITOLRAID_REBEL_WIN" unique="true">
-	<text>The Duskbringer Cruiser stood no chance against you. The ship plummets out of the sky, crashing into the ground. You quickly swoop in to salvage what you can.</text>
-	<variable name="ach_boss_duskcruiser" op="set" val="1"/>
-	<autoReward level="HIGH">standard</autoReward>
-	<choice hidden="true">	
-		<text>Continue...</text>
-		<event>
-			<text>Without the cruiser to stop them, a swarm of ships enter the system and eradicate the remaining Duskbringer forces. It's terribly lucky you chose to side with the Rebels - otherwise you'd no doubt have been killed as well.</text>
-			<choice hidden="true">	
-				<text>Continue...</text>
-				<event>
-					<text>You look for Alban again and land. He frowns, "Oh yes, you. You have upheld your word, and to show the Rebels are no cowards I will do the same. I will ensure the fleet does not bother you for a while. You may also help yourself to our left over ammunition and weapon supplies.</text>
-					<modifyPursuit amount="-3"/>
-					<weapon name="RANDOM"/>
-					<autoReward level="MED">missiles</autoReward>
-				</event>
-			</choice>
-		</event>
-	</choice>
-</event>
 </FTL>

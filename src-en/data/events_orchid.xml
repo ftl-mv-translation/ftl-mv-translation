@@ -135,7 +135,7 @@
 	<choice hidden="true">
 		<text>Ignore the pod, it could be dangerous.</text>
 		<event>
-			<text>You let the bizare pod drift on through space.</text>
+			<text>You let the bizarre pod drift on through space.</text>
 			<choice>
 				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
@@ -546,12 +546,29 @@
 		<text>(Orchid Crew) Your Orchid waves their vines frantically, warning you not to do it.</text>
 		<event>
 			<text>Your Orchid informs you the field is filled with young Orchid children who have not yet developed mobility. You realise you were nearly about to commit genocide and decide against it.</text>
+			<choice>
+				<text>Do something on-board the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="BOMB_ELITE">
+		<text>(Promotion Bomb) Bomb the field. [-1}]</text>
+		<event>
+			<text>A strange, insidious thought takes over your mind, and acting purely on instinct you raise the weapons and fire them at the field, to the shock and horror of the Orchids observing you. However, rather than decimating the field, the flowers are suddenly transformed into fully grown Orchids. Immediately, the onset of a mid-life crisis drives the field into madness before they are promptly turned back into wailing and barely developed baby flowers, their minds forever turned to mush by a sudden rush of memories and experiences of their adult selves that have yet to even be. Uncertain of what even just happened (and terrified you'll do the same to them), the field's owners simply demand you leave.</text>
+			<item_modify>
+				<item type="missiles" min="-1" max="-1"/>
+			</item_modify>
 		</event>
 	</choice>
 	<choice hidden="true" req="NANO_MEDBAY">
 		<text>(Medbots) Fertilize the fields.</text>
 		<event>
-			<text>Though it's not fertlizer in the traditional sense, the nanobots stimulate the growth of the flowers. The Orchid caretakers of the field seem to take notice of this and thank you for your generosity, though they advise you not to provide "unsolicited growth stimulation" to other people's children in the future.</text>
+			<text>Though it's not fertilizer in the traditional sense, the nanobots stimulate the growth of the flowers. The Orchid caretakers of the field seem to take notice of this and thank you for your generosity, though they advise you not to provide "unsolicited growth stimulation" to other people's children in the future.</text>
 			<autoReward level="MED">drone</autoReward>
 		</event>
 	</choice>
@@ -656,8 +673,31 @@
 					<quest event="ORCHID_ZOLTAN_QUEST_FINISH"/>
 				</event>
 			</choice>
-			<choice hidden="true" req="INFO_MACHINE">
+			<choice hidden="true" req="INFO_MACHINE"> <!-- unused  -->
 				<text>(Analyzer) Scan the device.</text>
+				<event>
+					<text>You inspect the device and quickly discover that it's actually a Duskbringer-made bomb in disguise! This was a trap! The bomb seems to have been set to deploy a message revealing it to be a Rebel ploy. This must have been some complex coordinated effort between the Duskbringers and Rebels to sabotage your mission.</text>
+					<choice hidden="true">
+						<text>Confront the Zoltan.</text>
+						<event>
+							<text>As soon as the unarmed ship realizes you haven't fallen for their trap, a Duskbringer escort reveals itself and attacks!</text>
+							<ship load="SHIP_DUSK_FIGHT" hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>Dismantle the bomb and leave.</text>
+						<event>
+							<autoReward level="MED">missiles</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="sensors" lvl="3">
+				<text>(Adv. Sensors) Scan the device.</text>
 				<event>
 					<text>You inspect the device and quickly discover that it's actually a Duskbringer-made bomb in disguise! This was a trap! The bomb seems to have been set to deploy a message revealing it to be a Rebel ploy. This must have been some complex coordinated effort between the Duskbringers and Rebels to sabotage your mission.</text>
 					<choice hidden="true">
@@ -751,6 +791,10 @@
 		<autoReward level="HIGH">missiles</autoReward>
 	</event>
 	<event>
+		<text>You hand over the sculpture of the Zoltan ship. The Orchids are fascinated by it, and thank you. Though the gift was from the Zoltans, the Orchids seem to credit you mostly and offer a large portion of scrap and ammunition.</text>
+		<autoReward level="HIGH">missiles</autoReward>
+	</event>
+	<event>
 		<text>As you hand over the statue, it begins to vibrate with greater intensity. A message briefly plays, "You will regret having sided with the Federation, filthy weed freaks! Glory to the Rebellion!", and then immediately explodes! The Orchid settlement is decimated and your ship takes some damage, but that's not the worst of it. The Orchids blame you for the attack and send one of their remaining ships to attack you!</text>
 		<damage amount="3"/>
 		<ship load="SHIP_ORCHID_FIGHT" hostile="true"/>
@@ -795,9 +839,13 @@
 <event name="ORCHID_DISTRESS_WEEDS" unique="true">
 	<text>An Orchid ship frantically hails you. "Federation, help! Our station has become overrun with massive man-eating weeds!"</text>
 	<distressBeacon/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
 		<text>Send a team to assist! Massive man-eating weeds are no laughing matter.</text>
 		<event load="ORCHID_DISTRESS_WEEDS_BOARD"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="0" max_lvl="0">
+		<text>It appears you lack bodies to throw at the bloodthirsty plants.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true" req="LIST_CREW_GOUL">
 		<text>(Goul Crew) Purge the weeds.</text>
@@ -845,6 +893,13 @@
 		<text>(Shell Crew) Have your Shell handle the weeds.</text>
 		<event>
 			<text>Your Shell has little fear of the deadly weeds, having such a hard exterior. Once the weeds are rid of, the Orchid personnel reward you with a new Kernel weapon for handling the situation so quickly.</text>
+			<weapon name="GIFTLIST_KERNEL"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_DRONES_BOARDING_DAMAGE">
+		<text>(Boarding Drone) Send your drone to handle the weeds.</text>
+		<event>
+			<text>You pull up alongside the station and release the drone through the airlock. Within a short time the majority of the creatures are dead, with only a little collateral damage. The Orchid personnel express their most sincere gratitude and offer you a Kernel weapon.</text>
 			<weapon name="GIFTLIST_KERNEL"/>
 		</event>
 	</choice>
@@ -903,7 +958,8 @@
 					<choice hidden="true" req="weapons" lvl="5">
 						<text>(Upg. Weapons) Fire a shot straight into the Rebel ship.</text>
 						<event>
-							<text>One shot straight into their engines is all it takes to cripple the Rebel ship. Now helpless, the Rebels surrender and scatter into the forest.</text>
+							<text>One shot straight into their engines is all it takes to cripple the Rebel ship. Now helpless, the Rebels surrender and scatter into the forest, leaving their ship to you.</text>
+							<autoReward level="MED">standard</autoReward>
 							<choice hidden="true">
 								<text>Continue...</text>
 								<event load="ORCHID_DISTRESS_JUNGLE_GIFT"/>
@@ -913,7 +969,8 @@
 					<choice hidden="true" req="mind">
 						<text>(Mind Control) Turn the Rebels against each other.</text>
 						<event>
-							<text>The Rebel commander whips around and blasts one of the other soldiers in the chest. Confused, the rest of the Rebels enter a firefight with each other, until every single last of of them has managed to kill each other.</text>
+							<text>The Rebel commander whips around and blasts one of the other soldiers in the chest. Confused, the rest of the Rebels enter a firefight with each other, until every single last of of them has managed to kill each other, leaving no one to guard their ship.</text>
+							<autoReward level="HIGH">standard</autoReward>
 							<choice hidden="true">
 								<text>Continue...</text>
 								<event load="ORCHID_DISTRESS_JUNGLE_GIFT"/>
@@ -993,7 +1050,7 @@
 		<crewMember amount="1" class="rock_outcast"/>
 	</event>
 	<event>
-		<text>You pry open the doors of the Rock ship only to find the butchered corpse of a mossy Rockman and several irate, parasite ridden orchids!</text>
+		<text>You pry open the doors of the Rock ship only to find the butchered corpse of a mossy Rockman and several irate, parasite ridden Orchids!</text>
 		<boarders min="2" max="3" class="orchid"/>
 	</event>
 </eventList>
@@ -1002,9 +1059,13 @@
 	<distressBeacon/>
 	<ship load="SHIP_ORCHID_GENERIC" hostile="false"/>
 	<text>A distress signal is coming from an Orchid ship, drifting far away from common interstellar routes. You try to communicate but there is no answer.</text>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Board the ship.</text>
 		<event load="ORCHID_DISTRESS_EMPTY_SHIP_LIST"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>There's no one to send to board that ship.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true" req="INFO_MACHINE">
 		<text>(Analyzer) Fetch the ship's security logs first.</text>
@@ -1395,7 +1456,7 @@
 			<choice hidden="true">
 				<text>This is your garden?</text>
 				<event>
-					<text>"Yes, that is correct. I am the Chieftain of this planet. This is one of the planet on which we grow the plant components of our Kernel weapons. Would you care to purchase one?"</text>
+					<text>"Yes, that is correct. I am the Chieftain of this planet. This is one of the planets on which we grow the plant components of our Kernel weapons. Would you care to purchase one?"</text>
 					<choice>
 						<text>Purchase a Kernel.</text>
 						<event load="GARDEN_KERNEL_FOREST_REGULAR"/>
@@ -1433,7 +1494,7 @@
 	<choice hidden="true">
 		<text>Ok, time's up. Let's get moving.</text>
 		<event>
-			<text>You don't have time to gaze at all the plant life, you must hurry on with your mission..</text>
+			<text>You don't have time to gaze at all the plant life, you must hurry on with your mission.</text>
 			<choice>
 				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
@@ -1559,7 +1620,7 @@
 				</event>
 			</choice>
 			<choice hidden="true" req="rock_commando">
-				<text>(Lost Sun Commando) Reason with them.</text>
+				<text>(Lost Sun Crew) Reason with them.</text>
 				<event>
 					<text>Your Commando speaks with the other Lost Suns, eventually coming to an understanding that perhaps massacring the Federation's allies isn't a good idea. The Lost Suns untie the Orchid Chieftain, who thanks you and offers to work aboard your ship.</text>
 					<crewMember amount="1" class="orchid_chieftain"/>

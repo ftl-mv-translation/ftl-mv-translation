@@ -544,6 +544,223 @@
 </event>
 
 <!--
+		DISTRESS!!!
+-->
+<eventList name="DISTRESS_FED">
+	<event load="DISTRESS_FED_EMBASSY"/>
+</eventList>
+
+<event name="DISTRESS_FED_EMBASSY" unique="true">
+	<text>A repeating distress signal guides you towards the local Ministry Embassy. It's alarming to find a distress signal here - made even more alarming by the Duskbringer ship posted outside the station.</text>
+	<distressBeacon/>
+	<ship load="SHIP_DUSK_FED_EMBASSY" hostile="false"/> <!--you only fight this if things go wrong-->
+	<choice hidden="true">
+		<text>Board the embassy.</text>
+		<event>
+			<text>You stealthily dock in one of the two hangars and make your way to the center lobby, stepping over the bodies of several deceased guards on the way. When you arrive, you find that countless civilians and guards, primarily Ministry but also numerous other species, have been tied up and gagged. Several guards stand on the sides, guns drawn, but are incapable of action without risking the civilians. A team of fully-suited up Duskbringers are holding guns to the heads of several officials, while their leader marches back and forth. "The time of complacency in our species is over! The Zoltan race did not rise from the ashes of a torched civilization to sit voicelessly on a council and die in wars caused by Human greed! A united Federation is a myth! It is time we rise up and claim our rightful place among the stars!" The Zoltan speaks stiffly, as if reciting a speech he heard spoken elsewhere.</text>
+			<choice hidden="true">
+				<text>Shoot the Duskbringer.</text>
+				<event load="FED_EMBASSY_KILL"/>
+			</choice>
+			<choice hidden="true">
+				<text>Reveal yourself and attempt to debate with the Duskbringer.</text>
+				<event load="FED_EMBASSY_DEBATE"/>
+			</choice>
+			<choice hidden="true">
+				<text>Take this moment to leave.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Avoid the embassy.</text>
+		<event>
+			<text>This is far too risky to be worth getting involved in.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FED_EMBASSY_MESSY">
+	<text>The embassy staff are less than pleased with your intervention. "Why does the Federation insist on hiring Renegades when they are as reckless with the lives of others as you?! None of these people had to die, but now their blood is on your hands."</text>
+	<choice hidden="true">
+		<text>Apologize and leave.</text>
+		<event>
+			<text>While you can tell the Zoltans don't accept your apology, they at least stop their ranting and turn to handling the situation, allowing you to slip away without further consequences.</text>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>You didn't have the situation under control at all!</text>
+		<event>
+			<text>Your insensitive response only angers the Zoltan further. "Well that wasn't your call to make. Now we have a diplomatic nightmare on our hands. Do you really think the project that not only hired you but allows people of your type to lawfully exist in this galaxy will continue to receive support when you act like this?" You figure it's best to leave before things get even uglier.</text>
+			<choice>
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_ZOLTAN"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Offer some scrap as compensation.</text>
+		<event>
+			<text>"You really think 30 scrap is going to make up for this? At least a dozen people are dead because of your reckless behavior." The Zoltan puts his hands over his head and paces back and forth. "This wouldn't even cover the property damage, let alone reimbursements to the families of the deceased. Just... go. You aren't wanted here."</text>
+			<item_modify>
+				<item type="scrap" min="-30" max="-30"/>
+			</item_modify>
+		</event>
+	</choice>
+</event>
+<eventList name="FED_EMBASSY_KILL">
+	<event>
+		<text>You draw your blaster and shoot the Duskbringer in the chest. Completely unprepared for a silent ambush, he dies before he can even activate his explosive vest. The guards on the side join in the fight, and you manage to clear out the Duskbringers surprisingly quickly. With the threat handled, the embassy staff pay you handsomely for your help.</text>
+		<autoReward level="HIGH">augment</autoReward>
+	</event>
+	<event load="FED_EMBASSY_BAD"/>
+	<event load="FED_EMBASSY_BAD"/>
+</eventList>
+<event name="FED_EMBASSY_BAD">
+	<text>Unfortunately, risky moves go haywire quickly. The Duskbringers react quickly, triggering their explosive vests and taking out several hostages. While the guards join the fray, you're forced to retreat back to the ship and fight off the now hostile vessel outside.</text>
+	<ship hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="FED_EMBASSY_GOOD">
+	<text>The head of the embassy even comes to shake your hand for your help. "It's a shame any bloodshed had to come from today at all - you did marvelously, disarming your opponents with words rather than guns. It was unlikely you could have convinced them to abandon their ways, but it seems much of our kind has forsworn old principles. Either way, here is your reward."</text>
+	<crewMember amount="1" class="zoltan_peacekeeper"/>
+	<autoReward level="HIGH">augment</autoReward>
+	<choice>
+		<text>Continue...</text>
+		<event load="MORALITY_REMOVE_ZOLTAN"/>
+	</choice>
+</event>
+<eventList name="FED_EMBASSY_DEBATE">
+	<event>
+		<text>The sudden reveal of your presence puts the Duskbringers offguard - but only momentarily. Before they can harm the hostages however, you put your hands in the air to show you don't intend to attack, at least not yet. The Duskbringer leader laughs and spreads his arms wide. "Well would you look at this! A Renegade clown has decided to come and entertain us today! Tell me, gunslinging brute, what words of wisdom do you wish to share with us?"</text>
+		<choice hidden="true">
+			<text>Your ideologies are evil and go against everything a once better galaxy worked towards!</text>
+			<event>
+				<text>"To claim our ideologies are evil merely proves you fail to understand the goal of the Duskbringer movement! A simple minded Renegade cannot comprehend such a grandiose picture. We are those who work towards a better galaxy. If not us, then who else is?" The Zoltan smiles, despite the fact he never bothered to explain what grand picture he claims to represent. The message however is clear - he isn't going to relent.</text>
+				<choice hidden="true">
+					<text>Time for plan B - attack!</text>
+					<event load="FED_EMBASSY_BAD"/>
+				</choice>
+				<choice hidden="true">
+					<text>We'll just go.</text>
+					<event/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>If you claim to be Zoltan supremacists, then why are you endangering the lives of so many of your kind?</text>
+			<event>
+				<text>There's a brief pause while the Duskbringer ponders this, but he seems to think he's come up with a clever response. "The nature of our movement is that we stand to make room for the superior lifeforms in this galaxy - to give them their rightful place. It is a fact that more often than not, the Zoltans are who possess these superior characteristics, but that is not to say ALL Zoltans do. Those we have found in this unholy temple of false peace have betrayed their species to work hand in hand with lesser beings, thus becoming lesser themselves." The Duskbringer smiles smugly, having dismantled your argument. It crosses your mind you don't actually need to win this intellectual war - you just need to distract him long enough that he drops his guard.</text>
+				<choice hidden="true">
+					<text>But who can truly decide which beings are and are not superior? What makes you the judge?</text>
+					<event>
+						<text>"Hmph. We are the judges because we are the only ones willing to take action. If the galaxy could have made this shift sooner, then there would be no need for the Duskbringers at all. The galaxy should have already accepted the Zoltans as the superior race - we have the better tech, the better culture, and the better minds. Sure, there are species who are stronger, or better adapted to certain environments - but there is a place for them in our new galaxy. It just won't be at the top. But only the Duskbringers can see this."</text>
+						<choice hidden="true">
+							<text>So you aren't judges at all - just radicals who've jumped the gun.</text>
+							<event>
+								<text>"WE ARE NOT RADICALS!" The Duskbringer pushes his fellow men aside and storms towards you. "HOW DARE YOU INSULT OUR MOVEMENT! Radicals are people who cannot support their ideology with facts, and so they resort to extreme measures! Nothing about the Duskbringers are extreme or unsupported. We are millions strong and growing, and our methods harm no one but those directly opposed to us. You are nothing but Renegade filth, who are you to say such things? You don't know politics, you don't know-" The Zoltan is cut off by abrupt gun-fire, as the guards open fire while the Duskbringers are distracted. The Duskbringers are wiped out before they can go for the hostages, and the embassy staff seem to recognize your help and offer a reward.</text>
+								<choice hidden="true">
+									<text>Take the reward.</text>
+									<event load="FED_EMBASSY_GOOD"/>
+								</choice>
+							</event>
+						</choice>
+						<choice hidden="true">
+							<text>Your tech is recycled from ruins, your minds are certainly not superior, and there is no metric for a better culture.</text>
+							<event>
+								<text>"All of our tech is lifted from the shoulders of our ancestors - our entire multiverse is built on the ruins of some ancient empire. What matters is we Zoltan were the ones able take advantage of it. Who else do you see with hard-light shielding, or mind uploading? And our minds are most surely superior, in that they are well rounded. A Shell may have a greater capacity for scientific understanding, but they fail to grasp diplomacy or philosophical matters. And as for culture - I simply think you lack any culture at all." The Zoltan chuckles at his own joke. It seems you've failed to put him off-guard, and unfortunately you're out of responses.</text>
+								<choice hidden="true">
+									<text>Time for plan B - attack!</text>
+									<event load="FED_EMBASSY_BAD"/>
+								</choice>
+								<choice hidden="true">
+									<text>We'll just go.</text>
+									<event/>
+								</choice>
+							</event>
+						</choice>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>That's just stupid! Clearly you're inferior for thinking such things.</text>
+					<event>
+						<text>"And so the battle of wits is short-lived! It's a shame, but I will take your need to resort to petty insults as an admission to your own defeat."</text>
+						<choice hidden="true">
+							<text>Time for plan B - attack!</text>
+							<event load="FED_EMBASSY_BAD"/>
+						</choice>
+						<choice hidden="true">
+							<text>We'll just go.</text>
+							<event/>
+						</choice>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>Pick your nose and pretend you don't get it.</text>
+					<event>
+						<text>You stand there silently, making no movements at all except to pick at your nose and scratch your rear. The Duskbringer seems entirely confused by this. "Uhm... are you listening to me? Did your brain turn off or something?" You continue to say nothing, staring blankly forward. More of the Duskbringer group start murmuring with each other, all together utterly baffled by what they're witnessing. This gives the guards just enough time to rush in and take control of the situation. The Duskbringers are wiped out before they can go for the hostages, and the embassy staff seem to recognize your help and offer a reward.</text>
+						<choice hidden="true">
+							<text>Take the reward.</text>
+							<event load="FED_EMBASSY_GOOD"/>
+						</choice>
+						<choice hidden="true">
+							<text>Stand there silently for longer.</text>
+							<event>
+								<text>The staff of the Embassy try to congratulate you on stopping the Duskbringers, but you ignore them and continue to gaze off into the distance. You do it for so long you forget why you were even there, and eventually your crew have to drag you back to the ship. The Zoltan are confused but deliver you a reward anyways.</text>
+								<crewMember amount="1" class="zoltan_peacekeeper"/>
+								<autoReward level="HIGH">augment</autoReward>
+								<choice>
+									<text>Continue...</text>
+									<event load="MORALITY_REMOVE_ZOLTAN"/>
+								</choice>
+							</event>
+						</choice>
+					</event>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>If you let these citizens go, we'll give you all a free cookie.</text>
+			<event>
+				<text>"While it is tempting... I'm going to have to turn down your offer." The Zoltan snickers. "A cookie, really? THAT's the best you can offer? Wow. That's kind of sad."</text>
+				<choice hidden="true">
+					<text>Time for plan B - attack!</text>
+					<event load="FED_EMBASSY_BAD"/>
+				</choice>
+				<choice hidden="true">
+					<text>We'll just go.</text>
+					<event/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>I forgot what I was going to say.</text>
+			<event>
+				<text>The Duskbringer blinks, unsure of how exactly he wants to insult you. Instead, he just laughs. "You are truly the most pathetic thing I have ever seen. Renegades must have the collective IQ equal to the number of Mantis who can spell the word 'idiot'."</text>
+				<choice hidden="true">
+					<text>Time for plan B - attack!</text>
+					<event load="FED_EMBASSY_BAD"/>
+				</choice>
+				<choice hidden="true">
+					<text>We'll just go.</text>
+					<event/>
+				</choice>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<!--
 		SPECIAL QUEST!!!!!
 		SPECIAL QUEST!!!!!
 		SPECIAL QUEST!!!!!

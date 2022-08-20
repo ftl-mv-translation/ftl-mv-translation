@@ -436,13 +436,24 @@
 </event>
 
 <event name="START_GAME">
-	<text>You take a look at the distant swirls of space as the stars fly past. This is the beginning of the next chapter in your saga. What will await you next?</text>
+	<text></text>
 </event>
 
 <event name="START_BEACON_RELOAD">
 	<loadEvent>START_BEACON_PRESELECT</loadEvent>
 </event>
 <event name="START_BEACON">
+	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE"/>
+	<loadEventList first="true" default="START_BEACON_REAL">
+		<event name="START_BEACON_DYLAN" req="prof_dylan_met" lvl="1"/>
+	</loadEventList>
+</event>
+<event name="START_BEACON_DYLAN">
+	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE"/>
+	<metaVariable name="prof_dylan_counter" op="add" val="1"/>
+	<loadEvent>START_BEACON_REAL</loadEvent>
+</event>
+<event name="START_BEACON_REAL">
 	<text>You take a look at the distant swirls of space as the stars fly past. This is the beginning of the next chapter in your saga. What will await you next?</text>
 	<queueEvent seeded="true">THE_JUDGES_VARIABLE_CLEAR</queueEvent>
 	<deathEvent>DEATH</deathEvent>
@@ -463,10 +474,18 @@
         <jumpClear>false</jumpClear>
         <noDanger>true</noDanger>
     </eventButton>
+	<eventButton name="UI_JUKEBOX">
+        <event load="STORAGE_CHECK_JUKEBOX"/>
+        <image>statusUI/top_music</image>
+        <customLocation x="338" y="46"/>
+        <tooltip>Open the jukebox.</tooltip>
+        <inactiveTooltip>Unavailable.</inactiveTooltip>
+        <jumpClear>false</jumpClear>
+    </eventButton>
 	<eventButton name="UI_TOGGLE_BUTTON">
         <event load="COMBAT_CHECK_TOGGLE_BUTTON"/>
         <image>statusUI/top_toggle</image>
-        <customLocation x="105" y="94"/>
+        <customLocation x="105" y="110"/>
         <tooltip>Toggle a drone or weapon.</tooltip>
         <inactiveTooltip>Unavailable!</inactiveTooltip>
         <jumpClear>false</jumpClear>
@@ -533,7 +552,7 @@
 	<item_modify>
 		<item type="fuel" min="10" max="10"/>
 	</item_modify>
-	<modifyPursuit amount="1"/>
+	<!--<modifyPursuit amount="1"/>-->
 	<disableScrapScore/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -547,7 +566,7 @@
 	<item_modify>
 		<item type="fuel" min="8" max="8"/>
 	</item_modify>
-	<modifyPursuit amount="1"/>
+	<!--<modifyPursuit amount="1"/>	moved further -->
 	<disableScrapScore/>
 	<!--<eventAlias name="START_BEACON_PREP" jumpClear="false" once="false">START_BEACON_PREP_SKIP</eventAlias>-->
 	<choice hidden="true">
@@ -606,7 +625,10 @@
 </event>
 <!--DIFFICULTY SELECT-->
 <event name="START_DIFFICULT_MENU">
-	<text>You are about to change your challenge level, which will change the way you experience Multiverse. Clicking on an option will give you a second confirmation and more details. You can change your challenge mode as many times as you'd like before you begin, but once you've started your run you cannot change this! Challenge level configurations will stay across all runs until changed again.</text>
+	<text>You are about to change your challenge level, which will change the way you experience Multiverse. Clicking on an option will give you more details. You can change your challenge mode as many times as you'd like before you begin, but once you've started your run you cannot change this! Challenge level configurations will stay across all runs until changed again.
+
+The challenge level is independant from the standard difficulty slider in the hangar, and is a complement rather than replacement; it alters aspects that the default difficulty couldn't tweak itself.
+	</text>
 	<item_modify steal="true">
 		<item type="fuel" min="-999" max="-999"/>
 		<item type="scrap" min="-999" max="-999"/>
@@ -618,8 +640,10 @@
 			<text>[CASUAL MODE: A mode for people who just want to experience the gameplay in a relaxed way]
 			Starting scrap: 50~
 			Starting fuel: 25{
-			Decreases difficulty of the elite at the sector one exit.
-			Multiverse Renegades minibosses will never spawn, The Traveling Merchant always gives a sizable free gift, and Federation Outposts give free repairs.
+			
+			The Rebel ship at the sector one exit will not be an Elite.
+			Multiverse Renegades minibosses will never spawn, and Federation Outposts give free repairs.
+			The Traveling Merchant always gives a sizable free gift, is weaker, and drops a powerful Energy Shield augment if killed.
 			Will reduce the difficulty of the True Ending.</text>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -633,8 +657,10 @@
 			<text>[NORMAL MODE: The standard mode, plays the way the mod was originally designed]
 			Starting scrap: 20~
 			Starting fuel: 12{
-			Decreases difficulty of the elite at the sector one exit.
-			Renegade Bosses will spawn with moderate strength and take scrap as tribute, The Traveling Merchant gives a small free gift in the Drop Point and Last Stand.</text>
+			
+			A weaker Rebel Elite will await you at the sector one exit.
+			Renegade minibosses will spawn with moderate strength and take scrap as tribute.
+			The Traveling Merchant gives a small free gift in the Drop Point and Last Stand, and drops a powerful Energy Shield augment if killed.</text>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="SET_DIFFICULTY_NORMAL"/>
@@ -647,8 +673,10 @@
 			<text>[CHALLENGE MODE: A mode for people looking for a harder challenge, but without things getting too out of hand]
 			Starting scrap: none
 			Starting fuel: 10{
-			The Rebel fleet gains a 1 jump boost. Increases difficulty of the elite at the sector one exit.
-			Renegades Bosses are buffed and take crew as tribute, The Traveling Merchant never gives any gifts, Last Stand repair beacons will always be under attack by Elite Rebels.
+			
+			The Rebel fleet gains a 1 jump boost. Increases difficulty of the Elite at the sector one exit.
+			Renegades Bosses are buffed and take crew as tribute, Last Stand repair beacons will always be under attack by Elite Rebels.
+			The Traveling Merchant never gives any gifts, is stronger, and drops a powerful weapon under most circumstances if killed.
 			Will increase the difficulty of the True Ending.</text>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -662,9 +690,11 @@
 			<text>[EXTREME MODE: Bored of things being too easy? Looking to make your life hell? This might be the mode for you.]
 			Starting scrap: none
 			Starting fuel: 8{
-			The Rebel fleet gains a 1 jump boost. Increases difficulty of the elite at the sector one exit.
-			Renegade Bosses are massively buffed and don't take tribute, The Traveling Merchant gives much less scrap for resources, Last Stand repair beacons will always be under attack by MFK Aces, The Last Stand start beacon is under attack by an MFK Ace.
+			
 			Extra preparation options at start are disabled.
+			The Rebel fleet gains a 1 jump boost. Increases difficulty of the Elite at the sector one exit.
+			Renegade Bosses are massively buffed and don't take tribute, Last Stand repair beacons will always be under attack by MFK Aces, the Last Stand start beacon is under attack by an MFK Picket Ace that will prevent you from jumping away.
+			The Traveling Merchant gives much less scrap for resources, is stronger, and drops a powerful weapon under most circumstances if killed.
 			Will massively increase the difficulty of the True Ending.</text>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -672,24 +702,6 @@
 			</choice>
 		</event>
 	</choice>
-	<!--<choice hidden="true">
-		<text>Sandbox.</text>
-		<event>
-			<text>[SANBOX MODE: Gives the player many resources. Will use normal difficulty settings for events.]
-			Starting scrap: 9999999
-			Starting fuel: 99
-			Starting missiles: 9999
-			Starting drone parts: 9999</text>
-			<choice hidden="true">
-				<text>Confirm decision.</text>
-				<event load="SET_DIFFICULTY_SANDBOX"/>
-			</choice>
-			<choice hidden="true">
-				<text>Nevermind.</text>
-				<event load="START_BEACON_RELOAD"/>
-			</choice>
-		</event>
-	</choice>-->
 </event>
 <event name="SET_DIFFICULTY_CASUAL">
 	<text>Your challenge level has been set to Casual.</text>
@@ -725,7 +737,7 @@
 		<item type="fuel" min="10" max="10"/>
 	</item_modify>
 	<metaVariable name="challenge_level" op="set" val="2"/>
-	<modifyPursuit amount="1"/>
+	<!--<modifyPursuit amount="1"/>-->
 	<disableScrapScore/>
 	<!--<eventAlias name="START_BEACON_PREP" jumpClear="false" once="false"/>-->
 	<choice hidden="true">
@@ -739,23 +751,8 @@
 		<item type="fuel" min="8" max="8"/>
 	</item_modify>
 	<metaVariable name="challenge_level" op="set" val="3"/>
-	<modifyPursuit amount="1"/>
 	<disableScrapScore/>
 	<!--<eventAlias name="START_BEACON_PREP" jumpClear="false" once="false">START_BEACON_PREP_SKIP</eventAlias>-->
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="START_BEACON_RELOAD"/>
-	</choice>
-</event>
-<event name="SET_DIFFICULTY_SANDBOX">
-	<text>Your challenge level has been set to Sandbox.</text>
-	<item_modify>
-		<item type="fuel" min="99" max="99"/>
-		<item type="missiles" min="999" max="999"/>
-		<item type="drones" min="999" max="999"/>
-		<item type="scrap" min="999999" max="999999"/>
-	</item_modify>
-	<disableScrapScore/>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event load="START_BEACON_RELOAD"/>
@@ -788,6 +785,7 @@
 												<text>Keep reading.</text>
 												<event>
 													<text>This is where you get involved. As a Renegade hired by the Federation your goal is simple - destroy the Flagship, and it is highly unlikely the Rebellion will be willing to dedicate any further efforts to capturing this reality. It is far more practical for them to divert the remaining Rebel forces to a different reality. If you fail, it is certain the Federation of this reality will fall, and this will become just another piece in the Rebel's arsenal of enslaved realities.</text>
+													<achievement>ACH_ACC_DATABASE</achievement>
 													<choice hidden="true">
 														<text>That's all for now. Time to get on with the mission.</text>
 														<event load="START_BEACON_RELOAD"/>
@@ -883,17 +881,33 @@
 	<backgroundObject name="DETERGENT">
 		<layer z="0">background</layer>
 		<spawnArea x="207" y="163" w="0" h="0" center="true"/>
+		<req lvl="500" max_lvl="800">stability</req> <!--must be within the same threshold the questionaire can appear-->
 		<anim>detergent</anim>
 		<hoverAnim>detergent_hover</hoverAnim>
+		<inactiveAnim hide="true"/>
 		<tooltip>A bottle of detergent.</tooltip>
 		<clickAction>
 			<event load="DETERGENT_MODE"/> <!--events_mechanics-->
 			<destroy/>
 		</clickAction>
 	</backgroundObject>
+	<backgroundObject name="GNOME">
+		<layer z="0">background</layer>
+		<spawnArea x="1154" y="390" w="0" h="0" center="true"/>
+		<req lvl="1">chaos_mode_unlock</req>
+		<anim>gnome_object</anim>
+		<hoverAnim>gnome_object_hover</hoverAnim>
+		<inactiveAnim hide="true"/>
+		<tooltip>A gnome.</tooltip>
+		<clickAction>
+			<event load="CHAOS_MODE"/> <!--events_mechanics-->
+			<destroy/>
+		</clickAction>
+	</backgroundObject>
 	<loadEventList seeded="false" first="true" generate="true">
 		<event name="START_BEACON_PREP_SKIP" req="challenge_level" lvl="3"/>
-		<event name="START_BEACON_PREP" req="challenge_level" lvl="0" max_lvl="2"/>
+		<event name="START_BEACON_FLEETBOOST" req="challenge_level" lvl="2" max_lvl="2"/>
+		<event name="START_BEACON_PREP" req="challenge_level" lvl="0" max_lvl="1"/>
 	</loadEventList>
 </event>
 <event name="START_BEACON_PREP">
@@ -962,17 +976,6 @@
 			</item_modify>
 		</event>
 	</choice>
-	<!--<choice hidden="true" req="drones" blue="false" max_group="1">
-		<text>Grab a drone.</text>
-		<event>
-			<text>Confident with your stash of drones, you prepare to continue on your mission.</text>
-			<drone name="REPAIR"/>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event load="START_BEACON_EXPLAIN"/>
-			</choice>
-		</event>
-	</choice>-->
 	<choice hidden="true" req="pilot" lvl="1" max_group="2" blue="false">
 		<text>Find another crew member.</text>
 		<event>
@@ -1000,7 +1003,18 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="pilot" lvl="1" max_group="4" blue="false">
+	<choice hidden="true" req="magical_hat" lvl="1" max_group="4" blue="true">
+		<text>Grab the magic hat.</text>
+		<event name="MAGIC_HAT">
+			<text>The magic hat makes you feel warm and fuzzy, despite being crafted in an incomprehensible and non-euclidean shape and color which eludes your mind. As soon as you put it on, it feels as though there is nowhere you couldn't go if you put your mind to it.</text>
+			<variable name="magical_hat_active" op="set" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="pilot" lvl="1" max_group="5" blue="false">
 		<text>You're good with what you have. Get a head start on the fleet!</text>
 		<event>
 			<text>You decide not to take anything extra, and carry on.</text>
@@ -1012,10 +1026,24 @@
 		</event>
 	</choice>
 </event>
+<event name="START_BEACON_FLEETBOOST">
+    <text>The fleet draws in closer...</text>
+	<changeBackground>BACK_SECTOR_START</changeBackground>
+	<modifyPursuit amount="1"/>
+	<choice hidden="true">
+       <text>Continue...</text>
+       <event load="START_BEACON_PREP"/>
+    </choice>
+</event>
 <event name="START_BEACON_PREP_SKIP">
     <text>You slowly exit hyperspeed, transitioning to a speed safe for landing and steer closer to the hangar below. There, your ship is stocked up and prepped to head out into this foreign galaxy.</text>
 	<changeBackground>BACK_SECTOR_START</changeBackground>
 	<playSound>lightspeed</playSound>
+	<modifyPursuit amount="1"/>
+	<choice hidden="true" req="magical_hat" lvl="1" max_group="4" blue="true">
+		<text>Grab the magic hat.</text>
+		<event load="MAGIC_HAT"/>
+	</choice>
 	<choice hidden="true">
        <text>Continue...</text>
        <event load="START_BEACON_EXPLAIN_LOAD"/>
@@ -1051,6 +1079,7 @@
 		<event name="BOON_SELECT_HUMAN_2" req="prof_z_boon_human_2"/>
 		<event name="BOON_SELECT_ENGI" req="prof_z_boon_engi"/>
 		<event name="BOON_SELECT_ZOLTAN" req="prof_z_boon_zoltan"/>
+		<event name="BOON_SELECT_OSMIAN" req="prof_z_boon_osmian"/>
 		<event name="BOON_SELECT_ORCHID" req="prof_z_boon_orchid"/>
 		<event name="BOON_SELECT_MANTIS" req="prof_z_boon_mantis"/>
 		<event name="BOON_SELECT_MANTIS_2" req="prof_z_boon_mantis_2"/>
@@ -1102,11 +1131,15 @@
 		<event name="BOON_SELECT_TRANSPORT" req="prof_r_boon_transport"/>
 		<event name="BOON_SELECT_MATH" req="prof_r_boon_math"/>
 		<event name="BOON_SELECT_RENEGADE" req="prof_r_boon_renegade"/>
+		<event name="BOON_SELECT_SENTRY" req="prof_r_boon_sentry"/>
 		<event name="BOON_SELECT_CURA" req="prof_r_boon_cura"/>
 		<event name="BOON_SELECT_CLONECANNON" req="prof_r_boon_clonecannon"/>
 		<event name="BOON_SELECT_MODULAR" req="prof_r_boon_modular"/>
 		<event name="BOON_SELECT_GATLING" req="prof_r_boon_gatling"/>
 		<event name="BOON_SELECT_MERCHANTS" req="prof_r_boon_rift"/>
+		<event name="BOON_SELECT_MADNESS" req="prof_r_boon_madness"/>
+		
+		<event name="BOON_SELECT_CHAOS" req="prof_boon_chaos"/>
 	</loadEventList>
 </event>
 
@@ -1153,8 +1186,10 @@
 	<choice hidden="true" req="prof_beacon_active" blue="true">
 		<text>A strange beacon lays nearby. Do you want to activate it?</text>
 		<event>
-			<text>The beacon seems almost familiar. Unsure of what it does but curious to find out, you activate it. Perhaps this will have a greater consequence down the line...</text>
+			<text>The beacon beeps and a cascading signal ricochets outwards into the depths of space. You don't know who's listening or where they are, but hopefully they're friendly - or carry good loot.</text>
+			<achievement silent="false">ACH_ACC_SIGNAL</achievement>
 			<variable name="loc_beacon_active" op="set" val="1"/>
+			<playSound>mysteriousBeacon</playSound>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
@@ -1174,9 +1209,9 @@
 </event>
 
 <event name="FINISH_BEACON">
-    <loadEventList seeded="true" first="false" generate="true">
-		<event name="FINISH_BEACON_REAL"/>
+    <loadEventList seeded="true" first="false">
 		<event name="FINISH_BEACON_DEBT" req="LOANS" lvl="1"/> <!--in events_standard.xml-->
+		<event name="FINISH_BEACON_REAL"/>
 	</loadEventList>
 </event>
 <event name="FINISH_BEACON_REAL">
@@ -1196,10 +1231,9 @@
 </event>
 
 <event name="FINISH_BEACON_NEBULA">
-    <loadEventList seeded="true" first="false">
-		<event name="FINISH_BEACON_NEBULA_REAL"/>
-		<event name="FINISH_BEACON_NEBULA_REAL"/>
+    <loadEventList seeded="true" first="true">
 		<event name="FINISH_BEACON_DEBT" req="LOANS" lvl="1"/>
+		<event name="FINISH_BEACON_NEBULA_REAL"/>
 	</loadEventList>
 </event>
 <event name="FINISH_BEACON_NEBULA_REAL">
@@ -1683,7 +1717,7 @@
 <event name="BOARDERS_HUMAN_REBEL_STATION" unique="true">
 	<text>A Rebel station floats in the distance. A siren flares on your ship, and some armed Rebel soldiers appear on your deck!</text>
 	<ship load="SHIP_REBEL_STATION" hostile="true"/> 
-	<boarders min="2" max="2" class="rebel"/>
+	<boarders min="2" max="2" class="human_rebel"/>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event load="COMBAT_CHECK"/>
@@ -1705,9 +1739,13 @@
 	<img planet="NONE"/>
 	<text load="GHOST_SHIP_TEXT"/>
 	<ship load="SHIP_GHOST_ALL" hostile="false"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>This is a great opportunity. Let's dock and see if we can find valuable supplies.</text>
 		<event load="ABANDONED_GHOST_DOCK"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>This is huge risk. The AI advises against boarding the vessel.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true">
 		<text>We're in a hurry, let's just quickly pull some scrap off the ship.</text>
@@ -1746,7 +1784,7 @@
 			<event load="ABANDONED_GHOST_SCRAP"/>
 		</choice>
 		<choice req="sensors" lvl="3" hidden="true"> 
-			<text>(Sensors) Wait, sensors are picking up something strange...</text>
+			<text>(Adv. Sensors) Wait, sensors are picking up something strange...</text>
 			<event>
 				<text>Your sensors are picking up some subtle but anomalous activity, it's as if the ship is slowly activating. You pull everyone back to your ship with what they have gathered.</text>
 				<autoReward level="MED">scrap_only</autoReward>
@@ -2000,8 +2038,8 @@
 	<choice hidden="true">
 		<text>Offer your help.</text>
 		<event>
-			<text>"Eugh... Federation... Yessss, we are lossst. No need to rub it in. We were chassssing ssssome filthy Fed-er.... criminalsss and wandered too far. Much too far. Could you ssspare ssssome fuel?"</text>
-			<choice hidden="true">
+			<text>"Eugh... Federation... Yessss, we are lossst. No need to rub it in. We were chassssing ssssome filthy Fed- er.... criminalsss and wandered too far. Much too far. Could you ssspare ssssome fuel?"</text>
+			<choice>
 				<text>Give them some fuel.</text>
 				<event>
 					<text>The Slug quickly scoops up the fuel and brings it back to his ship.</text>
@@ -2014,7 +2052,7 @@
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true" req="LIST_CREW_SLUG">
+			<choice req="LIST_CREW_SLUG">
 				<text>(Slug Crew) Have your Slug make the trade.</text>
 				<event>
 					<text>"One of ussss? My missstake... I did not think fellow Kleptocrianssss journeyed out thissss far intentionally..."</text>
@@ -2030,7 +2068,7 @@
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true" req="weapons" lvl="5">
+			<choice req="weapons" lvl="5">
 				<text>(Upg. Weapons) Keep your weapons powered while making the trade.</text>
 				<event>
 					<text>"I sssee you flexing your weaponssss over there, Feddy boy. You can put thossse away, I jusssst need the fuel..."</text>
@@ -2147,9 +2185,13 @@
 	</event>
 	<event>
 		<text>The ship that crashed appears to be a Federation Dreadnaught! There may still be crew alive, but the ship seems to be in a critical state.</text>
-		<choice hidden="true">
+		<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 			<text>Try to rescue the crew.</text>
 			<event load="CRASH_LANDING_INSPECT_FED_RESCUE"/>
+		</choice>
+		<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+			<text>There's no saviors aboard your vessel to send over.</text>
+			<event load="OPTION_INVALID"/>
 		</choice>
 		<choice hidden="true">
 			<text>It's too late, we should go.</text>
@@ -2172,7 +2214,7 @@
 	<event>	
 		<text>The ship here is no ordinary vessel. It's a massive Rebel carrier! From this distance it hasn't detected you, but several Auto-vessels remain functional inside.</text>
 		<choice hidden="true">
-			<text>Attack the auto-ships to access the carrier.</text>
+			<text>Attack the Auto-ships to access the carrier.</text>
 			<event>
 				<text>You approach the carrier and prepare for battle.</text>
 				<ship load="SHIP_AUTO_CRASH_LANDING" hostile="true"/>
@@ -2407,7 +2449,7 @@
 	</event>
 </eventList>
 
-<event name="DISTRESS_ASB_PIRATE" unique="true">
+<event name="DISTRESS_ASB_PIRATE" unique="true"> <!--no longer spawns-->
 	<text>You arrive at the source of the distress beacon, but find only a pirate! "Now, listen up. See that planet over there? On the surface is a series of active Anti-Ship Battery systems that I am now in control of. I am the only one stopping them from firing on you, and I don't really have a reason to keep doing that... but I think we can make a mutually beneficial deal here..."</text>
 	<distressBeacon/>
 	<img planet="PLANET_POPULATED_SMALL"/>
@@ -2446,6 +2488,18 @@
 	</choice>
 	<choice hidden="true" req="hacking" lvl="2">
 		<text>(Upg. Hacking) Take access of the systems yourself and redirect them onto the pirate.</text>
+		<event>
+			<text>"Tsk tsk. Well, I did warn y-... wait, why are those aiming at me?! What have you done? Crap, you've ruined everything!"</text>
+			<environment type="PDS" target="enemy"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="slug_saboteur">
+		<text>(Saboteur Crew) Take access of the systems yourself and redirect them onto the pirate.</text>
 		<event>
 			<text>"Tsk tsk. Well, I did warn y-... wait, why are those aiming at me?! What have you done? Crap, you've ruined everything!"</text>
 			<environment type="PDS" target="enemy"/>
@@ -2521,7 +2575,7 @@
 		</choice>
 	</event>
 	<event>
-		<text>You quickly receive a response, albiet a very rude one. "Eating crap and die, Federation! Not needing help from YOU!" It seems they must have been attacked recently, and their engines aren't functioning.</text>
+		<text>You quickly receive a response, albeit a very rude one. "Eating crap and die, Federation! Not needing help from YOU!" It seems they must have been attacked recently, and their engines aren't functioning.</text>
 		<choice hidden="true">
 			<text>Retaliate and attack.</text>
 			<event>
@@ -2572,7 +2626,7 @@
 				<event load="DISTRESS_FACTORY_RESCUE"/>
 			</choice>
 			<choice hidden="true" req="PDS_DISABLE">
-				<text>(Diluter) Block out the signals and approach.</text>
+				<text>(Signal Diluter) Block out the signals and approach.</text>
 				<event>
 					<text>You feel immediate relief as the barrage of signals comes to an end. With that distraction out of the way, you manage to escort several of the workers onto your ship before you have to pull away to avoid the debris. Though you drop most off nearby, one offers to stay. Probably because it pays better than their old job, if you had to guess.</text>
 					<crewMember amount="1" repair="1"/>
@@ -2706,10 +2760,11 @@
 </event>
 <eventList name="QUEST_MERCENARY_DELIVERY_TRANSFER">
 	<event>
-		<text>You pass over the drugs, and wait while the other ship looks them over. "Everything seems to be in check... but I don't think we'll be paying"</text>
+		<text>You pass over the drugs, and wait while the other ship looks them over. "Everything seems to be in check... but I don't think we'll be paying."</text>
 		<choice hidden="true">
 			<text>Raise your weapons and prepare to take the payment from them yourself.</text>
 			<event>
+			<text>You're not going to let anyone double cross you, especially not some narcotics addicted scum! You point your weapon array towards them.</text>
 				<ship hostile="true"/>
 				<choice hidden="true">
 					<text>Continue...</text>
@@ -3305,6 +3360,14 @@
 					<autoReward level="HIGH">stuff</autoReward>
 				</event>
 			</choice>
+			<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+				<text>(Telepathic Shell) Attempt to communicate telepathically.</text>
+				<event>
+					<text>After a moment, your crew tells you that these are simple beings, who enjoy a peaceful life. Your Shell puts the horse into a calm state, and you even manage to bring back a specimen. Without any fear of the horses, you explore further and even find old wreckage on the planet of an Engi ship, though the inhabitant is dead.</text>
+					<crewMember amount="1" class="pony"/>
+					<autoReward level="HIGH">stuff</autoReward>
+				</event>
+			</choice>
 			<choice hidden="true" req="unique_nights">
 				<text>(Nights) "Oi, lisssten up you freakin' horssse thingsss!"</text>
 				<event>
@@ -3354,9 +3417,13 @@
 
 <event name="DONOR_PLAGUE" unique="true">
 	<text>You arrive near a damaged and dilapidated space station. It appears to be abandoned but you detect faint life signatures on board.</text>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Board the station and look for survivors.</text>
 		<event load="DONOR_PLAGUE_LIST"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>The AI advises against boarding without any reinforcements aboard your ship.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true">
 		<text>Scrap some of the debris.</text>
@@ -3372,6 +3439,13 @@
 			<autoReward level="RANDOM">scrap_only</autoReward>
 		</event>
 	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+		<text>(Telepathic Shell) Your Shell senses lifeforms aboard the ship, none of them look promising.</text>
+		<event>
+			<text>Following your Shell's advice, you decide to avoid the station. While waiting for the FTL drive to charge, you skirt around the edge of the station and collect some scrap.</text>
+			<autoReward level="RANDOM">scrap_only</autoReward>
+		</event>
+	</choice>
 	<choice hidden="true" req="LIFE_SCANNER">
 		<text>(Lifeform Scanners) Run scans on the station.</text>
 		<event>
@@ -3380,14 +3454,11 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="BLUELIST_DRONES_BOARDING">
-		<text>(Boarding Drone) Send the drone. [-1|]</text>
+		<text>(Boarding Drone) Send the drone.</text>
 		<event>
 			<text>Human corpses are scattered across the station. You find the source of the signal, a lone survivor that locked themselves in a storage closet. They desperately cling onto your drone while sobbing. Knowing what a traumatic experience it must have been, you run some evaluations but ultimately decide they're stable enough to be of help. You quickly retreat with them in tow back to the ship, and hope they can recover enough to be of some use.</text>
 			<autoReward level="LOW">scrap_only</autoReward>
 			<crewMember amount="1" class="human"/>
-			<item_modify>
-				<item type="drones" min="-1" max="-1"/>
-			</item_modify>
 		</event>
 	</choice>
 </event>
@@ -3510,7 +3581,7 @@
 			<autoReward level="LOW">stuff</autoReward>
 		</event>
 	</choice>
-	<choice req="BLUELIST_MINING" hidden="true">
+	<choice req="BEAM_MINING" hidden="true">
 		<text>(Mining Equipment) Attempt to mine the asteroids.</text> 
 		<event>
 			<text>You carefully extract as much usable material as possible from the nearest asteroids while waiting for the FTL to charge.</text>
@@ -3610,9 +3681,13 @@
 
 <event name="STATION_SICK" unique="true">
 	<text>You arrive to find a small research station putting out a distress signal. There is no response to your hails.</text>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Dock with the station and investigate.</text>
 		<event load="STATION_SICK_LIST"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You cannot risk going in alone.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice>
 		<text>Leave it alone.</text>
@@ -3629,7 +3704,7 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="BLUELIST_DRONES_BOARDING">
-		<text>(Boarding Drone) Use a drone to investigate. [-1|]</text>
+		<text>(Boarding Drone) Use a drone to investigate.</text>
 		<event load="STATION_SICK_DRONE_LIST"/>
 	</choice>  
 	<choice hidden="true" req="LIFE_SCANNER">
@@ -3668,7 +3743,7 @@
 			</event>
 		</choice>
 		<choice hidden="true" req="medbay" lvl="3" max_group="0"> 
-			<text>(Medbay) Have the Advanced Medbay analyze their condition.</text>
+			<text>(Adv. Medbay) Have the Advanced Medbay analyze their condition.</text>
 			<event>
 				<text>You hold them off while retreating into the Med-bay. Its advanced systems determine that an alien neurotoxin is the cause of their frenzy. It synthesizes an antidote and releases it into the room. After a time, the scientists recover. One offers their services as thanks for saving them.</text>
 				<crewMember repair="1" amount="1"/>
@@ -3694,14 +3769,14 @@
 			</event>
 		</choice>
 		<choice hidden="true" req="medbay" lvl="2" max_group="0"> 
-			<text>(Medbay) Drag him back to the Medbay.</text>
+			<text>(Upg. Medbay) Drag him back to the Medbay.</text>
 			<event>
 				<text>You hold him down and the Medbay is able to stop whatever neurotoxin was on the ship from fully infecting your crew. Once he recovers, you prepare to fight off the scientists, who are beyond help.</text>
 				<boarders min="3" max="4" class="human"/>
 			</event>
 		</choice>
 		<choice hidden="true" req="medbay" lvl="3" max_group="0">  
-			<text>(Advanced Medbay) Have the Advanced Medbay analyze their condition.</text>
+			<text>(Adv. Medbay) Have the Advanced Medbay analyze their condition.</text>
 			<event>
 				<text>You hold them off while retreating into the Med-bay. Its advanced systems determine that an alien neurotoxin is driving your crewmember insane. It synthesizes an antidote and releases it into the ship. After a time, the frenzied scientists recover and one offers to help out as thanks for saving them.</text>
 				<crewMember amount="1"/>
@@ -3725,9 +3800,6 @@
 	<event>
 		<text>The cameras mounted to your drone show a chaotic scene. No people are to be found but the remnants of a recent battle on-board the ship are obvious. You instruct the drone to retrieve some useful materials before leaving.</text>
 		<autoReward level="MED">standard</autoReward>
-		<item_modify>
-			<item type="drones" min="-1" max="-1"/>
-		</item_modify>
 	</event>
 </eventList>
 
@@ -3970,9 +4042,13 @@
 	</event>
 	<event>
 		<text>You find a man living alone in a cave. From the appearance of his wrecked ship, it seems he's been here for many years. He looks healthy, but his mental state is questionable.</text>
-		<choice hidden="true">
+		<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 			<text>Bring him back to your ship in hopes of finding some help for him.</text>
 			<event load="MADMAN"/>
+		</choice>
+		<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+			<text>You refuse to let this person come any closer without the proper staff or equipment.</text>
+			<event load="OPTION_INVALID"/>
 		</choice>
 		<choice>
 			<text>Leave the madman to his ravings, he's not worth the risk.</text>
@@ -3995,6 +4071,10 @@
 		<choice req="LIST_CREW_SLUG" hidden="true">
 			<text>(Slug Crew) "Sssir, allow me to asssesss hiss mental ssstate."</text>
 			<event load="MADMAN_SLUG"/>
+		</choice>
+		<choice req="BLUELIST_CREW_SNAIL" hidden="true">
+			<text>(Telepathic Shell) "Sir, allow me to assess his mental state."</text>
+			<event load="MADMAN_SNAIL"/>
 		</choice>
 	</event>
 </eventList>
@@ -4036,14 +4116,14 @@
 			<event/>
 		</choice>
 		<choice req="medbay" lvl="2" hidden="true"> 
-			<text>(Improved Medbay) Quickly bring him to the medbay.</text>
+			<text>(Upg. Medbay) Quickly bring him to the medbay.</text>
 			<event>
 				<text>Your improved medbay was able to resuscitate him. After a short time he recovers greatly saying, "I really thought I was a goner... I haven't eaten for days. Would you mind if I stayed on your ship?"</text>
 				<crewMember amount="1">Charlie</crewMember>
 			</event>
 		</choice>
 		<choice req="clonebay" lvl="2" hidden="true"> <!--DLC!-->
-			<text>(Improved Clone Bay) Quickly register him into the Clone Bay.</text>
+			<text>(Upg. Clone Bay) Quickly register him into the Clone Bay.</text>
 			<event>
 				<text>Your quick reaction allowed your Clone Bay to revive him after he passes. After he steps out of the machine he states, "How am I alive? Wasn't I just dying on some shuttle? Technology sure has changed."</text>
 				<crewMember amount="1">Charlie</crewMember>
@@ -4057,6 +4137,15 @@
 	</event>
 	<event>
 		<text>You bring the ship closer and the Slug, after a pause, says that the person is stable and with good intentions. You offer a position in your crew and it is graciously accepted.</text>
+		<crewMember amount="1" class="human"/>	
+	</event>
+</eventList>
+<eventList name="MADMAN_SNAIL">
+	<event>
+		<text>You bring the ship closer. The Shell enters a trance-like state for 1 to 2 seconds, then quickly snaps out of it. He states, "Thhhis person is clearly unstable. It is best we leave thhhem alone."</text>
+	</event>
+	<event>
+		<text>You bring the ship closer and the Shell, after a pause, says that the person is stable and with good intentions. You offer a position in your crew and it is graciously accepted.</text>
 		<crewMember amount="1" class="human"/>	
 	</event>
 </eventList>
@@ -4104,6 +4193,14 @@
 		<text>Stay out of it.</text>
 		<event>
 			<text>The fight brings them out of your immediate scanning range; however, after a time the distress calls stop.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
 		</event>
 	</choice>
 	<choice req="weapons" lvl="6" hidden="true">
@@ -4260,9 +4357,25 @@
 	<event>
 		<text>You regretfully leave the area, not able to watch them get destroyed. A short while later you get a second message, "We survived, no thanks to you! Don't think I don't know that the Rebels are hunting for you. I'll be sure to tell them where you are the next time I see them!"</text>
 		<modifyPursuit amount="1"/>
+		<choice>
+			<text>Do something onboard the ship.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice>
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
 	</event>
 	<event>
 		<text>You watch helplessly as their ship smashes against a cruiser-sized rock...</text>
+		<choice>
+			<text>Do something onboard the ship.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice>
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
 	</event>
 </eventList>
 
@@ -4362,7 +4475,7 @@
 				<choice hidden="true">
 					<text>Continue...</text>
 					<event>
-						<text>Now that they're safe an engineer offers to join your crew and the rest tell you of a hidden Federation base a few jumps from here.</text>
+						<text>Now that they're safe, an engineer offers to join your crew and the rest tell you of a hidden Federation base a few jumps from here.</text>
 						<crewMember engines="1" amount="1"/> <!--DLC!-->
 						<quest event="HIDDEN_FEDERATION_BASE_LIST"/>
 						<autoReward level="MED">scrap_only</autoReward>
@@ -4380,7 +4493,7 @@
 				<choice hidden="true">
 					<text>Continue...</text>
 					<event>
-						<text>Now that they're safe an engineer offers to join your crew and the rest tell you of a hidden Federation base a few jumps from here.</text>
+						<text>Now that they're safe, an engineer offers to join your crew and the rest tell you of a hidden Federation base a few jumps from here.</text>
 						<crewMember engines="1" amount="1"/> <!--DLC!-->
 						<quest event="HIDDEN_FEDERATION_BASE_LIST"/>
 						<autoReward level="MED">scrap_only</autoReward>
@@ -4391,11 +4504,11 @@
 		<choice req="LIST_CREW_MEDICAL">
 			<text>(Medical Crew) Send your crewmember to stabilize their condition.</text>
 			<event>
-				<text>You send your crewmember over to their vessel, which immediately goes to work. Once they are relieved, you send over some supplies to keep them healthy enough to get to friendly territory.</text>
+				<text>You send your crewmember over to their vessel, who immediately goes to work. Once they are relieved, you send over some supplies to keep them healthy enough to get to friendly territory.</text>
 				<choice hidden="true">
 					<text>Continue...</text>
 					<event>
-						<text>Now that they're safe an engineer offers to join your crew and the rest tell you of a hidden Federation base a few jumps from here.</text>
+						<text>Now that they're safe, an engineer offers to join your crew and the rest tell you of a hidden Federation base a few jumps from here.</text>
 						<crewMember engines="1" amount="1"/> <!--DLC!-->
 						<quest event="HIDDEN_FEDERATION_BASE_LIST"/>
 						<autoReward level="MED">scrap_only</autoReward>
@@ -4633,18 +4746,36 @@
 <event name="DISTRESS_STATION_FIRE" unique="true">
 	<text>You find the source of the distress call, a small research station. It appears a small laboratory fire got out of control and is threatening to destroy the station. Their fire suppression system is not responding.</text>
 	<distressBeacon/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Send your crew in a shuttle to help put out the fire.</text>
 		<event load="DISTRESS_STATION_FIRE_CREW"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You have no one aboard to handle a station-wide fire.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true">
 		<text>Dock and try to rescue the survivors.</text>
 		<event load="DISTRESS_STATION_FIRE_RESCUE"/>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Leave.</text>
 		<event>
 			<text>You coldly shut off communications and prepare to leave. Your crew seems upset but you assure them that nothing could have been done.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>		
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>Leave.</text>
+		<event>
+			<text>You coldly shut off communications and prepare to leave. You're upset about the situation, but the ship AI assures you that nothing could have been done.</text>
 			<choice>
 				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
@@ -4668,7 +4799,7 @@
 			</choice>
 		</event>					
 	</choice>
-	<choice hidden="true" req="LIST_CREW_ELITE">
+	<choice hidden="true" req="LIST_CREW_ELITE_FIRE">
 		<text>(Elite Crew) Send your elite crew-member in.</text>
 		<event>
 			<text>Your crew, armed with years of elite training for situations like this, finds their way into the station and begins to suppress the fire.</text>
@@ -4695,9 +4826,9 @@
 		</event>			
 	</choice>
 	<choice hidden="true" req="FIRE_EXTINGUISHERS">
-		<text>(Extinguishers) Use your tech to supress the fire.</text>
+		<text>(Extinguishers) Use your tech to suppress the fire.</text>
 		<event>
-			<text>You quickly grab some extra extinguishers from the storage and attach a hose to the supression system, them move through the station, putting out the larger fires.</text>
+			<text>You quickly grab some extra extinguishers from the storage and attach a hose to the suppression system, then move through the station, putting out the larger fires.</text>
 			<choice hidden="true">
 				<text>Contact the survivors.</text>
 				<event>
@@ -4739,9 +4870,13 @@
 <event name="DISTRESS_STATION_DISEASE" unique="true">
 	<distressBeacon/>
 	<text>You locate a nearby human mining colony where an unknown disease has spread virulently. They are setting up a quarantine to contain it but a riot has broken out.</text>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Send in your crew to help control the crowds.</text>
 		<event load="DISTRESS_STATION_DISEASE_LIST"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>Your vessel currently lacks the manpower required to handle a crowd.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true">
 		<text>Ignore their request and move on.</text>
@@ -4795,7 +4930,7 @@
 			</item_modify>
 		</event>
 	</choice>
-	<choice hidden="true" req="LIST_CREW_MEDIC">
+	<choice hidden="true" req="LIST_CREW_MEDICAL">
 		<text>(Medical Crew) Send your crew to treat the infected.</text>
 		<event>
 			<text>Knowing just how to handle this, your medic dons a mask and moves about administering a "treatment" of pure water. The crowd is thoroughly convinced that this has actually helped them, and returns back to their homes. The law enforcement thanks you.</text>
@@ -4814,7 +4949,7 @@
 				</event>
 			</choice>
 			<choice hidden="true" req="NANO_MEDBAY">
-				<text>(Engi Med-bot Dispersal) Use the Nano med-bots to accelerate the dispersal of the cure.</text>
+				<text>(Med-bot Dispersal) Use the Nano med-bots to accelerate the dispersal of the cure.</text>
 				<event>
 					<text>You reconfigure your ship's Nano dispersal system. In a matter of minutes all of the workers are cured. The leaders can hardly believe what you have achieved. They offer you what they can as payment.</text>
 					<autoReward level="HIGH">weapon</autoReward>
@@ -4839,11 +4974,19 @@
 
 <event name="DISTRESS_REFUGEE_ABANDONED">
 	<text>You have encountered a refugee ship drifting in space. It looks as if it was fleeing the Rebel advance and ran out of fuel. Its distress beacon is active, but you're not sure anyone is on board, and its communications seem to be down.</text>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Prepare to board and investigate.</text>
 		<event load="DISTRESS_REFUGEE_GHOST_LIST"/>
 	</choice>
-	<choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>Unless you desire to be ambushed by a threat, you're not going out there on your own.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="BLUELIST_DRONES_BOARDING"> 
+		<text>(Boarding Drone) Use a drone to investigate.</text>
+		<event load="DISTRESS_REFUGEE_GHOST_LIST_DRONE"/>
+	</choice>
+	<choice hidden="true">
 		<text>Ignore the ship.</text>
 		<event>
 			<text>You don't take chances with ghost ships.</text>
@@ -4877,6 +5020,26 @@
 			<clone>true</clone>
 			<text>Your abandoned crewmember is waiting on the ship when you return, trying not to dwell on the fate of his previous incarnation.</text>
 		</removeCrew>
+	</event>
+	<event>
+		<text>As you approach the ship, your sensors flicker off for a second and you realise you have been boarded by Ghosts!</text>
+		<boarders min="2" max="4" class="phantom_wraith"/>
+	</event>
+</eventList>
+<eventList name="DISTRESS_REFUGEE_GHOST_LIST_DRONE">
+	<event>
+		<text>The ship is completely abandoned. There is no trace of the crew or any cargo. Mystified, you leave the ghost ship and continue on.</text>
+	</event>
+	<event>
+		<text>The ship is completely abandoned. It looks like it ran out of fuel... and the crew ran out of food not long after. Despite the grisly scene that remains, you are able to scavenge some supplies from the cargo hold.</text>
+		<autoReward level="MED">missiles</autoReward>
+	</event>
+	<event>
+		<text>It looks as if the ship ran out of fuel... and the crew ran out of food not long after. Despite the grisly scene that remains, your drone finds one surviving crewman locked in the freezer, almost perfectly preserved and apparently overlooked by the starving crew.</text>
+		<crewMember amount="1"/>
+	</event>
+	<event>
+		<text>As your drone investigates the ship, it is attacked by the now-cannibalistic crew! Driven mad by lack of food, they have turned to feeding on each other. You are forced to leave the drone behind or else lose your entire ship.</text>
 	</event>
 	<event>
 		<text>As you approach the ship, your sensors flicker off for a second and you realise you have been boarded by Ghosts!</text>
@@ -5282,7 +5445,7 @@
 	<event>
 		<text>As you approach the signal you receive a message on a Rebel channel, "I knew we'd catch some Federation fish with this signal. Prepare to be boarded, scum!"</text>
 		<ship load="SHIP_REBEL_FIGHT" hostile="true"/>
-		<boarders min="2" max="3" class="rebel"/>
+		<boarders min="2" max="3" class="human_rebel"/>
 		<choice hidden="true">
 			<text>Continue...</text>
 			<event load="COMBAT_CHECK"/>

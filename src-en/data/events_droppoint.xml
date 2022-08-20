@@ -137,13 +137,25 @@
 		<event load="FINISH_BEACON_DROPPOINT_ENCOUNTER_EXTREME"/>
 	</choice>
 </event>
+
 <event name="NEBULA_FINISH_BEACON_DROPPOINT">
 	<text>You've arrived at the Long-Range Beacon. When the FTL Drive is charged you can jump to the next Sector.</text>
 	<environment type="nebula"/>
-	<ship load="SHIP_START_MULTIVERSE" hostile="true"/>
-	<choice hidden="true">
+	<choice hidden="true" req="challenge_level" lvl="0" blue="false" max_group="0">
 		<text>Continue...</text>
-		<event load="FINISH_BEACON_DROPPOINT_ENCOUNTER"/>
+		<event load="FINISH_BEACON_DROPPOINT_ENCOUNTER_CASUAL"/>
+	</choice>
+	<choice hidden="true" req="challenge_level" lvl="1" blue="false" max_group="0">
+		<text>Continue...</text>
+		<event load="FINISH_BEACON_DROPPOINT_ENCOUNTER_NORMAL"/>
+	</choice>
+	<choice hidden="true" req="challenge_level" lvl="2" blue="false" max_group="0">
+		<text>Continue...</text>
+		<event load="FINISH_BEACON_DROPPOINT_ENCOUNTER_CHALLENGE"/>
+	</choice>
+	<choice hidden="true" req="challenge_level" lvl="3" blue="false" max_group="0">
+		<text>Continue...</text>
+		<event load="FINISH_BEACON_DROPPOINT_ENCOUNTER_EXTREME"/>
 	</choice>
 </event>
 
@@ -582,19 +594,29 @@
 		<choice>
 			<text>Buy an Engi slave.</text>
 			<event>
+				<text>You acquire the slave and swifly leave before the slaver decides to pull any form of foul play.</text>
 				<crewMember amount="1" class="engi"/>
 				<item_modify>
-					<item type="scrap" min="-35" max="-45"/>
+					<item type="scrap" min="-25" max="-35"/>
 				</item_modify>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="REPUTATION_UPDATE_SLAVER"/>
+				</choice>
 			</event>
 		</choice>
 		<choice>
 			<text>Buy a Mantis slave.</text>
 			<event>
+				<text>You acquire the slave and swifly leave before the slaver decides to pull any form of foul play.</text>
 				<crewMember amount="1" class="mantis"/>
 				<item_modify>
-					<item type="scrap" min="-45" max="-55"/>
+					<item type="scrap" min="-35" max="-45"/>
 				</item_modify>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="REPUTATION_UPDATE_SLAVER"/>
+				</choice>
 			</event>
 		</choice>
 		<choice hidden="true">
@@ -607,19 +629,29 @@
 		<choice>
 			<text>Buy a Rock slave.</text>
 			<event>
+				<text>You acquire the slave and swifly leave before the slaver decides to pull any form of foul play.</text>
 				<crewMember amount="1" class="rock"/>
 				<item_modify>
-					<item type="scrap" min="-45" max="-55"/>
+					<item type="scrap" min="-35" max="-45"/>
 				</item_modify>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="REPUTATION_UPDATE_SLAVER"/>
+				</choice>
 			</event>
 		</choice>
 		<choice>
 			<text>Buy an Orchid slave.</text>
 			<event>
+				<text>You acquire the slave and swifly leave before the slaver decides to pull any form of foul play.</text>
 				<crewMember amount="1" class="orchid"/>
 				<item_modify>
-					<item type="scrap" min="-40" max="-50"/>
+					<item type="scrap" min="-30" max="-40"/>
 				</item_modify>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="REPUTATION_UPDATE_SLAVER"/>
+				</choice>
 			</event>
 		</choice>
 		<choice hidden="true">
@@ -802,11 +834,21 @@
 			<autoReward level="LOW">stuff</autoReward>
 		</event>
 	</choice>
-	<choice req="BLUELIST_MINING" hidden="true">
+	<choice req="BEAM_MINING" hidden="true">
 		<text>(Mining Equipment) Attempt to mine the asteroids.</text> 
 		<event>
 			<text>You carefully extract as much usable material as possible from the nearest asteroids while waiting for the FTL to charge.</text>
 			<autoReward level="HIGH">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice req="BLUELIST_DRONES_BEAM" hidden="true">
+		<text>(Beam Drone) Attempt to mine the asteroids. [-1|]</text> 
+		<event>
+			<text>You carefully extract as much usable material as possible from the nearest asteroids while waiting for the FTL to charge.</text>
+			<autoReward level="HIGH">scrap_only</autoReward>
+			<item_modify>
+				<item type="drones" min="-1" max="-1"/>
+			</item_modify>
 		</event>
 	</choice>
 </event>
@@ -911,8 +953,8 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="rock_commando">
-		<text>(Lost Sun Commando) Offer to teach them how to construct makeshift explosives.</text>
+	<choice hidden="true" req="LIST_CREW_LOSTSUN">
+		<text>(Lost Sun Crew) Offer to teach them how to construct makeshift explosives.</text>
 		<event>
 			<text>Your commando, being both an experienced arsonist and knowledgeable in the ways of explosives, explains to the miners how the Lost Suns have been using "recycled" ammunition to save costs. Thoroughly impressed by this knowledge, the colony's leader grants you access to some of their latest spoils.</text>
 			<autoReward level="MED">fuel</autoReward>
@@ -1097,7 +1139,7 @@
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true">
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 				<text>Lend a crew member to stay and assist them.</text>
 				<event>
 					<text>Though it's only one man, the Federation officers seem to understand the weight of your decision and pay you greatly for your sacrifice.</text>
@@ -1107,6 +1149,10 @@
 						<text>Your crew cannot be cloned as they are not dead.</text>
 					</removeCrew>
 				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>You cannot lend any crew, as you don't have any to begin with.</text>
+				<event load="OPTION_INVALID"/>
 			</choice>
 			<choice hidden="true">
 				<text>We can't help.</text>
@@ -1200,10 +1246,13 @@
 			</event>
 		</choice>
 		<choice hidden="true" req="BLUELIST_BOMBS_HEAL">
-			<text>(Healing Bomb) Revive the Free Mantis.</text>
+			<text>(Healing Bomb) Revive the Free Mantis. [-1}]</text>
 			<event>
 				<text>Once safely returned to the realm of the living, the Free Mantis applauds you. "Excellency of fighter beyond any realm of imaginings! I must coming with and see you in further action."</text>
 				<crewMember amount="1" class="mantis_free"/>
+				<item_modify>
+					<item type="missiles" min="-1" max="-1"/>
+				</item_modify>
 			</event>
 		</choice>
 	</deadCrew>
@@ -1316,9 +1365,13 @@
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true">
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 				<text>Send in a team of crew to assist.</text>
 				<event load="DROPPOINT_PROTESTORS_CREW"/>    
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>The giant killing machine you are flying is not currently equipped to handle rioters with a non-lethal approach.</text>
+				<event load="OPTION_INVALID"/>    
 			</choice>
 			<choice hidden="true">
 				<text>Fly away.</text>
@@ -1366,7 +1419,7 @@
 </eventList>
 <eventList name="DROPPOINT_PROTESTORS_CREW">
 	<event>
-		<text>You land the vessel right in the middle of the conflict, careful not to squish anyone. Your crew exit and talk over the situation with the protesters. They manage to convince them not to resort to violence, the crowds slowly dwindle away.</text>
+		<text>You land the vessel right in the middle of the conflict, careful not to squish anyone. Your crew exit and talk over the situation with the protesters. They manage to convince them not to resort to violence, and the crowds slowly dwindle away.</text>
 	</event>
 	<event>
 		<text>The situation is too chaotic for you to land the ship nearby, so you pilot a short distance away from the main scene of conflict and drop off your crew. They're dragged into what has now descended into full on gun fire, and one of your crew is tagged straight in the chest with blaster fire! You give orders for the rest of the team to head back to the ship immediately.</text>
@@ -1383,7 +1436,7 @@
 </eventList>
 
 <event name="DROPPOINT_CRAZYZOLTAN" unique="true">
-	<text>A blip on the communicator shows an incoming transmission from a Zoltan ship out of your field of view. When you pick up, you're greeted by the unwelcome sounds of a raving madman screeching about 'cowering beneath the prophet eye.' He demands a prayer and offering, or else suffer his wrath.</text>
+	<text>A blip on the communicator shows an incoming transmission from a Zoltan ship out of your field of view. When you pick up, you're greeted by the unwelcome sounds of a raving madman screeching about 'cowering beneath the prophet eye'. He demands a prayer and offering, or else suffer his wrath.</text>
 	<choice hidden="true">
 		<text>Refuse.</text>
 		<event load="DROPPOINT_CRAZYZOLTAN_REFUSE"/>
@@ -1392,7 +1445,7 @@
 		<text>Pay him. [-20~]</text>
 		<event load="DROPPOINT_CRAZYZOLTAN_PAY"/>
 	</choice>
-	<choice hidden="true" req="zoltan_monk">
+	<choice hidden="true" req="LIST_CREW_MONK">
 		<text>(Monk Crew) Retaliate with even greater spiritual nonsense.</text>
 		<event>
 			<text>Both Zoltans launch into a long debate that gets so heated it eventually reaches a point not even your translator can comprehend the words they are saying. That's mostly because they aren't words, just primal screeching. Your monk returns and reports that the second Zoltan died during the argument, and implores you to not ask questions. You scrap his ship.</text>
@@ -1819,9 +1872,13 @@
 	</event>
 	<event>
 		<text>The ship that crashed appears to be a Federation Dreadnaught! There may still be crew alive, but the ship seems to be in a critical state.</text>
-		<choice hidden="true">
+		<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 			<text>Try to rescue the crew.</text>
 			<event load="MV_CRASH_LANDING_INSPECT_FED_RESCUE"/>
+		</choice>
+		<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+			<text>There's no saviors aboard your vessel to send over.</text>
+			<event load="OPTION_INVALID"/>
 		</choice>
 		<choice hidden="true">
 			<text>It's too late, we should go.</text>
@@ -1918,7 +1975,7 @@
 		<store>STORE_STANDARD</store>
 	</destroyed>
 	<deadCrew>
-		<text>The outpost hails you, "Thank you! I don't know what we did to anger the Rebels, but they were ready to kill us. I'll show you our goods and patch up your hull.</text>
+		<text>The outpost hails you, "Thank you! I don't know what we did to anger the Rebels, but they were ready to kill us. I'll show you our goods and patch up your hull."</text>
 		<autoReward level="MED">scrap_only</autoReward>
 		<damage amount="-5"/>
 		<store>STORE_STANDARD</store>
@@ -1929,7 +1986,7 @@
 	<choice>
 		<text>Engage the Rebel and rescue the space dock.</text>
 		<event>
-			<text>You lock onto the rebel and move in to engage.</text>
+			<text>You lock onto the Rebel and move in to engage.</text>
 			<ship load="SHIP_REBEL_STORE_RESCUE_START" hostile="true"/>
 			<choice hidden="true">
 				<text>Continue...</text>

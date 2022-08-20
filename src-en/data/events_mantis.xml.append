@@ -152,6 +152,7 @@
 			<event>
 				<text>You are able to get out of firing range of the cruiser before they can react. However, a smaller ship breaks off from a patrol and moves in to engage.</text>
 				<ship load="SHIP_MANTIS_FIGHT" hostile="true"/>
+				<disableScrapAugments/>
 				<item_modify>
 					<item type="scrap" min="50" max="50"/>
 				</item_modify>
@@ -183,6 +184,7 @@
 			<event>
 				<text>You recall the scrap you prepared to send and are able to get out of the cruiser's firing range before they can react. However, a smaller ship breaks off from a patrol and moves in to engage.</text>
 				<ship load="SHIP_MANTIS_FIGHT" hostile="true"/>
+				<disableScrapAugments/>
 				<item_modify>
 					<item type="scrap" min="50" max="50"/>
 				</item_modify>
@@ -276,7 +278,7 @@
 	Events with unique environments
 -->
 
-<event name="MANTIS_SUN_FIGHT" unique="false">   
+<event name="MANTIS_SUN_FIGHT" unique="true">   
 	<text>Who knows why the Mantis would venture so close to a sun. Perhaps it makes for more of a challenge?</text>
 	<ship load="SHIP_MANTIS_FIGHT" hostile="true"/>
 	<environment type="sun"/>
@@ -304,7 +306,7 @@
 	<event load="ALISON_MANTIS_CREW_MV"/>
 </eventList>
 
-<event name="MANTIS_BROKEN_TELEPORTER">
+<event name="MANTIS_BROKEN_TELEPORTER" unique="true">
 	<text>You're hailed by a Mantis vessel. "You not know how hard repair with claw is. Teleporter is broken, can you fix? We will pay you, as we are so kind."</text> 
 	<ship load="SHIP_MANTIS_FIGHT" hostile="false"/>
 	<choice hidden="true">
@@ -316,11 +318,11 @@
 		<event load="MANTIS_BROKEN_TELEPORTER_YES_DOORS"/>
 	</choice>
 	<choice hidden="true" req="REPAIR">
-		<text>(Repair Drone) Dispatch the repair drone to fix it. [-1 dronepart]</text>
+		<text>(Repair Drone) Dispatch the repair drone to fix it. [-1|]</text>
 		<event load="MANTIS_BROKEN_TELEPORTER_YES_REPAIR"/>
 	</choice>
 	<choice hidden="true" req="BOMB_HEAL_SYSTEM">
-		<text>(Repair Burst) Use the bomb to fix the teleporter. [-1 missile]</text>
+		<text>(Repair Burst) Use the bomb to fix the teleporter. [-1}]</text>
 		<event load="MANTIS_BROKEN_TELEPORTER_YES_BOMB"/>
 	</choice>
 	<choice hidden="true">
@@ -442,7 +444,7 @@
 			</item_modify>
 		</event>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
 		<text>Hand over a slave.</text>
 		<event>
 			<text>The Mantis come aboard and pick one of your crew to take back with them. Your crew struggles, trying to free themselves, but the last you see of them is screaming, being dragged out of the ship.</text>
@@ -451,6 +453,10 @@
 				<text>Tempting as it is to clone your crew, you made the decision to give them up, and you aren't going to break Federation code for it.</text>
 			</removeCrew>
 		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="0" max_lvl="0">
+		<text>The on-board AI recommends terminating these pirates with extreme prejudice.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 </event>
 
@@ -787,9 +793,13 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
 		<text>Pry it open.</text>
 		<event load="MANTIS_CREW_LIST"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="0" max_lvl="0">
+		<text>There's no way you're risking opening this pod without anyone around.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true" req="INFO_MACHINE">
 		<text>(Analyzer) Access the interior footage of the pod.</text>
@@ -1675,7 +1685,7 @@
 	</choice>
 </event>
 <ship name="SHIP_HATCHERY" auto_blueprint="MU_SUZERAIN_CRUISER">
-	<triggeredEvent name="HATCHERY_TIMER_START" event="HIVE_MERCENARY_HATCHERY_TIMER" enemyDamage="7" enemyDeaths="3"/>
+	<triggeredEvent name="HATCHERY_TIMER_START" event="HIVE_MERCENARY_HATCHERY_TIMER" enemyDamage="7" enemyDeaths="4"/>
 	<destroyed load="HIVE_MERCENARY_HATCHERY_WIN"/>
 	<deadCrew load="HIVE_MERCENARY_HATCHERY_WIN"/>
 	<crew>
@@ -1740,7 +1750,7 @@
 	<instantEscape/>
 </event>
 <event name="HIVE_MERCENARY_HATCHERY_WIN">
-	<text>The Suzerain cruiser has been defeated. The immense hull of the ship comes crashing down onto the planet's surface, though fortunately it lands in the nearby river rather than on the Hatchery itself. Below Mantis workers and Engi slaves flee, but the Bishop ship has not yet finished loading their cargo.</text>
+	<text>The Suzerain cruiser has been defeated. The immense hull of the ship comes crashing down onto the planet's surface, though fortunately it lands in the nearby river rather than on the Hatchery itself. Below, Mantis workers and Engi slaves flee, but the Bishop ship has not yet finished loading their cargo.</text>
 	<variable name="ach_boss_suzzycruiser" op="set" val="1"/>
 	<autoReward level="HIGH">standard</autoReward>
 	<choice hidden="true">

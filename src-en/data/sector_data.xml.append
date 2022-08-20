@@ -86,7 +86,6 @@ FULL ZONE LISTS
 	<sector>SECTOR_FREEMANTIS_UNIQUE</sector>
 	<sector>SECTOR_SEPARATIST_UNIQUE</sector>
 	<sector>SECTOR_OUTCAST_UNIQUE</sector>
-	<sector>SECTOR_PIRATE_UNIQUE</sector>
 	<sector>SECTOR_CLAN</sector>
 	<sector>SECTOR_MONK</sector>
 </sectorType>
@@ -94,6 +93,7 @@ FULL ZONE LISTS
 	<sector>SECTOR_CIVILIAN_HACKED</sector>
 	<sector>SECTOR_ZOLTAN_UNIQUE</sector>
 	<sector>SECTOR_REBEL_UNIQUE</sector>
+	<sector>SECTOR_PIRATE_UNIQUE</sector>
 	<sector>SECTOR_MANTIS_UNIQUE</sector>
 	<sector>SECTOR_ROCK_UNIQUE</sector>
 	<sector>SECTOR_CRYSTAL_UNIQUE</sector>
@@ -101,8 +101,8 @@ FULL ZONE LISTS
 	<sector>SECTOR_DUSKBRINGER_UNIQUE</sector>
 	<sector>SECTOR_AUTO_UNIQUE</sector>
 	<sector>SECTOR_LANIUS</sector>
-	<sector>SECTOR_SLUG_UNIQUE</sector>
-	<sector>SECTOR_SHELL_UNIQUE</sector> 
+	<sector>SECTOR_SLUG_UNIQUE</sector> 
+	<sector>SECTOR_SHELL_UNIQUE</sector>
 	<sector>SECTOR_MORPH</sector> 
 	<sector>SECTOR_GHOST_UNIQUE</sector>
 	<sector>SECTOR_DYNASTY_UNIQUE</sector>
@@ -161,7 +161,6 @@ SIMPLIFIED LISTS
 	<sector>SECTOR_FREEMANTIS_UNIQUE</sector>
 	<sector>SECTOR_SEPARATIST_UNIQUE</sector>
 	<sector>SECTOR_OUTCAST_UNIQUE</sector>
-	<sector>SECTOR_PIRATE_UNIQUE</sector>
 	<sector>SECTOR_LEECH_UNIQUE</sector> 
 </sectorType>
 <sectorType name="SECTOR_LIST_UNIQUE_DEADLY">
@@ -174,6 +173,7 @@ SIMPLIFIED LISTS
 	<sector>SECTOR_AUTO_UNIQUE</sector>
 	<sector>SECTOR_LANIUS</sector>
 	<sector>SECTOR_SLUG_UNIQUE</sector>
+	<sector>SECTOR_PIRATE_UNIQUE</sector>
 	<sector>SECTOR_SHELL_UNIQUE</sector> 
 	<sector>SECTOR_GHOST_UNIQUE</sector>
 	<sector>SECTOR_DYNASTY_UNIQUE</sector>
@@ -366,6 +366,7 @@ STARTING SECTOR
 		\\\\\\\\\\\
 		-->
 		<blueprint name="LASER_BURST_5" rarity="0"/>
+		<blueprint name="LASER_CHARGEGUN_3" rarity="0"/>
 		<blueprint name="LASER_HEAVY_3" rarity="0"/>
 		<blueprint name="LASER_HULL_3" rarity="0"/>
 		<blueprint name="LASER_PARTICLE_2" rarity="0"/>
@@ -375,6 +376,7 @@ STARTING SECTOR
 		<blueprint name="MISSILES_BURST_2" rarity="0"/>
 		<blueprint name="BEAM_3" rarity="0"/>
 		<blueprint name="BEAM_4" rarity="0"/>
+		<blueprint name="BEAM_ADAPT_2" rarity="0"/>
 		<blueprint name="BEAM_HULL_2" rarity="0"/>
 		<blueprint name="BEAM_LONG_2" rarity="0"/>
 		<blueprint name="ION_4" rarity="0"/>
@@ -382,6 +384,7 @@ STARTING SECTOR
 		<blueprint name="ENERGY_3" rarity="0"/>
 		<blueprint name="FOCUS_3" rarity="0"/>
 		<blueprint name="SHOTGUN_3" rarity="0"/>
+		<blueprint name="SHOTGUN_4" rarity="0"/>
 		<blueprint name="SHOTGUN_INSTANT" rarity="0"/>
 		<blueprint name="BEAM_FIRE_INSTANT" rarity="0"/>
 		<!--
@@ -395,7 +398,7 @@ STARTING SECTOR
 	</rarityList>
 	<startEvent>START_BEACON</startEvent>
 	<event name="DROPPOINT_SUPPLY_DEPOT" min="3" max="3"/>
-	<event name="SYLVAN" min="1" max="1"/>
+	<event name="SYLVAN_FIRST" min="1" max="1"/>
 	<event name="CURA_PROPOSITION" min="1" max="1"/>
 	<event name="NEMESIS_DROPPOINT" min="1" max="1"/>
 	<event name="STORELIST_DROPPOINT" min="2" max="2"/>
@@ -430,7 +433,7 @@ LAST STAND
 		<blueprint name="human" rarity="1"/>
 		<blueprint name="human_medic" rarity="3"/>
 		<blueprint name="human_engineer" rarity="4"/>
-		<blueprint name="human_soldier" rarity="0"/>
+		<blueprint name="human_soldier" rarity="5"/>
 		<!--engi-->
 		<blueprint name="engi" rarity="2"/>
 		<blueprint name="engi_separatist" rarity="0"/>
@@ -493,8 +496,18 @@ LAST STAND
 		<blueprint name="PRE_SCANNER" rarity="0"/>
 		<blueprint name="FUEL_CONSERVER" rarity="0"/>
 	</rarityList>
-	<startEvent>BOSS_NEUTRAL</startEvent><!-- STUPID, since it's starting you at the "exit" -->
+	<startEvent>LAST_STAND_START</startEvent><!-- STUPID, since it's starting you at the "exit" -->
 	<rebelBeacon event="FLEET_THREAT_CRITICAL" nebulaEvent="FLEET_THREAT_CRITICAL_NEBULA"/>
+	<quest event="RHYME_ENCOUNTER_CHAOS" req="chaos_mode" lvl="1">
+		<aggressive>2</aggressive>
+		<lastStand>true</lastStand>
+		<nextSector>false</nextSector>
+	</quest>
+	<quest event="RHYME_ENCOUNTER_REDEMPTION" req="towr_fail" lvl="1">
+		<aggressive>2</aggressive>
+		<lastStand>true</lastStand>
+		<nextSector>false</nextSector>
+	</quest>
 	<event name="THE_JUDGES_LOAD" min="1" max="1"/>
 	<event name="BOSS_STORES" min="1" max="1"/>
 	<event name="SYLVAN" min="1" max="1"/>
@@ -625,6 +638,8 @@ Outreaches
 		<blueprint name="phantom_mare" rarity="3"/>
 	</rarityList>
     <startEvent>ENTER_ASTEROID</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -724,6 +739,8 @@ CIVILIAN
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
     <startEvent>ENTER_CIVILIAN</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON_CIVILIAN" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MLOW" nebulaEvent="FLEET_THREAT_MLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -798,9 +815,13 @@ CIVILIAN
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
     <startEvent>ENTER_CIVILIAN_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON_CIVILIAN" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MLOW" nebulaEvent="FLEET_THREAT_MLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
+	<priorityEvent name="ELLIE_START" min="1" max="1" priority="1" req="loc_ellie" lvl="0" max_lvl="0"/>
+	<priorityEvent name="STOREEVENT_NNNN" min="1" max="1" priority="1" req="stability" lvl="1" max_lvl="200"/>
 	<event name="COREWORLDS_EARTH" min="1" max="1"/>
 	<event name="KESTREL_UNLOCK" min="1" max="1"/>
 	<event name="SPIDER_QUEST_START" min="1" max="1"/>
@@ -842,7 +863,7 @@ MILITIA
 		<blueprint name="human" rarity="1"/>
 		<blueprint name="human_medic" rarity="3"/>
 		<blueprint name="human_engineer" rarity="0"/>
-		<blueprint name="human_soldier" rarity="0"/>
+		<blueprint name="human_soldier" rarity="5"/>
 		<!--engi-->
 		<blueprint name="engi" rarity="3"/>
 		<blueprint name="engi_separatist" rarity="0"/>
@@ -880,6 +901,8 @@ MILITIA
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
     <startEvent>ENTER_MILITIA</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MLOW" nebulaEvent="FLEET_THREAT_MLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -936,7 +959,7 @@ FEDERATION
 		<blueprint name="human" rarity="1"/>
 		<blueprint name="human_medic" rarity="4"/>
 		<blueprint name="human_engineer" rarity="0"/>
-		<blueprint name="human_soldier" rarity="0"/>
+		<blueprint name="human_soldier" rarity="5"/>
 		<!--engi-->
 		<blueprint name="engi" rarity="1"/>
 		<blueprint name="engi_separatist" rarity="0"/>
@@ -974,6 +997,8 @@ FEDERATION
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
     <startEvent>ENTER_FEDERATION</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ACE_FEDERATION"/>
 	<rebelBeacon event="FLEET_THREAT_HIGH_FEDERATION" />
 	<removeFirstBeaconNebula/>
@@ -981,15 +1006,18 @@ FEDERATION
 	<event name="FEDERATION_OUTPOST_FED" min="1" max="1"/>
 	<event name="FED_MEMORIAL" min="1" max="1"/>
 	<event name="STEALTH_UNLOCK_1" min="1" max="1"/>
+	
 	<event name="SYLVAN" min="0" max="1"/>
 	<event name="NEMESIS_ENCOUNTER" min="0" max="1"/>
 	<event name="MV_TRAVELER" min="1" max="2"/>
+	
 	<event name="STORELIST_FED" min="3" max="3"/>
 	<event name="ITEMS_FED" min="3" max="4"/>
 	<event name="NEUTRAL_FED_UNIQUE" min="3" max="4"/>
 	<event name="NEUTRAL_FED_GENERIC" min="1" max="2"/>
+	<event name="DISTRESS_FED" min="1" max="1"/>
+	
 	<event name="PIRACY_LIST" min="0" max="1"/>
-	<event name="DISTRESS" min="0" max="1"/>
 	<event name="HOSTILE_FED" min="4" max="7"/>
 	<event name="QUESTS" min="0" max="1"/>
 </sectorDescription>
@@ -1104,6 +1132,8 @@ ENGI
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_ENGI</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon  event="FINISH_BEACON_ENGI" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -1178,6 +1208,8 @@ ENGI
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_ENGI_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON_HARMONY" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -1355,6 +1387,8 @@ SEPARATIST
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_SEPARATIST</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MLOW" nebulaEvent="FLEET_THREAT_MLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -1524,6 +1558,8 @@ SEPARATIST
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_SEPARATIST</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MLOW" nebulaEvent="FLEET_THREAT_MLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -1570,6 +1606,7 @@ ZOLTAN
 	</nameList>
 	<trackList>
 		<track>zoltan</track>
+		<track>spaceass</track>
 		<track>cosmos</track>
 	</trackList>
 	<rarityList>
@@ -1620,6 +1657,8 @@ ZOLTAN
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_ZOLTAN</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON_ZOLTAN" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MLOW" nebulaEvent="FLEET_THREAT_MLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -1640,6 +1679,7 @@ ZOLTAN
 	</nameList>
 	<trackList>
 		<track>zoltan</track>
+		<track>spaceass</track>
 		<track>cosmos</track>
 	</trackList>
 	<rarityList>
@@ -1690,6 +1730,8 @@ ZOLTAN
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_ZOLTAN_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON_ZOLTAN" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MLOW" nebulaEvent="FLEET_THREAT_MLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -1738,7 +1780,7 @@ ORCHID
 		<name>Gathering Outreaches</name>
 	</nameList>
 	<trackList>
-		<track>milkyway</track>
+		<track>orchid</track>
 		<track>cosmos</track>
 		<track>spaceass</track> 
 		<track>lostship</track>
@@ -1803,6 +1845,8 @@ ORCHID
 		<blueprint name="KERNEL_FIRE" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_ORCHID</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -1822,7 +1866,7 @@ ORCHID
 		<name>Gathering Gardenworlds [!]</name>
 	</nameList>
 	<trackList>
-		<track>milkyway</track>
+		<track>orchid</track>
 		<track>cosmos</track>
 		<track>spaceass</track> 
 		<track>lostship</track>
@@ -1888,6 +1932,8 @@ ORCHID
 		<blueprint name="KERNAL_REPLICATOR" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_ORCHID_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -1981,6 +2027,8 @@ VAMPWEED
 		<blueprint name="KERNEL_FIRE" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_ORCHID</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<event name="OUTPOST_LIST_ORCHID" min="0" max="1"/>
 	<event name="STORELIST_ORCHID" min="2" max="3"/>
 	<event name="MV_TRAVELER" min="1" max="1"/>
@@ -2063,6 +2111,8 @@ VAMPWEED
 		<blueprint name="KERNAL_REPLICATOR" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_ORCHID_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<event name="GARDEN_CRUISER_QUEST_STORE" min="1" max="1"/>
 	<event name="TRANSPORT_ORCHID_LOOT" min="1" max="1"/>
 	<event name="TRAPPER_ORCHID" min="1" max="1"/>
@@ -2152,6 +2202,8 @@ FREE MANTIS
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_FREEMANTIS</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MLOW" nebulaEvent="FLEET_THREAT_MLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -2225,6 +2277,8 @@ FREE MANTIS
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_FREEMANTIS_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -2336,6 +2390,8 @@ CRYSTAL
 		<blueprint name="DEFENSE_CRYSTAL" rarity="3"/>
 	</rarityList>
 	<startEvent>ENTER_CRYSTAL</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -2424,8 +2480,16 @@ CRYSTAL
 		<blueprint name="DEFENSE_CRYSTAL" rarity="2"/>
 	</rarityList>
 	<startEvent>ENTER_CRYSTAL_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
+	<quest event="RHYME_ENCOUNTER" req="CULTIST_SPAWNER_CHECK" lvl="1">
+		<nebulaBeacon>true</nebulaBeacon>
+		<aggressive>2</aggressive>
+		<lastStand>false</lastStand>
+		<nextSector>false</nextSector>
+	</quest>
 	<removeFirstBeaconNebula/>
 	<event name="RUINS_CRYSTAL" min="0" max="1"/>
 	<event name="TRANSPORT_CRYSTAL_LOOT" min="1" max="1"/>
@@ -2511,6 +2575,8 @@ OUTCAST
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_OUTCAST</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -2582,6 +2648,8 @@ OUTCAST
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_OUTCAST_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -2669,6 +2737,8 @@ LOST SUNS
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_LOSTSUN</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -2696,6 +2766,7 @@ LANIUS
 	</nameList>
 	<trackList>
 		<track>shrike</track>
+		<track>shining</track>
 		<track>deepspace</track>
 		<track>wasteland</track>
 	</trackList>
@@ -2747,8 +2818,16 @@ LANIUS
 		<blueprint name="phantom" rarity="4"/>
 	</rarityList>
 	<startEvent>ENTER_LANIUS</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
+	<quest event="RHYME_ENCOUNTER" req="CULTIST_SPAWNER_CHECK" lvl="1">
+		<nebulaBeacon>true</nebulaBeacon>
+		<aggressive>2</aggressive>
+		<lastStand>false</lastStand>
+		<nextSector>false</nextSector>
+	</quest>
 	<removeFirstBeaconNebula/>
 	<event name="TRANSPORT_LANIUS_LOOT" min="1" max="1"/>
 	<event name="BEACON_EATER_START" min="1" max="1"/>
@@ -2856,6 +2935,8 @@ PIRATE
 		<blueprint name="REBEL_ID" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_PIRATE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -2943,12 +3024,25 @@ PIRATE
 		<blueprint name="CRYSTAL_BURST_2" rarity="4"/>
 		<blueprint name="CRYSTAL_HEAVY_1" rarity="2"/>
 		<blueprint name="CRYSTAL_HEAVY_2" rarity="5"/>
+		<blueprint name="SENTRY_NORMAL" rarity="2"/>
+		<blueprint name="SENTRY_MIND" rarity="3"/>
+		<blueprint name="SENTRY_HEAL" rarity="4"/>
+		<blueprint name="SENTRY_FROST" rarity="3"/>
+		<blueprint name="SENTRY_HEALTH" rarity="4"/>
 
 		<blueprint name="REBEL_ID" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_PIRATE_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
+	<quest event="RHYME_ENCOUNTER" req="CULTIST_SPAWNER_CHECK" lvl="1">
+		<nebulaBeacon>true</nebulaBeacon>
+		<aggressive>2</aggressive>
+		<lastStand>false</lastStand>
+		<nextSector>false</nextSector>
+	</quest>
 	<removeFirstBeaconNebula/>
 	<event name="QUEST_TUCO_START" min="1" max="1"/>
 	<event name="STORELIST_PIRATE" min="4" max="4"/>
@@ -3038,8 +3132,16 @@ HACKER - marked as peaceful but they're actually hostile
 		<blueprint name="REBEL_ID" rarity="0"/>
 	</rarityList>
     <startEvent>ENTER_CIVILIAN_HACKED</startEvent>
-	<exitBeacon event="FINISH_BEACON_HACKER" nebulaEvent="FINISH_BEACON_HACKER" rebelEvent="FINISH_BEACON_HACKER_REBEL"/>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+
+	<exitBeacon event="FINISH_BEACON_HACKER" nebulaEvent="FINISH_BEACON_HACKER" rebelEvent="FINISH_BEACON_HACKER"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
+	<quest event="RHYME_ENCOUNTER" req="CULTIST_SPAWNER_CHECK" lvl="1">
+		<nebulaBeacon>true</nebulaBeacon>
+		<aggressive>2</aggressive>
+		<lastStand>false</lastStand>
+		<nextSector>false</nextSector>
+	</quest>
 	<removeFirstBeaconNebula/>
 	<!--<event name="FINISH_BEACON_HACKER_FAKE" min="1" max="1"/>-->
 	<event name="HACKER_CACHE" min="3" max="3"/>
@@ -3131,6 +3233,8 @@ REBEL
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_REBEL</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ACE"/>
 	<rebelBeacon event="FLEET_THREAT_HIGH" nebulaEvent="FLEET_THREAT_HIGH_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -3205,6 +3309,8 @@ REBEL
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_REBEL_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ACE"/>
 	<rebelBeacon event="FLEET_THREAT_CRITICAL" nebulaEvent="FLEET_THREAT_CRITICAL_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -3291,6 +3397,8 @@ AUTO
 		<blueprint name="phantom" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_AUTO</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_AUTO"/>
 	<rebelBeacon event="FLEET_AUTO" nebulaEvent="FLEET_AUTO_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -3364,8 +3472,16 @@ AUTO
 		<blueprint name="phantom" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_AUTO_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_AUTO"/>
 	<rebelBeacon event="FLEET_AUTO" nebulaEvent="FLEET_AUTO_NEBULA"/>
+	<quest event="RHYME_ENCOUNTER" req="CULTIST_SPAWNER_CHECK" lvl="1">
+		<nebulaBeacon>true</nebulaBeacon>
+		<aggressive>2</aggressive>
+		<lastStand>false</lastStand>
+		<nextSector>false</nextSector>
+	</quest>
 	<removeFirstBeaconNebula/>
 	<event name="DYNASTY_OUTPOST" min="0" max="1"/>
 	<event name="TRANSPORT_AUTO_LOOT" min="1" max="1"/>
@@ -3462,6 +3578,8 @@ MANTIS
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_MANTIS</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -3535,83 +3653,8 @@ MANTIS
 		-->
 	</rarityList>
 	<startEvent>ENTER_MANTIS_UNIQUE</startEvent>
-	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
-	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
-	<removeFirstBeaconNebula/>
-	<event name="HIVE_MERCENARY" min="1" max="1"/>
-	<event name="TRANSPORT_MANTIS_LOOT" min="1" max="1"/>
-	<event name="MV_TRAVELER" min="1" max="1"/>
-	<event name="TRAPPER_MANTIS" min="1" max="1"/>
-	<event name="STORELIST_MANTIS" min="2" max="3"/>
-	<event name="QUESTS_MANTIS_HIVE" min="1" max="1"/>
-	<event name="NEUTRAL_MANTIS_HIVE" min="6" max="7"/>
-	<event name="HOSTILE_MANTIS_HIVE" min="6" max="7"/>
-	<event name="PIRACY_LIST" min="0" max="1"/>
-	<event name="ITEMS_MANTIS_HIVE" min="1" max="2"/>
-	<event name="DISTRESS_MANTIS" min="1" max="2"/>
-</sectorDescription>
-<sectorDescription name="SECTOR_MANTIS_SECRET" unique="false">  
-	<nameList>
-		<name>The Hive [!]</name>
-	</nameList>
-	<trackList>
-		<track>mantis</track>
-		<track>debris</track>
-		<track>void</track>
-	</trackList>
-	<rarityList>
-		<!--
-		\\\\\\\\\\\
-		   CREW
-		\\\\\\\\\\\
-		-->
-		<!--human-->
-		<blueprint name="human" rarity="5"/>
-		<blueprint name="human_medic" rarity="0"/>
-		<blueprint name="human_engineer" rarity="0"/>
-		<blueprint name="human_soldier" rarity="0"/>
-		<!--engi-->
-		<blueprint name="engi" rarity="3"/>
-		<blueprint name="engi_separatist" rarity="0"/>
-		<blueprint name="engi_defender" rarity="0"/>
-		<!--zoltan-->
-		<blueprint name="zoltan" rarity="0"/>
-		<blueprint name="zoltan_monk" rarity="0"/>
-		<blueprint name="zoltan_devotee" rarity="0"/>
-		<blueprint name="zoltan_peace" rarity="0"/>
-		<!--rock-->
-		<blueprint name="rock" rarity="0"/>
-		<blueprint name="rock_outcast" rarity="0"/>
-		<blueprint name="rock_commando" rarity="0"/>
-		<blueprint name="rock_crusader" rarity="0"/>
-		<!--mantis-->
-		<blueprint name="mantis" rarity="1"/>
-		<blueprint name="mantis_free" rarity="4"/>
-		<blueprint name="mantis_suzerain" rarity="0"/>
-		<!--slug-->
-		<blueprint name="slug" rarity="0"/>
-		<blueprint name="slug_saboteur" rarity="0"/>
-		<!--crystal-->
-		<blueprint name="crystal" rarity="0"/>
-		<blueprint name="crystal_liberator" rarity="0"/>
-		<blueprint name="crystal_sentinel" rarity="0"/>
-		<!--orchid-->
-		<blueprint name="orchid" rarity="0"/>
-		<blueprint name="orchid_vampweed" rarity="0"/>
-		<!--leech-->
-		<blueprint name="leech" rarity="0"/>
-		<!--lanius-->
-		<blueprint name="lanius" rarity="0"/>
-		<blueprint name="lanius_welder" rarity="0"/>
-		<!--ghost-->
-		<blueprint name="phantom" rarity="0"/>
-		<!--
-		\\\\\\\\\\\
-		 EQUIPMENT
-		\\\\\\\\\\\
-		-->
-	</rarityList>
-	<startEvent>START_HIVE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -3712,6 +3755,8 @@ ROCK
 		<blueprint name="BOMB_LOCK" rarity="4"/>
 	</rarityList>
 	<startEvent>ENTER_ROCK</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -3791,6 +3836,8 @@ ROCK
 		<blueprint name="CRYSTAL_HEAVY_2" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_ROCK_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -3838,6 +3885,7 @@ DUSKBRINGER
 	</nameList>
 	<trackList>
 		<track>dusk</track>
+		<track>spaceass</track>
 		<track>cosmos</track>
 	</trackList>
 	<rarityList>
@@ -3888,26 +3936,28 @@ DUSKBRINGER
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_DUSKBRINGER</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ACE"/>
 	<rebelBeacon event="FLEET_THREAT_HIGH" nebulaEvent="FLEET_THREAT_HIGH_NEBULA"/>
 	<removeFirstBeaconNebula/>
 	<event name="STORELIST_DUSK" min="2" max="2"/>
 	<event name="MV_TRAVELER" min="1" max="1"/>
 	<event name="NEMESIS_ENCOUNTER" min="0" max="1"/>
-	<event name="ITEMS_DUSKBRINGER" min="2" max="3"/>
-	<event name="DISTRESS_DUSKBRINGER" min="1" max="2"/>
+	<event name="ITEMS_DUSKBRINGER" min="3" max="4"/>
+	<event name="DISTRESS_DUSKBRINGER" min="2" max="3"/>
 	<event name="NEUTRAL_DUSKBRINGER" min="5" max="6"/>
 	<event name="QUESTS_DUSKBRINGER" min="0" max="1"/>
 	<event name="HOSTILE_DUSKBRINGER" min="6" max="8"/>
 	<event name="PIRACY_LIST" min="1" max="2"/>
-	<event name="NEBULA_DUSKBRINGER" min="2" max="6"/>
 </sectorDescription>
 <sectorDescription name="SECTOR_DUSKBRINGER_UNIQUE" unique="true">   
 	<nameList>
-		<name>Duskbringer Capitol [!]</name>
+		<name>Duskbringer Stronghold [!]</name>
 	</nameList>
 	<trackList>
 		<track>dusk</track>
+		<track>spaceass</track>
 		<track>cosmos</track>
 	</trackList>
 	<rarityList>
@@ -3958,18 +4008,24 @@ DUSKBRINGER
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_DUSKBRINGER_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ACE"/>
 	<rebelBeacon event="FLEET_THREAT_VHIGH" nebulaEvent="FLEET_THREAT_VHIGH_NEBULA"/>
 	<removeFirstBeaconNebula/>
-	<event name="DUSKCAP_CAPITOLRAID" min="1" max="1"/>
+	
+	<event name="NEBULA_ANURAK" min="1" max="1"/>
+	<event name="NEBULA_DUSKCAP" min="2" max="2"/>
+	
+	<!--redo all of this math-->
 	<event name="DUSKCAP_CLONECANNON" min="1" max="1"/>
 	<event name="MV_TRAVELER" min="1" max="1"/>
 	<event name="NEMESIS_ENCOUNTER" min="1" max="1"/>
 	<event name="TRAPPER_DUSK" min="1" max="1"/>
 	<event name="TRANSPORT_DUSKBRINGER_LOOT" min="1" max="1"/>
 	<event name="STORELIST_DUSK" min="2" max="3"/>
-	<event name="UNIQUE_DUSKCAP" min="2" max="2"/>
-	<event name="BOARDERS_DUSKBRINGER" min="1" max="1"/>
+	<event name="UNIQUE_DUSKCAP" min="3" max="3"/>
+	
 	<event name="ITEMS_DUSKCAP" min="1" max="2"/>
 	<event name="NEUTRAL_DUSKCAP" min="6" max="6"/>
 	<event name="QUESTS_DUSKBRINGER" min="1" max="1"/>
@@ -4018,8 +4074,8 @@ ABANDONED
 	</nameList>
 	<trackList>
 		<track>shrike</track>
+		<track>shining</track>
 		<track>lostship</track>
-		<track>hacking</track>
 		<track>deepspace</track>
 	</trackList>
 	<rarityList>
@@ -4077,6 +4133,8 @@ ABANDONED
 		<blueprint name="REBEL_ID" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_ABANDONED</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -4183,6 +4241,8 @@ NEBULA
 		<blueprint name="phantom" rarity="3"/>
 	</rarityList>
 	<startEvent>ENTER_NEBULA</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON_UNEXPLORED" nebulaEvent="NEBULA_FINISH_BEACON_UNEXPLORED" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MLOW" nebulaEvent="FLEET_THREAT_MLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -4287,6 +4347,8 @@ SLUG
 		<blueprint name="REBEL_ID" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_SLUG</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -4370,6 +4432,8 @@ SLUG
 		<blueprint name="REBEL_ID" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_SLUG_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -4461,6 +4525,8 @@ SLUG
 		<blueprint name="REBEL_ID" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_CLAN</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -4562,6 +4628,8 @@ SHELL
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_SHELL</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -4640,6 +4708,8 @@ SHELL
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_SHELL_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -4731,6 +4801,8 @@ MORPH
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_MORPH</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ACE"/>
 	<rebelBeacon event="FLEET_THREAT_HIGH" nebulaEvent="FLEET_THREAT_HIGH_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -4831,6 +4903,8 @@ SLUG
 		<blueprint name="phantom" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_LEECH</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -4909,6 +4983,8 @@ SLUG
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_LEECH_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -4999,6 +5075,8 @@ MONK
 		<blueprint name="phantom" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_MONK</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -5010,7 +5088,7 @@ MONK
 	<event name="MV_TRAVELER" min="1" max="1"/>
 	<event name="MONK_EVENTS_EMPTY" min="2" max="4"/>
 	<event name="NEBULA_EMPTY_MONK" min="2" max="3"/>
-	<event name="NEBULA_ITEM_MONK" min="3" max="5"/>
+	<event name="NEBULA_ITEM_MONK" min="3" max="6"/>
 	<event name="NEBULA_NEUTRAL_MONK" min="4" max="4"/>
 	<event name="NEBULA_HOSTILE_MONK" min="5" max="6"/>
 	<event name="NEBULA_QUEST_MONK" min="1" max="2"/>
@@ -5088,6 +5166,8 @@ GHOST
 		<blueprint name="phantom_wraith" rarity="1"/>
 	</rarityList>
 	<startEvent>ENTER_GHOST</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -5165,8 +5245,16 @@ GHOST
 		<blueprint name="phantom_wraith" rarity="1"/>
 	</rarityList>
 	<startEvent>ENTER_GHOST_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
+	<quest event="RHYME_ENCOUNTER" req="CULTIST_SPAWNER_CHECK" lvl="1">
+		<nebulaBeacon>true</nebulaBeacon>
+		<aggressive>2</aggressive>
+		<lastStand>false</lastStand>
+		<nextSector>false</nextSector>
+	</quest>
 	<removeFirstBeaconNebula/>
 	<event name="UNLOCK_GHOST_QUEST" min="1" max="1"/>
 	<event name="NEBULA_DYNASTY_OUTPOST" min="1" max="1"/>
@@ -5265,6 +5353,8 @@ DYNASTY
 		<blueprint name="phantom_wraith" rarity="4"/>
 	</rarityList>
 	<startEvent>ENTER_DYNASTY</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_AUTO"/>
 	<rebelBeacon event="FLEET_AUTO" nebulaEvent="FLEET_AUTO_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -5341,8 +5431,16 @@ DYNASTY
 		<blueprint name="phantom_wraith" rarity="2"/>
 	</rarityList>
 	<startEvent>ENTER_DYNASTY_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_AUTO"/>
 	<rebelBeacon event="FLEET_AUTO" nebulaEvent="FLEET_AUTO_NEBULA"/>
+	<quest event="RHYME_ENCOUNTER" req="CULTIST_SPAWNER_CHECK" lvl="1">
+		<nebulaBeacon>true</nebulaBeacon>
+		<aggressive>2</aggressive>
+		<lastStand>false</lastStand>
+		<nextSector>false</nextSector>
+	</quest>
 	<removeFirstBeaconNebula/>
 	<event name="NEBULA_DYNASTY_OUTPOST" min="1" max="1"/>
 	<event name="NEBULA_DYNASTY_DREADNAUGHT" min="1" max="1"/>
@@ -5351,12 +5449,12 @@ DYNASTY
 	<event name="STORELIST_DYNASTY" min="0" max="1"/>
 	<event name="NEBULA_STORELIST_DYNASTY" min="2" max="2"/>
 	<event name="MV_TRAVELER" min="1" max="1"/>
-	<event name="NEBULA_UNIQUE_DYNCAP" min="2" max="2"/>
+	<event name="NEBULA_UNIQUE_DYNCAP" min="3" max="3"/>
 	<event name="DYNCAP_CLEARING" min="2" max="4"/>
 	<event name="NEBULA_ITEMS_DYNCAP" min="3" max="5"/>
-	<event name="NEBULA_HOSTILE_DYNASTY" min="4" max="5"/>
+	<event name="NEBULA_HOSTILE_DYNCAP" min="4" max="5"/>
 	<event name="NEBULA_NEUTRAL_DYNCAP" min="4" max="6"/>
-	<event name="NEBULA_DISTRESS_DYNASTY" min="1" max="2"/>
+	<event name="NEBULA_DISTRESS_DYNCAP" min="1" max="2"/>
 </sectorDescription>
 
 <!--
@@ -5433,6 +5531,8 @@ COALITION
 		<blueprint name="lanius_welder" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_COALITION</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -5503,6 +5603,8 @@ COALITION
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_COALITION_UNIQUE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -5549,8 +5651,8 @@ ABYSS
 	<event name="NEBULA_HOSTILE" min="5" max="6"/>
 	<event name="NEBULA_NEUTRAL" min="3" max="4"/>
 	<event name="DISTRESS" min="1" max="3"/>
-	<event name="NEBULA_EMPTY_ABYSS" min="3" max="4"/>
-	<event name="EMPTY_ABYSS" min="20" max="20"/>
+	<!--<event name="NEBULA_EMPTY_ABYSS" min="3" max="4"/>
+	<event name="EMPTY_ABYSS" min="20" max="20"/>-->
 </sectorDescription>
 
 <!--
@@ -5639,11 +5741,13 @@ ABYSS
 		<blueprint name="phantom" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_SALE_SLUG</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
 	<!--<event name="STOREEVENT_HEKTAR" min="2" max="2"/>-->
-	<event name="NEBULA_STOREEVENT_HEKTAR" min="5" max="5"/>
+	<priorityEvent name="NEBULA_STOREEVENT_HEKTAR" min="5" max="5" priority="1"/>
 	<event name="STORELIST_SLUG" min="1" max="2"/>
 	<event name="NEBULA_DISTRESS_SLOCKNOG_START" min="1" max="1"/>
 	<event name="NEBULA_DYNASTY_OUTPOST" min="0" max="1"/>
@@ -5682,8 +5786,8 @@ ABYSS
 	</nameList>
 	<trackList>
 		<track>shrike</track>
+		<track>shining</track>
 		<track>lostship</track>
-		<track>hacking</track>
 		<track>deepspace</track>
 	</trackList>
 	<rarityList>
@@ -5742,10 +5846,12 @@ ABYSS
 		<blueprint name="REBEL_ID" rarity="0"/>
 	</rarityList>
 	<startEvent>ENTER_SALE_ABANDONED</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
 	<removeFirstBeaconNebula/>
-	<event name="STOREEVENT_HEKTAR" min="5" max="5"/>
+	<priorityEvent name="STOREEVENT_HEKTAR" min="5" max="5" priority="1"/>
 	<event name="STORELIST_ABANDONED" min="1" max="2"/>
 	<event name="MV_TRAVELER" min="1" max="1"/>
 	<event name="PIRACY_LIST" min="2" max="3"/>
@@ -5828,10 +5934,12 @@ ABYSS
 		<blueprint name="phantom" rarity="5"/>
 	</rarityList>
 	<startEvent>ENTER_SALE_PIRATE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MEDIUM" nebulaEvent="FLEET_THREAT_MEDIUM_NEBULA"/>
 	<removeFirstBeaconNebula/>
-	<event name="STOREEVENT_HEKTAR" min="5" max="5"/>
+	<priorityEvent name="STOREEVENT_HEKTAR" min="5" max="5" priority="1"/>
 	<event name="STORELIST_PIRATE" min="1" max="1"/>
 	<event name="STORE_HOSTILE_PIRATE" min="0" max="1"/>
 	<event name="PIRACY_LIST" min="2" max="3"/>
@@ -5917,11 +6025,13 @@ ABYSS
 		<blueprint name="phantom" rarity="3"/>
 	</rarityList>
 	<startEvent>ENTER_SALE_NEBULA</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON_UNEXPLORED" nebulaEvent="NEBULA_FINISH_BEACON_UNEXPLORED" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_MLOW" nebulaEvent="FLEET_THREAT_MLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
+	<priorityEvent name="NEBULA_STOREEVENT_HEKTAR" min="5" max="5" priority="1"/>
 	<!--<event name="STOREEVENT_HEKTAR" min="2" max="2"/>-->
-	<event name="NEBULA_STOREEVENT_HEKTAR" min="5" max="5"/>
 	<event name="EVENTS_CLEARING" min="1" max="3"/>
 	<event name="EVENTS_CLEARING_DISTRESS" min="0" max="1"/>
 	<event name="MV_TRAVELER" min="1" max="1"/>
@@ -6008,6 +6118,8 @@ SPIDER
 		<blueprint name="phantom" rarity="5"/>
 	</rarityList>
 	<startEvent>START_SPIDER</startEvent> <!--no coords-->
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -6260,6 +6372,8 @@ JERRY!
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>START_JERRY</startEvent> <!--no coords-->
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON_PROTECTORATE" rebelEvent="FINISH_BEACON_PROTECTORATE"/>
 	<rebelBeacon event="FLEET_THREAT_VHIGH" nebulaEvent="FLEET_THREAT_VHIGH_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -6342,6 +6456,8 @@ HEKTAR
 		<blueprint name="lizard" rarity="3"/>
 	</rarityList>
 	<startEvent>START_HEKTAR</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="EXIT_HEKTAR" nebulaEvent="NEBULA_EXIT_HEKTAR" rebelEvent="EXIT_HEKTAR"/>
 	<rebelBeacon event="FLEET_THREAT_VLOW" nebulaEvent="FLEET_THREAT_VLOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -6349,6 +6465,7 @@ HEKTAR
 	<event name="HEKTAR_HEADQUARTERS" min="1" max="1"/>
 	<event name="HEKTAR_SHIPYARDS" min="1" max="1"/>
 	<event name="NEBULA_SYLVANHOME" min="1" max="1"/>
+	<event name="NEBULA_DISTRESS_HEKTAR_FEMALE" min="1" max="1"/>
 	<event name="NEBULA_TRANSPORT_HEKTAR_LOOT" min="1" max="1"/>
 	<event name="CLEARING_HEKTAR" min="4" max="4"/>
 	<event name="STOREEVENT_HEKTAR_SECTOR" min="2" max="2"/>
@@ -6375,6 +6492,12 @@ ESTATE
 		<track>colonial</track>
 	</trackList>
 	<rarityList>
+		<blueprint name="SENTRY_NORMAL" rarity="2"/>
+		<blueprint name="SENTRY_MIND" rarity="3"/>
+		<blueprint name="SENTRY_HEAL" rarity="4"/>
+		<blueprint name="SENTRY_FROST" rarity="3"/>
+		<blueprint name="SENTRY_HEALTH" rarity="4"/>
+	
 		<!--
 		\\\\\\\\\\\
 		   CREW
@@ -6422,14 +6545,17 @@ ESTATE
 		<blueprint name="phantom" rarity="0"/>
 	</rarityList>
 	<startEvent>START_ESTATE</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_AUTO"/>
 	<rebelBeacon event="FLEET_AUTO" nebulaEvent="FLEET_AUTO_NEBULA"/>
 	<removeFirstBeaconNebula/>
 	<event name="CURA_PRESIDENT" min="1" max="1"/>
 	<event name="TRANSPORT_ESTATE_LOOT" min="1" max="1"/>
+	<event name="PINNACLE_SHIPYARDS" min="1" max="1"/>
 	<event name="TRAPPER_ESTATE" min="1" max="1"/>
 	<event name="NEMESIS_ESTATE" min="1" max="1"/>
-	<event name="ESTATE_LEGION" min="1" max="1"/>
+	<event name="ELLIE_STUDIO" min="1" max="1"/>
 	<event name="MV_TRAVELER" min="1" max="1"/>
 	<event name="DYNASTY_OUTPOST" min="1" max="1"/>
 	<event name="STORELIST_AUTO" min="1" max="2"/>
@@ -6511,6 +6637,8 @@ ROYAL NEBULA
 		-->
 	</rarityList>
 	<startEvent>START_NIGHTS</startEvent>
+	<priorityEvent name="ANOMALY_SPAWNER" min="1" max="1" priority="1" req="ANOMALY_SPAWN_CHECK" lvl="1" max_lvl="200"/>
+	
 	<exitBeacon event="FINISH_BEACON" nebulaEvent="FINISH_BEACON_NEBULA" rebelEvent="FINISH_BEACON_FLEET_ELITE"/>
 	<rebelBeacon event="FLEET_THREAT_LOW" nebulaEvent="FLEET_THREAT_LOW_NEBULA"/>
 	<removeFirstBeaconNebula/>
@@ -6781,24 +6909,16 @@ SYLVAN'S NEXUS
 		<blueprint name="LOOT_LANIUS_1" rarity="3"/>
 		<blueprint name="LOOT_LANIUS_2" rarity="3"/>
 	</rarityList>
+	<noExit/>
 	<startEvent>ENTER_NEXUS</startEvent>
-	<exitBeacon event="SYLVAN_PRIME" rebelEvent="SYLVAN_PRIME"/>
 	<rebelBeacon event="FLEET_THREAT_CRITICAL" nebulaEvent="FLEET_THREAT_CRITICAL_NEBULA"/>
 	<removeFirstBeaconNebula/>
-	<event name="SYLVAN_CASHGRAB" min="1" max="1"/>
-	<event name="SYLVAN_EVERYTHING" min="1" max="1"/>
-	<event name="SYLVAN_NONEXIST" min="1" max="1"/>
-	<event name="SYLVAN_ERROR" min="1" max="1"/>
-	<event name="SYLVAN_1D" min="1" max="1"/>
-	<event name="SYLVAN_REBEL" min="1" max="1"/>
-	<event name="SYLVAN_NEMESIS" min="1" max="1"/>
-	<event name="DYLAN" min="1" max="1"/>
-	<event name="SYLVAN_BEANS" min="1" max="1"/>
-	<event name="SYLVAN_JOKE" min="1" max="1"/>
-	<event name="SYLVAN_FREEMANTIS" min="1" max="1"/>
-	<event name="SYLVAN_HARDSCIFI" min="1" max="1"/>
-	<event name="SYLVAN_MAID" min="1" max="1"/>
-	<event name="SYLVAN_SANS" min="1" max="1"/>
+	<exitBeacon event="SYLVAN_PRIME" rebelEvent="SYLVAN_PRIME"/> <!--something has to be the exit beacon-->
+	<event name="NEXUS_HAT" min="1" max="1"/>
+	<event name="HER" min="1" max="1"/>
+	<event name="NEXUS_LOSERS" min="1" max="1"/>
+	<event name="NEXUS_CEL" min="2" max="2"/>
+	<event name="NEXUS_RANDOM" min="11" max="11"/>
 	<event name="SYLVAN_NEXUS" min="999" max="999"/>
 </sectorDescription>
 
@@ -7424,50 +7544,20 @@ SHOWDOWN
 	</trackList>
 	<startEvent>SHOWDOWN_BEGIN</startEvent>
 	<removeFirstBeaconNebula/>
-	<hiddenAug>MARKER_FLAGSHIP</hiddenAug> <!-- update it -->
-	<jumpEvent>GO_TO_SHOWDOWN</jumpEvent>
 	<event name="GO_TO_SHOWDOWN" min="999" max="999"/>
+	<noExit/>
 </sectorDescription>
 
-<sectorDescription name="SHOWDOWN_CASUAL" unique="true">   
+<sectorDescription name="SHOWDOWN" unique="true">   
 	<nameList>
 		<name>The Showdown</name>
 	</nameList>
 	<trackList>
 		<track>showdown</track>
 	</trackList>
-	<startEvent>SHOWDOWN_CASUAL</startEvent>
+	<startEvent>SHOWDOWN_START</startEvent>
 	<event name="SHOWDOWN_PLACEHOLDER" min="999" max="999"/>
-</sectorDescription>
-<sectorDescription name="SHOWDOWN_NORMAL" unique="true">   
-	<nameList>
-		<name>The Showdown</name>
-	</nameList>
-	<trackList>
-		<track>showdown</track>
-	</trackList>
-	<startEvent>SHOWDOWN_NORMAL</startEvent>
-	<event name="SHOWDOWN_PLACEHOLDER" min="999" max="999"/>
-</sectorDescription>
-<sectorDescription name="SHOWDOWN_CHALLENGE" unique="true">   
-	<nameList>
-		<name>The Showdown</name>
-	</nameList>
-	<trackList>
-		<track>showdown</track>
-	</trackList>
-	<startEvent>SHOWDOWN_CHALLENGE</startEvent>
-	<event name="SHOWDOWN_PLACEHOLDER" min="999" max="999"/>
-</sectorDescription>
-<sectorDescription name="SHOWDOWN_EXTREME" unique="true">   
-	<nameList>
-		<name>The Showdown</name>
-	</nameList>
-	<trackList>
-		<track>showdown</track>
-	</trackList>
-	<startEvent>SHOWDOWN_EXTREME</startEvent>
-	<event name="SHOWDOWN_PLACEHOLDER" min="999" max="999"/>
+	<noExit/>
 </sectorDescription>
 
 <sectorDescription name="SHOWDOWN_WIN" unique="true">   
@@ -7479,8 +7569,66 @@ SHOWDOWN
 	</trackList>
 	<startEvent>TRUE_VICTORY</startEvent>
 	<event name="SHOWDOWN_PLACEHOLDER" min="999" max="999"/>
+	<noExit/>
 </sectorDescription>
 
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+RHYME
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<sectorDescription name="SECRET_RHYME" unique="true">  
+	<nameList>
+		<name>The Realm of Madness</name>
+	</nameList>
+	<trackList>
+		<track>chaos</track>
+	</trackList>
+	<noExit/>
+	<startEvent>THE_ONE_WHO_RHYMES</startEvent>
+	<event name="OPTION_INVALID" min="999" max="999"/>
+</sectorDescription>
+<sectorDescription name="SECRET_RHYME_CHAOS" unique="true">  
+	<nameList>
+		<name>The Realm of Madness</name>
+	</nameList>
+	<trackList>
+		<track>chaos</track>
+	</trackList>
+	<noExit/>
+	<startEvent>THE_ONE_WHO_RHYMES_CHAOS</startEvent>
+	<event name="OPTION_INVALID" min="999" max="999"/>
+</sectorDescription>
+<sectorDescription name="SECRET_HER" unique="true">  
+	<nameList>
+		<name>The Realm of Madness</name>
+	</nameList>
+	<trackList>
+		<track>chaos</track>
+	</trackList>
+	<noExit/>
+	<startEvent>REALM_MADNESS_START</startEvent>
+	<event name="VISION_ENCOUNTER" min="999" max="999"/>
+	<exitBeacon event="HER_FIGHT" rebelEvent="HER_FIGHT"/>
+	<noExit/>
+</sectorDescription>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+JUDGEMENT DAY
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<sectorDescription name="SECRET_DYLAN" unique="true">  
+	<nameList>
+		<name>Hoedown</name>
+	</nameList>
+	<trackList>
+		<track>hoedown</track>
+	</trackList>
+	<noExit/>
+	<startEvent>CASHMIRE_PANTS</startEvent>
+	<event name="OPTION_INVALID" min="999" max="999"/>
+</sectorDescription>
 
 <!--
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -7491,6 +7639,34 @@ SHOWDOWN
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
+<sectorDescription name="TEST_GLITCH" unique="false"> 
+	<nameList>
+		<name>TEST</name>
+	</nameList>
+	<trackList>
+		<track>separatist</track> 
+		<track>cosmos</track>
+		<track>milkyway</track>
+		<track>lostship</track>
+	</trackList>
+    <startEvent>ANOMALY_ORACLE</startEvent>
+	<event name="ANOMALY_ORACLE" min="999" max="999"/>
+</sectorDescription>
+
+<sectorDescription name="TEST_ANOMALY" unique="false"> 
+	<nameList>
+		<name>TEST</name>
+	</nameList>
+	<trackList>
+		<track>separatist</track> 
+		<track>cosmos</track>
+		<track>milkyway</track>
+		<track>lostship</track>
+	</trackList>
+    <startEvent>PLACEHOLDER</startEvent>
+	<event name="SPAWN_CHECK" min="999" max="999"/>
+</sectorDescription>
+
 <sectorDescription name="TUTORIAL" unique="false"> 
 	<nameList>
 		<name>Tutorial</name>
@@ -7560,7 +7736,7 @@ SHOWDOWN
 		<blueprint name="phantom" rarity="1"/>
 	</rarityList>
     <startEvent>START_CIVILIAN</startEvent>
-	<event name="STORES_STANDARD" min="999" max="999"/>
+	<!--<event name="STORES_STANDARD" min="999" max="999"/>-->
 </sectorDescription>
 
 <sectorDescription name="TEST_STORES" unique="false"> 
@@ -7617,6 +7793,6 @@ SHOWDOWN
 		<blueprint name="phantom" rarity="1"/>
 	</rarityList>
     <startEvent>START_CIVILIAN</startEvent>
-	<event name="STORES_STANDARD" min="999" max="999"/>
+	<!--<event name="STORES_STANDARD" min="999" max="999"/>-->
 </sectorDescription>
 </FTL>

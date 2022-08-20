@@ -111,7 +111,8 @@
 	</choice>
 </event>
 <event name="KESTREL_UNLOCK_OFFER">
-	<text>It seems these shipyards are in fact owned by Archive, so it's not difficult to get in touch with a correspondant who patches you in to Dewey directly. "Renegades? I have experience with your types. Before we begin, I would like to make it clear that, while I might be the CEO of Archive Inc., in this request I am not speaking on behalf of the company in any way. It would be... bad PR to get involved with more inter-dimensional renegades after the disaster of the 'Rusting Hulks' incident. I'm sure you understand."</text>
+	<text>It seems these shipyards are in fact owned by Archive, so it's not difficult to get in touch with a correspondant who patches you in to Dewey directly. "Renegades? I have experience with your types. Before we begin, I would like to make it clear that, while I might be the CEO of Archive Inc., in this request I am not speaking on behalf of the company in any way. It would be... bad PR to get involved with more inter-dimensional Renegades after the disaster of the 'Rusting Hulks' incident. I'm sure you understand."</text>
+	<variable name="loc_dewey" op="set" val="1"/>
 	<choice hidden="true">
 		<text>We do.</text>
 		<event>
@@ -122,16 +123,37 @@
 					<text>"But to who? Plenty of Kasparov's were made. This particular model would be of no interest to anyone but an avid historian or ship enthusiast like me. Never the matter. My request; hunt down those thieves and secure the Kasparov. I haven't in mind any particular reward, but I'm sure we can work something out. Name your price."</text>
 					<choice hidden="true">
 						<text>What about that old Kestrel?</text>
-						<event>
+						<event name="KESTREL_UNLOCK_OFFER_KESTREL">
 							<text>"Huh? That old thing? Oh, I can most certainly part ways with it. I jumped on purchasing one when they saw a sudden resurgence in popularity at the end of the Civil War, but now it seems everyone has one. Good deal then. One last thing - I've programmed the coordinates for the pirate ship into my assistant, Gana. He's just a machine, and not a very personable one at that, but he'll be sufficiently useful in combat. Best of luck captain. Godspeed!"</text>
+							<variable name="loc_itb" op="add" val="1"/>
 							<quest event="KESTREL_UNLOCK_PIRATE"/>
 							<drone name="GANA_BATTLE"/>
 						</event>
 					</choice>
 					<choice hidden="true">
 						<text>Decline the offer.</text>
-						<event>
+						<event name="KESTREL_UNLOCK_DECLINE">
 							<text>"You won't help then? What a loss... I'll have to find someone else then. Good day, captain."</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_zenith">
+				<text>Do you happen to know someone named Zenith?</text>
+				<event>
+					<text>"Zenith? As in the Pinnacle CEO?" You nod your head. "Well, yes, I know the name. One of the four corporations that used to dominate Earth. Never talked very extensively with her - she was obsessed with the nebulous future, while I care more about the concrete past. Neverthematter, why do you ask?" You shrug and mention your brief run-in. "Ah. What a coincidence. For such an infinitely large Multiverse, it sometimes feels so small..."</text>
+					<choice hidden="true">
+						<text>You could say so.</text>
+						<event>
+							<text>"Now then, that aside, back to that Kasparove issue. "I can't phatom why anyone would steal it. Plenty of Kasparov's were made. This particular model would be of no interest to anyone but an avid historian or ship enthusiast like me. Never the matter. My request; hunt down those thieves and secure the Kasparov. I haven't in mind any particular reward, but I'm sure we can work something out. Name your price."</text>
+								<choice hidden="true">
+								<text>What about that old Kestrel?</text>
+								<event><loadEvent>KESTREL_UNLOCK_OFFER_KESTREL</loadEvent></event>
+							</choice>
+							<choice hidden="true">
+								<text>Decline the offer.</text>
+								<event><loadEvent>KESTREL_UNLOCK_DECLINE</loadEvent></event>
+							</choice>
 						</event>
 					</choice>
 				</event>
@@ -300,7 +322,7 @@
 		<aggressive>2</aggressive>
 	</quest>
 	<customFleet right="false" firing="false" autoDarkening="false">RINGSHIP</customFleet>
-	<text>You were suspicious of a trick at first, but this is definitely the right location. In the distance you can see what is definitely the Kasparov, and a small Hephaestus depot with which the 'Kasparov' is being inspected by. You catch some radio chatter between ships. "Yeah, boss says we gotta bring this 'Shakarov' thing to Mr. Tanaka's collection. God knows breaking this thing down is gonna suck, but if we screw up he's probably gonna sell us to Tiiikaka. Make sure there isn't a scratch on this or we're toast!"</text>
+	<text>You were suspicious of a trick at first, but this is definitely the right location. In the distance you can see what is definitely the Kasparov, and a small Hephaestus depot by which the 'Kasparov' is being inspected. You catch some radio chatter between ships. "Yeah, boss says we gotta bring this 'Shakarov' thing to Mr. Tanaka's collection. God knows breaking this thing down is gonna suck, but if we screw up he's probably gonna sell us to Tiiikaka. Make sure there isn't a scratch on this or we're toast!"</text>
 	<ship load="SHIP_HEPHAESTUS_KESTREL" hostile="false"/>
 	<choice hidden="true">
 		<text>Demand they give back the Kasparov.</text>
@@ -356,6 +378,7 @@
 				<event>
 					<text>"That old assbucket. I should have known. Hideo takes whatever he wants from anyone he wants, even a fellow Union megacorp. Oh well. As Grandfather would say... well Grandfather didn't say much. He mostly just talked about satellites. Anyways, I thank you for your services. Best of luck on the rest of your mission."</text>
 					<autoReward level="LOW">stuff</autoReward>
+					<achievement>ACH_EVENT_KASPAROV</achievement>
 				</event>
 			</choice>
 		</event>
@@ -530,7 +553,7 @@
 		<text>(Rock Crew) Let them aboard but station your Rock as extra security.</text>
 		<event load="COREWORLDS_FREE_CREW_SECURITY"/>
 	</choice>
-	<choice hidden="true" req="BLUELIST_DRONES_BOARDING">
+	<choice hidden="true" req="BLUELIST_DRONES_BOARDING_DAMAGE">
 		<text>(Boarding Drone) Let them aboard but station your drone as extra security.</text>
 		<event load="COREWORLDS_FREE_CREW_SECURITY"/>
 	</choice>
@@ -863,7 +886,7 @@
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true" req="BLUELIST_MINING">
+			<choice hidden="true" req="BEAM_MINING">
 				<text>(Mining Equipment) Mine some of the asteroids on the outskirts.</text>
 				<event>
 					<text>You gather a decent supply of fuel and scrap from the asteroids when suddenly the harvester from earlier spots you. "Hey! This is a restricted area! What the hell are you doing?" With no one else to defend the asteroid field, they have no choice but to fight you off!</text>
@@ -1008,7 +1031,7 @@
 	<choice hidden="true" req="LIST_CREW_SUZERAIN">
 		<text>(Hive Elite) Demand the Suzerain ship stand down.</text>
 		<event>
-			<text>Your Mantis berates the Suzerain captain for leaving their territory unprotected to do silly things like "robbing meatsacks." Despite the irony of this, the Suzerain aboard the enemy ship seems ashamed and jumps away. The Militia ships offer a reward, but one of their guards offers his services to you, afraid the Suzerains might return and attack the caravan after you leave.</text>
+			<text>Your Mantis berates the Suzerain captain for leaving their territory unprotected to do silly things like "robbing meatsacks". Despite the irony of this, the Suzerain aboard the enemy ship seems ashamed and jumps away. The Militia ships offer a reward, but one of their guards offers his services to you, afraid the Suzerains might return and attack the caravan after you leave.</text>
 			<crewMember amount="1" combat="1"/>
 			<autoReward level="MED">standard</autoReward>
 		</event>
@@ -1054,6 +1077,7 @@
 	</beaconType>
 	<text>You've discovered a planet all too familiar. It's Antiquum Terrae, more often referred to as Old Earth, the homeworld and origin of the Human race! Though most of the planet has flooded, a few large and densely populated cities remain.</text>
 	<img back="BACKGROUND_EARTH" planet="PLANET_INVISIBLE"/>
+	<variable name="loc_itb" op="add" val="1"/>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -1140,8 +1164,8 @@
 		<nebulaBeacon>false</nebulaBeacon>
 		<currentSector>true</currentSector>
 		<nextSector>true</nextSector>
-		<sectorEight>false</sectorEight>
-		<lastStand>false</lastStand>
+		<sectorEight>true</sectorEight>
+		<lastStand>true</lastStand>
 	</quest>
 	<beaconType id="map_icon_barrel" global="true">
 		<color r="255" g="255" b="255" a="1.0"/>
@@ -1412,8 +1436,8 @@
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
-			<text>"A fine sssship for a Multiverssse Traveller! When we heard the Militia accepted any sssspeciesss among their ranksss, I realizzzed what an excccellent opportunity it would be to go hunting! But sssince you're here, perhapsss you have some sssspecimenss to donate? We will pay very well!"</text>
-			<choice>
+			<text>"A fine sssship for a Multiverssse Traveller! When we heard the Militia accepted any sssspeciesss among their ranksss, I realisssed what an excccellent opportunity it would be to go hunting! But sssince you're here, perhapsss you have some sssspecimenss to donate? We will pay very well!"</text>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 				<text>Draw straws and give a crew to the Slugs.</text>
 				<event>
 					<text>The Slugs take your crew back to their ship kicking and screaming. "Thiss one will make an exccccellent trophy! Sssome ssscrap for you, good ssssir."</text>
@@ -1423,6 +1447,10 @@
 						<text>Though your crew will likely be dead soon, you don't think cloning them is a good idea after you just gave them up to murderous hunters.</text>
 					</removeCrew>
 				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>Somehow, the Slugs have not even realised there's no one aboard to send over to them, despite their ability to detect lifeforms...</text>
+				<event load="OPTION_INVALID"/>
 			</choice>
 			<choice hidden="true" req="LIST_CREW_CLAN">
 				<text>(Clansman Crew) Claim to be hunters yourself.</text>
@@ -1552,6 +1580,7 @@
 	</choice>
 </event>
 <event name="MILITIA_TEXTWALL_LOAD">
+	<variable name="loc_boline_repeat" op="add" val="1"/>
 	<loadEvent ignoreUnique="true">MILITIA_TEXTWALL_TEXT</loadEvent>
 </event>
 <event name="MILITIA_TEXTWALL_TEXT">
@@ -1571,11 +1600,11 @@
 							<choice hidden="true">
 								<text>Continue...</text>
 								<event>
-									<text>"However, it also stands to say that the Orchids may actually function better with the Shells, who's reliance on oxygen naturally would pair them with the plant beings. It is a scientific wonder how a single Orchid is capable of effectively replacing a Life Support system for extended periods of time. Many biologists, many of which coincidentally also happen to be Shells, have attempted to study Orchid biology. For those of you who might not be aware, the Shell race has placed a heavy focus on scientific study, even occasionally abducting tourists or visiting ships to run quick, albeit painless, tests. This has led to many cultural misunderstandings with the less understanding species, such as the Rockmen or Mantis. The Slugs also have a particular interest in the Shells, though not for any innocent reasons. A clan of Slug hobbyists known as the Exotic Hunters Guild has formed, whose specific purpose is to hunt rare or sapient creatures. The Shells are their prime targets, because of their armored abilities."</text>
+									<text>"However, it also stands to say that the Orchids may actually function better with the Shells, as their reliance on oxygen naturally would pair them with the plant beings. It is a scientific wonder how a single Orchid is capable of effectively replacing a Life Support system for extended periods of time. Many biologists, many of which coincidentally also happen to be Shells, have attempted to study Orchid biology. For those of you who might not be aware, the Shell race has placed a heavy focus on scientific study, even occasionally abducting tourists or visiting ships to run quick, albeit painless, tests. This has led to many cultural misunderstandings with the less understanding species, such as the Rockmen or Mantis. The Slugs also have a particular interest in the Shells, though not for any innocent reasons. A clan of Slug hobbyists known as the Exotic Hunters Guild has formed, whose specific purpose is to hunt rare or sapient creatures. The Shells are their prime targets, because of their armored abilities."</text>
 									<choice hidden="true">
 										<text>Continue...</text>
 										<event>
-											<text>"Frighteningly, the attacks lead by the EHG, that being the aforementioned Exotic Hunters Guild for any of those not paying attention, are near synonymous with the earlier but still relatively recent series of conflicts known as the Slug Expansion Wars. I'm sure many of you here are already aware of the history of the Slug Expansion Wars, but I will share a brief summary of the conflicts for those of you who aren't."</text>
+											<text>"Frighteningly, the attacks led by the EHG, that being the aforementioned Exotic Hunters Guild for any of those not paying attention, are near synonymous with the earlier but still relatively recent series of conflicts known as the Slug Expansion Wars. I'm sure many of you here are already aware of the history of the Slug Expansion Wars, but I will share a brief summary of the conflicts for those of you who aren't."</text>
 											<choice hidden="true">
 												<text>Continue...</text>
 												<event>
@@ -1597,7 +1626,7 @@
 																				<text>Continue...</text>
 																				<event>
 																					<text>"Wait... is it Zluficar? Zultifigar? I know it starts with a Z..." Boline flips back through her text, searching for something. "Ah, I spelled it right here. Zulfiqar, that's it. Now, where was I... Oh, damn I lost my page. Do you uh, do you want me to start again?"</text>
-																					<choice hidden="true">
+																					<choice hidden="true" req="loc_boline_repeat" lvl="0" max_lvl="3" blue="false">
 																						<text>Continue...</text>
 																						<event>
 																							<text>Boline awaits your response.</text>
@@ -1608,6 +1637,43 @@
 																									<choice hidden="true">
 																										<text>Continue...</text>
 																										<event load="MILITIA_TEXTWALL_LOAD"/>
+																									</choice>
+																								</event>
+																							</choice>
+																							<choice hidden="true">
+																								<text>No.</text>
+																								<event>
+																									<text>"Oh, ok. Fair enough!" Boline flips the book closed. "Thanks for listening that far at least. So uh, what did you think?"</text>
+																									<choice hidden="true">
+																										<text>Pretty good.</text>
+																										<event>
+																											<text>"Really? You liked it? Amazing! Thank you so much for your feedback. Oh man, no one has ever said anything nice about my speech before, not even my own crew! Hey uh, what if I joined yours? You seem much nicer, and maybe with your encouragement I can even finish this draft in time to present it!"</text>
+																											<crewMember amount="1" class="zoltan_peacekeeper">Boline</crewMember>
+																										</event>
+																									</choice>
+																									<choice hidden="true">
+																										<text>Dear god that was the biggest waste of time in my life.</text>
+																										<event>
+																											<text>Boline looks down at her feet in shame. "Oh... ok." She cuts comms. You probably didn't have to be so rude, but at least you don't have to listen to her ramble any longer.</text>
+																										</event>
+																									</choice>
+																								</event>
+																							</choice>
+																						</event>
+																					</choice>
+																					<choice hidden="true" req="loc_boline_repeat" lvl="4" blue="false">
+																						<text>Continue...</text>
+																						<event>
+																							<text>Boline awaits your response.</text>
+																							<choice hidden="true">
+																								<text>Yes.</text>
+																								<event>
+																									<text>"Seriously? Again? I've read my speech to you 5 times already! Are you... making fun of me? Dude, not cool!" Seems you've really tipped her over the edge, because now Boline's weapons have come online!</text>
+																									<achievement>ACH_EVENT_BOLINE</achievement>
+																									<ship hostile="true"/>
+																									<choice hidden="true">
+																										<text>Continue...</text>
+																										<event load="COMBAT_CHECK"/>
 																									</choice>
 																								</event>
 																							</choice>
@@ -1710,7 +1776,7 @@
 </event>
 
 <event name="ENCOUNTER_MILITIA_ELITE" unique="true">
-	<text>The CDEG vessels are some of the deadliest in the Militia fleet, and for good reason. Boasting highly trained crew, these ships don't mess around in combat. Unfortunately for you, the ship here deems you a threat and attacks!</text>
+	<text>The vessels of the Elite Defense Cadre are some of the deadliest in the Militia fleet, and for good reason. Boasting highly trained crew, these ships don't mess around in combat. Unfortunately for you, the ship here deems you a threat and attacks!</text>
 	<ship load="SHIP_MILITIA_ELITE_FIGHT" hostile="true"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -1946,7 +2012,7 @@
 			<autoReward level="MED">standard</autoReward>
 		</event>
 	</choice>
-	<choice hidden="true" req="zoltan_monk">
+	<choice hidden="true" req="LIST_CREW_MONK">
 		<text>(Monk Crew) Shame the Rebels for their violent ways.</text>
 		<event>
 			<text>Your Monk spends the next 30 minutes insulting the Rebels for their barbaric ways, attacking men only doing their duty by defending civilians. The Rebels are so ashamed of themselves several crumple to the floor sobbing. One particularly moved individual offers to join your crew, and the rest agree to leave the Militiamen alone.</text>
@@ -1985,7 +2051,7 @@
 <eventList name="MILITIA_RECRUITMENT_TALK">
 	<event>
 		<text>The Rebels don't bother listening to you. They send over a team of crew to board you while you fight their ship.</text>
-		<boarders min="2" max="3" class="rebel"/>
+		<boarders min="2" max="3" class="human_rebel"/>
 		<ship hostile="true"/>
 		<choice hidden="true">
 			<text>Continue...</text>
@@ -2005,8 +2071,6 @@
 <eventList name="DISTRESS_MILITIA">
 	<event load="DISTRESS_MILITIA_KERNALS"/>
 	<event load="DISTRESS_MILITIA_OUTPOST"/>
-	
-	<event load="DISTRESS_ASB_PIRATE"/>
 </eventList> 
 
 <event name="DISTRESS_MILITIA_KERNALS" unique="true">
@@ -2257,7 +2321,7 @@
 	<choice hidden="true">
 		<text>Investigate the scene.</text>
 		<event>
-			<text>One of the militiamen tries to protest as you dock with the station, but they are cut off by a human clad in a green outfit smoking from a small wooden pipe of Old-Earth design. "Ah, a Multiverse Traveller, eh? I am Sherlock Haynes. I hail from Earth, though I have since joined the Militia myself. Now I work as a detective for the SDM, but I have been presented by a rather troublesome case. Perhaps you might help?"</text>
+			<text>One of the militiamen tries to protest as you dock with the station, but they are cut off by a human clad in a green outfit smoking from a small wooden pipe of Old-Earth design. "Ah, a Renegade, eh? I am Sherlock Haynes. I hail from Earth, though I have since joined the Militia myself. Now I work as a detective for the Militia, but I have been presented by a rather troublesome case. Perhaps you might help?"</text>
 			<choice hidden="true">
 				<text>Help with what?</text>
 				<event>
@@ -2353,27 +2417,27 @@
 		<event>
 			<text>The station has several systems on-board. Which do you want to look at?</text>
 			<choice hidden="true">
-				<text>Investigate the doors.</text>
+				<text>Investigate the Doors.</text>
 				<event load="DETECTIVE_SYSTEM_DOORS"/>
 			</choice>
 			<choice hidden="true">
-				<text>Investigate the dronebay.</text>
+				<text>Investigate the Dronebay.</text>
 				<event load="DETECTIVE_SYSTEM_DRONES"/>
 			</choice>
 			<choice hidden="true">
-				<text>Investigate the life support.</text>
+				<text>Investigate the Life Support.</text>
 				<event load="DETECTIVE_SYSTEM_OXYGEN"/>
 			</choice>
 			<choice hidden="true">
-				<text>Investigate the shields.</text>
+				<text>Investigate the Shields.</text>
 				<event load="DETECTIVE_SYSTEM_SHIELDS"/>
 			</choice>
 			<choice hidden="true">
-				<text>Investigate the sensors.</text>
+				<text>Investigate the Sensors.</text>
 				<event load="DETECTIVE_SYSTEM_SENSORS"/>
 			</choice>
 			<choice hidden="true">
-				<text>Investigate the weapons.</text>
+				<text>Investigate the Weapons.</text>
 				<event load="DETECTIVE_SYSTEM_WEAPONS"/>
 			</choice>
 			<choice hidden="true">
@@ -2385,7 +2449,7 @@
 	<choice hidden="true">
 		<text>Accuse a suspect.</text>
 		<event>
-			<text>Sherlock raises an eyebrow. "So, you have come to a conclusion? Who shot ol' Henry?""
+			<text>Sherlock raises an eyebrow. "So, you have come to a conclusion? Who shot ol' Henry?"
 			[You will only be able to accuse suspects that you have talked to]</text>
 			<choice hidden="true" req="loc_evidence_dronekiller" blue="true">
 				<text>None of them killed Henry personally. It was the drone who fired the fatal shot!</text>
@@ -2408,7 +2472,7 @@
 				<event load="DETECTIVE_ACCUSE_SHERLOCK"/>
 			</choice>
 			<choice hidden="true">
-				<text>Er, nevermind. I need to keep investigating</text>
+				<text>Er, nevermind. I need to keep investigating.</text>
 				<event>
 					<text>Sherlock chuckles. "Well alright then. Take your time, one can never be too careful about something like this."</text>
 					<choice hidden="true">
@@ -2429,8 +2493,8 @@
 	</choice>
 </event>
 <event name="DETECTIVE_ACCUSE_SHERLOCK">
-	<text>You take a long step towards the suspects, then swivel around and point a finger right at Sherlock. "You uh, you're accusing me? You do realize I haven't even been on this station before this day, right?</text>
-	<choice hidden="true">
+	<text>You take a long step towards the suspects, then swivel around and point a finger right at Sherlock. "You uh, you're accusing me? You do realize I haven't even been on this station before this day, right?"</text>
+	<choice hidden="true" req="loc_spit" lvl="0" max_lvl="2" blue="false">
 		<text>Sounds exactly like what a killer would say!</text>
 		<event>
 			<text>Suddenly, the lights go out, and blaster fire rings out through the room, and you hear one of your crew fall over. When the lights come back on, the suspects and back up reinforcements have already fled. Sherlock shouts at you. "Damn it! Now the real suspect has gotten away! Run, it is no longer safe here with a killer on the loose!"</text>
@@ -2438,6 +2502,17 @@
 				<clone>false</clone>
 				<text>You check your Clone Bay for your crew's vitals, but find the killer has deployed a virus to shut it off while you were gone! You restore it back to normal, but your crew is gone for good.</text>
 			</removeCrew>
+		</event>
+	</choice>
+	<choice hidden="true" req="loc_spit" lvl="3" blue="false">
+		<text>Sounds exactly like what a killer would say!</text>
+		<event>
+			<text>Sherlock folds his arms and glares at you. "You storm in here, spit on the faces of all my suspects, and then accuse ME of the crime? Get out. Get out right now. You are deranged. This is what I get for trusting a Renegade to handle serious business like this."</text>
+			<achievement>ACH_EVENT_MYSTERY</achievement>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_GENERAL"/>
+			</choice>
 		</event>
 	</choice>
 </event>
@@ -2645,6 +2720,7 @@
 		<text>Spit in Thom's face.</text>
 		<event>
 			<text>For no reason in particular, you decide to spit at Thom. Sherlock glares at you but says nothing.</text>
+			<variable name="loc_spit" op="add" val="1"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="DETECTIVE_EVIDENCE_MENU_LOAD"/>
@@ -2778,6 +2854,7 @@
 		<text>Spit in Amy's face.</text>
 		<event>
 			<text>For no reason in particular, you decide to spit at Amy. Sherlock glares at you but says nothing.</text>
+			<variable name="loc_spit" op="add" val="1"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="DETECTIVE_EVIDENCE_MENU_LOAD"/>
@@ -2899,6 +2976,7 @@
 		<text>Spit in Daniel's face.</text>
 		<event>
 			<text>For no reason in particular, you decide to spit at Daniel. Sherlock glares at you but says nothing.</text>
+			<variable name="loc_spit" op="add" val="1"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="DETECTIVE_EVIDENCE_MENU_LOAD"/>
@@ -3069,7 +3147,7 @@
 
 <ship name="SHIP_MILITIA_BOSS" auto_blueprint="MU_MILITIA_BOSS">
 	<triggeredEvent event="DETECTIVE_HANGARATTACK_FAILURE" time="100" thisFight="true" clearOnJump="true">
-		<triggeredEventBox load="DEFAULT_TIMER" pos="combat">
+		<triggeredEventBox load="DEFAULT_TIMER">
 			<warning time="10.0" flash="true"/>
 			<tooltip>The shield reactor will be disabled in this amount of time. Be sure to defeat the Dreadnaught before the time runs out.</tooltip>
 		</triggeredEventBox>

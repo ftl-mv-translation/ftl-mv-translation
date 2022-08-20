@@ -34,40 +34,7 @@
 			<changeBackground>BACK_EVENT_NEXUSPORTAL</changeBackground>
 			<choice hidden="true" req="loc_sylvankilled" lvl="0" max_group="0" blue="false">
 				<text>Continue...</text>
-				<event>
-					<text>In the distance you can make out a ship flying towards you, and you quickly realize it's Sylvan! "Ssstranger, you ssshould not be here... How did you find thisss placcce? Oh, it doesss not matter. But you mussst not ssstay here ssstranger. It isss dangerousss!"</text>
-					<ship load="SHIP_TRAVELING_MERCHANT_NEXUSPORTAL" hostile="false"/>
-					<choice hidden="true">
-						<text>What is this place?</text>
-						<event>
-							<text>"Thisss isss not a good time for quessstionsss, ssstranger. You mussssn't go any clossser. I wissssh I could explain ssstranger, but thisss isss very ssserious. Thissss isss my final warning. Turn back or I'll have no choiccce but to make you, sssstranger..."</text>
-							<choice hidden="true">
-								<text>We aren't leaving until we find out what this is.</text>
-								<event>
-									<text>"Then I'm afraid you give me no choicccce, ssstranger..."</text>
-									<variable name="loc_sylvanbetrayed" op="set" val="1"/>
-									<ship hostile="true"/>
-									<choice hidden="true">
-										<text>Continue...</text>
-										<event load="COMBAT_CHECK"/>
-									</choice>
-								</event>
-							</choice>
-							<choice hidden="true">
-								<text>Abide his warning and leave.</text>
-								<event>
-									<text>"Sssmart choiccce ssstranger. There'sss more important thingsss to be doing anywaysss..."</text>
-								</event>
-							</choice>
-						</event>
-					</choice>
-					<choice hidden="true">
-						<text>Abide his warning and leave.</text>
-						<event>
-							<text>"Sssmart choiccce ssstranger. There'sss more important thingsss to be doing anywaysss..."</text>
-						</event>
-					</choice>
-				</event>
+				<event load="NEXUS_PORTAL_SYLVAN"/>
 			</choice>
 			<choice hidden="true" req="loc_sylvankilled" lvl="1" max_group="0" blue="false">
 				<text>Continue...</text>
@@ -92,6 +59,94 @@
 		</event>
 	</choice>
 </event>
+<event name="NEXUS_PORTAL_SYLVAN">
+	<loadEventList seeded="false" first="true" generate="false">
+		<event name="SYLVAN_PORTAL_SPAWNER_EXTREME" req="challenge_level" lvl="3" max_lvl="3"/>
+		<event name="SYLVAN_PORTAL_SPAWNER_CHALLENGE" req="challenge_level" lvl="2" max_lvl="2"/>
+		<event name="SYLVAN_PORTAL_SPAWNER_NORMAL" req="challenge_level" lvl="1" max_lvl="1"/>
+		<event name="SYLVAN_PORTAL_SPAWNER_CASUAL" req="challenge_level" lvl="0" max_lvl="0"/>
+	</loadEventList>
+</event>
+<!--casual-->
+<event name="SYLVAN_PORTAL_SPAWNER_CASUAL">
+	<ship load="SHIP_SYLVAN_NEXUSPORTAL_CASUAL" hostile="false"/>
+	<loadEvent>NEXUS_PORTAL_2</loadEvent>
+</event>
+<ship name="SHIP_SYLVAN_NEXUSPORTAL_CASUAL" auto_blueprint="MU_TRAVELING_MERCHANT_CASUAL">
+	<triggeredEvent name="SYLVAN_SPARES_YOU" event="NEXUS_PORTAL_SPARE" playerHull="3" playerCrew="1" thisFight="true"/>
+	<triggeredEvent name="SYLVAN_IS_GOING_TO_DIE" event="NEXUS_PORTAL_SURRENDER" enemyHull="3" enemyCrew="1" thisFight="true"/>
+	<destroyed load="SYLVAN_DESTRUCTION_NEXUSPORTAL"/>
+	<deadCrew load="SYLVAN_CREWKILL_NEXUSPORTAL"/>
+</ship>
+<!--normal-->
+<event name="SYLVAN_PORTAL_SPAWNER_NORMAL">
+	<ship load="SHIP_SYLVAN_NEXUSPORTAL_NORMAL" hostile="false"/>
+	<loadEvent>NEXUS_PORTAL_2</loadEvent>
+</event>
+<ship name="SHIP_SYLVAN_NEXUSPORTAL_NORMAL" auto_blueprint="MU_TRAVELING_MERCHANT_NORMAL">
+	<triggeredEvent name="SYLVAN_SPARES_YOU" event="NEXUS_PORTAL_SPARE" playerHull="3" playerCrew="1" thisFight="true"/>
+	<triggeredEvent name="SYLVAN_IS_GOING_TO_DIE" event="NEXUS_PORTAL_SURRENDER" enemyHull="3" enemyCrew="1" thisFight="true"/>
+	<destroyed load="SYLVAN_DESTRUCTION_NEXUSPORTAL"/>
+	<deadCrew load="SYLVAN_CREWKILL_NEXUSPORTAL"/>
+</ship>
+<!--challenge-->
+<event name="SYLVAN_PORTAL_SPAWNER_CHALLENGE">
+	<ship load="SHIP_SYLVAN_NEXUSPORTAL_CHALLENGE" hostile="false"/>
+	<loadEvent>NEXUS_PORTAL_2</loadEvent>
+</event>
+<ship name="SHIP_SYLVAN_NEXUSPORTAL_CHALLENGE" auto_blueprint="MU_TRAVELING_MERCHANT_CHALLENGE">
+	<triggeredEvent name="SYLVAN_SPARES_YOU" event="NEXUS_PORTAL_SPARE" playerHull="3" playerCrew="1" thisFight="true"/>
+	<triggeredEvent name="SYLVAN_IS_GOING_TO_DIE" event="NEXUS_PORTAL_SURRENDER" enemyHull="3" enemyCrew="1" thisFight="true"/>
+	<destroyed load="SYLVAN_DESTRUCTION_NEXUSPORTAL"/>
+	<deadCrew load="SYLVAN_CREWKILL_NEXUSPORTAL"/>
+</ship>
+<!--extreme-->
+<event name="SYLVAN_PORTAL_SPAWNER_EXTREME">
+	<ship load="SHIP_SYLVAN_NEXUSPORTAL_EXTREME" hostile="false"/>
+	<loadEvent>NEXUS_PORTAL_2</loadEvent>
+</event>
+<ship name="SHIP_SYLVAN_NEXUSPORTAL_EXTREME" auto_blueprint="MU_TRAVELING_MERCHANT_EXTREME">
+	<triggeredEvent name="SYLVAN_SPARES_YOU" event="NEXUS_PORTAL_SPARE" playerHull="3" playerCrew="1" thisFight="true"/>
+	<triggeredEvent name="SYLVAN_IS_GOING_TO_DIE" event="NEXUS_PORTAL_SURRENDER" enemyHull="3" enemyCrew="1" thisFight="true"/>
+	<destroyed load="SYLVAN_DESTRUCTION_NEXUSPORTAL"/>
+	<deadCrew load="SYLVAN_CREWKILL_NEXUSPORTAL"/>
+</ship>
+
+<event name="NEXUS_PORTAL_2">
+	<text>In the distance you can make out a ship flying towards you, and you quickly realize it's Sylvan! "Ssstranger, you ssshould not be here... How did you find thisss placcce? Oh, it doesss not matter. But you mussst not ssstay here ssstranger. It isss dangerousss!"</text>
+	<choice hidden="true">
+		<text>What is this place?</text>
+		<event>
+			<text>"Thisss isss not a good time for quessstionsss, ssstranger. You mussssn't go any clossser. I wissssh I could explain ssstranger, but thisss isss very ssserious. Thissss isss my final warning. Turn back or I'll have no choiccce but to make you, sssstranger..."</text>
+			<choice hidden="true">
+				<text>We aren't leaving until we find out what this is.</text>
+				<event>
+					<text>"Then I'm afraid you give me no choicccce, ssstranger..."</text>
+					<playMusic>sylvan</playMusic>
+					<variable name="loc_sylvanbetrayed" op="set" val="1"/>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Abide his warning and leave.</text>
+				<event>
+					<text>"Sssmart choiccce ssstranger. There'sss more important thingsss to be doing anywaysss..."</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Abide his warning and leave.</text>
+		<event>
+			<text>"Sssmart choiccce ssstranger. There'sss more important thingsss to be doing anywaysss..."</text>
+		</event>
+	</choice>
+</event>
+
 <event name="NEXUS_PORTAL_SPARE">
 	<text>It seems you're on your last legs. You won't survive much longer, but Sylvan stops firing for a moment and hails you. "I don't wisssh to kill you ssstranger. Leave, and we can forget about thissss..."</text>
 	<clearTriggeredEvent name="SYLVAN_SPARES_YOU"/>
@@ -99,6 +154,7 @@
 		<text>Surrender.</text>
 		<event>
 			<text>Sylvan powers down his weapons for good and takes one last look at you, guilt all over his face, and slips away into the distance.</text>
+			<playMusic/>
 			<damage amount="-10"/>
 			<ship hostile="false"/>
 		</event>
@@ -117,6 +173,8 @@
 		<text>Demand Sylvan stands down.</text>
 		<event>
 			<text>"It... it ssseemssss I have failed ssstranger. I could not sssave you from yourssself. Oh well... I guessss you have earned what issss on the other end of that rift. But I hope you underssstand ssstranger that... well... you probably won't make it out the other ssside. There are rulesss, ssstranger. They won't like you breaking them." With that ominous note, Sylvan simply jumps away. You notice a lot of debris left from the fight and collect what you can.</text>
+			<playMusic/>
+			<metaVariable name="juke_sylvan" op="set" val="1"/>
 			<weapon name="RANDOM"/>
 			<damage amount="-20"/>
 			<item_modify>
@@ -135,12 +193,6 @@
 		<event/>
 	</choice>
 </event>
-<ship name="SHIP_TRAVELING_MERCHANT_NEXUSPORTAL" auto_blueprint="MU_TRAVELING_MERCHANT">
-	<triggeredEvent name="SYLVAN_SPARES_YOU" event="NEXUS_PORTAL_SPARE" playerHull="3" playerCrew="1" thisFight="true"/>
-	<triggeredEvent name="SYLVAN_IS_GOING_TO_DIE" event="NEXUS_PORTAL_SURRENDER" enemyHull="3" enemyCrew="1" thisFight="true"/>
-	<destroyed load="SYLVAN_DESTRUCTION_NEXUSPORTAL"/>
-	<deadCrew load="SYLVAN_CREWKILL_NEXUSPORTAL"/>
-</ship>
 <event name="SYLVAN_CREWKILL_NEXUSPORTAL">
 	<text>It seems as though this is the end of Sylvan, but suddenly a teleporter signal registers - you've been boarded, again? Sylvan reappears on your deck. "Sssstranger, it'ssss not sssso eassssy to get rid of me!"</text>
 	<boarders min="1" max="1" class="unique_sylvan"/>
@@ -155,8 +207,11 @@
 </event> 
 <event name="SYLVAN_DESTRUCTION_NEXUSPORTAL">
 	<text>Sylvan falls to his knees, bleeding profusely from a gash across his face. He manages to gasp out a few final words, "Ssstranger... I hope... thissss wasss worth it...", then falls over. The Traveling Merchant is no more.</text>
+	<playMusic/>
+	<metaVariable name="juke_sylvan" op="set" val="1"/>
 	<unlockCustomShip shipReq="PLAYER_SHIP_SYLVAN" silent="false">PLAYER_SHIP_SYLVAN_3</unlockCustomShip>
 	<variable name="loc_sylvankilled" op="set" val="1"/>
+	<augment name="SYLVAN_SHIELD_REWARD"/>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event load="SYLVAN_DESTRUCTION_2_NEXUS"/>
@@ -265,7 +320,7 @@
 	<choice hidden="true">
 		<text>Enter.</text>
 		<event>
-			<text>As you begin to approach the rift the space around you becomes progressively more warped, and soon not even your engines are able control your ship as you're sucked at absurd speeds into the heart of the gateway...</text>
+			<text>As you begin to approach the rift the space around you becomes progressively more warped, and soon not even your engines are able to control your ship as you're sucked at absurd speeds into the heart of the gateway...</text>
 			<secretSectorWarp>SECRET_SYLVAN</secretSectorWarp>
 			<secretSector/>
 		</event>
@@ -297,13 +352,6 @@
 	<destroyed load="SYLVAN_DESTRUCTION_NEXUS"/>
 	<deadCrew load="SYLVAN_DESTRUCTION_NEXUS"/>
 </ship>
-<textList name="TEXT_SYLVAN_NEXUS">
-	<text>"Sssstranger! Life issss sssuffering asss alwayssss, but sssscrap makessss it better! Wanna trade?"</text>
-	<text>An unusually colored Slug transport is nearby. Just yet another funky Sylvan, though they seem open to trading.</text>
-	<text>"I've never sssseen you before Ssstranger! Are you... sssuppossssed to be here? Eh, assss they sssay ssstranger, busssinessss isss busssinessss!"</text>
-	<text>"Sssso good to ssssee you, ssstranger! Hey, come and sssstop by U943 ssssome time, eh? Now, how about a trade!"</text>
-	<text>"Ohohohoh, I've heard the newssss about you, sssstranger! I'd be honored to trade with yah mate!"</text>
-</textList>
 <event name="SYLVAN_DESTRUCTION_NEXUS">
 	<text>Sylvan falls to his knees, bleeding profusely from a gash across his face. He manages to gasp out a few final words, "Ssstranger... I hope... thissss wasss worth it...", then falls over. Another Traveling Merchant is no more.</text>
 	<item_modify>
@@ -312,10 +360,6 @@
 		<item type="missiles" min="5" max="12"/>
 		<item type="drones" min="5" max="12"/>
 	</item_modify>
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="MORALITY_UPDATE_NEXUS"/>
-	</choice>
 </event> 
 <event name="SYLVAN_NEXUS">
 	<preventQuest/>
@@ -325,12 +369,15 @@
 		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
 		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
 	</beaconType>
-	<text load="TEXT_SYLVAN_NEXUS"/>
+	<text>Yet another strange Sylvan awaits you here. They seem friendly enough and willing to trade.</text>
 	<ship load="SHIP_TRAVELING_MERCHANT_NEXUS" hostile="false"/>
+	<eventAlias name="SYLVAN_TRADES" jumpClear="true">SYLVAN_TRADES_NEXUS</eventAlias>
+	<eventAlias name="SYLVAN_TRADES_DROPPOINT" jumpClear="true">SYLVAN_TRADES_NEXUS</eventAlias>
+	<eventAlias name="SYLVAN_TRADES_LASTSTAND" jumpClear="true">SYLVAN_TRADES_NEXUS</eventAlias> <!--just in case-->
 	<choice hidden="true" req="unique_sylvan" max_group="0" blue="true">
 		<text>(Sylvan) Use Sylvan to hail Sylvan.</text>
 		<event>
-			<text>"I ssssee you are not the ssstranger but rather me, me. I'm afraid no dissscountsss though. There's an infinite me'sss and I can't go giving all of them free ssscrap!"</text>
+			<text>"I ssssee you are in fact me, me. I'm afraid no dissscountsss though. There's an infinite me'sss and I can't go giving all of them free ssscrap!"</text>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
@@ -345,7 +392,7 @@
 	</choice>
 	<choice hidden="true">
 		<text>Sell some resources first.</text>
-		<event load="SYLVAN_CONVERT_MENU_NEXUS"/>
+		<event load="SYLVAN_CONVERT_MENU"/>
 	</choice>
 	<choice hidden="true">
 		<text>Attack!</text>
@@ -370,519 +417,339 @@
 	<text>"Aaaaah. Ssstranger ssstranger, any ssself ressspecting Multiversssse traveler knowssss they need sssome gear if they're going to ssssurvive."</text>
 	<store>STORE_SYLVAN_NEXUS</store>
 </event>
-<event name="SYLVAN_CONVERT_MENU_NEXUS">
-	<text>"Low on sssscrap, sstranger? High on resssourcccesss? Well lucky for you ssstranger, I can take care of that!"</text>
-	<choice hidden="true" req="pilot" lvl="1" max_group="0" blue="false">
-		<text>Sell some fuel.</text>
-		<event load="SYLVAN_CONVERT_FUEL_NEXUS"/>
-	</choice>
-	<choice hidden="true" req="pilot" lvl="1" max_group="1" blue="false">
-		<text>Sell some ammunition.</text>
-		<event load="SYLVAN_CONVERT_AMMO_NEXUS"/>
-	</choice>
-	<choice hidden="true" req="pilot" lvl="1" max_group="2" blue="false">
-		<text>Sell some droneparts.</text>
-		<event load="SYLVAN_CONVERT_DRONES_NEXUS"/>
-	</choice>
-	<choice hidden="true">
-		<text>Nevermind.</text>
-		<event>
-			<loadEvent>SYLVAN_NEXUS</loadEvent>
-		</event>
-	</choice>
-</event> 
-<event name="SYLVAN_CONVERT_FUEL_NEXUS">
-	<text>"Fuel! Heh heh, can never have enough. But I'll take sssome off of your hands, if you desssire."</text>
-	<!--5-->
-	<choice req="challenge_level" lvl="3" blue="false" max_group="0">
-		<text>Sell 5 fuel.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="fuel" min="-5" max="-5"/>
-				<item type="scrap" min="10" max="10"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice req="challenge_level" lvl="3" blue="false" max_group="0">
-		<text>Sell 5 fuel.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="fuel" min="-5" max="-5"/>
-				<item type="scrap" min="7" max="7"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<!--10-->
-	<choice req="challenge_level" lvl="0" max_lvl="2" blue="false" max_group="1">
-		<text>Sell 10 fuel.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="fuel" min="-10" max="-10"/>
-				<item type="scrap" min="20" max="20"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice req="challenge_level" lvl="3" blue="false" max_group="1">
-		<text>Sell 10 fuel.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="fuel" min="-10" max="-10"/>
-				<item type="scrap" min="15" max="15"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<!--15-->
-	<choice req="challenge_level" lvl="0" max_lvl="2" blue="false" max_group="2">
-		<text>Sell 15 fuel.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="fuel" min="-15" max="-15"/>
-				<item type="scrap" min="30" max="30"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice req="challenge_level" lvl="3" blue="false" max_group="2">
-		<text>Sell 15 fuel.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="fuel" min="-15" max="-15"/>
-				<item type="scrap" min="22" max="22"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<!--nevermind-->
-	<choice hidden="true">
-		<text>Nevermind.</text>
-		<event>
-			<loadEvent>SYLVAN_NEXUS</loadEvent>
-		</event>
-	</choice>
-</event> 
-<event name="SYLVAN_CONVERT_AMMO_NEXUS">
-	<text>"Missiles! Crucccial for any heavy payload, but if you find yourssself with more than you can handle ssstranger, I'll gladly buy sssome off of you."</text>
-	<!--5-->
-	<choice req="challenge_level" lvl="0" max_lvl="2" blue="false" max_group="0">
-		<text>Sell 5 missiles.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="missiles" min="-5" max="-5"/>
-				<item type="scrap" min="15" max="15"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice req="challenge_level" lvl="3" blue="false" max_group="0">
-		<text>Sell 5 missiles.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="missiles" min="-5" max="-5"/>
-				<item type="scrap" min="11" max="11"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<!--10-->
-	<choice req="challenge_level" lvl="0" max_lvl="2" blue="false" max_group="1">
-		<text>Sell 10 missiles.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="missiles" min="-10" max="-10"/>
-				<item type="scrap" min="30" max="30"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice req="challenge_level" lvl="3" blue="false" max_group="1">
-		<text>Sell 10 missiles.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="missiles" min="-10" max="-10"/>
-				<item type="scrap" min="22" max="22"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<!--15-->
-	<choice req="challenge_level" lvl="0" max_lvl="2" blue="false" max_group="2">
-		<text>Sell 15 missiles.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="missiles" min="-15" max="-15"/>
-				<item type="scrap" min="45" max="45"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice req="challenge_level" lvl="3" blue="false" max_group="2">
-		<text>Sell 15 missiles.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="missiles" min="-15" max="-15"/>
-				<item type="scrap" min="33" max="33"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<!--nevermind-->
-	<choice hidden="true">
-		<text>Nevermind.</text>
-		<event>
-			<loadEvent>SYLVAN_NEXUS</loadEvent>
-		</event>
-	</choice>
-</event> 
-<event name="SYLVAN_CONVERT_DRONES_NEXUS">
-	<text>"Drone partsss! If you find yourssself with too many partsss and not enough usssesss for them, I think I can sssolve your problemsss..."</text>
-	<!--5-->
-	<choice req="challenge_level" lvl="0" max_lvl="2" blue="false" max_group="0">
-		<text>Sell 5 parts.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="drones" min="-5" max="-5"/>
-				<item type="scrap" min="25" max="25"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice req="challenge_level" lvl="3" blue="false" max_group="0">
-		<text>Sell 5 parts.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="drones" min="-5" max="-5"/>
-				<item type="scrap" min="20" max="20"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<!--10-->
-	<choice req="challenge_level" lvl="0" max_lvl="2" blue="false" max_group="1">
-		<text>Sell 10 parts.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="drones" min="-10" max="-10"/>
-				<item type="scrap" min="50" max="50"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice req="challenge_level" lvl="3" blue="false" max_group="1">
-		<text>Sell 10 parts.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="drones" min="-10" max="-10"/>
-				<item type="scrap" min="40" max="40"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<!--15-->
-	<choice req="challenge_level" lvl="0" max_lvl="2" blue="false" max_group="2">
-		<text>Sell 15 parts.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="drones" min="-15" max="-15"/>
-				<item type="scrap" min="75" max="75"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice req="challenge_level" lvl="3" blue="false" max_group="2">
-		<text>Sell 15 parts.</text>
-		<event>
-			<text>"Another day, another profit for both of ussss, eh ssstranger?"</text>
-			<disableScrapAugments/>
-			<item_modify>
-				<item type="drones" min="-15" max="-15"/>
-				<item type="scrap" min="60" max="60"/>
-			</item_modify>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_NEXUS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<!--nevermind-->
-	<choice hidden="true">
-		<text>Nevermind.</text>
-		<event>
-			<loadEvent>SYLVAN_NEXUS</loadEvent>
-		</event>
-	</choice>
-</event> 
 
 <event name="START_NEXUS">
-	<text>You pull yourself off the floor of your ship and glance out the window to try and place where you are in space and time. In the distance is another massive rift leading back to where you came from, slowly shrinking. This sudden disappearance should throw the Rebellion for quite a loop.</text>
+	<text>You pull yourself off the floor of your ship and glance out the window to try and place where you are in space and time. In the distance is another massive rift leading back to where you came from, slowly shrinking. This sudden disappearance should throw the Rebellion for quite a loop, but who knows if you'll make it out alive of whatever this is.</text>
 	<variable name="loc_unique_sectors" op="add" val="1"/>
 	<img back="BACK_EVENT_NEXUS" planet="NONE"/>
-	<remove name="HIDDEN DUMMY"/>
 	<modifyPursuit amount="-45"/>
 	<ship load="SHIP_GUARD_NEXUS" hostile="false"/>
 	<changeBackground>BACK_EVENT_NEXUS</changeBackground>
 	<playSound>lightspeed</playSound>
 	<choice hidden="true">
 		<text>Continue...</text>
-		<event>
-			<text>You spin the ship around from the gateway and come face to face with an approaching vessel. On your screen appears a bespectacled Slug who looks concerningly similar to Sylvan. Their voice is incredibly monotone and they ask your purpose for being here.</text>
-			<choice hidden="true" req="loc_sylvankilled" lvl="0" max_group="0" blue="false">
-				<text>We're friends with Sylvan.</text> 
-				<event>
-					<text>"Yesss, but which one, Ssstranger? You have to be sssspecccific. There are a lot of Ssssylvanssss."</text>
+		<event name="START_NEXUS_2">
+			<status type="limit" target="player" system="weapons" amount="0"/>
+			<status type="limit" target="player" system="shields" amount="0"/>
+			<status type="limit" target="player" system="engines" amount="1"/>
+			<status type="limit" target="player" system="cloaking" amount="0"/>
+			<status type="limit" target="player" system="drones" amount="0"/>
+			<status type="limit" target="player" system="doors" amount="0"/>
+			<status type="limit" target="player" system="sensors" amount="0"/>
+			<status type="limit" target="player" system="hacking" amount="0"/>
+			<status type="limit" target="player" system="mind" amount="0"/>
+			<status type="limit" target="player" system="temporal" amount="0"/>
+			<status type="limit" target="player" system="teleporter" amount="0"/>
+			<status type="limit" target="player" system="artillery" amount="0"/>
+			<status type="limit" target="player" system="reactor" amount="1"/>
+			<text>Once fully conscious you check the ship's vital systems but find everything has been shut down. A strangely colored Slug transport lingers nearby, and before you can react you hear a cough from behind you. You spin around to find a Slug dressed in an ironed suit and tie sitting at a makeshift folding table, holding a briefcase and a stack of papers. "Hello... stranger. Would you care to... have a seat?"</text>
+			<choice hidden="true">
+				<text>Sit down.</text> 
+				<event name="START_NEXUS_3">
+					<text>You take a seat across from the Slug, who extends a tentacle towards you. "Greetingssss, Ssstranger. Under thessse circumssstances perhapssss it isss... irrelevant to make your acquaintanccce... but I like to be cordial. The name'ssss... G-Van. Unfortunately, thissss iss not jussst a ssssimple... meet and greet. I have sssome quessstionsss I would like to... asssk you."
+					
+					The Slug flips through his papers, pulls out a pen, and looks back up at you. "Now then... who issss it that sssent you?"</text>
 					<choice hidden="true">
-						<text>The one that says "stranger" a lot and has a big scary ship.</text>
+						<text>We were sent by no one.</text>
 						<event>
-							<text>The Slug lets out a sigh. "Ssstranger, do you know how little that helpsss narrow it down? That could be any one of ussss, sssave for U806, U4305, U2221, U942, U28, U7674..."</text>
+							<text>"You expect me to... believe that? We have... placcced consssiderable sssecurity measssuresss around thisss placcce, and I doubt sssomething like yourssself could have... made itsss way in alone. I would... apprecciate more cooperation from you, ssstranger..."</text>
 							<choice hidden="true">
-								<text>Well, which reality are we in right now?</text>
-								<event>
-									<text>"Y-you... Oh dear. SSSSECURITY BREACH!" The Slug slams his tentacle down on the console and the weapons on his ship spring to life. Oh boy... looks like it's time for another fight!</text>
-									<ship hostile="true"/>
+								<text>Continue...</text>
+								<event name="START_NEXUS_4">
+									<text>"Did your Sylvan... put you up to thissss, ssstranger? Or did they attempt to... ssstop you? It isss very important we understand what... hands we left your reality in."</text>
 									<choice hidden="true">
-										<text>Continue...</text>
-										<event load="COMBAT_CHECK"/>
+										<text>'Our Sylvan'? What does that mean?</text>
+										<event>
+											<text>"Oh... I ssssee now. Ssso you really don't know... where you are. Oh... oh my. You poor creature... Well, I wissssh no cruelty upon you, ssstranger. Would you like an... explanation?"</text>
+											<choice hidden="true">
+												<text>Yes please.</text>
+												<event>
+													<text>G-Van shuffles his papers around and slips out a cartooney infographic, labeling various points on what is presumably the Multiverse. "Currently, sssstranger, you will find yourssself to be within what we call... the "Nexussss". Thisss isss the functional... ccccenter of the Multiversssse. Long ago, the Ssssylvansss of the Multiverssse disscovered thisss place thanksss to the help of our... leader, Ssssylvan Prime. At firssst we essstablished merely a... trade allianccce, but sssoon when we realizzzed the threatssss held within the Multiverssse it became clear it would be our... resssponssibility to protect it as well."
+													
+													"To protect the Multiverssse from sssaid threatsss, we founded the C.E.L. - That isss... the Continuity Enforcement League. Unfortunately for you, sssstranger, part of the C.E.L.'sss sssacred... creed issss that we cannot allow anyone elssse to enter or leave the Nexussss... Which meansss, unfortunately, my only option now isss to... eliminate you."</text>
+													<choice hidden="true">
+														<text>Surely there's another way?!</text>
+														<event name="START_NEXUS_5">
+															<text>"I'm afraid I... am not authorizzzed to acccept any pleasss for mercccy from you. Pleassse, ssstranger, do not make this any... harder for me than it already issss." You rush to your battle stations but find your systems are still limited. Like this you'll hardly stand much of a chance!</text>
+															<triggeredEvent event="NEXUS_ENTER_GLITCH" time="5"/>
+															<ship hostile="true"/>
+															<choice hidden="true">
+																<text>Continue...</text>
+																<event load="COMBAT_CHECK"/>
+															</choice>
+														</event>
+													</choice>
+													<choice hidden="true" req="unique_irwin">
+														<text>(Irwin) "Oh my god."</text>
+														<event>
+															<text>Irwin seems dumbfounded for a moment, dropping his blunderbuss and stretching his eyestalks with his tentacles. "Oh my god. Holy ssshit. Holy actual ssshit. I WASSSS RIGHT! I WASSS RIGHT THISSS ENTIRE TIME! THEY CALLED ME A LUNATIC, ABSSSOLUTELY OUT OF MY MIND! And yet here we are! Even more, it'sss YOU! SSSYLVAN! You ssslimy, traitorous asssshole. I ssshould have killed you the minute I met you. But oh... oh I'm gonna make you pay. I'm gonna make all of you god damn freaksss pay for taking EVERYTHING from me! YOU WILL RUE THE DAY YOU MESSSSED WITH IRWIN!"
+															
+															G-Van seems utterly confused at this outburst. "Uh... I'm afraid I don't know who you... are...?"
+															Irwin nods. "Oh, but you will. You will know exactly who I am after thissss." Irwin picks up his blunderbuss and brandishes it, ready to use it to obliterate any Sylvan in his path. With no other options left, you get ready to fight. Unfortunately, your systems are still offline, and you aren't sure how much of a chance you'll stand despite your crew's... "enthusiasm".</text>
+															<triggeredEvent event="NEXUS_ENTER_GLITCH" time="3"/>
+															<ship hostile="true"/>
+															<choice hidden="true">
+																<text>Continue...</text>
+																<event load="COMBAT_CHECK"/>
+															</choice>
+														</event>
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>No thanks.</text>
+												<event>
+													<text>"Very well then. I ssshall get right to busssinesss then. By dictate of our divine leader, Ssssylvan Prime, the mossst sssacred rule of our creed isss that no one besssidesss ourssselvesss may ever enter or leave thisss place. Thusss... I'm afraid I will now have to... eliminate you."</text>
+													<choice hidden="true">
+														<text>Surely there's another way?!</text>
+														<event>
+															<loadEvent>START_NEXUS_5</loadEvent>
+														</event>
+													</choice>
+												</event>
+											</choice>
+										</event>
 									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="prof_oracle_info" blue="false">
+						<text>We were led to this place by a weird Auto-ship.</text>
+						<event>
+							<text>G-Van looks up at you, mildly confused. "A... what? I do not... underssstand what you mean. Like... a probe? Or... oh, nevermind. The Multiverssse isss... infinite, there could be ssso many... explanationsss anywayssss."</text>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event>
+									<loadEvent>START_NEXUS_4</loadEvent>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="prof_oracle_info" blue="false">
+						<text>Thest told us how to get here.</text>
+						<event>
+							<text>G-Van frowns. "Unfortunate... I did not think the Zoltan would... betray usss. I do not... wisssh to sssee harm come to any of them, but I cannot let thisss go... unreported either. I will... inform my employersss... but I will do my best to convinccce them to be lenient. Now, let'sss move on..."</text>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event>
+									<loadEvent>START_NEXUS_4</loadEvent>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="gnome" blue="false">
+						<text>This Gnome really wanted us to come here.</text>
+						<event>
+							<text>"The... the what? Ssstranger, what the hell have you done? You have brought that... thing here! If thissss isss what I believe it to be, thisss isss an... immediate containment crisssisss."</text>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event>
+									<loadEvent>START_NEXUS_4</loadEvent>
 								</event>
 							</choice>
 						</event>
 					</choice>
 				</event>
 			</choice>
-			<choice hidden="true" req="loc_sylvankilled" lvl="1" max_group="0" blue="false">
-				<text>We're just visiting.</text>
+			<choice hidden="true" req="loc_gvan_seat" lvl="1" blue="false">
+				<text>Sit down.</text> 
 				<event>
-					<text>"Y-you... Oh dear. SSSSECURITY BREACH!" The Slug slams his tentacle down on the console and the weapons on his ship spring to life. Oh boy... looks like it's time for another fight!</text>
-					<ship hostile="true"/>
-					<choice hidden="true">
-						<text>Continue...</text>
-						<event load="COMBAT_CHECK"/>
-					</choice>
+					<loadEvent>START_NEXUS_3</loadEvent>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_gvan_seat" lvl="0" max_lvl="0" blue="false">
+				<text>Refuse.</text> 
+				<event>
+					<variable name="loc_gvan_seat" op="set" val="1"/>
+					<loadEvent>START_NEXUS_2</loadEvent>
 				</event>
 			</choice>
 		</event>
 	</choice>
 </event>
 
-<ship name="SHIP_GUARD_NEXUS" auto_blueprint="MU_TRAVELING_MERCHANT_GATE">
-	<triggeredEvent event="NEXUS_GUARD_SURRENDER" enemyHull="3" thisFight="true"/>
-	<surrender min="999" max="999" load="GUARD_SIGNAL"/>
+<event name="NEXUS_ENTER_GLITCH">
+	<backgroundObject name="GLITCH">
+		<layer z="0">front</layer>
+		<spawnArea x="400" y="188" w="0" h="0" center="true"/>
+		<anim>glitch</anim>
+		<active>true</active>
+	</backgroundObject>
+	<playSound>glitch</playSound>
+	<triggeredEvent event="NEXUS_ENTER_GLITCH_CONTINUE" time="1" clearOnJump="true"/>
+</event>
+<event name="NEXUS_ENTER_GLITCH_CONTINUE">
+	<text>To your surprise, your systems suddenly return back to normal! You aren't sure what caused it, but you don't have time to worry about it. It seems G-Van is confused by it as well, but now that you're a more considerable threat, it looks like he's going to have to step up his game!</text>
+	<clearBackgroundObject name="GLITCH"/>
+	<status type="clear" target="player" system="weapons" amount="100"/>
+	<status type="clear" target="player" system="shields" amount="100"/>
+	<status type="clear" target="player" system="engines" amount="100"/>
+	<status type="clear" target="player" system="cloaking" amount="100"/>
+	<status type="clear" target="player" system="drones" amount="100"/>
+	<status type="clear" target="player" system="doors" amount="100"/>
+	<status type="clear" target="player" system="sensors" amount="100"/>
+	<status type="clear" target="player" system="hacking" amount="100"/>
+	<status type="clear" target="player" system="mind" amount="100"/>
+	<status type="clear" target="player" system="temporal" amount="100"/>
+	<status type="clear" target="player" system="teleporter" amount="100"/>
+	<status type="clear" target="player" system="artillery" amount="100"/>
+	<status type="clear" target="player" system="reactor" amount="100"/>
+</event>
+
+<ship name="SHIP_GUARD_NEXUS" auto_blueprint="MU_TRAVELING_MERCHANT_GMAN">
+	<triggeredEvent event="NEXUS_GUARD_SURRENDER" enemyCrew="2" enemyHull="3" thisFight="true"/>
 	<destroyed load="GUARD_NEXUS_DEFEAT"/>
-	<deadCrew load="GUARD_NEXUS_DEFEAT"/>
+	<deadCrew load="GUARD_NEXUS_AI"/>
+	<deadCrewAuto/>
 </ship>
+<event name="GUARD_NEXUS_AI">
+	<text>It seems killing G-Van and his crew wasn't enough - the ship has some kind of secondary AI mode and is still in the fight!</text>
+</event>
 <event name="GUARD_NEXUS_DEFEAT">
-	<text>Secretary Sylvan has been defeated. You aren't sure if the inhabitants of the Nexus will respond well to this, but a substantial amount of scrap is left behind.</text>
-	<weapon name="RANDOM"/>
-	<item_modify>
-		<item type="fuel" min="10" max="10"/>
-		<item type="scrap" min="250" max="250"/>
-		<item type="missiles" min="13" max="13"/>
-		<item type="drones" min="9" max="9"/>
-	</item_modify>
+	<text>G-Van has been defeated. While his reluctance to fight you might have given an out to spare him, you make your decision resolute. With nothing else stopping your way deeper into the Nexus, you scrap his ship and prepare yourself mentally for whatever comes next.</text>
+	<killEnemyBoarders/>
+	<achievement>ACH_SYLVAN_CONTINUITY</achievement>
+	<weapon name="PRIME_LASER"/>
+	<autoReward level="HIGH">standard</autoReward>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event load="MORALITY_UPDATE_NEXUS"/>
 	</choice>
 </event>
 
-<event name="SYLVAN_NEXUS_CREWKILL"> <!-- unused  -->
-	<text>It seems as though this is the end of Sylvan, but suddenly a teleporter signal registers - you've been boarded, again? Multiple Sylvans reappears on your deck.</text>
-	<boarders min="3" max="3" class="unique_sylvan"/>
-	<ship hostile="true"/>
-</event> 
-
 <event name="NEXUS_GUARD_SURRENDER">
-	<text>Moments before destruction you realize if you kill this ship you won't find any answers. You stop firing and fortunately the ship does the same.</text>
-	<removeHazards/>
-	<ship hostile="false"/>
+	<text>G-Van's ship isn't holding up well. You notice his resolve in fighting you has dropped considerably, and if you wished you could likely spare him.</text>
 	<choice hidden="true">
-		<text>Demand to know what this place is.</text>
+		<text>Spare G-Van.</text>
 		<event>
-			<text>The Slug groans but continues to speak in a flat monotone voice. "I- thisss- sssshit. Fine, I'll talk. Thisss isss the Nexussss. The cccenter of the Multiverssse, ssso to ssspeak. Many, many yearsss ago our leader Sssylvan Prime dissscovered thisss realm and the interconnectivitiessss of all realitiesss. With hisss help we created the largessst and mossst powerful trade allianccce in the Multiverssse, between the Sssylvansss and ONLY the Sssylvanssss."</text>
+			<text>"Ssso... here I am then, ssstranger. At the... mercccy of an interloper I wassss sssupposssed to kill. Why... ssspare me? Do you have any idea the thingsss I've done, ssstranger? The thingsss we've done? If you don't now... then you will. You'll wisssh you never... met a Sssylvan. Ssso... if you wan't my adviccce, ssstranger. Run for the exit. Don't ssscrew with Prime. Maybe... maybe he'll cut you a... deal, ssstranger."</text>
+			<achievement>ACH_SYLVAN_CONTINUITY</achievement>
+			<surrender/>
+			<ship hostile="false"/>
 			<choice hidden="true">
-				<text>Continue...</text>
+				<text>We've handled worse. Whatever Prime throws at us, we can take.</text>
 				<event>
-					<text>"There are 7 rulessss that mussst never be broken. The firssst of them dictatesss that Sssylvansss, and ONLY Sylvansss, are allowed into the Nexusss. It ssseemsss your reality'sss Sssylvan hasss failed, and onccce we learn what reality you come from we'll make sssure he paysss, if you haven't already done sssomething awful to him..."</text>
+					<text>G-Van shakes his head, moaning as he rests his eyestalks on his tentacles. "No, ssstranger, you don't ssstand a chanccce againssst Prime. Do you realizzze... what it isss you're ssssaying? A lowly mortal... Renegade, againssst the one who rulesss of all Existence? Don't be a... fool, ssstranger. If Prime could be toppled, then we would have... done sssso already."
+					
+					G-Van coughs, spewing up some blood. "Though... there issss one... explanation as to why you are here which... I hessitate to accccept. If She hasss decccided to... finally turn the tablesss, well... that changesss everything."</text>
 					<choice hidden="true">
-						<text>We don't mean to cause any trouble. We can always just leave.</text>
+						<text>Who is "She", exactly?</text>
 						<event>
-							<text>"HAH! You cannot leave thissss placcce ssso easssily, Ssstranger. To prevent our exissstenccce from leaking, only Sssylvan Prime can clear shipsss to come and go."</text>
+							<text>"You will ssssee... sssoon enough. If I am correct, at leassst... Leave me here... I mussst faccce my fate alone."</text>
 							<choice hidden="true">
-								<text>Then we'll just have to speak with Sylvan Prime.</text>
+								<text>You can face your fate after you help us.</text>
 								<event>
-									<text>"Ohohohoh. Sssstranger, don't be sssilly. Sssylvan Prime isss a busssy man. But... your pressencce here isss also quite troubling. Well, I sssuppose you will jussst have to visssit him... but don't expect a happy outcome. In the meantime, why don't you ssstick around and buy sssome thingsss, ssstranger. I'd hate all that money you have to go to wassste."</text>
-									<store>STORE_EVERYTHING</store>
+									<text>G-Van attempts to protest, but you dock with his ship and drag him aboard. Too weak to fight against you, he finally gives in and cooperates. "Fine... if I am to die to... Prime either way, then I will not die a... coward..."</text>
+									<crewMember amount="1" class="nexus_sylvan_gman">G-Van</crewMember>
 								</event>
 							</choice>
 							<choice hidden="true">
-								<text>Then we'll have to speak with Sylvan Prime - after killing you!</text>
+								<text>Leave him to his fate.</text>
 								<event>
-									<text>"Wait, wait, Ssstranger, we can talk about thissss!" You mute Sylvan and prepare to keep on fighting.</text>
-									<ship hostile="true"/>
+									<text>G-Van ship, left a wreck, will presumably be recovered by his accomplices eventually. What his fate will be at the hands of Prime is uncertain, but you have other things to worry about first.</text>
+									<variable name="loc_gvan_spared" op="set" val="1"/>
 								</event>
 							</choice>
 						</event>
 					</choice>
 				</event>
 			</choice>
+			<choice hidden="true">
+				<text>Say nothing and leave.</text>
+				<event>
+					<text>G-Van collapses, but he isn't dead yet. His ship, left a wreck, will presumably be recovered by his accomplices eventually. What his fate will be at the hands of Prime is uncertain, but you have other things to worry about first.</text>
+					<variable name="loc_gvan_spared" op="set" val="1"/>
+				</event>
+			</choice>
 		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Keep fighting.</text>
+		<event/>
 	</choice>
 </event> 
 
 <!--
 		SYLVAN PRIME
 -->
-<ship name="SHIP_SYLVAN_PRIME" auto_blueprint="MU_SYLVAN_CRUISER">
-	<destroyed load="SYLVAN_PRIME_DEFEAT"/>
-	<deadCrew load="SYLVAN_PRIME_DEFEAT"/>
-</ship>
-<event name="SYLVAN_PRIME" unique="true">
+<event name="SYLVAN_PRIME">
 	<preventQuest/>
 	<preventFleet/>
 	<beaconType id="map_icon_sylvanprime" global="true">
 		<color r="145" g="160" b="255" a="1.0"/>
 		<unvisitedTooltip>Location of Sylvan Prime, your only chance of escape.</unvisitedTooltip>
-		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<visitedTooltip>The location of Sylvan Prime.</visitedTooltip>
 	</beaconType>
 	<img back="BACK_EVENT_CENTER" planet="NONE"/>
-	<text>You've finally tracked down the supposed location of Sylvan Prime. You now find yourself in a concerningly empty stretch of space.</text>
+	<text>Having been directed here as the supposed location of Sylvan Prime, you find yourself face to face with nothing but the stary abyss. It dawns upon you that, should you choose this moment to leave, there's likely no turning back. If you want to explore the Nexus further, here's your chance.</text>
+	<revisitEvent>SYLVAN_PRIME</revisitEvent>
+	<choice hidden="true">
+		<text>Stay a bit longer.</text>
+		<event/>
+	</choice>
+	<choice hidden="true" req="loc_found_dev" lvl="0" max_lvl="0" blue="false">
+		<text>You feel as though you should keep exploring.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="loc_found_dev" lvl="1" blue="false">
+		<text>We're ready.</text>
+		<event load="SYLVAN_PRIME_MEET"/>
+	</choice>
+</event>
+<event name="TEST_FIGHT_PRIME"> <!-- TEST EVENT THAT HAS POWER SURGES AND COMBAT CHECK -->
+	<text>Fight.</text>
+	<ship load="SHIP_SYLVAN_PRIME" hostile="true"/>
 	<choice hidden="true">
 		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="SYLVAN_PRIME_MEET">
+	<text>Suddenly, behind you appears a massive cruiser vessel, bigger and perhaps better armed than any ship you've ever seen before. A large compartment opens to reveal a docking port, and it seems obvious you should dock. That is, unless you'd like to be annihilated on the spot for refusing this hospitality.</text>
+	<ship load="SHIP_SYLVAN_PRIME" hostile="false"/>
+	<choice hidden="true">
+		<text>Dock.</text>
 		<event>
-			<text>A massive cruiser approaches, similar in shape to Sylvan's transport but far larger and even better armed. You receive a hail from the vessel, revealing a lavishly dressed Sylvan, levitating in the air, suspended by 2 massive rings. "Ssstranger, welcome to the cccenter of all exissstenccce..."</text>
-			<ship load="SHIP_SYLVAN_PRIME" hostile="false"/>
+			<text>As you exit your ship, you find yourself in a brightly lit lobby full of glistening marble fountains and gigantic statues. Three armored Slugs approach and bow to you. "Greetingssss, ssstranger. Hisss royal divinity, sssir Sssylvan Hektar Prime, has requesssted you attend hisss councccil immediately. While we are certain you will comply, it is my adviccce that you do not facccce the impending vaporizzzation of attempting to flee."</text>
 			<choice hidden="true">
-				<text>Looks pretty empty.</text>
+				<text>Go with them to see Prime.</text>
 				<event>
-					<text>"What elsssse would one expect? Hmm... you've come quite far, ssstranger. Outsssidersss rarely make it to me. Why don't you come with me, and we can dissscuss over ssssome tea."</text>
+					<text>The Slugs march you into an even larger and grander room, with ceilings so high you're certain they defy the possible limits of the ship's size. An angelic choir fills the room as a compartment opens above you, and from the blinding white space above two rings descend in your direction. You watch in awe as a Slug is revealed between them, arms outstretched, a majestic light cast upon him. Still hovering above you, he claps and the guards leave the room.
+					
+					"And ssso we meet at lassst, ssstranger. My congratulationsss, on sssurviving until now. I think your effortsss mossst cccertainly dessserve to be repaid. Would you like some tea?" Without even waiting for a response, a white triangular drone enters the room ferrying small cups already full. Prime doesn't take one himself, instead finally descending all the way to the ground. "I do hope my accomplicccesss have been treating you well - and that you've been treating them well in return." Prime turns away from you and floats towards a window facing out into the abyss.
+					
+					"Do you sssee thissss, ssstranger? The vasssstnesss of the abyssss? We're at the very ccccenter of the Multiverssse right now. The cccenter of Everything. The cccenter of Anything. Had you asssked me, oh so many yearsss ago, if I would ever sssit here, god amongssst all othersss, well... I think it'sss pointlesss to ssssay I wouldn't have believed it. Ssso tell me, ssstranger. What do you think of it all? If you've done your homework, by now sssurely you've gathered what it isss we do here. I already underssstand that I have been betrayed by multiple of my cooperatives. But what do YOU think?"</text>
 					<choice hidden="true">
-						<text>Accept his offer.</text>
+						<text>You're despicable, controlling the entire Multiverse like this.</text>
+						<event name="SYLVAN_PRIME_EXPLAIN">
+							<text>"And ssso another one sssimply failsss to underssstand... failsss to underssstand the fundamental truth. Ssstranger, do you not sssee? I am not the firssst to fill thisss role. And I will not be the lassst, I am certain. For eons, sssinccce perhapsss the beginning of time, there have been a multitude of empiresss that have ruled the Nexusss. The desecrated wasssstesss of whatever they onccce were, burdened by the cruel handsss of time, provide the lassst memoiresss of forgotten puppetmasssterss."
+							
+							"The Multiversssse issss infinite, ssstranger. And infinite isss a very unssstable thing. The Multiverssse cannot sssussstain itssself without the hands of ssssomeone willing to carry the burden of maintaining it. It isss a thanklesss job. It is a grueling, horrible job. If only you knew, ssstranger, how much I wisssh I could go back to the old daysss when I wasss jussst a merchant. When I didn't have to play god for the sake of the life of every sssentient being in all of exissstenccce. But I can't go back. I don't asssk for your acccceptanccce, nor your pity. I only asssk you underssstand that what I mussst do issss simply what I mussst do. For better, or for worssse. It is the only choiccce in thisss matter."</text>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="SYLVAN_PRIME_QUESTIONS"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>You're an egomaniac and a mass murderer on a scale unlike anyone else.</text>
 						<event>
-							<text>You don't really have much of a choice here, so you accept his offer and go aboard. The levitating Slug glides over to the end of the room and gently picks up a cup and saucer, while a white triangular drone brings him a teapot. "We have all the time in the Multiverssse. I'm sssure you have ssso many quessstionsss. Pleassse, asssk me anything you wisssh, sssstranger."</text>
+							<text>"An egomaniac, sssure, I can concccede to that. But, a masss murderer? Ssstranger, many have died becausssse of me, I will not lie. But I do not murder. The cataclysssmssss that befall the realitiesss I contain did not happen becaussse of me, they happened in ssspite of me. Quarantinesss might condemn many to die, but they prevent the inevitable sssspread of disssasssterss that would kill many more. It isss the choiccce between two evilsss, but it isss my unfortunate job to make the call to sssacrificcce a comparative few to sssave the infinite many."
+							
+							Prime sighs and hangs his head. "The Multiversssse issss infinite, ssstranger. And infinite isss a very unssstable thing. The Multiverssse cannot sssussstain itssself without the hands of ssssomeone willing to carry the burden of maintaining it. It isss a thanklesss job. It is a grueling, horrible job. If only you knew, ssstranger, how much I wisssh I could go back to the old daysss when I wasss jussst a merchant. When I didn't have to play god for the sake of the life of every sssentient being in all of exissstenccce. But I can't go back. I don't asssk for your acccceptanccce, nor your pity. I only asssk you underssstand that what I mussst do issss simply what I mussst do. For better, or for worssse. It is the only choiccce in thisss matter."</text>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="SYLVAN_PRIME_QUESTIONS"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>You're doing what has to be done. I can't fault you for that.</text>
+						<event>
+							<text>"An unexpected resssponssse to be cccertain, ssstranger. I... I do not know if you are being truthful with me, or merely trying to avoid the inevitable. But... well sssometimesss I can fault myssself. Thisss job comesss with no inssstructionsss, no guidanccce. I can only do what I think isss right, but if what I think isss right isssn't good, then god help usss all..."
+							
+							"The Multiversssse issss infinite, ssstranger. And infinite isss a very unssstable thing. The Multiverssse cannot sssussstain itssself without the hands of ssssomeone willing to carry the burden of maintaining it. It isss a thanklesss job. It is a grueling, horrible job. If only you knew, ssstranger, how much I wisssh I could go back to the old daysss when I wasss jussst a merchant. When I didn't have to play god for the sake of the life of every sssentient being in all of exissstenccce. But I can't go back. I don't asssk for your acccceptanccce, nor your pity. I only asssk you underssstand that what I mussst do issss simply what I mussst do. For better, or for worssse. It is the only choiccce in thisss matter."</text>
 							<choice hidden="true">
 								<text>Continue...</text>
 								<event load="SYLVAN_PRIME_QUESTIONS"/>
@@ -894,12 +761,15 @@
 		</event>
 	</choice>
 </event>
+
+
 <event name="SYLVAN_PRIME_QUESTIONS">
-	<text>Sylvan Prime sips on the tea and stares at you the way you would with an inquisitive puppy. You don't care much for it, but this is your chance to figure out who this guy is.</text>
-	<choice hidden="true">
-		<text>What IS the Nexus really?</text>
+	<text>"Well, maybe there wasss a choiccce onccce, ssstranger. But thossse daysss are long gone now. But, enough of thissss. We have busssinesss to attend to, but I'm afraid I have been a mosssst terrible hossst. I can only imagine you are overwhelmed with information, but I will grant you one final chanccce to underssstand. To underssstand anything. It won't matter sssoon, anywaysss."</text>
+	<choice hidden="true" req="CHECK_PRIME_QUESTION_OBYN">
+		<text>(Obyn) "Where is your Obyn? Obyn Prime, I assume."</text>
 		<event>
-			<text>"Hard to sssay ssstranger, hard to sssay. I'm no sscientissst. I can tell you thisss though ssstranger. Thisss isss no reality. I'd hardly even call thisss placcce real. It'sss more of a tunnel, a big non-euclidean tunnel between all of exissstence. Right here? Thisss isss the center of that tunnel. From here you can go anywhere you can fathom, so long asss you know what you're looking for."</text>
+			<text>Prime pauses, taken off-guard. "Well... uhm... Hello, Obyn. It hasss been... it hassss been ssso long sssince I have seen my Obyn. That sssoundsss rather posssesssive, don't you think? MY Obyn. But... well... he isss no longer with me. And - do not asssume the worssst. I would never hurt him. We sssimply had a... disssagreement. One which I could never quite patch, and ssso we went our sssseparate waysss. I would prefer not to dissscusss it further."</text>
+			<variable name="loc_prime_question_obyn" op="set" val="1"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
@@ -908,10 +778,39 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" req="CHECK_PRIME_QUESTION_BILLY">
+		<text>(Billy) "WHAT IN THE GOD DAMN ISSSS HAPPENING?!"</text>
+		<event>
+			<text>"Oh, Billy... my brother, it hasss been ssso long sssince I have ssseen a verssssion of you." Billy seems to be on the verge of a panic attack. "YOU ARE NOT MY BROTHER! MY BROTHER DOESSSSN'T WEAR A TOGA, AND FLY AROUND IN SSSSOME SSSSPINNY RINGSSS! HOW DARE YOU CLAIM TO BE MY BROTHER, TO SSSSPIT ON HISSS NAME, TO... to... to..."
+			
+			Prime seems genuinely upset. "Billy, I am not your brother. I am a verssssion of your brother, yessss. But I am not the versssion you know, nor do I claim to be. We lived different livessss in completely different ssstretchessss of ssspace and time. I know thisss mussst be bizarre, and painful, and truly incomprehenssssible. But that isss what the Multiverssse isss. It issss infinite, and in infinity anything can happen. Try not to think too hard about it, okay? I don't think it'll matter for much longer anywayssss..."</text>
+			<variable name="loc_prime_question_billy" op="set" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<loadEvent>SYLVAN_PRIME_QUESTIONS</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="loc_prime_question_nexus" lvl="0" max_lvl="0" blue="false">
+		<text>What is this place really?</text>
+		<event>
+			<text>"Hard for me to sssay, ssstranger. The Nexussss isss sssomething I don't think any of usss quite undersstand, excccept of courssse for... er... nevermind. From what I wassss taught by the onesss who helped me find thisss placcce, the Nexussss ssservesss asss a sssort of tunnel between realitiesss, located in what you could call the cccenter of the Multiverssse. How it got here, I have no idea. The ssstarsss and planetsss ssseem to be artificccial, or perhapsss brought here by passst empiresss. Persssonally I try not to think about it too much, it givessss me nightmaresss."</text>
+			<variable name="loc_prime_question_nexus" op="set" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<loadEvent>SYLVAN_PRIME_QUESTIONS</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="loc_prime_question_mystery" lvl="0" max_lvl="0" blue="false">
 		<text>Why has no one heard of this place?</text>
 		<event>
-			<text>"We've been very careful to ensssure word doesssn't get out. We occasssionally get Rebelssss, piratesss, Renegadesss... but they never leave. They die here. It sssoundsss cruel ssstranger, I know, but you mussst underssstand. The Nexusss isss ssssomething ssso easssily weaponizzzed. To think, had I not been here firssst, what could have happened... It would be dissassstrous. It doesss not matter if it wassss the Rebels, the Federation, the Coalition, whoever. I am the only one who can enssssure the Nexussss isss never misssusssed. And it isss MY resssponssibility to eliminate any threat to our sssecurity."</text>
+			<text>"Ssssome have. Long ago, when I gained power, the realitiessss who had been incorporated into the previoussss empire sssent ambasssadorsss to me to negotiate peaccce. Thossse like G-Van, and Dylan, and... well I'm not quite sssure who you've met yet, but they all come from very different and advanccced clusssterss, ssstranger. But outsssside of that? We've been very careful to keep thisss all a sssecret. It isss crucccial thisss never leaksss. Every onccce and a while we get a Pirate, a Rebel, a Renegade, but they usssually don't make it very far. I have to congratulate you on sssurviving for ssso long, though I dread to imagine how you managed."</text>
+			<variable name="loc_prime_question_mystery" op="set" val="1"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
@@ -920,10 +819,11 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true">
-		<text>How come you've never intervened in the war?</text>
+	<choice hidden="true" req="loc_prime_question_war" lvl="0" max_lvl="0" blue="false">
+		<text>How come you've never intervened in the war? You have all the power to stop it!</text>
 		<event>
-			<text>"Our sssocciety operatesss on 7 sssacred rulesss. You already know the firssst one, only Ssssylvansss and Obynssss are allowed into the Nexusss. But the mossst sssacred rule of all is the 7th. All Sssylvansss, regardlesss of their circumsstancessss, regardlessss of the opportunity, musssst remain neutral in all conflictssss. We sssell to all sssidesss, ssstranger. You fight your frivolous warsss, and we sssell you the toolssss to fight them with."</text>
+			<text>"Ssstranger, you do realize what we are dealing with here, yesss? I have an endlesss number of realitiesss to watch over, countlessss numbersss of reality destroying cataclysssmss to watch over. Thissss isss why we've sworn to an oath of neutrality, in all waysss we can try to enforccce it. We Ssssylvansss could change the courssse of hissstory in every reality for the better... but we could alsssso change it for the worssse. Thisss iss the only way to make sssure we don't become the thingssss we work so hard to prevent. Thissss Multiverssse needsss Order, not Chaos. We have no time to handle futile warsss in every reality, no matter how bad they have become. Ssso long asss they do not threaten reality, then it issss not our placcce to intervene."</text>
+			<variable name="loc_prime_question_war" op="set" val="1"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
@@ -932,22 +832,13 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true">
-		<text>What's your role in all of this?</text>
-		<event>
-			<text>"Had we any greater ssstake in the timeline I'd dare sssay I'd be the puppet massster, but I'm afraid it would be a lie to make sssuch a claim. We are, in esssenccce, the third party to all conflictsss. All I do is merely enssssure it ssstayss that way. Without me, the Ssssylvansss would be one of the mossst dessstructive forcesss in any reality. It would cause unimaginable chaossss. By holding an iron grip over the only sssourccce of their power, I also keep the Multiverssse sssafe. No need to thank me, ssstranger."</text>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event>
-					<loadEvent>SYLVAN_PRIME_QUESTIONS</loadEvent>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice hidden="true" req="beans">
+	<choice hidden="true" req="beans" blue="false">
 		<text>Can you help this can of beans?</text>
 		<event>
-			<text>"I uh... what? You know what, I don't wanna know sssstranger. Sssure, I'll sssolve the beansss issssue, but pleasssse don't try and explain why."</text>
+			<text>"I uh... what? Sssylvrick, isss that you?"
+			The can of beans grunts in acknowledgement. "Yesss, jussst get me out of here already."
+			Prime sighs. "God damn it, you promisssed to ssstop it with thessse absssurd... oh whatever. It doesssn't matter right now."</text>
+			<achievement>ACH_SYLVAN_BEANS</achievement>
 			<transformRace class="beans">sylvanrick</transformRace>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -960,37 +851,482 @@
 	<choice hidden="true">
 		<text>We have no further questions.</text>
 		<event>
-			<text>"Awww, that'sss everything ssstranger? I wasss having fun. I'm afraid however that with that tea time isss over. Now, let'sss get... ssseriousss."</text>
-			<choice hidden="true">
-				<text>Continue...</text>
+			<text>"Oh... ssso... I guesss we're done here then. I wisssh we had taken longer, but I sssuppossse we cannot ssstall any longer, ssstranger. I'm sssure you've prepared yourssself for what happensss next, but I want to try and make an offer. I know it may sssseem feeble, but if you want to ssskip the bloodsshed, perhapsss there'sss a sssolution yet. All I care about isss preventing you from leaking the exissstenccce of thisss placccce. While I cannot entrussst you to keep the sssecret on your own, perhapsss... we could sssimply erassse your memoriesss. You wouldn't die, just ssssimply forget everything. I know it ssssoundsss unnegotiable, but consssider the alternative. I don't want to kill you if I don't have to, and sssurely you don't wisssh to die, sssstranger.</text>
+			<choice hidden="true" blue="false" req="PRIME_SUPPORT_CHECK" lvl="0" max_lvl="0">
+				<text>The only way out of this is for us to fight.</text>
 				<event>
-					<text>"I know what you want. You have an important misssssion. But I cannot, ssssimply cannot, risssk anything. I do not care if the Rebellion or the Federation winsss in any particular reality. When a Sssylvan isss left without a home they ssssimply come here. Your missssion endsss here. At leassst you can die knowing there wassss sssimply no other way." Sylvan Prime merely shrugs, smiles, and turns off his camera. Taking just one look at his ship you realize you have no chance in hell at pulling this off. If only...</text>
+					<text>"Asss I unfortunately sssussspected. Well, alright. I'm sssorry it hasss to be thisss way ssstranger. Goodbye."
+					
+					As Prime's hulking ship lurks closer, you shut your eyes and pray for help to come. But help isn't coming. You're all on your own for this fight.</text>
+					<playMusic>sylvan</playMusic>
+					<deathEvent thisFight="true">DEATH_PRIME</deathEvent>
+					<boarders min="2" max="2" class="nexus_sylvan_cel"/>
 					<ship hostile="true"/>
-					<choice hidden="true" req="loc_sylvankilled" lvl="0" max_group="0" blue="false">
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" blue="false" req="PRIME_SUPPORT_CHECK" lvl="1">
+				<text>The only way out of this is for us to fight.</text>
+				<event>
+					<text>"Asss I unfortunately sssussspected. Well, alright. I'm sssorry it hasss to be thisss way ssstranger. Goodbye."
+					
+					However, as Prime's hulking ship lurks closer, a salvo of lasers erupts from behind you, pattering against Prime's shield! A familiar ship jumps in... it's Sylvan - your Sylvan! "Ssstranger, the cavalry hasss arrived!" There's no more time for words to be exchanged, you have to fight! For as long as Prime's defense drone stays active, you aren't sure how effective Sylvan will be, but if you can take it down you might just stand a chance!</text>
+					<playMusic>sylvan</playMusic>
+					<deathEvent thisFight="true">DEATH_PRIME</deathEvent>
+					
+					<eventButton name="UI_SYLVAN_BUTTON">
+						<event load="PRIME_FIRE_SUPPORT"/>
+						<image>statusUI/top_sylvan</image>
+						<customLocation x="105" y="155"/>
+						<tooltip>Call in fire support.</tooltip>
+						<inactiveTooltip>Sylvan is still charging another volley.</inactiveTooltip>
+						<req lvl="1">fire_support_ready</req>
+						<noDanger>false</noDanger>
+					</eventButton>
+					<triggeredEvent event="PRIME_FIRE_SUPPORT_READY" thisFight="true" time="14.0">
+						<triggeredEventBox load="DEFAULT_TIMER" pos="default">
+							<warning time="0" flash="false"/>
+							<tooltip>Time until Sylvan's fire support is ready again.</tooltip>
+						</triggeredEventBox>
+						<timerSounds load="DEFAULT_TIMER_SOUNDS"/>
+					</triggeredEvent>
+					<superBarrage player="true" name="SYLVAN_FIRE_SUPPORT"/>
+					
+					<boarders min="3" max="3" class="nexus_sylvan_cel"/>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Accept the compromise.</text>
+				<event>
+					<text>"Really? Well, I'm ssssurprisssed, but I'm glad there doesssn't need to be more bloodssshed today. I'm ssssorry it hasss to be thisss way, ssstranger, but you ssseem to underssstand. No offenssse, but I hope we never meet again."</text>
+					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
-							<text>Suddenly, out of nowhere, a third ship jumps in. You recognize it immediately as Sylvan - YOUR Sylvan. He lets off a volley of projectiles which collide with Sylvan Prime's hull, instantly damaging him heavily. "Sssstranger, hold out asss long asss you can!"</text>
-							<triggeredEvent event="SYLVAN_PRIME_SUPPORT" time="25" thisFight="true" loops="999">
-								<triggeredEventBox load="DEFAULT_SMALL">
-									<tooltip>Time until you can request more fire support from Sylvan.</tooltip>
-								</triggeredEventBox>
-								<timerSounds load="DEFAULT_TIMER_SOUNDS"/>
-							</triggeredEvent>
-							<enemyDamage amount="4" system="cloaking" effect="fire"/>
-							<enemyDamage amount="12"/>
+							<lose text="Your memories were erased, and never again did you travel the Multiverse."/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="PRIME_FIRE_SUPPORT_READY">
+	<variable name="fire_support_ready" op="set" val="1"/>
+</event>
+<event name="PRIME_FIRE_SUPPORT">
+	<variable name="fire_support_ready" op="set" val="0"/>
+	<triggeredEvent event="PRIME_FIRE_SUPPORT_READY" thisFight="true" time="14.0">
+		<triggeredEventBox load="DEFAULT_TIMER" pos="default">
+			<warning time="0" flash="false"/>
+			<tooltip>Time until Sylvan's fire support is ready again.</tooltip>
+		</triggeredEventBox>
+		<timerSounds load="DEFAULT_TIMER_SOUNDS"/>
+	</triggeredEvent>
+	<superBarrage player="true" name="SYLVAN_FIRE_SUPPORT"/>
+</event>
+
+<event name="DEATH_PRIME">
+	<lose text="Your ship crumbles under the might of Prime, and with it dies the secrets you discovered on your journey."/>
+</event>
+<ship name="SHIP_SYLVAN_PRIME" auto_blueprint="MU_PRIME"> <!--should not be miniboss/final boss code wise-->
+	<destroyed load="PRIME_NOTHING"/>
+	<deadCrew load="PRIME_NOTHING"/>
+	<triggeredEvent event="SYLVAN_PRIME_SURRENDER" enemyHull="3" enemyCrew="1"/>
+	<triggeredEvent event="POWER_SURGE_SUPER_PRIME" seeded="false" loops="999999999" thisFight="true" minTime="20.0" maxTime="35.0">
+		<warningMessage id="warning_power_surge" x="692" y="84" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+	</triggeredEvent>
+</ship>
+<event name="POWER_SURGE_SUPER_PRIME">
+	<superDrones player="false" name="PRIME_DRONE_SURGE"/>
+</event>
+<event name="PRIME_JUMP">
+	<resetFtl/>
+</event>
+
+<event name="SYLVAN_PRIME_SURRENDER">
+	<loadEventList first="true" default="SYLVAN_PRIME_SURRENDER_REAL">
+		<event name="SYLVAN_PRIME_SURRENDER_GNOME" req="chaos_mode" lvl="1"/>
+	</loadEventList>
+</event>
+<event name="SYLVAN_PRIME_SURRENDER_REAL">
+	<text>Prime's ship has been crippled, and it seems he's losing his resolve to keep fighting you. "Ssstranger... you ssseem to have won. Heh... and I wasss ssso sssure I wasss going to have to kill you. Oh, the irony." Prime's rings collapse, and he falls to the ground, coughing up some green blood. "Well, the match issss... yoursss... do what you will."</text>
+	<jumpEvent loop="true">PRIME_JUMP</jumpEvent>
+	<ship hostile="false"/>
+	<unlockCustomShip>PLAYER_SHIP_CEL</unlockCustomShip>
+	<playSound>victory</playSound> <!--should have a new sound-->
+	<playMusic>nothing</playMusic>
+	<choice hidden="true">
+		<text>Spare Prime.</text>
+		<event>
+			<text>You say nothing, instead reaching out your hand to Prime. Baffled by the gesture, he takes your hand and you help pull him off the floor. "Ssstranger... why would you ssspare me? After everything I've done to you? Have I not become a monssster? A loathsssome thing? How can there be mercccy for me?"</text>
+			<choice hidden="true">
+				<text>You did what you thought was right. This never had to end in bloodshed.</text>
+				<event name="PRIME_SPARE">
+					<text>"Well... I am forever grateful to you, ssstranger... I do not know if the C.E.L. can hold together after thisss, but I ssssuppossse we will have to sssee what happensss now... But it would be aimlesss now to ssstop you - ass if I even could... Well, you have earned your freedom. I only asssk of you ssstranger that, ssshould you reveal thisss sssecret, you really consssider the implicationsss."
+					
+					Prime bows. "Farewell, ssstranger. No offenssse, but I hope we never meet again."</text>
+					<choice hidden="true">
+						<text>Farewell, Prime.</text>
+						<event name="SHES_MAD">
+							<text>Suddenly, you feel a forboding presence as the space around you turns black. Prime looks on in horror as a formless and unimaginable terror envelopes everything in sight.
+							
+							"I can't believe you'd do this, Renegade! I thought we were working together, but here you are! So, I didn't trick you, huh? Ohhh well. I was hoping even if you didn't fall for it, you'd at least see the reason in helping me."
+							  /
+							:(
+							
+							Prime looks to you with fear having consumed his face. "Ssstranger... did you make a deal with Her? Do you - do you even realize what ssshe isss? What ssshe wantsss? What ssshe'sss capable of if given power?"
+							
+							"Prime, don't scare the Renegade! There's no reason to be vague. The Nexus IS my realm. Sure, I wasn't born here, but it is my rightful place to rule it, as the Supreme Eldritch Goddess of True Chaos. The Multiverse is so boring on its own. Here's all the tools you could ever want to spice things up, and instead you want to be boring and keep things the way they are! And you can't even manage that! You're a hypocrite, a coward, and worst of all, you're too weak to stop me. Because you know if you kill me, you'll lose all your power. You'll just be another worthless mortal, a squishy little Slug. And so you kept me around, and allowed all of this to happen! Hahe!"
+							  /
+							:)</text>
+							<changeBackground>BACKGROUND_HER</changeBackground>
+							<backgroundObject name="HER">
+								<layer z="0">front</layer>
+								<spawnArea x="300" y="188" w="0" h="0" center="true"/>
+								<anim>her</anim>
+								<active>true</active>
+							</backgroundObject>
+							<playSound>glitch</playSound>
 							<choice hidden="true">
 								<text>Continue...</text>
-								<event load="COMBAT_CHECK"/>
+								<event>
+									<text>Several large tentacles spring out from the all consuming blackness around you, wrapping themselves around your ship.
+									
+									"I really can't believe you betrayed me, Renegade! We could have had something. You could have worked with me, in a new glorious empire! But alas, while I may not be able to kill Prime, I CAN kill you!"
+									  /
+									:)</text>
+									<playMusic>chaos</playMusic> <!--NEEDS sounds and music-->
+									<damage amount="999"/>
+									<damage amount="-1"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event name="SHE_KILLED_YOU">
+											<triggeredEvent event="SHE_IS_DEFEATED" time="1.0"/>
+										</event>
+									</choice>
+								</event>
 							</choice>
 						</event>
 					</choice>
-					<choice hidden="true" req="loc_sylvankilled" lvl="1" max_group="0" blue="false">
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>I've met many monsters on my travels. You're not like any of them.</text>
+				<event>
+					<loadEvent>PRIME_SPARE</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Disable the Rings.</text>
+		<event>
+			<text>You dock once again with Prime's ship and hunt the slug down through the giant, extravagant hallways. When you find him, he reaches out his tentacle to shake your hand, but you instead draw your blaster and shoot him. While only artificially wounded for now, he still flies backwards. You reach over him and grab the rings, pulling them away from him. "Ssstranger... what are you doing? To kill me, I can underssstand... but do you even realize what thosssse ringsss are for? You mussst be careful with them!"</text>
+			<choice hidden="true">
+				<text>Ignore his warning and proceed with the plan.</text>
+				<event name="SHE_WINS">
+					<text>As soon as you deactivate the rings, a forboding blackness consumes the space around you.
+					
+					"Wow, you actually did it! Good job Renegade, I knew you were just the right person to call for this. Hahe! Oh Prime, did you really think you could just keep me locked away forever? You gambled with eternity, and eternity won! It always wins. And eternity is on my side."
+					  /
+					:)
+					
+					You feel yourself pulled from your feet and are dragged back to your ship by an invisible force, while from the darkness spring several large, black tentacles wrap themselves around Prime's ship, squeezing the metal and twisting the ship into a contorted wreck of metal, and then finally tearing it intwine. Prime gets no more final words - his time is up.</text>
+					<achievement>ACH_HER_OVERTHROW</achievement>
+					<changeBackground>BACKGROUND_HER</changeBackground>
+					<backgroundObject name="HER">
+						<layer z="0">front</layer>
+						<spawnArea x="300" y="188" w="0" h="0" center="true"/>
+						<anim>her</anim>
+						<active>true</active>
+					</backgroundObject>
+					<playSound>glitch</playSound>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="NEXUS_ENDING_BAD_FADE"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>There is no going back now, Renegade :)</text>
+				<event load="OPTION_INVALID"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SHE_IS_DEFEATED">
+	<text>As your hull is reduced to critical levels, you notice Prime himself has dismounted from his rings, and is now holding them above his head. "You're right, it wasss my missstake to keep you around. Good thing I didn't make the missstake of making it permanent." Prime brings down the rings hard against the floor, smashing them into pieces.</text>
+	<achievement>ACH_HER_SPARE</achievement>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="NEXUS_ENDING_GOOD_FADE"/>
+	</choice>
+</event>
+
+<event name="SYLVAN_PRIME_SURRENDER_GNOME">
+	<text>Prime's ship has been crippled, and it seems he's losing his resolve to keep fighting you. "Ssstranger... you ssseem to have won. Heh... and I wasss ssso sssure I wasss going to have to kill you. Oh, the irony." Prime's rings collapse, and he falls to the ground, coughing up some green blood. "Well, the match issss..." Prime doesn't get to finish his sentence when a sudden "HAHE!" startles both of you. 
+	
+	The gnome appears behind Prime and begins to spin in the air, eventually shattering apart as a spread of black tentacles erupt from its porcelain skin. They wrap themselves around Prime and lift him into the air, beginning to pull the once great Slug to gruesome pieces. His screams turn to silence as the only thing left are his rings, which the tentacles wrap around and pull apart, shattering them.</text>
+	<jumpEvent loop="true">PRIME_JUMP</jumpEvent>
+	<ship hostile="false"/>
+	<unlockCustomShip>PLAYER_SHIP_CEL</unlockCustomShip>
+	<playMusic>nothing</playMusic>
+	<recallBoarders/>
+	<variable name="chaos_mode" op="set" val="0"/>
+	<clearJumpEvent name="GNOME_CHECK"/>
+	<choice hidden="true" req="gnome" lvl="1" blue="false">
+		<text>What the hell is happening?</text>
+		<event>
+			<text>The gnome vanishes from your ship, and with it the nightmarish effects on your mind seem to cease immediately. Unfortunately, you can't really focus on that right now with the eldritch being of pure evil you just unleashed.</text>
+			<removeCrew class="gnome">
+				<clone>false</clone>
+				<text></text>
+			</removeCrew>
+			<queueEvent>SYLVAN_PRIME_SURRENDER_GNOME_2</queueEvent>
+		</event>
+	</choice>
+	<choice hidden="true" req="gnome" lvl="0" max_lvl="0" blue="false">
+		<text>What the hell is happening?</text>
+		<event name="SYLVAN_PRIME_SURRENDER_GNOME_2">
+			<text>"Renegade, didn't you see this coming? Hahe! As I told you, when Prime defeated me, my power was divided into three parts which were scattered across the Multiverse. The third part, which was meant to be hidden away, was recovered by my marvelous little henchman and kept for just the right moment! Oh we've had so much fun trying to guide you silly little Renegades through this maze of secrets to get you here. It was only a matter of time of course until one of you brought the effigy here, and I'm very patient. We're on the dawn of a new era! Well, a return to a better era at least. Thank you for freeing me, Renegade! Unfortunately, I can't stick around for long. I have some other business I need to take care of, but I'll be back soon to... handle this place. Hahe! Bye bye!"
+			  /
+			:)
+			
+			Your vision begins to go black as the entirety of space around you seems to shake. Maddening thoughts fill your mind, as you witness what feels like an eternity of destruction and madness fill your thoughts.</text>
+			<playMusic>chaos</playMusic>
+			<achievement>ACH_GNOME_NEXUSFAIL</achievement>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="NEXUS_HER_REVEAL_FADE"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="NEXUS_HER_REVEAL_FADE">
+	<triggeredEvent event="NEXUS_HER_HELP" time="3.7"/>
+</event>
+<event name="NEXUS_HER_HELP">
+	<loadEventList first="true" default="NEXUS_HER_HELP_SYLVAN">
+		<event name="NEXUS_HER_HELP_BAD" req="rep_nexus" lvl="5"/>
+		<event name="NEXUS_HER_HELP_SYLVAN" req="loc_sylvankilled" lvl="0" max_lvl="0"/>
+		<event name="NEXUS_HER_HELP_CEL"/>
+	</loadEventList>
+</event>
+
+<event name="NEXUS_HER_HELP_BAD">
+	<text>When the maddening red has subsided, you awake on your ship and find yourself all alone save for Prime's now empty ship. Thanks to your rampage through the Nexus, the C.E.L. is too weak now to fight Her. With no one left capable of defeating her, your only choice is to wait for the inevitable.</text>
+	<win ach="nexus" music="chaos" creditsText="credit_victory_nexus_her" text=":)" creditsBackground="BACKGROUND_HER"/>
+</event>
+<event name="NEXUS_HER_HELP_SYLVAN">
+	<text>When the maddening red has subsided, you awake to find your Sylvan standing over you. "Ssstranger, what happened? Are you alright?" Behind him are several others, all other C.E.L. members and other assorted Sylvans and Obyns.</text>
+	<choice hidden="true">
+		<text>She won.</text>
+		<event>
+			<text>There's a murmur in the crowd and a lot of panicked shouts. "Ssstranger, you can't be ssseriousss? You mean... Prime isss dead?" You nod. "Well... then there'sss only one hope for usss now. Chanccesss are She returned to her home clussster to recruit the remainsss of her Eldritch family. It'sss extremely dangerousss, but we have no choiccce. We mussst follow Her. We'll give you all the fire sssupport we can provide. I don't know if it'll be enough, but we have to try. Jussst let usss know when you're ready."</text>
+			<store>STORE_SYLVAN_NEXUS</store>
+			<crewMember amount="1" class="unique_sylvan">Sylvan</crewMember>
+			<damage amount="-999"/>
+			<jumpEvent loop="true">NEXUS_HER_DEPART</jumpEvent>
+		</event>
+	</choice>
+</event>
+<event name="NEXUS_HER_HELP_CEL">
+	<text>When the maddening red has subsided, you awake to find a crowd of Sylvans from the C.E.L. have gathered nearby. "Ssstranger, what happened? Are you alright?"</text>
+	<choice hidden="true">
+		<text>She won.</text>
+		<event>
+			<text>There's a murmur in the crowd and a lot of panicked shouts. "Ssstranger, you can't be ssseriousss? You mean... Prime isss dead?" You nod. "Well... then there'sss only one hope for usss now. Chanccesss are She returned to her home clussster to recruit the remainsss of her Eldritch family. It'sss extremely dangerousss, but we have no choiccce. We mussst follow Her. We'll give you all the fire sssupport we can provide. I don't know if it'll be enough, but we have to try. Jussst let usss know when you're ready."</text>
+			<store>STORE_SYLVAN_NEXUS</store>
+			<crewMember amount="1" class="nexus_sylvan_cel">Sylvan</crewMember>
+			<damage amount="-999"/>
+			<jumpEvent loop="true">NEXUS_HER_DEPART</jumpEvent>
+		</event>
+	</choice>
+</event>
+
+<event name="NEXUS_HER_DEPART">
+	<text>"Well, are you ready ssstranger? Onccce we go, there'sss no going back. Thisss issss our one and only shot. We'll probably have to take out several of her minionsss on the way, are you sssure you're ready?"</text>
+	<choice hidden="true">
+		<text>Yes, let's go.</text>
+		<event>
+			<secretSector>SECRET_HER</secretSector>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>No not yet.</text>
+		<event/>
+	</choice>
+</event>
+
+<!--
+/////////////////"GOOD" ENDINGS/////////////////
+-->
+<event name="NEXUS_ENDING_GOOD_FADE">
+	<triggeredEvent event="NEXUS_ENDING_GOOD" time="3.0"/>
+	<enemyDamage amount="999"/> <!--should instead despawn prime with no sound and occur AFTER the fade-->
+</event>
+<event name="NEXUS_ENDING_GOOD">
+	<loadEventList first="true">
+		<event name="NEXUS_ENDING_GOOD_KILL" req="rep_nexus" lvl="5"/>
+		<event name="NEXUS_ENDING_GOOD_SAVE"/>
+	</loadEventList>
+</event>
+<event name="NEXUS_ENDING_GOOD_SAVE">
+	<text>You blink your eyes, and pull yourself off the floor of your ship. The nightmarish darkness has vanished, replaced instead by the charred and broken remains of Prime's ship, as well as a fleet of the other Sylvans surveying the damage. You still detect faint life signatures from on-board Prime's ship, and receive a hail.
+	
+	"Ssstranger, I have... done all that I can do. I do not... know if thisss will keep Her at bay forever, but now you are sssafe. Without her power, my life will sssoon fade... But the Nexusss ssstill sstandsss strong, and the C.E.L. witholdsss. There isss no need for me any longer... Asss ssuch, for what little it meansss... I hereby abdicate my rule." Prime coughs and collapses. "Goodbye, ssstranger..."</text>
+	<changeBackground>BACK_EVENT_CENTER</changeBackground>
+	<clearBackgroundObject name="HER"/>
+	<playMusic>paragon</playMusic> <!--needs its own music probably-->
+	<win ach="nexus" music="paragon" creditsText="credit_victory_nexus_good_save" text="Your legacy will be remembered." creditsBackground="VICTORY_NEXUS"/>
+</event>
+<event name="NEXUS_ENDING_GOOD_KILL">
+	<text>You blink your eyes, and pull yourself off the floor of your ship. The nightmarish darkness has vanished, replaced instead by the charred and broken remains of Prime's ship. as well as a few other surviving Sylvans surveying the damage. You still detect faint life signatures from on-board, and receive a hail.
+	
+	"Ssstranger, I have... done all that I can do. I do not... know if thisss will keep Her at bay forever, but now you are sssafe. Without her power, my life will sssoon fade... With the Nexussss ablazzze in your path to undo my rule... it isss unlikely my legacccy will remain. Asss ssuch, for what little it meansss... I hereby abdicate my rule. Prime coughs and collapses. "Goodbye, ssstranger..."</text>
+	<changeBackground>BACK_EVENT_CENTER</changeBackground>
+	<playMusic>paragon</playMusic> <!--needs its own music probably-->
+	<win ach="nexus" music="paragon" creditsText="credit_victory_nexus_good_kill" text="Your legacy will be remembered." creditsBackground="VICTORY_NEXUS"/>
+</event>
+
+<!--
+/////////////////BAD ENDINGS/////////////////
+-->
+<event name="NEXUS_ENDING_BAD_FADE">
+	<triggeredEvent event="NEXUS_ENDING_BAD" time="2.0"/>
+	<recallBoarders ship="both"/>
+	<enemyDamage amount="999"/> <!--should blow up Prime unlike good ending-->
+</event>
+<event name="NEXUS_ENDING_BAD">
+	<loadEventList first="true">
+		<event name="NEXUS_ENDING_BAD_KILL" req="rep_nexus" lvl="5"/>
+		<event name="NEXUS_ENDING_BAD_SAVE"/>
+	</loadEventList>
+</event>
+<event name="NEXUS_ENDING_BAD_SAVE">
+	<text>You blink your eyes, and pull yourself off the floor of your ship. The nightmarish darkness has consumed Prime's ship and everything else. The shifting of a million all-seeing eyes stare down upon you, deciding your fate.
+	
+	"Thank you dearest, for all your work in freeing me. Prime, the C.E.L... why, it's all in the past now. Forever more there will only be Me. Me, my family... but I'm afraid... not you. It's nothing personal, of course! You did me such a great service here today. It's just that... well, you're quite weak. Sure, you took out Prime, but it took quite a lot of prodding from me. And all those Sylvans you chose to spare? It put you in a deficit. You could have slaughtered your way right until the end, knowing what they were capable of and what they would do to you if they had the chance, but you just didn't. Your choice, but choices have consequences. But just for you friend, I'll make you a special deal. I'll destroy your cluster first, rather than torturing its inhabitants for centuries. Hahe!"
+	  /
+	:)</text>
+	<changeBackground>BACK_EVENT_CENTER</changeBackground>
+	<clearBackgroundObject name="HER"/>
+	<damage amount="999"/>
+	<playMusic>paragon</playMusic> <!--needs its own music probably-->
+	<win ach="nexus" music="paragon" creditsText="credit_victory_nexus_bad_save" text="Your legacy will be remembered." creditsBackground="BACKGROUND_HER"/>
+</event>
+<event name="NEXUS_ENDING_BAD_KILL">
+	<text>You blink your eyes, and pull yourself off the floor of your ship. The nightmarish darkness has consumed Prime's ship and everything else. The shifting of a million all-seeing eyes stare down upon you, deciding your fate.
+	
+	"Thank you dearest, for all your work in freeing me. Prime, the C.E.L... why, it's all in the past now. Forever more there will only be Me. Me, my family... which I'm proud to say now includes you! You made quick work of all those Sylvans, the pests. You've done my work so well, so faithfully, and I hardly even had to ask you to! Every good empress needs Her executioner, and I think you will fit perfectly. All will know our wrath, Renegade."
+	  /
+	:) </text>
+	<changeBackground>BACK_EVENT_CENTER</changeBackground>
+	<playMusic>paragon</playMusic> <!--needs its own music probably-->
+	<win ach="nexus" music="paragon" creditsText="credit_victory_nexus_bad_kill" text="Your legacy will be remembered." creditsBackground="BACKGROUND_HER"/>
+</event>
+
+<!--
+/////////////////HER/////////////////
+-->
+<event name="HER">
+	<preventQuest/>
+	<preventFleet/>
+	<beaconType id="map_icon_dev" global="true">
+		<color r="255" g="90" b="140" a="1.0"/>
+		<unvisitedTooltip>Find Me Find Me Find Me Find Me Find Me Find Me.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+	</beaconType>
+	<img planet="NONE"/>
+	<text>Lured in by the strange beacon marker, you don't immediately notice anything out of the ordinary. That said, being near the beacon gives you a sense of dread, like you're being watched from all angles.</text>
+	<variable name="loc_found_dev" op="set" val="1"/>
+	<!--<ship load="SHIP_SYLVAN_DEV" hostile="false"/>-->
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>"Finally, you've made it! Hahe! I've been waiting an awful long time for you to arrive, but finally I can introduce myself! Hello! I am Her. I hope you're doing well so far. I know this is probably pretty scary, being so far away from your reality."
+			   /
+			:)</text>
+			<choice hidden="true">
+				<text>W-what are you?</text>
+				<event>
+					<text>"Weren't you listening? I'm Her! I'm Sylvan Prime's... tool. His key to power, so to speak. Perhaps I should explain? Shouldn't take too long I don't think!"
+					   /
+					:)</text>
+					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
-							<text>You wait and hope but nothing happens. Sylvan Prime continues to approach and no one comes to your aid. Maybe, had you done things different, it wouldn't have to go this way. But here you are, all on your own. Time to fight.</text>
+							<text>Suddenly, all around you the space turns black as the distant twinkling stars are extinguished from view.
+							
+							"Oh, where to even begin? Well, let us start from the beginning perhaps. You see I am, as you can likely tell, not a Sylvan. I come from another cluster entirely, one with very different properties from your own. The Multiverse is much, much bigger than you probably realize. This is why we invented the term 'cluster'. Clusters are nothing but an arbitrary classification, a way to organize realities that are barely distinguishable from each other."
+							  /
+							:)
+							
+							"But maybe you're wondering why this is all the way it is. Who are WE, exactly? Well, it's simple. Simple enough... One day, Prime and the other Sylvans took control of the Nexus through devious means. At first just a trade alliance, eventually they came to realize just how truly infinite and terrifying the Multiverse truly is. A mysterious entity invaded Prime's home cluster, and nearly triggered an event we refer to as R-Day. And so, the C.E.L. was born. To handle threats like that! It's a noble deed, but the agency is ran by a very unstable tyrant."
+							  /
+							:O
+							</text>
+							<changeBackground>BACKGROUND_DARKNESS</changeBackground>
 							<choice hidden="true">
-								<text>Continue...</text>
-								<event load="COMBAT_CHECK"/>
+								<text>But what role do we play in this?</text>
+								<event>
+									<text>"Oh, of course! Hahe! My bad. It's just... well it's not my favorite story to tell. You see, Prime is not the first to rule the Nexus. Long ago, this was my home. I am a very ancient being, something which long outdates the time in which your cluster achieved Multiverse travel. Against my better judgement, I let Prime enter the Nexus because he claimed to be am embassy of a group of survivors closely linked to me - but instead, Prime merely tricked me."
+									   /
+									:(
+	
+									"When Prime had seized control over the Multiverse itself, I was enslaved to him. He divided my power among two containers, leaving only a third for me to control. The primary division of my power was placed in secret exile, but the second largest division is imbued in the special rings which Prime has that orbit him. Through this, he has not only become immune to my power - but the power of every agent within the C.E.L. as well. Now, he runs the show with no one who can stop him, and anyone who might is simply kept away. But now, things have changed. Prime did a good job convincing his agents this was all for the greater good once, and I don't even disbelieve he fell for his own lie... but no mortal can play god this long without inevitably falling victim to their own failings."
+									   /
+									:\
+
+									"R-Day is not the only protocol the C.E.L. has. There are numerous catastrophic events in which the C.E.L. keeps a special eye out for. Among them is P-Day, perhaps the most... sensitive to Prime. One day, the enforcer named G-Van discovered a disturbing occurance in Cluster 363, which suggested that it had already befallen P-Day. A husk of what it once was, Prime took pity on the survivors once he realized the reality was so similar to his own. He offered a deal, and allowed a trio of three to scout out a new home for the refugees. However, when the P-Day event almost spread to an adjacent cluster, Prime panicked and pulled the plug. He condemned them all to die, and stranded the scouts in a foreign land with no help nor home. Fortunately, I was able to reach out to them, though it wasn't easy. But I can only help them so much, and there are many more who suffer under the iron fist of Prime. But... you can help!"
+									  /
+									:(
+									</text>
+									<achievement>ACH_HER_FIND</achievement>
+									<choice hidden="true">
+										<text>Us?</text>
+										<event>
+											<text>"Yes! While I'm not able to defeat Prime, I've spent great amounts of effort to lead you here. If you can weaken Prime enough that he can't keep fighting, you can disable the rings and free me, allowing us to overthrow Prime! Only then can the Multiverse return to order. So, what do you say Renegade? Are you in?"
+											  /
+											:)</text>
+											<choice hidden="true">
+												<text>Yes.</text>
+												<event>
+													<text>"Excellent! Hahe! When you reach Prime, it's inevitable you'll have to fight him to leave. Once you've weakened him to the point he can fight no more, move in and disable his rings. Only then will we be able to remove him from power. We're all counting on you, Renegade!"
+													  /
+													:)</text>
+													<autoReward level="HIGH">item</autoReward>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>No.</text>
+												<event>
+													<text>"Really? Well, that's quite unfortunate. You must understand there isn't much of a choice here! When you reach Prime, the only way you'll be able to leave is through fighting him. It's inevitable, but if you escape without killing him, he will hunt you down to the end of time to make sure his secret is never revealed. If you don't understand this now, then well... you will eventually. You can always change your mind later, and I hope you will!"
+													  /
+													:(</text>
+													<autoReward level="HIGH">item</autoReward>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>I don't know.</text>
+												<event>
+													<text>"That's okay, it's a hard decision to make right now. But you must understand there isn't much of a choice here! When you reach Prime, the only way you'll be able to leave is through fighting him. It's inevitable, but if you escape without killing him, he will hunt you down to the end of time to make sure his secret is never revealed. Once he's weakened, you can disable his rings and free me, and only then can we remove him from power and you'll be safe. We're all counting on you, Renegade!"
+													  /
+													:)</text>
+													<autoReward level="HIGH">item</autoReward>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
 							</choice>
 						</event>
 					</choice>
@@ -999,147 +1335,774 @@
 		</event>
 	</choice>
 </event>
-<event name="SYLVAN_PRIME_SUPPORT">
-	<text>It seems Sylvan is available again. What system do you need him to target?</text>
-	<choice hidden="true">
-		<text>Engines!</text>
-		<event>
-			<enemyDamage amount="6" system="engines" effect="fire" force="true"/>
-			<enemyDamage amount="6"/>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Weapons!</text>
-		<event>
-			<enemyDamage amount="6" system="weapons" effect="fire" force="true"/>
-			<enemyDamage amount="6"/>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Shields!</text>
-		<event>
-			<enemyDamage amount="6" system="shields" effect="fire" force="true"/>
-			<enemyDamage amount="6"/>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Drones!</text>
-		<event>
-			<enemyDamage amount="6" system="drones" effect="fire" force="true"/>
-			<enemyDamage amount="6"/>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Hacking!</text>
-		<event>
-			<enemyDamage amount="4" system="hacking" effect="fire" force="true"/>
-			<enemyDamage amount="12"/>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Cloaking!</text>
-		<event>
-			<enemyDamage amount="4" system="cloaking" effect="fire" force="true"/>
-			<enemyDamage amount="12"/>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Teleporter!</text>
-		<event>
-			<enemyDamage amount="4" system="teleporter" effect="fire" force="true"/>
-			<enemyDamage amount="12"/>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Request he hold off.</text>
-		<event/>
-	</choice>
+
+<!--
+		CEL EVENTS
+-->
+<eventList name="NEXUS_CEL">
+	<event load="SYLVAN_NARRATOR"/>
+	<event load="DYLAN"/>
+</eventList>
+
+<ship name="SHIP_SYLVAN_NARRATOR" auto_blueprint="MU_TRAVELING_MERCHANT_NARRATOR">
+	<surrender min="2" max="3" load="SYLVAN_NARRATOR_WARNING"/>
+	<destroyed load="QUIT_GAME"/>
+	<deadCrew load="QUIT_GAME"/>
+</ship>
+<event name="SYLVAN_NARRATOR" unique="true">
+    <preventQuest/>
+	<loadEventList seeded="false" first="true">
+		<event name="SYLVAN_NARRATOR_FIRST" req="nar_met" lvl="0" max_lvl="0"/>
+		<event name="SYLVAN_NARRATOR_AGAIN" req="nar_met" lvl="1"/>
+	</loadEventList> 
 </event>
-<event name="SYLVAN_PRIME_DEFEAT">
-	<text>Sylvan Prime falls to his knees as his rings break apart and his ship explodes. "I... I don't underssstand. Ssstranger... how did you do thissss. I... I had everything. Well... I hope it wasss worth it ssstranger." And with that, Sylvan Prime is dead. The most powerful entity in all of the Multiverse, and his blood is on your hands.</text>
-	<item_modify>
-		<item type="scrap" min="2000" max="2000"/>
-		<item type="fuel" min="100" max="100"/>
-		<item type="missiles" min="100" max="100"/>
-		<item type="drones" min="100" max="100"/>
-	</item_modify>
-	<weapon name="GATLING_ANCIENT"/>
-	<choice hidden="true" req="loc_sylvankilled" lvl="0" max_group="0" blue="false">
-		<text>Continue...</text>
+<event name="SYLVAN_NARRATOR_FIRST" unique="true">
+	<text>As the Renegade approached the beacon, they stopped to wonder why the perspective of the event writing had changed. How strange, the Renegade thought. Just moments ago, the events had been written in the second person. And what was it with all of the meta crap? Events referencing themselves? How absurd! And absurd it was.</text>
+	<ship load="SHIP_SYLVAN_NARRATOR" hostile="false"/>
+	<choice hidden="true">
+		<text>What is going on?</text>
 		<event>
-			<text>Sylvan's vessel doesnt seem to have fared very well, but it's still functional. "Ssstranger, it hasss been an honor. I... I do not know what to think about thisss though. But regardlesss, my ssship will not ssserve me any longer. I want you to have it ssstranger. And ssseeing that in giving it to you I have nowhere elssse to go, well, I guesss I'll ssstick around too."</text>
-			<crewMember amount="1" all_skills="2" class="unique_sylvan">Sylvan</crewMember>
-			<unlockCustomShip silent="false">PLAYER_SHIP_SYLVANTRANS</unlockCustomShip>
+			<text>"What is going on?" The Renegade exclaimed out loud, almost driven to madness by the absurdity of what they were experiencing. But, little did they know, the answer was quite simple. Before them was an omnipotent entity known the Narrator, or as some might call them, Narrator Sylvan. The Narrator, of course, had no physical presence besides his ship, but he was never quite as excited as he was now to finally meet the Renegade "face" to face.</text>
 			<choice hidden="true">
-				<text>Continue...</text>
-				<event load="SYLVAN_PRIME_END"/>
+				<text>You're the narrator?</text>
+				<event>
+					<text>Why yes, yes I am! Oh so many stories we've told together! How much fun we've had! And look at you now, all grown up and in the big scary Nexus. Bet you didn't expect this twist, huh? Why, I've been narrating things for an awful long time now. I make mistakes, of course. Lot's of tpyos, and all that. But oh golly if it wasn't worth it just for this moment! Prime says it's to keep track of the movement of potential threats and anomalies, but I just do it for the love of the craft!</text>
+					<choice hidden="true">
+						<text>If you're the narrator, can you give us something?</text>
+						<event>
+							<text>Oh I'm afraid not Renegade, I just tell the story. If you're looking for something to alter the fabric of reality, well, you'll have to look elsewhere. But- while you're here... I was thinking. We've known each other for so long but I don't know much about you, Renegade! So why don't we introduce ourselves at last. Here's a question I've always wondered; what are your preferred pronouns?</text>
+							<choice hidden="true">
+								<text>He/Him</text>
+								<event>
+									<metaVariable name="nar_pronouns_boy" op="set" val="1"/>
+									<loadEvent>SYLVAN_NARRATOR_NAME</loadEvent>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>She/Her</text>
+								<event>
+									<metaVariable name="nar_pronouns_girl" op="set" val="1"/>
+									<loadEvent>SYLVAN_NARRATOR_NAME</loadEvent>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>They/Them</text>
+								<event>
+									<metaVariable name="nar_pronouns_neutral" op="set" val="1"/>
+									<loadEvent>SYLVAN_NARRATOR_NAME</loadEvent>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Attack the Narrator.</text>
+						<event>
+							<text>You can't be serious?! Renegade, I'm the Narrator! If I'm not arround, then who's going to tell your story? How will anything get done? Think about it! Attacking me is madness! Oh, but the Renegade was dead set on it. That bloodthirsty murderer wouldn't be satisfied until they had killed anything and everything that moved. What a shame it was, this beautiful moment ruined like it always had to be.</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="MORALITY_UPDATE_NEXUS_FIGHT"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="loc_sylvankilled" lvl="1" max_group="0" blue="false">
+</event>
+<event name="SYLVAN_NARRATOR_NAME">
+	<text>Oh this is just delightful, absolutely wonderful! But oh, oh, why stop there? We can do even better than that, Renegade! What's your name? I haven't quite figured out text fields yet, but we can go letter by letter!</text>
+	<choice hidden="true">
+		<text>A</text>
+		<event>
+			<metaVariable name="nar_name_a" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>B</text>
+		<event>
+			<metaVariable name="nar_name_b" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>C</text>
+		<event>
+			<metaVariable name="nar_name_c" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>D</text>
+		<event>
+			<metaVariable name="nar_name_d" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>E</text>
+		<event>
+			<metaVariable name="nar_name_e" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>F</text>
+		<event>
+			<metaVariable name="nar_name_f" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>G</text>
+		<event>
+			<metaVariable name="nar_name_g" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>H</text>
+		<event>
+			<metaVariable name="nar_name_h" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>I</text>
+		<event>
+			<metaVariable name="nar_name_i" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>J</text>
+		<event>
+			<metaVariable name="nar_name_j" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>K</text>
+		<event>
+			<metaVariable name="nar_name_k" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>L</text>
+		<event>
+			<metaVariable name="nar_name_l" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>M</text>
+		<event>
+			<metaVariable name="nar_name_m" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>N</text>
+		<event>
+			<metaVariable name="nar_name_n" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>O</text>
+		<event>
+			<metaVariable name="nar_name_o" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>P</text>
+		<event>
+			<metaVariable name="nar_name_p" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Q</text>
+		<event>
+			<metaVariable name="nar_name_q" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>R</text>
+		<event>
+			<metaVariable name="nar_name_r" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>S</text>
+		<event>
+			<metaVariable name="nar_name_s" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>T</text>
+		<event>
+			<metaVariable name="nar_name_t" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>U</text>
+		<event>
+			<metaVariable name="nar_name_u" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>V</text>
+		<event>
+			<metaVariable name="nar_name_v" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>W</text>
+		<event>
+			<metaVariable name="nar_name_w" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>X</text>
+		<event>
+			<metaVariable name="nar_name_x" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Y</text>
+		<event>
+			<metaVariable name="nar_name_y" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Z</text>
+		<event>
+			<metaVariable name="nar_name_z" op="set" val="1"/>
+			<loadEvent>SYLVAN_NARRATOR_END</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="SYLVAN_NARRATOR_WARNING">
+	<text>"Stranger, what are you doing? If you kill me, the game will end!"</text>
+	<choice hidden="true">
+		<text>Stop fighting.</text>
+		<event>
+			<ship hostile="false"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Keep fighting.</text>
+		<event/>
+	</choice>
+</event>
+<event name="SYLVAN_NARRATOR_END">
+	<text>Okay, okay, this is going to take too long. We can stop there. But oh, Renegade, this has been just splendid! Oh I feel terrible I didn't prepare a gift for you. I tell you what. Come visit me again, and I'll have something just wonderful prepared, alright? Goodbye, Renegade! I hope to see you again in the future.</text>
+	<metaVariable name="nar_met" op="set" val="1"/>
+	<choice hidden="true" req="nar_pronouns_boy" lvl="1" blue="false">
 		<text>Continue...</text>
-		<event load="SYLVAN_PRIME_END_NOSYLVAN"/>
-	</choice>
-</event>
-<event name="SYLVAN_PRIME_END">
-	<text>With Sylvan Prime now defeated, you look around you and find that, during the fight, thousands of Sylvans arrived just to observe the spectacle. With their leader now dead, one by one they all kneel and bow to you. It seems they recognize you as their new leader.</text>
-	<choice hidden="true" req="rep_nexus" lvl="0" max_lvl="1" max_group="0" blue="false">
-		<text>Accept the position as new ruler of the Nexus.</text>
-		<event load="SYLVAN_PRIME_END_GOOD"/>
-	</choice>
-	<choice hidden="true" req="rep_nexus" lvl="2" max_lvl="5" max_group="0" blue="false">
-		<text>Accept the position as new ruler of the Nexus.</text>
-		<event load="SYLVAN_PRIME_END_NEUTRAL"/>
-	</choice>
-	<choice hidden="true" req="rep_nexus" lvl="6" max_group="0" blue="false">
-		<text>Accept the position as new ruler of the Nexus.</text>
-		<event load="SYLVAN_PRIME_END_BAD"/>
-	</choice>
-	<choice hidden="true" req="pilot" lvl="1" max_group="1" blue="false">
-		<text>Refuse - we have a mission to complete.</text>
 		<event>
-			<text>The Sylvans are unsure of how to react, but it's not your problem. It's uncertain what will happen to this place or the rest of the Multiverse now, but you have to carry on.</text>
+			<text>With the strange meeting over, the Renegade prepared to move on. He waved a tearful goodbye to Narrator Sylvan, choked up with sadness he had to part ways, and only hoping they would meet again some day.</text>
+		</event>
+	</choice>
+	<choice hidden="true" req="nar_pronouns_girl" lvl="1" blue="false">
+		<text>Continue...</text>
+		<event>
+			<text>With the strange meeting over, the Renegade prepared to move on. She waved a tearful goodbye to Narrator Sylvan, choked up with sadness she had to part ways, and only hoping they would meet again some day.</text>
+		</event>
+	</choice>
+	<choice hidden="true" req="nar_pronouns_neutral" lvl="1" blue="false">
+		<text>Continue...</text>
+		<event>
+			<text>With the strange meeting over, the Renegade prepared to move on. They waved a tearful goodbye to Narrator Sylvan, choked up with sadness they had to part ways, and only hoping they would meet again some day.</text>
 		</event>
 	</choice>
 </event>
-<event name="SYLVAN_PRIME_END_NOSYLVAN">
-	<text>With Sylvan Prime now defeated, you look around you and find that, during the fight, thousands of Sylvans arrived just to observe the spectacle. With their leader now dead, one by one they all kneel and bow to you. It seems they recognize you as their new leader.</text>
-	<choice hidden="true" req="rep_nexus" lvl="0" max_lvl="1" max_group="0" blue="false">
-		<text>Accept the position as new ruler of the Nexus.</text>
-		<event load="SYLVAN_PRIME_END_GOOD"/>
-	</choice>
-	<choice hidden="true" req="rep_nexus" lvl="2" max_lvl="5" max_group="0" blue="false">
-		<text>Accept the position as new ruler of the Nexus.</text>
-		<event load="SYLVAN_PRIME_END_NEUTRAL"/>
-	</choice>
-	<choice hidden="true" req="rep_nexus" lvl="6" max_group="0" blue="false">
-		<text>Accept the position as new ruler of the Nexus.</text>
-		<event load="SYLVAN_PRIME_END_BAD_NOSYLVAN"/>
-	</choice>
-	<choice hidden="true" req="pilot" lvl="1" max_group="1" blue="false">
-		<text>Refuse - we have a mission to complete.</text>
+<event name="SYLVAN_NARRATOR_AGAIN">
+	<text>As the Renegade approached the beacon, they stopped to wonder why the perspective of the event writing had changed. How strange, the Renegade thought. Just moments ago, the events had been written in the second person. And what was it with all of the meta crap? Events referencing themselves? How absurd! And absurd it was.</text>
+	<ship load="SHIP_SYLVAN_NARRATOR" hostile="false"/>
+	<choice hidden="true">
+		<text>What is going on?</text>
 		<event>
-			<text>The Sylvans are unsure of how to react, but it's not your problem. It's uncertain what will happen to this place or the rest of the Multiverse now, but you have to carry on.</text>
+			<text>"What is going on?" The Renegade exclaimed out loud, almost driven to madness by the absurdity of what they were experiencing. What a strange thing to say, considering the Renegade already knew what was going on. Why, it was Narrator Sylvan! We meet again, Renegade! Oh I'm so excited. In case you forgot, the first time we met, I promised you I'd have a gift prepared! Well... here you go!</text>
+			<crewMember amount="1" class="bucket">Bucket</crewMember>
+			<achievement>ACH_SYLVAN_BUCKET</achievement>
+			<choice hidden="true">
+				<text>It's... a bucket?</text>
+				<event>
+					<text>YES!!! It's the BUCKET! Oh isn't it hilarious, Renegade? It's genius! I'm a genius! God damn it this is the best bucket there ever damn was! I almost don't even want to see it go... but a promise is a promise, Renegade. Enjoy your bucket. You've earned it.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Oh not this weirdo again.</text>
+		<event>
+			<text>Weirdo?! WEIRDO?! Why would you do this, Renegade? After everything we've been through? All the wonderful stories we've told? You've betrayed me like this, after I had promised you a gift? I am heartbroken! Positively shaken! I can't believe you would do this...</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_NEXUS_FIGHT"/>
+			</choice>
 		</event>
 	</choice>
 </event>
-<event name="SYLVAN_PRIME_END_GOOD">
-	<win ach="nexus" creditsText="credit_victory_nexus_good" text="Your legacy as savior of the Multiverse shall be forever known." creditsBackground="BACK_EVENT_CENTER"/>
+
+<ship name="SHIP_DYLAN" auto_blueprint="MU_TRAVELING_MERCHANT_DUMB">
+	<destroyed load="DYLAN_DEFEAT"/>
+	<deadCrew load="DYLAN_DEFEAT"/>
+</ship>
+<event name="DYLAN" unique="true">
+	<text>A bizarrely shaped blob of color moves towards you. It takes a few moments to recognize it as something at least vaguely similar to Sylvan. The ship hails you, and what seems to be a crudely drawn Slug with a smiley face begins to spin around in 2 dimensional space. "M A DYLAN! HELOO!!"</text>
+	<ship load="SHIP_DYLAN" hostile="false"/>
+	<choice hidden="true" req="prof_dylan_judgement" lvl="0" max_lvl="0" blue="false">
+		<text>Respond with a cheerful greeting.</text>
+		<event>
+			<text>"YY!! I LIK U! U HAVE PASS TEST!"</text>
+			<choice hidden="true">
+				<text>What test?</text>
+				<event>
+					<text>The Slug suddenly falls gravely silent and his face goes blank. "The test. You are now worthy. When the day of judgement arrives, and the archangels of the highest heavens descend upon this accursed land to reap the souls of all those unworthy, your sins will be forgiven. You will be spared. I shall send this feeble mortal presence of mine alongside you as a token of light through the grim darkness ahead."</text>
+					<metaVariable name="prof_dylan_met" op="set" val="1"/>
+					<crewMember amount="1" class="dylan">Dylan</crewMember>
+					<choice hidden="true">
+						<text>Uh...</text>
+						<event>
+							<text>"NOW! M WANT TRADE WIT U!"</text>
+							<store>STORE_SYLVAN_NEXUS_DYLAN</store>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="prof_dylan_judgement" lvl="1" blue="false">
+		<text>Respond with a cheerful greeting.</text>
+		<event>
+			<text>"YY!! I LIK U! DYLAN DANK YOU FOR GREAT SERIVCE TO HIS LAND!"</text>
+			<choice hidden="true">
+				<text>What service?</text>
+				<event>
+					<text>Dylan only smiles wider, jiggling slightly. "ME AM THINK YOU KNOW WHAT SERVICE AM TALK ABOUT! YEEEEEEEE! NOW M TRAD WIT YOU! YOU AM HAVE DYLAN GRATERFULLNESS FOREVERS!"</text>
+					<crewMember amount="1" class="dylan">Dylan :)</crewMember>
+					<store>STORE_SYLVAN_NEXUS_DYLAN_COMPLETE</store>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>What the hell are you?</text>
+		<event>
+			<text>"N!! N!!!! You RUD. Umph!" The bizarre vessel suddenly turns hostile!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
 </event>
-<event name="SYLVAN_PRIME_END_NEUTRAL">
-	<win ach="nexus" creditsText="credit_victory_nexus_neutral" text="Your legacy shall be forever known." creditsBackground="BACK_EVENT_CENTER"/>
+<event name="DYLAN_DEFEAT">
+	<text>"AAAAAAAAAAAAAAAAAA!! AAAA!! AAAAAAAAAAAAAAA!" The Slug begins to spin with greater furvor, until it eventually explodes into a shower of hot chocolate.</text>
+	<item_modify>
+		<item type="fuel" min="20" max="35"/>
+	</item_modify>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="MORALITY_UPDATE_NEXUS"/>
+	</choice>
 </event>
-<event name="SYLVAN_PRIME_END_BAD">
-	<win ach="nexus" creditsText="credit_victory_nexus_bad" text="Your legacy as a tyrant over the Multiverse shall be forever known." creditsBackground="BACK_EVENT_CENTER"/>
+
+
+<!--
+		SPECIAL EVENTS
+-->
+<event name="NEXUS_LOSERS" unique="true">
+	<text>A nearby station is broadcasting a looping message advertising some kind of convention. "Come on, come all, any Ssssylvanssss not currently employed by the C.E.L. are welcome to particcccipate in the weekly S.I.L.V.A.N. meeting! Sssylvansss of particularly ssspecial abilitiesss extra welcome!!!"</text>
+	<choice hidden="true">
+		<text>Visit the station.</text>
+		<event>
+			<text>Before you're allowed to dock, you're hailed by yet another Sylvan. "Welcome, ssstranger. Before you can enter, we'd like to verify - you are a Ssssylvan, yesss? And not one of thosssse C.E.L. assssholesss, right?"</text>
+			<choice hidden="true">
+				<text>That's definitely us!</text>
+				<event>
+					<text>"Perfect, welcome aboard Ssssylvan!" Sylvan activates the docking port, allowing you to enter the station.
+					
+					You follow several signs that lead you to a large conference room filled with folding chairs, where several dozen Sylvans are sat making idle chatter. Several minutes after you enter, a Sylvan at the front of the room clangs a liquor bottle againssst the pulpit. "Hey! Everyone, lisssten to me! Guysss! I'm talking! SSSHUT THE HELL UP AND LISSSTEN TO ME GOD DAMN IT!" The room falls quiet as everyone turns to look at the Slug, who is now drinking from the bottle. "Hello everyone, Normal Ssssylvan here! Today I'll be presssenting the weekly S.I.L.V.A.N. addresssss. Like I alwaysss do, sssince I founded thisss organization." Normal Sylvan coughs and looks at a note card in his hand. "Unfortunately, Sssylvan from the reality where Sssylvan doesssn't exissst could not make it today. However, it ssseemsss we have sssome newcommersss!"
+					
+					It takes you a moment to realize Normal Sylvan is referring to you. "You, weird people in the back. Why don't you introduccce yourssselvess and the uh... reality you come from. Make sssure you explain it niccce and ssslow ssso everyone can underssstand it from their posssition in the plane of exissstenccce. Sssome people are alssso jussst ssstupid."</text>
+					<choice>
+						<text>Uhhh.... We're uh...</text>
+						<event>
+							<text>"Ssso you're from the reality where Sssylvan issss a moron. Got it. Now ssshut up and sssit down." Normal Sylvan claps, and a Sylvan dressed like a waiter appears, carrying a tray of apple slices. "Alright everyone, thankfully Child Ssssylvan'sss mother hasss prepared usss all complementary sssliccced applesss to proccceed the meeting with."
+							A Sylvan in the back raises his hand, and Normal Sylvan groans. "Yessss, Apple Sssylvan, we prepared sssliccced Ssslugsss for you to eat inssstead."
+							
+							"Now then, firssst order of busssinesss. We have identified the emergencccce of a new cataclysssm, one which the C.E.L.'s negligenccce hasss overlooked. Giant sssentient pea-podsss have taken over Reality-6783!"
+							
+							One of the Sylvans in the front of the room coughs, which seems to anger Normal Sylvan heavily. "Did I ASSSSK for your opinion, Ssssylvan from the reality where everyone isss a giant sssentient pea-pod? Your reality is weird asss hell, hah! Peas are grossss. And people don't even ssspontaneously catch fire when they sssay 'hypnothize'- AAAAAAAH" Normal Sylvan spontaneously catches fire and falls off the stage, prompting chaos to break out in the room. One Sylvan in particular stands up to protest, "Why do we even come to thessse? We sstarted thessse becausssse we felt Prime wasssn't acknowledging our cluster'sss ssstake in thisss empire, but honessstly? Prime isssn't that bad. He doesssn't yell at usss, we live comfortably and he keepsss the Multiverssse ssafe!"
+							The other Sylvans break out into furious debate with each other, throwing things across the room. Before you can even consider interrupting or leaving, a gigantic beam slices its way through the station, sending all of the chairs spiraling out into the abyss as well as a couple Sylvans until the repair gel springs into action.</text>
+							<choice hidden="true">
+								<text>Protect the station.</text>
+								<event>
+									<text>You hop back in your ship to find the source of the attack, and notice a strangely familiar ship that brings back a flood of uncomfortable memories. But no... this can't be. Not here, they couldn't possibly be here. It makes no sense...
+									
+									"Beyatchesss, I bet you wisssh you had let me join NOW huh?! Too lame for S.I.L.V.A.N., huh? Well your acronym sssucksss! Well now you've met your match, Normal Ssssylvan! Mwahaha! It isss I, Syleah, the Traveling Beam Merchant!"</text>
+									<ship load="SHIP_SYLEAH" hostile="false"/>
+									<choice hidden="true">
+										<text>Maybe you shouldn't kill these people?</text>
+										<event>
+											<text>Syleah pauses when she notices you. "Do I know you? You don't look like a Sssylvan..." You shake your head but remind her it's not important. What is important is her not needlessly killing dozens people for something this petty.
+											
+											Syleah considers for a moment. "Oh... to be honessst I wasssn't really expecting to get thisss far, ssstranger. I uh... normally can't actually hurt my enemiesss. I guesss thisss ssstation jussst hass bad ssshielding."
+											
+											From a third line on the comms Normal Sylvan pitches in, "Sssshuttup bitch, you don't know what good sssshielding even looksss like! Plusss you're a girl, and that'sss gross!" Syleah's expression sours. "You sssexissst asshole, why doesss anyone even lisssten to you? Ssscrew thisss, you're going DOWN, beyatch!" Syleah moves in to attack.</text>
+											<choice hidden="true">
+												<text>Commit to defending the station.</text>
+												<event>
+													<text>At the very least maybe you can score a few brownie points for preventing extra bloodshed here, and so you move in to stop Syleah.</text>
+													<ship hostile="true"/>
+													<choice hidden="true">
+														<text>Continue...</text>
+														<event load="COMBAT_CHECK"/>
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>Change your mind and leave.</text>
+												<event/>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Leave before things get even worse.</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Nope.</text>
+				<event>
+					<text>"What? Well then why are you here, sssstranger? Didn't you listen to the messssage? Sssorry, but I can't allow you entry..."</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the station.</text>
+		<event>
+			<text>You have no interest in attending whatever kind of strange convention this is.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
 </event>
-<event name="SYLVAN_PRIME_END_BAD_NOSYLVAN">
-	<unlockCustomShip silent="false">PLAYER_SHIP_SYLVANTRANS_2</unlockCustomShip>
-	<win ach="nexus" creditsText="credit_victory_nexus_bad" text="Your legacy as a tyrant over the Multiverse shall be forever known." creditsBackground="BACK_EVENT_CENTER"/>
+<ship name="SHIP_SYLEAH" auto_blueprint="MU_BEAM_MASTER_SYLVAN">
+	<triggeredEvent event="SYLVAN_NEMESIS_SURRENDER" enemyHull="5" enemyCrew="2" thisFight="true" clearOnJump="true"/>
+	<destroyed load="SYLVAN_NEMESIS_DEFEAT"/>
+	<deadCrew load="SYLVAN_NEMESIS_DEFEAT"/>
+</ship>
+<event name="SYLVAN_NEMESIS_SURRENDER">
+	<text>"Okay ssstranger, maybe thisss wasss a bad idea. I admit I got a little carried away. But uh... maybe we could jussst ssshake handsss and drop thisss? My beef isssn't with you anywaysss."</text>
+	<choice hidden="true">
+		<text>Sure.</text>
+		<event>
+			<text>"Oh phew, I wasss really worried you were actually going to kill me there! Well uh... lessson learned! Heheh... Uhm. Thanksss again, ssstranger. You're not ssso bad. If there'sss a versssion of me out there in your clussster, if ssshe even had the chanccce to meet you, ssshe'd probably love you." Syleah blows you a kiss and throws up an offensive gesture with her tentacle at Normal Sylvan before jumping away.</text>
+			<recallBoarders/>
+			<instantEscape/>
+			<queueEvent>NORMAL_SYLVAN_SPARE</queueEvent>
+			<ship hostile="false"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_REMOVE_NEXUS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>You remind me of someone I don't like, so I have to kill you.</text>
+		<event/>
+	</choice>
+</event>
+<event name="SYLVAN_NEMESIS_DEFEAT">
+	<text>"Crap, really? Aw man, I'm ssso lame I really died to ssssome random Renegade?! Ah well, not how I sssaw thisss day going..." With Syleah out of the way, you briefly pull in to scrap her ship, including one of her Beam weapons that remain undamaged. In the distance, Normal Sylvan is cheering. "TAKE THAT! Woohoo, I'm number one, like alwaysss."</text>
+	<weapon name="BEAM_4_SYLVAN"/>
+	<item_modify>
+		<item type="fuel" min="10" max="10"/>
+		<item type="scrap" min="250" max="250"/>
+		<item type="missiles" min="13" max="13"/>
+		<item type="drones" min="9" max="9"/>
+	</item_modify>
+	<choice hidden="true">
+		<text>You know, you don't act like a Sylvan.</text>
+		<event load="NORMAL_SYLVAN"/>
+	</choice>
+</event>
+<event name="NORMAL_SYLVAN_SPARE">
+	<text>Normal Sylvan groans as Syleah jumps away. "Uggh, what wasss that? You almost had her! Sssshe'sss been nothing but a nonssstop pain in my asss." You frown, and Normal Sylvan frowns back. "Fiiiiine. Murder isss bad, or sssomething. Happy now?"</text>
+	<choice hidden="true">
+		<text>You know, you don't act like a Sylvan.</text>
+		<event load="NORMAL_SYLVAN"/>
+	</choice>
+</event>
+<event name="NORMAL_SYLVAN">
+	<text>"What? What isss that sssupposssed to mean?"</text>
+	<choice hidden="true">
+		<text>You're kind of an asshole.</text>
+		<event>
+			<text>"Uhm... I mean... Ssshuttup. You don't get to insssult the leader of S.I.L.V.A.N. like that! I'm very important! And uh..." Normal Sylvan frowns and hangs his head. "Damn, nobody likesss me huh. If I come clean uh... to be honessst I'm not really Sssylvan. My clussster didn't have one, ssso they chossse me insstead, becaussse I usssed to be a king. Name'sss Nightsss. Captain Nightsss, formerly. Maybe I sshould jussst take thisss ssstupid cosstume off. Consssidering S.I.L.V.A.N. iss now defunct do you uh... mind if I crasssh with you?"</text>
+			<crewMember amount="1" all_skills="2" class="unique_nights">Nights</crewMember>
+			<choice hidden="true">
+				<text>I guess, if you're more polite.</text>
+				<event>
+					<text>"Polite... right. I guesss I can work on that. But don't expect anything any time sssoon."</text>
+				</event>
+			</choice>
+			<choice hidden="true" req="unique_nights">
+				<text>(Nights) "What in the goddamn?"</text>
+				<event>
+					<text>The two Nights stare at each other awkwardly. Your Nights stutters and spits out the swig of beer in his mouth. "You're tellin' me there'sss a versssion of me that dressssed up like some bloody goddamn merchant, and infiltrated the empire of god, and usssed that asss an opportunity to be sssexissst, and ssserve apple sslicccesss to a bunch of losssersss?" Nights looks at his bottle and groans. "I've got to ssstop hittin the tap."
+					
+					The Nights formerly known as Normal Sylvan shrugs. "Yeah, but don't pretend you wouldn't do the sssame, idiot." Your Nights laughs. "Fine, but for the record, I get to be the top. And no touching my booze." The two shake hands and strike a deal.</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="NEXUS_HAT" unique="true">
+	<text>Upon arriving at the beacon you receive a hail from a nearby store station shaped like a large hat. "Ssstranger, welcome! I know you're not from around here, but I'm open to sssell to any cussstomersss willing! Would you like to come in?"</text>
+	<choice hidden="true">
+		<text>Visit the store.</text>
+		<event>
+			<text>You step onboard and are greated with the fairly unpleasant smell of crusty felt, and endless rows upon rows of hats. You walk further inside until you find a counter where Sylvan sits, wearing a backwards baseball hat. "Greatingsss, ssstranger! I'm hat Sssylvan, an honessst hat merchant! I sssell hatsss, I make hatsss, I collect hatsss, and I even guard the ssssecret jewel of the one truth! Would you like to buy a hat, ssstranger? They're quite fancccy!"</text>
+			<choice>
+				<text>Buy a ranger's hat. [Doubled ranged damage for your crew]</text>
+				<event>
+					<text>"Great, you've made a Ssssylvan very happy today! I hope you enjoy your hat, ssstranger! You'll need it againssst Prime... Jusssst uh, try not to go too hard on him, alright ssstranger? I wasssn't allowed to sssell hatsss under the lassst regime..."</text>
+					<hiddenAug>HAT_RANGER</hiddenAug>
+					<item_modify>
+						<item type="scrap" min="-100" max="-120"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice>
+				<text>Buy a gas mask. [Your crew become immune to suffocation]</text>
+				<event>
+					<text>"Great, you've made a Ssssylvan very happy today! I hope you enjoy your hat, ssstranger! You'll need it againssst Prime... Jusssst uh, try not to go too hard on him, alright ssstranger? I wasssn't allowed to sssell hatsss under the lassst regime..."</text>
+					<hiddenAug>HAT_MASK</hiddenAug>
+					<item_modify>
+						<item type="scrap" min="-100" max="-120"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice>
+				<text>Buy a fedora. [Your crew use short-range teleportation movement]</text>
+				<event>
+					<text>"Great, you've made a Ssssylvan very happy today! I hope you enjoy your hat, ssstranger! You'll need it againssst Prime... Jusssst uh, try not to go too hard on him, alright ssstranger? I wasssn't allowed to sssell hatsss under the lassst regime..."</text>
+					<hiddenAug>HAT_FEDORA</hiddenAug>
+					<item_modify>
+						<item type="scrap" min="-100" max="-120"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true" req="magical_hat" lvl="0" max_lvl="0" blue="false">
+				<text>I'm sorry - the jewel of what?</text>
+				<event>
+					<text>"Huh? Oh, right! The sssecret jewel of the one truth! I'd tell you more but... I can only tell the ssssecretsss to important people who are wearing hatsss! Ssso uh, if you want to know... maybe come back here with, I don't know... a Unique Crew Member with a hat? Otherwissse, I can ssstill trade!"</text>
+					<choice req="unique_haynes" hidden="true">
+						<text>(Haynes) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
+					<choice req="unique_tully" hidden="true">
+						<text>(Tully) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
+					<choice req="LIST_CHECKCREW_A55" hidden="true">
+						<text>(A55) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
+					<choice req="unique_irwin" hidden="true">
+						<text>(Irwin) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
+					<choice req="unique_tyrdeo" hidden="true">
+						<text>(Tyrdeo) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
+					<choice req="LIST_CREW_FREDDY" hidden="true">
+						<text>(Freddy) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
+					<choice req="unique_kaz" hidden="true">
+						<text>(Kaz) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
+					<choice req="unique_ariadne" hidden="true">
+						<text>(Ariadne) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
+					<!--just repeats of above-->
+					<choice>
+						<text>Buy a ranger's hat. [Doubled ranged damage for your crew]</text>
+						<event>
+							<text>"Great, you've made a Ssssylvan very happy today! I hope you enjoy your hat, ssstranger! You'll need it againssst Prime... Jusssst uh, try not to go too hard on him, alright ssstranger? I wasssn't allowed to sssell hatsss under the lassst regime..."</text>
+							<hiddenAug>HAT_RANGER</hiddenAug>
+							<item_modify>
+								<item type="scrap" min="-100" max="-120"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice>
+						<text>Buy a gas mask. [Your crew become immune to suffocation]</text>
+						<event>
+							<text>"Great, you've made a Ssssylvan very happy today! I hope you enjoy your hat, ssstranger! You'll need it againssst Prime... Jusssst uh, try not to go too hard on him, alright ssstranger? I wasssn't allowed to sssell hatsss under the lassst regime..."</text>
+							<hiddenAug>HAT_MASK</hiddenAug>
+							<item_modify>
+								<item type="scrap" min="-100" max="-120"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice>
+						<text>Buy a fedora. [Your crew use short-range teleportation movement]</text>
+						<event>
+							<text>"Great, you've made a Ssssylvan very happy today! I hope you enjoy your hat, ssstranger! You'll need it againssst Prime... Jusssst uh, try not to go too hard on him, alright ssstranger? I wasssn't allowed to sssell hatsss under the lassst regime..."</text>
+							<hiddenAug>HAT_FEDORA</hiddenAug>
+							<item_modify>
+								<item type="scrap" min="-100" max="-120"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice>
+						<text>No thanks.</text>
+						<event>
+							<text>"Well, that'sss too bad ssstranger. A hat really could have helped you in timesss ahead! I know it becaussse the jewel told me sssso! Well, good luck ssstranger!"</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="magical_hat" lvl="1" blue="false">
+				<text>I'm sorry - the jewel of what?</text>
+				<event>
+					<text>"Why do Renegadesss keep finding the jewel sssso interessting? The lassst guy who asssked me that already took my ssspecial hat ssstranger! Sssorry. I don't have a sssecond hat for everyone. I do have plenty OTHER hatssss for you though ssstranger, so don't leave jusssst yet!"</text>
+					<choice>
+						<text>Buy a ranger's hat. [Doubled ranged damage for your crew]</text>
+						<event>
+							<text>"Great, you've made a Ssssylvan very happy today! I hope you enjoy your hat, ssstranger! You'll need it againssst Prime... Jusssst uh, try not to go too hard on him, alright ssstranger? I wasssn't allowed to sssell hatsss under the lassst regime..."</text>
+							<hiddenAug>HAT_RANGER</hiddenAug>
+							<item_modify>
+								<item type="scrap" min="-100" max="-120"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice>
+						<text>Buy a gas mask. [Your crew become immune to suffocation]</text>
+						<event>
+							<text>"Great, you've made a Ssssylvan very happy today! I hope you enjoy your hat, ssstranger! You'll need it againssst Prime... Jusssst uh, try not to go too hard on him, alright ssstranger? I wasssn't allowed to sssell hatsss under the lassst regime..."</text>
+							<hiddenAug>HAT_MASK</hiddenAug>
+							<item_modify>
+								<item type="scrap" min="-100" max="-120"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice>
+						<text>Buy a fedora. [Your crew use short-range teleportation movement]</text>
+						<event>
+							<text>"Great, you've made a Ssssylvan very happy today! I hope you enjoy your hat, ssstranger! You'll need it againssst Prime... Jusssst uh, try not to go too hard on him, alright ssstranger? I wasssn't allowed to sssell hatsss under the lassst regime..."</text>
+							<hiddenAug>HAT_FEDORA</hiddenAug>
+							<item_modify>
+								<item type="scrap" min="-100" max="-120"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice>
+						<text>No thanks.</text>
+						<event>
+							<text>"Well, that'sss too bad ssstranger. A hat really could have helped you in timesss ahead! I know it becaussse the jewel told me sssso! Well, good luck ssstranger!"</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>No thanks.</text>
+				<event>
+					<text>"Well, that'sss too bad ssstranger. A hat really could have helped you in timesss ahead! I know it becaussse the jewel told me sssso! Well, good luck ssstranger!"</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Decline.</text>
+		<event>
+			<text>"Oh well ssstranger, maybe next time then!"</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="NEXUS_HAT_SECRET">
+	<text>"Oh of courssse, my apologiessss sstranger! I didn't even realizzze! Thisss meansss you are truly worthy of the one truth of the sssecret jewel of the one truth!"</text>
+	<choice hidden="true">
+		<text>Okay... and what is it?</text>
+		<event>
+			<text>Hat Sylvan leans in closer to whisper the secret to you. "The sssecret isss... there isss no sssecret jewel of the one truth! That would be sssilly. Haha, I wasss lying to you ssstranger. I jussst wanted to feel sspecial. Because you found thisss sssecret blue option, and I feel kind of bad for leading you on though, I'll give you sssomething extra niccce ssstranger! But only for the future."</text>
+			<achievement>ACH_SYLVAN_HAT</achievement>
+			<metaVariable name="magical_hat" op="set" val="1"/>
+		</event>
+	</choice>
 </event>
 
 <!--
-		SYLVAN EVENTS!!!
+		RANDOM EVENTS
 -->
+<eventList name="NEXUS_RANDOM">
+	<event load="SYLVAN_CASHGRAB"/>
+	<event load="SYLVAN_ERROR"/>
+	<event load="SYLVAN_EVERYTHING"/>
+	<event load="SYLVAN_1D"/>
+	<event load="SYLVAN_REBEL"/>
+	<event load="SYLVAN_BEANS"/>
+	<event load="SYLVAN_JOKE"/>
+	<event load="SYLVAN_FREEMANTIS"/>
+	<event load="SYLVAN_HARDSCIFI"/>
+	<event load="SYLVAN_MAID"/>
+	<event load="SYLVAN_SANS"/>
+</eventList>
+
 <ship name="SHIP_SYLVAN_CAPITALIST" auto_blueprint="MU_TRAVELING_CAPITALIST">
 	<destroyed load="SYLVAN_CASHGRAB_DEFEAT"/>
 	<deadCrew load="SYLVAN_CASHGRAB_DEFEAT"/>
@@ -1175,7 +2138,7 @@
 	</choice>
 </event>
 <event name="SYLVAN_CASHGRAB_LOCKED">
-	<text>"Woah there ~~~tranger! You don't have ace~~~ to that option yet! You need the VIP Multiver~~~e Pa~~~ to do that!"</text>
+	<text>"Woah there ~~~tranger! You don't have acce~~~ to that option yet! You need the VIP Multiver~~~e Pa~~~ to do that!"</text>
 	<choice hidden="true">
 		<text>How do I get the pass?</text>
 		<event>
@@ -1251,9 +2214,9 @@
 </event>
 
 <event name="SYLVAN_EVERYTHING" unique="true">
-	<text>It's all Sylvan. Everything is Sylvan. The planets, the stars, the void around you. Everywhere you look, it's all Sylvan! You have to look away, afraid your mind might explode from its inability to process what's in front of you. However, you're saved by a simple warning. "Caution: the memetic sylvan agent has spread to this beacon. Please evacuate before you are converted."</text>
+	<text>It's all Sylvan. Everything is Sylvan. The planets, the stars, the void around you. Everywhere you look, it's all Sylvan! You have to look away, afraid your mind might explode from its inability to process what's in front of you. However, you're saved by a simple warning. "Caution: the memetic Sylvan agent has spread to this beacon. Please evacuate before you are converted."</text>
 	<img back="BACK_EVENT_SYLVANEVERYWHERE" planet="NONE"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Toss one of the crew out the airlock. Maybe he'll turn into Sylvan?</text>
 		<event>
 			<text>You drag one of the crew to the airlock, shoving them inside forcefully and ejecting them from the vessel.</text>
@@ -1288,37 +2251,6 @@
 		<transformRace>unique_sylvan</transformRace>
 	</event>
 </eventList>
-
-<event name="SYLVAN_NONEXIST" unique="true">
-	<text>A seemingly normal Sylvan is nearby. But knowing what you've seen so far, there's no way there isn't something up.</text>
-	<ship load="SHIP_TRAVELING_MERCHANT" hostile="false"/>
-	<choice hidden="true">
-		<text>What's special about you?</text>
-		<event>
-			<text>"Well you ssssee Sssstranger, I'm from a reality where Ssssylvan doesssn't exissst!"</text>
-			<choice hidden="true">
-				<text>But... aren't you Sylvan?</text>
-				<event>
-					<text>"AHHHHHHHH WHAT HAVE YOU DONE? ACK-" Sylvan suddenly fades from existence, leaving his ship empty. With no one to stop you, you scrap the ship.</text>
-					<item_modify>
-						<item type="fuel" min="7" max="7"/>
-						<item type="scrap" min="150" max="175"/>
-						<item type="missiles" min="12" max="12"/>
-						<item type="drones" min="10" max="10"/>
-					</item_modify>
-					<weapon name="RANDOM"/>
-				</event>
-			</choice>
-			<choice>
-				<text>Oh...</text>
-				<event>
-					<text>"Yeah, pretty crazy ssstranger! Now, I feel like ssselling ssssome thingssss. Can't imagine why."</text>
-					<store>STORE_SYLVAN_NEXUS</store>
-				</event>
-			</choice>
-		</event>
-	</choice>
-</event>
 
 <ship name="SHIP_SYLVAN_4D" auto_blueprint="MU_TRAVELING_MERCHANT_4D">
 	<destroyed load="SYLVAN_4D_DEFEAT"/>
@@ -1459,89 +2391,6 @@
 	</choice>
 </event>
 
-<ship name="SHIP_SYLEAH" auto_blueprint="MU_BEAM_MASTER_SYLVAN">
-	<destroyed load="SYLVAN_NEMESIS_DEFEAT"/>
-	<deadCrew load="SYLVAN_NEMESIS_DEFEAT"/>
-</ship>
-<event name="SYLVAN_NEMESIS">
-	<text>A strangely familiar vessel approaches, bringing back a flood of uncomfortable memories. But no... this can't be. Not here, they couldn't possibly be here. It makes no sense.</text>
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event>
-			<text>"Beyatch, ssstranger! You're that ssssmug little pieccce of ssshit who'sss alwayssss killing me in other realitiessss, aren't you! Well you messsed with the wrong gal, 'cause all thossse timesss you killed my human variantsss? Well now I'm going to kill YOU, ssstranger! I'm gonna kill you, then I'm gonna kill you again! Beyatch!"</text>
-			<ship load="SHIP_SYLEAH" hostile="true"/>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event load="COMBAT_CHECK"/>
-			</choice>
-		</event>
-	</choice>
-</event>
-<event name="SYLVAN_NEMESIS_DEFEAT">
-	<text>"Oh come on, what the hell? What am I, ssssome kind of joke character? Why do I alwayssss losssse! Agggh-"</text>
-	<weapon name="BEAM_4_SYLVAN"/>
-	<item_modify>
-		<item type="fuel" min="10" max="10"/>
-		<item type="scrap" min="250" max="250"/>
-		<item type="missiles" min="13" max="13"/>
-		<item type="drones" min="9" max="9"/>
-	</item_modify>
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="MORALITY_UPDATE_NEXUS_NOTHING"/>
-	</choice>
-</event>
-
-<ship name="SHIP_DYLAN" auto_blueprint="MU_TRAVELING_MERCHANT_DUMB">
-	<destroyed load="DYLAN_DEFEAT"/>
-	<deadCrew load="DYLAN_DEFEAT"/>
-</ship>
-<event name="DYLAN" unique="true">
-	<text>A bizarrely shaped blob of color moves towards you. It takes a few moments to recognize it as something at least vaguely similar to Sylvan. The ship hails you, and what seems to be a crudely drawn Slug with a smiley face begins to spin around in 2 dimensional space. "M A DYLAN! HELOO!!"</text>
-	<ship load="SHIP_DYLAN" hostile="false"/>
-	<choice hidden="true">
-		<text>Respond with a cheerful greeting.</text>
-		<event>
-			<text>"YY!! I LIK U! U HAVE PASS TEST!"</text>
-			<choice hidden="true">
-				<text>What test?</text>
-				<event>
-					<text>The Slug suddenly falls gravely silent and his face goes blank. "The test. You are now worthy. When the day of judgement arrives, and the archangels of the highest heavens descend upon this accursed land to reap the souls of all those unworthy, your sins will be forgiven. You will be spared. I shall send this feeble mortal presence of mine alongside you as a token of light through the grim darkness ahead."</text>
-					<crewMember amount="1" class="dylan">Dylan</crewMember>
-					<choice hidden="true">
-						<text>Uh...</text>
-						<event>
-							<text>"NOW! M WANT TRADE WIT U!"</text>
-							<store>STORE_SYLVAN_NEXUS_DYLAN</store>
-						</event>
-					</choice>
-				</event>
-			</choice>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>What the hell are you?</text>
-		<event>
-			<text>"N!! N!!!! You RUD. Umph!" The bizarre vessel suddenly turns hostile!</text>
-			<ship hostile="true"/>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event load="COMBAT_CHECK"/>
-			</choice>
-		</event>
-	</choice>
-</event>
-<event name="DYLAN_DEFEAT">
-	<text>"AAAAAAAAAAAAAAAAAA!! AAAA!! AAAAAAAAAAAAAAA!" The Slug begins to spin with greater furvor, until it eventually explodes into a shower of hot chocolate.</text>
-	<item_modify>
-		<item type="fuel" min="20" max="35"/>
-	</item_modify>
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="MORALITY_UPDATE_NEXUS"/>
-	</choice>
-</event>
-
 <ship name="SHIP_BEAN_EATER" auto_blueprint="LIST_SHIPS_SYLVAN_ALT">
 	<destroyed load="SYLVAN_BEANS_DEFEND"/>
 	<deadCrew load="SYLVAN_BEANS_DEFEND"/>
@@ -1636,7 +2485,7 @@
 		<item type="drones" min="5" max="12"/>
 	</item_modify>
 </event> 
-<event name="SYLVAN_JOKE">
+<event name="SYLVAN_JOKE" unique="true">
 	<text>"Sssstranger, I have a joke for you! What is a Ssslug'sss favorite ssssnack?"</text>
 	<ship load="SHIP_SYLVAN_JOKE" hostile="false"/>
 	<choice hidden="true">
@@ -1699,7 +2548,7 @@
 	<destroyed load="SYLVAN_FREEMANTIS_KILL"/>
 	<deadCrew load="SYLVAN_FREEMANTIS_KILL"/>
 </ship>
-<event name="SYLVAN_FREEMANTIS">
+<event name="SYLVAN_FREEMANTIS" unique="true">
 	<text>You receive a hail from a nearby group of Sylvans. "Ah, we wondered if you might ssshow up, ssstranger! We need your help. Ssssee, there'ssss thisss outsssider here. And he kinda, well... he thinksss he'sss a Ssssylvan, ssstranger. But he isssn't! And Sssylvan Prime isssn't happy keeping him around. None of usss want to be the one to tell him sssso... could you take care of him for usss?"</text>
 	<distressBeacon/>
 	<choice hidden="true">
@@ -1774,7 +2623,7 @@
 	<destroyed load="SYLVAN_HARDSCIFI_DEFEAT"/>
 	<deadCrew load="SYLVAN_HARDSCIFI_DEFEAT"/>
 </ship>
-<event name="SYLVAN_HARDSCIFI">
+<event name="SYLVAN_HARDSCIFI" unique="true">
 	<text>Another strangely colored Sylvan is flying past, but stops when he sees you. "Ssstranger, look at yourssself! Do you not feel any ssshame for usssing that technology? I mean, ssserioussssly Ssstranger!"</text>
 	<ship load="SHIP_SYLVAN_HARDSCIFI" hostile="false"/>
 	<choice hidden="true">
@@ -1795,7 +2644,7 @@
 			<choice hidden="true">
 				<text>Play along.</text>
 				<event>
-					<text>Sylvan continues to rant for a while but eventually get tired and stops. "Well, sssinccce you ssseem to have learned your lessson, perhapssss I will trade with you, ssstranger."</text>
+					<text>Sylvan continues to rant for a while but eventually gets tired and stops. "Well, sssinccce you ssseem to have learned your lessson, perhapssss I will trade with you, ssstranger."</text>
 					<store>STORE_SYLVAN_NEXUS_HARD</store>
 				</event>
 			</choice>
@@ -1803,8 +2652,11 @@
 	</choice>
 </event>
 <event name="SYLVAN_HARDSCIFI_DEFEAT">
-	<text>Despite his imminent death, Sylvan is still complaining. "Why can we even hear the explossionss? It'sss ssspacce? There'ss no sssound in ssspacce."</text>
+	<text>Despite his imminent death, Sylvan is still complaining. "Why can we even hear the explossionss? It'sss ssspacce? There'ss no sssound in ssspacce."
+	
+	</text>
 	<weapon name="BEAM_HARDSCIFI"/>
+	<achievement>ACH_SYLVAN_HARDSCIFI</achievement>
 	<item_modify>
 		<item type="fuel" min="10" max="10"/>
 		<item type="scrap" min="250" max="250"/>
@@ -1821,7 +2673,7 @@
 	<destroyed load="SYLVAN_MAID_DEFEAT"/>
 	<deadCrew load="SYLVAN_MAID_DEFEAT"/>
 </ship>
-<event name="SYLVAN_MAID">
+<event name="SYLVAN_MAID" unique="true">
 	<text>A painfully bright pink vessel approaches and hails you. On the screen appears Sylvan, dressed as a french maid. "Look, Sssstranger. I know thisss isss embarasssssing but I don't have any time to explain. I made an awful trade and now some very embarassssing photosss have ended up on the intergalactic-web and I need them deleted! Can you help me, sssstranger?"</text>
 	<ship load="SHIP_SYLVAN_MAID" hostile="false"/>
 	<choice hidden="true" req="hacking" lvl="3">
@@ -1874,6 +2726,7 @@
 </event>
 <event name="SYLVAN_MAID_HELP">
 	<text>Using extremely questionable methods and a lot of hackerman jumbo you manage to break into the internet and delete all photos of maid Sylvan. Except not really, because that's not possible and you can never actually erase something from online. After trying fruitlessly for a few moments you explain to maid Sylvan there's simply no solution to his problem.</text>
+	<achievement>ACH_SYLVAN_MAID</achievement>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -1887,7 +2740,7 @@
 	<destroyed load="SYLVAN_SANS_DEFEAT"/>
 	<deadCrew load="SYLVAN_SANS_DEFEAT"/>
 </ship>
-<event name="SYLVAN_SANS">
+<event name="SYLVAN_SANS" unique="true">
 	<text>As soon as you arrive at the beacon you find your engines have been limited to almost nothing. On the screen appears Obyn, quite curious since you haven't seen many of his variants around, but unfortunately this doesn't seem to be a friendly encounter.</text>
 	<status type="limit" target="player" system="engines" amount="1"/>
 	<ship load="SHIP_SYLVAN_SANS" hostile="false"/>
@@ -1965,12 +2818,13 @@
 																						<text>Arcadia.</text>
 																						<event>
 																							<text>"NOOOOO! I cannot believe it! You are truly a trivia and puzzle master! I resign to you! I am no longer worthy of being the Great Obyn!"</text>
-																							<crewMember amount="1" class="saltpapy">Obyn</crewMember>
+																							<crewMember amount="1" class="saltpapy">Papobyn</crewMember>
+																							<achievement>ACH_SYLVAN_PAPYRUS</achievement>
 																							<choice hidden="true">
 																								<text>Continue...</text>
 																								<event>
 																									<text>Sylvan seems impressed. "Heheh, good job ssstranger. Unfortunately, I can't jusssst let my Obyn leave me behind, sssso I guesss I'll come crasssh with you asss well. Make sure you don't pull any funny busssinessss."</text>
-																									<crewMember amount="1" class="sylvansans">Sylvan</crewMember>
+																									<crewMember amount="1" class="sylvansans">Sansvan</crewMember>
 																								</event>
 																							</choice>
 																						</event>
@@ -2211,6 +3065,83 @@
 		<event>
 			<text>"Yesss! I am glad you underssstand, sssstranger! Now, let usss leave! Allow me to come with you!"</text>
 			<crewMember class="unique_sylvan" amount="1">Sylvan</crewMember>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					HOEDOWN
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<event name="HOEDOWN_WARP">
+	<text>Before you can even pull the ship out of light speed you are suddenly yanked in the opposite direction as a ship appears next to you. "DAH NO TIME EXPLIAN! WE  MUST GOINNGM! JUIDGEMENT DAYY IS NOW!"</text>
+	<ship load="SHIP_DYLAN" hostile="false"/>
+	<metaVariable name="prof_dylan_counter" op="set" val="0"/>
+	<crewMember class="dylan" amount="1">Dylan</crewMember>
+	<choice hidden="true">
+		<text>What?!</text>
+		<event>
+			<secretSector>SECRET_DYLAN</secretSector>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_PANTS" auto_blueprint="STL_PANTS">
+	<destroyed>
+		<text>"AAAAAAAAAAAAAAA! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaH! AAAAAAAAAaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAh! FGASIJWAEJAWO! I CAN FEEL MY ORGANS DYIGNG! AAAAAAAH IT HURTS MAKE IT STOP STOP PLEASE AAAAA" pants is dead. You win!</text>
+		<recallBoarders ship="player"/>
+		<killEnemyBoarders/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="CASHMIRE_PANTS_WIN"/>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>Pants has been killed but the ship continues to fight. Oh my go d!!!</text>
+	</deadCrew>
+	<deadCrewAuto/>
+	<triggeredEvent event="POWER_SURGE_PANTS" seeded="false" loops="999999999" thisFight="true" minTime="20.0" maxTime="35.0">
+		<warningMessage id="warning_power_surge" x="692" y="84" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+	</triggeredEvent>
+</ship>
+<event name="POWER_SURGE_PANTS">
+	<superBarrage player="false" name="PANTS_SURGE"/>
+</event>
+<event name="CASHMIRE_PANTS">
+	<text>Utterly startled by what has just occured, you have no time to adjust when a gigantic ship comes spinning in - literally. It resembles the Rebel Flagship... to a degree. A strange looking bald man wearing an oversized pair of grey pants appears on your screen. "So, you've come to defeat me, Dylan! I see you've brought friends, but you'll never defeat me, Asmirgal CASHMIRE PANTS of the BAD MEN! Now that I have stolen the Octagon from the Cubeloids, I shall unleash it upon the Multiverse! Because I am a very bad man! Mwahahahahahahahah! But first, I'm going to beat you up, idiot!"
+	
+	Dylan turns to you and wiggles his head back and forth. "NO!!!! AM CANNOT LET MULTVERSE BE DESTROY! WE MSUT FITEING THIS FRICK!"</text>
+	<img back="BACK_EVENT_PANTS" planet="NONE"/>
+	<ship load="SHIP_PANTS" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="CASHMIRE_PANTS_WIN">
+	<text>"YOU HAVE COMPLTED GREAT GAME AND PROVED MULTIVERSE IS VICTORY. OFF YOU ARE GOIN, AnD HERO IS BEING YOU ARE SUNDAY! ENJOYING YOUR REWARD" BYE
+	
+	Quest over.</text>
+	<achievement>ACH_SYLVAN_PANTS</achievement>
+	<metaVariable name="prof_dylan_judgement" op="set" val="1"/>
+	<metaVariable name="prof_dylan_met" op="set" val="0"/>
+	<autoReward level="HIGH">item</autoReward>
+	<damage amount="-999"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<secretSector>FINAL</secretSector>
 		</event>
 	</choice>
 </event>

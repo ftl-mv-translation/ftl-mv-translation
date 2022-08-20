@@ -154,11 +154,15 @@
 <event name="NEBULA_SHELL_TOXINTEST" unique="true">
 	<text>Nearby appears to be a Shell science laboratory. They hail you. "Oh, good a visitor! We haven't seen many people recently, which is rathhhher unfortunate. With so many new... Rebels coming by we've noticed you outsiders react rathhher strangely to our toxins. We would like to test the effects on any aliens you might have... we understand thhhe risk and will pay accordingly."</text>
 	<environment type="nebula"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
 		<text>Send over your crew.</text>
 		<event load="TOXINTEST_REGULAR"/>
 	</choice>
-	<choice hidden="true" req="shell">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="0" max_lvl="0">
+		<text>The scientists will have to look elsewhere for test subjects.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SHELL">
 		<text>(Shell Crew) Send over your Shell.</text>
 		<event>
 			<text>"We uh... appreciate thhhe gesture, but we really don't need to test on our own species..."</text>
@@ -583,9 +587,13 @@
 		<event>
 			<text>A Shell materializes on the ship, and quickly rolls away into a far corner. Not long after, a Slug Clansman comes out from the nebula, firing a shot into the Shell ship, destroying it. It's not hard to piece two and two together here.</text>
 			<ship load="SHIP_CLAN_FIGHT" hostile="false"/>
-			<choice hidden="true">
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 				<text>Hand over the Shell to the Clansmen.</text>
 				<event load="SHELL_HIDING_RATOUT"/>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>Terminate the Shell.</text>
+				<event load="SHELL_HIDING_EXTERMINATE"/>
 			</choice>
 			<choice hidden="true">
 				<text>Protect the Shell.</text>
@@ -622,6 +630,27 @@
 	<event>
 		<text>Your crew grab onto the Shell, hauling them up off the ground and helplessly into the air. You contact the Slugs and inform them that the Shell is aboard your ship. Pleased with your help, they take the Shell back with them and transfer over some scrap.</text>
 		<autoReward level="MED">scrap_only</autoReward>
+	</event>
+</eventList>
+<eventList name="SHELL_HIDING_EXTERMINATE">
+	<event>
+		<text>Your security measures easily deal with the Shell, however the hunters take notice of your ship. They point their already hot weapons on you, either because you robbed them of prey, or they see you as a threat to their streak.</text>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>Your security measures swiftly dispose of the undesired stowaway. It seems you were quick enough to avoid being caught by the hunters - when they no longer detect any lifesigns in the vicinity, they jump away, leaving you with a moment of respite.</text>
+		<choice hidden="true">
+			<text>Check the storage.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice hidden="true">
+			<text>Do nothing.</text>
+			<event/>
+		</choice>
 	</event>
 </eventList>
 
@@ -921,7 +950,7 @@
 -->
 <event name="NEBULA_SHELLHOME_LAB" unique="true">
 	<preventQuest/>
-	<text>You receive a hail from a Federation vessel hiding in the nebula. "Oh, good, you must be the backup we called for! We were transporting troops to the Last Stand when we were forced to detour through this sector. We thought we would be fine until a Shell Abductor came from nowhere and abducted our crew! We suspect they're being held at this beacon in a nearby laboratory, but we don't have enough firepower to rescue them on our own."</text>
+	<text>You receive a hail from a Federation vessel hiding in the nebula. "Oh, good, you must be the backup we called for! We were transporting troops to Node 17 when we were forced to detour through this sector. We thought we would be fine until a Shell Abductor came from nowhere and abducted our crew! We suspect they're being held at this beacon in a nearby laboratory, but we don't have enough firepower to rescue them on our own."</text>
 	<environment type="nebula"/>
 	<distressBeacon/>
 	<choice hidden="true">
@@ -931,7 +960,7 @@
 			<choice hidden="true">
 				<text>Hail them and negotiate peacefully. No need to murder these scientists.</text>
 				<event>
-					<text>"Oh, a Federation vessel. Welcome to thhhis beacon! What can I do for you?" You explain the situation, and the Shell seems to contemplate for a moment. "Oh, I see. My apologies, it has always been Shell custom to study creatures who enter our space. We bring no harm to them of course, we simply bring them aboard, run a quick few painless tests, and send them on our way. We meant no harm! Do not worry, I'll have them all released immediately. We want no trouble."</text>
+					<text>"Oh, a Federation vessel. Welcome to thhhis beacon! What can I do for you?" You explain the situation, and the Shell seems to contemplate for a moment. "Oh, I see. My apologies, it hhhas always been Shell custom to study creatures who enter our space. We bring no harm to thhhem of course, we simply bring thhhem aboard, run a quick few painless tests, and send thhhem on our way. We meant no harm! Do not worry, I'll have thhhem all released immediately. We want no trouble."</text>
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
@@ -945,8 +974,7 @@
 									<choice hidden="true">
 										<text>Continue...</text>
 										<event load="COMBAT_CHECK"/>
-									</choice>
-									
+									</choice>		
 								</event>
 							</choice>
 							<choice hidden="true">
@@ -964,7 +992,7 @@
 					<ship load="SHIP_SHELL_DONUTBOSS" hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
-						<event load="COMBAT_CHECK"/>
+						<event load="MORALITY_UPDATE_SHELL_FIGHT"/>
 					</choice>
 				</event>
 			</choice>
@@ -990,7 +1018,7 @@
 	</choice>
 </event>
 <event name="SHELLHOME_LAB_RESCUE_LAB">
-	<text>"You saved us! Thhhat was a Federation ship thhhough... You would betray your own people to save us? I'm not sure how to thhhink about thhhat. But I don't have time to anyways. Please, I hope you will allow me to come with you now that I cannot stay here. I will of course still free these men and send them back to their ship first."</text>
+	<text>"You saved us! Thhhat was a Federation ship thhhough... You would betray your own people to save us? I'm not sure how to thhhink about thhhat. But I don't have time to anyways. Please, I hope you will allow me to come withhh you now thhhat I cannot stay here. I will of course still free thhhese men and send thhhem back to their ship first."</text>
 	<variable name="ach_boss_stealth" op="set" val="1"/>
 	<unlockCustomShip silent="false">PLAYER_SHIP_SHELL</unlockCustomShip>
 	<crewMember amount="1" class="shell_radiant">Bamalf</crewMember>
@@ -1008,7 +1036,7 @@
 		<text>You've killed all of the scientists aboard the station. You scrap the exterior of the hull.</text>
 		<autoReward level="MED">standard</autoReward>
 		<choice hidden="true">
-			<text>Free the Soldiers.</text>
+			<text>Free the soldiers.</text>
 			<event>
 				<text>You board the station and free all of the Federation personnel. They thank you briefly before rushing back to their ship, which has docked with the station to retrieve them. The Federation ship thanks you and pays you for your help.</text>
 				<autoReward level="MED">scrap_only</autoReward>
@@ -1054,16 +1082,16 @@
 </eventList>
 
 <event name="NEBULA_SHELLHOME_MERCENARY" unique="true">
-	<text>You aren't alone at this beacon. Nearby is a Mercenary vessel, all of its systems online but the ship remaining mostly inactive.</text>
+	<text>You aren't alone at this beacon. Nearby is a Syndicate vessel, all of its systems online but the ship remaining mostly inactive.</text>
 	<environment type="nebula"/>
 	<choice hidden="true">
-		<text>Hail the Mercenaries and see why they're here.</text>
+		<text>Hail the mercenaries and see why they're here.</text>
 		<event>
 			<text>"Oh errr. We were hired by some Clansmen to capture one of these Shell ships, but that's a lot harder a task than we were prepared for. Now, we're kinda just waiting here until a Shell ship comes by and randomly dies. However long that'll take..."</text>
 			<choice hidden="true">
 				<text>Help them out, seek out a Shell ship and capture them.</text>
 				<event>
-					<text>You fly past the Mercenaries and deeper into the nebula until you encounter a Shell ship.</text>
+					<text>You fly past the mercenaries and deeper into the nebula until you encounter a Shell ship.</text>
 					<ship load="SHIP_SHELL_MERCENARY" hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
@@ -1078,7 +1106,7 @@
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>Attack the Mercenaries.</text>
+		<text>Attack the mercenaries.</text>
 		<event>
 			<text>You decide not to give the pirates any chances and attack immediately.</text>
 			<ship load="SHIP_MERCENARY_ALL" hostile="true"/>
@@ -1448,14 +1476,28 @@
 		</event>
 	</choice>
 </event>
+
 <ship name="SHIP_OOJ_FIGHT" auto_blueprint="LIST_SHIPS_REBEL_SELITE_FIGHT">
-	<surrender min="3" max="4">
-		<text>Suddenly, a voice bursts out of the Rebel ship, though it's oddly unhuman, but you can't place your finger on why. "StOp! THis shIp dosnot want TO fight. Please-stofiring. Please. Please. Please."</text>
+	<triggeredEvent event="SURRENDER_OOJ_UNLOCK" enemyHull="5" enemyCrew="2" thisFight="true" clearOnJump="true"/>
+	<destroyed load="DESTROYED_REBEL"/>
+	<deadCrew load="DEAD_CREW_REBEL"/>
+	<crew>
+		<crewMember type="human_soldier" prop="1"/>
+	</crew>
+</ship>
+<event name="MORPH_3_UNLOCK">
+	<event/>
+</event>
+
+<event name="SURRENDER_OOJ_UNLOCK">
+	<text>Suddenly, a voice bursts out of the Rebel ship, though it's oddly unhuman, but you can't place your finger on why. "StOp! THis shIp dosnot want TO fight. Please-stofiring. Please. Please. Please."</text>
 		<choice hidden="true">
 			<text>Listen to them and stop.</text>
 			<event>
-				<text>"T-hank yOu. You are... so KInd." It suddenly dawns on you what's off. The voice is spliced together from other audio tracks. It's not even a person speaking, but a bizzare recording.</text>
+				<text>"T-hank yOu. You are... so KInd." It suddenly dawns on you what's off. The voice is spliced together from other audio tracks. It's not even a person speaking, but a bizarre recording.</text>
 				<ship hostile="false"/>
+				<recallBoarders/>
+				<surrender/>
 				<choice hidden="true">
 					<text>Inquire about the voice.</text>
 					<event>
@@ -1480,6 +1522,7 @@
 									<text>We aren't the right people for this task.</text>
 									<event>
 										<text>"I... UNDER stand. Thank youfor not KIlling me." The Rebel ship spits out a weapon, then jumps away.</text>
+										<instantEscape/>
 										<weapon name="RANDOM"/>
 										<choice hidden="true">
 											<text>Continue...</text>
@@ -1493,6 +1536,7 @@
 							<text>No.</text>
 							<event>
 								<text>The ship stops, then immediately jumps away. Guess you scared them off, idiot.</text>
+								<instantEscape/>
 							</event>
 						</choice>
 					</event>
@@ -1503,15 +1547,6 @@
 			<text>Refuse and keep shooting.</text>
 			<event/>
 		</choice>
-	</surrender>
-	<destroyed load="DESTROYED_REBEL"/>
-	<deadCrew load="DEAD_CREW_REBEL"/>
-	<crew>
-		<crewMember type="human_soldier" prop="1"/>
-	</crew>
-</ship>
-<event name="MORPH_3_UNLOCK">
-	<event/>
 </event>
 <event name="ENCOUNTER_OOJMAJOO">
 	<text>Looks like this is the ship carrying the supposed subject zero. Much like the ship before, it makes no attempt to brag, threaten, or insult you like a normal Rebel ship would, but silently moves past.</text>
@@ -1614,7 +1649,7 @@
 	<choice hidden="true">	
 		<text>Could ask the same about why the Rebels are here.</text>
 		<event>
-			<text>"Yes, I was wondering thhhe same thhhhing. Thhhey've taken an interest in our... my latest mistakes. Thhhe Morphs, you see, were created to work for thhhe Shells. Do thhhe hard, manual labor. Damn Nerva, thhhe Management District's director, kept refusing to approve funding for thhhe project! Probably thhhought thhe Morphs were going to make them useless, much like thhhhe Radiants and Military Districts..."</text>
+			<text>"Yes, I was wondering thhhe same thhhhing. Thhhey've taken an interest in our... my latest mistakes. Thhhe Morphs, you see, were created to work for thhhe Shells. Do thhhe hard, manual labor. A work of god damn genius, too! All it took was a bit of Quarp Juice and soon enough I had created LIFE ITSELF! Damn Nerva, thhhe Management District's director, kept refusing to approve funding for thhhe project! Probably thhhought thhe Morphs were going to make them useless, much like thhhhe Radiants and Military Districts..."</text>
 			<choice hidden="true">	
 				<text>Continue...</text>
 				<event>
@@ -1623,17 +1658,18 @@
 						<text>We're on a quest to reach Node 17.</text>
 						<event>
 							<text>"Well no shit, everyone knows WHERE you're going. I swear, everyone is heading to thhhhat forsaken place. A disgrace! You could have used thhhat MV tech to, I don't know, solve ancient mysteries or create some sort of interdimensional utopia. But instead you use it to fight each othhher. We Shells do not suffer from thhhese issues. We are people of science, and have little to worry about internal conflict. Now, you still have not answered me. Have you come to kill me? Recruit me to cure some form of deadly space disease your people suffer from? God damn it, I'm tired of waiting."</text>
-							<choice hidden="true">	
+							<!--regular interaction-->
+							<choice hidden="true" req="LIST_CREW_ELLIE" lvl="0" max_lvl="0" blue="false" max_group="0">	
 								<text>We heard your distress call and came here.</text>
 								<event>
 									<text>"Ah, some kind of philanthropist, are you? Great, well I guess you're a better escort thhhan... I dunno, something thhhat's worse than you. You don't subscribe to any silly religions or conspiracies do you? You are vaccinated, right?"</text>
 									<choice hidden="true">	
-										<text>No.</text>
+										<text>Not particularly.</text>
 										<event>
 											<text>"Very good thhhen. I request thhhat you transport me back to thhhe Geniocracy when you have a chance. I shall make myself useful in thhhhe meantime. I am no freeloader."</text>
 											<crewMember amount="1" repair="2" class="unique_alkali">Alkali</crewMember>
 											<choice hidden="true">	
-												<text>Ok.</text>
+												<text>Okay.</text>
 												<event load="ALKALI_LEGION"/>
 											</choice>
 										</event>
@@ -1644,7 +1680,7 @@
 											<text>Alkali looks at you in disgust. "Ugh... well at least I know for certain you aren't going to kill me. For the time I am aboard your ship, you shall let me sleep in whatever room doesn't have any spiritual paraphernalia in it. I don't care if it's a broom closet. I request thhhat you transport me back to thhhe Geniocracy when you have a chance. I shall make myself useful in thhhhe meantime. I am no freeloader."</text>
 											<crewMember amount="1" repair="2" class="unique_alkali">Alkali</crewMember>
 											<choice hidden="true">	
-												<text>Ok.</text>
+												<text>Okay.</text>
 												<event load="ALKALI_LEGION"/>
 											</choice>
 										</event>
@@ -1655,17 +1691,52 @@
 											<text>Alkali looks at you in disgust. "Ugh... great, a bunch of barbarians. For the time I am aboard your ship, you shall let me sleep in whatever room doesn't have any spiritual paraphernalia in it. I don't care if it's a broom closet. I request thhhat you transport me back to thhhe Geniocracy when you have a chance. I shall make myself useful in thhhhe meantime. I am no freeloader."</text>
 											<crewMember amount="1" repair="2" class="unique_alkali">Alkali</crewMember>
 											<choice hidden="true">	
-												<text>Ok.</text>
+												<text>Okay.</text>
 												<event load="ALKALI_LEGION"/>
 											</choice>
 										</event>
 									</choice>
 								</event>
 							</choice>
-							<choice hidden="true">	
-								<text>Kill him.</text>
+							<!--Ellie interactions-->
+							<choice hidden="true" req="LIST_CREW_ELLIE_COSTUME" lvl="1" blue="false" max_group="0">		
+								<text>We heard your distress call and came here.</text>
 								<event>
-									<text>You draw your laser, and shoot Alkali. He dies almost immediately, not having fully recovered from his wounds. There's nothing else to do here now, so you head back to the ship wondering how massive of a mistake this was.</text>
+									<text>"Ah, some kind of philanthropist, are you? Great, well I guess you're a better escort thhhan... I dunno, something thhhat's worse than you. You- wait..." Alkali seems to notice Ellie standing amongst your crew for the first time. "A-are you Professor Ellie thhhe Equinoid? As in, THHHE Professor Ellie thhhe Equinoid?</text>
+									<choice hidden="true">	
+										<text>Uh... yeah, that's Ellie.</text>
+										<event>
+											<text>"YOU-" Alkali takes a moment to collect himself, rolling up to Ellie and shaking her hand. "It's an honor to meet you, professor. I am Professor Alkali Mardovar, but I'm sure you've heard of my work as I've heard of yours. Your Quarp Juice is a miracle, a life creating miracle! It's thhhe basis of my entire Morph project, it's truly revolutionary! I am in awe to be in your presence, as I am sure you are to be in mine!"
+											
+											Ellie doesn't seem to really even register what Alkali has said, but she likes the praise. "Another superfan?! Whinny! I love meeting fans." Ellie gets on her knees to be eye level with the shell, patting him on the head. "Well Mister Alkali, it's an honor to meet you too! Quarp Juice is very yummy! But I didn't invent it, silly. It's just the juice from Quarp!"
+											Alkali shakes his head. "You're too humble. But Quarp isn't even a real fruit! It puzzled me at first but it seems to be a fictional creation in some television show. The juice thhhhough is very real, and since your name is on the product it is clear thhhhat it is your creation! No self respecting scientist would let someone else to take credit for somethhhhing as marvelous as it. Ahem. Now then, since it is clear you are a crew of competitive IQ I shan't have any qualms in joining you. But don't dissapoint me."</text>
+											<crewMember amount="1" repair="2" class="unique_alkali">Alkali</crewMember>
+											<choice hidden="true">	
+												<text>Okay.</text>
+												<event load="ALKALI_LEGION"/>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true" req="unique_ellie_stephan" lvl="1" blue="false" max_group="0">		
+								<text>We heard your distress call and came here.</text>
+								<event>
+									<text>"Ah, some kind of philanthropist, are you? Great, well I guess you're a better escort thhhan... I dunno, something thhhat's worse than you. You- wait..." Alkali seems to notice Stephan, still partly dressed in his suit, standing amongst your crew for the first time. "A-are you Professor Ellie thhhe Equinoid? As in, THHHE Professor Ellie thhhe Equinoid?</text>
+									<choice hidden="true">	
+										<text>Uh... yeah, he used to play Ellie.</text>
+										<event>
+											<text>"YOU-" Alkali takes a moment to collect himself, rolling up to Stephan and shaking his hand. "It's an honor to meet you, professor. I am Professor Alkali Mardovar, but I'm sure you've heard of my work as I've heard of yours. Your Quarp Juice is a miracle, a life creating miracle! It's thhhe basis of my entire Morph project, it's truly revolutionary! I am in awe to be in your presence, as I am sure you are to be in mine!"
+											
+											Stephan seems highly confused but shakes Alkali's hand anyways. "Uhm... what? I- I'm sorry. I don't meant to be rude. It's just, I think you're confused. I'm not a scientist, I'm an actor. Or... was an actor. Quarp juice is just merchandise for my old show. Quarp isn't REAL, and the juice is just some weird mixture of probably biohazardous chemicals."
+											Alkali shakes his head. "You're too humble. Of course I know Quarp isn't a real fruit. It puzzled me at first, yes. The juice thhhhough is very real, and since your name is on the product it is clear thhhhat it is your creation! No self respecting scientist would let someone else to take credit for somethhhhing as marvelous as it. Ahem. Now then, since it is clear you are a crew of competitive IQ I shan't have any qualms in joining you. But don't dissapoint me."</text>
+											<crewMember amount="1" repair="2" class="unique_alkali">Alkali</crewMember>
+											<choice hidden="true">	
+												<text>Okay.</text>
+												<event load="ALKALI_LEGION"/>
+											</choice>
+										</event>
+									</choice>
 								</event>
 							</choice>
 						</event>
@@ -1960,6 +2031,7 @@
 	Events that give items
 -->
 <eventList name="NEBULA_MORPH_ITEMS">
+	<event load="NEBULA_MORPH_JUICE"/>
 	<event load="NEBULA_MORPH_PEEPEEPOOPOO"/>
 	<event load="NEBULA_MORPH_SOLAR"/>
 	<event load="NEBULA_MORPH_SMUGGLER_CONFUSED"/>
@@ -2025,6 +2097,119 @@
 	</event>
 </eventList>
 
+<event name="NEBULA_MORPH_JUICE" unique="true">
+	<text>A Shell vessel outfitted for cargo purposes is attempting to navigate the thicker clouds nearby. You catch chatter on the comms concerning their cargo, which seems to be high value. From what you can hear, it appears they're afraid of getting lost in the nebula.</text>
+	<environment type="storm"/>
+	<ship load="SHIP_SHELL_SCIENCE_JUICE" hostile="false"/>
+	<choice hidden="true">	
+		<text>Inquire if you can help.</text>
+		<event>
+			<text>The two Shells turn to look at you, surprised to find someone else here. "Oh. A Renegade. And thhhey aren't killing us? How strange. Maybe you can help. We're currently transporting a shipment of Quarp Juice to Site Omega but thhhis storm is in our way. Do you happen to have any alternate flight paths thhhere?"</text>
+			<choice hidden="true">	
+				<text>No, sorry.</text>
+				<event>
+					<text>The Shells immediately mute you and carry on arguing with each other.</text>
+					<choice hidden="true">
+						<text>Check the storage.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice hidden="true">
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">	
+				<text>Uhm... Quarp Juice? What?</text>
+				<event>
+					<text>"You've never heard of Quarp Juice? It's thhhis miracle substance Professor Alkali discovered that thhhe Union was selling! Invented by some genius scientist named Ellie! We used it to make thhhe Morphs. Which uh... didn't turn out so well, sure, but thhhey aren't selling thhhhe stuff anymore and it's incredibly expensive. We had a couple warehhhouses of it left and we're moving it before it gets blown up by Rebels."</text>
+					<choice hidden="true">	
+						<text>We can't help you.</text>
+						<event>
+							<text>The Shells immediately mute you and carry on arguing with each other.</text>
+							<choice hidden="true">
+								<text>Check the storage.</text>
+								<event load="STORAGE_CHECK"/>
+							</choice>
+							<choice hidden="true">
+								<text>Do nothing.</text>
+								<event/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="sensors" lvl="3">	
+						<text>(Adv. Sensors) Show them your databanks.</text>
+						<event load="MORPH_JUICE_SCANS"/>
+					</choice>
+					<choice hidden="true" req="ADV_SCANNERS">	
+						<text>(LRS) Show them your databanks.</text>
+						<event load="MORPH_JUICE_SCANS"/>
+					</choice>
+					<choice hidden="true" req="unique_alkali">	
+						<text>(Alkali) Contact them with Alkali.</text>
+						<event load="MORPH_JUICE_ALKALI"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="sensors" lvl="3">	
+				<text>(Adv. Sensors) Show them your databanks.</text>
+				<event load="MORPH_JUICE_SCANS"/>
+			</choice>
+			<choice hidden="true" req="ADV_SCANNERS">	
+				<text>(LRS) Show them your databanks.</text>
+				<event load="MORPH_JUICE_SCANS"/>
+			</choice>
+			<choice hidden="true" req="unique_alkali">	
+				<text>(Alkali) Contact them with Alkali.</text>
+				<event load="MORPH_JUICE_ALKALI"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>If their cargo is valuable, let's take it!</text>
+		<event>
+			<text>You aren't quite sure what they're exactly carrying, but you sure wouldn't mind taking it!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_SHELL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">	
+		<text>Ignore the vessel.</text>
+		<event>
+			<text>With nothing of interest to do with the transport, you simply mute their frequencies and carry on.</text>
+			<choice hidden="true">
+				<text>Check the storage.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice hidden="true">
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MORPH_JUICE_SCANS">
+	<event>
+		<text>"Wow, your databanks are quite extensive. And so I thought we Shells were the only ones with thhhe observational skills to record such thhhorough data. Thhhank you for this. Allow us to assist you."</text>
+		<upgrade amount="1" system="oxygen"/>
+	</event>
+	<event>
+		<text>"Wow, your databanks are quite extensive. And so I thought we Shells were the only ones with thhhe observational skills to record such thhhorough data. Thhhank you for this. Allow us to assist you."</text>
+		<upgrade amount="1" system="shields"/>
+	</event>
+	<event>
+		<text>"Wow, your databanks are quite extensive. And so I thought we Shells were the only ones with thhhe observational skills to record such thhhorough data. Thhhank you for this. Allow us to assist you."</text>
+		<upgrade amount="1" system="engines"/>
+	</event>
+</eventList>
+<event name="MORPH_JUICE_ALKALI">
+	<text>You expect Alkali to offer help to the scientists or at least some words of reaffirment, but instead he only proceeds to insult the pair for their incompetence. Ashamed (and also afraid of being fired) the Shells profusely apologize and offer you everything they can spare to settle Alkali's anger.</text>
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+
 <event name="NEBULA_MORPH_PEEPEEPOOPOO" unique="true">
 	<text>A hail from the nearest Morph ship bears an odd message. "Pee pee poo poo." To you, this sounds like nothing more than a crude joke. But for all you know, to the Morphs this could be profound.</text>
 	<ship load="SHIP_MORPH_FIGHT" hostile="false"/>
@@ -2032,7 +2217,7 @@
 	<choice hidden="true">	
 		<text>Take some time to decipher it.</text>
 		<event>
-			<text>You spend hours analyzing what it could mean. You work your brain, trying every possible angle to look for. At last, you give up. It seems the true meaning of pee pee poo poo shall forever remain lost to you. Fortunately, your efforts don't go entirely in vain, and the morph seems to appreciate your thoughtfulness and gives you a small chunk of scrap.</text>
+			<text>You spend hours analyzing what it could mean. You work your brain, trying every possible angle to look for. At last, you give up. It seems the true meaning of pee pee poo poo shall forever remain lost to you. Fortunately, your efforts don't go entirely in vain, and the Morph seems to appreciate your thoughtfulness and gives you a small chunk of scrap.</text>
 			<autoReward level="LOW">scrap_only</autoReward>
 		</event>
 	</choice>
@@ -2599,7 +2784,7 @@
 		</event>
 	</choice>
 	<choice hidden="true" req="BLUELIST_DRONES_BOARDING">	
-		<text>(Boarding Drone) Send the drone in to eradicate the morphs. [-1|]</text>
+		<text>(Boarding Drone) Send the drone in to eradicate the Morphs. [-1|]</text>
 		<event load="MORPH_SLICE_BOARDER"/>
 	</choice>
 	<choice hidden="true">	

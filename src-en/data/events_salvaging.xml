@@ -56,9 +56,13 @@
 <event name="SALVAGE_DEFAULT_MINEFIELD">
 	<text>Your crew stumble across an abandoned minefield. Certainly dubious, but also a potential source of a large amount of ammo and scrap. However, it's risky for the crew.</text>
 	<variable name="loc_has_salvaged" op="set" val="1"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Take the risk.</text>
 		<event load="SALVAGE_DEFAULT_MINEFIELD_RISK"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You have no sacrificial crew to send in the minefield.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true" req="rock_crusader">
 		<text>Your Crusader knows a lot about explosives, and can also take a hit.</text>
@@ -139,7 +143,7 @@
 			<drone name="BATTLETOG_DEFEND"/>
 		</event>
 	</choice>
-	<choice hidden="true" req="BLUELIST_ENERGY_SHIELD">
+	<choice hidden="true" req="LIST_CHECK_ENERGY_SHIELD">
 		<text>(Energy Shield) Approach without any fear of intruders.</text>
 		<event>
 			<text>Fortunately, your Energy Shield greatly simplify the process. You retrieve the schematic without having to deal with any resistance.</text>
@@ -165,9 +169,13 @@
 <event name="SALVAGE_DEFAULT_PIRATES">
 	<text>The immediate area around the beacon yields little, but after diving much deeper into the system you stumble across an inactive pirate ship scans didn't turn up before.</text>
 	<variable name="loc_has_salvaged" op="set" val="1"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Send a team to see what loot might be inside.</text>
 		<event load="SALVAGE_DEFAULT_PIRATES_LOOT"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You cannot send a team, since you lack one.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true">
 		<text>Scrap the hull.</text>
@@ -208,6 +216,13 @@
 			<text>(Phasing Crew) Sneak inside.</text>
 			<event>
 				<text>Your crew is able to slip easily past the door and get inside, where they find a trap that they quickly defuse. Now that it's safe to enter, the rest of the crew follow and take all that they can.</text>
+				<autoReward level="HIGH">standard</autoReward>
+			</event>
+		</choice>
+		<choice hidden="true" req="LIST_CREW_ROCK">
+			<text>(Rock Crew) Send in your Rock first.</text>
+			<event>
+				<text>Your crew is able to easily bash the door open and get inside, but the second they step inside a trap is triggered! "Screw you, thieves!" shouts an automated message, followed by an explosion. Your crew member fortunately appears to only have flinched and is still whole. Now that it's safe to enter, the rest of the crew follow and take all that they can.</text>
 				<autoReward level="HIGH">standard</autoReward>
 			</event>
 		</choice>

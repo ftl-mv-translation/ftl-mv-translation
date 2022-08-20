@@ -478,6 +478,13 @@
 			<reveal_map/>
 		</event>
 	</choice>
+	<choice req="LOCKED_GLOBAL_TELEPORT" hidden="true">
+		<text>(Central Teleport) Beam directly onto the station to try to avoid detection.</text>
+		<event>
+			<text>Once on board, your crew is able to access and download the long-range scanner's archived information. Your map has been updated.</text>
+			<reveal_map/>
+		</event>
+	</choice>
 </event>
 <eventList name="AUTO_DEFENSE_MAP_SENSORS">
 	<event>
@@ -715,13 +722,20 @@
 		<text>Continue...</text>
 		<event>
 			<text>A flushed and panicky Rebel soldier has teleported aboard. The Rebel, who appears unarmed, repeatedly declares his peaceful intentions. It seems the Rebel life has lost its charm.</text>
-			<choice hidden="true">
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 				<text>Accept his proposal, and prepare to fight the Rebel ship.</text>
 				<event load="REBEL_DEFECTOR_HELP"/>
 			</choice>
-			<choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 				<text>Reject his offer. You can never trust these Rebels.</text>
 				<event load="REBEL_DEFECTOR_REJECT"/>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>Terminate the intruder immediately. You can never trust these Rebels.</text>
+				<event>
+					<text>Your advanced security system easily removes the intruder, but the Rebel ship still needs to be dealt with.</text>
+					<event load="COMBAT_CHECK"/>
+				</event>
 			</choice>
 		</event>
 	</choice>
@@ -926,7 +940,7 @@
 			<choice hidden="true">
 				<text>Keep listening.</text>
 				<event>
-					<text>"It is common knowledge that the human race is superior to all other aliens. Therefore, it is the Rebellion's divine right to overthrow the Federation and establish a glorious, human only galactic government. Other aliens will be allowed to exist on the outskirts so long as they avoid communicating with humans.</text>
+					<text>"It is common knowledge that the human race is superior to all other aliens. Therefore, it is the Rebellion's divine right to overthrow the Federation and establish a glorious, human only galactic government. Other aliens will be allowed to exist on the outskirts so long as they avoid communicating with humans."</text>
 					<modifyPursuit amount="1"/>
 					<choice hidden="true">
 						<text>Continue...</text>
@@ -1187,7 +1201,7 @@
 				<text>Continue...</text>
 				<event>
 					<text>In the center of the stage is an important looking Rebel politician, surrounded by 3 big screens projecting Rebel propaganda. You can just barely make out what he's saying over all the cheering from the crowd. "Friends and friends to be, we have all gathered here to celebrate the might of the Rebellion! We have received news that the new Rebel Flagship gifted to us by the Multiverse travelers has reached the Federation Capitol! The Federation's days are numbered, and soon the Rebellion shall rise and take its place!"</text>
-					<choice hidden="true">
+					<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 						<text>Send one of your crew to assassinate the politician.</text>
 						<event>
 							<text>You wish you had brought your ship, but if you go back now it may be too late. You use your handheld scanner to find a good vantage point and send one of your crew to prepare.</text>
@@ -1196,6 +1210,10 @@
 								<event load="REBELHOLD_SPEECH_ASSASINATE"/>
 							</choice>
 						</event>
+					</choice>
+					<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+						<text>With you out here on your own, there is little to do.</text>
+						<event load="OPTION_INVALID"/>
 					</choice>
 					<choice hidden="true" req="LIST_CREW_ELITE">
 						<text>(Elite Crew) Send your elite to assassinate the politician.</text>
@@ -1474,7 +1492,7 @@
 	</choice>
 </event>
 <event name="FLAGSHIP_CONSTRUCTION_DONE">
-	<text>You know with an infinite amount of potential realities there is thousands more Flagships out there, but without this one at least one more reality has been saved. It's a major victory, and there's countless scrap for you to collect, and even the blueprints of a Rebel cruiser left unprotected! Cautious of reinforcements arriving, you take as much as you can and leave. The Fleet will likely be too distracted dealing with this loss to follow you.</text>
+	<text>You know with an infinite amount of potential realities there are thousands more Flagships out there, but without this one at least one more reality has been saved. It's a major victory, and there's countless scrap for you to collect, and even the blueprints of a Rebel cruiser left unprotected! Cautious of reinforcements arriving, you take as much as you can and leave. The Fleet will likely be too distracted dealing with this loss to follow you.</text>
 	<variable name="ach_boss_construction" op="set" val="1"/>
 	<unlockCustomShip silent="false">PLAYER_SHIP_REBEL</unlockCustomShip>
 	<item_modify>
@@ -2134,6 +2152,8 @@
 		<event>
 			<text>The damaged ship is in horrible condition, but it still manages to raise its weapons and defend itself.</text>
 			<ship load="SHIP_AUTO_DAMAGED" hostile="true"/>
+			<enemyDamage amount="2" system="random" effect="eff"/>
+			<enemyDamage amount="1" system="random" effect="eff"/>   
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="COMBAT_CHECK"/>
@@ -2143,7 +2163,7 @@
 	<choice hidden="true">
 		<text>Avoid the ship.</text>
 		<event>
-			<text>You'd have to be an absolute idiot to invest time into repairing an enemy auto-ship.</text>
+			<text>You'd have to be an absolute idiot to invest time into repairing an enemy Auto-ship.</text>
 			<choice>
 				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
@@ -2476,8 +2496,9 @@
 			<choice hidden="true" req="loc_a55_handshake" lvl="1" max_group="0" blue="false">
 				<text>Continue...</text>
 				<event>
-					<text>"Thank you, matey. Arg, though you did choose to try and murder me a few minutes ago, your heart is clearly in the right place lad. I suspect my time here as king might be short lived, those Engineers will come around again. I think I shall come with you, in hopes I might live to see a future without Rebels."</text>
+					<text>"Thank you, matey. Arg, though you did choose to try and murder me a few minutes ago, your heart is clearly in the right place lad. I suspect my time here as king might be short lived, those Engineers will come around again. I think I shall come with you, in hopes I might live to see a future without Rebels. Let me send you over some scans o' me ship - not the one you destroyed, but one I plundered from the Rebel databanks back in the day."</text>
 					<variable name="ach_crew_a55" op="set" val="1"/>
+					<unlockCustomShip silent="false">PLAYER_SHIP_AUTO</unlockCustomShip>
 					<drone name="A55_BATTLE"/>
 				</event>
 			</choice>
@@ -2614,7 +2635,7 @@
 						</event>
 					</choice>
 					<choice hidden="true" req="LIST_CREW_ENGINEER">
-						<text>(Enginer Crew) Have your engineer help.</text>
+						<text>(Engineer Crew) Have your engineer help.</text>
 						<event>
 							<text>Your engineer searches deep through their memories and remembers a staff training day where they explained the importance of each button. Recalling the red button was the correct solution, you relay this to the crew who flips open the protective casing and smashes the button as fast as they can.</text>
 							<choice hidden="true">
@@ -2653,6 +2674,7 @@
 </event>
 <event name="AUTO_POWERCORE_BIGBOOM_ESCAPE_GOOD">
 	<text>Your advanced engines are easily able to get you out in time. You watch the explosion from a safe distance.</text>
+	<achievement>ACH_EVENT_EXPLOSION</achievement>
 </event>
 <event name="AUTO_POWERCORE_SAVE">
 	<text>A loud beep emminates from the console. "Emergency Reactor Meltdown Prevention button pressed. Stopping countdown to imminent explosion. Reactor stabilized." By some incredible miracle, it appears you've stopped the explosion.</text>
@@ -2862,9 +2884,9 @@
     </loadEventList>
 </event>
 <event name="CYRA_JERRY_SPARE_CREW">
-	<text>Cyra's ship is in poor condition, but before you can continue the fight, Jerry pulls you aside. "Please, whatever you do, don't kill Cyra. She can't keep fighting like this for much longer, we can get through this without her dying! Please, I know you're a mercenary and a Federation one at that, but there doesn't need to be more bloodshed today!"</text>
+	<text>Cyra's ship is in poor condition, but before you can continue the fight, Jerry pulls you aside. "Please, whatever you do, don't kill Cyra. She can't keep fighting like this for much longer, we can get through this without her dying, as long as you don't finish her off! Please, I know you're a mercenary and a Federation one at that, but there doesn't need to be more bloodshed today!"</text>
 	<triggeredEvent event="CYRA_JERRY_SUCCESS" thisFight="true" clearOnJump="true">
-		<time amount="25"/>
+		<time amount="18"/>
 	</triggeredEvent> 
 </event>
 <event name="CYRA_JERRY_SPARE_DEAD">
@@ -2874,6 +2896,7 @@
 	<text>You've managed to hold out just long enough, and eventually Cyra's ship comes to a halt. Cyra herself has collapsed, unable to fight any longer, and she reluctantly surrenders.</text>
 	<ship hostile="false"/>
 	<autoReward level="HIGH">weapon</autoReward>
+	<variable name="loc_killedcyra" op="set" val="1"/>
 	<choice hidden="true" req="unique_jerry" lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event>
@@ -3787,9 +3810,13 @@
 <event name="DESTROYED_TOM">
 	<text>Just as you defeat the Rebel ship, an escape pod ejects from it. Unfortunately, it doesn't get far before you collect it and bring it aboard. You open it and drag out the Rebel officer inside. They beg that you let them live.</text>
 	<autoReward level="LOW">standard</autoReward>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Accept him onto your ship.</text>
 		<event load="DESTROYED_TOM_POD_ACCEPT"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>Accepting the Rebel without further means of ensuring his loyalty is too risky.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true" req="mind">
 		<text>(Mind Control) Keep the mind control online in-case he does anything bad.</text>

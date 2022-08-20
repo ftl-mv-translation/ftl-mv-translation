@@ -35,13 +35,13 @@ BLACKMARKET_BOUNTYHUNTER
 -->
 
 <event name="PIRACY_LIST">
-	<loadEventList seeded="true" first="true" generate="true" default="PIRACY_LIST_GENERIC">
+	<loadEventList seeded="false" first="true" generate="true" default="PIRACY_LIST_GENERIC">
 		<event name="PIRACY_LIST_GENERIC"/>
 	</loadEventList>
 </event>
 
 <event name="PIRACY_LIST_GENERIC">
-	<loadEventList seeded="true" first="false" generate="true">
+	<loadEventList seeded="false" first="false" generate="true">
 		<event name="PIRACY_GENERIC_FRIENDLY"/>
 		<event name="PIRACY_GENERIC_CHOICE"/>
 		<event name="PIRACY_GENERIC_HOSTILE"/>
@@ -308,7 +308,7 @@ BLACKMARKET_BOUNTYHUNTER
 <event name="SLAVER_CHOICE">
 	<text load="TEXT_SLAVER_CHOICE"/>
 	<ship load="SHIP_SLAVER_ALL" hostile="false"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Draw straws and send a crew-member over to the slavers.</text>
 		<event>
 			<text>The chosen crew-member leaves without complaint, knowing you had no choice.</text>
@@ -318,7 +318,18 @@ BLACKMARKET_BOUNTYHUNTER
 			</removeCrew>
 		</event>
 	</choice>
-	<choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>"Logic error: request cannot be met. This is an automated vessel. Demand: refused."</text>
+		<event>
+			<text>How stupid do these guys have to be to demand crew from an automated vessel? You'll have time to think about it after you'll do the world a favor by ridding it of these clowns.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>We will never surrender one of our crew to slavers!</text>
 		<event>
 			<text>You prepare to fight the slaver.</text>
@@ -329,7 +340,7 @@ BLACKMARKET_BOUNTYHUNTER
 			</choice>
 		</event>
 	</choice>
-	<choice req="spider" hidden="true">
+	<choice req="LIST_CREW_SPIDER" hidden="true">
 		<text>(Spider Crew) "Give" them your spider and let them cause havoc.</text>
 		<event>
 			<text>"Wait, what is thi- OH GOD AHGHWHAHAGGHHAHHH" The slaver falls to the floor as the spider tears out his throat, and moves on to consume the rest of the crew. While it might have killed everyone aboard, including the slaves, the hull of the ship remains intact for you to scrap.</text>
@@ -461,8 +472,8 @@ BLACKMARKET_BOUNTYHUNTER
 
 <textList name="TEXT_MERCENARY_FRIENDLY">
 	<text>The Syndicate has no shortage of guns for hire who'll do just about anything for the right price. The vessel here is no exception.</text>
-	<text>A ship hails you: "Greetings! It seems you're having some difficulty with the Rebellion. I'd love to help, but I can't afford the upkeep required on this hunnk of junk I'm flying... maybe we can come to an arrangement?"</text>
-	<text>"Got scrap? Need something done? Well, I'm the man for you!" The mercenary at this beacon flashes a toothy grin to reasure you.</text>
+	<text>A ship hails you: "Greetings! It seems you're having some difficulty with the Rebellion. I'd love to help, but I can't afford the upkeep required on this hunk of junk I'm flying... maybe we can come to an arrangement?"</text>
+	<text>"Got scrap? Need something done? Well, I'm the man for you!" The mercenary at this beacon flashes a toothy grin to reassure you.</text>
 	<text>Thanks to Vael and the Syndicate, mercenaries are swarming the galaxy. Their less-than-legal services are in high demand, and one is waiting nearby for ships like you that might find some use in their services.</text>
 	<text>A ship with Syndicate markings orbits a nearby backwater station. You receive a shady message: "Anything is possible, for the right price."</text>
 	<text>"I've caught word... a Renegade? You must be busy. Busy busy, indeed! I understand your mission is quite important. Maybe, for a litle payment, I can make life easier for you?"</text>
@@ -643,7 +654,7 @@ BLACKMARKET_BOUNTYHUNTER
             <ship hostile="true"/>
             <choice hidden="true">
                 <text>Continue...</text>
-                <event load="REPUTATION_DECREASE_MERCENARY_COMBAT"/>
+                <event load="REPUTATION_DECREASE_SMUGGLING_COMBAT"/>
             </choice>
         </event>
     </choice>

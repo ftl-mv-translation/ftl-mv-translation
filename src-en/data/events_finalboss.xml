@@ -109,6 +109,7 @@
 
 <event name="SHOWDOWN_BEGIN">
 	<text>As you pursue the Flagship, you know this is your last chance to prepare whatever you might need before the battle. This will be it, there's no going back once you've caught up to them. Now would be a good time to check your mission report one last time.</text>
+	<jumpEvent>GO_TO_SHOWDOWN</jumpEvent>
 	<img back="BACKGROUND_LIGHTSPEED" planet="NONE"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -128,37 +129,32 @@
 </event>
 
 <event name="GO_TO_SHOWDOWN">
-	<text>You've done all you can. Now, it's time to fight this Flagship.</text>
-	<img back="BACKGROUND_LIGHTSPEED" planet="NONE"/>
-	<choice hidden="true" req="challenge_level" max_group="0" lvl="0" blue="false">
-		<text>Continue...</text>
-		<event load="GO_TO_SHOWDOWN_CASUAL"/>
-	</choice>
-	<choice hidden="true" req="challenge_level" max_group="0" lvl="1" blue="false">
-		<text>Continue...</text>
-		<event load="GO_TO_SHOWDOWN_NORMAL"/>
-	</choice>
-	<choice hidden="true" req="challenge_level" max_group="0" lvl="2" blue="false">
-		<text>Continue...</text>
-		<event load="GO_TO_SHOWDOWN_CHALLENGE"/>
-	</choice>
-	<choice hidden="true" req="challenge_level" max_group="0" lvl="3" blue="false">
-		<text>Continue...</text>
-		<event load="GO_TO_SHOWDOWN_EXTREME"/>
-	</choice>
+	<text>Now fully situated and ready for your final fight, you set the ship into hyperspeed for hopefully not your last time.</text>
+	<secretSector>SHOWDOWN</secretSector>
 </event>
 
-<event name="GO_TO_SHOWDOWN_CASUAL">
-	<secretSector/>
+<event name="SHOWDOWN_START">
+	<img back="BACKGROUND_LIGHTSPEED" planet="NONE"/>
+	<loadEventList seeded="false" first="true" generate="false">
+		<event name="SHOWDOWN_GNOME" req="chaos_mode" lvl="1"/>
+		<event name="SHOWDOWN_CASUAL" req="challenge_level" lvl="0" max_lvl="0"/>
+		<event name="SHOWDOWN_NORMAL" req="challenge_level" lvl="1" max_lvl="1"/>
+		<event name="SHOWDOWN_CHALLENGE" req="challenge_level" lvl="2" max_lvl="2"/>
+		<event name="SHOWDOWN_EXTREME" req="challenge_level" lvl="3" max_lvl="3"/>
+	</loadEventList>
 </event>
-<event name="GO_TO_SHOWDOWN_NORMAL">
-	<secretSector/>
+<event name="SHOWDOWN_START_NOCHAOS">
+	<loadEventList seeded="false" first="true" generate="false">
+		<event name="SHOWDOWN_CASUAL" req="challenge_level" lvl="0" max_lvl="0"/>
+		<event name="SHOWDOWN_NORMAL" req="challenge_level" lvl="1" max_lvl="1"/>
+		<event name="SHOWDOWN_CHALLENGE" req="challenge_level" lvl="2" max_lvl="2"/>
+		<event name="SHOWDOWN_EXTREME" req="challenge_level" lvl="3" max_lvl="3"/>
+	</loadEventList>
 </event>
-<event name="GO_TO_SHOWDOWN_CHALLENGE">
-	<secretSector/>
-</event>
-<event name="GO_TO_SHOWDOWN_EXTREME">
-	<secretSector/>
+<event name="SHOWDOWN_GNOME">
+	<achievement>ACH_GNOME_TRUEFAIL</achievement>
+	<playSound>gm_fail</playSound>
+	<loadEvent>SHOWDOWN_START_NOCHAOS</loadEvent>
 </event>
 
 <event name="SHOWDOWN_CASUAL">
@@ -284,11 +280,11 @@
 				<text>Continue...</text>
 				<event>
 					<text>Nights chuckles and takes another sip. "Heheh... Admiral Vance Wentworth, huh? More like... Wentworthlessssss! HAHAHAHAHAHAHAHAH!"</text>
-					<achievement silent="false">ACH_CHAR_WENTWORTHLESS</achievement>
+					<achievement silent="false">ACH_TRUEEND_WENTWORTHLESS</achievement>
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
-							<text>Through Night's intoxicated laughter and hiccuping you can hear Vance growling, as his eye twitches in annoyance. At last, you've found validation for keeping this slimey asshole on your ship. Too bad you can't delay the inevitable any longer - it's time for a showdown!</text>
+							<text>Through Nights' intoxicated laughter and hiccuping you can hear Vance growling, as his eye twitches in annoyance. At last, you've found validation for keeping this slimey asshole on your ship. Too bad you can't delay the inevitable any longer - it's time for a showdown!</text>
 							<ship hostile="true"/>
 							<choice hidden="true">
 								<text>Continue...</text>
@@ -315,7 +311,7 @@
 						<text>Continue...</text>
 						<event>
 							<text>With that, Vance ends the call immediately and his ship goes back to charging its MV Drive. Tully looks defeated, but you don't have time to contemplate. It's time for one final showdown!</text>
-							<achievement silent="false">ACH_CHAR_TULLYTRUEEND</achievement>
+							<achievement silent="false">ACH_TRUEEND_TULLY</achievement>
 							<ship hostile="true"/>
 							<choice hidden="true">
 								<text>Continue...</text>
@@ -364,6 +360,7 @@
 														<text>Continue...</text>
 														<event>
 															<text>Suddenly, Jerry gets back up to his feet, wiping away the tears. "Well, there's only one thing left to do now." He draws out a massive Gatling gun. You aren't sure where he got it from, but you don't have the time to question it.</text>
+															<achievement>ACH_JERRY_END</achievement>
 															<crewMember amount="1" class="unique_jerry_gun">Jerry</crewMember>
 															<choice hidden="true" blue="false" lvl="0" max_group="0" req="pony_tamed">
 																<text>Continue...</text>
@@ -396,7 +393,9 @@
 																				<event>
 																					<text>Then, Jerry proceeds to mount the pony! "Alright. Now I'm ready."</text>
 																					<crewMember amount="1" class="unique_jerry_pony_crystal">Jerry</crewMember>
-																					<unlockCustomShip silent="false">PLAYER_SHIP_PONY_3</unlockCustomShip>
+																					<achievement>ACH_JERRY_STEED</achievement>
+																					<achievement>ACH_JERRY_CRYSTALSTEED</achievement>
+																					<!--<unlockCustomShip silent="false">PLAYER_SHIP_PONY_3</unlockCustomShip>-->
 																					<choice hidden="true">
 																						<text>Continue...</text>
 																						<event load="COMBAT_CHECK_FLAGSHIP"/>
@@ -428,7 +427,8 @@
 																				<event>
 																					<text>Then, Jerry proceeds to mount the pony! "Alright. Now I'm ready."</text>
 																					<crewMember amount="1" class="unique_jerry_pony">Jerry</crewMember>
-																					<unlockCustomShip silent="false">PLAYER_SHIP_PONY_3</unlockCustomShip>
+																					<achievement>ACH_JERRY_STEED</achievement>
+																					<!--<unlockCustomShip silent="false">PLAYER_SHIP_PONY_3</unlockCustomShip>-->
 																					<choice hidden="true">
 																						<text>Continue...</text>
 																						<event load="COMBAT_CHECK_FLAGSHIP"/>
@@ -474,6 +474,7 @@
 </event>
 <event name="TRUE_VICTORY">
 	<text>As the MFK Flagship is destroyed, and Vance with it, you know your mission has been a success. The Rebellion will struggle to recover without their leader, but this won't be their death. You retrieve the nearby Paragon from the wreckage, and bring it back to your ship. Knowing there is little time left to lose before the fleet catches up, you take one last look at your crew. To detonate this bomb means the collapse of the Multiverse, and MV drives will simply cease to function. This will mean an end to the war... but it'll kill you and your crew, as well as strand billions of people from around the Multiverse. The choice is yours, captain. How does this end?</text>
+	<metaVariable name="juke_showdown" op="set" val="1"/>
 	<unlockCustomShip silent="false">PLAYER_SHIP_FLAGSHIP</unlockCustomShip>
 	<img back="VICTORY_TRUE" planet="NONE"/>
 	<choice hidden="true">
@@ -520,6 +521,10 @@
 		<text>Ask Jerry about this.</text>
 		<event load="TRUE_VICTORY_CREW_JERRY"/>
 	</choice>
+	<choice hidden="true" req="unique_anurak">
+		<text>Ask Anurak about this.</text>
+		<event load="TRUE_VICTORY_CREW_ANURAK"/>
+	</choice>
 	<choice hidden="true" req="unique_devorak">
 		<text>Ask Devorak about this.</text>
 		<event load="TRUE_VICTORY_CREW_DEVORAK"/>
@@ -535,6 +540,14 @@
 	<choice hidden="true" req="unique_ooj">
 		<text>Ask OOJ MAJOO about this.</text>
 		<event load="TRUE_VICTORY_CREW_OOJ"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ELLIE_COSTUME">
+		<text>Ask Ellie about this.</text>
+		<event load="TRUE_VICTORY_CREW_ELLIE"/>
+	</choice>
+	<choice hidden="true" req="unique_ellie_stephan">
+		<text>Ask Stephan about this.</text>
+		<event load="TRUE_VICTORY_CREW_STEPHAN"/>
 	</choice>
 	<choice hidden="true" req="unique_nights">
 		<text>Ask Nights about this.</text>
@@ -556,7 +569,7 @@
 		<text>Ask Tyrdeo about this.</text>
 		<event load="TRUE_VICTORY_CREW_TYRDEO"/>
 	</choice>
-	<choice hidden="true" req="unique_freddy">
+	<choice hidden="true" req="LIST_CREW_FREDDY">
 		<text>Ask Freddy about this.</text>
 		<event load="TRUE_VICTORY_CREW_FREDDY"/>
 	</choice>
@@ -608,11 +621,11 @@
 		<text>Check on the Spider Queen.</text>
 		<event load="TRUE_VICTORY_CREW_QUEEN"/>
 	</choice>
-	<choice hidden="true" req="salt">
+	<choice hidden="true" req="unique_obyn">
 		<text>Ask Obyn about this.</text>
 		<event load="TRUE_VICTORY_CREW_OBYN"/>
 	</choice>
-	<choice hidden="true" req="symbiote">
+	<choice hidden="true" req="unique_symbiote">
 		<text>Ask Tintan and Rig about this.</text>
 		<event load="TRUE_VICTORY_CREW_SYMBIOTE"/>
 	</choice>
@@ -624,7 +637,7 @@
 		<text>Ask Guntput about this.</text>
 		<event load="TRUE_VICTORY_CREW_GUNTPUT"/>
 	</choice>
-	<choice hidden="true" req="traitor">
+	<choice hidden="true" req="unique_metyunt">
 		<text>Ask Metyunt about this.</text>
 		<event load="TRUE_VICTORY_CREW_METYUNT"/>
 	</choice>
@@ -669,6 +682,14 @@
 		<event load="TRUE_VICTORY_LOAD"/>
 	</choice>
 </event>
+<event name="TRUE_VICTORY_CREW_ANURAK">
+	<text>"Oh dear, Shellskenbry! This is really quite something! I don't... I don't know what to make of it all! But, you want my opinion on this? Oh I'm not very good with decisions. No no not at all! Uhm... oh my... uh... uh... I think you should do it! The bomb! The bomb... is what you should do. Yes. Uhm. I don't know why. It's just what first comes to my head. I think if I tried to explain it I might change my mind and I don't want that kind of indecision right now! Just... just do it quickly, okay? Oh I hope it doesn't hurt..."</text>
+	<unlockCustomShip silent="false">CREW_SHIP_SLOT2_2</unlockCustomShip>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="TRUE_VICTORY_LOAD"/>
+	</choice>
+</event>
 <event name="TRUE_VICTORY_CREW_DEVORAK">
 	<text>"That bastard Vance finally got what's coming to him, and I am damn glad I was aboard the ship that did it. Maybe the Federation isn't so bad after all, eh? Hah, that's a lie, but you're alright kid. Blowing up myself along with the rest of time and space sounds like a pretty fitting end to my story. I've served my purpose. Don't let me hold you back from pulling the trigger."</text>
 	<unlockCustomShip silent="false">CREW_SHIP_SLOT2_2</unlockCustomShip>
@@ -697,6 +718,22 @@
 	<text>"Pur too look-loo kik pik ripple steep." You have no idea what this means, but the sentiment behind it is not lost when OOJ shapes himself into a large heart. You give the giant blob a hug as he jiggles in your arms.</text>
 	<transformRace class="unique_ooj">unique_ooj_love</transformRace>
 	<unlockCustomShip silent="false">CREW_SHIP_SLOT3_2</unlockCustomShip>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="TRUE_VICTORY_LOAD"/>
+	</choice>
+</event>
+<event name="TRUE_VICTORY_CREW_ELLIE">
+	<text>"Hahahah! Ellie is on top of the world! On top of the Multiverse! Neeeiiiigh!" Ellie spins around in circles. "It would be a shame for Ellie to die now! She still has a duty to all the children, all the children who will never see Ellie again if she died! Don't blow the bomb superfan, think about what you'd be robbing the Multiverse of!"</text>
+	<unlockCustomShip silent="false">CREW_SHIP_SLOT3_3</unlockCustomShip>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="TRUE_VICTORY_LOAD"/>
+	</choice>
+</event>
+<event name="TRUE_VICTORY_CREW_STEPHAN">
+	<text>"We've come so far! Maybe... maybe after this, I really am a hero. Something for children to look up to... Even if they'll never know what we've done. I don't... I don't care what happens next. You've given me a chance at redemption, and that's all I care about. Thank you, captain."</text>
+	<unlockCustomShip silent="false">CREW_SHIP_SLOT3_3</unlockCustomShip>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event load="TRUE_VICTORY_LOAD"/>
@@ -759,7 +796,7 @@
 	</choice>
 </event>
 <event name="TRUE_VICTORY_CREW_ARIADNE">
-	<text>Even in the face of this great triumph, Ariadne remains stoic, save for a faint smirk on her face. "When I offered my services to you captain, I didn't expect you to drag me across the Multiverse into the pit of demigods to overthrow the Rebellion. But - it's been an honor. However, my initial mission is not complete. The Theocracy has not yet been defeated. I'm afraid that bomb of yours will do little to stop the Elders. I understand this is not my call to make, but I hope you have considered the weight of this decision.</text>
+	<text>Even in the face of this great triumph, Ariadne remains stoic, save for a faint smirk on her face. "When I offered my services to you captain, I didn't expect you to drag me across the Multiverse into the pit of demigods to overthrow the Rebellion. But - it's been an honor. However, my initial mission is not complete. The Theocracy has not yet been defeated. I'm afraid that bomb of yours will do little to stop the Elders. I understand this is not my call to make, but I hope you have considered the weight of this decision."</text>
 	<unlockCustomShip silent="false">CREW_SHIP_SLOT7</unlockCustomShip>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -799,7 +836,7 @@
 	</choice>
 </event>
 <event name="TRUE_VICTORY_CREW_ANOINTED">
-	<text>"From ancient ruins I heard mention of Paragon. But never in even dreams was I thinking I find it! If I am Anointed, then you are divine beyond doubt!" The Anointed bows to you. "For centuries my people revere Obelisk as gods, but now I am knowing of their true menace. I could not thinking any better end to their empire than the destruction of Multiverse."</text>
+	<text>"From ancient ruins I heard mention of Paragon. But never in even dreams was I thinking I find it! If I am Anointed, then you are divine beyond doubt!" The Anointed bows to you. "For centuries my people revere Obelisks as gods, but now I am knowing of their true menace. I could not thinking any better end to their empire than the destruction of Multiverse."</text>
 	<unlockCustomShip silent="false">CREW_SHIP_SLOT8_2</unlockCustomShip>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -807,7 +844,7 @@
 	</choice>
 </event>
 <event name="TRUE_VICTORY_CREW_DESSIUS">
-	<text>"Oh grandfather Aneidio, if only thou could witness me now! Y-you. You are not worthy of a title. You have ascended past such mortal things. You have but completed in such short time what the legacy of all 16 Reapers could never. What are you? I dare not insult you with conjecture. But if you should accept my humblest opinion, then hark and listen. This Paragon, oh foul creation, is a tool of the Obelisk. An antithesis to their power yes, but of their making. Should it not seem to you most cruel after all of this to give them their way and let it be their invention that divide reality? The Obelisk will fall, but the Multiverse is a fact of our existence. Would it not be sorrowful to deprive reality of such a beautiful thing, to defile nature once again with the patent of cruel gods? Think these thoughts I ask of you, but do not let me be the one to stop you."</text>
+	<text>"Oh grandfather Aneidio, if only thou could witness me now! Y-you. You are not worthy of a title. You have ascended past such mortal things. You have but completed in such short time what the legacy of all 16 Reapers could never. What are you? I dare not insult you with conjecture. But if you should accept my humblest opinion, then hark and listen. This Paragon, oh foul creation, is a tool of the Obelisks. An antithesis to their power yes, but of their making. Should it not seem to you most cruel after all of this to give them their way and let it be their invention that divide reality? The Obelisks will fall, but the Multiverse is a fact of our existence. Would it not be sorrowful to deprive reality of such a beautiful thing, to defile nature once again with the patent of cruel gods? Think these thoughts I ask of you, but do not let me be the one to stop you."</text>
 	<unlockCustomShip silent="false">CREW_SHIP_SLOT8_3</unlockCustomShip>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -886,7 +923,7 @@
 	</choice>
 </event>
 <event name="TRUE_VICTORY_CREW_WITHER"> <!--no unlock-->
-	<text>"You've come so far - I'm impressed! For a mortal you're surprisingly resilient. But I implore you not to forget the mission. The Paragon must be detonated for the Obelisk to truly be defeated. I understand the sacrifice that must be made here, and trust me I don't look forward to it either. But our lives are just a drop in the ocean of those ruined by the Obelisk, Rebels, and even the Federation with the Multiverse tech in their hands."</text>
+	<text>"You've come so far - I'm impressed! For a mortal you're surprisingly resilient. But I implore you not to forget the mission. The Paragon must be detonated for the Obelisks to truly be defeated. I understand the sacrifice that must be made here, and trust me I don't look forward to it either. But our lives are just a drop in the ocean of those ruined by the Obelisks, Rebels, and even the Federation with the Multiverse tech in their hands."</text>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event load="TRUE_VICTORY_LOAD"/>

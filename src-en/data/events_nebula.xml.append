@@ -252,6 +252,13 @@
             <quest event="NEBULA_SIGNAL_QUEST"/>
         </event>
     </choice>
+	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+        <text>(Telepathic Shell) Have your Shell decode the signal.</text>
+        <event>
+            <text>The signal is difficult to decode, but you're able to break it. It appears to be the location for a pirate cache on a nearby planet!</text>
+            <quest event="NEBULA_SIGNAL_QUEST"/>
+        </event>
+    </choice>
 	<choice hidden="true" req="LIST_CREW_COGNITIVE_ALL">
         <text>(Cognitive Crew) Have your Cognitive decode the signal.</text>
         <event>
@@ -428,16 +435,20 @@
 
 <event name="STORM_ITEMS" unique ="true">
 	<text>You jump into the middle of a plasma storm. Multiple recently incapacitated ships loom in the shadows, briefly illuminated by the lightning.</text>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Manually search the wreckage for survivors and equipment.</text>
 		<event load="STORM_ITEMS_LIST"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You have no crew to send out to plunder any remains left.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice>
 		<text>Avoid the risk and wait to jump away unscathed.</text>
 		<event/>
 	</choice>
 	<choice req="pilot" lvl="2" hidden="true">
-		<text>(Piloting) Have your pilot carefully explore the debris.</text>
+		<text>(Upg. Piloting) Have your pilot carefully explore the debris.</text>
 		<event load="STORM_ITEMS_PILOTING"/>
 	</choice>
 	<environment type="storm"/>
@@ -1502,9 +1513,13 @@
 	<text>A civilian ship desperately hails you. "The space gas- gas too thick- oxygen system damaged- too much... gas..."</text>
 	<environment type="nebula"/>
 	<distressBeacon/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Rescue them.</text>
 		<event load="NEBULA_DISTRESS_DEATH_BY_GAS_RESCUE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>Unfortunate for the civilians, but you cannot risk helping them, unless you can pinpoint their location.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true" req="teleporter">
 		<text>(Teleporter) Beam the civilians on-board.</text>

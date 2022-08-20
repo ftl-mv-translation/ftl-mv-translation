@@ -137,10 +137,24 @@
 	<choice hidden="true" req="BLUELIST_WEAPONS_HEAVY">
 		<text>(Heavy Weapon) Use your gun.</text>
 		<event>
-			<text>Your powerful weapon dislodges and shatters a massive shard of crystal, leaving your away team enough space to climb down and take a look.</text>
-			<choice hidden="true">
+			<text>Your powerful weapon dislodges and shatters a massive shard of crystal, leaving enough space to send an away team to climb down and take a look.</text>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
 				<text>Investigate the cache.</text>
 				<event load="CRYSTAL_CACHE_LIST"/>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="0" max_lvl="0">
+				<text>This was a fantastic display of firepower, but who is going to investigate in there?</text>
+				<event>
+					<text>You ignore the cache and do something onboard the ship.</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
 			</choice>
 		</event>
 	</choice>
@@ -178,9 +192,23 @@
 	</event>
 	<event>
 		<text>Against all odds, a lucky shot strikes an existing fracture in the crystal, compounding it into a crack that grows until an entire section of the barrier falls away!</text>
-		<choice hidden="true">
+		<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
 			<text>Investigate the cache.</text>
 			<event load="CRYSTAL_CACHE_LIST"/>
+		</choice>
+		<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="0" max_lvl="0">
+			<text>Unfortunately for you, luck cannot change the fact that you have no one to send to investigate the cache.</text>
+			<event>
+				<text>You ignore the cache and do something onboard the ship.</text>
+				<choice>
+					<text>Do something onboard the ship.</text>
+					<event load="STORAGE_CHECK"/>
+				</choice>
+				<choice>
+					<text>Do nothing.</text>
+					<event/>
+				</choice>
+			</event>
 		</choice>
 	</event>
 </eventList>
@@ -286,13 +314,21 @@
 
 <event name="CRYSTAL_HUMAN_TESTS" unique="true">
 	<text>You arrive near what appears to be a Crystalline research facility. A scientist quickly messages you, "Ah! Some more aliens. Please, I've heard so much about all the different races in this galaxy and I am really curious about your physiology! Would you let us run a few simple tests?"</text>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Allow them to run tests on a crewmember.</text>
 		<event load="CRYSTAL_HUMAN_TESTS_ACCEPT"/>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>The scientists will have to look elsewhere for test subjects.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Refuse.</text>
 		<event load="CRYSTAL_HUMAN_TESTS_REFUSE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>Refuse.</text>
+		<event load="CRYSTAL_HUMAN_TESTS_REFUSE_AUTO"/>
 	</choice>
 	<choice hidden="true" req="LIST_CREW_ROCK">
 		<text>(Rock Crew) Send your Rockman crew.</text>
@@ -301,7 +337,7 @@
 			<autoReward level="MED">standard</autoReward>
 		</event>
 	</choice>
-		<choice hidden="true" req="salt">
+		<choice hidden="true" req="LIST_CREW_OBYN">
 		<text>(Saltman Crew) Send your Saltman crew.</text>
 		<event>
 			<text>"Is that... ? Impossible... The missing link between Crystal and Rock kind! This is truly wonderful! We have so little records of your kind. We have a lot to learn from these scans, we must get to analyzing them as soon as possible! Please, take this."</text>
@@ -369,6 +405,19 @@
 		<choice hidden="true">
 			<text>Continue...</text>
 			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="CRYSTAL_HUMAN_TESTS_REFUSE_AUTO">
+	<event>
+		<text>"I see. That is a shame. Perhaps the next vessel we meet will be able to contribute to the advancement of science."</text>
+		<choice>
+			<text>Do something onboard the ship.</text>
+			<event load="STORAGE_CHECK"/>
+		</choice>
+		<choice>
+			<text>Do nothing.</text>
+			<event/>
 		</choice>
 	</event>
 </eventList>
@@ -465,7 +514,7 @@
 	</choice>
 </event>
 <textList name="TEXT_ENCOUNTER_CRYSTAL">
-	<text>You arrive near a fleet of crystal ships, civilian or mercantile from the looks of them. You pause to scan one but they react immediately and send an escort to fight you off. Prepare to engage!</text>
+	<text>You arrive near a fleet of Crystal ships, civilian or mercantile from the looks of them. You pause to scan one but they react immediately and send an escort to fight you off. Prepare to engage!</text>
 	<text>You arrive at the Beacon and are immediately greeted by an automatic message or warning of some kind. The translator can't seem to discern its purpose but after a few short moments an alarm goes off and a hostile ship jumps in!</text>
 	<text>You receive a message, "Hah. It looks like another worthless alien-filled craft. Prepare to meet your maker!" Weapon locks detected.</text>
 	<text>A Crystalline ship messages you, "I have not yet seen an Alien ship of such caliber as yours! As a warrior I demand to test my skills against you!" Before you can respond they move in to attack.</text>
@@ -1078,7 +1127,7 @@
 <event name="CRYSTAL_HELP_DIG" unique="true">
 	<text>A large Crystalline ship is floating in space here. They hail: "Aliens?! How curious. We request your aid. We have men buried on a nearby planet and we must dig them out."</text>
 	<ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="false"/>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
 		<text>Send a crewmember to help.</text>
 		<event>
 			<text>You do as you're asked and send a crewmember down to the planet to assist. They discover a massive Crystal excavation operation and it quickly becomes clear this is a task that will take days, not hours.</text>
@@ -1143,6 +1192,10 @@
 				</event>
 			</choice>
 		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0">
+		<text>You have no crew to spare.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice>
 		<text>Refuse.</text>
@@ -1301,7 +1354,7 @@
 </event>
 <eventList name="CRYSTALHOME_ZOLTENVOY_DELIVERY_GIFT">
 	<event>
-		<text>You hail the outpost and deliver the bomb. The Crystals inside are deeply confused, but not long after Zoltan reinforcements jump in! It seems you've misunderstood - the Zoltan were here to attack the Crystals! The peace-keeper vessel approaching seems to think you're working against them and attacks!</text>
+		<text>You hail the outpost and deliver the bomb. The Crystals inside are deeply confused, but not long after Zoltan reinforcements jump in! It seems you've misunderstood - the Zoltans were here to attack the Crystals! The peace-keeper vessel approaching seems to think you're working against them and attacks!</text>
 		<ship load="SHIP_ZOLTENVOY_PEACE" hostile="true"/> 
 		<choice hidden="true">
 			<text>Continue...</text>
@@ -1309,7 +1362,7 @@
 		</choice>
 	</event>
 	<event>
-		<text>You hail the outpost and deliver the bomb. It appears you understood correctly, because the Crystals thank you. Whatever attacked the Zoltan must have been a pirate, probably using the Crystal weapons so commonly found around here. As thanks for finishing the delivery, the Crystals pay you handsomely.</text>
+		<text>You hail the outpost and deliver the bomb. It appears you understood correctly, because the Crystals thank you. Whatever attacked the Zoltans must have been a pirate, probably using the Crystal weapons so commonly found around here. As thanks for finishing the delivery, the Crystals pay you handsomely.</text>
 		<autoReward level="HIGH">standard</autoReward>
 	</event>
 </eventList>

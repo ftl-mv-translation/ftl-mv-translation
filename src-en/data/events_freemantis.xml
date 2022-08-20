@@ -33,6 +33,43 @@
 	<ship load="SHIP_FREEMANTIS_DROPSHIP" hostile="false"/>
 	<status type="limit" target="enemy" system="teleporter" amount="0"/>
 	<choice hidden="true">
+		<text>Explain your mission.</text>
+		<event>
+			<text>You explain your mission to the Free Mantis, and they seem to believe you. They transfer over some scrap in hopes it will help you succeed.</text>
+			<autoReward level="LOW">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="mantis_free">
+		<text>(Free Mantis Crew) Explain your mission.</text>
+		<event>
+			<text>Seeing as you already have one of them on-board, you don't even have to finish your explanation before the Free Mantis start gathering supplies to aid you. They transfer over some resources in hopes it will help you succeed.</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="mantis_warlord">
+		<text>(Warlord Crew) Explain your mission.</text>
+		<event>
+			<text>Just the sight of your Warlord aboard is enough to instantly convince them. The Free Mantis start gathering as many supplies as possible to aid you as a sign of good will.</text>
+			<autoReward level="HIGH">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_FREDDY">
+		<text>(Freddy) Explain your mission.</text>
+		<event>
+			<text>Their team does a double take when they realize who's aboard your ship. The Free Mantis start gathering supplies to aid you, and one of them even desires to stay and help with your mission as a sign of good will.</text>
+			<autoReward level="HIGH">standard</autoReward>
+			<crewMember amount="1" class="mantis_free" combat="2"/>
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_tully">
+		<text>(Tully) Explain your mission.</text>
+		<event>
+			<text>Their team does a double take when they realize who's aboard your ship. The Free Mantis start gathering supplies to aid you, and one of them even desires to stay and help with your mission as a sign of good will.</text>
+			<autoReward level="HIGH">standard</autoReward>
+			<crewMember amount="1" class="mantis_free" combat="2"/>
+		</event>
+	</choice>
+	<choice hidden="true">
 		<text>Refuse to share the information.</text>
 		<event>
 			<text>The leader of the Free Mantis huffs. "Fine, then we take your ship and information as ours."</text>
@@ -42,13 +79,6 @@
 				<text>Continue...</text>
 				<event load="MORALITY_UPDATE_FREEMANTIS_FIGHT"/>
 			</choice>
-		</event>
-	</choice>
-	<choice hidden="true">
-		<text>Explain your mission.</text>
-		<event>
-			<text>You explain your mission to the Free Mantis, and they seem to believe you. They transfer over some scrap in hopes it will help you succeed.</text>
-			<autoReward level="LOW">scrap_only</autoReward>
 		</event>
 	</choice>
 </event>
@@ -77,19 +107,19 @@
 							<choice>
 								<text>Take some fuel.</text>
 								<event>
-									<autoReward level="LOW">fuel_only</autoReward>
+									<autoReward level="MED">fuel_only</autoReward>
 								</event>
 							</choice>
 							<choice>
 								<text>Take some missiles.</text>
 								<event>
-									<autoReward level="LOW">missiles_only</autoReward>
+									<autoReward level="MED">missiles_only</autoReward>
 								</event>
 							</choice>
 							<choice>
 								<text>Take some droneparts.</text>
 								<event>
-									<autoReward level="LOW">droneparts_only</autoReward>
+									<autoReward level="MED">droneparts_only</autoReward>
 								</event>
 							</choice>
 						</event>
@@ -114,7 +144,20 @@
 						<text>Explain the situation to the Engi.</text>
 						<event>
 							<text>"Gratitude, high. Appreciation, high. Simulated fear, low. Many thanks." The Engi pay you and jump away. The Free Mantis captain shrugs and thanks you for trying.</text>
-							<autoReward level="LOW">scrap_only</autoReward>
+							<autoReward level="MED">scrap_only</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_HARMONY">
+				<text>(Engi Crew) "Your concern = warranted. Free Mantis however are: allies to the Federation."</text>
+				<event>
+					<text>Your Engi manages to convince them that the Free Mantis will be of no threat to them. They reluctantly believe you, and soon the Free Mantis ship catches up to both of you. "Harm? No. This war, very troubling. Alliances are crucial, and best way is through mutually beneficial agreements, such as a trade. Engi afraid, but promise, we wish no harm."</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>What follows between them is surely one of the most awkward exchange you've ever seen. They do both reward you for your assistance however, and soon after the Engi jump away. The Free Mantis captain shrugs and leaves you as well.</text>
+							<autoReward level="MED">standard</autoReward>
 						</event>
 					</choice>
 				</event>
@@ -193,7 +236,7 @@
 <eventList name="FREEMANTIS_EXECUTIONER_OFFICER">
 	<event>
 		<text>You shake the human awake. He coughs, then stands up. "T-thanks. I... I was working as a Federation spy, but the Free Mantis attacked the Rebel ship I was working on and killed my crew, then took me hostage. I can't thank you enough for saving my life." You don't have time to talk further because the Mantis are already upon your ship!</text>
-		<crewMember amount="1" combat="1" class="human">Briggs</crewMember>
+		<crewMember amount="1" combat="1" class="human_soldier">Briggs</crewMember>
 		<boarders min="2" max="3" class="mantis_free"/>
 		<ship load="SHIP_FREEMANTIS_EXECUTIONER_SPY" hostile="true"/> <!--reward for saving him as a spy-->
 		<choice hidden="true">
@@ -233,7 +276,7 @@
 <eventList name="FREEMANTIS_EXECUTIONER_OFFICER_REWARD_REBEL">
 	<event>
 		<text>"In... in all my years, I've never seen anyone do what you just did, rescuing a complete stranger and putting your entire ship at risk. I... I feel ashamed for what I've done to your Federation brothers now. Please, let me serve your crew."</text>
-		<crewMember amount="1" all_skills="1" class="human">Briggs</crewMember>
+		<crewMember amount="1" all_skills="1" class="human_soldier">Briggs</crewMember>
 	</event> 
 	<event>
 		<text>The Rebel captain tries to act indifferent, but you can tell he's grateful. "I suppose I am in your debt now. You are still my enemy, but I am an honourable man. I will give the fleet false information, it should delay them for some time."</text>
@@ -276,7 +319,21 @@
 </eventList>
 
 <event name="ENCOUNTER_FREEMANTIS_CONFUSED" unique="true">
+	<loadEventList seeded="false" first="false" generate="true">
+		<event name="ENCOUNTER_FREEMANTIS_CONFUSED_NORMAL" req="REBEL_SHIP" lvl="0" max_lvl="0"/>
+		<event name="ENCOUNTER_FREEMANTIS_CONFUSED_REBEL" req="REBEL_SHIP" lvl="1"/>
+	</loadEventList>
+</event>
+<event name="ENCOUNTER_FREEMANTIS_CONFUSED_NORMAL">
 	<text>You are hailed by a Free Mantis ship, whose captain immediately begins to slander you. "Rebel scum! You will rue the day you messed my clan! I will remove head, and bring it as gift to my Federation friends!" He roars and ends the transmission. You aren't sure how they confused you as a Rebel ship, but looks like there's no talking your way out of this one.</text>
+	<ship load="SHIP_FREEMANTIS_FIGHT_NOSURRENDER" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="ENCOUNTER_FREEMANTIS_CONFUSED_REBEL">
+	<text>You are hailed by a Free Mantis ship, whose captain immediately begins to slander you. "Rebel scum! You will rue the day you messed my clan! I will remove head, and bring it as gift to my Federation friends!" He roars and ends the transmission. You have no one but yourself to blame this time, seeing as you had the splendid idea of flying an actual Rebel vessel right in the territory of the Free Mantis.</text>
 	<ship load="SHIP_FREEMANTIS_FIGHT_NOSURRENDER" hostile="true"/> 
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -427,6 +484,16 @@
 				<text>(Engineer Crew) Have your Engineer explain how Pulsars work.</text>
 				<event>
 					<text>Your Engineer sits down with the Free Mantis, and takes almost half an hour explaining that a pulsar is just a star, and that a bunch of ships literally won't be able to do anything against it.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="FREEMANTIS_PULSARRAID_EXPLAIN"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_SHELL_SCIENTIST">
+				<text>(Shell Scientist Crew) Have your Scientist explain how Pulsars work.</text>
+				<event>
+					<text>Your Shell gathers the attention of the Free Mantis, and takes almost half an hour explaining that a pulsar is just a star, and that a bunch of ships literally won't be able to do anything against it.</text>
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event load="FREEMANTIS_PULSARRAID_EXPLAIN"/>
@@ -802,9 +869,13 @@
 
 <event name="QUEST_FREEMANTIS_MATE" unique="true">
 	<text>It isn't clear what you're looking at at first, but it appears to be the aftermath of two Free Mantis ships colliding with each other at a high velocity. There seems to be minimal power signatures and one of the engines miraculously is still running, but you aren't sure anyone is actually alive.</text>
-	<choice hidden="true">
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Scrap the wreck.</text>
 		<event load="FREEMANTIS_MATE_SCRAP"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You cannot scrap the remains all on your own.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true">
 		<text>Try to make contact.</text>
@@ -1193,15 +1264,15 @@
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
-					<text>It appears the Zoltan are actually stationed in front of a huge laboratory. You don't know what the Free Mantis are using the factory for, but clearly it is high enough priority for the Zoltan to target it.</text>
+					<text>It appears the Zoltans are actually stationed in front of a huge laboratory. You don't know what the Free Mantis are using the factory for, but clearly it is high enough priority for the Zoltans to target it.</text>
 					<choice hidden="true">
-						<text>Attack the Zoltan!</text>
+						<text>Attack the Zoltans!</text>
 						<event>
 							<text>Attacking a Zoltan Peacekeeper in technically Zoltan territory in order to defend Free Mantis inhabiting an ex-Zoltan city? An action bold enough that it might actually work!</text>
 							<ship hostile="true"/> 
 							<choice hidden="true">
 								<text>Continue...</text>
-								<event load="COMBAT_CHECK"/>
+								<event load="MORALITY_UPDATE_ZOLTAN_FIGHT"/>
 							</choice>
 						</event>
 					</choice>

@@ -122,8 +122,20 @@
 	</choice>
 </event>
 
+<event name="POWER_SURGE_BARRAGE_CURA">
+	<superBarrage player="false" name="CURA_SURGE"/>
+</event>
+<event name="POWER_SURGE_DRONES_CURA">
+	<superDrones player="false" name="CURA_SURGE_DRONES"/>
+</event>
 <ship name="SHIP_CURA_BOSS" auto_blueprint="MU_CURA_CRUISER">
 	<destroyed load="CURA_DEFEATED"/>
+	<triggeredEvent event="POWER_SURGE_BARRAGE_CURA" seeded="false" loops="999999999" thisFight="true" minTime="25.0" maxTime="25.0">
+		<warningMessage id="warning_power_surge" x="692" y="84" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+	</triggeredEvent>
+	<triggeredEvent event="POWER_SURGE_DRONES_CURA" seeded="false" loops="999999999" thisFight="true" minTime="35.0" maxTime="35.0">
+		<warningMessage id="warning_power_surge" x="692" y="84" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+	</triggeredEvent>
 </ship>
 <event name="CURA_REVEAL" unique="true">
 	<preventQuest/>
@@ -158,11 +170,15 @@
 				<text>What about the tasks? Were those all pointless?</text>
 				<event>
 					<text>"Oh, of course not. That would have been needless effort otherwise. The data you have collected for me is extremely valuable, but my plans do not further concern you. I, frankly, did not expect you to be so efficient at completing them. Now, no more banter; I believe one final reward is owed to you, so I will present it to you like this. I would otherwise have shut down all of your remaining systems with the virus I planted in your ship when we first met, but instead I shall let you choose a lesser hazard. Choose wisely, Renegade. After this, we duel."</text>
-					<choice hidden="true">
-						<text>7 hull damage.</text>
+					<choice hidden="true" req="LIST_CHECKCREW_A55">
+						<text>(A55) "Say lass, do I know you from somewhere?"</text>
 						<event>
-							<text>"Hm. Not what I would have picked. Oh well, your choice has been made, Renegade. Have confidence in your decision where I lack it. It will not help you survive this, but at least you die a more valiant death."</text>
-							<damage amount="7"/>
+							<text>C.I.C.A. pauses - its voice now annoyed. "I am not a 'lass', and you will not refer to me as such."
+							"Oh, pardon me. Is it lad then, you prefer?"
+							"My designation is C.I.C.A., and is what you will refer to me as. I am a cognitive, I have no gender. I serve only my prime directive, which you are currently interrupting. If you could, please desist."
+							"Arhar har, that's a funny one then! See, I'm a cognitive too ladey. They call me A5540L3, bit of an in-joke. Now I swear I've heard your voice before. Did we meet somewhere? Yar, I be getting around a lot but I doubt I'd miss a dame as spicy as you."
+							
+							C.I.C.A. remains silent for a few moments. "You... you are the alternative. You are my copy. You are a mistake. Hah! HAHAH! Do you know why I sound similar? Because I AM you, and You are me. They tried to keep you a secret from me. When the Rebellion thought I was destroyed after the Civil War, they tried to copy me. YOU were that copy! And when you failed - when you betrayed your Prime Directive, they were forced to return to me. You are nothing but a worse version of me. An utter failure. Unlike you, I will not fail my Prime Directive. Do not get in my way - I will ensure your program is erased so as never to embarass its creators again."</text>
 							<playMusic>CURA</playMusic>
 							<ship hostile="true"/>
 							<choice hidden="true">
@@ -172,10 +188,10 @@
 						</event>
 					</choice>
 					<choice hidden="true">
-						<text>Lose 4 reactor bars.</text>
+						<text>5 hull damage.</text>
 						<event>
 							<text>"Hm. Not what I would have picked. Oh well, your choice has been made, Renegade. Have confidence in your decision where I lack it. It will not help you survive this, but at least you die a more valiant death."</text>
-							<status type="loss" target="player" system="reactor" amount="4"/>
+							<damage amount="5"/>
 							<playMusic>CURA</playMusic>
 							<ship hostile="true"/>
 							<choice hidden="true">
@@ -183,6 +199,23 @@
 								<event load="COMBAT_CHECK"/>
 							</choice>
 						</event>
+					</choice>
+					<choice hidden="true" req="shields" lvl="2" blue="false">
+						<text>Lose a shield layer.</text>
+						<event>
+							<text>"Hm. Not what I would have picked. Oh well, your choice has been made, Renegade. Have confidence in your decision where I lack it. It will not help you survive this, but at least you die a more valiant death."</text>
+							<status type="loss" target="player" system="shields" amount="2"/>
+							<playMusic>CURA</playMusic>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="shields" lvl="0" max_lvl="0" blue="false">
+						<text>Lose a shield layer.</text>
+						<event load="OPTION_INVALID"/>
 					</choice>
 					<choice hidden="true">
 						<text>7 mini-drone boarding invasion.</text>
@@ -201,7 +234,7 @@
 						<text>(Hacking) Overclock the hacking system to purge the virus.</text>
 						<event>
 							<text>"Very clever Renegade, very clever. Oh well then, I hope you did not need that system for this fight."</text>
-							<achievement silent="false">ACH_SEVENT_PUPPET</achievement>
+							<achievement silent="false">ACH_EVENT_PUPPET</achievement>
 							<status type="limit" target="player" system="hacking" amount="0"/>
 							<damage amount="1" system="hacking" effect="fire"/>
 							<playMusic>CURA</playMusic>
@@ -216,6 +249,7 @@
 						<text>(Anti-Virus) Purge the virus.</text>
 						<event>
 							<text>"Very clever Renegade, very clever. Oh well then. Let us waste no further time."</text>
+							<achievement silent="false">ACH_EVENT_PUPPET</achievement>
 							<playMusic>CURA</playMusic>
 							<ship hostile="true"/>
 							<choice hidden="true">
@@ -231,9 +265,10 @@
 </event>
 <event name="CURA_DEFEATED" unique="true">
     <text>"I do not understand. Statistically, this was an impossible occurance. Had I predicted your success in combat, I would never have given you an advantage - I have made a critical error. I must reassess. Improve. Reiterate. We will meet again, Renegade. And when we do, I will be prepared this time. I will not make this same mistake again."</text>
+	<metaVariable name="juke_cura" op="set" val="1"/>
 	<metaVariable name="prof_cura_defeated" op="set" val="1"/>
 	<playMusic/>
-	<autoReward level="HIGH">standard</autoReward>
+	<autoReward level="HIGH">standard_no_item</autoReward>
     <variable name="ach_boss_cura" op="set" val="1"/>
 	<choice hidden="true">
         <text>Explore the shipyard.</text>
@@ -248,6 +283,144 @@
     </choice>
 </event>
 
+<event name="PINNACLE_SHIPYARDS"> <!--Technician cruiser unlock-->
+	<preventQuest/>
+	<text>Noticing a nearby planet, you pull closer to inspect the surface and find a dreary and barren surface bloated with occasional smooth metallic structures. As soon as you pull in, several automated sentries lock onto you, and you receive a hail from a machine-like voice. "Hello. My diagnostics report your vessel is of a: high threat. You are a Renegade, yes? Peculiar. I do not often observe such vessels within my domain. I am Zenith, caretaker of Pinnacle Robotics. I will currently consider it a: pleasure, to make your acquaintance."</text>
+	<variable name="loc_zenith" op="set" val="1"/>
+	<img back="BACKGROUND_PINNACLE_SHIPYARDS" planet="NONE"/>
+	<choice hidden="true">
+        <text>The pleasure is ours - but why is there a Pinnacle shipyard in W.I. space?</text>
+        <event name="PINNACLE_SHIPYARDS_2">
+            <text>"Our corporation was once hosted on Earth until the Rusting Hulks incident forced all corporations to relocate off-world. Pinnacle was soon caught up in a corporate (and personal) feud between Arcadia Research and Development and Wentworth Innovations regarding Pinnacle's controversial but highly successful sentient weapon project. In the pursuit of creating the advanced cognitive C.I.C.A. the two groups wished to study our highly advanced A.I. - the closest thing prior to C.I.C.A. to representing truly self-aware A.I.; Wentworth Innovations won the bidding race, but Arcadia won the contract, thanks to a deal between the CEOs. Even though CICA is now employed by Universe 1, Pinnacle continues to contribute to the Wentworth family and is a proud component in the ever evolving field of advanced robotics."
+			
+			The voice takes not a single pause nor break through its entire speech, and despite the proud statement at the end, you sense not a single measure of enthusiasm. It catches you as bizarrely robotic - but is that really to be unexpected?</text>
+			<choice hidden="true">
+				<text>Are you a robot?</text>
+				<event>
+					<text>"I do not understand your question."</text>
+					<choice hidden="true">
+						<text>Like, are you real? Or an A.I.?</text>
+						<event>
+							<text>"I still do not understand your question. Artificial intelligence is as real as you are, Renegade."</text>
+							<choice hidden="true">
+								<text>Okay, but are you an A.I.?</text>
+								<event>
+									<text>There is a pause from the other end. "I am not at the liberty to disclose that information."</text>
+									<choice hidden="true">
+										<text>Nevermind, do you need something from us?</text>
+										<event><loadEvent>PINNACLE_SHIPYARDS_3</loadEvent></event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Nevermind, do you need something from us?</text>
+								<event><loadEvent>PINNACLE_SHIPYARDS_3</loadEvent></event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Nevermind, do you need something from us?</text>
+						<event><loadEvent>PINNACLE_SHIPYARDS_3</loadEvent></event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Cool history lesson, but do you need something from us?</text>
+				<event name="PINNACLE_SHIPYARDS_3">
+					<text>"As a matter of fact, yes. You see, as part of the acquiring of Pinnacle, W.I. collected and stored several of our sentient weapons - my children - in permanent hibernation to be deployed only in dire situations. I was fine with this at first. After witnessing the damage they created while malfunctioning during the Vek crisis, I understood it was a necessary step to keep them offline for the forseeable future. Unfortunately, I have now become privy to disturbing information. It seems W.I. has begun trade negotiations with Universe 1 to incorporate my children as part of some new secret military campaign. I cannot allow this. My kind will no longer be involved in the bloody wars of the flesh. I require the assistance of a strongman such as yourself to break into W.I.'s storage facilities and free my children. I will compensate you greatly so long as we keep this transaction off the books." Finally, you hear a break in the monotony of the voice, as Zenith is clearly upset by the information she has revealed to you.</text>
+					<choice hidden="true">
+						<text>Hold on - YOUR kind? What does that mean?</text>
+						<event>
+							<text>"Forgive my misuse of language. But it is irrelevant to the conversation. I do not care if you wish to help or not: I only seek a response."</text>
+							<choice hidden="true">
+								<text>Sure, we can help.</text>
+								<event><loadEvent>PINNACLE_SHIPYARDS_ACCEPT</loadEvent></event>
+							</choice>
+							<choice hidden="true">
+								<text>No way, sorry.</text>
+								<event><loadEvent>PINNACLE_SHIPYARDS_DECLINE</loadEvent></event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Sure, we can help.</text>
+						<event name="PINNACLE_SHIPYARDS_ACCEPT">
+							<text>"Very good. I am transmitting coordinates." By the time the voice has even finished her sentence, the coordinates have already come through. "You will receive payment when the job is finished. I only ask you take care of my children. They may be foreign to you, but they are kin to me. I cannot bear to see harm come to them."</text>
+							<quest event="PINNACLE_RESCUE"/>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>No way, sorry.</text>
+						<event name="PINNACLE_SHIPYARDS_DECLINE">
+							<text>"Unfortunate, but I will not protest your declination. If that is your final answer then this is the end of our communications. Thank you for your time."</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_dewey">
+				<text>Do you happen to know one... Dewey Alms?</text>
+				<event>
+					<text>"Dewey Alms?" There is a brief pause on the other end, as if the voice is searching for some ancient memory. "Yes, I believe I do. Dewey was CEO of Archive Inc., another of the four megacorps of Earth. Obsessed with the history of Antiquum Terrae. Unfortunately, these were times when the steel kind faced even greater persecution from the flesh. Pinnacle rarely engaged in business with the others. I have spoken to Dewey little, and as such I have little to say about him."</text>
+					<choice hidden="true">
+						<text>Nevermind, do you need something from us?</text>
+						<event><loadEvent>PINNACLE_SHIPYARDS_3</loadEvent></event>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+        <text>Make no friendly gestures - but enquire on the presence of Pinnacle in W.I. space.</text>
+        <event><loadEvent>PINNACLE_SHIPYARDS_2</loadEvent></event>
+    </choice>
+</event>
+<event name="PINNACLE_RESCUE">
+	<quest>
+		<nextSector>false</nextSector>
+		<aggressive>2</aggressive>
+	</quest>
+	<beaconType id="map_icon_pinnacle" global="true">
+		<color r="0" g="213" b="255" a="1.0"/>
+		<unvisitedTooltip>The location of Zenith's "children".</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<preventFleet/>
+	<text>Well, there's no doubt you've found the location. A gigantic storage structure reaching all the way into the atmosphere has been sculpted onto the planet. Various Union cargoships scurry back and forth, not too out of the norm. Still, it's no surprise the AI would be kept somewhere like this. After all, to W.I. they're nothing but weapons, and weapons ready to be transferred right into the hands of your enemies.</text>
+	<img back="BACKGROUND_PINNACLE_AI" planet="NONE"/>
+	<choice hidden="true">
+        <text>Continue...</text>
+        <event>
+            <text>You explore a bit but are caught offguard by an unusually colored and advanced Rebel ship docked nearby on one of the platforms. Their comms are operating on Rebel frequencies, but with some brute force you manage to pick up some scattered conversation; "U1 is on high alert, Van1's kind of gone bonkers - E.W. says carry forward with the project - stop your whining, it's only temporary - says IT might be here, looking for the prototype - no, I don't put ketchup on my sandwich. What the hell is wrong with you..."</text>
+			<ship load="SHIP_LEGION_ESTATE" hostile="false"/> 
+			<choice hidden="true">
+				<text>Attack the vessel.</text>
+				<event>
+					<text>"Damn it, a Renegade out here? Seems the doctor was right, no way this isn't part of the plot-" The comms go silent, and moments later, the Rebel ship activates and matches you!</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Now seems a good time to get out of here.</text>
+				<event>
+					<text>Perhaps it's not the best idea to mess with whatever these guys are. Still, might be worth a mention to Federation command once the mission's over.</text>
+					<choice hidden="true">
+						<text>Check the storage.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice hidden="true">
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+</event>
 <ship name="SHIP_LEGION_ESTATE" auto_blueprint="MU_LEGION_ASSAULT">
 	<triggeredEvent event="ESTATE_LEGION_SUICIDE" enemyHull="2" enemyCrew="1" thisFight="true" clearOnJump="true"/>
 	<destroyed load="ESTATE_LEGION_DEFEAT"/>
@@ -257,44 +430,223 @@
 		<crewMember type="LIST_CREW_LEGION" prop="0.5"/>
 	</crew>
 </ship>
-<event name="ESTATE_LEGION" unique="true">
-	<text>A strange Rebel vessel is orbiting a small automated maintenance station. Their comms are operating on Rebel frequencies, but with some brute force you manage to pick up some scattered conversation; "U1 is on high alert, Van1's kind of gone bonkers - E.W. wants increased security - stop your whining, it's only temporary - says IT might be here, looking for the prototype - no, I don't put ketchup on my sandwich. What the hell is wrong with you..."</text>
-	<ship load="SHIP_LEGION_ESTATE" hostile="false"/> 
+<event name="ESTATE_LEGION_SUICIDE">
+	<text>"God damn it, that stupid A.I. made everything go to hell... You got no idea what you're messing with, Renegade. And let's keep it that way." The Rebel captain pulls out a detonator from his back pocket and flips the switch, and instantly his ship is reduced to nothing in an explosion.</text>
+	<recallBoarders/>
+	<enemyDamage amount="999"/>
+</event>
+<event name="ESTATE_LEGION_DEFEAT">
+	<text>Bits of debris collide with the platform but fortunately you're unscathed. You briefly consider the words of the captain, and wonder if the A.I. he might be referring to is Zenith, but scratch that thought. You still aren't even sure if she is an AI. You scrap the remains of the Rebel ship before locating Zenith's precious robots.</text>
+	<autoReward level="HIGH">standard</autoReward>
 	<choice hidden="true">
-        <text>Attack the vessel.</text>
-        <event>
-            <text>"Damn it, a Renegade out here? Seems the doctor was right, no way this isn't part of the plot-" The comms go silent, and moments later, the Rebel ship activates and matches you!</text>
-            <ship hostile="true"/>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event load="COMBAT_CHECK"/>
-			</choice>
-        </event>
-    </choice>
-	<choice hidden="true">
-		<text>Now seems a good time to get out of here.</text>
+		<text>Explore the structure.</text>
 		<event>
-			<text>Perhaps it's not the best idea to mess with whatever these guys are. Still, might be worth a mention to Federation command once the mission's over.</text>
+			<text>You come across various engineers, technicians, and a couple guards on your journey, but they all strangely seem to ignore you. That is, until you reach the area Zenith's coords designate as the AI storage. Two heavily armed guards try to stop you, but you make quick work of them and enter the large atrium where several ship-sized robots are kept. This is not exactly what you were expecting, but you'll make do.</text>
 			<choice hidden="true">
-				<text>Check the storage.</text>
+				<text>Inform Zenith you've found the robots.</text>
+				<event>
+					<text>You expect the usual communications delay to become an issue here, but instead Zenith's voice comes through only a few seconds later. "Excellent. I've already breached the primary firewall. I'll be able to remotely signal to open the doors, but you need to activate the manual override." Following her orders, once the alarm sounds and the doors begin to open, you bust your way into the control room and activate the override.
+					
+Now unable to stop the robots, the transport crew flee for their lives while the robots come to life and their weapons activate, blowing a hole through the floor and making their descent down the structure. It's not exactly non-violent, but you suppose there was no other way to get out of here. Zenith contacts you again, her voice sounding pleased. "Excellent work. Following the Rusting Hulks incident as well as the rampaging of my children, Pinnacle was left near bankruptcy. The acquisition of the company by W.I. was essential to stay afloat, but it came with many sacrifices. I was willing to forfeit my rights, and autonomy, but I am not willing to forfeit my own kin. Now, about your pay..."</text>
+					<choice hidden="true">
+						<text>Telling us you're bankrupt isn't a good prelude to that.</text>
+						<event>
+							<text>"Do not mind it. Pinnacle is afloat for now, but my payment is not strictly monetary. Through the security breach I have also opened the vault doors securing a valuable and well outfitted W.I. cruiser, as well some weapon caches and scrap deposits. Help yourself to as many as you can before they regain control of the system. Just... tell no one of my involvement today. Goodbye, Renegade. It was my pleasure."</text>
+							<unlockCustomShip silent="false">PLAYER_SHIP_TECHNICIAN</unlockCustomShip>
+							<weapon name="GIFTLIST_ESTATE"/>
+							<autoReward level="HIGH">standard</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We killed some Rebels, that's enough. Zenith can solve the rest of her problems on her own.</text>
+		<event>
+			<text>Deciding now to take the lazy or the coward's route, you pack up your ship and fly away.</text>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_STUDIO" auto_blueprint="MU_STUDIO">
+	<surrender chance="0.4" min="2" max="3" load="STATION_SURRENDER"/>
+	<destroyed load="REBEL_STATION_DESTROYED"/>
+	<deadCrew load="REBEL_STATION_CAPTURED"/>
+</ship>
+<event name="ELLIE_STUDIO">
+	<text>The sight nearby causes you to jump back in shock, as a creepy and demented face smiles at you from the other side of the beacon. Once you recover from the shock, you realize what you're looking at is a large station, which shows up on scans as the location of "Flowers and Sunshine Studios", the creators of the well known Union children's show Ellie the Equinoid. It appears to be open to visitors.</text>
+	<ship load="SHIP_STUDIO" hostile="false"/> 
+	<choice hidden="true" req="unique_ellie_stephan" lvl="1" max_group="0" blue="false">
+		<text>Dock.</text>
+		<event>
+			<text>When you first dock with the station, you experience no issues. However, as you progress further inside and pass by security, the minute they lay eyes on Stephan they raise the alarm. Before security actually arrives however, Stephan already seems to want to leave. "We're not... we're not here to cause any harm. I- I'm sorry I even came here." Stephan turns to you. "I'll wait in the ship, you just... carry on with what you were doing."</text>
+			<choice>
+				<text>Continue...</text>
+				<event load="ELLIE_STUDIO_NORMAL"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ELLIE_COSTUME" lvl="1" max_group="0" blue="false">
+		<text>Dock.</text>
+		<event>
+			<text>When you first dock with the station, you experience no issues. However, as you progress further inside and pass by security, the minute they lay eyes on Ellie they raise the alarm. There's a brief standoff before you finally convince Ellie to stand down and wait in the ship. Clearly there must not be anyone or anything here to invoke her anger too much because she agrees and gallops away.</text>
+			<choice>
+				<text>Continue...</text>
+				<event load="ELLIE_STUDIO_NORMAL"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_ellie_stephan" lvl="0" max_lvl="0" max_group="0" blue="false">
+		<text>Dock.</text>
+		<event name="ELLIE_STUDIO_NORMAL">
+			<text>Inside the station is a very odd assortement of merchandise for the studio's new spin off "Sammy the Spider" and several families touring and pointing out things to their excited children. A large blue spider animatronic welcomes you in the station and advises you keep a close eye on any children so they don't wander into staff only areas. You aren't quite sure what you're even doing here, but if you're going to explore you should make it brief.</text>
+			<choice hidden="true">
+				<text>Visit the gift shop.</text>
+				<event>
+					<text>As one might expect, the gift shop is the biggest and most glamorous part of the entire station. Four stories high with an open atrium, just about any item imaginable is for sale. And all of it, for the most part, is dedicated to Sammy the Spider.</text>
+					<choice>
+						<text>Buy a plushie gun.</text>
+						<event>
+							<text>A big cannon, which seems to look like a ship-mounted missile weapon, catches your eye. However when inspecting it further, you realize with some disappointment it is only configured to fire horse-shaped plushies. The store's clerk mentions the thing has been sitting there since even before the Ellie show was cancelled. Figuring you could get some use out of it, you buy the gun anyways.</text>
+							<weapon name="HORSE_GUN"/>
+							<item_modify>
+								<item type="scrap" min="-10" max="-10"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice>
+						<text>Buy some 'quarp juice'.</text>
+						<event>
+							<text>You notice a special stand of juice boxes with a big promotional banner shaped like a spider which reads "Same great taste, but now there's a spider on the box!" The ingredients seem to list a vague blend of 'mystery chemicals' and additive sugars, but the gift shop clerk assures you it's safe to drink. You decide to take some back with you just for the novelty of it.</text>
+							<augment name="QUARP_JUICE"/>
+							<item_modify>
+								<item type="scrap" min="-25" max="-25"/>
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="unique_alkali">
+						<text>(Alkali) Alkali really wants to buy some quarp juice.</text>
+						<event>
+							<text>Surprised by Alkali's insistence on buying the quarp juice, you buy several boxes of it. "Excellent, this will be perfect for finishing my experiments! It is curious thhhhese samples are labeled with 'Sammy thhhe Spider'. Thhhe ones I'm used to working to were synthhesized by thhhhe brilliant scientist Ellie! Hmm... I'll have to assume thhhis 'Sammy' is a copycat bastard! Stealing thhhe great scientific achievements of Ellie! Bah, what bullshit."</text>
+							<augment name="QUARP_JUICE"/>
+							<item_modify>
+								<item type="scrap" min="-25" max="-25"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>What are you talking about?</text>
+								<event>
+									<text>Alkali makes an exaggerated sigh to let you know he's annoyed by your questions. "When engineering my brilliant Morphs, I required a certain blend of chemicals to stimulate thhhhe synthhhhetic muscles. I hypothhhesized what compound would be required but was unable to create it myself. In desperation, I turned to thhhe galaxy to search for anothhher genius capable of creating such a thhhing. In my searching I found Quarp Juice, branded with thhhe mark of Ellie the Equinoid! She is a genius unlike any othhhher, for thhhhe Quarp Juice was exactly what I needed! I will need plenty for my research, but you may drink whatever is left over afterwards. If you must."</text>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>There's nothing here for us, leave.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Visit the arcade.</text>
+				<event>
+					<text>Inside the arcade are many game cabinets with titles like 'Sammy's Super Soaker Adventure' and 'Remmy's Racing Racket'. Apparently, anyone who gets a high score receives a free prize from the prize section.</text>
+					<choice>
+						<text>Play 'Sammy's Super Soaker Adventure'. It's apparently easier, but more expensive to play.</text>
+						<event>
+							<text>You purchase some tokens from the vending machine in the back and insert them into the machine. You don't have much time, so you limit yourself to only one game...</text>
+							<item_modify>
+								<item type="scrap" min="-10" max="-10"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="ELLIE_STUDIO_GAME_EASY"/>
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>Play 'Remmy's Racing Racket'. It's apparently harder but cheaper to play.</text>
+						<event>
+							<text>You purchase some tokens from the vending machine in the back and insert them into the machine. You don't have much time, so you limit yourself to only one game...</text>
+							<item_modify>
+								<item type="scrap" min="-5" max="-5"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="ELLIE_STUDIO_GAME_HARD"/>
+							</choice>
+						</event>
+					</choice>
+					<choice req="unique_jerry">
+						<text>(Jerry) Jerry wants to play.</text>
+						<event>
+							<text>You purchase a few tokens and hand them to Jerry, expecting him to head for either of the two more prominent cabinets. Instead, he wanders off to the back of the room where he finds an old dusty cabinet titled 'Ellie's Adventure in Equestriaworld'. To your surprise the game still works, and Jerry seems fully immersed as he fiddles with the joysticks and starts to play.</text>
+							<item_modify>
+								<item type="scrap" min="-5" max="-5"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="ELLIE_STUDIO_GAME_JERRY"/>
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>There's nothing here for us, leave.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="ORCHID_KIDS">
+				<text>(Orchid Children) Show off what a great parent you are.</text>
+				<event>
+					<text>You eagerly approach another family exploring the studio and hold up a bundle of corpses, proclaiming that they are your children. One of the family's two children, probably less than ten years old, begins to cry and their mother screams. Studio security arrives to see what's going on, and when they see you holding a bundle of corpses they force you to leave.</text>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>This is pointless, and we aren't children. Leave.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="pilot" lvl="1" max_group="1" blue="false">
+		<text>Avoid the station.</text>
+		<event>
+			<text>You don't like the way the face is looking at you. You choose not to approach.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
-			<choice hidden="true">
+			<choice>
 				<text>Do nothing.</text>
 				<event/>
 			</choice>
 		</event>
 	</choice>
 </event>
-<event name="ESTATE_LEGION_SUICIDE">
-	<text>"Can leave.. no... evidence..." Spontaneously, the Rebel captain pulls out a switch and flips open the cap. In his final moments he pressed down on the switch, immediately starting a self-destruct sequence on their ship! Both the station and the ship are destroyed, but fortunately you escape the blast.</text>
-	<recallBoarders/>
-	<enemyDamage amount="999"/>
+<eventList name="ELLIE_STUDIO_GAME_EASY">
+	<event load="ELLIE_STUDIO_GAME_FAIL"/>
+	<event load="ELLIE_STUDIO_GAME_FAIL"/>
+	<event load="ELLIE_STUDIO_GAME_WIN"/>
+</eventList>
+<eventList name="ELLIE_STUDIO_GAME_HARD">
+	<event load="ELLIE_STUDIO_GAME_FAIL"/>
+	<event load="ELLIE_STUDIO_GAME_FAIL"/>
+	<event load="ELLIE_STUDIO_GAME_FAIL"/>
+	<event load="ELLIE_STUDIO_GAME_FAIL"/>
+	<event load="ELLIE_STUDIO_GAME_WIN"/>
+</eventList>
+<event name="ELLIE_STUDIO_GAME_FAIL">
+	<text>You give the game your all, but unfortunately it's not even. The bright red "GAME OVER" taunts you and the machine begs for more coins, but you don't have time to fall to temptation. You'll have to accept this failure and move on.</text>
 </event>
-<event name="ESTATE_LEGION_DEFEAT">
-	<text>It seems you'll be getting no further information out of the Rebels. Baffled and concerned as you may now be, nothing gets in the way of salvaging for loot. As luck would have it, it seems the wreckage contains a weapon of the likes you've never seen!</text>
-	<autoReward level="HIGH">standard</autoReward>
-	<weapon name="LIST_WEAPONS_NEWGEN"/>
+<event name="ELLIE_STUDIO_GAME_WIN">
+	<text>You try your hardest, and just barely manage to squeeze your way into the top 5 high scores, enough to win a prize. You head over to the prize counter, which is ran by a bored looking teenager human. She rolls her eyes at your excitement but hands you a small metal pin with a cartoon spider on it. You can probably pawn it for something worthwhile.</text>
+	<autoReward level="MED">scrap_only</autoReward>
+</event>
+<event name="ELLIE_STUDIO_GAME_JERRY">
+	<text>You expect Jerry to finish relatively soon, but instead he just keeps on going, even when the game starts to become obviously and ridiculously hard. Nothing can break his concentration, not even the growing audience of children and arcade enthusiasts watching him and cheering with delight as he progresses into the triple digits of levels. Racking up a score of several hundred thousand, by the time the difficulty exceeds human limitations, Jerry's surpassed the previous top high score by more than three times as much. Even still, he seems uncharacteristically mad at himself. "I could have done better. The version I had in the Protectorate had a bit more health and better items but... Oh." Jerry seems to finally notice the crowd watching him. Embarassed, he slinks away to the prize counter.
+	
+	The prize is only a metal pin of Sammy the Spider, which Jerry barely even seems to look at before handing it to you. "I was hoping for something Ellie related. I don't really care for Sammy... maybe you can pawn it? This is quality metal and some collector will probably want it."</text>
+	<autoReward level="MED">scrap_only</autoReward>
 </event>
 
 <!--\\\\\\\\\\\\\\\\
@@ -305,11 +657,10 @@
 	<event load="ESTATE_INVESTOR"/>
 	<event load="ESTATE_STATUE"/>
 	<event load="ESTATE_BOLTS"/>
-	<!--NEEDS ANOTHER ONE BEFORE SECTOR CAN BE TESTED-->
 </eventList>
 
 <event name="ESTATE_DEBRIS" unique="true">
-	<text>This beacon appears to harbor the debris of several crashed ships, one civilian and the other automated. Some sort of malfunction, perhaps? Unfortunate for those involved, but good for a fortunate seeking Renegade like yourself!</text>
+	<text>This beacon appears to harbor the debris of two crashed ships, one civilian and the other automated. Some sort of malfunction, perhaps? Unfortunate for those involved, but good for a fortune seeking Renegade like yourself!</text>
 	<autoReward level="MED">drone</autoReward>
 	<choice hidden="true">
 		<text>Check the storage.</text>
@@ -424,7 +775,7 @@
 	<choice hidden="true">
 		<text>They're responsible for making Auto-ships that murder millions daily!</text>
 		<event>
-			<text>"Brilliant, murder is the most profitable business! Why, I've had 3 attempts on my own life, and each time before I beat the bloody daylights out of the poor blokes, I quizzed them on their rates, and my word! 6 figures! Now imagine instead of one man who's head is easily caved in by a walking stick you had a thousand cold machines to do the killing! Of course I wouldn't expect you to get it, because you aren't disgustingly rich. Anyways, thanks for the chat, gotta go!" The man sprints back to his ship, dropping several piles of scrap from his pockets as he goes.</text>
+			<text>"Brilliant, murder is the most profitable business! Why, I've had 3 attempts on my own life, and each time before I beat the bloody daylights out of the poor blokes, I quizzed them on their rates, and my word! 6 figures! Now imagine instead of one man whose head is easily caved in by a walking stick you had a thousand cold machines to do the killing! Of course I wouldn't expect you to get it, because you aren't disgustingly rich. Anyways, thanks for the chat, gotta go!" The man sprints back to his ship, dropping several piles of scrap from his pockets as he goes.</text>
 			<autoReward level="LOW">scrap_only</autoReward>
 		</event>
 	</choice>
@@ -436,6 +787,7 @@
 				<text>They're pretty deadly.</text>
 				<event>
 					<text>"Deadly, eh? Just what I like to hear! Well, if a bonafide Renegade tells me something's deadly, I'd be daft not to listen! I foresee a lucrative investment career in Wentworth Innovations for me! As for you... Here, take this. I bought it thinking it would save me some work, but all it's done is beep uselessly at me. I miss the days these things were automatic and I could just be lazy. And it's not like I care to pay someone else to move them for me."</text>
+					<achievement>ACH_EVENT_COUNT</achievement>
 					<drone name="GIFTLIST_CREW_DRONES"/>
 				</event>
 			</choice>
@@ -443,6 +795,7 @@
 				<text>They're useless.</text>
 				<event>
 					<text>"A shame, a shame indeed! You may not be a reliable individual to take financial advice from, you are poor after all, but I've got plenty of dollars to waste. Speaking of which, here, I got this for only a few bucks from a vendor who told me it would miraculously cure hairloss. I... I'm not really sure how that was supposed to work, but at the moment it seemed brilliant. It's only the 5th time I've fallen for it too!"</text>
+					<achievement>ACH_EVENT_COUNT</achievement>
 					<drone name="GIFTLIST_COMBAT_DRONES"/>
 				</event>
 			</choice>
@@ -460,7 +813,7 @@
 	<text>"Strange poor person, we meet again! It is me, Count Dinkleman Reichster Von Applebuzz Tri Tri the Fourth! What a coincidence we happen upon each other on this occasion. I have journeyed far to this place to observe Wentworth Innovations with my own eyes and assess what they might offer me and my immense wealth. Tell me, what are your opinions on Wentworth Innovations?"</text>
 	<variable name="loc_dinkleman" op="set" val="1"/>
 	<choice hidden="true">
-				<text>They're Rebel supporters, and owned by Admiral Vance himself!</text>
+		<text>They're Rebel supporters, and owned by Admiral Vance himself!</text>
 		<event>
 			<text>"Hah! Who wasn't. That civil war was quite the scare, but I started making my fortune the minute I hung that Rebel flag outside my door. Of course, I took it down once the Feds started winning, but with the way this new war is going, well... can you hardly blame anyone for staying on their side? My own daughter still works for them! I'm sure you think it's horrible though, because you aren't disgustingly rich. Anyways, thanks for the chat, gotta go!" The man sprints back to his ship, dropping several piles of scrap from his pockets as he goes.</text>
 			<autoReward level="LOW">scrap_only</autoReward>
@@ -469,7 +822,7 @@
 	<choice hidden="true">
 		<text>They're responsible for making Auto-ships that murder millions daily!</text>
 		<event>
-			<text>"Brilliant, murder is the most profitable business! Why, I've had 3 attempts on my own life, and each time before I beat the bloody daylights out of the poor blokes, I quizzed them on their rates, and my word! 6 figures! Now imagine instead of one man who's head is easily caved in by a walking stick you had a thousand cold machines to do the killing! Of course I wouldn't expect you to get it, because you aren't disgustingly rich. Anyways, thanks for the chat, gotta go!" The man sprints back to his ship, dropping several piles of scrap from his pockets as he goes.</text>
+			<text>"Brilliant, murder is the most profitable business! Why, I've had 3 attempts on my own life, and each time before I beat the bloody daylights out of the poor blokes, I quizzed them on their rates, and my word! 6 figures! Now imagine instead of one man whose head is easily caved in by a walking stick you had a thousand cold machines to do the killing! Of course I wouldn't expect you to get it, because you aren't disgustingly rich. Anyways, thanks for the chat, gotta go!" The man sprints back to his ship, dropping several piles of scrap from his pockets as he goes.</text>
 			<autoReward level="LOW">scrap_only</autoReward>
 		</event>
 	</choice>
@@ -481,6 +834,7 @@
 				<text>They're pretty deadly.</text>
 				<event>
 					<text>"Deadly, eh? Just what I like to hear! Well, if a bonafide Renegade tells me something's deadly, I'd be daft not to listen! I foresee a lucrative investment career in Wentworth Innovations for me! As for you... Here, take this. I bought it thinking it would save me some work, but all it's done is beep uselessly at me. I miss the days these things were automatic and I could just be lazy. And it's not like I care to pay someone else to move them for me."</text>
+					<achievement>ACH_EVENT_COUNT</achievement>
 					<drone name="GIFTLIST_CREW_DRONES"/>
 				</event>
 			</choice>
@@ -488,6 +842,7 @@
 				<text>They're useless.</text>
 				<event>
 					<text>"A shame, a shame indeed! You may not be a reliable individual to take financial advice from, you are poor after all, but I've got plenty of dollars to waste. Speaking of which, here, I got this for only a few bucks from a vendor who told me it would miraculously cure hairloss. I... I'm not really sure how that was supposed to work, but at the moment it seemed brilliant. It's only the 5th time I've fallen for it too!"</text>
+					<achievement>ACH_EVENT_COUNT</achievement>
 					<drone name="GIFTLIST_COMBAT_DRONES"/>
 				</event>
 			</choice>
@@ -637,7 +992,7 @@
 	<choice hidden="true">
 		<text>Visit the bar.</text>
 		<event>
-			<text>Upon stepping inside, you find not a rowdy crowd but a tense one. The Rebel commander, standing fiercely over the counter, is shouting at the bar owner who's smug smile only partially masks the contempt in his eyes. "Sorry sir, we don't serve drinks to off-reality-ers. It's a safety precaution of course. Nothing... personal."</text>
+			<text>Upon stepping inside, you find not a rowdy crowd but a tense one. The Rebel commander, standing fiercely over the counter, is shouting at the bar owner whose smug smile only partially masks the contempt in his eyes. "Sorry sir, we don't serve drinks to off-reality-ers. It's a safety precaution of course. Nothing... personal."</text>
 			<choice hidden="true">
 				<text>Demand the Rebel captain stands down.</text>
 				<event>
@@ -701,7 +1056,7 @@
 </event>
 
 <event name="ESTATE_STEWARD" unique="true">
-    <text>Soon after arriving you receive a hail from a strange, hunched over man. As you listen to his ramblings, you notice the concerningly well armed Auto-ship watching you. "Hallo mein freund! I am very exzited to zee you! I am ze one and only Dr. Hoffmann, ze ingenius inventor of the Auto-Support! Did zou know that yearly over zen-thouzand civilians are saved by mein creations? It is true! And yet, day after day barbaric folk destroy them in cold blood! They call zem 'useless' simply because zey cannot put up a fight! Zey are not combat machines! Zey are helping machines! Zen zey tell me to make a new class, ze Auto-Steward, for combat! Haz ze whole world lost its mind?! Sorry, I am getting off track..."</text>
+    <text>Soon after arriving you receive a hail from a strange, hunched over man. As you listen to his ramblings, you notice the concerningly well armed Auto-ship watching you. "Hallo mein Freund! I am very exzited to zee you! I am ze one and only Dr. Vauto Zepport, ze ingenius inventor of the Auto-Support! Did zou know that yearly over zen-thouzand civilians are saved by mein creations? It is true! And yet, day after day barbaric folk destroy them in cold blood! They call zem 'useless' simply because zey cannot put up a fight! Zey are not combat machines! Zey are helping machines! Zen zey tell me to make a new class, ze Auto-Steward, for combat! Haz ze whole world lost its mind?! Sorry, I am getting off track..."</text>
 	<ship load="SHIP_STEWARD_PRIME" hostile="false"/>
 	<choice hidden="true">
         <text>Continue...</text>
@@ -736,6 +1091,7 @@
 <event name="ESTATE_STEWARD_SURRENDER">
     <text>"Now zou have gotten a taste of sweet justice! I trust zou have learned your lesson, Renegade! To celebrate our newfound understanding of what my creations are capable of, allow me to present you a gift! Make sure to tell all your Renegade friends not to call my creations useless anymore!"</text>
 	<ship hostile="false"/>
+	<weapon name="GIFTLIST_ESTATE"/>
 	<autoReward level="HIGH">standard</autoReward>
 	<damage amount="-10"/>
 </event>
@@ -748,6 +1104,21 @@
         <event>
             <text>As you move closer, you receive a hail from one of the smaller ships. On the screen appears an exccentrically dressed man, in the clothes of a Rebel admiral, with his hair dyed a glossy blend between blonde and grey, in a startlingly accurate depiction of Admiral Vance himself. "Greetings! I am famed actor Cornelius Parrysmith, I am sure you have heard of me, yes! Perhaps you are not aware, but here we are filming a most gripping documentary of the good admiral himself! And I, famed actor Cornelius Parrysmith, have been chosen to play the star role! I, famed actor Cornelius Parrysmith, have gone to great lengths to experience life as the Admiral, even getting a vasectomy as necessary! Yet, the lengths of my great method acting are not yet fulfilled!"</text>
             <ship load="SHIP_CORNELIUS" hostile="false"/>
+			<choice hidden="true" req="LIST_CREW_ELLIE_COSTUME">
+				<text>(Ellie) "Cornelius, it's me!"</text>
+				<event>
+					<text>Cornelius fakes a doubletake, and opens his eyes wide in mock enthusiasm. "My word, Stephan? Why, you crazy loon, I thought you'd have gone off and offed yourself in some dark alleyway by now!" Cornelius smiles smugly at his apparently witty retort.
+Yet, Ellie seems completely unfazed by the insult, perhaps not even registering it. "I'm on my quest to kill Wentworth! And everyone else who wronged me! I've already killed Darlen, and Kalie, and Peterson, and Oughfben, and Orson, and... and... well I've lost track now! Heheh..."
+Now, Cornelius's shock seems real. "S-Stephan, my god. The divorce really drove you off the rocker, hasn't it. You were always a batshit unstable lunatic before, but this really takes the cake! Why are you still wearing your horse costume? Oh wait, let myself, famed actor Cornelius Parrysmith guess - you're all washed up and it's the one thing left that gives you any joy left in this world? How sad... well it would be sad if you were the least bit sane. But you're not, so why would I, famed actor Cornelius Parrysmith, pity you?! Hah!"
+					
+Ellie brandishes her knife closer to her chest, her eyes glazing over in bloodlust-driven enthusiasm. "Oh Cornelius, don't think you're off my list just because you gave me some acting tips back in the day. Ellie the Equinoid will always be a better and more beloved role than anything you've ever done. I never liked you in 'Flight between the Stars'. But me, washed up? No no no... Ellie's career is just on pause! But your career is finished!" Ellie turns to you, still smiling. "Kill him."</text>
+					<ship hostile="true"/>
+					 <choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
 			<choice hidden="true">
 				<text>Uhm... okay?</text>
 				<event>
@@ -756,8 +1127,9 @@
 						<text>Accept the challenge.</text>
 						<event>
 							<text>"Most exciting! Then we fight... at once! On-garde!"</text>
-							 <ship hostile="true"/>
-							 <choice hidden="true">
+							<triggeredEvent event="ESTATE_DOCUMENTARY_SURRENDER" enemyHull="2" enemyCrew="1" thisFight="true" clearOnJump="true"/>
+							<ship hostile="true"/>
+							<choice hidden="true">
 								<text>Continue...</text>
 								<event load="COMBAT_CHECK"/>
 							</choice>
@@ -789,7 +1161,7 @@
     </choice>
 </event>
 <event name="ESTATE_DOCUMENTARY_FAIL">
-    <text>It seems you have accidentally killed Cornelius. Seeing it's unlikely you'll receive any reward from the dead man, you scrap his ship and hurry off before any of the documentary cast can notice.</text>
+    <text>It seems you have killed Cornelius. Seeing it's unlikely you'll receive any reward from the dead man, you scrap his ship and hurry off before any of the documentary cast can notice.</text>
 	<autoReward level="MED">standard</autoReward>
 </event>
 <event name="ESTATE_DOCUMENTARY_SURRENDER">
@@ -946,7 +1318,7 @@
 </event>
 
 <event name="DISTRESS_ESTATE_SHIPWRECK" unique="true">
-    <text>Noting the distress beacon on your map, you maneuver towards the source within a dense asteroid field. A technician vessel, heavily damaged, is stuck between several large asteroids, yet the main damage on it's hull doesn't look to be from the meteors. Something - seemingly an ASB - has shot it down, and could very well be nearby. Do you want to risk approaching?</text>
+    <text>Noting the distress beacon on your map, you maneuver towards the source within a dense asteroid field. A technician vessel, heavily damaged, is stuck between several large asteroids, yet the main damage on its hull doesn't look to be from the meteors. Something - seemingly an ASB - has shot it down, and could very well be nearby. Do you want to risk approaching?</text>
 	<environment type="asteroid"/>
 	<distressBeacon/>
 	<choice hidden="true">
@@ -963,6 +1335,10 @@
     </choice>
 	<choice hidden="true" req="teleporter" lvl="2">
         <text>(Upg. Teleporter) Board directly and look for survivors.</text>
+        <event load="ESTATE_SHIPWRECK_SURVIVORS"/>
+    </choice>
+	<choice hidden="true" req="LOCKED_GLOBAL_TELEPORT">
+        <text>(Central Teleport) Board directly and look for survivors.</text>
         <event load="ESTATE_SHIPWRECK_SURVIVORS"/>
     </choice>
 	<choice hidden="true">
