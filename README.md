@@ -48,15 +48,21 @@ The repo is designed to work with [Weblate](https://weblate.org/). Following Web
 
 1. Unzip the latest FTL: Multiverse into src-en/ directory
 2. Update the `packaging` section of `mvloc.config.jsonc` file
-3. Run `mvloc batch-generate --clean --update en`
+3. Run `mvloc major-update --first-pass`
+4. Push the changes to the repo, then Update -> Force Synchronization from Weblate.
+5. Run `mvloc major-update --second-pass`
+6. Push the changes to the repo, then Update -> Force Synchronization from Weblate.
 
 The command extracts localizable strings from `src-en/` and updates  `en.po` files in `locale/`.
-Weblate can automatically grab the changes once the repository is updated. For more information, see
-[this](https://github.com/ftl-mv-translation/ftl-mv-translation/blob/main/docs/update-simulation.md).
+Note that the two-step is required for Weblate to automatically handle the string changes correctly.
 
 ### Changing string extraction criteria
 
-Edit `mvloc.config.jsonc` file, then and follow the "Updating the English strings" workflow.
+1. Edit `mvloc.config.jsonc` file
+3. Run `mvloc batch-generate --clean --update en`
+
+Unlike `major-update` command it tries to update the file without global translation memory,
+does not perform a fuzzy matching, and preserves the obsolete/fuzzy entries.
 
 ### Applying the translation
 
