@@ -397,7 +397,9 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml, targetlang):
     # Use keys from the original locale
     for key in dict_original:
         entry_translated = dict_translated.get(key, None)
-        string_translated = entry_translated.value if entry_translated else None
+        if (not entry_translated) or entry_translated.fuzzy:
+            continue
+        string_translated = entry_translated.value
         if not string_translated:
             continue
 
