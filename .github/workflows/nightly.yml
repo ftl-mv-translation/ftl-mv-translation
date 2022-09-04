@@ -7,41 +7,22 @@ on:
   workflow_dispatch:
     # Manual run
 
-
 jobs:
-  purge_previous_packages:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup Rclone
-        uses: AnimMouse/setup-rclone@v1
-        with:
-          rclone_config: ${{ secrets.RCLONE_CONFIG }}
-      
-      - name: Empty ftl-multiverse directory
-        run: |
-          rclone delete GoogleDrive:ftl-multiverse --drive-use-trash=false
-
   build:
-    needs: purge_previous_packages
-
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        language: [ko, fr, de, zh_Hans, ru]
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Setup Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.10'
+    # - name: Setup Python
+    #   uses: actions/setup-python@v3
+    #   with:
+    #     python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install .
+    # - name: Install dependencies
+    #   run: |
+    #     python -m pip install --upgrade pip
+    #     python -m pip install .
 
     - name: Cache .cache directory (used for packaging)
       uses: actions/cache@v3
@@ -49,26 +30,38 @@ jobs:
         path: .cache
         key: ${{ hashFiles('mvloc.config.jsonc') }}
 
-    - name: Build packages
-      run: |
-        mvloc batch-apply ${{ matrix.language }}
-        mvloc package ${{ matrix.language }}
-
-    - name: Upload XML files as Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: xml-${{ matrix.language }}
-        path: |
-          output-${{ matrix.language }}/
-          report.txt
-
     - name: Setup rclone
       uses: AnimMouse/setup-rclone@v1
       with:
         rclone_config: ${{ secrets.RCLONE_CONFIG }}
 
-    - name: Upload the mod to GDrive
+    # - name: Build packages
+    #   run: |
+    #     mvloc batch-apply ko && mvloc package ko && mv report.txt packages/batch-apply-report-ko.txt
+    #     mvloc batch-apply fr && mvloc package fr && mv report.txt packages/batch-apply-report-fr.txt
+    #     mvloc batch-apply de && mvloc package de && mv report.txt packages/batch-apply-report-de.txt
+    #     mvloc batch-apply zh_Hans && mvloc package zh_Hans && mv report.txt packages/batch-apply-report-zh_Hans.txt
+    #     mvloc batch-apply ru && mvloc package ru && mv report.txt packages/batch-apply-report-ru.txt
+
+    # - name: Upload the mod to GDrive
+    #   run: |
+    #     rclone delete GoogleDrive:ftl-multiverse/test --drive-use-trash=false
+    #     rclone copy packages GoogleDrive:ftl-multiverse/test
+    
+    - name: Checkout the metadata branch
+      uses: actions/checkout@v3
+      with:
+        ref: installer-metadata
+        path: installer-metadata
+        token: ${{ secrets.FTLMV_WEBLATE_BOT_TOKEN }}
+    
+    - name: Update the listfile
       run: |
-        rclone copyto report.txt GoogleDrive:ftl-multiverse/batch-apply-report-${{ matrix.language }}.txt
-        rclone copy packages GoogleDrive:ftl-multiverse
+        cd installer-metadata
+        date +%s > listfile
+        rclone lsf --csv --separator ";" --format pi GoogleDrive:ftl-multiverse/test >> listfile
+        git config user.email "ftlmv-weblate-bot@users.noreply.github.com"
+        git config user.name "ftlmv-weblate-bot"
+        git commit -a --amend -m "listfile update"
+        git push -f origin installer-metadata
 
