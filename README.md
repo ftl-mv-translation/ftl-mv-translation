@@ -4,9 +4,6 @@
 
 Download from [HERE](https://drive.google.com/drive/folders/1N7I6_p7aFBGchcuSyw0b3_WvdBLFJUlZ?usp=sharing). (Updated every UTC 00:00)
 
-If you want only XML files, [follow this link](https://github.com/ftl-mv-translation/ftl-mv-translation/actions/workflows/nightly.yml) and download from `Artifacts` section of the latest run. (Requires to be logged into GitHub)
-
-
 ## Running the script
 
 The script is written in Python and managed by poetry. A standard setuptools may install it as a package,
