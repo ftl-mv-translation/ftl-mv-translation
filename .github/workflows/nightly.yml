@@ -11,6 +11,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Install zip for CI script
+      run: |
+        sudo apt install -y zip
+    
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -37,11 +41,11 @@ jobs:
 
     - name: Build packages
       run: |
-        mvloc batch-apply ko && mvloc package ko && mv report.txt packages/batch-apply-report-ko.txt
-        mvloc batch-apply fr && mvloc package fr && mv report.txt packages/batch-apply-report-fr.txt
-        mvloc batch-apply de && mvloc package de && mv report.txt packages/batch-apply-report-de.txt
-        mvloc batch-apply zh_Hans && mvloc package zh_Hans && mv report.txt packages/batch-apply-report-zh_Hans.txt
-        mvloc batch-apply ru && mvloc package ru && mv report.txt packages/batch-apply-report-ru.txt
+        bash snippets/ci-nightly.sh ko
+        bash snippets/ci-nightly.sh fr
+        bash snippets/ci-nightly.sh de
+        bash snippets/ci-nightly.sh zh_Hans
+        bash snippets/ci-nightly.sh ru
 
     - name: Upload the mod to GDrive
       run: |
