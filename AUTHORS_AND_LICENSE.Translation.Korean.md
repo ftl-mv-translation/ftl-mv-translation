@@ -19,7 +19,7 @@ The Korean translation is provided by:
 * BlueRain
 * 거기서그걸왜
 * Jin sik park
-* Elendi
+* CronoSniper
 * 'Pataphy
 
 ... and 3 anonymous contributors.
