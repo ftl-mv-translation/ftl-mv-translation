@@ -371,7 +371,7 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, targetlang, 
 @click.option(
     '--targetlang', '-t', default='',
     help='The language of target.'
-         ' The applyPostprocesses configuration will be applied only when this option is specified.'
+         ' Some configuration will be applied only when this option is specified.'
 )
 @click.pass_context
 def apply(ctx, inputxml, originalpo, translatedpo, outputxml, targetlang):
@@ -383,9 +383,12 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml, targetlang):
 
     if targetlang:
         config = ctx.obj['config']
-        postprocesses = config.get('languageSpecifics', {}).get(targetlang, {}).get('applyPostprocesses', [])
+        perLanguageSettings = config.get('languageSpecifics', {}).get(targetlang, {})
     else:
-        postprocesses = []
+        perLanguageSettings = {}
+    
+    postprocesses = perLanguageSettings.get('applyPostprocesses', [])
+    use_fuzzy = perLanguageSettings.get('applyUseFuzzy', False)
 
     print(f'Reading {inputxml}...')
     tree = parse_ftlxml(inputxml)
@@ -397,7 +400,7 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml, targetlang):
     # Use keys from the original locale
     for key in dict_original:
         entry_translated = dict_translated.get(key, None)
-        if (not entry_translated) or entry_translated.fuzzy:
+        if (not entry_translated) or ((not use_fuzzy) and entry_translated.fuzzy):
             continue
         string_translated = entry_translated.value
         if not string_translated:
