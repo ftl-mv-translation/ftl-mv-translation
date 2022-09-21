@@ -288,7 +288,7 @@ def update(ctx, oldoriginal, neworiginal, target, new_original_xml, targetlang, 
     * Updates to the same-strings are applied.
 
     There are multiple number of available ID relocation strategies that can be choosed by `--id-relocation-strategy`:
-    `lld`, `gs`, `gsa`, and `el`.
+    `lld`, `gs`, `gsa`, and `elm`.
 
     * `lld` (least lineno difference): Match each old and new entries as long as their string are identical.
     If there are multiple of such entries, use a translation whose lineno is closest to the changed lineno.
