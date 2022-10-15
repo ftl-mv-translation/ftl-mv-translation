@@ -4,7 +4,7 @@ from loguru import logger
 from collections import defaultdict, namedtuple
 from lxml import etree
 from io import BytesIO, StringIO
-from mvlocscript.xmltools import AttributeMatcher, MatcherBase, MultipleAttributeMatcher, xpath
+from mvlocscript.xmltools import AttributeMatcher, MatcherBase, MultipleAttributeMatcher, get_tag_as_written, xpath
 
 ### Reading and writing FTL XMLs
 
@@ -108,7 +108,7 @@ class FtlShipIconMatcher(MatcherBase):
             self._element_to_name[element] = name
             self._name_count[name] += 1
 
-    def getsegment(self, tree, element):
+    def getsegment(self, tree, element, original_segment):
         name = self._element_to_name.get(element, None)
         if (name is not None) and (self._name_count[name] == 1):
             return f'shipIcon[name="{name}"]'
@@ -124,10 +124,10 @@ class FtlEventChoiceMatcher(MultipleAttributeMatcher):
     def __init__(self):
         super().__init__(['req', 'lvl'], 'prioritized', disable_condensing=True)
 
-    def getsegment(self, tree, element):
+    def getsegment(self, tree, element, original_segment):
         if element.tag != 'choice':
             return None
-        return super().getsegment(tree, element)
+        return super().getsegment(tree, element, original_segment)
     
 
 class FtlCustomStoreMatcher(MatcherBase):
@@ -138,10 +138,10 @@ class FtlCustomStoreMatcher(MatcherBase):
     def prepare(self, tree):
         return self._inner.prepare(tree)
 
-    def getsegment(self, tree, element):
+    def getsegment(self, tree, element, original_segment):
         if element.tag != 'customStore':
             return None
-        return self._inner.getsegment(tree, element)
+        return self._inner.getsegment(tree, element, original_segment)
     
     def isuniquefromroot(self, tree, element, segment):
         # Disable condensing path
@@ -150,9 +150,28 @@ class FtlCustomStoreMatcher(MatcherBase):
     def isuniquefromparent(self, tree, element, segment):
         return self._inner.isuniquefromparent(tree, element, segment)
 
+class FtlCustomShipMatcher(MatcherBase):
+    '''hyperspace.xml: do _NOT_ apply any ID generation logic for //customShip/crew/*, as its @name is not an ID'''
+    def getsegment(self, tree, element, original_segment):
+        p1 = element.getparent() 
+        p2 = p1 and p1.getparent()
+        if p1 and p2 and get_tag_as_written(p1) == 'crew' and get_tag_as_written(p2) == 'customShip':
+            return original_segment
+        return None
+    
+    def isuniquefromroot(self, tree, element, segment):
+        # Disable condensing path
+        return False
+    
+    def isuniquefromparent(self, tree, element, segment):
+        # The segment is always unique from the element's parent as guaranteed by _ElementTree.getpath()
+        return True
+
 def ftl_xpath_matchers():
     return [
-        # Most elements use @name for key.
+        # Don't apply any custom ID generation for //customShip/crew/*
+        FtlCustomShipMatcher(),
+        # Most elements use @name for key
         # @auto_blueprint also serves as a complementary key for <ship> elements
         MultipleAttributeMatcher(['name', 'auto_blueprint'], 'prioritized'),
         # Use @req and @lvl for <choice> elements in events
