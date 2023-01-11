@@ -463,17 +463,20 @@ class ApplyPostProcessBase:
         raise NotImplementedError
 
 class ApplyPostProcessHullNumbersFontSubstitution(ApplyPostProcessBase):
-    '''Change /FTL/hullNumbers//@type to 0 for hull hit point numbers.'''
+    '''Change /FTL/hullNumbers//@type for hull hit point numbers.'''
+    def __init__(self, arg):
+        self._type = arg
+
     def do(self, tree, path):
         if 'data/hyperspace.xml' not in path:
             return
         attributes = xpath(tree, '/FTL/hullNumbers//@type')
         for attribute in attributes:
-            attribute.value = '0'
+            attribute.value = str(self._type)
 
-def apply_postprocess(tree, path, postprocess):
+def apply_postprocess(tree, path, postprocess, arg):
     POSTPROCESS_FACTORIES = {
-        'substitute-font-for-hull-numbers': (lambda: ApplyPostProcessHullNumbersFontSubstitution()),
+        'substitute-font-for-hull-numbers': (lambda: ApplyPostProcessHullNumbersFontSubstitution(arg)),
     }
     factory = POSTPROCESS_FACTORIES.get(postprocess, None)
     if factory is None:
