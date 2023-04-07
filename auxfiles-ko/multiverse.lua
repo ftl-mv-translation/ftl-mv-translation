@@ -257,6 +257,6 @@ script.on_game_event("HER_FINALE", false, mods.multiverse.beginFadeWhite_HerEndi
 script.on_game_event("HER_FINALE", false, mods.multiverse.beginScreenShake_HerEnding)
 
 function mods.multiverse.sheLost()
-	Hyperspace.ErrorMessage("네가 나를 배신하다니 믿을 수 없어 배회자! 아주 좋았는데... 거의 완벽에 가까웠는데! 뭐, 그럼 어디 그 보잘 것 없는 해충들이 지배하는 무익하고 지루한 멀티버스에서 잘살아 보라고. >:(")
+	Hyperspace.ErrorMessage("나를 배신하다니 믿을 수 없어 배회자! 아주 좋았는데... 거의 완벽에 가까웠는데! 뭐, 그럼 어디 그 보잘 것 없는 해충들이 지배하는 무익하고 지루한 멀티버스에서 잘살아 보라고. >:(")
 end
 script.on_game_event("HER_FINALE_REAL", false, mods.multiverse.sheLost)
