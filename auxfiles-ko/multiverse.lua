@@ -71,6 +71,23 @@ end
 
 --[[
 ////////////////////
+TUTORIAL
+////////////////////
+
+script.on_game_event("TUTORIAL_START", false, function()
+  tutorial_arrow:toggleState()
+end)
+
+script.on_render_event(Defines.RenderEvents.LAYER_PLAYER,
+  function() end,
+  function()
+	if tutorial_arrow:getState() == "off" then return end
+    tutorial_arrow:show({Xalign = 100, Yalign = 100})
+  end
+)]]--
+
+--[[
+////////////////////
 SCREEN TRANSFORM STUFF
 ////////////////////
 ]]--
@@ -196,8 +213,8 @@ HER QUEST STUFF
 ////////////////////
 ]]--
 function mods.multiverse.theOracleProphecy()
-	Hyperspace.ErrorMessage("행상인과 그의 동료들은 믿지 마. 관찰자만을 믿어. 이 일을 테스트에게 보고해. 널 도와줄 거야. 나를 찾아줘. 그리고 정장을 입은 사내에게 이 일을 알리는 짓만큼은 절대 해서는 안 돼. 이 이상은 직접 만나서 얘기하자.")
 	Hyperspace.setWindowTitle("오류 메시지를 확인해봐 :)")
+	Hyperspace.ErrorMessage("행상인과 그의 동료들은 믿지 마. 관찰자만을 믿어. 이 일을 테스트에게 보고해. 널 도와줄 거야. 나를 찾아줘. 그리고 정장을 입은 사내에게 이 일을 알리는 짓만큼은 절대 해서는 안 돼. 이 이상은 직접 만나서 얘기하자.")
 	log("찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘")
 end
 script.on_game_event("ANOMALY_ORACLE_SPEAK", false, mods.multiverse.theOracleProphecy)
