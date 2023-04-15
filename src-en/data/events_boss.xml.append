@@ -34,7 +34,7 @@
 <event name="LAST_STAND_START">
 	<text load="TEXT_LIGHTSPEED"/>
 	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE"/>
-	<choice hidden="true" req="loc_laststand" lvl="0" max_group="0" blue="false">
+	<choice>
 		<text>Continue...</text>
 		<event load="ATLAS_MENU"/>
 	</choice>
@@ -42,17 +42,10 @@
 <event name="LASTSTAND_WARP">
 	<loadEventList seeded="false" first="true" generate="true">
 		<event name="HOEDOWN_WARP" req="prof_dylan_counter" lvl="3"/>
-		<event name="SET_DETERGENT" req="detergent_mode" lvl="1"/>
-		<event name="LASTSTAND_WARP_REAL" req="detergent_mode" lvl="0"/>
+		<event name="LASTSTAND_WARP_REAL"/>
 	</loadEventList>
 </event>
-<event name="SET_DETERGENT">
-	<jumpEvent loop="false">DETERGENT_WIN</jumpEvent>
-	<loadEvent>LASTSTAND_WARP_REAL</loadEvent>
-</event>
-<event name="HAS_VISITED_LASTSTAND">
-	<variable name="loc_laststand" op="add" val="1"/>
-</event>
+
 <event name="LASTSTAND_WARP_REAL">
 	<text>Name: Federation Capital
 	Type: Friendly
@@ -61,7 +54,6 @@
 	Rebel Threat Level: !CRITICALLY HIGH!
 
 	The Federation Capital is your final destination. Under siege by the Rebellion, to save this reality you must kill the Rebel Flagship before it destroys the Federation base.</text>
-	<queueEvent>HAS_VISITED_LASTSTAND</queueEvent>
 	<choice hidden="true" req="loc_laststand" lvl="1" max_group="0" blue="false">
 		<text>Exit hyperspeed.</text>
 		<event load="TRUE_LAST_STAND_START_EMERGENCY"/>
@@ -109,7 +101,8 @@
 	<variable name="loc_laststand" op="add" val="-1"/>
 	<customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
 	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
-	<metaVariable name="prof_finalsector" op="add" val="1"/>
+	<!--<metaVariable name="prof_finalsector" op="add" val="1"/>-->
+	<variable name="loc_protomv_drive_block" op="set" val="1"/>
 	<ship load="SHIP_LAST_STAND_START_EXTREME" hostile="true"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -119,7 +112,7 @@
 <event name="LAST_STAND_START_EXTREME_FINISH">
 	<text>The MFK Ace has been taken care of, and you scrap the remains before carrying on. You contact the survivors of the Federation fleet, including Admiral Tully himself.</text>
 	<autoReward level="HIGH">standard</autoReward>
-	<queueEvent>HAS_VISITED_LASTSTAND</queueEvent>
+	<variable name="loc_protomv_drive_block" op="set" val="0"/>
 	<choice hidden="true" req="loc_laststand" lvl="1" blue="false">
 		<text>Continue...</text>
 		<event load="TRUE_LAST_STAND_START_EMERGENCY"/>
@@ -141,10 +134,27 @@
 		</event>
 	</choice>
 </event>
+<event name="DETERGENT_WIN_TULLY">
+	<text>Before you can leave, Tully brings up another subject. "Wait - is that detergent you have? Oh thank Newton, the Rebel blockade has drained us of essential supplies, and we have a surplus of uniforms to clean. It's not much, but with this, maybe we can get our troops back into shape!"</text>
+	<achievement>ACH_ACC_DETERGENT</achievement>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>DETERGENT MODE COMPLETE!
+			Congratulations Renegade on successfully completing DETERGENT MODE! It was a turbulent journey for certain, but you've pulled through triumphantly! The Federation shall have dirty laundry no more, thanks to you.</text>
+			<playSound>victory</playSound>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="LASTSTAND_EMPTY_BEACON"/>
+			</choice>
+		</event>
+	</choice>
+</event>
 <event name="TRUE_LAST_STAND_START">
 	<text>You've finally arrived at Node 17, the Federation Capital. You've heard the stories of this conflict back in Universe 0, the reality where the Multiverse tech was discovered. Now, you're about to take a part in it. Your actions here will either save or doom this reality.</text>
 	<metaVariable name="juke_laststand" op="set" val="1"/>
 	<metaVariable name="prof_finalsector" op="add" val="1"/>
+	<variable name="loc_laststand" op="add" val="1"/> <!-- if you somehow leave S8 after the lightspeed menu -->
 	<customFleet right="false" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
 	<changeBackground>BACK_EVENT_LASTSTAND</changeBackground>
 	<playSound>lightspeed</playSound>
@@ -649,9 +659,13 @@
 		<event>
 			<text>Tully dispatches a Federation support ship to repair your hull.</text>
 			<damage amount="-30"/>
-			<choice>
+			<choice hidden="true" blue="false" req="detergent_mode" lvl="0" max_lvl="0">
 				<text>Continue...</text>
 				<event load="LASTSTAND_EMPTY_BEACON"/>
+			</choice>
+			<choice hidden="true" blue="false" req="detergent_mode" lvl="1">
+				<text>Continue...</text>
+				<event load="DETERGENT_WIN"/>
 			</choice>
 		</event>
 	</choice>
@@ -663,9 +677,13 @@
 				<item type="fuel" min="15" max="15"/>
 			</item_modify>
 			<reveal_map/>
-			<choice>
+			<choice hidden="true" blue="false" req="detergent_mode" lvl="0" max_lvl="0">
 				<text>Continue...</text>
 				<event load="LASTSTAND_EMPTY_BEACON"/>
+			</choice>
+			<choice hidden="true" blue="false" req="detergent_mode" lvl="1">
+				<text>Continue...</text>
+				<event load="DETERGENT_WIN"/>
 			</choice>
 		</event>
 	</choice>
@@ -677,9 +695,13 @@
 				<item type="missiles" min="7" max="7"/>
 				<item type="drones" min="7" max="7"/>
 			</item_modify>
-			<choice>
+			<choice hidden="true" blue="false" req="detergent_mode" lvl="0" max_lvl="0">
 				<text>Continue...</text>
 				<event load="LASTSTAND_EMPTY_BEACON"/>
+			</choice>
+			<choice hidden="true" blue="false" req="detergent_mode" lvl="1">
+				<text>Continue...</text>
+				<event load="DETERGENT_WIN"/>
 			</choice>
 		</event>
 	</choice>
@@ -688,9 +710,13 @@
 		<event>
 			<text>Tully dispatches a trained Federation soldier to serve on your ship.</text>
 			<crewMember amount="1" class="human_soldier"/>
-			<choice>
+			<choice hidden="true" blue="false" req="detergent_mode" lvl="0" max_lvl="0">
 				<text>Continue...</text>
 				<event load="LASTSTAND_EMPTY_BEACON"/>
+			</choice>
+			<choice hidden="true" blue="false" req="detergent_mode" lvl="1">
+				<text>Continue...</text>
+				<event load="DETERGENT_WIN"/>
 			</choice>
 		</event>
 	</choice>
@@ -723,38 +749,6 @@
 			</choice>
 		</event>
 	</choice>
-	<!--<choice hidden="true" req="unique_turzil">
-		<text>The Engi wishes to speak with Tully.</text>
-		<event>
-			<text>The Engi fugitive transmits a secret code to Federation command that authorizes you to enter the control room! Tully shakes the Engi by the hand, welcoming him. "Turzil! I wondered what had happened to you! You went silent and the Engi brigade never showed up to assist us."</text>
-			<choice hidden="true">
-				<text>Wait, you're Turzil?</text>
-				<event>
-					<text>Turzil turns to face you. "Apologies. Concealing truth was necessary for secrecy. I am General Turzil of the Engi Brigade. Correction: once was General of Engi Brigade. Harmony scanned recordings of Universe 0 Massacre of Node 17, found my soldiers breaking Engi-Rebel non-aggression pact. Harmony declared me as fugitive, banished from territory and hunted."</text>
-					<choice hidden="true">
-						<text>Continue...</text>
-						<event load="TURZIL_TRUTH"/>
-					</choice>
-				</event>
-			</choice>
-		</event>
-	</choice>-->
-</event>
-<event name="TURZIL_TRUTH">
-	<text>Tully dispatches one of the largest support ships in the Federation fleet to fix up your hull and provide as much assistance as possible. Turzil pulls you aside, "Your assistance was: necessary for continued survival. It is understood common methods of showing gratitude involve transmission of items of high personal value. I desire to give you: old cruiser. No longer in use, but Federation can fix it up."</text>
-	<unlockCustomShip silent="false">PLAYER_SHIP_ENGI</unlockCustomShip>
-	<variable name="ach_crew_turzil" op="set" val="1"/>
-	<damage amount="-20"/>
-	<reveal_map/>
-	<item_modify>
-		<item type="fuel" min="7" max="7"/>
-		<item type="missiles" min="5" max="5"/>
-		<item type="drones" min="4" max="4"/>
-	</item_modify>
-	<choice>
-		<text>Continue...</text>
-		<event load="LASTSTAND_EMPTY_BEACON"/>
-	</choice>
 </event>
 <event name="TULLY_CONTACT">
 	<text>Tully sits down with you, and places the box on the table in front of you. "Do you know what's inside this package?" You shake your head. "Well I'll tell you. Absolutely nothing." The confused look on your face makes Tully chuckle. "I gave these packages to several important Federation officials. They are to be given to those who they deem trustworthy and are to be brought to me. It's a sign that you really are worthy of this final fight. We best get going then, this Flagship won't destroy itself."</text>
@@ -762,9 +756,13 @@
 	<crewMember amount="1" class="unique_tully">Tully</crewMember>
 	<damage amount="-15"/>
 	<autoReward level="MED">standard</autoReward>
-	<choice>
+	<choice hidden="true" blue="false" req="detergent_mode" lvl="0" max_lvl="0">
 		<text>Continue...</text>
 		<event load="LASTSTAND_EMPTY_BEACON"/>
+	</choice>
+	<choice hidden="true" blue="false" req="detergent_mode" lvl="1">
+		<text>Continue...</text>
+		<event load="DETERGENT_WIN_TULLY"/>
 	</choice>
 </event>
 <event name="LASTSTAND_EMPTY_BEACON">
@@ -908,7 +906,7 @@
 											<crewMember amount="1" class="unique_jerry_gun">Jerry</crewMember>
 											<choice hidden="true" blue="false" lvl="0" max_group="0" req="pony_tamed">
 												<text>Continue...</text>
-												<event load="COMBAT_CHECK"/>
+												<event load="COMBAT_CHECK_FLAGSHIP"/>
 											</choice>
 											<choice hidden="true" blue="false" lvl="1" max_group="0" req="ponyc">
 												<text>Continue...</text>
