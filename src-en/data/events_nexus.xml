@@ -19,7 +19,7 @@
 	<preventFleet/>
 	<quest>
 		<nebulaBeacon>true</nebulaBeacon>
-		<createNebula>true</createNebula>
+		<createNebula>false</createNebula>
 		<aggressive>2</aggressive>
 	</quest>
 	<beaconType id="map_icon_merchantquest_major" global="true">
@@ -88,6 +88,13 @@
 	<triggeredEvent name="SYLVAN_IS_GOING_TO_DIE" event="NEXUS_PORTAL_SURRENDER" enemyHull="3" enemyCrew="1" thisFight="true"/>
 	<destroyed load="SYLVAN_DESTRUCTION_NEXUSPORTAL"/>
 	<deadCrew load="SYLVAN_CREWKILL_NEXUSPORTAL"/>
+	<triggeredEvent event="SHIELD_SURGE_SYLVAN" seeded="false" loops="999999999" thisFight="true" minTime="60.0" maxTime="60.0">
+		<warningMessage id="warning_shield_surge_player" x="692" y="84" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+		<triggeredEventBox load="DEFAULT_SMALL" pos="combat">
+			<warning time="10.0" flash="true"/>
+			<tooltip>Sylvan's shields will regenerate in this long.</tooltip>
+		</triggeredEventBox>
+	</triggeredEvent>
 </ship>
 <!--challenge-->
 <event name="SYLVAN_PORTAL_SPAWNER_CHALLENGE">
@@ -99,6 +106,13 @@
 	<triggeredEvent name="SYLVAN_IS_GOING_TO_DIE" event="NEXUS_PORTAL_SURRENDER" enemyHull="3" enemyCrew="1" thisFight="true"/>
 	<destroyed load="SYLVAN_DESTRUCTION_NEXUSPORTAL"/>
 	<deadCrew load="SYLVAN_CREWKILL_NEXUSPORTAL"/>
+	<triggeredEvent event="SHIELD_SURGE_SYLVAN" seeded="false" loops="999999999" thisFight="true" minTime="45.0" maxTime="45.0">
+		<warningMessage id="warning_shield_surge_player" x="692" y="84" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+		<triggeredEventBox load="DEFAULT_SMALL" pos="combat">
+			<warning time="10.0" flash="true"/>
+			<tooltip>Sylvan's shields will regenerate in this long.</tooltip>
+		</triggeredEventBox>
+	</triggeredEvent>
 </ship>
 <!--extreme-->
 <event name="SYLVAN_PORTAL_SPAWNER_EXTREME">
@@ -110,6 +124,13 @@
 	<triggeredEvent name="SYLVAN_IS_GOING_TO_DIE" event="NEXUS_PORTAL_SURRENDER" enemyHull="3" enemyCrew="1" thisFight="true"/>
 	<destroyed load="SYLVAN_DESTRUCTION_NEXUSPORTAL"/>
 	<deadCrew load="SYLVAN_CREWKILL_NEXUSPORTAL"/>
+	<triggeredEvent event="SHIELD_SURGE_SYLVAN" seeded="false" loops="999999999" thisFight="true" minTime="30.0" maxTime="30.0">
+		<warningMessage id="warning_shield_surge_player" x="692" y="84" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+		<triggeredEventBox load="DEFAULT_SMALL" pos="combat">
+			<warning time="10.0" flash="true"/>
+			<tooltip>Sylvan's shields will regenerate in this long.</tooltip>
+		</triggeredEventBox>
+	</triggeredEvent>
 </ship>
 
 <event name="NEXUS_PORTAL_2">
@@ -124,6 +145,7 @@
 					<text>"Then I'm afraid you give me no choicccce, ssstranger..."</text>
 					<playMusic>sylvan</playMusic>
 					<variable name="loc_sylvanbetrayed" op="set" val="1"/>
+					<triggeredEvent event="STOP_MUSIC" jumps="1"/>
 					<ship hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
@@ -174,6 +196,7 @@
 		<event>
 			<text>"It... it ssseemssss I have failed ssstranger. I could not sssave you from yourssself. Oh well... I guessss you have earned what issss on the other end of that rift. But I hope you underssstand ssstranger that... well... you probably won't make it out the other ssside. There are rulesss, ssstranger. They won't like you breaking them." With that ominous note, Sylvan simply jumps away. You notice a lot of debris left from the fight and collect what you can.</text>
 			<playMusic/>
+			<triggeredEvent event="STOP_MUSIC" jumps="1"/>
 			<metaVariable name="juke_sylvan" op="set" val="1"/>
 			<weapon name="RANDOM"/>
 			<damage amount="-20"/>
@@ -208,6 +231,7 @@
 <event name="SYLVAN_DESTRUCTION_NEXUSPORTAL">
 	<text>Sylvan falls to his knees, bleeding profusely from a gash across his face. He manages to gasp out a few final words, "Ssstranger... I hope... thissss wasss worth it...", then falls over. The Traveling Merchant is no more.</text>
 	<playMusic/>
+	<clearTriggeredEvent name="STOP_MUSIC"/>
 	<metaVariable name="juke_sylvan" op="set" val="1"/>
 	<unlockCustomShip shipReq="PLAYER_SHIP_SYLVAN" silent="false">PLAYER_SHIP_SYLVAN_3</unlockCustomShip>
 	<variable name="loc_sylvankilled" op="set" val="1"/>
@@ -421,6 +445,7 @@
 <event name="START_NEXUS">
 	<text>You pull yourself off the floor of your ship and glance out the window to try and place where you are in space and time. In the distance is another massive rift leading back to where you came from, slowly shrinking. This sudden disappearance should throw the Rebellion for quite a loop, but who knows if you'll make it out alive of whatever this is.</text>
 	<variable name="loc_unique_sectors" op="add" val="1"/>
+	<variable name="loc_protomv_drive_block" op="set" val="1"/>
 	<img back="BACK_EVENT_NEXUS" planet="NONE"/>
 	<modifyPursuit amount="-45"/>
 	<ship load="SHIP_GUARD_NEXUS" hostile="false"/>
@@ -581,6 +606,7 @@
 </event>
 <event name="NEXUS_ENTER_GLITCH_CONTINUE">
 	<text>To your surprise, your systems suddenly return back to normal! You aren't sure what caused it, but you don't have time to worry about it. It seems G-Van is confused by it as well, but now that you're a more considerable threat, it looks like he's going to have to step up his game!</text>
+	<variable name="loc_protomv_drive_block" op="set" val="0"/>
 	<clearBackgroundObject name="GLITCH"/>
 	<status type="clear" target="player" system="weapons" amount="100"/>
 	<status type="clear" target="player" system="shields" amount="100"/>
@@ -708,6 +734,7 @@
 <event name="SYLVAN_PRIME_MEET">
 	<text>Suddenly, behind you appears a massive cruiser vessel, bigger and perhaps better armed than any ship you've ever seen before. A large compartment opens to reveal a docking port, and it seems obvious you should dock. That is, unless you'd like to be annihilated on the spot for refusing this hospitality.</text>
 	<ship load="SHIP_SYLVAN_PRIME" hostile="false"/>
+	<variable name="loc_protomv_drive_block" op="set" val="1"/>
 	<choice hidden="true">
 		<text>Dock.</text>
 		<event>
@@ -2656,7 +2683,6 @@
 	
 	</text>
 	<weapon name="BEAM_HARDSCIFI"/>
-	<achievement>ACH_SYLVAN_HARDSCIFI</achievement>
 	<item_modify>
 		<item type="fuel" min="10" max="10"/>
 		<item type="scrap" min="250" max="250"/>

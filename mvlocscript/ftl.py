@@ -154,8 +154,13 @@ class FtlCustomShipMatcher(MatcherBase):
     '''hyperspace.xml: do _NOT_ apply any ID generation logic for //customShip/crew/*, as its @name is not an ID'''
     def getsegment(self, tree, element, original_segment):
         p1 = element.getparent() 
-        p2 = p1 and p1.getparent()
-        if p1 and p2 and get_tag_as_written(p1) == 'crew' and get_tag_as_written(p2) == 'customShip':
+        p2 = None if p1 is None else p1.getparent()
+        if (
+            (p1 is not None)
+            and (p2 is not None)
+            and get_tag_as_written(p1) == 'crew'
+            and get_tag_as_written(p2) == 'customShip'
+        ):
             return original_segment
         return None
     

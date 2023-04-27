@@ -36,7 +36,11 @@
 		<text>Check the mission report.</text>
 		<event load="STORAGE_CHECK_STATUS"/>
 	</choice>-->
-	<choice hidden="true">
+	<choice hidden="true" blue="false" req="loc_has_salvaged" lvl="0" max_lvl="0">
+		<text>Perform a task or salvage operation.</text>
+		<event load="STORAGE_CHECK_JOB"/>
+	</choice>
+	<choice hidden="true" blue="false" req="loc_has_salvaged" lvl="1">
 		<text>Perform a task.</text>
 		<event load="STORAGE_CHECK_JOB"/>
 	</choice>
@@ -12522,7 +12526,7 @@ No firefighting -> 2.0x extinguishing speed
 	</choice>
 	<choice hidden="true" req="UPG_TECH_NOPHASE" lvl="1" blue="false">
 		<text>Emancipation Grills [Installed]</text>
-		<event load="STORAGE_CHECK_SYSTEM_TECH"/>
+		<event load="STORAGE_CHECK_SYSTEM_DOORS"/>
 	</choice>
 	<choice hidden="true" req="UPG_TECH_NOPHASE" lvl="0" max_lvl="0" blue="false">
 		<text>Emancipation Grills [Not Installed]</text>
@@ -13187,32 +13191,32 @@ No firefighting -> 2.0x extinguishing speed
 		<text>Mortality Initiatives [Installed]</text>
 		<event load="STORAGE_CHECK_LAB_ANCIENT"/>
 	</choice>
-	<choice hidden="true" req="LIST_CREW_ANCIENT" lvl="0" max_lvl="0" blue="false">
+	<choice hidden="true" req="ANCIENT_LAB_MORTAL_SPOILER" blue="false">
 		<text>Mortality Initiatives [Not Installed]</text>
 		<event load="OPTION_INVALID"/>
 	</choice>
-	<choice hidden="true" req="LAB_ANCIENT_MORTAL" lvl="1" blue="false">
+	<choice hidden="true" req="LAB_ANCIENT_NEURAL" lvl="1" blue="false">
 		<text>Advanced Neural Complex [Installed]</text>
 		<event load="STORAGE_CHECK_LAB_ANCIENT"/>
 	</choice>
-	<choice hidden="true" req="LIST_CREW_ANCIENT" lvl="0" max_lvl="0" blue="false">
+	<choice hidden="true" req="ANCIENT_LAB_NEURAL_SPOILER" blue="false">
 		<text>Advanced Neural Complex [Not Installed]</text>
 		<event load="OPTION_INVALID"/>
 	</choice>
-	<choice hidden="true" req="LAB_ANCIENT_MORTAL" lvl="1" blue="false">
+	<choice hidden="true" req="LAB_ANCIENT_ONEPUNCH" lvl="1" blue="false">
 		<text>Equalizer [Installed]</text>
 		<event load="STORAGE_CHECK_LAB_ANCIENT"/>
 	</choice>
-	<choice hidden="true" req="LIST_CREW_ANCIENT" lvl="0" max_lvl="0" blue="false">
+	<choice hidden="true" req="ANCIENT_LAB_ONEPUNCH_SPOILER" blue="false">
 		<text>Equalizer [Not Installed]</text>
 		<event load="OPTION_INVALID"/>
 	</choice>
 	
-	<choice hidden="true" req="LAB_COGNITIVE_FIRE" lvl="1" blue="false">
+	<choice hidden="true" req="LAB_COGNITIVE_RAGE" lvl="1" blue="false">
 		<text>Rage Mode [Installed]</text>
 		<event load="STORAGE_CHECK_LAB_COGNITIVE"/>
 	</choice>
-	<choice hidden="true" req="LIST_CREW_COGNITIVE_ALL" lvl="0" max_lvl="0" blue="false">
+	<choice hidden="true" req="COGNITIVE_LAB_RAGE_SPOILER" blue="false">
 		<text>Rage Mode [Not Installed]</text>
 		<event load="OPTION_INVALID"/>
 	</choice>
@@ -13220,15 +13224,15 @@ No firefighting -> 2.0x extinguishing speed
 		<text>Hazard-proof Systems [Installed]</text>
 		<event load="STORAGE_CHECK_LAB_COGNITIVE"/>
 	</choice>
-	<choice hidden="true" req="LIST_CREW_COGNITIVE_ALL" lvl="0" max_lvl="0" blue="false">
+	<choice hidden="true" req="COGNITIVE_LAB_FIRE_SPOILER" blue="false">
 		<text>Hazard-proof Systems [Not Installed]</text>
 		<event load="OPTION_INVALID"/>
 	</choice>
-	<choice hidden="true" req="LAB_COGNITIVE_FIRE" lvl="1" blue="false">
+	<choice hidden="true" req="LAB_COGNITIVE_POWER" lvl="1" blue="false">
 		<text>Mobile Batteries [Installed]</text>
 		<event load="STORAGE_CHECK_LAB_COGNITIVE"/>
 	</choice>
-	<choice hidden="true" req="LIST_CREW_COGNITIVE_ALL" lvl="0" max_lvl="0" blue="false">
+	<choice hidden="true" req="COGNITIVE_LAB_POWER_SPOILER" blue="false">
 		<text>Mobile Batteries [Not Installed]</text>
 		<event load="OPTION_INVALID"/>
 	</choice>
@@ -22171,9 +22175,9 @@ CLONEBAY
 		<event>
 			<text>You open the crate and look inside.</text>
 			<item_modify>
-				<item type="scrap" min="125" max="125"/>
+				<item type="scrap" min="175" max="175"/>
 			</item_modify>
-			<remove name="CRATE_SCRAP"/>
+			<remove name="CRATE_SCRAP_HUGE"/>
 		</event>
 	</choice>
 	<choice>
@@ -26077,7 +26081,7 @@ MORPH
 <event name="COMBAT_CHECK_SURGE_DRONES">
 	<text>How much power do you want to reroute?</text>
 	<clearSuperDrones player="true"/>
-	<choice req="UPG_BATTERY_GENERATOR" hidden="true">
+	<choice req="DEBUG_GENERATOR" hidden="true">
 		<text>Use the Emergency Generator to power the surges. [30s cooldown, 4 Beam drones]</text>
 		<event>
 			<text>Power rerouted to surge control. Proceeding to combat.</text>
@@ -26208,7 +26212,7 @@ MORPH
 
 <event name="COMBAT_CHECK_SURGE_FIRE">
 	<text>How much power do you want to reroute?</text>
-	<choice req="UPG_BATTERY_GENERATOR" hidden="true">
+	<choice req="DEBUG_GENERATOR" hidden="true">
 		<text>Use the Emergency Generator to power the surges. [26s cooldown, 6 shots]</text>
 		<event>
 			<text>Power rerouted to surge control. Proceeding to combat.</text>
@@ -26339,8 +26343,8 @@ MORPH
 
 <event name="COMBAT_CHECK_SURGE_DAMAGE">
 	<text>How much power do you want to reroute?</text>
-	<choice req="UPG_BATTERY_GENERATOR" hidden="true">
-		<text>Use the Emergency Generator to power the surges. [20s cooldown, 1 beam]</text>
+	<choice req="DEBUG_GENERATOR" hidden="true">
+		<text>Use the Emergency Generator to power the surges. [26s cooldown, 1 beam]</text>
 		<event>
 			<text>Power rerouted to surge control. Proceeding to combat.</text>
 			<triggeredEvent event="CURA_SURGESTART_DAMAGE_MIN" loops="999999999" thisFight="true" minTime="26.0" maxTime="26.0">
@@ -26352,14 +26356,12 @@ MORPH
 			</triggeredEvent>
 			<choice>
 				<text>Continue to the fight!</text>
-				<event>
-					<status type="clear" target="enemy" system="teleporter" amount="100"/>
-				</event>
+				<event/>
 			</choice>
 		</event>
 	</choice>
 	<choice req="reactor" lvl="2" hidden="true" blue="false">
-		<text>2 Power [UNSTABLE: 20s cooldown, 2 beams, 3 self damage per activation]</text>
+		<text>2 Power [UNSTABLE: 23s cooldown, 2 beams, 3 self damage per activation]</text>
 		<event>
 			<text>Power rerouted to surge control. Proceeding to combat.</text>
 			<status type="loss" target="player" system="reactor" amount="2"/>
@@ -26372,14 +26374,12 @@ MORPH
 			</triggeredEvent>
 			<choice>
 				<text>Continue to the fight!</text>
-				<event>
-					<status type="clear" target="enemy" system="teleporter" amount="100"/>
-				</event>
+				<event/>
 			</choice>
 		</event>
 	</choice>
 	<choice req="reactor" lvl="4" hidden="true" blue="false">
-		<text>4 Power [UNSTABLE: 20s cooldown, 3 beams, 5 self damage per activation]</text>
+		<text>4 Power [UNSTABLE: 26s cooldown, 3 beams, 5 self damage per activation]</text>
 		<event>
 			<text>Power rerouted to surge control. Proceeding to combat.</text>
 			<status type="loss" target="player" system="reactor" amount="4"/>
@@ -26392,14 +26392,12 @@ MORPH
 			</triggeredEvent>
 			<choice>
 				<text>Continue to the fight!</text>
-				<event>
-					<status type="clear" target="enemy" system="teleporter" amount="100"/>
-				</event>
+				<event/>
 			</choice>
 		</event>
 	</choice>
 	<choice req="reactor" lvl="6" hidden="true" blue="false">
-		<text>6 Power [UNSTABLE: 20s cooldown, 4 beams, 7 self damage per activation]</text>
+		<text>6 Power [UNSTABLE: 29s cooldown, 4 beams, 7 self damage per activation]</text>
 		<event>
 			<text>Power rerouted to surge control. Proceeding to combat.</text>
 			<status type="loss" target="player" system="reactor" amount="6"/>
@@ -26412,14 +26410,12 @@ MORPH
 			</triggeredEvent>
 			<choice>
 				<text>Continue to the fight!</text>
-				<event>
-					<status type="clear" target="enemy" system="teleporter" amount="100"/>
-				</event>
+				<event/>
 			</choice>
 		</event>
 	</choice>
 	<choice req="reactor" lvl="8" hidden="true" blue="false">
-		<text>8 Power [VERY UNSTABLE: 30s cooldown, 6 beams, 9 self damage per activation]</text>
+		<text>8 Power [VERY UNSTABLE: 32s cooldown, 6 beams, 9 self damage per activation]</text>
 		<event>
 			<text>Power rerouted to surge control. Proceeding to combat.</text>
 			<status type="loss" target="player" system="reactor" amount="8"/>
@@ -26432,9 +26428,7 @@ MORPH
 			</triggeredEvent>
 			<choice>
 				<text>Continue to the fight!</text>
-				<event>
-					<status type="clear" target="enemy" system="teleporter" amount="100"/>
-				</event>
+				<event/>
 			</choice>
 		</event>
 	</choice>
@@ -26450,7 +26444,6 @@ MORPH
 		<text>Nevermind, let's fight!</text>
 		<event>
 			<text>You decide not to do anything and prepare to fight.</text>
-			<status type="clear" target="enemy" system="teleporter" amount="100"/>
 		</event>
 	</choice>
 </event>
@@ -26509,7 +26502,7 @@ MORPH
 			</choice>
 		</event>
 	</choice>
-	<choice req="UPG_BATTERY_GENERATOR">
+	<choice req="DEBUG_GENERATOR">
 		<text>Power the augment with the Emergency Generator.</text>
 		<event>
 			<text>You activate the combat augment.</text>
@@ -26593,7 +26586,7 @@ MORPH
 			</choice>
 		</event>
 	</choice>
-	<choice req="UPG_BATTERY_GENERATOR">
+	<choice req="DEBUG_GENERATOR">
 		<text>Power the augment with the Emergency Generator.</text>
 		<event>
 			<text>You activate the combat augment.</text>
@@ -26677,7 +26670,7 @@ MORPH
 			</choice>
 		</event>
 	</choice>
-	<choice req="UPG_BATTERY_GENERATOR">
+	<choice req="DEBUG_GENERATOR">
 		<text>Power the augment with the Emergency Generator.</text>
 		<event>
 			<text>You activate the combat augment.</text>
@@ -26963,7 +26956,7 @@ MORPH
 			</choice>
 		</event>
 	</choice>
-	<choice req="UPG_BATTERY_GENERATOR">
+	<choice req="DEBUG_GENERATOR">
 		<text>Disable enemy piloting using the Emergency Generator.</text>
 		<event>
 			<text>You activate the combat augment.</text>
@@ -27024,7 +27017,7 @@ MORPH
 			</choice>
 		</event>
 	</choice>
-	<choice req="UPG_BATTERY_GENERATOR">
+	<choice req="DEBUG_GENERATOR">
 		<text>Power the augment with the Emergency Generator.</text>
 		<event>
 			<text>You activate the combat augment.</text>
@@ -27105,7 +27098,7 @@ MORPH
 			</choice>
 		</event>
 	</choice>
-	<choice req="UPG_BATTERY_GENERATOR">
+	<choice req="DEBUG_GENERATOR">
 		<text>Power the augment with the Emergency Generator.</text>
 		<event>
 			<text>You activate the combat augment.</text>
@@ -27184,7 +27177,7 @@ MORPH
 			</choice>
 		</event>
 	</choice>
-	<choice req="UPG_BATTERY_GENERATOR">
+	<choice req="DEBUG_GENERATOR">
 		<text>Disable Teleporter with the Emergency Generator.</text>
 		<event>
 			<text>You activate the combat augment.</text>
@@ -27231,7 +27224,7 @@ MORPH
 			</choice>
 		</event>
 	</choice>
-	<choice req="UPG_BATTERY_GENERATOR">
+	<choice req="DEBUG_GENERATOR">
 		<text>Disable Mind Control with the Emergency Generator.</text>
 		<event>
 			<text>You activate the combat augment.</text>
@@ -27325,7 +27318,7 @@ MORPH
 			</choice>
 		</event>
 	</choice>
-	<choice req="UPG_BATTERY_GENERATOR">
+	<choice req="DEBUG_GENERATOR">
 		<text>Power the augment with the Emergency Generator.</text>
 		<event>
 			<text>You activate the combat augment.</text>
@@ -27440,7 +27433,7 @@ MORPH
 			</choice>
 		</event>
 	</choice>
-	<choice req="UPG_BATTERY_GENERATOR">
+	<choice req="DEBUG_GENERATOR">
 		<text>Use the Emergency Generator to power the augment.</text>
 		<event>
 			<text>You activate the generator, but you will still need some power.</text>
@@ -31407,6 +31400,10 @@ MORPH
 		<text>Separatist Cruiser</text>
 		<event load="OPTION_INVALID"/>
 	</choice>
+	<choice hidden="true" req="ach_mv_leech" lvl="1" blue="false">
+		<text>Eargen Cruiser</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
 	<choice hidden="true" req="ach_mv_shell" lvl="1" blue="false">
 		<text>Geniocracy Cruiser</text>
 		<event load="OPTION_INVALID"/>
@@ -31587,10 +31584,14 @@ MORPH
 			</choice>
 		</event>
 	</choice>
+	<choice hidden="true" req="ach_crew_anurak" lvl="1" blue="false">
+		<text>Anurak</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
 	<choice hidden="true" req="ach_crew_devorak" lvl="1" blue="false">
 		<text>Devorak the Deathless</text>
 		<event>
-			<text>PROFILE: Devorak "The Deathless" Ralai
+			<text>PROFILE: Devorak "The Deathless" Rei
 			Title: Duskbringer General
 			Species: Zoltan - Age: 54 - Gender: Male
 			
@@ -32185,7 +32186,7 @@ MORPH
 <eventList name="GNOME_SHAKE"> <!--maybe have it randomly drop a lore thing occasionally as well as jokes?-->
 	<event>
 		<playSound>gm_shake_1</playSound>
-		<loadEvent>STORAGE_CHECK</loadEvent>
+		<loadEvent>STORAGE_CHECK_REAL</loadEvent>
 	</event>
 	<event>
 		<playSound>gm_shake_2</playSound>
@@ -32273,7 +32274,7 @@ MORPH
 			<text>Jerry climbs onto the horse...</text>
 			<removeCrew class="unique_jerry_gun">
 				<clone>false</clone>
-				<text>Jerry cannot be cloned as he is not dead.</text>
+				<text></text>
 			</removeCrew>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -32281,7 +32282,7 @@ MORPH
 					<text>...</text>
 					<removeCrew class="pony_tamed">
 						<clone>false</clone>
-						<text>Jerry cannot be cloned as he is not dead.</text>
+						<text></text>
 					</removeCrew>
 					<choice hidden="true">
 						<text>Continue...</text>
@@ -32296,12 +32297,13 @@ MORPH
 		</event>
 	</choice>
 	<choice hidden="true" req="JERRY_AND_CRYSTAL">
-		<text>Mount Jerry.</text>
+		<text>Mount Jerry on your crystal Equinoid.</text>
 		<event>
 			<text>Jerry climbs onto the horse...</text>
 			<removeCrew class="unique_jerry_gun">
+			<achievement>ACH_JERRY_STEED</achievement>
 				<clone>false</clone>
-				<text>Jerry cannot be cloned as he is not dead.</text>
+				<text></text>
 			</removeCrew>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -32309,13 +32311,14 @@ MORPH
 					<text>...</text>
 					<removeCrew class="ponyc">
 						<clone>false</clone>
-						<text>Jerry cannot be cloned as he is not dead.</text>
+						<text></text>
 					</removeCrew>
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
 							<text>...</text>
 							<crewMember amount="1" class="unique_jerry_pony_crystal">Jerry</crewMember>
+							<achievement>ACH_JERRY_CRYSTALSTEED</achievement>
 						</event>
 					</choice>
 				</event>
@@ -32328,7 +32331,7 @@ MORPH
 			<text>Jerry gets off of his horse...</text>
 			<removeCrew class="unique_jerry_pony">
 				<clone>false</clone>
-				<text>Jerry cannot be cloned as he is not dead.</text>
+				<text></text>
 			</removeCrew>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -32437,6 +32440,10 @@ MORPH
 	<choice req="unique_alkram" blue="false" hidden="true">
 		<text>Look for Alkram.</text>
 		<event load="SOCIALIZE_ALKRAM_LIST"/>
+	</choice>
+	<choice req="unique_tonysr" blue="false" hidden="true">
+		<text>Look for Tony Sr.</text>
+		<event load="SOCIALIZE_TONY_LIST"/>
 	</choice>
 	<!--ghost-->
 	<choice req="unique_dessius" blue="false" hidden="true">

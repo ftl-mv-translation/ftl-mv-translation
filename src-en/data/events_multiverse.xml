@@ -251,6 +251,7 @@
 							<text>"Our friend Corby has MISPOKE. Ignore her ERROR. We advise you do not CONTINUE to PLAY with things like these. It seems we must ABANDON this reality immediately, and so we will ACCEPT no other tributes at this time." 
 							The Zoltan nods. "Well... I see no reason not to... at least record this... And as such... I will consider it tribute, and with it... a very special boon. The Boon of Chaos. Use it... wisely. Goodbye, traveler."</text>
 							<metaVariable name="prof_boon_chaos" op="set" val="1"/>
+							<achievement silent="false">ACH_BOON_CHAOS</achievement>
 							<metaVariable name="prof_judges_zoltan" op="set" val="0"/>
 							<metaVariable name="prof_judges_engi" op="set" val="0"/>
 							<metaVariable name="prof_judges_rockman" op="set" val="0"/>
@@ -1383,7 +1384,7 @@
 	<choice hidden="true" req="LIST_WEAPONS_ESTATE_SENTRY" blue="false">
 		<text>Present a Deployment Cannon.</text>
 		<event>
-			<text>"Ah, a sentry gun born from the so called GENIUS at the infernal Wentworth Innovations CORPORATION! I advise against you doing business with SUCH PEOPLE, but it is not my place to make your DECISIONS for you. I shall BLESS you with the BLESSING OF SENTRIES. But have PATIENCE. It is not for now, but for LATER!"</text>
+			<text>"Ah, a sentry gun born from the so called GENIUSES at the infernal Wentworth Innovations CORPORATION! I advise against you doing business with SUCH PEOPLE, but it is not my place to make your DECISIONS for you. I shall BLESS you with the BLESSING OF SENTRIES. But have PATIENCE. It is not for now, but for LATER!"</text>
 			<achievement silent="false">ACH_BOON_SENTRY</achievement>
 			<metaVariable name="prof_r_boon_sentry" op="set" val="1"/>
 			<choice hidden="true">
@@ -1923,7 +1924,7 @@
 </event>
 
 <event name="NEMESIS_JERRY">
-	<loadEventList seeded="false" first="true" generate="true">
+	<loadEventList seeded="false" first="true" generate="false">
 		<event name="NEMESIS_JERRY_NOCREW" req="LIST_CREW_JERRY" lvl="0" max_lvl="0"/>
 		<event name="NEMESIS_JERRY_CREW" req="LIST_CREW_JERRY" lvl="1"/>
 	</loadEventList>
@@ -2051,6 +2052,7 @@
 	<text>Sylvan falls to his knees, bleeding profusely from a gash across his face. He manages to gasp out a few final words, "Ssstranger... I hope... thissss wasss worth it...", then falls over. The Traveling Merchant is no more.</text>
 	<playMusic/>
 	<metaVariable name="juke_sylvan" op="set" val="1"/>
+	<clearTriggeredEvent name="STOP_MUSIC"/>
 	<achievement silent="false">ACH_SYLVAN_KILL</achievement>
 	<unlockCustomShip shipReq="PLAYER_SHIP_SYLVAN" silent="false">PLAYER_SHIP_SYLVAN_3</unlockCustomShip>
 	<variable name="loc_sylvankilled" op="set" val="1"/>
@@ -2188,7 +2190,7 @@
 			<variable name="loc_sylvanattacked" op="set" val="1"/>
 			<deathEvent thisFight="true">DEATH_TO_SYLVAN</deathEvent>
 			<boarders min="3" max="3" class="slug_clansman"/>
-			<jumpEvent>STOP_MUSIC</jumpEvent>
+			<triggeredEvent event="STOP_MUSIC" jumps="1"/>
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>Continue...</text>
@@ -2429,14 +2431,14 @@ can only hope and pray to whomever this nonsense works
 <event name="SYLVAN_LASTSTAND">
 	<loadEventList seeded="false" first="true" default="SYLVAN_STANDARD">
 		<event name="SYLVAN_ATTACKED" req="loc_sylvanattacked"/>
-		<event name="SYLVAN_BETRAYED" req="loc_sylvanattacked"/>
+		<event name="SYLVAN_BETRAYED" req="loc_sylvanbetrayed"/>
 		
 		<event name="SYLVAN_GIFT_LASTSTAND" req="challenge_level" lvl="1" max_lvl="1"/>
 	</loadEventList> 
 </event> 
 
 <event name="SYLVAN_GIFT">
-	<text>"Ssstranger ssstranger! Good to ssssee you. Have sssome ssscrap, on the house. Now that'sss out of the way, care for a trade?"</text>
+	<text>"Ssstranger ssstranger! Good to ssssee you. Have sssome ssscrap, on the houssse. Now that'sss out of the way, care for a trade?"</text>
 	<ship load="SHIP_TRAVELING_MERCHANT_CHALLENGE" hostile="false"/>
 	<autoReward level="MED">item</autoReward>
 	<choice hidden="true">
@@ -2445,9 +2447,9 @@ can only hope and pray to whomever this nonsense works
 	</choice>
 </event> 
 <event name="SYLVAN_GIFT_LASTSTAND">
-	<text>"Ssstranger ssstranger, this issss it, eh? Now, I'd never do thisss with anyone elssse... but I like you, ssstranger. And you have a lot of presssure on you right now. Have sssome ssscrap, on the house. Now that'sss out of the way, care for a trade?"</text>
+	<text>"Ssstranger ssstranger, this issss it, eh? Now, I'd never do thisss with anyone elssse... but I like you, ssstranger. And you have a lot of presssure on you right now. Have sssome ssscrap, on the houssse. Now that'sss out of the way, care for a trade?"</text>
 	<ship load="SHIP_TRAVELING_MERCHANT_CHALLENGE" hostile="false"/>
-	<autoReward level="MED">item</autoReward>
+	<autoReward level="MED">weapon</autoReward>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event load="SYLVAN_STANDARD"/>
@@ -3422,7 +3424,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="SYLVAN_ROYAL_WIN">
 	<text>"I... I still lost... Even with all of that... I wasn't a match for you. Well... see you in the next life, beyatch..." Leah falls to the ground, and for the first time, she doesn't beam away. Your nemesis is finally dead.</text>
 	<achievement silent="false">ACH_LEAH_TRUEEND</achievement>
-	<autoReward level="HIGH">standard</autoReward>
+	<autoReward level="HIGH">standard_no_item</autoReward>
 	<unlockCustomShip silent="false">PLAYER_SHIP_SYLVAN</unlockCustomShip>
 	<choice hidden="true">
 		<text>Inspect the merchant's ship.</text>
@@ -8543,6 +8545,10 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 			</choice>
 		</event>
 	</choice>
+	<choice hidden="true" req="JUDGE_BOON_RENEGADE">
+		<text>Use your blessing to avoid combat.</text>
+		<event load="MV_TRAVELER_BOON"/>
+	</choice>
 </event>
 <event name="MTBOSS_LEECHC_DESTROYED">
 	<text>The mighty vessel has been eliminated! Within its wreckage remains plenty of scrap and supplies for the taking.</text>
@@ -9382,7 +9388,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_CLANSMAN_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Guild design! This must be some rare hunting vessel, who's taken it upon themselves to travel the Multiverse for rare hunts!</text>
 	<ship load="SHIP_MTBOSS_CLANSMAN_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_CLANB_DROP">MTBOSS_CLANB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_CLANB_DROP">MTBOSS_CLANB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Prepare to fight!</text>
 		<event>
@@ -9414,7 +9420,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_DUSKBRINGER_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Duskbringer design! The steel exterior of the ship shines from the nearest star, but your attention is drawn to their large crew of Zoltan soldiers.</text>
 	<ship load="SHIP_MTBOSS_DUSKBRINGER_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_DUSKB_DROP">MTBOSS_DUSKB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_DUSKB_DROP">MTBOSS_DUSKB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9446,7 +9452,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_ENGI_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Engi design! The ship appears to be made of of various parts from different styles of Engi ships, an odd amalgam unlike anything you've seen.</text>
 	<ship load="SHIP_MTBOSS_ENGI_C_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_ENGIC_DROP">MTBOSS_ENGIC_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_ENGIC_DROP">MTBOSS_ENGIC_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9478,7 +9484,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_FREEMANTIS_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Free Mantis design! It appears to be stealth oriented, but still capable of both a strong offense and teleportation!</text>
 	<ship load="SHIP_MTBOSS_FREEMANTIS_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_FREEMANTISB_DROP">MTBOSS_FREEMANTISB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_FREEMANTISB_DROP">MTBOSS_FREEMANTISB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9510,7 +9516,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_LOSTSUN_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Lost Sun design! The ship seems to be armored with a thick layer of ice, and it wields an impressive arsenal of Frost weapons!</text>
 	<ship load="SHIP_MTBOSS_LOSTSUN_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_LOSTSUNB_DROP">MTBOSS_LOSTSUNB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_LOSTSUNB_DROP">MTBOSS_LOSTSUNB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9542,7 +9548,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_MANTIS_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Mantis design! The ship sports a massive array of bombs, but little ability to damage your hull outside of a simple Beam drone.</text>
 	<ship load="SHIP_MTBOSS_MANTIS_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_MANTISB_DROP">MTBOSS_MANTISB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_MANTISB_DROP">MTBOSS_MANTISB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9574,7 +9580,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_MONK_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Monk design! It's uncharacteristic of Zoltan Monk ships to be so well armed, though it seems most of their weaponry is Ion related!</text>
 	<ship load="SHIP_MTBOSS_MONK_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_MONKB_DROP">MTBOSS_MONKB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_MONKB_DROP">MTBOSS_MONKB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9606,7 +9612,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_ROCK_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Rock design! The tough obsidian hull of the cruiser looks as though it could take quite a beating, and you suspect they might have especially well protected primary systems.</text>
 	<ship load="SHIP_MTBOSS_ROCK_C_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_ROCKC_DROP">MTBOSS_ROCKC_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_ROCKC_DROP">MTBOSS_ROCKC_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9638,7 +9644,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_SEPARATIST_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Separatist design! The ship appears to be split in two halves, and resembles some sort of old Earth symbolism...</text>
 	<ship load="SHIP_MTBOSS_SEPARATIST_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_SEPARATISTB_DROP">MTBOSS_SEPARATISTB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_SEPARATISTB_DROP">MTBOSS_SEPARATISTB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9670,7 +9676,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_SLUG_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Slug design! The bright hull of the cruiser draws your attention, though the arsenal its pointing straight at you is quite distracting as well.</text>
 	<ship load="SHIP_MTBOSS_SLUG_C_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_SLUGC_DROP">MTBOSS_SLUGC_DROP_CHAOS</eventAlias>	
+	<eventAlias jumpClear="false" name="MTBOSS_SLUGC_DROP">MTBOSS_SLUGC_DROP_CHAOS</eventAlias>	
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9702,7 +9708,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_STEALTH_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Stealth design! The ship seems to bear camouflage similar to ones you've seen used on terrestrial planets, but seems rather inefficient in space.</text>
 	<ship load="SHIP_MTBOSS_STEALTH_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_STEALTHB_DROP">MTBOSS_STEALTHB_DROP_CHAOS</eventAlias>	
+	<eventAlias jumpClear="false" name="MTBOSS_STEALTHB_DROP">MTBOSS_STEALTHB_DROP_CHAOS</eventAlias>	
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9734,7 +9740,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_ZOLTAN_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Zoltan design! The ship glows with energy, and it's safe to say the Zoltan crew aboard have kept their reactor well supplied.</text>
 	<ship load="SHIP_MTBOSS_ZOLTAN_C_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_ZOTLANC_DROP">MTBOSS_ZOTLANC_DROP_CHAOS</eventAlias>	
+	<eventAlias jumpClear="false" name="MTBOSS_ZOTLANC_DROP">MTBOSS_ZOTLANC_DROP_CHAOS</eventAlias>	
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9766,7 +9772,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_SHELL_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Shell design! A bright light shines through the cracks on the ship, pulsing the colors of the rainbow.</text>
 	<ship load="SHIP_MTBOSS_SHELL_C_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_SHELLC_DROP">MTBOSS_SHELLC_DROP_CHAOS</eventAlias>	
+	<eventAlias jumpClear="false" name="MTBOSS_SHELLC_DROP">MTBOSS_SHELLC_DROP_CHAOS</eventAlias>	
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9798,7 +9804,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_ENGINEER_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Rebel Engineer design! It looks like a medical vessel, though it's armed just as well as any standard Rebel military ship.</text>
 	<ship load="SHIP_MTBOSS_ENGINEER_B_CHAOS" hostile="false"/>
-	<eventAlias jumpClear="true" name="MTBOSS_ENGINEERB_DROP">MTBOSS_ENGINEERB_DROP_CHAOS</eventAlias>	
+	<eventAlias jumpClear="false" name="MTBOSS_ENGINEERB_DROP">MTBOSS_ENGINEERB_DROP_CHAOS</eventAlias>	
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9830,7 +9836,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_LANIUS_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Lanius design! The ship glitters in the light of the nearby star, as its scarlet hull and sharp spikes lurch towards you.</text>
 	<ship load="SHIP_MTBOSS_LANIUS_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_LANIUSB_DROP">MTBOSS_LANIUSB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_LANIUSB_DROP">MTBOSS_LANIUSB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9862,7 +9868,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_KESTREL_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of an older Kestrel model! The fresh white coat suggests it has been outfitted with a more up to date arsenal recently.</text>
 	<ship load="SHIP_MTBOSS_KESTREL_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_KESTRELB_DROP">MTBOSS_KESTRELB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_KESTRELB_DROP">MTBOSS_KESTRELB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9894,7 +9900,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_FED_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Federation design! However, judging from the rusting hull and crude pirate paint, it's safe to assume the Federation is no longer the owner of this vessel.</text>
 	<ship load="SHIP_MTBOSS_FED_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_FEDB_DROP">MTBOSS_FEDB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_FEDB_DROP">MTBOSS_FEDB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9926,7 +9932,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_ORCHID_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Orchid design! The ship here seems to bear an unusual resemblance to an Earth fruit known as the "strawberry", though that's probably a coincidence.</text>
 	<ship load="SHIP_MTBOSS_ORCHID_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_ORCHIDB_DROP">MTBOSS_ORCHIDB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_ORCHIDB_DROP">MTBOSS_ORCHIDB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9958,7 +9964,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_CRYSTAL_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Crystal design! If your days as a Renegade have told you anything, the orange hull of this ship suggests their crew probably have some affixation with fire.</text>
 	<ship load="SHIP_MTBOSS_CRYSTAL_C_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_CRYSTALC_DROP">MTBOSS_CRYSTALC_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_CRYSTALC_DROP">MTBOSS_CRYSTALC_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -9990,7 +9996,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_TUCO_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Hephaestus design! The decals of the ship bring to your mind the sounds of clinking poker chips and the intoxicating chirp of a slot machine winding up to reveal your fate.</text>
 	<ship load="SHIP_MTBOSS_TUCO_B_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_TUCOB_DROP">MTBOSS_TUCOB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_TUCOB_DROP">MTBOSS_TUCOB_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -10022,7 +10028,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_LEECH_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Eargen design! Bright neon lights adorn the hull. To most, this would be nothing but a frivolous and worthless gesture, but to the Eargen military, whose ships are strong but outdated, such decorations denote a level of tech above the typical par.</text>
 	<ship load="SHIP_MTBOSS_LEECH_C_CHAOS" hostile="false"/> 
-	<eventAlias jumpClear="true" name="MTBOSS_LEECHC_DROP">MTBOSS_LEECHC_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_LEECHC_DROP">MTBOSS_LEECHC_DROP_CHAOS</eventAlias>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -10033,6 +10039,10 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 				<event load="COMBAT_CHECK"/>
 			</choice>
 		</event>
+	</choice>
+	<choice hidden="true" req="JUDGE_BOON_RENEGADE">
+		<text>Use your blessing to avoid combat.</text>
+		<event load="MV_TRAVELER_BOON"/>
 	</choice>
 </event>
 <event name="MTBOSS_LEECHC_DROP_CHAOS">
@@ -10050,7 +10060,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_MFK_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Rebel design! At once, a strange pattern appears on your computer... its frequency matches the signal from that beacon you had activated earlier!</text>
 	<playSound>mysteriousBeacon</playSound>
-	<eventAlias jumpClear="true" name="MTBOSS_MFKC_DROP">MTBOSS_MFKC_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_MFKC_DROP">MTBOSS_MFKC_DROP_CHAOS</eventAlias>
 	<ship load="SHIP_MTBOSS_MFK_C_CHAOS" hostile="false"/> 
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -10083,7 +10093,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_SALT_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of unknown alien design! At once, a strange pattern appears on your computer... its frequency matches the signal from that beacon you had activated earlier!</text>
 	<playSound>mysteriousBeacon</playSound>
-	<eventAlias jumpClear="true" name="MTBOSS_SALTC_DROP">MTBOSS_SALTC_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_SALTC_DROP">MTBOSS_SALTC_DROP_CHAOS</eventAlias>
 	<ship load="SHIP_MTBOSS_SALT_C_CHAOS" hostile="false"/> 
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -10116,7 +10126,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_SYLVAN_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of Slug design! At once, a strange pattern appears on your computer... its frequency matches the signal from that beacon you had activated earlier!</text>
 	<playSound>mysteriousBeacon</playSound>
-	<eventAlias jumpClear="true" name="MTBOSS_SYLVANC_DROP">MTBOSS_SYLVANC_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_SYLVANC_DROP">MTBOSS_SYLVANC_DROP_CHAOS</eventAlias>
 	<ship load="SHIP_MTBOSS_SYLVAN_C_CHAOS" hostile="false"/> 
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -10149,7 +10159,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_OSMIAN_B_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of unknown alien design! At once, a strange pattern appears on your computer... its frequency matches the signal from that beacon you had activated earlier!</text>
 	<playSound>mysteriousBeacon</playSound>
-	<eventAlias jumpClear="true" name="MTBOSS_OSMIANB_DROP">MTBOSS_OSMIANB_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_OSMIANB_DROP">MTBOSS_OSMIANB_DROP_CHAOS</eventAlias>
 	<ship load="SHIP_MTBOSS_OSMIAN_B_CHAOS" hostile="false"/> 
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -10184,7 +10194,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_HORSE_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of unknown alien design! At once, a strange pattern appears on your computer... its frequency matches the signal from that beacon you had activated earlier!</text>
 	<playSound>mysteriousBeacon</playSound>
-	<eventAlias jumpClear="true" name="MTBOSS_HORSEC_DROP">MTBOSS_HORSEC_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_HORSEC_DROP">MTBOSS_HORSEC_DROP_CHAOS</eventAlias>
 	<ship load="SHIP_MTBOSS_HORSE_C_CHAOS" hostile="false"/> 
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -10217,7 +10227,7 @@ Three, and my persssonal favorite, you bring them sssomeone they will lisssten t
 <event name="MV_TRAVELER_BOSS_SPIDER_C_CHAOS">
 	<text>From out of the tunnel comes a massive cruiser vessel, of unknown alien design! At once, a strange pattern appears on your computer... its frequency matches the signal from that beacon you had activated earlier!</text>
 	<playSound>mysteriousBeacon</playSound>
-	<eventAlias jumpClear="true" name="MTBOSS_SPIDERC_DROP">MTBOSS_SPIDERC_DROP_CHAOS</eventAlias>
+	<eventAlias jumpClear="false" name="MTBOSS_SPIDERC_DROP">MTBOSS_SPIDERC_DROP_CHAOS</eventAlias>
 	<ship load="SHIP_MTBOSS_SPIDER_C_CHAOS" hostile="false"/> 
 	<choice hidden="true">
 		<text>Continue...</text>

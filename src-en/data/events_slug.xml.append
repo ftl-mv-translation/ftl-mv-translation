@@ -2358,6 +2358,10 @@
 					<autoReward level="MED">stuff</autoReward>
 				</event>
 			</choice>
+			<choice hidden="true">
+				<text>Hurry away.</text>
+				<event/>
+			</choice>
 		</event>
 	</choice>
 	<choice hidden="true">
@@ -3178,7 +3182,6 @@
 -->
 <event name="PONY_WORLD">
 	<preventQuest/>
-	<preventFleet/>
 	<quest>
 		<nebulaBeacon>false</nebulaBeacon>
 		<aggressive>2</aggressive>
@@ -3855,7 +3858,7 @@
 										<text>Continue...</text>
 										<event>
 											<text>Obyn follows you through the corridors of the facility, where you make your way back to the hangar where your ship is held. You hurry inside and take off from the massive facility and make your way back down to the market. You begin to think you might actually make it out of here without a fight, when a Clansman cruiser jumps in out of nowhere! "Ah, there you are you little fecal droppingsss! Ssstealing from the Guild only endssss you up in one ssspot! A shallow grave!"</text>
-											<jumpEvent>TEMP_OBYN_JUMP</jumpEvent>
+											<triggeredEvent event="TEMP_OBYN_JUMP" jumps="1"/>
 											<crewMember amount="1" class="unique_obyn_temp">Obyn</crewMember>
 											<ship load="SHIP_CLAN_CRUISER" hostile="true"/>
 											<choice hidden="true">
@@ -3896,6 +3899,7 @@
 						<text>Continue...</text>
 						<event>
 							<text>Obyn follows you through the corridors of the facility, where you make your way back to the hangar where your ship is held. You hurry inside and take off from the massive facility and make your way back down to the market. You begin to think you might actually make it out of here without a fight, when a Clansman cruiser jumps in out of nowhere! "Ah, there you are you little fecal droppingsss! Ssstealing from the Guild only endssss you up in one ssspot! A shallow grave!"</text>
+							<triggeredEvent event="TEMP_OBYN_JUMP" jumps="1"/>
 							<crewMember amount="1" class="unique_obyn_temp">Obyn</crewMember>
 							<ship load="SHIP_CLAN_CRUISER_CHAOS" hostile="true"/>
 							<choice hidden="true">
@@ -3913,6 +3917,7 @@
 <event name="SYLVAN_DOES_AN_EX_MACHINA">
 	<text>As more ships approach, underneath the shadow of the massive dissection center, it becomes apparent this is the end. "The EHG hasss had enough of you messsing around in our sssector! You Renegades hold no regard for the sssanctity of the Kleptocracccy's control over thessse nebulas or our right to exploit the resssourccces within them! Ssssurrender the Sssalt Man or be annihilated!"</text>
 	<variable name="ach_boss_clancruiser" op="set" val="1"/>
+	<clearTriggeredEvent name="TEMP_OBYN_JUMP"/>
 	<choice hidden="true" req="pilot" blue="false" max_group="0">
 		<text>No, screw you! I'm tired of listening to your dumb accents!</text>
 		<event>
@@ -3969,6 +3974,7 @@
 <event name="GNOME_DOES_AN_EX_MACHINA">
 	<text>As more ships approach, underneath the shadow of the massive dissection center, it becomes apparent this is the end. "The EHG hasss had enough of you messsing around in our sssector! You Renegades hold no regard for the sssanctity of the Kleptocracccy's control over thessse nebulas or our right to exploit the resssourccces within them! Ssssurrender the Sssalt Man or be annihilated!"</text>
 	<variable name="ach_boss_clancruiser" op="set" val="1"/>
+	<clearTriggeredEvent name="TEMP_OBYN_JUMP"/>
 	<choice hidden="true" req="pilot" blue="false" max_group="0">
 		<text>No, screw you! I'm tired of listening to your dumb accents!</text>
 		<event>
@@ -4215,7 +4221,7 @@
 		<text>Ask about the rodeo.</text>
 		<event>
 			<text>You're greeted by a Ranger with an oversized hat, who explains the basics. "We've rounded up quite a handful of Equinoidsss, and we're going to hold a grand sssspace rodeo! You can enter one of your crew if you want, for a sssmall entrance fee of 25 ssscrap. Whatever particccipant lastsss the longessst winsss the prize, a weapon we definitely didn't sssteal! It's one big-assss beam, if that enticccesss you!"</text>
-			<choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 				<text>Enter the rodeo.</text>
 				<event>
 					<text>You hand over some scrap to the Clansman, who reassures you by saying "Don't worry about your crew either, we ain't rookiesss here! We've got a whole medical team on ssstandbye in cassse thingssss go sssouth!"</text>
@@ -4252,7 +4258,7 @@
 							</choice>
 						</event>
 					</choice>
-					<choice hidden="true" req="LIST_CREW_MORPH_LIZARD">
+					<choice hidden="true" req="LIST_CREW_LIZARD">
 						<text>(Lizard Crew) Your Lizard has ridden Equinoids before. Send him.</text>
 						<event>
 							<text>Your crew steps up to the competitors' chamber amongst some other aliens. Some Clansmen finish up preparing, and then usher in the first few contestants...</text>
@@ -4263,6 +4269,10 @@
 						</event>
 					</choice>
 				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>You don't have any eligible riders with you. And don't even think about putting the drones on the horse...</text>
+				<event load="OPTION_INVALID"/>
 			</choice>
 			<choice hidden="true">
 				<text>Inquire about these 'Equinoids' instead.</text>
@@ -4350,6 +4360,7 @@
 </event>
 
 <event name="NEBULA_CLAN_PHEROMONES" unique="true">
+	<preventQuest/>
 	<text>You've seen a lot of things in your travels, but you don't think you've ever seen the wastes of half a Mantis fleet lying before a Guild megastructure. A massive mechanic arm appears to be collecting the wrecks one by one and moving them towards a small docking bay.</text>
 	<environment type="nebula"/>
 	<choice hidden="true">
@@ -5700,7 +5711,6 @@
 		<text>Continue...</text>
 		<event>
 			<text>Your crew waltz out of the wreck, the crown ill-fittingly placed around the can of beans who drags it around him. You're amazed to see as the Slugs all around, Slocknog included, bow down, willing to accept this change of events... Like seriously, why are they so fine with this?</text>
-			<unlockCustomShip silent="false">PLAYER_SHIP_SYLVANTRANS_3</unlockCustomShip>
 			<choice hidden="true">
 				<text>We've done it.</text>
 				<event>
