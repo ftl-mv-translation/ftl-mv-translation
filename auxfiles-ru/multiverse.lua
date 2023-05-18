@@ -71,6 +71,23 @@ end
 
 --[[
 ////////////////////
+TUTORIAL
+////////////////////
+
+script.on_game_event("TUTORIAL_START", false, function()
+  tutorial_arrow:toggleState()
+end)
+
+script.on_render_event(Defines.RenderEvents.LAYER_PLAYER,
+  function() end,
+  function()
+	if tutorial_arrow:getState() == "off" then return end
+    tutorial_arrow:show({Xalign = 100, Yalign = 100})
+  end
+)]]--
+
+--[[
+////////////////////
 SCREEN TRANSFORM STUFF
 ////////////////////
 ]]--
@@ -196,8 +213,8 @@ HER QUEST STUFF
 ////////////////////
 ]]--
 function mods.multiverse.theOracleProphecy()
-	Hyperspace.ErrorMessage("Не доверяйте ни этому торговцу, ни его сообщникам. Верьте только мне и наблюдателям, сообщите об этом Сесту. Вам помогут. Найдите меня. И, что бы вы ни делали, ни в коем случае не говорите тому, что в костюме, об этом. Мы обсудим это подробнее, когда встретимся.")
 	Hyperspace.setWindowTitle("Проверь сообщение об ошибке :)")
+	Hyperspace.ErrorMessage("Не доверяйте ни этому торговцу, ни его сообщникам. Верьте только мне и наблюдателям, сообщите об этом Сесту. Вам помогут. Найдите меня. И, что бы вы ни делали, ни в коем случае не говорите тому, что в костюме, об этом. Мы обсудим это подробнее, когда встретимся.")
 	log("Найди Меня Найди Меня Найди Меня Найди Меня Найди Меня Найди Меня Найди Меня Найди Меня Найди Меня Найди Меня Найди Меня Найди Меня Найди Меня")
 end
 script.on_game_event("ANOMALY_ORACLE_SPEAK", false, mods.multiverse.theOracleProphecy)

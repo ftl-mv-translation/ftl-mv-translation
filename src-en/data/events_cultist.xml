@@ -279,8 +279,34 @@
 </event>
 
 <event name="ORIGINS_RUWEN_EXIT">
-	<text>You have arrived at the exit beacon. It appears the apparatus will deposit in a random sector once we jump away.</text>
+	<text>You have arrived at the exit beacon. It appears the apparatus will deposit you in a random sector once we jump away.</text>
 	<variable name="loc_crystalhome" op="set" val="1"/>
+	<variable name="loc_origins_exit" op="set" val="1"/>
+	<choice req="loc_origins_exit" lvl="1" max_group="0" hidden="true" blue="false"> <!--theoretically you can never get this except in the fleet so Im just going to make it that for simplisities sake-->
+		<text>Continue...</text>
+		<event>
+			<text>The Rebel fleet has taken control of the beacon! You'll have to fight your way out!</text>
+			<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+			<environment type="PDS" target="player"/>
+			<noASBPlanet/>
+			<ship load="SHIP_REBEL_FLEET_S" hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+			<choice hidden="true" req="engines" lvl="6">
+				<text>(Adv. Engines) Try to escape the Elite.</text>
+				<event load="FLEET_ESCAPE"/>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_JERRY">
+				<text>(Jerry) "Hello!"</text>
+				<event>
+					<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+					<ship hostile="false"/> 
+				</event>
+			</choice>
+		</event>
+	</choice>
 	<choice hidden="true" req="loc_waystone" lvl="1" max_group="0" blue="false">
 		<text>Inspect the Waystone.</text>
 		<event>
@@ -317,7 +343,7 @@
 				<text>Continue...</text>
 				<event>
 					<text>Unfortunately, Ruwen is no longer with you. With no proper way to return the device back to the Crystal people now, you break it down into scrap.</text>
-					<autoReward level="HIGH">fuel</autoReward>
+					<autoReward level="HIGH">scrap_only</autoReward>
 					<choice hidden="true">
 						<text>Check the storage.</text>
 						<event load="STORAGE_CHECK"/>
@@ -353,7 +379,7 @@
 			<choice hidden="true" req="unique_ruwen" lvl="0" max_group="0" blue="false">
 				<text>Continue...</text>
 				<event>
-					<text>Either way, Ruwen is no longer with us. You can consider this mission a total failure, but at least you got see some new sights.</text>
+					<text>Either way, Ruwen is no longer with us. You can consider this mission a total failure, but at least you got to see some new sights.</text>
 					<choice hidden="true">
 						<text>Check the storage.</text>
 						<event load="STORAGE_CHECK"/>

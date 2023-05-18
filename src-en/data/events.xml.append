@@ -2094,10 +2094,70 @@ The challenge level is independant from the standard difficulty slider in the ha
 		<text>[Federation Database] Who are the Clairvoyants?</text>
 		<event>
 			<text id="database_clairvoyants"/>
+			<choice>
+				<text>Attack the ship!</text>
+				<event hidden="true">
+					<text>The Slugs, confident in their ability to take you, make no attempt to get away and engage you directly in combat.</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
 			<choice hidden="true">
-				<text>Continue...</text>
+				<text>Offer your help.</text>
 				<event>
-					<restartEvent/>
+					<text>"Eugh... Federation... Yessss, we are lossst. No need to rub it in. We were chassssing ssssome filthy Fed- er.... criminalsss and wandered too far. Much too far. Could you ssspare ssssome fuel?"</text>
+					<choice>
+						<text>Give them some fuel.</text>
+						<event>
+							<text>The Slug quickly scoops up the fuel and brings it back to his ship.</text>
+							<item_modify>
+								<item type="fuel" min="-3" max="-3"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="SLUG_ELITE_LOST_GIVE"/>
+							</choice>
+						</event>
+					</choice>
+					<choice req="LIST_CREW_SLUG">
+						<text>(Slug Crew) Have your Slug make the trade.</text>
+						<event>
+							<text>"One of ussss? My missstake... I did not think fellow Kleptocrianssss journeyed out thissss far intentionally..."</text>
+							<item_modify>
+								<item type="fuel" min="-3" max="-3"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event>
+									<text>Knowing you have a Slug aboard your vessel, the Clairvoyants seem much more open, and you feel confident enough to accept their payment without suspecting some kind of trick.</text>
+									<autoReward level="MED">item</autoReward>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice req="weapons" lvl="5">
+						<text>(Upg. Weapons) Keep your weapons powered while making the trade.</text>
+						<event>
+							<text>"I sssee you flexing your weaponssss over there, Feddy boy. You can put thossse away, I jusssst need the fuel..."</text>
+							<item_modify>
+								<item type="fuel" min="-3" max="-3"/>
+							</item_modify>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event>
+									<text>Knowing you're armed to the teeth, you doubt the Clairvoyants will try anything, and you feel confident enough to accept their payment without suspecting some kind of trick.</text>
+									<autoReward level="MED">item</autoReward>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>We can't help.</text>
+						<event/>
+					</choice>
 				</event>
 			</choice>
 		</event>

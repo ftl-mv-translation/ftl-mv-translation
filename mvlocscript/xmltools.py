@@ -48,7 +48,7 @@ def xpath(tree_or_element, expr):
 
     return list(map(convert_xpath_result, xpath_result))
 
-def _get_tag_as_written(e):
+def get_tag_as_written(e):
     tag, prefix = e.tag, e.prefix
     if prefix is None:
         return tag
@@ -59,7 +59,7 @@ class MatcherBase:
     def prepare(self, tree):
         pass
 
-    def getsegment(self, tree, element):
+    def getsegment(self, tree, element, original_segment):
         raise NotImplementedError
     
     def isuniquefromroot(self, tree, element, segment):
@@ -80,19 +80,19 @@ class AttributeMatcher(MatcherBase):
 
     def prepare(self, tree):
         for element in tree.xpath(f'//*[@{self._attribute}]'):
-            tagname = _get_tag_as_written(element)
+            tagname = get_tag_as_written(element)
             attrval = element.get(self._attribute)
             if '"' not in attrval:
                 self._cache[(tagname, attrval)] += 1
 
-    def getsegment(self, tree, element):
+    def getsegment(self, tree, element, original_segment):
         attrval = element.get(self._attribute)
         if (attrval is not None) and ('"' not in attrval):
-            return f'{_get_tag_as_written(element)}[@{self._attribute}="{attrval}"]'
+            return f'{get_tag_as_written(element)}[@{self._attribute}="{attrval}"]'
         return None
     
     def isuniquefromroot(self, tree, element, segment):
-        tagname = _get_tag_as_written(element)
+        tagname = get_tag_as_written(element)
         attrval = element.get(self._attribute)
         return self._cache[(tagname, attrval)] == 1
 
@@ -154,7 +154,7 @@ class MultipleAttributeMatcher(MatcherBase):
     def _count_matches(self, elements, tagname, candidate):
         ret = 0
         for other_element in elements:
-            if _get_tag_as_written(other_element) != tagname:
+            if get_tag_as_written(other_element) != tagname:
                 continue
             
             attrvals = _get_multiple_values_from_dict(other_element, self._attributes)
@@ -163,7 +163,7 @@ class MultipleAttributeMatcher(MatcherBase):
         return ret
 
     def _evaluate_candidate(self, element, candidate):
-        tagname = _get_tag_as_written(element)
+        tagname = get_tag_as_written(element)
         if not self._disable_condensing:
             fromroot = self._count_matches(self._elementscache, tagname, candidate)
             assert fromroot > 0
@@ -190,7 +190,7 @@ class MultipleAttributeMatcher(MatcherBase):
         )
         return f'{tagname}[{condition_expr}]'
 
-    def getsegment(self, tree, element):
+    def getsegment(self, tree, element, original_segment):
         if element not in self._elementscache:
             return None
 
@@ -210,7 +210,7 @@ class MultipleAttributeMatcher(MatcherBase):
                     break
         
         assert best_candidate is not None
-        segment = self._candidate_to_segment(_get_tag_as_written(element), best_candidate)
+        segment = self._candidate_to_segment(get_tag_as_written(element), best_candidate)
         self._resultcache[element] = (segment, best_candidate_uniquity)
         return segment
     
@@ -263,7 +263,7 @@ class UniqueXPathGenerator:
             )
 
             for matcher in self._matchers:
-                new_segment = matcher.getsegment(self._tree, curelement)
+                new_segment = matcher.getsegment(self._tree, curelement, segment)
                 if new_segment is None:
                     continue
                 

@@ -71,6 +71,23 @@ end
 
 --[[
 ////////////////////
+TUTORIAL
+////////////////////
+
+script.on_game_event("TUTORIAL_START", false, function()
+  tutorial_arrow:toggleState()
+end)
+
+script.on_render_event(Defines.RenderEvents.LAYER_PLAYER,
+  function() end,
+  function()
+	if tutorial_arrow:getState() == "off" then return end
+    tutorial_arrow:show({Xalign = 100, Yalign = 100})
+  end
+)]]--
+
+--[[
+////////////////////
 SCREEN TRANSFORM STUFF
 ////////////////////
 ]]--
@@ -196,8 +213,8 @@ HER QUEST STUFF
 ////////////////////
 ]]--
 function mods.multiverse.theOracleProphecy()
-	Hyperspace.ErrorMessage("행상인과 그의 동료들은 믿지 마. 관찰자만을 믿어. 이 일을 테스트에게 보고해. 널 도와줄 거야. 나를 찾아줘. 그리고 정장을 입은 사내에게 이 일을 알리는 짓만큼은 절대 해서는 안 돼. 이 이상은 직접 만나서 얘기하자.")
 	Hyperspace.setWindowTitle("오류 메시지를 확인해봐 :)")
+	Hyperspace.ErrorMessage("행상인과 그의 동료들은 믿지 마. 관찰자만을 믿어. 이 일을 테스트에게 보고해. 널 도와줄 거야. 나를 찾아줘. 그리고 정장을 입은 사내에게 이 일을 알리는 짓만큼은 절대 해서는 안 돼. 이 이상은 직접 만나서 얘기하자.")
 	log("찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘 찾아줘")
 end
 script.on_game_event("ANOMALY_ORACLE_SPEAK", false, mods.multiverse.theOracleProphecy)
@@ -257,6 +274,6 @@ script.on_game_event("HER_FINALE", false, mods.multiverse.beginFadeWhite_HerEndi
 script.on_game_event("HER_FINALE", false, mods.multiverse.beginScreenShake_HerEnding)
 
 function mods.multiverse.sheLost()
-	Hyperspace.ErrorMessage("네가 나를 배신하다니 믿을 수 없어 배회자! 아주 좋았는데... 거의 완벽에 가까웠는데! 뭐, 그럼 어디 그 보잘 것 없는 해충들이 지배하는 무익하고 지루한 멀티버스에서 잘살아 보라고. >:(")
+	Hyperspace.ErrorMessage("나를 배신하다니 믿을 수 없어 배회자! 아주 좋았는데... 거의 완벽에 가까웠는데! 뭐, 그럼 어디 그 보잘 것 없는 해충들이 지배하는 무익하고 지루한 멀티버스에서 잘살아 보라고. >:(")
 end
 script.on_game_event("HER_FINALE_REAL", false, mods.multiverse.sheLost)

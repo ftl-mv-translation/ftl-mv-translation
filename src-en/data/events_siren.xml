@@ -214,20 +214,31 @@
 		<event>
 			<text>Aboard the wreck you find a strange gun with anomalous properties like the ship you just fought, as well as an Atlas disc with coordinates that make no sense to you. You're wary of whatever nonsense those aliens were spewing, but against your better judgement you enter the disc into your Atlas regardless. We should be able to explore these coordinates at the next sector jump.</text>
 			<variable name="coords_rhyme" op="add" val="1"/>
+			<metaVariable name="towr_fail" op="set" val="1"/> <!--if missing or dying in the meantime-->
 			<weapon name="BEAM_MADNESS"/>
 		</event>
 	</choice>
 </event>
 
 <!--redemption encounter-->
+<ship name="SHIP_RHYMER_REDEMPTION" auto_blueprint="MU_RHYME_BOMBER">
+	<destroyed load="RHYME_ENCOUNTER_REDEMPTION_DEFEAT"/>
+	<deadCrew load="RHYME_ENCOUNTER_REDEMPTION_DEFEAT"/>
+</ship>
 <event name="RHYME_ENCOUNTER_REDEMPTION">
+	<beaconType id="map_icon_cultist" global="true">
+		<color r="255" g="0" b="0" a="1.0"/>
+		<unvisitedTooltip>There is strange interference at this beacon.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
 	<text>Uncertain what you'll find at this beacon, you tread carefully but even then aren't quite enlightened on what you've found. A massive and well armed Bomber, similar but differently colored to the mysterious rainbow ships that have been reported popping up, is hiding behind an asteroid. You seem unable to scan it - something about the ship is causing unexpected glitches in your hardware.</text>
-	<ship load="SHIP_RHYMER_3" hostile="false"/>
+	<ship load="SHIP_RHYMER_REDEMPTION" hostile="false"/>
 	<status type="limit" target="player" system="sensors" amount="1"/>
 	<choice hidden="true">
 		<text>Hail the vessel.</text>
 		<event>
-			<text>A voice from the enemy ship begins to speak, but to your surprise it sounds as if it were next to you. You turn but see no one and realize you're hearing the voice in your head. "Tired, my master does grow! Oh, how dissapointing was his last foe. A battle for the ages, he thought. But these Renegades, they die quite a lot. You, I think, shall be their redemption. Yes, surely you'll be the exception! Come on, and fight! To battle my master will surely be your right."</text>
+			<text>A voice from the enemy ship begins to speak, but to your surprise it sounds as if it were next to you. You turn but see no one and realize you're hearing the voice in your head. "Tired, my master does grow! Oh, how disappointing was his last foe. A battle for the ages, he thought. But these Renegades, they die quite a lot. You, I think, shall be their redemption. Yes, surely you'll be the exception! Come on, and fight! To battle my master will surely be your right."</text>
 			<choice hidden="true">
 				<text>Your master? What are you talking about?</text>
 				<event>
@@ -250,13 +261,35 @@
 	<choice hidden="true">
 		<text>Ignore it and leave.</text>
 		<event>
-			<text>If there's one thing you've learned in your years as a Renegade, its never to trust a mysterious ship.</text>
+			<text>If there's one thing you've learned in your years as a Renegade, it's never to trust a mysterious ship.</text>
 			<choice>
 				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
 				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="RHYME_ENCOUNTER_REDEMPTION_DEFEAT">
+	<text>"Finally, at last, my death has come. To the end I am all but numb. The end is nearer, the time is nigh! Not now but later you will die. Go now, and search my wreck. There is one last card in the master's deck."</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<status type="clear" target="player" system="sensors" amount="100"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>Aboard the wreck you find a strange gun with anomalous properties like the ship you just fought, as well as an Atlas disc with coordinates that make no sense to you. You're wary of whatever nonsense those aliens were spewing, but against your better judgement you enter the disc into your Atlas regardless. If you want to go there, you'll have to do it now. There won't be another opportunity.</text>
+			<weapon name="BEAM_MADNESS"/>
+			<choice hidden="true">
+				<text>Reroute now.</text>
+				<event>
+					<secretSector>SECRET_RHYME</secretSector>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Leave it for another day.</text>
 				<event/>
 			</choice>
 		</event>
@@ -333,6 +366,7 @@
 		<event>
 			<text>"Oh this is perfect, truly just perfect! But first I must take this gnome for which my master holds such respect. Now now off we go! We certainly wouldn't want to be late to the show!"</text>
 			<playSound>gm_goodbye</playSound>
+			<variable name="loc_protomv_drive_block" op="set" val="1"/>
 			<removeCrew class="gnome">
 				<clone>false</clone>
 				<text></text>
@@ -661,6 +695,7 @@
 	</beaconType>
 	<text>You've finally made it to the location of Her. The entire space around is nothing but darkness, with every star having been pulled out of the night sky and consumed by some ancient evil. This is it, there's no second chances now. You're about to go up against perhaps the most powerful and evil entity known to exist in the Multiverse.</text>
 	<img back="BACKGROUND_DARKNESS" planet="NONE"/>
+	<variable name="loc_protomv_drive_block" op="set" val="1"/>
 	<backgroundObject name="HER">
 		<layer z="100">foreground</layer>
 		<spawnArea x="640" y="360" w="0" h="0" center="true"/>

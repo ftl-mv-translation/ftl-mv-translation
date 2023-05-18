@@ -387,7 +387,7 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml, targetlang):
     else:
         perLanguageSettings = {}
     
-    postprocesses = perLanguageSettings.get('applyPostprocesses', [])
+    postprocesses = perLanguageSettings.get('applyPostprocesses', {})
     use_fuzzy = perLanguageSettings.get('applyUseFuzzy', False)
 
     print(f'Reading {inputxml}...')
@@ -421,8 +421,8 @@ def apply(ctx, inputxml, originalpo, translatedpo, outputxml, targetlang):
             else:
                 setattr(entity, 'text', string_translated)
 
-    for postprocess in postprocesses:
-        apply_postprocess(tree, Path(outputxml).as_posix(), postprocess)
+    for postprocess, arg in postprocesses.items():
+        apply_postprocess(tree, Path(outputxml).as_posix(), postprocess, arg)
 
     ensureparent(outputxml)
     write_ftlxml(outputxml, tree)

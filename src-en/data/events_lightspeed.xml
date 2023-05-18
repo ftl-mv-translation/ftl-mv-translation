@@ -124,6 +124,20 @@
 			</choice>
 		</event>
 	</choice>
+	<choice hidden="true" req="LOCKED_KERNAL_REPLICATOR">
+		<text>(Greenhouse) Recycle the fuel. [Gives back 1{]</text>
+		<event>
+			<text>Recycling complete!</text>
+			<eventAlias name="ATLAS_MENU" jumpClear="true">ATLAS_MENU_NOEQUIPMENT</eventAlias>
+			<item_modify>
+				<item type="fuel" min="1" max="1"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="LOAD_ATLAS"/>
+			</choice>
+		</event>
+	</choice>
 	<choice hidden="true" req="FLEET_SKIP">
 		<text>(Engine Overdrive) Activate the Capacitor. [Delays Fleet 3 jumps, will cause 6 damage to Engines and Hull. Removes Augment]</text>
 		<event>
@@ -241,10 +255,6 @@
 <event name="ATLAS_MENU">
 	<text>While in hyperspeed, you have several options. You can proceed to your next sector or do something aboard the ship first.</text>
 	<variable name="loc_has_salvaged" op="set" val="0"/>
-	<choice hidden="true" req="LIST_JUMPSPACE_EQUIPMENT">
-		<text>Do something aboard the ship.</text>
-		<event load="ATLAS_EQUIPMENT"/>
-	</choice>
 	<choice hidden="true" req="FEDERATION_DATABASE">
 		<text>[Federation Database] Learn about the Atlas.</text>
 		<event load="ATLAS_MENU_LEARN"/>
@@ -252,6 +262,10 @@
 	<choice hidden="true" req="CURA_TASK_CHECK">
 		<text>View available tasks from C.U.R.A.</text>
 		<event load="CURA_TASK_MENU"/>
+	</choice>
+	<choice hidden="true" req="LIST_JUMPSPACE_EQUIPMENT">
+		<text>Do something aboard the ship.</text>
+		<event load="ATLAS_EQUIPMENT"/>
 	</choice>
 	
 	<choice hidden="true" req="SEC FINAL" blue="false">
@@ -2754,35 +2768,34 @@ Where do you want to reroute to?
 	<choice hidden="true" req="pilot" lvl="1" max_group="0" blue="false">
 		<text>Nevermind.</text>
 		<event>
-			<variable name="loc_laststand" op="set" val="0"/>
 			<loadEvent>LASTSTAND_WARP</loadEvent>
 		</event>
 	</choice>
 	<choice hidden="true" req="coords_spider" blue="false" max_group="1">
 		<text>Jump to the Infested Sector.</text>
-		<event load="LIGHTSPEED_SECTOR_WARP_SPIDER"/>
+		<event load="LIGHTSPEED_SECTOR_WARP_SPIDER_BOSS"/>
 	</choice>
 	<choice hidden="true" req="coords_jerry" blue="false" max_group="2">
 		<text>Jump to the Jerome Protectorate.</text>
-		<event load="LIGHTSPEED_SECTOR_WARP_JERRY"/>
+		<event load="LIGHTSPEED_SECTOR_WARP_JERRY_BOSS"/>
 	</choice>
 	<choice hidden="true" req="coords_nights" blue="false" max_group="3">
 		<text>Jump to the Royal Nebula.</text>
-		<event load="LIGHTSPEED_SECTOR_WARP_NIGHTS"/>
+		<event load="LIGHTSPEED_SECTOR_WARP_NIGHTS_BOSS"/>
 	</choice>
 	<choice hidden="true" req="coords_hektar" blue="false" max_group="4">
 		<text>Jump to the Hektar Mega-Market.</text>
-		<event load="LIGHTSPEED_SECTOR_WARP_HEKTAR"/>
+		<event load="LIGHTSPEED_SECTOR_WARP_HEKTAR_BOSS"/>
 	</choice>
 	<choice hidden="true" req="coords_estate" blue="false" max_group="5">
 		<text>Jump to Wentworth Innovations HQ.</text>
-		<event load="LIGHTSPEED_SECTOR_WARP_ESTATE"/>
+		<event load="LIGHTSPEED_SECTOR_WARP_ESTATE_BOSS"/>
 	</choice>
 	<choice hidden="true" req="coords_hive" blue="false" max_group="6">
 		<text>Jump to the Mantis Hive.</text>
-		<event load="LIGHTSPEED_SECTOR_WARP_HIVE"/>
+		<event load="LIGHTSPEED_SECTOR_WARP_HIVE_BOSS"/>
 	</choice>
-	<choice hidden="true" req="coords_rhyme" blue="false" max_group="6">
+	<choice hidden="true" req="coords_rhyme" blue="false" max_group="7">
 		<text>Jump to ???.</text>
 		<event load="LIGHTSPEED_SECTOR_WARP_RHYME"/>
 	</choice>
@@ -2815,6 +2828,34 @@ Where do you want to reroute to?
 		</event>
 	</choice>
 </event>
+<event name="LIGHTSPEED_SECTOR_WARP_SPIDER_BOSS">
+	<text>You are about to reroute. Below is the Atlas entry for this sector.
+	Name: Infested Sector
+	Type: Hostile
+	Dominant Faction: Militia, The Brood (pirates)
+	Rebel Threat Level: Low
+	Locations of Interest: Spider Hive
+	
+	A civilian sector under duress, these coords were given to you by the Militia, in hopes you could assist with their spider infestation issues.</text>
+	<choice hidden="true">
+		<text>Continue with the jump.</text>
+		<event>
+			<text>You prepare to jump to the new co-ordinates, and change your flight path accordingly.</text>
+			<variable name="coords_spider" op="set" val="0"/>
+			<variable name="loc_laststand" op="add" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="JUMP_TO_SPIDER"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind.</text>
+		<event>
+			<loadEvent>ATLAS_MENU_NOEQUIPMENT</loadEvent>
+		</event>
+	</choice>
+</event>
 <event name="JUMP_TO_SPIDER">
 	<secretSector>SECTOR_SPIDER</secretSector>
 </event>
@@ -2832,6 +2873,33 @@ Where do you want to reroute to?
 		<event>
 			<text>You prepare to jump to the new co-ordinates, and change your flight path accordingly.</text>
 			<variable name="coords_jerry" op="set" val="0"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="JUMP_TO_JERRY"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind.</text>
+		<event>
+			<loadEvent>ATLAS_MENU_NOEQUIPMENT</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="LIGHTSPEED_SECTOR_WARP_JERRY_BOSS">
+	<text>You are about to reroute. Below is the Atlas entry for this sector.
+	Name: Jerome Protectorate
+	Type: Hostile
+	Dominant Faction: The Rebellion
+	Rebel Threat Level: Very High
+	
+	A secondary Rebel stronghold kept under rule by Jerome Wentworth, Admiral Vance of the Rebel fleet's nephew. A high priority target undoubtedly, and taking him out could weaken the Rebel fleet.</text>
+	<choice hidden="true">
+		<text>Continue with the jump.</text>
+		<event>
+			<text>You prepare to jump to the new co-ordinates, and change your flight path accordingly.</text>
+			<variable name="coords_jerry" op="set" val="0"/>
+			<variable name="loc_laststand" op="add" val="1"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="JUMP_TO_JERRY"/>
@@ -2876,6 +2944,34 @@ Where do you want to reroute to?
 		</event>
 	</choice>
 </event>
+<event name="LIGHTSPEED_SECTOR_WARP_NIGHTS_BOSS">
+	<text>You are about to reroute. Below is the Atlas entry for this sector.
+	Name: Royal Slug Nebulae
+	Type: Hostile
+	Dominant Faction: Slug Kleptocracy
+	Rebel Threat Level: Low 
+	Locations of Interest: The Slug Palace
+	
+	This sector is home to the Slug Royal family... which currently just consists of Captain Nights. Slocknog gave you these coordinates to come "watch the spectacle", which likely can't mean anything good.</text>
+	<choice hidden="true">
+		<text>Continue with the jump.</text>
+		<event>
+			<text>You prepare to jump to the new co-ordinates, and change your flight path accordingly.</text>
+			<variable name="coords_nights" op="set" val="0"/>
+			<variable name="loc_laststand" op="add" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="JUMP_TO_NIGHTS"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind.</text>
+		<event>
+			<loadEvent>ATLAS_MENU_NOEQUIPMENT</loadEvent>
+		</event>
+	</choice>
+</event>
 <event name="JUMP_TO_NIGHTS">
 	<secretSector>SECRET_NIGHTS</secretSector>
 </event>
@@ -2907,6 +3003,35 @@ Where do you want to reroute to?
 		</event>
 	</choice>
 </event>
+<event name="LIGHTSPEED_SECTOR_WARP_HEKTAR_BOSS">
+	<text>You are about to reroute. Below is the Atlas entry for this sector.
+	Name: Hektar Mega-Market(tm)
+	Type: Neutral
+	Dominant Faction: Hektar Industries
+	Rebel Threat Level: Very Low
+	Locations of Interest: Hektar Industries HQ
+	
+	The entries for this sector are bloated with product placements and corporate jargon. What concerns you more however is the massive number of distress beacons located within this sector. This should be interesting...</text>
+	<choice hidden="true">
+		<text>Continue with the jump.</text>
+		<event>
+			<text>You prepare to jump to the new co-ordinates, and change your flight path accordingly.</text>
+			<variable name="coords_hektar" op="set" val="0"/>
+			<variable name="loc_laststand" op="add" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="JUMP_TO_HEKTAR"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind.</text>
+		<event>
+			<loadEvent>ATLAS_MENU_NOEQUIPMENT</loadEvent>
+		</event>
+	</choice>
+</event>
+
 <event name="JUMP_TO_HEKTAR">
 	<secretSector>SECRET_HEKTAR</secretSector>
 </event>
@@ -2938,6 +3063,34 @@ Where do you want to reroute to?
 		</event>
 	</choice>
 </event>
+<event name="LIGHTSPEED_SECTOR_WARP_ESTATE_BOSS">
+	<text>You are about to reroute. Below is the Atlas entry for this sector.
+	Name: Wentworth Innovations HQ
+	Type: Hostile
+	Dominant Faction: Wentworth Innovations (Union subsidiary)
+	Rebel Threat Level: !CRITICALLY HIGH! (Auto Fleet)
+	Locations of Interest: W.I. HQ, Mercury Shipyards
+	
+	One of the largest megacorps within the Union, Wentworth Innovations is the family corporation of none other than Admiral Vance himself. However, due to his absence, VP Cayden Stimly has taken temporary charge. Under his direction, the company has become exceptionally aggressive towards competition, and holds the Union leadership under a spell of bribery. Tread with caution.</text>
+	<choice hidden="true">
+		<text>Continue with the jump.</text>
+		<event>
+			<text>You prepare to jump to the new co-ordinates, and change your flight path accordingly.</text>
+			<variable name="coords_estate" op="set" val="0"/>
+			<variable name="loc_laststand" op="add" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="JUMP_TO_ESTATE"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind.</text>
+		<event>
+			<loadEvent>ATLAS_MENU_NOEQUIPMENT</loadEvent>
+		</event>
+	</choice>
+</event>
 <event name="JUMP_TO_ESTATE">
 	<secretSector>SECRET_ESTATE</secretSector>
 </event>
@@ -2956,6 +3109,7 @@ Where do you want to reroute to?
 		<event>
 			<text>You prepare to jump to the new co-ordinates, and change your flight path accordingly.</text>
 			<variable name="coords_rhyme" op="set" val="0"/>
+			<variable name="loc_protomv_drive_block" op="set" val="1"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="JUMP_TO_RHYME"/>
@@ -3055,10 +3209,6 @@ Where do you want to reroute to?
 	<choice hidden="true"> <!--can also be rerouted too via the coords menu if you have the coords-->
 		<text>Go to the Hive Broodworlds.</text> 
 		<event load="LIGHTSPEED_SECTOR_WARP_HIVE"/>
-	</choice>
-	<choice hidden="true">
-		<text>Go to the Central Shipyards.</text> 
-		<event load="LIGHTSPEED_SECTOR_WARP_AUTO"/>
 	</choice>
 	<choice hidden="true">
 		<text>Go to the Theocracy Homeworlds.</text> 
@@ -3430,6 +3580,27 @@ Where do you want to reroute to?
 			<variable name="magical_hat_active" op="set" val="0"/>
 			<variable name="coords_hive" op="set" val="0"/> <!--in case you have reroute coords instead-->
 			<replaceSector name="SECTOR_MANTIS_UNIQUE">SECTOR_MANTIS</replaceSector>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event><secretSector>SECTOR_MANTIS_UNIQUE</secretSector></event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind.</text>
+		<event>
+			<loadEvent>ATLAS_MENU_NOEQUIPMENT</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="LIGHTSPEED_SECTOR_WARP_HIVE_BOSS"> <!--cannot use hat in s8 transition-->
+	<text id="atlas_hive"/>
+	<choice hidden="true">
+		<text>Continue with the jump.</text>
+		<event>
+			<text>You prepare to jump to the new co-ordinates, and change your flight path accordingly.</text>
+			<variable name="coords_hive" op="set" val="0"/>
+			<variable name="loc_laststand" op="add" val="1"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event><secretSector>SECTOR_MANTIS_UNIQUE</secretSector></event>

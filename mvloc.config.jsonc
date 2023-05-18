@@ -2,6 +2,7 @@
     "filePatterns": [
         // Files to translate (glob pattern)
 
+        "data/achievements.xml",
         "data/autoBlueprints.xml.append",
         "data/blueprints.xml.append",
         "data/bosses.xml.append",
@@ -80,6 +81,9 @@
     "stringSelectionXPath": [
         // XML text extraction rules (XPath)
 
+        // vanilla achievements
+        "//achievement/desc",
+
         // blueprints
         "//crewBlueprint/title",
         "//crewBlueprint/short",
@@ -119,16 +123,18 @@
         "//powerEffect/buttonText",
         "//powerEffect/tooltip",
         "//customStore/category/customTitle",
+        "//customShip/crew/*/@name",
         "//victories//name",
         "//victories//description",
         "//victories//secretName",
         "//victories//secretDescription",
         "//achievements/page/section/@text",
-        "//achievement/name",
+        "//achievement/name", // Note: this element is shared between Hyperspace AND vanilla achievements
         "//achievement/description",
         "//achievement/header",
         "//achievement/secretName",
         "//achievement/secretDescription",
+        "//drones/drone/tooltipName",
 
         // sector
         "//sectorDescription/nameList/name",
@@ -151,27 +157,34 @@
                 "//droneBlueprint/short",
                 "//weaponBlueprint/short",
                 "//crewMember",
+                "//customShip/crew/*/@name",
             ],
-            "applyPostprocesses": [
+            "applyPostprocesses": {
                 // Specify additional logics to transform each XML in the `apply` command. These are implemented on
                 // per-need basis. For the list of postprocessing, see apply_postprocess() in the code for more info.
                 
-                // Korean distribution doesn't include a type 3 font for displaying hull hit points.
-                // This patch makes it to use type 0 instead.
-                "substitute-font-for-hull-numbers",
-            ]
+                // Languages based on TTF fonts don't include a proper type 3 font for displaying hull hit points.
+                // This patch makes it to use a custom type instead.
+                "substitute-font-for-hull-numbers": 0,
+            }
         },
         "zh_Hans": {
             // Apply the translation flagged as fuzzy.
-            "applyUseFuzzy": true
+            "applyUseFuzzy": true,
+             
+            "applyPostprocesses": {
+                // Languages based on TTF fonts don't include a proper type 3 font for displaying hull hit points.
+                // This patch makes it to use a custom type instead.
+                "substitute-font-for-hull-numbers": 10,
+            }
         }
     },
 
     "packaging": {
         "fullOriginal": [
-            "https://drive.google.com/uc?id=1U94fcFtdJQirHvrH4G9gGehA02Q-GHUU&confirm=t",
-            "https://drive.google.com/uc?id=1EDY0tX4N-w-bmJ5Qf65GAZ9h5iRiR6ny&confirm=t"
+            "https://drive.google.com/uc?id=1EDY0tX4N-w-bmJ5Qf65GAZ9h5iRiR6ny&confirm=t",
+            "https://drive.google.com/uc?id=17XDwphfmFIWxHy5ReCVR64Lo5XTb1GIL&confirm=t"
         ],
-        "version": "5.3"
+        "version": "5.3.1-hotfix"
     }
 }
