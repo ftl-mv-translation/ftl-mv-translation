@@ -47,19 +47,19 @@ jobs:
         git tag -a nightly -m nightly -f
         git push -f origin nightly
 
+    - name: Cleanup old releases
+      uses: dev-drprasad/delete-older-releases@v0.2.1
+      with:
+        keep_latest: 0
+      env:
+        GITHUB_TOKEN: ${{ secrets.FTLMV_WEBLATE_BOT_TOKEN }}
+
     - name: Release the mod
       uses: softprops/action-gh-release@v1
       with:
         files: packages/*
         tag_name: nightly
         token: ${{ secrets.FTLMV_WEBLATE_BOT_TOKEN }}
-
-    - name: Cleanup old releases
-      uses: dev-drprasad/delete-older-releases@v0.2.1
-      with:
-        keep_latest: 1
-      env:
-        GITHUB_TOKEN: ${{ secrets.FTLMV_WEBLATE_BOT_TOKEN }}
 
     - name: Checkout the metadata branch
       uses: actions/checkout@v3
