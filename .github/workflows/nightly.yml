@@ -38,10 +38,18 @@ jobs:
         bash snippets/ci-nightly.sh zh_Hans
         bash snippets/ci-nightly.sh ru
 
+    - name: Tag the commit
+      run: |
+        git config user.email "ftlmv-weblate-bot@users.noreply.github.com"
+        git config user.name "ftlmv-weblate-bot"
+        git tag -a nightly -m nightly -f
+        git push -f origin nightly
+
     - name: Release the mod
       uses: softprops/action-gh-release@v1
       with:
         files: packages/*
+        tag_name: nightly
         token: ${{ secrets.FTLMV_WEBLATE_BOT_TOKEN }}
 
     - name: Cleanup old releases
