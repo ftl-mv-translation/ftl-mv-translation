@@ -30,11 +30,6 @@ jobs:
         path: .cache
         key: ${{ hashFiles('mvloc.config.jsonc') }}
 
-    - name: Setup rclone
-      uses: AnimMouse/setup-rclone@v1
-      with:
-        rclone_config: ${{ secrets.RCLONE_CONFIG }}
-
     - name: Build packages
       run: |
         bash snippets/ci-nightly.sh ko
@@ -43,11 +38,19 @@ jobs:
         bash snippets/ci-nightly.sh zh_Hans
         bash snippets/ci-nightly.sh ru
 
-    - name: Upload the mod to GDrive
-      run: |
-        rclone delete GoogleDrive:ftl-multiverse --drive-use-trash=false
-        rclone copy packages GoogleDrive:ftl-multiverse --drive-upload-cutoff 1000T
-    
+    - name: Release the mod
+      uses: softprops/action-gh-release@v1
+      with:
+        files: packages/*
+        token: ${{ secrets.FTLMV_WEBLATE_BOT_TOKEN }}
+
+    - name: Cleanup old releases
+      uses: dev-drprasad/delete-older-releases@v0.2
+      with:
+        keep_latest: 1
+      env:
+        GITHUB_TOKEN: ${{ secrets.FTLMV_WEBLATE_BOT_TOKEN }}
+
     - name: Checkout the metadata branch
       uses: actions/checkout@v3
       with:
@@ -59,7 +62,7 @@ jobs:
       run: |
         cd installer-metadata
         date +%s > listfile
-        rclone lsf --csv --separator ";" --format pi GoogleDrive:ftl-multiverse >> listfile
+        ls -p packages | grep -v / | sed "s@^@$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/latest/download/@" >> listfile
         git config user.email "ftlmv-weblate-bot@users.noreply.github.com"
         git config user.name "ftlmv-weblate-bot"
         git commit -a --amend -m "listfile update"
