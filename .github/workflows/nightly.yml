@@ -9,11 +9,11 @@ on:
 
 jobs:
   build:
-    permissions: write-all
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      token: ${{ secrets.FTLMV_WEBLATE_BOT_TOKEN }}
 
     - name: Setup Python
       uses: actions/setup-python@v3
@@ -71,7 +71,7 @@ jobs:
       run: |
         cd installer-metadata
         date +%s > listfile
-        ls -p packages | grep -v / | sed "s@^@$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/latest/download/@" >> listfile
+        ls -p ../packages | grep -v / | sed "s@^@$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/latest/download/@" >> listfile
         git config user.email "ftlmv-weblate-bot@users.noreply.github.com"
         git config user.name "ftlmv-weblate-bot"
         git commit -a --amend -m "listfile update"
