@@ -2,7 +2,9 @@
 
 ## Link to the latest nightly translation
 
-Download from [HERE](https://drive.google.com/drive/folders/1N7I6_p7aFBGchcuSyw0b3_WvdBLFJUlZ?usp=sharing). (Updated every UTC 00:00)
+~~Download from HERE. (Updated every UTC 00:00)~~
+
+Download hosting has been broken since Jul 28, 2023. Will be fixed briefly.
 
 ## Running the script
 
