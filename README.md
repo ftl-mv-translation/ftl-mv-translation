@@ -2,9 +2,7 @@
 
 ## Link to the latest nightly translation
 
-~~Download from HERE. (Updated every UTC 00:00)~~
-
-Download hosting has been broken since Jul 28, 2023. Will be fixed briefly.
+Download from [HERE](https://github.com/ftl-mv-translation/ftl-mv-translation/releases/latest). (Updated every UTC 00:00)
 
 ## Running the script
 
