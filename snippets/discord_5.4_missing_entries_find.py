@@ -23,6 +23,6 @@ def main():
             entry_fixed = dict_fixed[key]
 
             if entry_current.value == '' and entry_broken.value == '' and entry_fixed.value != '':
-                print(entry_current.key)
+                print(Path(current_path).name + "|" + entry_current.key)
 
 main()
