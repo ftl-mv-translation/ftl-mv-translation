@@ -15,7 +15,7 @@ def main():
     for current_path in glob(glob_current):
         if current_path.endswith('en.po'):
             continue
-        fixed_path = current_path.replace('locale', 'locale-fixed')
+        fixed_path = current_path.replace('locale', 'locale-fixed-secondpass')
 
         dict_current, _, sourcelocation = readpo(current_path)
         dict_fixed, _, _ = readpo(fixed_path)
