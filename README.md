@@ -2,7 +2,7 @@
 
 ## Link to the latest nightly translation
 
-Download from [HERE](https://drive.google.com/drive/folders/1N7I6_p7aFBGchcuSyw0b3_WvdBLFJUlZ?usp=sharing). (Updated every UTC 00:00)
+Download from [HERE](https://github.com/ftl-mv-translation/ftl-mv-translation/releases/latest). (Updated every UTC 00:00)
 
 ## Running the script
 
