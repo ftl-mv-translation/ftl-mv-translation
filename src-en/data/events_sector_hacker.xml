@@ -1,0 +1,1283 @@
+<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					HACKER SECTOR
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					EXIT BEACON
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<!--<event name="FINISH_BEACON_HACKER">
+	<text id="finish_beacon"/>
+	<choice hidden="true">
+		<text>Explore.</text>
+		<event load="EXIT_LIST"/>
+	</choice>
+	<choice hidden="true">
+		<text>Do something onboard the ship.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice hidden="true">
+		<text>Do nothing.</text>
+		<event/>
+	</choice>
+</event>-->
+
+<event name="FINISH_BEACON_HACKER">
+	<preventQuest/>
+	<beaconType id="map_icon_exit_hacker" global="false">
+		<color r="50" g="255" b="0" a="1"/>
+		<!--<unvisitedTooltip>This is the real exit beacon. Go here to travel to the next sector.</unvisitedTooltip>-->
+		<visitedTooltip>This is the real exit beacon.</visitedTooltip>
+	</beaconType>
+	<variable name="loc_hacker_exit" op="set" val="1"/>
+	<text>You've arrived at the exit...</text>
+	<choice req="loc_hacker_exit" lvl="0" max_group="0" hidden="true" blue="false">
+		<text>Continue...</text>
+		<event>
+			<text>It seems you've found the exit, but your Atlas won't connect. Something appears to be blocking the signal...</text>
+			<ship load="SHIP_HACKER_BROADCAST_FAKE" hostile="false"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>Suddenly, you receive a hail from a broadcast station hidden behind a small moon. "What'ssss thisss? The ssssilly little Renegade ssship isss trying to LEAVE? I'm afraid I can't allow that!"</text>	
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="loc_hacker_exit" lvl="1" max_group="0" hidden="true" blue="false"> <!--theoretically you can never get this except in the fleet so Im just going to make it that for simplisities sake-->
+		<text>Continue...</text>
+		<event>
+			<text>The hacker station has been defeated, but the Rebel fleet has taken control of the beacon! You'll have to fight your way out!</text>
+			<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+			<ship load="SHIP_REBEL_FLEET_S" hostile="true"/>
+			<environment type="PDS" target="player"/>
+			<noASBPlanet/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+			<choice hidden="true" req="engines" lvl="6">
+				<text>(Adv. Engines) Try to escape the Elite.</text>
+				<event load="FLEET_ESCAPE"/>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_JERRY">
+				<text>(Jerry) "Hello!"</text>
+				<event>
+					<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO"/>
+					<ship hostile="false"/> 
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HACKER_EXIT_DEFEAT">
+	<text>The Hacker station has been defeated. Fortunately, your Atlas connects to the exit beacon as soon as the hacker threat is removed.</text>
+	<variable name="loc_hackerexit" op="set" val="1"/>
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					ITEM EVENTS ()
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<eventList name="ITEMS_HACKED">
+	<event load="HACKED_CIVILIANS_FREECREW"/>
+	<event load="HACKER_CIVILIAN_STATION"/>
+	<event load="HACKER_OFFER"/>
+	<event load="HACKED_MILITIA"/>
+</eventList>
+
+<event name="HACKED_CIVILIANS_FREECREW" unique="true">
+	<text>A Union ship hiding from the hackers hails you. "Please, I can't keep hiding forever. Will you let me work on-board your ship, so that I can escape from this bloody sector?"</text>
+	<ship load="SHIP_UNION_GENERIC" hostile="false"/>
+	<choice>
+		<text>Welcome on-board.</text>
+		<event>
+			<crewMember amount="1" class="LIST_CREW_UNION_RANDOM"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We don't need any more crew, sorry.</text>
+		<event>
+			<text>You apologize to them and carry on your mission.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="HACKER_CIVILIAN_STATION" unique="true">
+	<text>"A ship! I didn't think anyone would ever find us. A battalion of hackers moved through here and ransacked our station. We're out of supplies and we can't do business without them. Would you be willing to sell us some? We don't have scrap, but we can offer payment in other ways."</text>
+	<ship load="SHIP_UNION_STATION" hostile="false"/> 
+	<choice>
+		<text>Give them fuel.</text>
+		<event>
+			<text>You transfer some fuel over to the civilians.</text>
+			<item_modify>
+				<item type="fuel" min="-8" max="-8"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="HACKER_CIVILIAN_STATION_THANK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Give them missiles.</text>
+		<event>
+			<text>You transfer some ammunition over to the civilians.</text>
+			<item_modify>
+				<item type="missiles" min="-5" max="-5"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="HACKER_CIVILIAN_STATION_THANK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Give them droneparts.</text>
+		<event>
+			<text>You transfer some droneparts over to the civilians.</text>
+			<item_modify>
+				<item type="drones" min="-3" max="-3"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="HACKER_CIVILIAN_STATION_THANK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We cannot help.</text>
+		<event>
+			<text>You apologize to the civilians and cut comms.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HACKER_CIVILIAN_STATION_THANK">
+	<text>"Thank you, we'll make sure to hide these better in case we're raided again. Now, how can we help you?"</text>
+	<choice hidden="true">
+		<text>We need repairs.</text>
+		<event>
+			<text>"Yes, we can help with that. I will send out a repair team immediately!"</text>
+			<damage amount="-10"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We need to delay the fleet.</text>
+		<event>
+			<text>"I'm not sure how much we could do... but if the fleet comes by, we will lie about your location. Hopefully, they'll believe us."</text>
+			<modifyPursuit amount="-2"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We could use a reactor upgrade.</text>
+		<event>
+			<text>"Yes, I think we can manage this. I'll send out a team to make some upgrades immediately."</text>
+			<upgrade amount="1" system="reactor"/>
+		</event>
+	</choice>
+</event>
+
+<event name="HACKED_MILITIA" unique="true">
+	<text>A Militia ship is passing through this system, likely trying to avoid the hackers who murdered the rest of their colleagues.</text>
+	<choice>
+		<text>Inspect the ship.</text>
+		<event>
+			<text>The Militia ship has received some damage from what likely was a recent battle. The crew is alive, but they're afraid and trying to flee the sector.</text>
+			<ship load="SHIP_MILITIA_GENERIC" hostile="false"/>
+			<status type="limit" target="enemy" system="engines" amount="2"/>
+			<status type="loss" target="enemy" system="shields" amount="2"/>
+			<status type="limit" target="enemy" system="doors" amount="0"/>
+			<choice hidden="true">
+				<text>Offer to escort their crew.</text>
+				<event load="HACKED_MILITIA_CREW"/>
+			</choice>
+			<choice hidden="true">
+				<text>Offer to help with repairs.</text>
+				<event>
+					<text>The militiamen thank you for your offer. You spend some time fixing their damaged systems, and are paid for your efforts.</text>
+					<autoReward level="LOW">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>They make easy targets, attack!</text>
+				<event>
+					<text>Morals are obviously not of importance to you, as you have decided to attack the militia ship.</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the militiamen.</text>
+		<event>
+			<text>You don't disturb the ship and instead do something on-board.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="HACKED_MILITIA_CREW">
+	<event>
+		<text>The militiamen are wary of your offer, but eventually give in. One even offers to join your crew, hoping it will provide a different way for them to protect civilians.</text>
+		<crewMember amount="1" class="human"/>
+	</event>
+	<event>
+		<text>The militiamen are wary of your offer. They decline, not wanting to be tricked once again.</text>
+	</event>
+</eventList>
+
+<event name="HACKER_OFFER" unique="true">
+	<text>"Well if it issssn't the very ship I've been looking for. I'm ssssorry if my friendsss haven't given you a warm welcome, but I am here to extend an offer of kindnesss. I'm ssssure we could reach a mutually benificial trade..."</text>
+	<ship load="SHIP_HACKER" hostile="false"/>
+	<choice hidden="true">
+		<text>Express interest in what they may offer.</text>
+		<event>
+			<text>"Ahh, I ssssee you have an eye for opportunity. Ressspectable." The hacker shows you some possible trades or services they could offer.</text>
+			<choice>
+				<text>Pay for detailed data on the sector.</text>
+				<event>
+					<text>The hackers transfer the data to your computer. Luckily, it doesn't appear to conceal any viruses.</text>
+					<reveal_map/>
+					<item_modify>
+						<item type="scrap" min="-30" max="-20"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice>
+				<text>Pay for them to distract the fleet.</text>
+				<event>
+					<text>"I wassss hoping you would choossse thisssss. I will enjoy thissss job greatly..." You can imagine whatever they plan to do will be of great annoyance to the fleet.</text>
+					<modifyPursuit amount="-2"/>
+					<item_modify>
+						<item type="scrap" min="-30" max="-20"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice blue="false">
+				<text>Buy a Hacking system.</text>
+				<event>
+					<text>"Sssso you wisssh to follow in our footsssteps? Cute. Really, quite cute. Don't let it go to your head, we will rule thissss sssector!" The Slug sends out a team to install the Hacking system on your ship. You make sure to keep a careful eye on them.</text>
+					<system name="hacking"/>
+					<item_modify>
+						<item type="scrap" min="-90" max="-75"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Nevermind.</text>
+				<event>
+					<text>"Ssssshame. Try not to get killed..."</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Fight the hackers!</text>
+		<event>
+			<text>These Slug bastards are holding the civilians of this sector hostage. There's no way you're going to let them go so easily.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We have no need for your services.</text>
+		<event>
+			<text>"Ssssshame. Try not to get killed..."</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					NEUTRAL EVENTS ()
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<eventList name="NEUTRAL_HACKED">
+	<event load="HACKED_PDS"/>
+	<event load="HACKED_CIVILIAN_WRECK_TRAP"/>
+	<event load="HACKED_FLEET_SPY"/>
+	<event load="HACKED_FANCY_CLASS"/>
+	<event load="HACKED_HOSTAGES"/>
+
+</eventList>
+
+<event name="HACKED_PDS" unique="true">
+    <text>A Hacker is currently interfacing with a planetary defense grid - they look distracted, and do not notice you yet. The station next to the grid hails you, but their message is garbled. "They're trying to hack our defense grid... but we're not making it easy for them! If you can help, then help. Otherwise, get out of here before it's too late!"</text>
+    <ship load="SHIP_HACKER_AND_BATTERY" hostile="false"/>
+    <choice req="PDS_DISABLE">
+		<text>(Signal Diluter) Prevent them from interfering with the defense grid.</text>
+		<event>
+			<text>You're able to jam the hacking signal to the station's anti-ship batteries, which allows the defense grid to only target the enemy hacker. The Union station commander seems ecstatic. "Haha! Get 'em!"</text>
+			<environment type="PDS" target="enemy"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>Attack the hacker.</text>
+		<event>
+			<text>The Hacker tries to taunt you. "Haha, you fool! We have already gained accessss to the defensssse grid!" The Slugs activate the grid... although it doesn't seem to be able to distinguish friend from foe. The captain then yells at his crew: "...What do you mean we weren't done yet?"</text>
+			<environment type="PDS" target="both"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>Offer the hacker some scrap to scram.</text>
+		<event>
+			<text>"Hmmm... On the one hand, if we finissssh hacking the defensssse grid you might pay more... but we are outnumbered... Fine, we will accept your offer. Goodbye!"</text>
+			<item_modify>
+				<item type="scrap" min="-35" max="-25"/>
+			</item_modify>
+			<choice>
+				<text>Continue...</text>
+				<instantEscape/>
+				<event load="HACKED_PDS_RESCUE">   		 	
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>Get out of there before it's too late.</text>
+		<event>
+			<text>You elect to get out of the region as soon as possible. Unfortunately, this leaves you with no time to spend on on-ship activities.</text>
+		</event>
+    </choice>
+</event>
+<event name="HACKED_PDS_RESCUE">
+    <text>"Thanks for intervening - they almost had us. We'll make sure any other hacker that gets close will be sorry they messed with us. Take this and keep up the good work." The station gives you some resources and a weapon for your time.</text>
+    <autoReward level="HIGH">stuff</autoReward>
+    <weapon name="GIFTLIST_UNION"/>
+</event>
+
+<event name="HACKED_HOSTAGES" unique="true">
+	<text>A small civilian colony nearby appears to be under control by a group of Hackers. The civilians are helpless against their captors.</text>
+	<choice hidden="true">
+		<text>Attack the hacker bastards.</text>
+		<event>
+			<text>You aren't going to let some corrupt filthy Slugs hold innocent civilians hostage when you can help it. You engage the hackers.</text>
+			<ship load="SHIP_HACKER_HOSTAGES" hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Pay the hackers to release the civilians.</text>
+		<event>
+			<text>"What issss thiss? A generoussss donation from a mysssterioussss Federation benefactor? How kind. We weren't milking much cassssh from these civiliansss anywaysss..." The hackers release control over the civilians and jump away.</text>
+			<item_modify>
+				<item type="scrap" min="-30" max="-20"/>
+			</item_modify>
+			<instantEscape/>
+			<choice hidden="true">
+				<text>Contact the colony.</text>
+				<event load="HACKED_HOSTAGES_PAY"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the colony.</text>
+		<event>
+			<text>Either the hackers don't notice you, or they simply don't care to deal with your ship. You ignore the colony and carry on your way.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HACKED_HOSTAGES_WIN">
+	<text>You've defeated the hacker ship. The rest of the hackers, afraid of you now that you've defeated their colleague, flee from the system.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="HACKED_HOSTAGES_PAY"/>
+	</choice>
+</event>
+<eventList name="HACKED_HOSTAGES_PAY"> <!--add more?-->
+	<event>
+		<text>The colony is grateful for your assistance. Their leader explains they specialized in the extraction of fuel from asteroids, but the hackers came looking for money. They were held hostage until they could scrounge up more scrap. Now that they're free, they give you a generous donation of fuel.</text>
+		<autoReward level="HIGH">fuel_only</autoReward>
+	</event>
+	<event>
+		<text>The colony is grateful for your assistance. They explain that the hackers were holding their weapon production facilities under their control to create weapons for their ships. Now that they are free, they give you one of their weapons.</text>
+		<weapon name="RANDOM"/>
+	</event>
+</eventList>
+
+<event name="HACKED_CIVILIAN_WRECK_TRAP" unique="true">
+	<text>The wreckage of a civilian ship drifts nearby. It's unfortunate that the civilians had to die in such a way, but there's likely some supplies on-board that you can salvage.</text>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>Scrap the ship.</text>
+		<event load="HACKED_CIVILIAN_WRECK_TRAP_SALVAGE"/>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>You have no crew to perform any form of salvage.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(Slug Crew) Have your Slug check the wreckage first.</text>
+		<event load="HACKED_CIVILIAN_WRECK_TRAP_SLUG"/>
+	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+		<text>(Telepathic Shell) Have your Shell check the wreckage first.</text>
+		<event load="HACKED_CIVILIAN_WRECK_TRAP_SNAIL"/>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>You aren't a gang of pirates or filthy hackers. Professionals have standards.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="HACKED_CIVILIAN_WRECK_TRAP_SALVAGE">
+	<event>
+		<text>You begin to ransack the internals of the ship when you notice a bomb planted inside the wreckage! It explodes, killing one of your crew. You retreat back to the ship when a hacker, undoubtedly the one who planted the trap, attacks.</text>
+		<ship load="SHIP_HACKER" hostile="true"/>
+		<removeCrew>
+			<clone>true</clone>
+			<text>Luckily your Clone Bay is always ready for whenever the crew may be blown up.</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>Nothing disturbs your salvage mission. You bring back some supplies from the ship.</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>To your surprise, one of the civilians appears to have survived the battle. Unfortunately, it also seems their attacker never left. With your latest recruit following behind, you prepare to fight off the hackers.</text>
+		<crewMember amount="1"/>
+		<ship load="SHIP_HACKER" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="HACKED_CIVILIAN_WRECK_TRAP_SLUG">
+	<event>
+		<text>Your Slug detects a trap on-board the wreckage. A hacker ship hiding nearby, disappointed that you didn't fall for their tricks, moves in to attack!</text>
+		<ship load="SHIP_HACKER" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>The Slug senses nothing wrong. Your salvage mission is undisturbed. You bring back some supplies from the ship.</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>The Slug senses that one of the civilians survived the fight! You move in to rescue them.</text>
+		<crewMember amount="1"/>
+	</event>
+</eventList>
+<eventList name="HACKED_CIVILIAN_WRECK_TRAP_SNAIL">
+	<event>
+		<text>Your Shell detects a trap on-board the wreckage. A hacker ship hiding nearby, disappointed that you didn't fall for their tricks, moves in to attack!</text>
+		<ship load="SHIP_HACKER" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>The Shell senses nothing wrong. Your salvage mission is undisturbed. You bring back some supplies from the ship.</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>The Shell senses that one of the civilians survived the fight! You move in to rescue them.</text>
+		<crewMember amount="1"/>
+	</event>
+</eventList>
+
+<event name="HACKED_FLEET_SPY" unique="true">
+	<text>A hacker ship hails you. "Hello friendssss, it isss unfortunate that we mussst meet under thessse circumssstancessss. Assss you know, the Rebel fleet will pay a high price to know your location. That issss of courssse, unlesss you're willing to pay to keep your location a... ssssecret."</text>
+	<ship load="SHIP_HACKER_FLEET_SPY" hostile="false"/>
+	<choice>
+		<text>Pay them not to alert the fleet.</text>
+		<event>
+			<text>"Thissss will do fine. Enjoy the ressst of your travelssss."</text>
+			<item_modify>
+				<item type="scrap" min="-35" max="-25"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We can't let this information get out! We have to kill the hackers.</text>
+		<event>
+			<text>You can't risk having the hackers leak your location to the fleet. You have to destroy them.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>We aren't paying you anything.</text>
+		<event>
+			<text>"Oh well. Hope you have ssssome fun with the Rebelssss then!" The hackers jump away.</text>
+			<modifyPursuit amount="2"/>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="HACKED_FANCY_CLASS" unique="true">
+	<text>It appears a Slug and Hacker vessel are squaring off at this beacon. Judging from the dialogue you've intercepted between the ships, it seems they're arguing something about... ship classes?</text>
+	<choice hidden="true">
+		<text>Inquire about their argument.</text>
+		<event>
+			<text>The hackers won't respond to your hails, but the Slugs will. "The hackerssss have been leeching ssssshipssss from the Sssslug ssshipyardsssss for yearsss! They ressshape the interiorsss ssslightly and give them ssssome fancy namesss! Imagine the nerve of that."</text>
+			<choice hidden="true">
+				<text>Side with the Slugs.</text>
+				<event>
+					<text>You've decided to defend the Slugs and fight the Hacker vessel. Prepare for combat!</text>
+					<ship load="SHIP_HACKER_FANCY_CLASS" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Side with the Hackers.</text>
+				<event>
+					<text>You've decided to defend the Hackers and fight the Slug vessel. Prepare for combat!</text>
+					<ship load="SHIP_SLUG_FANCY_CLASS" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Ok, have fun with that.</text>
+				<event>
+					<text>You'll stay out of a duel between two Slug ships. Mutual destruction would be a fitting end for them both.</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the ships.</text>
+		<event>
+			<text>You'll stay out of a duel between two Slug ships. Mutual destruction would be a fitting end for them both.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FANCY_CLASS_HACKER">
+	<text>You've defeated the Hacker vessel. You salvage the remains.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>"An interesssting turn of eventsss... but not one that I'm going to complain about. Ssssome ssscrap is in order for you."</text>
+			<autoReward level="HIGH">scrap_only</autoReward>
+		</event>
+	</choice>
+</event>
+<event name="FANCY_CLASS_SLUG">
+	<text>You've defeated the Slug vessel. You salvage the remains.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice>
+		<text>Continue...</text>
+		<event>
+			<text>"That wasss... unexpected. Moralssss my assss, I know you're looking for a reward. I don't ssssuppose you'd find usssse in a little delay in the Rebel fleet..."</text>
+			<modifyPursuit amount="-2"/>
+		</event>
+	</choice>
+</event>
+
+<eventList name="NEBULA_HACKED"> <!-- nebula currently don't spawn in hacked sector, so, unused -->
+	<event load="NEBULA_LOST_SHIP_HACKER"/> <!--is filler in disguise anyway-->
+</eventList>
+
+<event name="NEBULA_LOST_SHIP_HACKER" unique="true">
+	<text>A heavily damaged Federation ship is hiding in the nebula at this beacon. Before you have time to make contact with them, they fade into the nebula.</text>
+	<environment type="nebula"/>
+	<choice hidden="true">
+		<text>Attempt to follow and help them.</text>
+		<event load="NEBULA_LOST_SHIP_LIST_HACKER"/>
+	</choice>
+	<choice>
+		<text>Keep your position, they can handle themselves.</text>
+		<event>
+			<text>You decide not to chase after the Feds.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>	
+	<choice req="teleporter" hidden="true"> 
+		<text>(Teleporter) Lock onto their life-signs with your teleporter.</text>
+		<event>
+			<ship load="SHIP_FED_GENERIC" hostile="false"/>
+			<text>You beam the Federation crew aboard. One gladly joins your crew, the rest wait to be dropped off at the next station.</text>
+			<crewMember amount="1"/>
+			<autoReward level="MED">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice req="ADV_SCANNERS" hidden="true">
+		<text>(Long-Ranged Scanners) Pump extra power into your sensors and try to track them.</text>
+		<event load="NEBULA_LOST_SHIP_LIST2"/>
+	</choice>
+</event>
+<eventList name="NEBULA_LOST_SHIP_LIST_HACKER">
+	<event>
+		<text>Your search is hopeless. Your sensors can't pick up anything in the nebula.</text>
+	</event>
+	<event>
+		<text>While searching fruitlessly through the nebula, you stumble upon the Hacker ship which the Federation loyalists were likely hiding from. You prepare for a fight.</text>
+		<ship load="SHIP_HACKER" hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<ship load="SHIP_FED_GENERIC" hostile="false"/>
+		<text>You get lucky and find them floating not too deep into the nebula. Thrilled to be found by friendlies, they come on board and abandon their wrecked ship.</text>
+		<crewMember amount="1"/>
+	</event>
+</eventList>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					DISTRESS EVENTS ()
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<eventList name="DISTRESS_HACKED">
+	<event load="DISTRESS_HACKER_TRAP"/>
+	<event load="DISTRESS_HACKER_MILITIA"/>
+</eventList>
+
+<event name="DISTRESS_HACKER_TRAP">
+	<distressBeacon/>
+	<text load="TEXT_ENCOUNTER_HACKER_DISTRESS"/>
+	<ship load="SHIP_HACKER" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_HACKER_DISTRESS">
+	<text>Despite the distress beacon being encoded as a Civilian signal, the source of the signal was a Hacker ship, lying in wait for someone to fall into their trap!</text>
+	<text>The original source of this distress beacon is gone, now replaced by a hostile Hacker vessel!</text>
+	<text>"Ahhh, you would not believe how eassssy it isss to trick people like you. We didn't even have to hack anything, we jusssst turned on our dissstresssss beacon and waited!"</text>
+	<text>The hacker ship at this beacon makes it clear that the distress beacon was merely a trap!</text>
+</textList>
+
+<event name="DISTRESS_HACKER_MILITIA" unique="true">
+	<distressBeacon/>
+	<text>The distress beacon here appears to originate from a Militia ship, currently fleeing from a Hacker vessel.</text>
+	<choice hidden="true">
+		<text>Rescue the Militiamen.</text>
+		<event>
+			<text>This sector needs all of the Militiamen that it can, and you aren't going to let the Hackers kill any more of them.</text>
+			<ship load="SHIP_HACKER_MILITIA_RESCUE" hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>You can't risk your mission by rescuing the Militia ship. You carry on.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DISTRESS_HACKER_MILITIA_WIN">
+	<text>The hacker ship has been defeated. You scrap the ship.</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>It appears most of the Militiamen did not survive the attack. The lone survivor, their captain, offers to join your crew.</text>
+			<crewMember amount="1" class="human" pilot="1"/>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					QUEST EVENTS ()
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<eventList name="QUESTS_HACKED">
+	<event load="QUEST_HACKER_HOSPITAL"/>
+</eventList>
+
+<event name="QUEST_HACKER_HOSPITAL" unique="true">
+    <text>"Incoming ship, I don't know who you are or why you've come here, but please, hear me out. The hackers... they've captured a hospital in a nearby system. Many of us have family there, and we can't afford to pay their ransom. Please, you're their only hope."</text>
+   	<choice hidden="true">
+   		<text>Agree to their request.</text>
+   	 	<event>
+   		 	<text>The civilians forward the location of the occupied hospital. "Do everything you can, please."</text>
+   		 	<quest event="QUEST_HACKER_HOSPITAL_DESTINATION"/>
+   	 	</event>
+	</choice>
+    <choice hidden="true">
+		<text>We can't help.</text>
+		<event>
+			<text>The voice on the other side sobs, and shortly disconnects.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+   		</event>
+	</choice>
+</event>
+<event name="QUEST_HACKER_HOSPITAL_DESTINATION">
+    <beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1"/>
+		<unvisitedTooltip>Populated hospital occupied by Hackers.</unvisitedTooltip>
+    </beaconType>
+    <text>The hospital at this beacon is indeed guarded by a hacker vessel as you were told. They swiftly hail: "If you don't have our ranssssom, then you'd besssst leave immediately."</text>
+    <ship load="SHIP_HACKER_HOSPITAL" hostile="false"/>
+    <choice hidden="true">
+   		<text>Attack the hackers holding the hospital hostage.</text>
+		<event>
+			<text>You have no intention of letting the hackers get away with their misdeeds.</text>
+			<ship hostile="true"/>
+			<choice>
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+   		<text>Pay the ransom to make them leave the hospital alone.</text>
+   		<event>
+			<text>"Pleassssure doing bussssinessss with you." The Hacker vessel departs from this beacon.</text>
+			<item_modify>
+				<item type="scrap" min="-150" max="-150"/>
+			</item_modify>
+			<instantEscape/>
+			<choice>
+				<text>Continue...</text>
+				<event load="HOSPITAL_SAVED"/>
+			</choice>
+		</event>
+	</choice>
+    <choice hidden="true">
+		<text>Apologize and leave as soon as you can.</text>
+		<event>
+			<text>"Tell thosssse humanssss they had better hurry up and pony up the dough."</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+   	 	</event>
+    </choice>
+</event>
+<event name="HOSPITAL_SAVED">
+    <text>"This is the acting chief of staff of this hospital. We can't offer much, but we're in your debt. How can we help?"</text>
+    <choice hidden="true" blue="false" req="clonebay" lvl="1" max_lvl="2" max_group="0">
+		<text>Have them upgrade your Clone Bay.</text>
+		<event>
+			<text>"Our lab technicians could do this in their sleep. I hope this helps you on your mission."</text>
+			<upgrade amount="1" system="clonebay"/>
+		</event>
+    </choice>
+    <choice hidden="true" blue="false" req="medbay" lvl="1" max_lvl="2" max_group="0">
+		<text>Have them upgrade your Medbay.</text>
+		<event>
+			<text>"Our lab technicians could do this in their sleep. I hope this helps you on your mission."</text>
+			<upgrade amount="1" system="medbay"/>
+		</event>
+    </choice>
+    <choice req="LAB_INSTALLED" lvl="0" max_lvl="0" hidden="true" blue="false" max_group="1">
+		<text>Have them install an onboard lab for crew upgrades.</text>
+		<event>
+			<text>"Our researchers have state of the art lab equipment. We can spare some on your behalf."</text>
+			<hiddenAug>LAB_INSTALLED</hiddenAug>
+		</event>
+    </choice>
+    <choice req="LAB_UPGRADE" lvl="0" max_lvl="0" hidden="true" blue="false" max_group="1">
+		<text>Have them upgrade your onboard lab.</text>
+		<event>
+			<text>"Our researchers have state of the art lab equipment. We can spare some on your behalf."</text>
+			<hiddenAug>LAB_UPGRADE</hiddenAug>
+		</event>
+    </choice>
+    <choice hidden="true">
+		<text>Ask for a member of their medical staff to join you.</text>
+		<event>
+			<text>"That won't be a problem. We've got an aide who would rather be anywhere else than this sector right now."</text>
+			<crewMember amount="1" class="human_medic"/>
+		</event>
+    </choice>
+    <choice hidden="true">
+		<text>Ask if they can delay the fleet.</text>
+		<event>
+			<text>"We'll do what we can, but don't expect a miracle here, Renegade."</text>
+			<modifyPursuit amount="-1"/>
+		</event>
+		</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					HOSTILE EVENTS ()
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<eventList name="HOSTILE_HACKED">
+	<event load="ENCOUNTER_HACKER"/>
+	<event load="ENCOUNTER_HACKER_AUTO"/>
+	<event load="ENCOUNTER_HACKER_PIRATE"/>
+	<event load="ENCOUNTER_HACKER_REBEL"/>
+	
+	<event load="HACKER_O2_JAM"/>
+</eventList>
+
+<event name="ENCOUNTER_HACKER">
+	<text load="TEXT_ENCOUNTER_HACKER"/>
+	<ship load="SHIP_HACKER" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_HACKER">
+	<text>"You made your lassst missstake coming here, Federation sssship. Thisss isss our sssssector now!"</text>
+	<text>A hacker ship tails you far from behind as you explore this beacon. As they slowly inch closer, it's apparent that they're looking for a fight.</text>
+	<text>"Oh goodnesssss, we are blesssed to be in the pressence of a Federation vesssel!" Before you can respond back, the hackers interject, "Jussssst kidding! Prepare to die."</text>
+	<text>You detect a foreign signal on your computer. While in the process of discerning its origin, a hacker ship jumps out and attacks!</text>
+	<text>The Hackers have taken control of this sector, and they aren't keen on letting others in. The ship here prepares to defend its claim over this territory.</text>
+</textList>
+
+<event name="ENCOUNTER_HACKER_PIRATE">
+	<text load="TEXT_ENCOUNTER_HACKER_PIRATE"/>
+	<ship load="SHIP_PIRATE_ALL" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_HACKER_PIRATE">
+	<text>This sector may be under the control of the Hacker clan, but that doesn't mean it doesn't have pirates swarming around as well. A pirate ship at this beacon spots you and attacks.</text>
+	<text>A pirate ship, idly exploring this sector, spots you and wastes no time in attacking.</text>
+	<text>Hackers aren't the only pirates who can be found in this sector. The hostile ship at this beacon is evidence of this.</text>
+</textList>
+
+<event name="ENCOUNTER_HACKER_REBEL">
+	<text>A Rebel ship comes speeding towards you. "Damn it! The hackers took control of this sector while we were stationed here, and we have to find our way out! Now a Federation ship is here too? Hell, we gotta get to the fleet..."</text>
+	<ship load="SHIP_REBEL_HACKER_FLEET" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_HACKER_AUTO" unique="true">
+	<text>A Rebel Auto-ship, painted in hacker blue, sends you a message. "This is U-578-694. I have been repurposed to serve my new masters and destroy all intruders. Enjoy the rest of your miserable existence."</text>
+	<ship load="SHIP_HACKER_AUTO" hostile="true"/> 
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="DESTROYED_HACKER_AUTO">
+	<text>You've defeated the hacked Auto-ship. You salvage what remains.</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+
+<event name="HACKER_O2_JAM" unique="true">
+	<loadEventList seeded="false" first="false" generate="false">
+		<event name="ENCOUNTER_HACKER" req="oxygen" lvl="0" max_lvl="0"/>
+		<event name="HACKED_DISABLED" req="oxygen" lvl="1"/>
+	</loadEventList>
+</event>
+<event name="HACKED_DISABLED">
+	<text>You notice a change in the air, almost as if it's getting thinner. You check the computer to see your Life Support has been disabled! A Hacker ship hails you. "What an unfortunate thing to happen to a sssship like yoursss. If you have ssssome ssscrap, perhapsss we could sssolve thisss little... breathing problem of yoursss?"</text>
+	<ship load="SHIP_HACKER" hostile="false"/>
+	<status type="limit" target="player" system="oxygen" amount="0"/>
+	<choice>
+		<text>Pay them their filthy money.</text>
+		<event>
+			<text>"Good choice! We'll have that little problem taken care of rather quickly."</text>
+			<status type="clear" target="player" system="oxygen" amount="100"/>
+			<item_modify>
+				<item type="scrap" min="-30" max="-20"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>You bastards, we aren't giving you anything!</text>
+		<event>
+			<text>"Poor decissssion... hope you won't be needing it any time sssoon!"</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="ANTI_VIRUS">
+		<text>(Anti-Virus) Restore your life support.</text>
+		<event>
+			<text>The hackers are dumbfounded by your apparent recovery from their cyber attack. Enraged, they raise their weapons and attack!</text>
+			<status type="clear" target="player" system="oxygen" amount="100"/>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					UNIQUE EVENTS
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					SPECIAL EVENTS
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->
+<event name="HACKER_CACHE">
+	<preventQuest/>
+	<beaconType id="map_icon_hacker" global="false">
+		<color r="73" g="151" b="195" a="1.0"/>
+		<unvisitedTooltip>Uyo%Heav#Ton@Sdtviie!Stih*Anecbo</unvisitedTooltip>
+		<visitedTooltip>Explored location. A hacker cache was located here.</visitedTooltip>
+	</beaconType>
+	<text>The source of the strange garbled beacon here appears to be a Hacker Broadcasting Station. This must be one of the stations jamming the radio.</text>
+	<ship load="SHIP_HACKER_BROADCAST" hostile="false"/>
+	<choice hidden="true">
+		<text>Attack the station.</text>
+		<event>
+			<text>You raise your weapons and engage the broadcast station. You notice your systems fluctuating, they must have multiple combat augments onboard jamming you!</text>
+			<ship hostile="true"/>
+			<status type="divide" target="player" system="sensors" amount="2"/>
+			<status type="loss" target="player" system="engines" amount="2"/>
+			<status type="divide" target="player" system="doors" amount="2"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+			<choice hidden="true" req="ANTI_VIRUS">
+			<text>(Anti-Virus) Prevent their hacking.</text>
+			<event>
+				<text>The Anti-Virus works its magic and counters the digital assault without any problems.</text>
+				<status type="clear" target="player" system="sensors" amount="100"/>
+				<status type="clear" target="player" system="engines" amount="100"/>
+				<status type="clear" target="player" system="doors" amount="100"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true" req="hacking">
+			<text>(Hacking) Prevent their hacking.</text>
+			<event>
+				<text>The Hacker ship's virus is much harder to purge than you expected, and you have to overclock the hacking system. Your systems return to normal, but your hacking has taken a huge loss.</text>
+				<status type="clear" target="player" system="sensors" amount="100"/>
+				<status type="clear" target="player" system="engines" amount="100"/>
+				<status type="clear" target="player" system="doors" amount="100"/>
+				<status type="loss" target="player" system="hacking" amount="2"/>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="COMBAT_CHECK"/>
+				</choice>
+			</event>
+		</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore the station.</text>
+		<event>
+			<text>You aren't willing to endanger yourself attacking a hacker station.</text>
+			<choice>
+				<text>Do something on-board the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HACKER_CACHE_DEFEAT">
+	<text>The Hackers have been defeated. Your systems return to normal, and you move in to scrap the station.</text>
+	<variable name="loc_hackerstation" op="add" val="1"/>
+	<status type="clear" target="player" system="sensors" amount="100"/>
+	<status type="clear" target="player" system="engines" amount="100"/>
+	<status type="clear" target="player" system="doors" amount="100"/>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>You're about to leave when you notice a small platform and a cache nearby the wreck of the broadcast station.</text>
+			<choice hidden="true">
+				<text>Open the cache.</text>
+				<event load="HACKER_CACHE_LIST"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="HACKER_CACHE_LIST">
+	<event>
+		<text>The cache is rather underwhelming. You find a small amount of droneparts and nothing else.</text>
+		<autoReward level="LOW">droneparts_only</autoReward>
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event/>
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event load="HACKER_CACHE_QUEST"/>
+		</choice>
+	</event>
+	<event>
+		<text>Inside the cache is a brand new Ion weapon! You take it on-board.</text>
+		<weapon name="GIFTLIST_ION"/>
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event/>
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event load="HACKER_CACHE_QUEST"/>
+		</choice>
+	</event>
+	<event>
+		<text>The cache appears to be storage for various supplies, which you help yourself to.</text>
+		<autoReward level="MED">stuff</autoReward>
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event/>
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event load="HACKER_CACHE_QUEST"/>
+		</choice>
+	</event>
+	<event>
+		<text>Inside the cache is a de-activated Engi, likely kept as a slave. You provide it with power back on your ship, and it re-activates, ready to serve on your crew.</text>
+		<crewMember amount="1" class="engi"/>
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event/>
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event load="HACKER_CACHE_QUEST"/>
+		</choice>
+	</event>
+	<event>
+		<text>The cache was trapped! Explosions rock the walls and you jump for cover. However, as you get back to your feet, nothing appears to have been damaged. The trap wasn't a trap after all, instead several Repair Bursts had been set off by accident!</text>
+		<damage amount="-7"/>
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event/>
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event load="HACKER_CACHE_QUEST"/>
+		</choice>
+	</event>
+	<event>
+		<text>You open the cache, and a screeching noise pierces the air. You run back to the ship and find a stream of garbled data streaming down your computer. Luckily you're able to shut it off in time, but you suspect it may confuse the Rebels for a while.</text>
+		<modifyPursuit amount="-1"/>
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event/>
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>Continue...</text>
+			<event load="HACKER_CACHE_QUEST"/>
+		</choice>
+	</event>
+</eventList>
+<event name="HACKER_CACHE_QUEST">
+	<text>It appears you've taken out all of the Hacker broadcast stations in the sector! No longer restricted, your radio suddenly gets a flood of alerts, including a high priority Federation distress signal!</text>
+	<quest event="HACKER_FED_DISTRESS"/>
+</event>
+<event name="HACKER_FED_DISTRESS">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1"/>
+		<unvisitedTooltip>Federation distress signal.</unvisitedTooltip>
+	</beaconType>
+	<text>You've arrived at the location of the Federation distress call... except there's no Federation ship here. Instead, there's a massive Hacker cruiser waiting for you! "You think you're clever? Do you even know how long it took to sssset up all thossse ssstationss? Well, it doesssn't matter now. Thisss isss what you get for crossssing the Hacker clan'ssss path!"</text>
+	<ship load="SHIP_HACKER_CRUISER" hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
+</event>
+<event name="HACKER_FED_WIN">
+	<text>Right as you finish off the hackers, a life pod detaches from the ship and spirals out into space... only for you to scoop it up and bring it aboard. Inside, you can see the surviving Slug quivering in fear.</text>
+	<variable name="ach_boss_hacker" op="set" val="1"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<text>You pry open the lifepod, and the Slug slides out slowly, hands in the air. "Ok, I sssurrender! You fight well. Too well... I'll give you anything and everything you want! Data, labor, scrap, all I assssk isss you don't kill me!"</text>
+			<unlockCustomShip silent="false">PLAYER_SHIP_HACKER</unlockCustomShip>
+			<autoReward level="HIGH">standard</autoReward>
+			<crewMember amount="1" class="slug_saboteur" all_skills="2">Kemi</crewMember>
+			<modifyPursuit amount="-2"/>
+			<reveal_map/>
+		</event>
+	</choice>
+</event>
+
+</FTL>

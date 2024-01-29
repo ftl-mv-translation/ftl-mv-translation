@@ -1,0 +1,921 @@
+<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					FEDERATION OUTPOST
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<ship name="SHIP_FEDERATION_OUTPOST" auto_blueprint="MU_FED_REFUEL">
+	<destroyed load="DESTROYED_FEDERATION_STATION"/>
+	<deadCrew load="DEAD_CREW_FEDERATION"/>
+</ship>
+<textList name="TEXT_OUTPOST_FEDERATION">
+	<text>You receive a hail from the nearby Federation refueling station. "Hello!-" The other end is cut off briefly by a loud bang. "SHIT! OW! OH MY GOD! AGH!" The Federation captain returns on screen a moment later. "Ugh... ignore that. We recruited a couple rookies and one of them just dropped a box of fuel on my foot. Sorry about that. Despite my throbbing foot, it's good to see a friendly face! If you need anything, don't hesitate to ask!"</text>
+	<text>The Federation anthem blasts through your stereo, temporarily deafening you. An automatic message loops as you rush to turn down the volume. "FEDERATION!!! YEAH!!! FED! ER! A! TION!!!" Despite the overwhelming patriotism from the nearby station, all other business seems to be going as normal. You should be able to get free supplies here.</text>
+	<text>A Federation commander aboard the nearby station hails you. "Renegades! Some day I hope to visit Universe 0 myself, but in the meantime it's wonderful to have visitors from the core of the Federation itself. Whatever you need is yours. Go get those Rebel bastards!"</text>
+</textList>
+<event name="OUTPOST_FEDERATION_SPAWNER">
+	<preventQuest/>
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0"/>
+		<unvisitedTooltip id="map_outpost_unvisited"/>
+		<visitedTooltip id="map_outpost_visited"/>
+	</beaconType>
+	<ship load="SHIP_FEDERATION_OUTPOST" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_FEDERATION">
+		<event name="OUTPOST_FEDERATION_BAD" req="rep_comb_federation" lvl="2"/>
+	</loadEventList>
+</event> 
+<event name="OUTPOST_FEDERATION" unique="true">
+	<text load="TEXT_OUTPOST_FEDERATION"/>
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>Request free repairs. [7$]</text>
+		<event>
+			<damage amount="-7"/>
+		</event>
+	</choice>
+	<choice>
+		<text>Request fuel.</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request ammunition.</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request droneparts.</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_FEDERATION_BAD" unique="true">
+	<text>It seems your reputation has caught up with you - although there's an allied outpost near this beacon, they refuse to return any of your hails and seem to have gone into some sort of lockdown. Looks like you won't be getting any service out of them.</text>
+	<choice hidden="true">
+		<text>Let the outpost be.</text>
+		<event>
+			<text>No reason to make your situation worse. You decide to avoid the outpost.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					UNION OUTPOST
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<ship name="SHIP_UNION_OUTPOST" auto_blueprint="MU_UNION_STATION">
+	<destroyed load="DESTROYED_UNION"/>
+	<deadCrew load="DEAD_CREW_UNION"/>
+</ship>
+<textList name="TEXT_OUTPOST_UNION">
+	<text>A friendly Union outpost hails you. "It's a good day for the Federation! We've heard the Rebels have had some setbacks getting to Node 17 because of insurrection within their own ranks! Haha, now ain't that poetry! In celebration, any friends of the Federation get our service on the house!"</text>
+	<text>"Normally, I wouldn't be inclined to do free handouts, but you Renegades are carrying the weight of the whole damn Multiverse on your back! I don't know how much I can stand behind all of Universe 0's decisions, but I can respect your mission! Whatever you need, I'm willing to provide."</text>
+	<text>A Union commander waves you over. "I made a mistake, siding with the Rebels in the Civil War. Anyone with a sensory organ can see now the Rebels almost tore this galaxy apart! I know it's not much, but if I can help you in any way it'll make me feel even a little bit better about my past."</text>
+</textList>
+<event name="OUTPOST_UNION_SPAWNER">
+	<preventQuest/>
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0"/>
+		<unvisitedTooltip id="map_outpost_unvisited"/>
+		<visitedTooltip id="map_outpost_visited"/>
+	</beaconType>
+	<ship load="SHIP_UNION_OUTPOST" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_UNION">
+		<event name="OUTPOST_UNION_BAD" req="rep_comb_union" lvl="2"/>
+	</loadEventList>
+</event> 
+<event name="OUTPOST_UNION" unique="true">
+	<text load="TEXT_OUTPOST_UNION"/>
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>Request free repairs. [7$]</text>
+		<event>
+			<damage amount="-7"/>
+		</event>
+	</choice>
+	<choice>
+		<text>Request fuel.</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request ammunition.</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request droneparts.</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_HUMAN">
+		<text>(Human Crew) Have your human bargain with them for repairs. [10$]</text>
+		<event>
+			<damage amount="-10"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_UNION_BAD" unique="true">
+	<text>It seems your reputation has caught up with you - although there's an allied outpost near this beacon, they refuse to return any of your hails and seem to have gone into some sort of lockdown. Looks like you won't be getting any service out of them.</text>
+	<choice hidden="true">
+		<text>Let the outpost be.</text>
+		<event>
+			<text>No reason to make your situation worse. You decide to avoid the outpost.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					HARMONY OUTPOST
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<ship name="SHIP_ENGI_OUTPOST" auto_blueprint="MU_ENGI_STATION">
+	<destroyed load="DESTROYED_ENGI"/>
+	<deadCrew load="DEAD_CREW_ENGI"/>
+</ship>
+<textList name="TEXT_OUTPOST_ENGI">
+	<text>"Scanning for Federation Identification..." The Engi pauses as a few drones swarm over your ship, scanning it thoroughly. "Identification: retrieved. Goodwill protocols indicate Renegade beneficiaries must receive apt compensation for services."</text>
+	<text>A busy Harmony outpost is in the middle of receiving dozens of incoming and outgoing shipments at once, and yet it still manages to hail you. "Core processors overloaded - traffic has overwhelmed official capacity by 356%. However, capacity may be surpassed even further if Renegade captain deems necessary. You are permitted to: raise overcapacity levels by no more than 30%. Be quick."</text>
+	<text>A joint Harmony and Ministry outpost has been constructed nearby. While most of the Engi ignore you, a Zoltan officer hails you. "Greetings. In the eyes of the Federation we are all equals, and so I see it only honorable we extend you a warm welcome. Do you need any assistance?"</text>
+</textList>
+<event name="OUTPOST_ENGI_SPAWNER">
+	<preventQuest/>
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0"/>
+		<unvisitedTooltip id="map_outpost_unvisited"/>
+		<visitedTooltip id="map_outpost_visited"/>
+	</beaconType>
+	<ship load="SHIP_ENGI_OUTPOST" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_ENGI">
+		<event name="OUTPOST_ENGI_BAD" req="rep_comb_engi" lvl="2"/>
+	</loadEventList>
+</event> 
+<event name="OUTPOST_ENGI" unique="true">
+	<text load="TEXT_OUTPOST_ENGI"/>
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>Request free repairs. [7$]</text>
+		<event>
+			<damage amount="-7"/>
+		</event>
+	</choice>
+	<choice>
+		<text>Request fuel.</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request ammunition.</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request droneparts.</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_HARMONY">
+		<text>(Harmony Crew) Have your Engi bargain with them for a drone.</text>
+		<event>
+			<drone name="RANDOM"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_ENGI_BAD" unique="true">
+	<text>It seems your reputation has caught up with you - although there's an allied outpost near this beacon, they refuse to return any of your hails and seem to have gone into some sort of lockdown. Looks like you won't be getting any service out of them.</text>
+	<choice hidden="true">
+		<text>Let the outpost be.</text>
+		<event>
+			<text>No reason to make your situation worse. You decide to avoid the outpost.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					MINISTRY OUTPOST
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<ship name="SHIP_ZOLTAN_OUTPOST" auto_blueprint="MU_ZOLTAN_STATION">
+	<destroyed load="DESTROYED_ZOLTAN"/>
+	<deadCrew load="DEAD_CREW_ZOLTAN"/>
+</ship>
+<textList name="TEXT_OUTPOST_ZOLTAN">
+	<text>A Zoltan outpost, functioning also partly as a temple, hails you. "It is in the nature of Illesctrianism that we open our minds and accept all others." The Zoltan pokes a look at you. "You are... hard to accept. But I will consider it a test of my faith and accept you regardless. The services of this temple are at your disposal."</text>
+	<text>"The Ministry welcomes you, Renegade captain. These are dangerous, partisan days. I'm sure there are many things we disagree on, but let us put them past us today. What is it that ails you? If you could divulge such information, perhaps we could provide treatment."</text>
+	<text>"Ugh... Renegades..." The Zoltan captain makes a rude gesture with his hands before realizing he's on camera and is quickly embarrassed. "I mean... uhm... hello there! May the Great Eye bless you on this fine day! Whatever you need, I'm sure we can offer!"</text>
+</textList>
+<event name="OUTPOST_ZOLTAN_SPAWNER">
+	<preventQuest/>
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0"/>
+		<unvisitedTooltip id="map_outpost_unvisited"/>
+		<visitedTooltip id="map_outpost_visited"/>
+	</beaconType>
+	<ship load="SHIP_ZOLTAN_OUTPOST" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_ZOLTAN">
+		<event name="OUTPOST_ZOLTAN_BAD" req="rep_comb_zoltan" lvl="2"/>
+	</loadEventList>
+</event> 
+<event name="OUTPOST_ZOLTAN" unique="true">
+	<text load="TEXT_OUTPOST_ZOLTAN"/>
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>Request free repairs. [7$]</text>
+		<event>
+			<damage amount="-7"/>
+		</event>
+	</choice>
+	<choice>
+		<text>Request fuel.</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request ammunition.</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request droneparts.</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_ZOLTAN_CAPITAL">
+		<text>(Ministry Crew) Have your Zoltan bargain with them for a reactor upgrade.</text>
+		<event>
+			<upgrade amount="1" system="reactor"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_ZOLTAN_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_ZOLTAN_BAD" unique="true">
+	<text>It seems your reputation has caught up with you - although there's an allied outpost near this beacon, they refuse to return any of your hails and seem to have gone into some sort of lockdown. Looks like you won't be getting any service out of them.</text>
+	<choice hidden="true">
+		<text>Let the outpost be.</text>
+		<event>
+			<text>No reason to make your situation worse. You decide to avoid the outpost.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_ZOLTAN_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					GATHERING OUTPOST
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<ship name="SHIP_ORCHID_OUTPOST" auto_blueprint="MU_ORCHID_STATION">
+	<destroyed load="DESTROYED_ORCHID"/>
+	<deadCrew load="DEAD_CREW_ORCHID"/>
+</ship>
+<textList name="TEXT_OUTPOST_ORCHID">
+	<text>A Floral monk hails you, speaking in sign language. "The Gathering welcomes all peaceful folk to these lands. Whether you have tasted the nectar of the sweet fruit of Cyrtal'y Mncolo or are but a simple traveler seeking refuge, we are grateful to offer it. What might we do for you today, captain?"</text>
+	<text>The nearby outpost seems to be a retrofitted terraforming platform that now acts as an emergency supply outpost. "The Federation has brought much prosperity to the Gathering. It is only right that we repay our debts." The Floral gestures towards the docking bay where a team awaits your ship.</text>
+	<text>"Our wealth is yours! There is no nobler system of economics than to ensure all receive an equal share to what they contribute to society. And you, you are the hopeful savior of our reality! It should seem only right that we owe you anything, anything at all!"</text>
+</textList>
+<event name="OUTPOST_ORCHID_SPAWNER">
+	<preventQuest/>
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0"/>
+		<unvisitedTooltip id="map_outpost_unvisited"/>
+		<visitedTooltip id="map_outpost_visited"/>
+	</beaconType>
+	<ship load="SHIP_ORCHID_OUTPOST" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_ORCHID">
+		<event name="OUTPOST_ORCHID_BAD" req="rep_comb_orchid" lvl="2"/>
+	</loadEventList>
+</event> 
+<event name="OUTPOST_ORCHID" unique="true">
+	<text load="TEXT_OUTPOST_ORCHID"/>
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>Request free repairs. [7$]</text>
+		<event>
+			<damage amount="-7"/>
+		</event>
+	</choice>
+	<choice>
+		<text>Request fuel.</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request ammunition.</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request droneparts.</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_FLORAL">
+		<text>(Floral Crew) Have your Orchid bargain for a Kernel weapon.</text>
+		<event>
+			<weapon name="GIFTLIST_KERNEL"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_ORCHID_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_ORCHID_BAD" unique="true">
+	<text>It seems your reputation has caught up with you - although there's an allied outpost near this beacon, they refuse to return any of your hails and seem to have gone into some sort of lockdown. Looks like you won't be getting any service out of them.</text>
+	<choice hidden="true">
+		<text>Let the outpost be.</text>
+		<event>
+			<text>No reason to make your situation worse. You decide to avoid the outpost.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_ORCHID_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					FREE MANTIS OUTPOST
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<ship name="SHIP_FREEMANTIS_OUTPOST" auto_blueprint="MU_FREEMANTIS_STATION">
+	<destroyed load="DESTROYED_FREEMANTIS"/>
+	<deadCrew load="DEAD_CREW_FREEMANTIS"/>
+</ship>
+<textList name="TEXT_OUTPOST_FREEMANTIS">
+	<text>"Oh yes yes it is Renegade that is approaching! Can barely containing excitement!" The Free Mantis commander of the nearby outpost takes a giant sniff from a bottle of pheromones. "YEAH!!!!!! I AM EXCITING! I GIVE YOU ANYTHING! I GIVE YOU FIRSTBORN, I GIVE YOU-" The Mantis promptly collapses, twitching slightly from the raw energy pumping through their veins. Nevertheless, a more able team awaits you in the docking bay.</text>
+	<text>You receive a hail from the nearby outpost, where a sobbing Free Mantis awaits you. "You are... so beautiful. So majestic, I deserving not of seeing you! Go, taking the free things and leave before I cry last of every tear!"</text>
+	<text>A hail comes in from a human Federation officer working aboard the nearby Free Mantis station. "I must say, these Free Mantis are... very interesting to work with. When I first was rescued from Rebel captivity by one, they kissed me and started praying at my feet. We're married now!" The Federation captain pauses before remembering what he was talking about. "Er... sorry, when you live among the Free Mantis too long you start to ramble about nothing. Is there any assistance you're in need of? I'm sure the rest of the crew here would be honored to help you."</text>
+</textList>
+<event name="OUTPOST_FREEMANTIS_SPAWNER">
+	<preventQuest/>
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0"/>
+		<unvisitedTooltip id="map_outpost_unvisited"/>
+		<visitedTooltip id="map_outpost_visited"/>
+	</beaconType>
+	<ship load="SHIP_FREEMANTIS_OUTPOST" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_FREEMANTIS">
+		<event name="OUTPOST_FREEMANTIS_BAD" req="rep_comb_freemantis" lvl="2"/>
+	</loadEventList>
+</event> 
+<event name="OUTPOST_FREEMANTIS" unique="true">
+	<text load="TEXT_OUTPOST_FREEMANTIS"/>
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>Request free repairs. [7$]</text>
+		<event>
+			<damage amount="-7"/>
+		</event>
+	</choice>
+	<choice>
+		<text>Request fuel.</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request ammunition.</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request droneparts.</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_FREEMAN">
+		<text>(Free Mantis Crew) Suggest that the Free Mantis join your crew.</text>
+		<event>
+			<crewMember amount="1" class="mantis_free"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_FREEMANTIS_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_FREEMANTIS_BAD" unique="true">
+	<text>It seems your reputation has caught up with you - although there's an allied outpost near this beacon, they refuse to return any of your hails and seem to have gone into some sort of lockdown. Looks like you won't be getting any service out of them.</text>
+	<choice hidden="true">
+		<text>Let the outpost be.</text>
+		<event>
+			<text>No reason to make your situation worse. You decide to avoid the outpost.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_FREEMANTIS_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					CRYSTAL OUTPOST
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<ship name="SHIP_CRYSTAL_OUTPOST" auto_blueprint="MU_CRYSTAL_STATION">
+	<destroyed load="DESTROYED_CRYSTAL"/>
+	<deadCrew load="DEAD_CREW_CRYSTAL"/>
+</ship>
+<textList name="TEXT_OUTPOST_CRYSTAL">
+	<text>"Aliens, how curious. Ycathine knowns what kind of mysterious tales you could tell!" The Crystal yawns. "Or that's what I used to think. Unfortunately, you all seem quite boring. That said, boring or not, I've pledged my duties to the Federation and I intend to uphold them. What do you need?"</text>
+	<text>The Crystalline station nearby locks all of its weapons onto you, threatening to open fire. "STOP RIGHT THERE! THIS IS IMPERIAL SPACE! GET LOST OR- oh crypt, you're a Renegade! Wow! My apologies. Feel free to dock, and I'll see to it my crew can provide whatever resources you're in need of."</text>
+	<text>The Empire has made remarkable progress in colonizing the space they've only just recently moved into. An outpost waving both the Imperial and Federation flags hails you, offering various free services.</text>
+</textList>
+<event name="OUTPOST_CRYSTAL_SPAWNER">
+	<preventQuest/>
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0"/>
+		<unvisitedTooltip id="map_outpost_unvisited"/>
+		<visitedTooltip id="map_outpost_visited"/>
+	</beaconType>
+	<ship load="SHIP_CRYSTAL_OUTPOST" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_CRYSTAL">
+		<event name="OUTPOST_CRYSTAL_BAD" req="rep_comb_crystal" lvl="2"/>
+	</loadEventList>
+</event> 
+<event name="OUTPOST_CRYSTAL" unique="true">
+	<text load="TEXT_OUTPOST_CRYSTAL"/>
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>Request free repairs. [7$]</text>
+		<event>
+			<damage amount="-7"/>
+		</event>
+	</choice>
+	<choice>
+		<text>Request fuel.</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request ammunition.</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request droneparts.</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(Crystal Crew) Request that the Crystals give you a Crystal weapon.</text>
+		<event>
+			<text>"Yes, we can arrange this. It will arrive shortly."</text>
+			<weapon name="GIFTLIST_CRYSTAL"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_CRYSTAL_BAD" unique="true">
+	<text>It seems your reputation has caught up with you - although there's an allied outpost near this beacon, they refuse to return any of your hails and seem to have gone into some sort of lockdown. Looks like you won't be getting any service out of them.</text>
+	<choice hidden="true">
+		<text>Let the outpost be.</text>
+		<event>
+			<text>No reason to make your situation worse. You decide to avoid the outpost.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					OUTCAST OUTPOST
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<ship name="SHIP_OUTCAST_OUTPOST" auto_blueprint="MU_FED_STATION">
+	<destroyed load="DESTROYED_FEDERATION_STATION"/>
+	<deadCrew load="DEAD_CREW_FEDERATION"/>
+	<crew>
+		<crewMember type="rock_outcast" prop="0.5"/>
+		<crewMember type="LIST_CREW_FEDERATION_RANDOM" prop="0.5"/>
+	</crew>
+</ship>
+<textList name="TEXT_OUTPOST_OUTCAST">
+	<text>In the strange territory the outcasts call their home, it's not unusual to find all sorts of odd things. Still, the Federation outpost here comes as a surprise! A welcome one to be sure however, and as soon as you approach they open their hangar doors to allow you inside.</text>
+	<text>An outcast aboard the nearby Federation refueling station hails you. "I emigrated to the Gathering in what feels like forever ago. But being a part of the Federation is one of the greatest honors I could ever have dreamed to serve. Allow me to provide anything I can to assist you, Captain."</text>
+	<text>It's a bit surprising, although not entirely shocking, to find a Federation outpost here in Outcast territory. A crew of all sorts of species works aboard, and the commanding officer offers you free services in return for your commitment to saving reality.</text>
+</textList>
+<event name="OUTPOST_OUTCAST_SPAWNER">
+	<preventQuest/>
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0"/>
+		<unvisitedTooltip id="map_outpost_unvisited"/>
+		<visitedTooltip id="map_outpost_visited"/>
+	</beaconType>
+	<ship load="SHIP_OUTCAST_OUTPOST" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_OUTCAST">
+		<event name="OUTPOST_OUTCAST_BAD" req="rep_comb_outcast" lvl="2"/>
+	</loadEventList>
+</event> 
+<event name="OUTPOST_OUTCAST" unique="true">
+	<text load="TEXT_OUTPOST_OUTCAST"/>
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>Request free repairs. [7$]</text>
+		<event>
+			<damage amount="-7"/>
+		</event>
+	</choice>
+	<choice>
+		<text>Request fuel.</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request ammunition.</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>Request droneparts.</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3"/>
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ROCK">
+		<text>(Rock Crew) Request that the Outcasts give you a missile weapon.</text>
+		<event>
+			<text>"Allow me to see what we can provide. I'm sure we have something extra in storage."</text>
+			<weapon name="GIFTLIST_MISSILES"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_OUTCAST_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_OUTCAST_BAD" unique="true">
+	<text>It seems your reputation has caught up with you - although there's an allied outpost near this beacon, they refuse to return any of your hails and seem to have gone into some sort of lockdown. Looks like you won't be getting any service out of them.</text>
+	<choice hidden="true">
+		<text>Let the outpost be.</text>
+		<event>
+			<text>No reason to make your situation worse. You decide to avoid the outpost.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Attack the outpost!</text>
+		<event>
+			<text>You arm the weapons and engage the station!</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>

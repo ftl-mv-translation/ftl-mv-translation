@@ -1,0 +1,1069 @@
+<FTL>
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					START BEACON, EXIT AND OTHER
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+<event name="FINISH_BEACON">
+    <loadEventList seeded="true" first="false">
+		<event name="FINISH_BEACON_DEBT" req="LOANS" lvl="1"/> <!--in events_special_standard.xml-->
+		<event name="FINISH_BEACON_REAL"/>
+	</loadEventList>
+</event>
+<event name="FINISH_BEACON_REAL">
+    <text>You've arrived at the Long-Range Beacon. When the FTL Drive is charged you can jump to the next Sector.</text>
+    <choice hidden="true">
+        <text>Explore.</text>
+        <event load="EXIT_FILLER_LIST"/>
+    </choice>
+    <choice hidden="true">
+        <text>Do something on-board the ship.</text>
+        <event load="STORAGE_CHECK"/>
+    </choice>
+    <choice hidden="true">
+        <text>Do nothing.</text>
+        <event/>
+    </choice>
+</event>
+
+<event name="FINISH_BEACON_NEBULA">
+    <loadEventList seeded="true" first="true">
+		<event name="FINISH_BEACON_DEBT" req="LOANS" lvl="1"/>
+		<event name="FINISH_BEACON_NEBULA_REAL"/>
+	</loadEventList>
+</event>
+<event name="FINISH_BEACON_NEBULA_REAL">
+	<text>This Long-Range Beacon is almost hidden within a nebula. When the FTL Drive is charged you can jump to the next Sector.</text>
+	<choice hidden="true">
+		<text>Explore.</text>
+		<event load="NEBULA_EXIT_FILLER_LIST"/>
+	</choice>
+	<choice hidden="true">
+		<text>Do something on-board the ship.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice hidden="true">
+		<text>Do nothing.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="ADDON_TRC_INFO">
+	<text>THE RENEGADE COLLECTION
+	Developed by: Kix
+	Currently Disabled.
+	
+	An equipment expansion pack meant to be used alongside Multiverse. Includes many various weapon and drone concepts considered, for one reason or another, unfitting for the base mod. While attempting to be balanced, due to the nature of the equipment in this pack as well as the fact it is not part of base Multiverse means there may be a higher variation of balance than usual. The new weapons include those that are niche, too conceptually similar to existing weapons, involve "hard-to-balance" gimmicks, or are just conceptually bizarre.
+	
+	To enable the Renegade Collection, go to the Subset Forums and visit the MV addon section!</text>
+</event>
+
+<event name="START_GAME">
+	<text></text>
+</event>
+
+<event name="START_BEACON_RELOAD">
+	<loadEvent>START_BEACON_PRESELECT</loadEvent>
+</event>
+<event name="START_BEACON">
+	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE"/>
+	<loadEventList first="true" default="START_BEACON_REAL">
+		<!--<event name="START_BEACON_TUTORIAL" req="prof_new_player" lvl="1"/>-->
+		<event name="START_BEACON_DYLAN" req="prof_dylan_met" lvl="1"/>
+	</loadEventList>
+</event>
+<event name="START_BEACON_DYLAN">
+	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE"/>
+	<metaVariable name="prof_dylan_counter" op="add" val="1"/>
+	<loadEvent>START_BEACON_REAL</loadEvent>
+</event>
+<event name="START_BEACON_REAL">
+	<text>You take a look at the distant swirls of space as the stars fly past. This is the beginning of the next chapter in your saga. What will await you next?</text>
+	<queueEvent seeded="true">THE_JUDGES_VARIABLE_CLEAR</queueEvent>
+	<deathEvent>DEATH</deathEvent>
+	<variable name="loc_start_compatibility" op="set" val="1"/>
+	<eventButton name="ADDON_TRC">
+        <event load="ADDON_TRC_INFO"/>
+        <image border="0">addons/trc</image>
+        <customLocation x="115" y="7"/>
+        <tooltip id="addon_hover_trc"/>
+        <jumpClear>false</jumpClear>
+        <noDanger>false</noDanger>
+    </eventButton>
+	<eventButton name="UI_STORAGE_CHECK_BUTTON">
+        <event load="STORAGE_CHECK_BUTTON"/>
+        <image>statusUI/top_storage</image>
+        <location>2</location>
+        <tooltip>Open the storage menu.</tooltip>
+        <inactiveTooltip>Unavailable: You cannot do this while in danger!</inactiveTooltip>
+        <jumpClear>false</jumpClear>
+        <noDanger>true</noDanger>
+    </eventButton>
+	<eventButton name="UI_JUKEBOX">
+        <event load="STORAGE_CHECK_JUKEBOX"/>
+        <image border="12">statusUI/top_music</image>
+        <customLocation x="338" y="46"/>
+        <tooltip>Open the jukebox.</tooltip>
+        <inactiveTooltip>Unavailable.</inactiveTooltip>
+        <jumpClear>false</jumpClear>
+    </eventButton>
+	<eventButton name="UI_TOGGLE_BUTTON">
+        <event load="COMBAT_CHECK_TOGGLE_BUTTON"/>
+        <image border="12">statusUI/top_toggle</image>
+        <customLocation x="105" y="110"/>
+        <tooltip>Toggle your equipment.</tooltip>
+        <inactiveTooltip>Unavailable!</inactiveTooltip>
+        <jumpClear>false</jumpClear>
+        <noDanger>false</noDanger>
+    </eventButton>
+	<removeNebula/>
+	<beaconType id="map_icon_start" global="false">
+		<color r="46" g="252" b="51" a="1"/>
+	</beaconType>
+	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE"/>
+	<choice hidden="true">
+		<text>Proceed with your mission.</text>
+		<event load="START_BEACON_CONFIGURE"/>
+	</choice>
+	<!--<choice hidden="true">
+		<text>Select a tutorial.</text>
+		<event load="START_BEACON_TUTORIAL"/>
+	</choice>-->
+</event>
+<event name="START_BEACON_CONFIGURE">
+	<item_modify steal="true">
+		<item type="fuel" min="-999" max="-999"/>
+		<item type="scrap" min="-999" max="-999"/>
+	</item_modify>
+	<disableScrapScore/>
+	<loadEventList first="true" generate="true">
+		<event name="START_BEACON_CONFIGURE_2"/>
+	</loadEventList>
+</event>
+<event name="START_BEACON_CONFIGURE_2">
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="START_BEACON_PRESELECT" req="FOR_MULTIVERSE" lvl="1"/>
+		<event name="START_BEACON_COMPATIBILITY" req="FOR_MULTIVERSE" max_lvl="0"/>
+	</loadEventList>
+</event>
+<event name="START_BEACON_COMPATIBILITY">
+	<text>It appears you are playing on a ship not designed for Multiverse! Do you believe this to be incorrect? Please report it so we or the appropriate developers can correct it!
+	It is heavily recommended you do not use ships or other mods not made for Multiverse to prevent issues. However, since you are, we have added some markers needed for compatibility. This will prevent some errors, but does not guarantee you won't have issues.
+	If you wish to update the ship you are playing to support MV but don't know how, feel free to ask about it on the forums or our discord, we'll be happy to help.</text>
+	<hiddenAug>SHIP_MULTIVERSE</hiddenAug>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="START_BEACON_PRESELECT"/>
+	</choice>
+</event>
+<event name="START_BEACON_PRESELECT">
+	<text>Before your mission begins, it might be time to prepare before you arrive at the warp bay. What would you like to do?</text>
+	<choice hidden="true">
+		<text>Proceed with your mission.</text>
+		<event name="LIGHTSPEED_DROPPOINT">
+			<text>Name: Federation Multiverse Drop Point
+			Type: Friendly
+			Dominant Faction: The United Federation
+			Rebel Threat Level: Medium (Neutral Fleet)
+
+			You're about to arrive at the nearest Federation warpbay, a structure acting as a beacon for traveling between universes.</text>
+			<choice hidden="true">
+				<text>Exit Hyperspeed.</text>
+				<event load="START_BEACON_PREP_LOAD"/>
+			</choice>
+			<!-- FAST AUGMENT INSTALL -->
+			<choice hidden="true" req="LIST_START_AUG_CHECK">
+				<text>You may immediately install the [X] augments below, losing the option to sell them or benefit from unconventional stacking. Should you choose to keep them, you may internalize them later on any time you can access the storage.</text>
+				<event load="OPTION_INVALID"/>
+			</choice>
+			<choice hidden="true" req="EX_PAYLOAD_CREATOR">
+				<text>Payload Fabricator</text>
+				<event load="INSTALL_PAYLOAD_START"/>
+			</choice>
+			<choice hidden="true" req="EX_O2_MASKS">
+				<text>Respirators</text>
+				<event load="INSTALL_RESPIRATOR_START"/>
+			</choice>
+			<choice hidden="true" req="EX_FIRE_EXTINGUISHERS">
+				<text>Extinguishers</text>
+				<event load="INSTALL_EXTINGUISHER_START"/>
+			</choice>
+			<choice hidden="true" req="EX_BREACH_SEALANT">
+				<text>Sealant</text>
+				<event load="INSTALL_SEALANT_START"/>
+			</choice>
+			<choice hidden="true" req="EX_ZOLTAN_BYPASS">
+				<text>Hard-Light Bypass</text>
+				<event load="INSTALL_BYPASS_START"/>
+			</choice>
+			<choice hidden="true" req="EX_LIFE_SCANNER">
+				<text>Lifeform Scanner</text>
+				<event load="INSTALL_LIFESCAN_START"/>
+			</choice>
+			<choice hidden="true" req="EX_DEFENSE_SCRAMBLER">
+				<text>Defense Scrambler</text>
+				<event load="INSTALL_SCRAMBLER_START"/>
+			</choice>
+			<choice hidden="true" req="START_SHIELDBOOST"> <!--need shields-->
+				<text>Shield Charge Booster</text>
+				<event load="INSTALL_SHIELDBOOST_START"/>
+			</choice>
+			<choice hidden="true" req="START_IONARMOR"> <!--need shields-->
+				<text>Ion Field</text>
+				<event load="INSTALL_IONARMOR_START"/>
+			</choice>
+			<choice hidden="true" req="EX_FTL_BOOSTER">
+				<text>FTL Booster</text>
+				<event load="INSTALL_FTLBOOST_START"/>
+			</choice>
+			<choice hidden="true" req="START_RELOADER"> <!--need weapons-->
+				<text>Re-loader</text>
+				<event load="INSTALL_RELOADER_START"/>
+			</choice>
+			<choice hidden="true" req="EX_EXPLOSIVE_REPLICATOR">
+				<text>Explosive Replicator</text>
+				<event load="INSTALL_REPLICATOR_START"/>
+			</choice>
+			<choice hidden="true" req="EX_CLOAK_FIRE">
+				<text>Stealth Weapons</text>
+				<event load="INSTALL_CLOAKFIRE_START"/>
+			</choice>
+			<choice hidden="true" req="EX_MEDBAY_NANO">
+				<text>Med-bots</text>
+				<event load="INSTALL_MEDBOT_START"/>
+			</choice>
+			<choice hidden="true" req="EX_MEDBAY_SPEED">
+				<text>Medical Stimulants</text>
+				<event load="INSTALL_STIMS_START"/>
+			</choice>
+			<choice hidden="true" req="EX_MEDBAY_RESISTANCE">
+				<text>Safety Blankets</text>
+				<event load="INSTALL_BLANKETS_START"/>
+			</choice>
+			<choice hidden="true" req="EX_BACKUP_DNA">
+				<text>Backup DNA</text>
+				<event load="INSTALL_DNA_START"/>
+			</choice>
+			<choice hidden="true" req="EX_DRONE_SPEED">
+				<text>Drone Booster</text>
+				<event load="INSTALL_DRONEBOOST_START"/>
+			</choice>
+			<choice hidden="true" req="EX_TELEPORT_HEAL">
+				<text>Reconstructive Teleporter</text>
+				<event load="INSTALL_RECONTELE_START"/>
+			</choice>
+			<choice hidden="true" req="START_FTLJAM"> <!--need hacking-->
+				<text>FTL Jammer</text>
+				<event load="INSTALL_FTLJAM_START"/>
+			</choice>
+			<choice hidden="true" req="EX_HACKING_STUN">
+				<text>Neural Disruptor</text>
+				<event load="INSTALL_NEURAL_START"/>
+			</choice>
+			<choice hidden="true" req="START_GENERATOR"> <!--need battery-->
+				<text>Emergency Generator</text>
+				<event load="INSTALL_GENERATOR_START"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="prof_finalsector" lvl="0" max_lvl="0" blue="false">
+		<text>Challenge levels locked. Get to sector 8 to unlock them!</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="prof_finalsector" lvl="1" blue="false">
+		<text>Learn about challenge levels.</text>
+		<event load="START_DIFFICULT_MENU"/>
+	</choice>
+	<choice hidden="true" req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>--CASUAL--</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="SET_CASUAL" blue="false">
+		<text>Change to Casual level.</text>
+		<event>
+			<metaVariable name="challenge_level" op="set" val="0"/>
+			<loadEvent>START_BEACON_PRESELECT</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true" req="INFO_NORMAL" blue="false">
+		<text>--STANDARD--</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="SET_NORMAL" blue="false">
+		<text>Change to Standard level.</text>
+		<event>
+			<metaVariable name="challenge_level" op="set" val="1"/>
+			<loadEvent>START_BEACON_PRESELECT</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true" req="challenge_level" lvl="2" max_lvl="2" blue="false">
+		<text>--CHALLENGE--</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="SET_CHALLENGE" blue="false">
+		<text>Change to Challenge level.</text>
+		<event>
+			<metaVariable name="challenge_level" op="set" val="2"/>
+			<loadEvent>START_BEACON_PRESELECT</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true" req="challenge_level" lvl="3" blue="false">
+		<text>--EXTREME--</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true" req="SET_EXTREME" blue="false">
+		<text>Change to Extreme level.</text>
+		<event>
+			<metaVariable name="challenge_level" op="set" val="3"/>
+			<loadEvent>START_BEACON_PRESELECT</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true" req="FEDERATION_DATABASE" lvl="0" max_lvl="0">
+		<text>Download the Federation Database entries. [HEAVILY recommended for beginners]</text>
+		<event load="GIVE_DATABASE"/>
+	</choice>
+	<choice hidden="true" req="FEDERATION_DATABASE" lvl="1" blue="false">
+		<text>Reread the Federation Database entries.</text>
+		<event load="DATABASE_LOREDUMP"/>
+	</choice>
+</event>
+
+<event name="INSTALL_PAYLOAD_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_PAYLOAD_CREATOR"/>
+	<hiddenAug>PAYLOAD_CREATOR</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_RESPIRATOR_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_O2_MASKS"/>
+	<hiddenAug>UPG_TECH_RESPIRATOR</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_EXTINGUISHER_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_FIRE_EXTINGUISHERS"/>
+	<hiddenAug>UPG_TECH_EXTINGUISHERS</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_SEALANT_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_BREACH_SEALANT"/>
+	<hiddenAug>UPG_TECH_SEALANT</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_BYPASS_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_ZOLTAN_BYPASS"/>
+	<hiddenAug>UPG_TECH_BYPASS</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_LIFESCAN_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_LIFE_SCANNER"/>
+	<hiddenAug>UPG_TECH_LIFEFORM</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_SCRAMBLER_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_DEFENSE_SCRAMBLER"/>
+	<hiddenAug>UPG_TECH_SCRAMBLER</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_SHIELDBOOST_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_SHIELD_RECHARGE"/>
+	<hiddenAug>UPG_SHIELDS_PERFORMANCE</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_IONARMOR_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_ION_ARMOR"/>
+	<hiddenAug>UPG_SHIELD_ION</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_FTLBOOST_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_FTL_BOOSTER"/>
+	<hiddenAug>UPG_ENGINES_PERFORMANCE</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_RELOADER_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_AUTO_COOLDOWN"/>
+	<hiddenAug>UPG_WEAPONS_PERFORMANCE</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_REPLICATOR_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_EXPLOSIVE_REPLICATOR"/>
+	<hiddenAug>UPG_WEAPONS_REPLICATOR</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_CLOAKFIRE_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_CLOAK_FIRE"/>
+	<hiddenAug>UPG_CLOAK_FIRE</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_MEDBOT_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_MEDBAY_NANO"/>
+	<hiddenAug>UPG_MEDBAY_NANO</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_STIMS_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_MEDBAY_SPEED"/>
+	<hiddenAug>UPG_MEDBAY_SPEED</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_BLANKETS_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_MEDBAY_RESISTANCE"/>
+	<hiddenAug>UPG_MEDBAY_RESISTANCE</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_DNA_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_BACKUP_DNA"/>
+	<hiddenAug>UPG_CLONEBAY_DNA</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_DRONEBOOST_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_DRONE_SPEED"/>
+	<hiddenAug>UPG_DRONE_SPEED</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_RECONTELE_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_TELEPORT_HEAL"/>
+	<hiddenAug>UPG_TELEPORTER_HEAL</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_FTLJAM_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_FTL_JAMMER"/>
+	<hiddenAug>UPG_HACK_JAMMER</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_NEURAL_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_HACKING_STUN"/>
+	<hiddenAug>UPG_HACK_STUN</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_GENERATOR_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_BATTERY_GENERATOR"/>
+	<hiddenAug>UPG_BATTERY_GENERATOR</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<!--DIFFICULTY SELECT-->
+<event name="START_DIFFICULT_MENU">
+	<text>Challenge levels alter the way you experience Multiverse. Once you've started your run, it cannot be changed! Challenge level configuration is saved across all runs until changed again.
+
+The challenge level is independent from the standard difficulty slider in the hangar, and is a complement rather than replacement; it alters aspects that the default difficulty couldn't tweak itself.</text>
+	<choice hidden="true">
+		<text>Casual.</text>
+		<event>
+			<text>[CASUAL MODE: A mode for people who just want to experience the gameplay in a relaxed way.]
+			Starting scrap: 50~
+			Starting fuel: 25{
+			
+			The Rebel ship at the sector one exit will not be an Elite.
+			Renegade minibosses will never spawn, and Federation Outposts give free repairs.
+			The Traveling Merchant always gives a sizable free gift, is weaker, and drops a powerful Energy Shield augment if killed.
+			Will reduce the difficulty of the True Ending.</text>
+			<choice>
+				<text>Return.</text>
+				<event>
+					<loadEvent>START_DIFFICULT_MENU</loadEvent>
+				  </event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Standard.</text>
+		<event>
+			<text>[STANDARD MODE: plays the way the mod was originally designed.]
+			Starting scrap: 20~
+			Starting fuel: 12{
+			
+			A weaker Rebel Elite will await you at the sector one exit.
+			Renegade minibosses will spawn with moderate strength and take scrap as tribute.
+			The Traveling Merchant gives a small free gift in the Drop Point and Last Stand, and drops a powerful Energy Shield augment if killed.</text>
+			<choice>
+				<text>Return.</text>
+				<event>
+					<loadEvent>START_DIFFICULT_MENU</loadEvent>
+				  </event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Challenge.</text>
+		<event>
+			<text>[CHALLENGE MODE: A mode for people looking for a harder challenge, but without things getting too out of hand.]
+			Starting scrap: none
+			Starting fuel: 10{
+			
+			The Rebel fleet gains a 1 jump boost. Increases difficulty of the Elite at the sector one exit.
+			Renegades minibosses are buffed and demand more scrap as tribute, Last Stand repair beacons will always be under attack by Elite Rebels.
+			The Traveling Merchant never gives any gifts, is stronger, and drops a powerful weapon under most circumstances if killed.
+			Will increase the difficulty of the True Ending.</text>
+			<choice>
+				<text>Return.</text>
+				<event>
+					<loadEvent>START_DIFFICULT_MENU</loadEvent>
+				  </event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Extreme.</text>
+		<event>
+			<text>[EXTREME MODE: Bored of things being too easy? Looking to make your life hell? This might be the mode for you.]
+			Starting scrap: none
+			Starting fuel: 8{
+			
+			Extra preparation options at the starting beacon are disabled.
+			The Rebel fleet gains a 1 jump boost. Increases difficulty of the Elite at the sector one exit.
+			Renegade minibosses are massively buffed, demand a bigger scrap tribute, and will stop taking tribute after 5 sectors, Last Stand repair beacons will always be under attack by MFK Aces, the Last Stand start beacon is under attack by an MFK Picket Ace that will prevent you from jumping away.
+			The Traveling Merchant gives much less scrap for resources, is stronger, and drops a powerful weapon under most circumstances if killed.
+			Will further increase the difficulty of the True Ending.</text>
+			<choice>
+				<text>Return.</text>
+				<event>
+					<loadEvent>START_DIFFICULT_MENU</loadEvent>
+				  </event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Return.</text>
+		<event>
+			<loadEvent>START_BEACON_PRESELECT</loadEvent>
+		  </event>
+	</choice>
+</event>
+<event name="GIVE_DATABASE">
+	<text>You've downloaded the database, which will now grant you the opportunity to read about various factions, individuals, or locations. This provides no physical benefit, but will help guide you on your path to success in your journey. It will also provide detailed tutorials on new mechanics such as the Atlas or Internal Upgrades.</text>
+	<hiddenAug>FEDERATION_DATABASE</hiddenAug>
+	<choice hidden="true" req="pilot">
+		<text>[Federation Database] Remind yourself about your mission.</text>
+		<event name="DATABASE_LOREDUMP">
+			<text>You, captain, are now a central part of the largest known conflict in not just the galaxy, but the multiverse itself. After the conclusion of the original Federation Civil War in Universe 0, your home reality, the Galactic Federation defeated Admiral Vance and the Rebellion, securing their control over the galaxy.</text>
+			<choice>
+				<text>Keep reading.</text>
+				<event>
+					<text>The Federation struggled with various other conflicts, most notably a cold war between the dangerous Coalition Alliance endorsed by the Slug Kleptocracy, Mantis Hive, Rock Theocracy, and Eargen Republic. This conflict finally escalated into the invasion of Aquarian territory, resulting in heavy losses. After the Coalition's attack temporarily destabilized the Federation once again, Vance ran a covert operation from the Rebel Stronghold to attempt to salvage the heavily protected ancient ruins that the Coalition had been seeking as well.</text>
+					<choice>
+						<text>Keep reading.</text>
+						<event>
+							<text>Though the full details are unknown, it is believed that among these ruins Vance's team salvaged the first Multiverse Drive, which he would reverse engineer and install on the remaining Rebel fleet. After a Federation raid on the Rebel Stronghold, Vance and his men fled to Universe 1 and allied with the Rebellion of that reality to overthrow the Federation. Universe 1 now acts as the center of the Interdimensional Rebellion's operations, while Universe 0 leads the counterattack.</text>
+							<choice>
+								<text>Keep reading.</text>
+								<event>
+									<text>Fruitless as though it might be, both sides are now locked into a seemingly unending conflict, invading realities to secure the strength and survival of their own faction. Make no mistake - though the Rebellion continues to perpetuate their title of a brave uprising, the Rebellion is well beyond a simple insurrection. Though intel is sparse, it would appear Universe 1 has been transformed into a desolate, industrial dystopia fueling the eternal gears of war that seek nothing less than the total annihilation of the Federation and all non-human species.</text>
+									<choice>
+										<text>Keep reading.</text>
+										<event>
+											<text>The whereabouts of U0 Vance are currently unknown, though sightings of suspicious movements of the privately trained MFK Ace corps, undyingly loyal to Vance Prime, have been seen all around the Multiverse. The MFK Aces will likely prove to be your greatest threat, along with the powerful redesigned Flagship model dispatched to this reality to destroy the Federation base and secure a Rebel victory.</text>
+											<choice>
+												<text>Keep reading.</text>
+												<event>
+													<text>This is where you get involved. As a Renegade hired by the Federation your goal is simple - destroy the Flagship, and it is highly unlikely the Rebellion will be willing to dedicate any further efforts to capturing this reality. It is far more practical for them to divert the remaining Rebel forces to a different reality. If you fail, it is certain the Federation of this reality will fall, and this will become just another piece in the Rebels' arsenal of enslaved realities.</text>
+													<achievement>ACH_ACC_DATABASE</achievement>
+													<choice hidden="true">
+														<text>That's all for now. Time to get on with the mission.</text>
+														<event load="START_BEACON_RELOAD"/>
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>That's enough for now.</text>
+												<event load="START_BEACON_RELOAD"/>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>That's enough for now.</text>
+										<event load="START_BEACON_RELOAD"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>That's enough for now.</text>
+								<event load="START_BEACON_RELOAD"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>That's enough for now.</text>
+						<event load="START_BEACON_RELOAD"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>That's enough for now.</text>
+				<event load="START_BEACON_RELOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="START_BEACON_RELOAD"/>
+	</choice>
+</event>
+<event name="START_BEACON_PREP_LOAD">
+	<backgroundObject name="HANGAR_SALUTE">
+		<layer z="0">background</layer>
+		<spawnArea x="0" y="324" w="0" h="0"/>
+		<anim>hang_salute</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_BOXGUY">
+		<layer z="0">background</layer>
+		<spawnArea x="770" y="122" w="0" h="0"/>
+		<anim>hang_boxguy</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_MANTISGRAB">
+		<layer z="0">background</layer>
+		<spawnArea x="174" y="291" w="0" h="0"/>
+		<anim>hang_mantisgrab</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_TYPINGGUY">
+		<layer z="0">background</layer>
+		<spawnArea x="1020" y="135" w="0" h="0"/>
+		<anim>hang_typingguy</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_CRYSTALREPAIR">
+		<layer z="0">background</layer>
+		<spawnArea x="960" y="123" w="0" h="0"/>
+		<anim>hang_crystalrepair</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_BOXGIRL">
+		<layer z="0">background</layer>
+		<spawnArea x="206" y="163" w="0" h="0"/>
+		<anim>hang_boxgirl</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_CLEAN">
+		<layer z="0">background</layer>
+		<spawnArea x="863" y="107" w="0" h="0"/>
+		<anim>hang_clean</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_DOCTOR">
+		<layer z="0">background</layer>
+		<spawnArea x="1120" y="214" w="0" h="0"/>
+		<anim>hang_doctor</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_POKER">
+		<layer z="0">background</layer>
+		<spawnArea x="977" y="160" w="0" h="0"/>
+		<anim>hang_poker</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_KERNEL">
+		<layer z="0">background</layer>
+		<spawnArea x="835" y="412" w="0" h="0"/>
+		<anim>hang_kernel</anim>
+	</backgroundObject>
+	<backgroundObject name="DETERGENT">
+		<layer z="0">background</layer>
+		<spawnArea x="207" y="163" w="0" h="0" center="true"/>
+		<req lvl="0" max_lvl="200">stability</req> <!--appears whenever a rhymer can appear-->
+		<anim>detergent</anim>
+		<hoverAnim>detergent_hover</hoverAnim>
+		<inactiveAnim hide="true"/>
+		<tooltip>A bottle of detergent.</tooltip>
+		<clickAction>
+			<event load="DETERGENT_MODE"/> <!--events_mechanics-->
+			<destroy/>
+		</clickAction>
+	</backgroundObject>
+	<backgroundObject name="GNOME">
+		<layer z="0">background</layer>
+		<spawnArea x="1154" y="390" w="0" h="0" center="true"/>
+		<req lvl="1">chaos_mode_unlock</req>
+		<anim>gnome_object</anim>
+		<hoverAnim>gnome_object_hover</hoverAnim>
+		<inactiveAnim hide="true"/>
+		<tooltip>A gnome.</tooltip>
+		<clickAction>
+			<event load="CHAOS_MODE"/> <!--events_mechanics-->
+			<destroy/>
+		</clickAction>
+	</backgroundObject>
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="START_BEACON_CASUAL" req="challenge_level" lvl="0" max_lvl="0"/>
+		<event name="START_BEACON_NORMAL" req="challenge_level" lvl="1" max_lvl="1"/>
+		<event name="START_BEACON_FLEETBOOST" req="challenge_level" lvl="2" max_lvl="2"/>
+		<event name="START_BEACON_PREP_SKIP" req="challenge_level" lvl="3"/>
+	</loadEventList>
+</event>
+
+<event name="START_BEACON_CASUAL">
+	<item_modify>
+		<item type="fuel" min="25" max="25"/>
+		<item type="scrap" min="50" max="50"/>
+	</item_modify>
+	<disableScrapScore/>
+	<loadEvent>START_BEACON_PREP</loadEvent>
+</event>
+<event name="START_BEACON_NORMAL">
+	<item_modify>
+		<item type="fuel" min="12" max="12"/>
+		<item type="scrap" min="20" max="20"/>
+	</item_modify>
+	<disableScrapScore/>
+	<loadEvent>START_BEACON_PREP</loadEvent>
+</event>
+<event name="START_BEACON_FLEETBOOST">
+    <text>The fleet draws in closer...</text>
+	<changeBackground>BACK_SECTOR_START</changeBackground>
+	<modifyPursuit amount="1"/>
+	<item_modify>
+		<item type="fuel" min="10" max="10"/>
+	</item_modify>
+	<choice hidden="true">
+       <text>Continue...</text>
+       <event load="START_BEACON_PREP"/>
+    </choice>
+</event>
+<event name="START_BEACON_PREP_SKIP">
+    <text>You slowly exit hyperspeed, transitioning to a speed safe for landing and steer closer to the hangar below. There, your ship is stocked up and prepped to head out into this foreign galaxy.</text>
+	<changeBackground>BACK_SECTOR_START</changeBackground>
+	<playSound>lightspeed</playSound>
+	<item_modify>
+		<item type="fuel" min="8" max="8"/>
+	</item_modify>
+	<modifyPursuit amount="1"/>
+	<choice hidden="true" req="ANY_BOON">
+		<text>The hangar operators hail you.</text>
+		<event load="START_BOON_MENU"/>
+	</choice>
+	<choice hidden="true" req="magical_hat" lvl="1" blue="true">
+		<text>Grab the magic hat.</text>
+		<event load="MAGIC_HAT"/>
+	</choice>
+	<choice hidden="true">
+       <text>Continue...</text>
+       <event load="START_BEACON_EXPLAIN_LOAD"/>
+    </choice>
+</event>
+
+<event name="START_BEACON_PREP">
+	<text>You slowly exit hyperspeed, transitioning to a speed safe for landing and steer closer to the hangar below. There, your ship is stocked up and prepped to head out into this foreign galaxy.</text>
+	<changeBackground>BACK_SECTOR_START</changeBackground>
+	<playSound>lightspeed</playSound>
+	<choice hidden="true" req="ANY_BOON">
+		<text>The hangar operators hail you.</text>
+		<event load="START_BOON_MENU"/>
+	</choice>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="START_BEACON_PREP_OPTIONS"/>
+	</choice>
+</event>
+<event name="START_BEACON_PREP_OPTIONS">
+	<text>You hurry to your ship, but realize you still have a little time before you leave. You likely have time to grab one last thing.</text>
+	<choice hidden="true" lvl="0" max_group="0" req="NO_WEAPON" blue="false">
+		<text>Grab a weapon.</text>
+		<event>
+			<text>Looks like there's a few options.</text>
+			<choice>
+				<text>Grab a Basic Laser.</text>
+				<event>
+					<text>Confident with your new arsenal, you prepare to continue on your mission.</text>
+					<weapon name="LASER_BURST_1"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="START_BEACON_EXPLAIN_LOAD"/>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>Grab a Simple Ion.</text>
+				<event>
+					<text>Confident with your new arsenal, you prepare to continue on your mission.</text>
+					<weapon name="ION_1"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="START_BEACON_EXPLAIN_LOAD"/>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>Grab a Leto Launcher.</text>
+				<event>
+					<text>Confident with your new arsenal, you prepare to continue on your mission.</text>
+					<weapon name="MISSILES_1"/>
+					<item_modify>
+						<item type="missiles" min="2" max="2"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="START_BEACON_EXPLAIN_LOAD"/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" lvl="1" max_group="0" req="NO_WEAPON" blue="false">
+		<text>You cannot grab a free weapon.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="2" blue="false">
+		<text>Find another crew member.</text>
+		<event>
+			<text>Confident with your new crew, you prepare to continue on your mission.</text>
+			<crewMember amount="1" class="human"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="3" blue="false">
+		<text>Grab some extra resources.</text>
+		<event>
+			<text>With some extra resources in your storage, you prepare to continue on your mission.</text>
+			<item_modify>
+				<item type="fuel" min="2" max="2"/>
+				<item type="scrap" min="10" max="10"/>
+				<item type="missiles" min="2" max="2"/>
+				<item type="drones" min="2" max="2"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="magical_hat" lvl="1" max_group="4" blue="true">
+		<text>Grab the magic hat.</text>
+		<event name="MAGIC_HAT">
+			<text>The magic hat makes you feel warm and fuzzy, despite being crafted in an incomprehensible and non-euclidean shape and color which eludes your mind. As soon as you put it on, it feels as though there is nowhere you couldn't go if you put your mind to it.</text>
+			<variable name="magical_hat_active" op="set" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="pilot" lvl="1" max_group="5" blue="false">
+		<text>You're good with what you have. Get a head start on the fleet!</text>
+		<event>
+			<text>You decide not to take anything extra, and carry on.</text>
+			<modifyPursuit amount="-2"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<!--BOON SELECT-->
+<event name="START_BOON_MENU">
+	<text>It seems a gift awaits you. From uncertain origins it's labeled, in strange penmanship, "A gift from the observers, on behalf of the last challenger to find us. We sincerely await meeting you. See you soon, perhaps?"</text>
+	<choice hidden="true">
+		<text>Accept the gift.</text>
+		<event load="BOON_SELECT"/>
+	</choice>
+	<choice hidden="true">
+		<text>Turn down the gift.</text>
+		<event>
+			<loadEvent>BOON_SELECT_CONTINUE</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="BOON_SELECT_CONTINUE">
+	<loadEventList seeded="false">
+		<event name="START_BEACON_PREP_OPTIONS" req="challenge_level" lvl="0" max_lvl="2"/>
+		<event name="START_BEACON_EXPLAIN_LOAD" req="challenge_level" lvl="3"/>
+	</loadEventList>
+</event>
+<event name="BOON_SELECT">
+	<loadEventList seeded="false">
+		<event name="BOON_SELECT_HUMAN" req="prof_z_boon_human"/>
+		<event name="BOON_SELECT_HUMAN_2" req="prof_z_boon_human_2"/>
+		<event name="BOON_SELECT_ENGI" req="prof_z_boon_engi"/>
+		<event name="BOON_SELECT_ZOLTAN" req="prof_z_boon_zoltan"/>
+		<event name="BOON_SELECT_OSMIAN" req="prof_z_boon_osmian"/>
+		<event name="BOON_SELECT_ORCHID" req="prof_z_boon_orchid"/>
+		<event name="BOON_SELECT_MANTIS" req="prof_z_boon_mantis"/>
+		<event name="BOON_SELECT_MANTIS_2" req="prof_z_boon_mantis_2"/>
+		<event name="BOON_SELECT_ROCK" req="prof_z_boon_rock"/>
+		<event name="BOON_SELECT_ROCK_2" req="prof_z_boon_rock_2"/>
+		<event name="BOON_SELECT_CRYSTAL" req="prof_z_boon_crystal"/>
+		<event name="BOON_SELECT_SLUG" req="prof_z_boon_slug"/>
+		<event name="BOON_SELECT_SLUG_2" req="prof_z_boon_slug_2"/>
+		<event name="BOON_SELECT_SHELL" req="prof_z_boon_shell"/>
+		<event name="BOON_SELECT_LEECH" req="prof_z_boon_leech"/>
+		<event name="BOON_SELECT_GHOST" req="prof_z_boon_ghost"/>
+		<event name="BOON_SELECT_LANIUS" req="prof_z_boon_lanius"/>
+		<event name="BOON_SELECT_MORPH" req="prof_z_boon_morph"/>
+		<event name="BOON_SELECT_LIZARD" req="prof_z_boon_lizard"/>
+		<event name="BOON_SELECT_SPIDER" req="prof_z_boon_spider"/>
+		<event name="BOON_SELECT_PONY" req="prof_z_boon_horse"/>
+		<event name="BOON_SELECT_OBELISK" req="prof_z_boon_obelisk"/>
+		<event name="BOON_SELECT_SIREN" req="prof_z_boon_siren"/>
+		<event name="BOON_SELECT_UNIQUE" req="prof_z_boon_unique"/>
+		<event name="BOON_SELECT_UNIQUEMECH" req="prof_z_boon_unique_m"/>
+		<event name="BOON_SELECT_KIDS" req="prof_z_boon_kids"/>
+		
+		<event name="BOON_SELECT_WEAPONS" req="prof_e_boon_weapons"/>
+		<event name="BOON_SELECT_SHIELDS" req="prof_e_boon_shields"/>
+		<event name="BOON_SELECT_ENGINES" req="prof_e_boon_engines"/>
+		<event name="BOON_SELECT_MEDBAY" req="prof_e_boon_medbay"/>
+		<event name="BOON_SELECT_CLONEBAY" req="prof_e_boon_clonebay"/>
+		<event name="BOON_SELECT_OXYGEN" req="prof_e_boon_oxygen"/>
+		<event name="BOON_SELECT_TELEPORTER" req="prof_e_boon_teleporter"/>
+		<event name="BOON_SELECT_MIND" req="prof_e_boon_mind"/>
+		<event name="BOON_SELECT_HACKING" req="prof_e_boon_hacking"/>
+		<event name="BOON_SELECT_CLOAKING" req="prof_e_boon_cloaking"/>
+		<event name="BOON_SELECT_TEMPORAL" req="prof_e_boon_temporal"/>
+		<event name="BOON_SELECT_DRONES" req="prof_e_boon_drones"/>
+		<event name="BOON_SELECT_SENSORS" req="prof_e_boon_sensors"/>
+		<event name="BOON_SELECT_DOORS" req="prof_e_boon_doors"/>
+		<event name="BOON_SELECT_PILOT" req="prof_e_boon_pilot"/>
+		<event name="BOON_SELECT_BATTERY" req="prof_e_boon_battery"/>
+		<event name="BOON_SELECT_REACTOR" req="prof_e_boon_reactor"/>
+		
+		<event name="BOON_SELECT_STARTER" req="prof_r_boon_starter"/>
+		<event name="BOON_SELECT_KERNELELITE" req="prof_r_boon_kernel"/>
+		<event name="BOON_SELECT_CRYSTALELITE" req="prof_r_boon_crystal"/>
+		<event name="BOON_SELECT_MINELAUNCHER" req="prof_r_boon_minelauncher"/>
+		<event name="BOON_SELECT_NEWGEN" req="prof_r_boon_newgen"/>
+		<event name="BOON_SELECT_AETHER" req="prof_r_boon_obelisk"/>
+		<event name="BOON_SELECT_MERCHANTS" req="prof_r_boon_nexus"/>
+		<event name="BOON_SELECT_SPECIAL" req="prof_r_boon_special"/>
+		<event name="BOON_SELECT_TRANSPORT" req="prof_r_boon_transport"/>
+		<event name="BOON_SELECT_MATH" req="prof_r_boon_math"/>
+		<event name="BOON_SELECT_RENEGADE" req="prof_r_boon_renegade"/>
+		<event name="BOON_SELECT_SENTRY" req="prof_r_boon_sentry"/>
+		<event name="BOON_SELECT_CURA" req="prof_r_boon_cura"/>
+		<event name="BOON_SELECT_CLONECANNON" req="prof_r_boon_clonecannon"/>
+		<event name="BOON_SELECT_MODULAR" req="prof_r_boon_modular"/>
+		<event name="BOON_SELECT_GATLING" req="prof_r_boon_gatling"/>
+		<event name="BOON_SELECT_MERCHANTS" req="prof_r_boon_rift"/>
+		<event name="BOON_SELECT_MADNESS" req="prof_r_boon_madness"/>
+		
+		<event name="BOON_SELECT_CHAOS" req="prof_boon_chaos"/>
+	</loadEventList>
+</event>
+
+<event name="START_BEACON_EXPLAIN_LOAD">
+	<loadEventList seeded="false" default="START_BEACON_EXPLAIN">
+		<event name="GIVE_POWERSURGE_2" req="STAGE_2"/>
+		<event name="GIVE_POWERSURGE_3" req="STAGE_3"/>
+		<event name="GIVE_EXTRALIFE" req="EXTRA_LIFE"/>
+		<event name="GIVE_MVDRIVE" req="MULTIVERSE_DRIVE_GOOD"/>
+		<event name="GIVE_UNSTABLE" req="EMERGENCY_DRIVE"/>
+		<event name="GIVE_ATM" req="ATM_MACHINE"/>
+		<event name="GIVE_SPORES" req="SPORE_SHIPMENT"/>
+		<event name="GIVE_RECALL" req="LOCKED_GLOBAL_TELEPORT"/>
+	</loadEventList>
+</event>
+<event name="GIVE_POWERSURGE_2">
+	<triggeredEvent event="FLAGSHIP_STAGE2_TRACKER" seeded="false" loops="999999999" jumps="1"/>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_POWERSURGE_3">
+	<triggeredEvent event="FLAGSHIP_STAGE3_TRACKER" seeded="false" loops="999999999" jumps="1"/>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_EXTRALIFE">
+	<triggeredEvent event="EXTRA_LIFE_HEAL" playerHull="3" clearOnJump="false"/>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_MVDRIVE">
+	<triggeredEvent event="MV_DRIVE_EXPLODE" loops="999999999">
+	  <jumps amount="1" type="1"/>
+	</triggeredEvent>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_UNSTABLE">
+	<triggeredEvent event="UNSTABLE_CHECKER" loops="999999999" jumps="1"/>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_ATM">
+	<triggeredEvent name="ATM_CHECKER" event="ATM_MACHINE_WITHDRAW_CHECK" loops="999999999">
+	  <jumps amount="1" type="1"/>
+	</triggeredEvent>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_SPORES">
+	<triggeredEvent name="SPORE_CHECKER" event="SPORE_WITHDRAW_CHECK" loops="999999999">
+	  <jumps amount="1" type="1"/>
+	</triggeredEvent>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_RECALL">
+	<eventButton name="UI_RECALL_BUTTON">
+        <event load="RECALL"/>
+        <image border="12">statusUI/top_recall</image>
+		<customLocation x="105" y="140"/>
+        <tooltip>Recover your boarding crew.</tooltip>
+        <inactiveTooltip>Unavailable: You cannot do this while in danger!</inactiveTooltip>
+        <jumpClear>false</jumpClear>
+        <noDanger>true</noDanger>
+    </eventButton>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="START_BEACON_EXPLAIN">
+	<text>Finally suited up and ready to go, you take a look at your beacon map. Looks like you still have a while until the fleet becomes an immediate threat, so you can spare some time to do something on the ship if you wish.</text>
+	<choice hidden="true" req="prof_beacon_active" blue="true">
+		<text>A strange beacon lays nearby. Do you want to activate it?</text>
+		<event>
+			<text>The beacon beeps and a cascading signal ricochets outwards into the depths of space. You don't know who's listening or where they are, but hopefully they're friendly - or carry good loot.</text>
+			<achievement silent="false">ACH_ACC_SIGNAL</achievement>
+			<variable name="loc_beacon_active" op="set" val="1"/>
+			<playSound>mysteriousBeacon</playSound>
+			<choice>
+				<text>Continue...</text>
+				<event>
+					<loadEvent>STORAGE_CHECK</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Do something onboard the ship.</text>
+		<event load="STORAGE_CHECK"/>
+	</choice>
+	<choice>
+		<text>Do nothing.</text>
+		<event/>
+	</choice>
+</event>
+
+<event name="BROKEN_START">
+	<text>CAUTION. Incompatible mods have been detected, breaking some core functions of Multiverse. It is mandatory that you re-evaluate your modlist to eliminate issues, and use mods that were meant for Multiverse in mind. 
+	
+	Common cause of issues;
+	Beginning Scrap advantage
+	Engi Scrap advantage
+	Any fleet removal mod
+	Just about any mod made prior to the release of Multiverse that modifies events</text>
+	<choice hidden="true">
+		<text>Read the disclaimer carefully.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event/>
+	</choice>
+</event>
+</FTL>
