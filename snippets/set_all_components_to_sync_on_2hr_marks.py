@@ -1,13 +1,4 @@
-# Crawls Weblate. Mark po entries fuzzy if they're marked as fuzzy in Weblate as well.
-# Usage:
-# 1. Create a file called .weblate-token at the root of the repo,
-#    with content being your Weblate token that starts with `wlu_`.
-# 2. Run the script.
-# 3. Run the script with `process` argument.
-
-import json
 import math
-import sys
 import requests
 from loguru import logger
 from mvlocscript.potools import parsekey, readpo, writepo
