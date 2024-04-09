@@ -71,6 +71,26 @@ end)
 
 --[[
 ////////////////////
+FINAL BOSS FIGHT
+////////////////////
+]]--
+
+script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
+    local enemyShip = Hyperspace.ships.enemy
+    if enemyShip and not enemyShip.bDestroyed then
+        local bossList = Hyperspace.Global.GetInstance():GetBlueprints():GetBlueprintList("LIST_SHIPS_FINALBOSS")
+        for i = 0, bossList:size() - 1 do
+            if enemyShip.myBlueprint.blueprintName == bossList[i] then
+                Hyperspace.playerVariables.loc_finalboss = 1
+                return
+            end
+        end
+    end
+    Hyperspace.playerVariables.loc_finalboss = 0
+end)
+
+--[[
+////////////////////
 COMBINED REPUTATIONS
 ////////////////////
 ]]--

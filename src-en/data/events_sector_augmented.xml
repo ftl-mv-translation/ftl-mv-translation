@@ -167,7 +167,6 @@
 						<text>Continue...</text>
 						<event/>
 					</choice>
-					<!--update these as new ones are added!!!!! I know I'm going to forget-->
 					<choice hidden="true" req="ANCIENT_LASER">
 						<text>Offer her an Ancient Laser to feed on.</text>
 						<event>
@@ -191,15 +190,6 @@
 						<event>
 							<text id="anointed_dinner"/>
 							<remove name="ANCIENT_FOCUS"/>
-							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
-							<variable name="ach_crew_anointed" op="set" val="1"/>
-						</event>
-					</choice>
-					<choice hidden="true" req="ANCIENT_FOCUS_2">
-						<text>Offer her an Ancient Pinpoint Mk. II to feed on.</text>
-						<event>
-							<text id="anointed_dinner"/>
-							<remove name="ANCIENT_FOCUS_2"/>
 							<crewMember amount="1" combat="2" class="unique_anointed">Anointed</crewMember>
 							<variable name="ach_crew_anointed" op="set" val="1"/>
 						</event>
@@ -892,7 +882,7 @@
 				<event>
 					<text>The Separatist lets out an audible sigh. "The [cubical] vessels that populate this sector belonged to ancient race. It is believed, though 60% speculation, that these creatures first developed Harmony. There is your [lore], now please leave."</text>
 					<choice hidden="true">
-						<text>Attack them, maybe they have something valuable on-board!</text>
+						<text>Attack them, maybe they have something valuable on board!</text>
 						<event>
 							<text>You've decided to attack the Separatist ship. Prepare for battle.</text>
 							<ship hostile="true"/> 
@@ -1208,6 +1198,16 @@
 			<weapon name="GIFTLIST_LANIUS"/>
 		</event>
     </choice>
+	<choice hidden="true" req="DRONE_CONTROL_SHIPREPAIR">
+		<text>(Hull Repair Drone) Repair their ship with a drone. [-1|]</text>
+		<event>
+			<text>The drone repairs the Lanius vessel, giving them the capability to fix themselves using the hull - after which, they calm down. "In fight. Won, barely. Have - we found this."</text>
+			<item_modify>
+				<item type="drone" min="-1" max="-1"/>
+			</item_modify>
+			<weapon name="GIFTLIST_LANIUS"/>
+		</event>
+    </choice>
     <choice hidden="true" req="LIST_CREW_MEDICAL">
 		<text>(Medical Crew) Have your medical crew help them out.</text>
 		<event>
@@ -1225,7 +1225,11 @@
 			<weapon name="GIFTLIST_LANIUS"/>
 		</event>
     </choice>
-    <choice hidden="true">
+    <choice hidden="true" req="BEAM_REPAIR">
+		<text>(Pro-Hull Beam) Repair their ship.</text>
+		<event load="DISTRESS_AUGMENTED_NEAR_DEATH_BEAM"/>
+    </choice>
+	<choice hidden="true">
 		<text>Wait for their destruction.</text>
 		<event load="DISTRESS_AUGMENTED_NEAR_DEATH_DEATH"/>
     </choice>
@@ -1240,6 +1244,21 @@
 		<choice hidden="true">
 			<text>Continue...</text>
 			<event load="DEAD_CREW_AUGMENTED"/>
+		</choice>
+	</event>
+</eventList>
+<eventList name="DISTRESS_AUGMENTED_NEAR_DEATH_BEAM">
+	<event>
+		<text>You swiftly contact the Lanius and instruct them to lower their shields so you can use your Beam to fix their integrity. They do so, allowing themselves to be repaired, and they calm down afterwards. "In fight. Won, barely. Have - we found this."</text>
+		<weapon name="GIFTLIST_LANIUS"/>
+		<status type="loss" target="enemy" system="shields" amount="8"/>
+		<enemyDamage amount="-8"/>
+	</event>
+	<event>
+		<text>You swiftly contact the Lanius and instruct them to lower their shields so you can use your Beam to fix their integrity. However, your plea goes ignored - either due to mistrust or confusion, which is not helped by their panic.</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="DISTRESS_AUGMENTED_NEAR_DEATH_DEATH"/>
 		</choice>
 	</event>
 </eventList>

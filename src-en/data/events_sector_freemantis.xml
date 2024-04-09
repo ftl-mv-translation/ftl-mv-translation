@@ -65,7 +65,7 @@
 	<choice hidden="true" req="mantis_free">
 		<text>(Free Mantis Crew) Explain your mission.</text>
 		<event>
-			<text>Seeing as you already have one of them on-board, you don't even have to finish your explanation before the Free Mantis start gathering supplies to aid you. They transfer over some resources in hopes it will help you succeed.</text>
+			<text>Seeing as you already have one of them on board, you don't even have to finish your explanation before the Free Mantis start gathering supplies to aid you. They transfer over some resources in hopes it will help you succeed.</text>
 			<autoReward level="MED">standard</autoReward>
 		</event>
 	</choice>
@@ -364,7 +364,7 @@
 		<event>
 			<text>You don't need to get involved, and messing with multiple Free Mantis clans at once isn't a good idea.</text>
 			<choice>
-				<text>Do something on-board the ship.</text>
+				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
@@ -508,7 +508,7 @@
 		<event>
 			<text>The Mantis shakes his head, "Where your sense of fight? Disappointing." He ends transmissions.</text>
 			<choice>
-				<text>Do something on-board the ship.</text>
+				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
@@ -687,7 +687,7 @@
 		<event>
 			<text>You don't care to disturb the Free Mantis and ignore the city.</text>
 			<choice>
-				<text>Do something on-board the ship.</text>
+				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
@@ -768,7 +768,7 @@
 		<event>
 			<text>You aren't willing to harass the Free Mantis and their past. You apologize and leave.</text>
 			<choice>
-				<text>Do something on-board the ship.</text>
+				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
@@ -865,7 +865,7 @@
 											<autoReward level="MED">standard</autoReward>
 										</event>
 									</choice>
-									<choice hidden="true" req="unique_freddy">
+									<choice hidden="true" req="LIST_CREW_FREDDY">
 										<text>(Freddy) "We're a young civilization, we have a lot of growing to do."</text>
 										<event>
 											<text>Freddy apologizes to the Zoltan for the actions of his people and talks about where his people have come in the few years since they've established themselves. Upon talking to Freddy, the Zoltan side claims they understand the Mantis' perspective more now. Peace might still be a ways off, but it does seem more possible now, especially as Freddy's influence with the Free Mantis diplomat will allow for concessions from the Free Mantis side of the debate to come much easier. The Zoltan agree to go back to the Ministry and make a more institutional effort to broker peace if the Free Mantis are willing to do the same. Instead of returning to the diplomatic ship, the Peacekeeper bodyguard offers to remain aboard your ship, showing an interest in your mission.</text>
@@ -980,7 +980,7 @@
 		<event>
 			<text>It's probably wise to not take part in this matter. You fly to a spot with less company.</text>
 			<choice>
-				<text>Do something on-board the ship.</text>
+				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
@@ -1037,10 +1037,9 @@
 			</choice>
 		</event>
 	</choice>
-    <choice>
+    <choice blue="false" req="LIST_CHECK_ANY_CREW" lvl="1">
 		<text>Have your crew patch up their breaches.</text>
 		<event>
-			<choiceRequiresCrew/>
 			<text>Your crew is careful to repair the breaches. However, accomplishing this feat without suffocating to death ends up being quite time consuming.</text>
 			<modifyPursuit amount="1"/>
 			<choice hidden="true">
@@ -1167,7 +1166,7 @@
 		<event>
 			<text>You don't have time to go tracking down missing Free Mantis. You apologize and leave.</text>
 			<choice>
-				<text>Do something on-board the ship.</text>
+				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
@@ -1251,7 +1250,7 @@
 		<event>
 			<text>You don't feel like looting wrecks that might still have survivors aboard. You leave them to drift.</text>
 			<choice>
-				<text>Do something on-board the ship.</text>
+				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
@@ -1291,6 +1290,10 @@
 	</beaconType>
 	<text>You have arrived at the location of the Free Mantis clan. You drop off the survivors, and the clan thanks you greatly. They offer you one of their finest soldiers in tribute.</text>
 	<crewMember amount="1" combat="1" class="mantis_free"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="MORALITY_REMOVE_FREEMANTIS"/>
+	</choice>
 </event>
 <event name="FREEMANTIS_MATE_CLAN" unique="true">
 	<beaconType id="map_icon_quest" global="true">
@@ -1298,7 +1301,11 @@
 		<unvisitedTooltip>Location of a Free Mantis clan to inform about an 'accident'.</unvisitedTooltip>
 	</beaconType>
 	<text>You have arrived at the location of the Free Mantis clan. You explain the situation to the clan leader, who seems rather perplexed. "Yes... they aren't smartest of Mantis. Still, we thank you." They gather a group to go retrieve the survivors, and pay you in scrap.</text>
-	<autoReward level="LOW">scrap_only</autoReward>
+	<autoReward level="MED">scrap_only</autoReward>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="MORALITY_REMOVE_FREEMANTIS"/>
+	</choice>
 </event>
 
 <!--
@@ -1321,6 +1328,7 @@
 	<loadEventList first="false" generate="true">
 		<event name="ENCOUNTER_FREEMANTIS_BOAST"/>
 		<event name="ENCOUNTER_FREEMANTIS_CONFUSED"/>
+		<event name="ENCOUNTER_FREEMANTIS_BROKEN_COMM"/>
 		<event name="ENCOUNTER_FREEMANTIS_SUN"/>
 	</loadEventList>
 </event>
@@ -1356,6 +1364,50 @@
 		<event load="COMBAT_CHECK"/>
 	</choice>
 </event>
+
+<event name="ENCOUNTER_FREEMANTIS_BROKEN_COMM" unique="true">
+    <text>A nearby Free Mantis ship sends you a message. "Wanting fight practice! But comm broken, can't hear... Idea! You firing on us if you want to say no, or not doing so to say yes."</text>
+    <ship load="SHIP_FREEMANTIS_FIGHT_NOSURRENDER" hostile="false"/>
+    <choice hidden="true">
+        <text>Fire on them.</text>
+        <event>
+            <text>"We're under attack! Return fire!" You aren't sure if they misunderstood you or if you misunderstood them, but now it looks like you'll have to fight your way out of this.</text>
+            <ship hostile="true"/>
+            <choice hidden="true">
+                <text>Continue...</text>
+                <event load="COMBAT_CHECK"/>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Don't fire on them.</text>
+        <event>
+            <text>"Good! We are wanting to fight too." The Free Mantis ship understands your lack of action to mean that you want to fight!</text>
+            <ship hostile="true"/>
+            <choice hidden="true">
+                <text>Continue...</text>
+                <event load="COMBAT_CHECK"/>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="cloaking">
+        <text>(Cloaking) Sneak away.</text>
+        <event>
+            <text>"Renegade? Where have you gone?" It looks like you managed to get away from the clueless Mantises.</text>
+        </event>
+    </choice>
+    <choice hidden="true" req="BLUELIST_BOMB_REPAIR">
+        <text>(Repair Bomb) Remotely fix their communications and tell them you don't want to fight.</text>
+        <event>
+            <text>The Mantises are shocked at your ability to remotely repair their systems. "You are fixing our ship? From over there?" The grateful Free Mantis decide to gift you with some of their leftover spoils.</text>
+            <item_modify>
+                <item type="missiles" min="-1" max="-1"/>
+            </item_modify>
+            <autoReward level="MED">fuel</autoReward>
+        </event>
+    </choice>
+</event>
+
 <event name="ENCOUNTER_FREEMANTIS_SUN" unique="true">
 	<text>A Free Mantis ship and a sun both share this beacon. "Ah, fellow fighter! Welcome, and let us test skills against each other."</text>
 	<ship load="SHIP_FREEMANTIS_FIGHT_NOSURRENDER" hostile="true"/> 
@@ -1504,7 +1556,7 @@
 		<event>
 			<text>If these guys are willing to go this far to express their hatred of the Zoltans, chances are they won't be very friendly to others either.</text>
 			<choice>
-				<text>Do something on-board the ship.</text>
+				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>
@@ -1554,7 +1606,7 @@
 		<event>
 			<text>These guys are probably crazed pheromone addicts, nothing worth messing with.</text>
 			<choice>
-				<text>Do something on-board the ship.</text>
+				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
 			</choice>
 			<choice>

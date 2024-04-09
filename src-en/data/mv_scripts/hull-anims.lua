@@ -95,13 +95,12 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(ship)
 end)
 
 -- Render all active hull anims
-local function renderHullAnims(ship, alphaRef, alphaCalcFunc)
+script.on_render_event(Defines.RenderEvents.SHIP_ENGINES, function() end, function(ship, enginesVisible, alpha)
     local hullAnimSet = hullAnims[ship.iShipId]
-    if #hullAnimSet > 0 and hullAnimSet["layout"] == Hyperspace.Global.GetInstance():GetShipManager(ship.iShipId).myBlueprint.layoutFile then
+    if #hullAnimSet > 0 and hullAnimSet["layout"] == Hyperspace.ships(ship.iShipId).myBlueprint.layoutFile then
         local shipGraph = Hyperspace.ShipGraph.GetShipInfo(ship.iShipId)
         local x = ship.shipImage.x + shipGraph.shipBox.x
         local y = ship.shipImage.y + shipGraph.shipBox.y
-        local alpha = alphaCalcFunc(alphaRef)
         for i, hullAnim in ipairs(hullAnimSet) do
             Graphics.CSurface.GL_PushMatrix()
             Graphics.CSurface.GL_Translate(x + hullAnim.x, y + hullAnim.y)
@@ -111,12 +110,4 @@ local function renderHullAnims(ship, alphaRef, alphaCalcFunc)
             Graphics.CSurface.GL_PopMatrix()
         end
     end
-end
-local function calcJumpAlpha(progress)   return 1 - math.min(progress/0.75, 1) end
-local function calcHullAlpha(cloakAlpha) return (1 - cloakAlpha)*0.5 + 0.5     end
-script.on_render_event(Defines.RenderEvents.SHIP_JUMP, function() end, function(ship, progress)
-    renderHullAnims(ship, progress, calcJumpAlpha)
-end)
-script.on_render_event(Defines.RenderEvents.SHIP_HULL, function() end, function(ship, cloakAlpha)
-    renderHullAnims(ship, cloakAlpha, calcHullAlpha)
 end)
