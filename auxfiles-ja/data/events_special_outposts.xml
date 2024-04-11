@@ -1,0 +1,809 @@
+<FTL>
+	
+<ship name="SHIP_FEDERATION_OUTPOST" auto_blueprint="MU_FED_REFUEL">
+	<destroyed load="DESTROYED_FEDERATION_STATION" />
+	<deadCrew load="DEAD_CREW_FEDERATION" />
+</ship>
+<textList name="TEXT_OUTPOST_FEDERATION">
+	<text>近くの連邦給油所から呼びかけを受ける。"こんにちは！"相手は大きな音で短く切られる。"クソッ！OW！OH MY GOD！アッ！"連邦の船長がスクリーンに戻る。「無視しろ新人を何人か採用したんだが、そのうちの一人が燃料の入った箱を俺の足の上に落としたんだ。すまんな。足がズキズキするけど、友好的な顔を見るのはいいことだ！何かあったら遠慮なく言ってくれ！"</text>
+	<text>連邦国歌がステレオから流れ、一時的に耳をつんざく。慌てて音量を下げると、自動メッセージが流れる。「連邦!イェー!!!FED！ER！A!TION!!!"近くの駅からの圧倒的な愛国心にもかかわらず、他のすべてのビジネスは通常通り行われているようだ。ここでは無料で物資を手に入れることができるはずだ。</text>
+	<text>近くのステーションに乗っていた連邦の司令官が、あなたを呼んだ。「レネゲイド！いつか私も宇宙0を訪れたい。だが、その前に連邦のコアからの訪問者を迎えるのは素晴らしいことだ。必要なものは何でも与えよう。反乱軍の野郎どもをやっつけろ！"</text>
+</textList>
+<event name="OUTPOST_FEDERATION_SPAWNER">
+	<preventQuest />
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0" />
+		<unvisitedTooltip id="map_outpost_unvisited" />
+		<visitedTooltip id="map_outpost_visited" />
+	</beaconType>
+	<ship load="SHIP_FEDERATION_OUTPOST" hostile="false" />
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_FEDERATION">
+		<event name="OUTPOST_FEDERATION_BAD" req="rep_comb_federation" lvl="2" />
+	</loadEventList>
+</event> 
+<event name="OUTPOST_FEDERATION" unique="true">
+	<text load="TEXT_OUTPOST_FEDERATION" />
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>無料修理を依頼する[7$]</text>
+		<event>
+			<damage amount="-7" />
+		</event>
+	</choice>
+	<choice>
+		<text>燃料を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>弾薬を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ドローンパーツを要請する。</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_FEDERATION_BAD" unique="true">
+	<text>このビーコンの近くに同盟軍の前哨基地があるが、彼らは君たちの呼びかけに応じようとせず、ある種のロックダウン状態に陥っているようだ。どうやら、彼らからは何のサービスも受けられないようだ。</text>
+	<choice hidden="true">
+		<text>前哨基地はそのままでいい。</text>
+		<event>
+			<text>これ以上状況を悪化させる理由はない。あなたは前哨地を避けることにした。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<ship name="SHIP_UNION_OUTPOST" auto_blueprint="MU_UNION_STATION">
+	<destroyed load="DESTROYED_UNION" />
+	<deadCrew load="DEAD_CREW_UNION" />
+</ship>
+<textList name="TEXT_OUTPOST_UNION">
+	<text>友好的な連邦の前哨基地があなたを呼んでいる。「連邦にとって良い日だ！反乱軍がノード17に到着する前に、仲間内の反乱で挫折したと聞いている！ハハ 詩的だな"連邦の友よ" "祝杯をあげよう"</text>
+	<text>「普通なら、無償で配給する気にはなれないが、君たちレネゲイドは多元宇宙全体の重荷を背負っているんだ！ユニバース0の決定にどこまで賛同できるか分からないが、君の使命は尊重できる！必要なものは何でも提供する"</text>
+	<text>北軍司令官が手を振る。「南北戦争で反乱軍に味方したのは間違いだった。感覚器官を持つ者なら誰でも反乱軍がこの銀河を引き裂きかけたとわかる！些細なことですが、少しでもお役に立てれば......自分の過去が少しでも減る気がします"</text>
+</textList>
+<event name="OUTPOST_UNION_SPAWNER">
+	<preventQuest />
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0" />
+		<unvisitedTooltip id="map_outpost_unvisited" />
+		<visitedTooltip id="map_outpost_visited" />
+	</beaconType>
+	<ship load="SHIP_UNION_OUTPOST" hostile="false" />
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_UNION">
+		<event name="OUTPOST_UNION_BAD" req="rep_comb_union" lvl="2" />
+	</loadEventList>
+</event> 
+<event name="OUTPOST_UNION" unique="true">
+	<text load="TEXT_OUTPOST_UNION" />
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>無料修理を依頼する[7$]</text>
+		<event>
+			<damage amount="-7" />
+		</event>
+	</choice>
+	<choice>
+		<text>燃料を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>弾薬を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ドローンパーツを要請する。</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_HUMAN">
+		<text>(人間の乗組員) 人間に修理の交渉をさせる。[10$]</text>
+		<event>
+			<damage amount="-10" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_UNION_BAD" unique="true">
+	<text>このビーコンの近くに同盟軍の前哨基地があるが、彼らは君たちの呼びかけに応じようとせず、ある種のロックダウン状態に陥っているようだ。どうやら、彼らからは何のサービスも受けられないようだ。</text>
+	<choice hidden="true">
+		<text>前哨基地はそのままでいい。</text>
+		<event>
+			<text>これ以上状況を悪化させる理由はない。あなたは前哨地を避けることにした。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<ship name="SHIP_ENGI_OUTPOST" auto_blueprint="MU_ENGI_STATION">
+	<destroyed load="DESTROYED_ENGI" />
+	<deadCrew load="DEAD_CREW_ENGI" />
+</ship>
+<textList name="TEXT_OUTPOST_ENGI">
+	<text>"連邦をスキャン中"数機のドローンが 船をスキャンしています"身分証明書を回収しました"レネゲイドの受益者は適正な報酬を 受け取る必要がある"</text>
+	<text>多忙なハーモニーの前哨基地が、一度に何十もの荷物の入出荷を受けている最中である。「コアプロセッサーがオーバーロードしている。しかし、レネゲイドの船長が必要と判断した場合、キャパシティはさらに超過する可能性がある。許可されているのは、オーバーキャパシティ・レベルを30％以内に引き上げること。急げ。</text>
+	<text>近くにハーモニーと魔法省の共同前哨基地が建設された。ほとんどのエンギ人があなたを無視する中、ゾルタンの将校が声をかけてきた。「よろしく。連邦の目には我々は皆平等であり、あなたを温かく歓迎するのは名誉なことだと思う。何か手伝いましょうか？"</text>
+</textList>
+<event name="OUTPOST_ENGI_SPAWNER">
+	<preventQuest />
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0" />
+		<unvisitedTooltip id="map_outpost_unvisited" />
+		<visitedTooltip id="map_outpost_visited" />
+	</beaconType>
+	<ship load="SHIP_ENGI_OUTPOST" hostile="false" />
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_ENGI">
+		<event name="OUTPOST_ENGI_BAD" req="rep_comb_engi" lvl="2" />
+	</loadEventList>
+</event> 
+<event name="OUTPOST_ENGI" unique="true">
+	<text load="TEXT_OUTPOST_ENGI" />
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>無料修理を依頼する[7$]</text>
+		<event>
+			<damage amount="-7" />
+		</event>
+	</choice>
+	<choice>
+		<text>燃料を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>弾薬を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ドローンパーツを要請する。</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_HARMONY">
+		<text>(ハーモニークルー)エンジにドローンの交渉をさせる。</text>
+		<event>
+			<drone name="RANDOM" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_ENGI_BAD" unique="true">
+	<text>このビーコンの近くに同盟軍の前哨基地があるが、彼らは君たちの呼びかけに応じようとせず、ある種のロックダウン状態に陥っているようだ。どうやら、彼らからは何のサービスも受けられないようだ。</text>
+	<choice hidden="true">
+		<text>前哨基地はそのままでいい。</text>
+		<event>
+			<text>これ以上状況を悪化させる理由はない。あなたは前哨地を避けることにした。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<ship name="SHIP_ZOLTAN_OUTPOST" auto_blueprint="MU_ZOLTAN_STATION">
+	<destroyed load="DESTROYED_ZOLTAN" />
+	<deadCrew load="DEAD_CREW_ZOLTAN" />
+</ship>
+<textList name="TEXT_OUTPOST_ZOLTAN">
+	<text>ゾルタンの前哨基地が、寺院としても機能している。"心を開き、他者を受け入れるのがイレシュクトリア教の本質だ"ゾルタンはあなたを見る。"君は...受け入れがたい。だが私は信仰の試練と考え、ともかく君を受け入れる。この寺院のサービスを自由に利用できる。"</text>
+	<text>"レネゲイド・キャプテン、魔法省は歓迎する。危険で党派的な時代だ。意見の相違は多々あるだろうが、今日は過去のことにしよう。あなたの悩みは何ですか？そのような情報をお教えいただければ、治療ができるかもしれません。"</text>
+	<text>"うっ...レネゲイド..."ゾルタンのキャプテンはカメラに映っていることに気づく前に、手で失礼なジェスチャーをし、すぐに恥ずかしがる。"つまり...あー...こんにちわ！この素晴らしい日に、大いなる目のご加護がありますように！必要なものがあれば、何でも提供できるはずだ！"</text>
+</textList>
+<event name="OUTPOST_ZOLTAN_SPAWNER">
+	<preventQuest />
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0" />
+		<unvisitedTooltip id="map_outpost_unvisited" />
+		<visitedTooltip id="map_outpost_visited" />
+	</beaconType>
+	<ship load="SHIP_ZOLTAN_OUTPOST" hostile="false" />
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_ZOLTAN">
+		<event name="OUTPOST_ZOLTAN_BAD" req="rep_comb_zoltan" lvl="2" />
+	</loadEventList>
+</event> 
+<event name="OUTPOST_ZOLTAN" unique="true">
+	<text load="TEXT_OUTPOST_ZOLTAN" />
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>無料修理を依頼する[7$]</text>
+		<event>
+			<damage amount="-7" />
+		</event>
+	</choice>
+	<choice>
+		<text>燃料を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>弾薬を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ドローンパーツを要請する。</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_ZOLTAN_CAPITAL">
+		<text>(省クルー）ゾルタンにリアクターのアップグレードを交渉させる。</text>
+		<event>
+			<upgrade amount="1" system="reactor" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ZOLTAN_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_ZOLTAN_BAD" unique="true">
+	<text>このビーコンの近くに同盟軍の前哨基地があるが、彼らは君たちの呼びかけに応じようとせず、ある種のロックダウン状態に陥っているようだ。どうやら、彼らからは何のサービスも受けられないようだ。</text>
+	<choice hidden="true">
+		<text>前哨基地はそのままでいい。</text>
+		<event>
+			<text>これ以上状況を悪化させる理由はない。あなたは前哨地を避けることにした。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ZOLTAN_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<ship name="SHIP_ORCHID_OUTPOST" auto_blueprint="MU_ORCHID_STATION">
+	<destroyed load="DESTROYED_ORCHID" />
+	<deadCrew load="DEAD_CREW_ORCHID" />
+</ship>
+<textList name="TEXT_OUTPOST_ORCHID">
+	<text>フローラル族の僧侶が手話で挨拶する。"ギャザリング "は、平和な民がこの地に集うことを歓迎する。シルタルの甘い果実の蜜を味わった者であろうと、避難所を求めるただの旅人であろうと、我々はそれを提供できることに感謝している。何かご用でしょうか、船長？"</text>
+	<text>近くの前哨基地は、テラフォーミング・プラットフォームを改造したもので、現在は緊急補給基地として機能しているようだ。「連邦はギャザリングに多くの繁栄をもたらした。その借りを返すのは当然のことだ。フローラルはドッキング・ベイの方にジェスチャーを送る。</text>
+	<text>「私たちの富はあなたのものです！社会に貢献した分だけ、すべての人が等しく分け前を受け取れるようにすることほど、崇高な経済システムはない。そしてあなたは、私たちの現実の希望に満ちた救世主だ！私たちがあなたに何か、何から何まで借りがあるのは当然だと思うべきです！"</text>
+</textList>
+<event name="OUTPOST_ORCHID_SPAWNER">
+	<preventQuest />
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0" />
+		<unvisitedTooltip id="map_outpost_unvisited" />
+		<visitedTooltip id="map_outpost_visited" />
+	</beaconType>
+	<ship load="SHIP_ORCHID_OUTPOST" hostile="false" />
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_ORCHID">
+		<event name="OUTPOST_ORCHID_BAD" req="rep_comb_orchid" lvl="2" />
+	</loadEventList>
+</event> 
+<event name="OUTPOST_ORCHID" unique="true">
+	<text load="TEXT_OUTPOST_ORCHID" />
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>無料修理を依頼する[7$]</text>
+		<event>
+			<damage amount="-7" />
+		</event>
+	</choice>
+	<choice>
+		<text>燃料を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>弾薬を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ドローンパーツを要請する。</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_FLORAL">
+		<text>(フローラル・クルー）オーキッドにカーネルの武器を買わせる。</text>
+		<event>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_ORCHID_BAD" unique="true">
+	<text>このビーコンの近くに同盟軍の前哨基地があるが、彼らは君たちの呼びかけに応じようとせず、ある種のロックダウン状態に陥っているようだ。どうやら、彼らからは何のサービスも受けられないようだ。</text>
+	<choice hidden="true">
+		<text>前哨基地はそのままでいい。</text>
+		<event>
+			<text>これ以上状況を悪化させる理由はない。あなたは前哨地を避けることにした。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<ship name="SHIP_FREEMANTIS_OUTPOST" auto_blueprint="MU_FREEMANTIS_STATION">
+	<destroyed load="DESTROYED_FREEMANTIS" />
+	<deadCrew load="DEAD_CREW_FREEMANTIS" />
+</ship>
+<textList name="TEXT_OUTPOST_FREEMANTIS">
+	<text>"そうそう、レネゲードが近づいているんだ！興奮が収まらない！"近くの前哨基地のフリーマンティスの司令官は、フェロモンのボトルから巨大な鼻をかむ。「イェー!!!!私は興奮している！何でもやる！私はあなたに長子を与える、私はあなたに..."マンティスはすぐに倒れ、血管を流れる生のエネルギーでわずかに痙攣する。とはいえ、ドッキング・ベイにはもっと有能なチームが待ち構えている。</text>
+	<text>泣きじゃくるフリー・マンティスが待っている。「あなたは...とても美しい。とても荘厳で、私はあなたを見る資格がない！私が涙を流す前に、自由を奪って立ち去れ！"</text>
+	<text>近くのフリーマンティス・ステーションで働く人間の連邦士官から連絡が入る。"フリーマンティスは...""とても興味深い存在だ初めて反乱軍の捕虜から救出されたとき、彼らは私にキスし、足元で祈り始めた。私たちは結婚したんだ。連邦のキャプテンは、自分が話していたことを思い出す前に立ち止まる。「すみません、フリーマンティスに長く住んでいると、とりとめのない話になってしまうんです。何かお困りですか？ここの他のクルーが喜んでお手伝いしますよ。"</text>
+</textList>
+<event name="OUTPOST_FREEMANTIS_SPAWNER">
+	<preventQuest />
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0" />
+		<unvisitedTooltip id="map_outpost_unvisited" />
+		<visitedTooltip id="map_outpost_visited" />
+	</beaconType>
+	<ship load="SHIP_FREEMANTIS_OUTPOST" hostile="false" />
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_FREEMANTIS">
+		<event name="OUTPOST_FREEMANTIS_BAD" req="rep_comb_freemantis" lvl="2" />
+	</loadEventList>
+</event> 
+<event name="OUTPOST_FREEMANTIS" unique="true">
+	<text load="TEXT_OUTPOST_FREEMANTIS" />
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>無料修理を依頼する[7$]</text>
+		<event>
+			<damage amount="-7" />
+		</event>
+	</choice>
+	<choice>
+		<text>燃料を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>弾薬を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ドローンパーツを要請する。</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_FREEMAN">
+		<text>(フリー・マンティス・クルー）フリー・マンティスをあなたのクルーに加えるよう提案する。</text>
+		<event>
+			<crewMember amount="1" class="mantis_free" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_FREEMANTIS_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_FREEMANTIS_BAD" unique="true">
+	<text>このビーコンの近くに同盟軍の前哨基地があるが、彼らは君たちの呼びかけに応じようとせず、ある種のロックダウン状態に陥っているようだ。どうやら、彼らからは何のサービスも受けられないようだ。</text>
+	<choice hidden="true">
+		<text>前哨基地はそのままでいい。</text>
+		<event>
+			<text>これ以上状況を悪化させる理由はない。あなたは前哨地を避けることにした。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_FREEMANTIS_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<ship name="SHIP_CRYSTAL_OUTPOST" auto_blueprint="MU_CRYSTAL_STATION">
+	<destroyed load="DESTROYED_CRYSTAL" />
+	<deadCrew load="DEAD_CREW_CRYSTAL" />
+</ship>
+<textList name="TEXT_OUTPOST_CRYSTAL">
+	<text>"エイリアン、なんと好奇心旺盛な。あなたたちがどんな不思議な話をするか、イカティーンは知っている！"クリスタルはあくびをする。「私もそう思っていた。残念なことに、君たちは退屈そうだ。とはいえ、退屈であろうとなかろうと、私は連邦に義務を誓い、それを守るつもりだ。何か用か？"</text>
+	<text>近くのクリスタライン・ステーションは、すべての武器をあなたにロックし、発砲するぞと威嚇している。「そこで止まれ！ここは帝国の空間だ！ここは帝国の宇宙だ！ 失せろ、さもなくば......ああ、暗号だ、お前はレネゲイドか！うわー！失礼しました。遠慮なくドック入りしてくれ、私のクルーが必要なリソースを提供できるよう取り計らうよ。"</text>
+	<text>帝国は、つい最近進出したばかりの宇宙空間の植民地化で目覚ましい成果を上げている。帝国と連邦の旗を掲げた前哨基地が、さまざまな無料サービスを提供している。</text>
+</textList>
+<event name="OUTPOST_CRYSTAL_SPAWNER">
+	<preventQuest />
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0" />
+		<unvisitedTooltip id="map_outpost_unvisited" />
+		<visitedTooltip id="map_outpost_visited" />
+	</beaconType>
+	<ship load="SHIP_CRYSTAL_OUTPOST" hostile="false" />
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_CRYSTAL">
+		<event name="OUTPOST_CRYSTAL_BAD" req="rep_comb_crystal" lvl="2" />
+	</loadEventList>
+</event> 
+<event name="OUTPOST_CRYSTAL" unique="true">
+	<text load="TEXT_OUTPOST_CRYSTAL" />
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>無料修理を依頼する[7$]</text>
+		<event>
+			<damage amount="-7" />
+		</event>
+	</choice>
+	<choice>
+		<text>燃料を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>弾薬を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ドローンパーツを要請する。</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(クリスタル・クルー）クリスタルにクリスタルの武器をくれるよう依頼する。</text>
+		<event>
+			<text>「はい、手配できます。まもなく到着します"</text>
+			<weapon name="GIFTLIST_CRYSTAL" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_CRYSTAL_BAD" unique="true">
+	<text>このビーコンの近くに同盟軍の前哨基地があるが、彼らは君たちの呼びかけに応じようとせず、ある種のロックダウン状態に陥っているようだ。どうやら、彼らからは何のサービスも受けられないようだ。</text>
+	<choice hidden="true">
+		<text>前哨基地はそのままでいい。</text>
+		<event>
+			<text>これ以上状況を悪化させる理由はない。あなたは前哨地を避けることにした。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<ship name="SHIP_OUTCAST_OUTPOST" auto_blueprint="MU_FED_STATION">
+	<destroyed load="DESTROYED_FEDERATION_STATION" />
+	<deadCrew load="DEAD_CREW_FEDERATION" />
+	<crew>
+		<crewMember type="rock_outcast" prop="0.5" />
+		<crewMember type="LIST_CREW_FEDERATION_RANDOM" prop="0.5" />
+	</crew>
+</ship>
+<textList name="TEXT_OUTPOST_OUTCAST">
+	<text>追放された者たちが故郷と呼ぶ奇妙な領域では、さまざまな奇妙なものを見つけることは珍しくない。それにしても、ここの連邦の前哨基地は驚きだった！しかし、歓迎すべきことであるのは確かだ。近づくとすぐに、彼らは格納庫のドアを開けて中に入れてくれる。</text>
+	<text>近くの連邦給油ステーションにいた追放者が、あなたに声をかけてきた。「私はギャザリングに移住してきた。だが連邦の一員になれたことは この上ない名誉だ船長、お役に立てることがあれば何でもさせてください。"</text>
+	<text>アウトキャストの領土に連邦の前哨基地があるのは、まったく衝撃的ではないが、少し驚きだ。船内では様々な種族のクルーが働いており、司令官は現実を救うことへのコミットメントと引き換えに、あなたに無償のサービスを提供する。</text>
+</textList>
+<event name="OUTPOST_OUTCAST_SPAWNER">
+	<preventQuest />
+	<beaconType id="map_icon_outpost" global="true">
+		<color r="233" g="123" b="74" a="1.0" />
+		<unvisitedTooltip id="map_outpost_unvisited" />
+		<visitedTooltip id="map_outpost_visited" />
+	</beaconType>
+	<ship load="SHIP_OUTCAST_OUTPOST" hostile="false" />
+	<loadEventList seeded="false" first="true" generate="false" default="OUTPOST_OUTCAST">
+		<event name="OUTPOST_OUTCAST_BAD" req="rep_comb_outcast" lvl="2" />
+	</loadEventList>
+</event> 
+<event name="OUTPOST_OUTCAST" unique="true">
+	<text load="TEXT_OUTPOST_OUTCAST" />
+	<choice req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>無料修理を依頼する[7$]</text>
+		<event>
+			<damage amount="-7" />
+		</event>
+	</choice>
+	<choice>
+		<text>燃料を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="7" max="7" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>弾薬を要求する。</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="4" max="4" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ドローンパーツを要請する。</text>
+		<event>
+			<item_modify>
+				<item type="drones" min="3" max="3" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ROCK">
+		<text>(ロック・クルー) アウトキャスツにミサイル兵器をくれるよう要請しろ。</text>
+		<event>
+			<text>"提供できるものを見させてください。倉庫に余分なものがあるはずだ"</text>
+			<weapon name="GIFTLIST_MISSILES" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_OUTCAST_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="OUTPOST_OUTCAST_BAD" unique="true">
+	<text>このビーコンの近くに同盟軍の前哨基地があるが、彼らは君たちの呼びかけに応じようとせず、ある種のロックダウン状態に陥っているようだ。どうやら、彼らからは何のサービスも受けられないようだ。</text>
+	<choice hidden="true">
+		<text>前哨基地はそのままでいい。</text>
+		<event>
+			<text>これ以上状況を悪化させる理由はない。あなたは前哨地を避けることにした。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>武器を武装し、ステーションと交戦する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>

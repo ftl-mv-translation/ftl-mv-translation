@@ -1,0 +1,775 @@
+<FTL>
+<event name="RHYME_ENCOUNTER">
+	<beaconType id="map_icon_cultist" global="true">
+		<color r="255" g="0" b="0" a="1.0" />
+		<unvisitedTooltip>このビーコンには奇妙な干渉がある。</unvisitedTooltip>
+		<visitedTooltip>場所を探索。興味のあるものは何も残っていない。</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<preventQuest />
+	<variable name="loc_found_rhymer" op="set" val="1" />
+	<loadEventList seeded="false" first="true" default="RHYME_ENCOUNTER_4">
+		<event name="RHYME_ENCOUNTER_1" req="prof_rhyme_encounter" lvl="0" max_lvl="0" />
+		<event name="RHYME_ENCOUNTER_2" req="prof_rhyme_encounter" lvl="1" max_lvl="1" />
+		<event name="RHYME_ENCOUNTER_3" req="prof_rhyme_encounter" lvl="2" max_lvl="2" />
+		<event name="RHYME_ENCOUNTER_4" req="prof_rhyme_encounter" lvl="4" />
+	</loadEventList> 
+</event>
+
+
+
+
+<ship name="SHIP_RHYMER_1" auto_blueprint="MU_RHYME_INTERCEPTOR">
+	<destroyed load="RHYME_ENCOUNTER_1_DEFEAT" />
+	<deadCrew load="RHYME_ENCOUNTER_1_DEFEAT" />
+</ship>
+<event name="RHYME_ENCOUNTER_1">
+	<text>このビーコンで何が見つかるかわからず、慎重に歩みを進めたが、それでも何を見つけたのかよくわからない。小型だが武装したインターセプターが小惑星の後ろに隠れている。スキャンができないようだが、この船の何かがハードウェアに予期せぬ不具合を引き起こしているようだ。</text>
+	<ship load="SHIP_RHYMER_1" hostile="false" />
+	<status type="limit" target="player" system="sensors" amount="1" />
+	<choice hidden="true">
+		<text>船万歳。</text>
+		<event>
+			<text>敵艦からの声が話し始めるが、驚いたことにそれはまるで自分の隣にいるように聞こえる。振り向いたが誰もおらず、頭の中で声がしていることに気づく。「お前は何者だ？私は任務を与えられている。何を話せばいいのかわからない。どうか誤解しないでほしい。世界は広く、多元宇宙も広い。そのすべてから見れば、あなたはちらつきに過ぎない。数年前、私たちは家を出た。ここにいたら死んでいただが今 我々はここにいる仲間は旅立つことを選んだ邪悪なものエルドリッチなものあなたの心は爆発するでしょう、きっと"</text>
+			<choice hidden="true">
+				<text>え？</text>
+				<event>
+					<text>"なるほど、まだ何も知らないのですね。でも、どうか、心配しないでください。すべてが終わって終われば。何も残らない、我々が勝ったのだから。混沌でしかないものを恐れなさい。彼が終わる前に、あなたの愛するものはすべて失われる。私たちは彼の息子であり、娘である。史上最強の存在。プライムじゃない！カオスの主には何もできない！"</text>
+					<choice hidden="true">
+						<text>あなたは私が心配しないように説得するのが上手くない。</text>
+						<event>
+							<text>「私たちの言葉を捻じ曲げている！あなたには見えない！この宇宙が消し去られた後、あなたは私たちに感謝するだろう。この宇宙が消し去られた後に！断絶は近い、我々は確信している。だがお前には見えない、純粋だからだ！さあ、運命に立ち向かえ。今すぐ死ね、二流のレネゲイドめ。"</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視して立ち去る。</text>
+		<event>
+			<text>レネゲイドになって学んだことがひとつあるとすれば、謎めいた船を信用してはいけないということだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="RHYME_ENCOUNTER_1_DEFEAT">
+	<text>"そうなのか、そうなのか？私は敗北した。私たちに手を出した以上、慎重に行動することだ。また会うだろうし、大騒ぎになるだろう。さようなら！さようなら！これで終わりだ"</text>
+	<metaVariable name="prof_rhyme_encounter" op="add" val="1" />
+	<autoReward level="HIGH">standard</autoReward>
+	<status type="clear" target="player" system="sensors" amount="100" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>あなたはその場を離れようとしたが、残骸の中に別の奇妙な信号があることに気づいた。あの船と同じ異常な特性を持つ、ある種の武器だ。船内に持ち込み、問題が起きないことを祈る。</text>
+			<weapon name="BEAM_MADNESS" />
+		</event>
+	</choice>
+</event>
+
+
+<ship name="SHIP_RHYMER_2" auto_blueprint="MU_RHYME_SCOUT">
+	<destroyed load="RHYME_ENCOUNTER_2_DEFEAT" />
+	<deadCrew load="RHYME_ENCOUNTER_2_DEFEAT" />
+</ship>
+<event name="RHYME_ENCOUNTER_2">
+	<text>このビーコンで何が見つかるかわからないため、慎重に歩みを進めるが、それでも何を見つけたのかはよくわからない。よく武装したスカウト船が小惑星の後ろに隠れている。スキャンできないようだ。この船の何かが、ハードウェアに予期せぬ不具合を引き起こしているようだ。</text>
+	<ship load="SHIP_RHYMER_2" hostile="false" />
+	<status type="limit" target="player" system="sensors" amount="1" />
+	<choice hidden="true">
+		<text>船万歳。</text>
+		<event>
+			<text>敵艦からの声が話し始めるが、驚いたことにそれはまるで自分の隣にいるように聞こえる。振り向いたが誰もおらず、頭の中で声がしていることに気づく。「ああ、レネゲードだ！待ちきれないよ！私の友人はあなた方に殺されたらしい。本当か？そうだ、そうだ、汚らわしいクズどもめ！お前らなど一人もいなくしてやる！この目で真実を見た。レネゲイドよ、お前はまだ若い。カオスが溢れ、時計の針は刻々と進む！"ノックの音と共に死が訪れる"</text>
+			<choice hidden="true">
+				<text>お友達のことは残念だけど、あれは私たちじゃない。</text>
+				<event>
+					<text>"あなたは私が嘘をつく愚か者だと思っている！幕が下り、私の友人は死ぬ。だが、銃を握っているのは誰だ？そう、あなたです！私は何もないところから話しているのではない。いやいや、ただ騒いでいるのではない！私たちのアイドル、チーフ。私の悲しみを診断してくれた人。混沌のもの。すべての宇宙の消費者。エントロピーの存在！彼にとっては、何一つ補足するものはない</text>
+					<choice hidden="true">
+						<text>何を言っているのか本当に分からない。</text>
+						<event>
+							<text>「いいよ、そうしてくれ！あなたに発言権があるわけではない。死が近づいているのだ。お前の頭蓋骨はご主人様への贈り物だ。彼は終わりに飢えている。ああ、彼は最も慈悲深い友人だ。すべてが無に帰しても我々は取り乱すことはない。新世界では我々の居場所がある。この破滅を味わうがいい！この食器で十分だお前たちを馬鹿にしてやる」。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視して立ち去る。</text>
+		<event>
+			<text>レネゲイドになって学んだことがひとつあるとすれば、謎めいた船を信用してはいけないということだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="RHYME_ENCOUNTER_2_DEFEAT">
+	<text>「いや、そんなはずはない！主人はこの運命を予見していなかった！私は死んだ。それでも、私はすべてを捧げた。友の道を行くしかない。このレネゲイドめ。死神が呼んでいる。ついに幕が下りる。"</text>
+	<metaVariable name="prof_rhyme_encounter" op="add" val="1" />
+	<autoReward level="HIGH">standard</autoReward>
+	<status type="clear" target="player" system="sensors" amount="100" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>あなたはその場を離れようとしたが、残骸の中に別の奇妙な信号があることに気づいた。あの船と同じ異常な特性を持つ、ある種の武器だ。船内に持ち込み、問題が起きないことを祈る。</text>
+			<weapon name="BEAM_MADNESS" />
+		</event>
+	</choice>
+</event>
+
+
+
+<ship name="SHIP_RHYMER_3" auto_blueprint="MU_RHYME_BOMBER">
+	<destroyed load="RHYME_ENCOUNTER_3_DEFEAT" />
+	<deadCrew load="RHYME_ENCOUNTER_3_DEFEAT" />
+</ship>
+<event name="RHYME_ENCOUNTER_3">
+	<text>このビーコンで何が見つかるかわからないため、慎重に歩みを進めるが、それでも何を見つけたのかはよくわからない。巨大で武装したボマーが小惑星の後ろに隠れている。スキャンができないようだが、この船の何かがハードウェアに予期せぬ不具合を引き起こしているようだ。</text>
+	<ship load="SHIP_RHYMER_3" hostile="false" />
+	<status type="limit" target="player" system="sensors" amount="1" />
+	<choice hidden="true">
+		<text>船万歳。</text>
+		<event>
+			<text>敵艦からの声が話し始めるが、驚いたことにそれはまるで自分の隣にいるように聞こえる。振り向いたが誰もおらず、頭の中で声がしていることに気づく。「すべては無駄だ！よくぞ戦ってくれた。私の最後の2人の友人は？ああ、彼らは苦い最期を遂げた。犯人は誰だ？あなたです、説教壇に誓って。ご主人様のお気に召したようだな。我々の数を減らしたいのか？いいだろう、灰は灰に、そんなくだらないこと。だが、なぞなぞを言ってみろ。何を見つけるのがお望みか？いやいや、ご主人様は優しくないですよ」。</text>
+			<choice hidden="true">
+				<text>親方？何のことだ？</text>
+				<event>
+					<text>"ミステリーミステリー、ああなんという圧迫感。あなたの無知、それはまるで病気のようだ。運命は待ってくれない！ああ、あなたの前には厄介な運命が待ち受けている。カオスと破滅、我々の予言通りだ。謎は暗号化されている。我らの主は韻を踏む者。すべての時代の終わりをもたらす者！"</text>
+					<choice hidden="true">
+						<text>聞いたことがない。</text>
+						<event>
+							<text>"まだ......ギャーギャー騒ぐのか。恐ろしい罠を恐れているのか？哀れなものだ。結局、臆病がもたらすのは死だけだ。いいさ、もし君が行動を起こさないなら。予言が真実であるなら、あなたは予言をしない。その時は、あなたの手を強要しなければならない！そうしてこそ、私は引退できる。手を挙げろ、卑劣な悪魔め。私の死によってのみ、真実は明らかになる。"</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視して立ち去る。</text>
+		<event>
+			<text>レネゲイドになって学んだことがひとつあるとすれば、謎めいた船を信用してはいけないということだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="RHYME_ENCOUNTER_3_DEFEAT">
+	<text>「ついに、ついに、私の死が訪れた。最後まで、私は無感覚でしかない。終わりは近い、時は近い！今ではなく、後に死ぬのだ。さあ、私の残骸を探しなさい。マスターのデッキに最後の1枚がある」。</text>
+	
+	<autoReward level="HIGH">standard</autoReward>
+	<status type="clear" target="player" system="sensors" amount="100" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>沈没船の中で、あなたは先ほど戦った船のような異常な特性を持つ奇妙な銃と、意味不明の座標を持つアトラスディスクを見つけた。エイリアンが何を言っているのかわからないが、良識に反してディスクをアトラスに入力した。次のセクター・ジャンプで、この座標を探索できるはずだ。</text>
+			<variable name="coords_rhyme" op="add" val="1" />
+			<metaVariable name="towr_fail" op="set" val="1" /> 
+			<weapon name="BEAM_MADNESS" />
+		</event>
+	</choice>
+</event>
+
+
+<ship name="SHIP_RHYMER_REDEMPTION" auto_blueprint="MU_RHYME_BOMBER">
+	<destroyed load="RHYME_ENCOUNTER_REDEMPTION_DEFEAT" />
+	<deadCrew load="RHYME_ENCOUNTER_REDEMPTION_DEFEAT" />
+</ship>
+<event name="RHYME_ENCOUNTER_REDEMPTION">
+	<beaconType id="map_icon_cultist" global="true">
+		<color r="255" g="0" b="0" a="1.0" />
+		<unvisitedTooltip>このビーコンには奇妙な干渉がある。</unvisitedTooltip>
+		<visitedTooltip>場所を探索。興味のあるものは何も残っていない。</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<preventQuest />
+	<runFromFleet closest="true" />
+	<preventBossFleet forever="true" />
+	<text>このビーコンで何が見つかるかわからないため、慎重に歩みを進めるが、それでも何を見つけたのかはよくわからない。巨大で武装したボマーが小惑星の後ろに隠れている。スキャンができないようだが、この船の何かがハードウェアに予期せぬ不具合を引き起こしているようだ。</text>
+	<ship load="SHIP_RHYMER_REDEMPTION" hostile="false" />
+	<status type="limit" target="player" system="sensors" amount="1" />
+	<choice hidden="true">
+		<text>船万歳。</text>
+		<event>
+			<text>敵艦からの声が話し始めるが、驚いたことにそれはまるで自分の隣にいるように聞こえる。振り向いても誰もいない。頭の中で声がしていることに気づく。「疲れた、主人は成長した！ああ、彼の最後の敵はどれほど失望させられたことだろう。時代を超えた戦いだと彼は思った。だが、レネゲイドはよく死ぬ。だが、レネゲイドはよく死ぬ。そうだ、きっと君は例外だ！さあ、戦え！私のマスターと戦うことは、きっと君の権利だ"</text>
+			<choice hidden="true">
+				<text>親方？何のことだ？</text>
+				<event>
+					<text>"ミステリーミステリー、ああなんという圧迫感。あなたの無知、それはまるで病気のようだ。運命は待ってくれない！ああ、あなたの前には厄介な運命が待ち受けている。カオスと破滅、我々の予言通りだ。謎は暗号化されている。我らの主は韻を踏む者。すべての時代の終わりをもたらす者！"</text>
+					<choice hidden="true">
+						<text>聞いたことがない。</text>
+						<event>
+							<text>"まだ......ギャーギャー騒ぐのか。恐ろしい罠を恐れているのか？哀れなものだ。結局、臆病がもたらすのは死だけだ。いいさ、もし君が行動を起こさないなら。予言が真実であるなら、あなたは予言をしない。その時は、あなたの手を強要しなければならない！そうしてこそ、私は引退できる。手を挙げろ、卑劣な悪魔め。私の死によってのみ、真実は明らかになる。"</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視して立ち去る。</text>
+		<event>
+			<text>レネゲイドになって学んだことがひとつあるとすれば、謎めいた船を信用してはいけないということだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="RHYME_ENCOUNTER_REDEMPTION_DEFEAT">
+	<text>「ついに、ついに、私の死が訪れた。最後まで、私は無感覚でしかない。終わりは近い、時は近い！今ではなく、後に死ぬのだ。さあ、私の残骸を探しなさい。マスターのデッキに最後の1枚がある」。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<status type="clear" target="player" system="sensors" amount="100" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>沈没船であなたは、先ほど戦った船と同じような異常な特性を持つ奇妙な銃と、意味不明の座標を持つアトラスディスクを見つけた。エイリアンが何を言っているのかわからないが、良識に反してそのディスクをアトラスに入力した。行きたければ今行くしかない。次の機会はない。</text>
+			<recallBoarders />
+			<weapon name="BEAM_MADNESS" />
+			<choice hidden="true">
+				<text>今すぐルートを変更する。</text>
+				<event>
+					<secretSector>SECRET_RHYME</secretSector>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>別の日にしよう。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<ship name="SHIP_RHYMER_4" auto_blueprint="MU_RHYME_BOMBER">
+	<destroyed load="RHYME_ENCOUNTER_4_DEFEAT" />
+	<deadCrew load="RHYME_ENCOUNTER_4_DEFEAT" />
+</ship>
+<event name="RHYME_ENCOUNTER_4">
+	<text>このビーコンで何が見つかるかわからないため、慎重に歩みを進めるが、それでも何を見つけたのかはよくわからない。巨大で武装したボマーが小惑星の後ろに隠れている。スキャンができないようだが、この船の何かがハードウェアに予期せぬ不具合を引き起こしているようだ。</text>
+	<ship load="SHIP_RHYMER_4" hostile="false" />
+	<status type="limit" target="player" system="sensors" amount="1" />
+	<choice hidden="true">
+		<text>船万歳。</text>
+		<event>
+			<text>敵艦からの声が話し始めるが、驚いたことにそれはまるで自分の隣にいるように聞こえる。振り返るが誰もいない。頭の中で声がしていることに気づく。「またレネゲイドか？またレネゲイドか。お前のおふざけにはうんざりだ。無意味な議論に付き合う気はない。いや、もちろん違う。ああ、お前を殺すのは愉快だ！"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視して立ち去る。</text>
+		<event>
+			<text>レネゲイドとしての年月で学んだことがひとつあるとすれば、それは「謎めいた船を信用してはいけない」ということだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="RHYME_ENCOUNTER_4_DEFEAT">
+	<text>「いや、そんなはずはない！主人はこの運命を予見していなかった！私は死んだ。それでも、私はすべてを捧げた。友の道を行くしかない。このレネゲイドめ。死神が呼んでいる。ついに幕が下りる。"</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<status type="clear" target="player" system="sensors" amount="100" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>あなたはその場を離れようとしたが、残骸の中に別の奇妙な信号があることに気づいた。あの船と同じ異常な特性を持つ、ある種の武器だ。船内に持ち込み、問題が起きないことを祈る。</text>
+			<weapon name="BEAM_MADNESS" />
+		</event>
+	</choice>
+</event>
+
+
+<ship name="SHIP_RHYMER_GNOME" auto_blueprint="MU_RHYME_INTERCEPTOR_GNOME">
+	<destroyed load="DESTROYED_SIREN_UNKNOWN" />
+	<deadCrew load="DEADCREW_SIREN_UNKNOWN" />
+</ship>
+<event name="RHYME_ENCOUNTER_CHAOS">
+	<beaconType id="map_icon_cultist" global="true">
+		<color r="255" g="0" b="0" a="1.0" />
+		<unvisitedTooltip>このビーコンには奇妙な干渉がある。</unvisitedTooltip>
+		<visitedTooltip>場所を探索。興味のあるものは何も残っていない。</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<preventQuest />
+	<runFromFleet closest="true" />
+	<preventBossFleet forever="true" />
+	<text>このビーコンで何が見つかるかわからず、慎重に歩みを進めるが、奇妙な色をした異星人の船の接近に驚かされる。"終わりの夜明け "が再び近づいている。あなたが運ぶノームは、あなたがもてなそうとする主人である！よかった、よかった、時は近づいた！全ての時間が死ぬべき時が再び近づいていた。だが今、君はここにいる......そしてこれ以上遅れることなく......ご主人様にこの知らせを伝えなければならない！ああ、一緒に来てくれるかい？韻を踏む者のもとへ......我々は行かなければならない。</text>
+	<ship load="SHIP_RHYMER_GNOME" hostile="false" />
+	<choice hidden="true">
+		<text>奇妙な船と一緒に行く。</text>
+		<event>
+			<text>「ああ、これは完璧だ！その前に、主人が尊敬してやまないこのノームを手に入れなければならない。さあ、さあ行こう！ショーに遅刻するわけにはいかないからね！"</text>
+			<playSound>gm_goodbye</playSound>
+			<variable name="loc_protomv_drive_block" op="set" val="1" />
+			<removeCrew class="gnome">
+				<clone>false</clone>
+				<text />
+			</removeCrew>
+			<choice>
+				<text>次へ...</text>
+				<event>
+					<secretSector>SECRET_RHYME_CHAOS</secretSector>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>いや。私たちには他に行くところがある。</text>
+		<event>
+			<text>「本気なのか？私が錯乱しているだけ？来てくれないの？I...韻を踏むこともできない本当に？本気なのか？まあ...クソ。さよなら"</text>
+			<instantEscape />
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<ship name="SHIP_CATINTHEHAT" auto_blueprint="MU_RHYME_CRUISER">
+	<destroyed load="THE_ONE_WHO_RHYMES_WIN" />
+	<deadCrew load="THE_ONE_WHO_RHYMES_WIN" />
+	<miniBoss sound="victory" musicDelay="-1" />
+	<triggeredEvent event="SCRAP_CHAOS" seeded="false" thisFight="false" loops="999999999" time="2.5" />
+</ship>
+<event name="THE_ONE_WHO_RHYMES">
+	<text>星々が飛び交うのを眺めながら、景色がどんどんゆがんでいくのを見ていると、やがて巨大な宇宙空間の異常の前に猛スピードで投げ出される。目を疑うような真っ赤な閃光が、あなたを後方に転倒させる。</text>
+	<variable name="loc_unique_sectors" op="add" val="1" />
+	<img back="BACK_EVENT_RHYME" planet="NONE" />
+	<playSound>lightspeed</playSound>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>「あなたは見た！あなたは息をのんだ！私はあなたを夢中にさせた！ついに謎の答えが出た！それは私、韻を踏む者。混沌の神、時の終焉者！ああ、なんという喜び、なんという楽しみ！君はどこまで来たのだろう。やっと会えた！ああ、友よ......俺たちは爆笑するぜ。畏敬の念に震えないか？私は完璧だ、美しい、最後の一歩まで。この大騒ぎはなんだ？さぁさぁ、2人きりになったことだし、始めましょう！"</text>
+			<ship load="SHIP_CATINTHEHAT" hostile="false" />
+			<choice hidden="true">
+				<text>いったい何が起こっているのか、説明してもらえないだろうか？</text>
+				<event>
+					<text>「ははは！ハヘ！ああ、しかし、君の混乱は私に喜びをもたらす！想像を絶する力を持つエルドリッチの存在、それが私だ。ああ、宇宙論、なんという混乱。最初からやり直そうか？そうしよう！"</text>
+					<choice hidden="true">
+						<text>そうだね。</text>
+						<event>
+							<text>「推測か？って！ああ、でも興奮するべきだよ！あなたがここにいてくれて、私はとても嬉しい！何から始めようか？ああ、そうだ！もう一つのクラスターは、私たちの出身地です。見たこともないような現実！エルドリッチが普通で、夢がその隙間を埋めている場所！はい、その通りです！約束する。神々の夢...それは我々の問題だ。セイレーンたちは？まあ、銀の皿に乗せて食べるんだ！"</text>
+							<choice hidden="true">
+								<text>セイレーン？誰が？</text>
+								<event>
+									<text>「ああ、あなたは本当に無知だ！三脚が重要だと知らなかったのか？そうだ、そうだ、他とは違う種族だ！狡猾な神......彼らの母！そして彼らの乳飲みに飽きると......ああ、彼女は彼らを座屈させた！ハハ、ハハ！なんという暴動だポータルを通って彼らは走っていった。その後ろから？それは私だ！そこでは私はいつも不人気だった。でもここでは？...私が望めば どんな混乱だって起こせるのよでも、セイレーンたちは......私を憎んでいた。でも、何人かは共感してくれたようだ！彼らは私を崇拝し、賞賛した。昇給もないのにね！しばらくの間、私は満足していた。マルチバースを支配していると思い込んでいるスラッグの野郎にちょっかいを出していた。私の異変を嫌っていた。腹いせに組織を作り-俺を破滅させるためだ私が失敗したのは 幻だったようだ母は狡猾で忍耐強い。ナメクジの居場所が空くのは時間の問題だ"</text>
+									<choice hidden="true">
+										<text>ついていけるか自信がない。</text>
+										<event>
+											<text>「邪魔しないでよ！邪魔ばかりで疲れる。神韻のカルトは私が作った！そして、その中で私は最も卑劣な計画を練った。率直に言おう。昔は、私と主人だけだった。私たちは一緒にいて、自由にあらゆる災難を引き起こしていた！だが今はいない楽しみが台無しだこの世界を引き裂いてやる。最初からそうするつもりだったプライムの野郎は？...彼にはもう時間がないようだ。まさにこの時、私は最大の力を解き放つ！世界は崩れ 現実は壊れる星は転がり落ちるその後、ケーキを食べよう。さあさあ、恐れることはない。私はただ、それが終わる前にほくそ笑みたかっただけだ。さあ、創造の終わりを見届けよ！汝は良い人生を送ったが、最後の世代であった」。</text>
+											<choice hidden="true">
+												<text>きっと、これを避ける方法があるのだろう！</text>
+												<event>
+													<text>"ああ、最も困難な要求だ。ドラマチックなセンスだ！ギリギリのところで、救世主のように口を開く！ああ、最高に愛らしい振る舞いじゃないか。いいだろう、ユーモアを交えてやろう。お前たちを地獄に突き落とす前に、最後のチャンスをやろう。もし汝が死闘で私に勝てるなら...私は汝ら愚か者の抹殺を延期しよう！私はかなり焦っているので、あまり長引かないようにしてほしい。もう待たないでくれ、終わりを永遠に引き延ばすことはできない。"</text>
+													<metaVariable name="towr_fail" op="set" val="1" />
+													<deathEvent thisFight="true">THE_ONE_WHO_RHYMES_FAIL</deathEvent>
+													<playMusic>chaos_fight</playMusic>
+													<ship hostile="true" />
+													<choice hidden="true">
+														<text>次へ...</text>
+														<event load="COMBAT_CHECK" />
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true" req="unique_irwin">
+												<text>(アーウィン）"このためにずっとトレーニングしてきたんだ！"</text>
+												<event>
+													<text>アーウィンは「韻を踏む者」の言葉を途中で切り上げ、すぐに興奮した様子であなたに向き直った。「エキゾチックな生き物？壮大な多元宇宙レベルの陰謀？俺はこのために作られたんだ！」
+
+アーウィンがブラーバスのスイッチを入れ、オレンジ色の輝きから赤色に変える。"エルドリッチの神を殺す時が来た"</text>
+													<metaVariable name="towr_fail" op="set" val="1" />
+													<deathEvent thisFight="true">THE_ONE_WHO_RHYMES_FAIL</deathEvent>
+													<playMusic>chaos_fight</playMusic>
+													<transformRace class="unique_irwin">unique_irwin_demon</transformRace>
+													<ship hostile="true" />
+													<choice hidden="true">
+														<text>次へ...</text>
+														<event load="COMBAT_CHECK" />
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>運命を受け入れ、現実が破壊されるのを見届ける。</text>
+												<event>
+													<text>神は漫画のように長い腕を広げ、唱えながら笑い始める。周囲はまるで空間そのものが崩壊しているかのようだ。これは本当に終わりなのだ。</text>
+													<lose text="This reality was destroyed, instantaneously erasing anyone and everyone inside." sound="catLaugh" />
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="SCRAP_CHAOS">
+	<item_modify>
+		<item type="scrap" min="-5" max="5" />
+	</item_modify>
+</event>
+<event name="THE_ONE_WHO_RHYMES_FAIL">
+	<text>"ああ、悲劇的だ、とてもとても悲しい...。本当に、ここまで私を悲しませることができるとは思わなかった！残念だが、君の運命は決まった。終わったことは終わった。私の計画は明らかになった。時の終わりはすぐに始まるだろう。さようなら、無知な間抜けめ"</text>
+	<lose text="This reality was destroyed, instantaneously erasing anyone and everyone inside." sound="catLaugh" />
+</event>
+<event name="THE_ONE_WHO_RHYMES_WIN">
+	<text>相手の船が爆発に見舞われる中、神はぐったりとしたふりをして自分の船に現れる。"ああ、私！なんてことだ！本当か？今が私が死ぬときなのか？もちろんそんなことはない。私がここで生きているのを見るのは、とても残酷に思えるに違いない。エルドリッチの神を無にできると思ったのか？いや、私の時は永遠だ。今はほんの一瞬だ。とはいえ、君の努力は賞賛に値する。"</text>
+	<metaVariable name="juke_chaos" op="set" val="1" />
+	<metaVariable name="prof_rhyme_encounter" op="add" val="1" />
+	<metaVariable name="towr_fail" op="set" val="0" />
+	<recallBoarders ship="both" />
+	<playMusic />
+	<choice hidden="true">
+		<text>私たちは失敗したのですか？</text>
+		<event>
+			<text>「いやいや、むしろ君の勝ちだよ！こんなに楽しいことはない！お前たちレネゲイドが本当に面白いのなら、お前たちが一人も残らないでどうする？実際、私は贈り物を贈ろうと思う。一つでも二つでもなく、三つだ！きっと運が向いてくるはずだ！"</text>
+			<choice hidden="true">
+				<text>1番のギフトを受け取る。</text>
+				<event>
+					<text>「どんな賞品があるかな？その1、私の大切なクルーザー！君が損傷させたものだ。少し傷ついたが、大丈夫だ。行って楽しんでこい。"</text>
+					<unlockCustomShip>PLAYER_SHIP_RHYME</unlockCustomShip>
+					<choice hidden="true">
+						<text>ギフトナンバー2を受け取る。</text>
+						<event>
+							<text>「二人目は、見知らぬ人。私の大切なノームよ、あなたを危険な目には遭わせない！それは嘘だ、認めなければならない。ちょっとした秘密を教えよう。この中には見たこともないような真のカオスが封じ込められている。楽しい挑戦だ！気が向いたら、ノームを連れてきてくれ！これをカオスモードと呼ぼう！現実が崩壊する可能性は9％だけだ」。韻を踏む者」はあなたに小さな庭のノームの彫刻を投げ渡す。見ていてとても不快になる。</text>
+							<metaVariable name="chaos_mode_unlock" op="set" val="1" />
+							<choice hidden="true">
+								<text>3番のギフトを受け取る。</text>
+								<event>
+									<text>"そして3つ目は、あなた方が最も喜ぶであろうことだ！この勝利が君たちの最後の勝利になるだろう。いや、それは脅しではない。今のところ、勝利は私の恩返しだ。あの恐ろしいフラッグシップは私が消し去る。そして将来、また潔くそうしよう！あのノームを連れて来い。そしてまた戦おう、ハヘ！さて、私が言いたいことは以上だ。さようなら、さようなら、素晴らしい一日を！"韻を踏む者』の下に穴が開き、そこから彼は落ちる。彼の帽子は一瞬後ろに残ったが、長い腕が戻ってきてそれを掴み、奈落の底へと滑り落ちていく。</text>
+									<win ach="chaos" music="chaos" creditsText="credit_victory_chaos" text="What fun, what fun! And now your run is won!" creditsBackground="VICTORY_CHAOS" />
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<event name="THE_ONE_WHO_RHYMES_CHAOS">
+	<text>星々が飛び交うのを眺めながら、景色がどんどんゆがんでいくのを見ていると、やがて巨大な宇宙空間の異常の前に猛スピードで投げ出される。目を疑うような真っ赤な閃光が、あなたを後方に転倒させる。</text>
+	<variable name="loc_unique_sectors" op="add" val="1" />
+	<img back="BACK_EVENT_RHYME" planet="NONE" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>「こんにちは！また会えて嬉しいよ！やっと戻ってきたね！前回会ったときは、本当に楽しかった！そうだろう？今ここで、君と僕とで、最高に楽しいよ！"</text>
+			<ship load="SHIP_CATINTHEHAT_CHAOS" hostile="false" />
+			<choice hidden="true">
+				<text>あなたは誰？どうしたんだ？</text>
+				<event>
+					<text>「ははは！ハヘ！でも、その困惑が私を喜ばせるのよ！そうでなければ、なぜここに来たんだ？私はとても親切だから、手短に教えてあげよう。世界の終わりとは、あなたが今関わっているビジネスのことだ。私の主人が待っている間に、大きなゲームが展開される。なんと大きな謎だろう。昔、あなたが交わした約束。そして今、私はその同じ約束を反故にする！悪魔のような決闘で、再び私と対決せよ。もしお前が失敗すれば、この現実に対して私は最も残酷になるだろう！選択はあなた次第、時は今。現実の終わりを、許すか？"</text>
+					<choice hidden="true">
+						<text>挑戦を受け入れ、「韻を踏む者」に立ち向かえ。</text>
+						<event>
+							<text>「本当に嬉しい！前回はとても楽しかった！しかし、乱闘の前に、最後の贈り物を与えよう。それは、私のノームをこんなに早く返してくれたことだ！新しい乗組員だ。さあ、この計画を進めよう。"</text>
+							<crewMember amount="1" class="LIST_CREW_ELITE_RHYME" />
+							<deathEvent thisFight="true">THE_ONE_WHO_RHYMES_FAIL</deathEvent>
+							<playMusic>chaos_fight</playMusic>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="unique_irwin">
+						<text>(アーウィン）"このためにずっとトレーニングしてきたんだ！"</text>
+						<event>
+							<text>アーウィンは「韻を踏む者」の言葉を途中で切り上げ、すぐに興奮した様子であなたに向き直った。「エキゾチックな生き物？壮大な多元宇宙レベルの陰謀？俺はこのために作られたんだ！」
+
+アーウィンがブラーバスのスイッチを入れ、オレンジ色の輝きから赤色に変える。"エルドリッチの神を殺す時が来た"</text>
+							<deathEvent thisFight="true">THE_ONE_WHO_RHYMES_FAIL</deathEvent>
+							<playMusic>chaos_fight</playMusic>
+							<transformRace class="unique_irwin">unique_irwin_demon</transformRace>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>現実を破壊させる。</text>
+						<event>
+							<text>「本当に？こんなに早く諦めるんですか？まあ、選択はあなたのものだ。時が相応の報いを受けるときだ！"神は漫画のように長い腕を広げ、唱えながら笑い始める。まるで空間そのものが崩壊しているかのようだ。これは本当に終わりなのだ。</text>
+							<lose text="This reality was destroyed, instantaneously erasing anyone and everyone inside." sound="catLaugh" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CATINTHEHAT_CHAOS" auto_blueprint="MU_RHYME_CRUISER">
+	<destroyed load="THE_ONE_WHO_RHYMES_WIN_CHAOS" />
+	<deadCrew load="THE_ONE_WHO_RHYMES_WIN_CHAOS" />
+	<miniBoss sound="victory" musicDelay="-1" />
+	<triggeredEvent event="SCRAP_CHAOS" seeded="false" thisFight="false" loops="999999999" time="1.5" />
+</ship>
+<event name="THE_ONE_WHO_RHYMES_WIN_CHAOS">
+	<text>相手の船が爆発に打ち勝つと、神があなたの船に現れる。「またやってくれたな！なんて恐ろしいスタッカートなんだ！約束は約束だ、失望はさせない。この現実の救世主を君に授けよう。見事な成功、おめでとう。さあ、当然の休息を楽しめ。</text>
+	<metaVariable name="juke_chaos" op="set" val="1" />
+	<achievement>ACH_GNOME_COMPLETE</achievement>
+	<playMusic />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<win ach="chaos" music="chaos" creditsText="credit_victory_chaos" text="What fun, what fun! And now your run is won!" creditsBackground="VICTORY_CHAOS" />
+		</event>
+	</choice>
+</event>
+
+
+<event name="REALM_MADNESS_START">
+	<text>あなたは、奈落の底を飛び交う人間の顔を嘲笑うかのような、ぼんやりとした靄に覆われた、ある種の渦巻く地獄絵図に到着した。ここにいるだけで、肌がゾクゾクし、自分が歓迎されないだけでなく、深刻な危険にさらされている土地にいる外国人侵略者のように感じる。"よそ者よ、エネルギー測定に基づき、彼女が待っていると思われる場所を特定した。時間内に到着するよう最善を尽くしますが、あなたは私たちの前に出てください。気をつけろ。この町には、我々の理解を超えたエルドリッチな生き物が住んでいる。ここは彼女の領域だ。すべての敵と戦うことに固執する意味はない。大事なのは彼女のところへ行くことだ。 気をつけろ、よそ者。"</text>
+	<clearJumpEvent />
+	<revisitEvent>VISION_ENCOUNTER</revisitEvent>
+	<img back="BACK_EVENT_RHYME" planet="NONE" />
+	<variable name="loc_protomv_drive_block" op="set" val="0" />
+	<item_modify>
+		<item type="fuel" min="80" max="80" />
+	</item_modify>
+	<modifyPursuit amount="-999" />
+</event>
+
+<ship name="SHIP_VISION" auto_blueprint="LIST_SHIPS_HER">
+	<destroyed load="VISION_DEFEAT" />
+	<deadCrew load="VISION_DEFEAT" />
+</ship>
+<textList name="TEXT_VISION_ENCOUNTER">
+	<text>夜のように黒い船が近づき、言葉もなくあなたの船への攻撃を開始する。戦うしかない！</text>
+	<text>"レネゲイド "は、自分たちが仕掛けた永遠の混沌の支配を元に戻そうとしているのか？なんてかわいいんだ。でも、もう希望はない。必然を受け入れ、降伏するのみだ"</text>
+	<text>エイリアンの船が、彼女の手先のひとつが、あなたに向かって発砲してきた。暗闇の軍団に終わりはないようだ。</text>
+	<text>最初は幻覚かと思ったが、黒い器が目の前に現れ、やがて火を噴く！戦う準備をしろ</text>
+	<text>C.E.L.がまだ夢中なのは残念だ。今こそ彼らの火力支援が必要なのに。敵艦が接近中！戦うしかない！</text>
+	<text>このセクターの敵の波は終わりがないようだ。彼女がこれほど多くの手下を犠牲にするのは奇妙だが、恐れをなしているのだろうか？あるいは、もっと現実的な話として、彼女は大砲の餌をたくさん持っているだけなのかもしれない。</text>
+</textList>
+<event name="VISION_ENCOUNTER">
+	<revisitEvent>VISION_ENCOUNTER</revisitEvent>
+	<preventQuest />
+	<img back="VICTORY_TRUE" planet="NONE" />
+	<text load="TEXT_VISION_ENCOUNTER" />
+	<ship load="SHIP_VISION" hostile="true" />
+	<deathEvent thisFight="true">DEATH_VISION</deathEvent>
+	<backgroundObject name="HER">
+		<layer z="100">foreground</layer>
+		<spawnArea x="640" y="360" w="0" h="0" center="true" />
+		<anim>her_vhs</anim>
+		<active>true</active>
+	</backgroundObject>
+	<triggeredEvent event="HER_HAZARDS" time="35" thisFight="true" loops="999999">
+		<warningMessage id="warning_newhazard" x="444" y="46" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true" />
+	</triggeredEvent>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="VISION_DEFEAT">
+	<text>黒い船は破壊された。スクラップするものはたくさんあるが、時間がない。このまま進み続け、ハーにたどり着かなければならない！資源と労力を浪費して敵の一匹一匹と戦っていたら、絶対にたどり着けない！</text>
+	<metaVariable name="loc_her_minions" op="add" val="1" />
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+<event name="DEATH_VISION">
+	<lose text="Your vessel is lost amongst the smiling abyss, ensuring eternal darkness upon the Multiverse." />
+</event>
+<event name="HER_HAZARDS">
+	<removeHazards />
+	<changeBackground>VICTORY_TRUE</changeBackground>
+	<loadEventList seeded="false">
+		<event name="HER_HAZARDS_SUN" />
+		<event name="HER_HAZARDS_ASTEROID" />
+		<event name="HER_HAZARDS_PULSAR" />
+		<event name="HER_HAZARDS_STORM" />
+	</loadEventList>
+</event>
+<event name="HER_HAZARDS_SUN">
+	<environment type="sun" />
+</event>
+<event name="HER_HAZARDS_ASTEROID">
+	<environment type="asteroid" />
+</event>
+<event name="HER_HAZARDS_PULSAR">
+	<environment type="pulsar" />
+</event>
+<event name="HER_HAZARDS_STORM">
+	<environment type="storm" />
+</event>
+
+<ship name="SHIP_HER" auto_blueprint="MU_HER_BOSS">
+	<destroyed load="HER_FINALE" />
+	<deadCrew load="HER_FINALE" />
+</ship>
+
+<event name="HER_FIGHT">
+	<preventQuest />
+	<beaconType id="map_icon_her" global="true">
+		<color r="155" g="90" b="205" a="1.0" />
+		<unvisitedTooltip>彼女の居場所</unvisitedTooltip>
+	</beaconType>
+	<text>あなたはついに彼女の居場所にたどり着いた。辺りの空間は暗闇に包まれ、すべての星が夜空から引き抜かれ、古代の邪悪なものに飲み込まれている。もうチャンスはない。おそらく多元宇宙で最も強力で邪悪な存在に立ち向かおうとしているのだ。</text>
+	<playMusic>chaos</playMusic>
+	<img back="VICTORY_TRUE" planet="NONE" />
+	<variable name="loc_protomv_drive_block" op="set" val="1" />
+	
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>悪夢のようなビジョンが視界を曇らせ始め、目の前の空間に巨大なクルーザーが固まる。どこから来たのかわからないが、妙に聞き覚えのある声が話しかけてくる！本当に久しぶりだ！また会ったな、親愛なる友よ！韻を踏む者、私です。すでにご存知のように、我々は新しい時代の瀬戸際にいる！私のマスターがここにいる！これまでとは違って、これからは本当に大騒ぎだ！"目の前で踊るエルドリッチの存在を見たことがないにもかかわらず、あなたの心の奥の暗い場所は、彼の変わった話し方や邪悪な笑みを思い出しているようだ。</text>
+			<ship load="SHIP_HER" hostile="false" />
+			<backgroundObject name="HER">
+				<layer z="100">foreground</layer>
+				<spawnArea x="640" y="360" w="0" h="0" center="true" />
+				<anim>her_vhs</anim>
+				<active>true</active>
+			</backgroundObject>
+			<choice>
+				<text>次へ...</text>
+				<event>
+					<text>「本当に素晴らしい！でもお願いだから、この小さな混沌の代理人を怖がらせないで！こんにちは、レネゲイド！我が領域へようこそ。私の大切な子供たちの家だ。かつて、この平原には私のような無数のエルドリッチな存在が住んでいた。不運にも 絶え間ない抗争で 多くの者が絶滅に追いやられた今、残っているのは宇宙を汚染し、私の害虫の餌となる彼らの夢の物質だけだ。正直なところ、私は神々の軍隊で多元宇宙を征服したかったが、まあいい。カオスの少神と長老神で十分だ」。</text>
+					<choice>
+						<text>次へ...</text>
+						<event>
+							<text>"レネゲード "の何がおかしいかわかるか？今までのレネゲイドは？君は...賢い賢すぎる君は違うまるで病気だ 異星人の病気だ干渉するために 存在している何のために？高次元存在の病的な娯楽か？そんなことはどうでもいい。君が何であろうと、君は私の目的に非常に役立つことが分かった。長いこと待たされ、辛抱強く操られてきた......ようやく、おろおろするのをやめる準備ができたようだ。私の魂が庭小人と傲慢な愚か者の大きな回転輪の間で分裂し、落ち着かなかった。本題に入ろうじゃないか、レネゲイド。ナメクジのお仲間ももうすぐ来るし、彼らを引き離すのを楽しみにしてたんだ、本題に入ろうぜ。バイバイ！」
+/
+:)</text>
+							<playMusic>her</playMusic>
+							<ship hostile="true" />
+							<triggeredEvent event="HER_SUPPORT" thisFight="true" time="120.0">
+								<triggeredEventBox load="DEFAULT_TIMER" pos="default">
+									<warning time="0" flash="false" />
+									<tooltip>C.E.L.が到着するまで生き延びなければならない！</tooltip>
+								</triggeredEventBox>
+								<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+							</triggeredEvent>
+							<triggeredEvent event="HER_HAZARDS" time="35" thisFight="true" loops="999999">
+								<warningMessage id="warning_newhazard" x="444" y="46" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true" />
+							</triggeredEvent>
+							<deathEvent thisFight="true">DEATH_VISION</deathEvent>
+							
+							<triggeredEvent name="TRIGGER_HER_HEAL" event="HER_HEAL" thisFight="true" enemyDamage="1" loops="999999" /> 
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+							<choice hidden="true" req="unique_irwin">
+								<text>(アーウィン）"このためにずっとトレーニングしてきたんだ！"</text>
+								<event>
+									<text>彼女が軽い苛立ちと好奇心で見守るなか、アーウィンは興奮のあまり銃をさらに胸に近づけた。「エキゾチックな生き物？壮大な多元宇宙レベルの陰謀？俺はこのために作られたんだ！"アーウィンは銃をオレンジ色から赤色に変える。"エルドリッチの神を殺す時が来た"</text>
+									<transformRace class="unique_irwin">unique_irwin_demon</transformRace>
+									<choice>
+										<text>次へ...</text>
+										<event load="COMBAT_CHECK" />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HER_HEAL">
+	<enemyDamage amount="-999" />
+</event>
+<event name="HER_SUPPORT">
+	<customFleet right="false" firing="false" autoDarkening="true">CUSTOM_FLEET_CEL</customFleet>
+	<playSound>lightspeed</playSound>
+	<text>突然、無数の艦船がビーコンに飛び込んできた。C.E.L.が到着し、大火力を携えてきたのだ！ある種の巨大な仕掛けが配備され、目の前の船にまっすぐロックオンする。"よそ者め、全火器をあの船に集中させろ！これで船体にダメージを与えられるだろうが、まだ終わりではない！彼女を弱体化させるため、破壊する必要がある！"</text>
+	<removeHazards />
+	<changeBackground>BACKGROUND_HERDEFEAT</changeBackground>
+	<img planet="NONE" />
+	<clearBackgroundObject name="HER" />
+	<clearTriggeredEvent name="TRIGGER_HER_HEAL" /> 
+</event>
+
+<event name="HER_FINALE">
+	<triggeredEvent event="HER_FINALE_REAL" time="3.0" />
+	<clearTriggeredEvent name="HER_HAZARDS" /> 
+	<removeHazards />
+</event>
+<event name="HER_FINALE_REAL">
+	<text>巨大な黒い器が消え始めると、「韻を踏む者」の悲鳴が聞こえる。「そんなはずはない！もうバラバラだ！あなたはすべてを台無しにした、私たちの夢を打ち砕いた！自分が消えていくのを感じる！もう...あなたが本当に勝ったなんて信じられない。"実体は消え去り、周囲の闇も消えていく
+
+終了だ。あなたは彼女を倒し、エルドリッチの神の魔の手から多元宇宙を救った。それはあなたの最初の任務ではなかった。しかし、あなたがここで行ったことは、それ以上に重要なことなのだ。</text>
+	<achievement>ACH_HER_DEFEAT</achievement>
+	<metaVariable name="juke_her" op="set" val="1" />
+	<changeBackground>BACKGROUND_HERDEFEAT</changeBackground>
+	<img planet="NONE" />
+	<playMusic>paragon</playMusic>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<win ach="nexus" music="her_credits" creditsText="credit_victory_nexus_her_good" text="She is no more. Enjoy your retirement, Renegade." creditsBackground="VICTORY_CHAOSNEXUS" />
+		</event>
+	</choice>
+</event>
+</FTL>

@@ -1,0 +1,2423 @@
+<FTL>
+
+
+
+<event name="FINISH_BEACON_VAMPWEED">
+	<text id="finish_beacon" />
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="EXIT_FILLER_LIST" />
+	</choice>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+	
+<eventList name="ITEMS_VAMPWEED">
+	<event load="VAMPWEED_SLAVES" />
+	<event load="VAMPWEED_GARDEN" />
+	<event load="VAMPWEED_SCRAPYARD" />
+	<event load="VAMPWEED_TERRAFORMING" />
+	<event load="VAMPWEED_INJECTION" />
+	<event load="VAMPWEED_RIOT" />
+</eventList>
+
+<event name="VAMPWEED_SLAVES" unique="true">
+	<text>「今どき仕事を見つけるのは簡単じゃない！銀河系労働力のモラルは崩壊している！人々はもう働きたがらない。生産性が低下する一方で、賃金アップを要求し続ける！そう思わないか？奴隷商人はあなたを見つめて返事を待っている。</text>
+	<ship load="SHIP_SLAVER_ALL" hostile="false" />
+	<img planet="NONE" />
+	<choice hidden="true">
+		<text>ああ、もちろんだ！</text>
+		<event name="VAMPWEED_SLAVES_2">
+			<text>言い終わらないうちに、奴隷商人はこう切り出した。"だからこそ、私はこの新しい "忠実な労働者 "プログラムを発表することに興奮している！報酬はティイカカが負担します」。奴隷商人はにやりと笑い、手下たちにさまざまな「労働者」を売り歩かせる。</text>
+			<choice hidden="true">
+				<text>奴隷商人を襲え</text>
+				<event>
+					<text>奴隷商人は銀河のクズだ。こいつを一掃することで、大いなる正義を成し遂げるのだ。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="REPUTATION_DECREASE_SLAVER_COMBAT" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>奴隷を買え。</text>
+				<event>
+					<text>「いい買い物だった。船長、お役に立ちますように..."</text>
+					<item_modify>
+						<item type="scrap" min="-35" max="-25" />
+					</item_modify>
+					<crewMember amount="1" class="orchid_vampweed" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="REPUTATION_UPDATE_SLAVER" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>奴隷を買え。</text>
+				<event>
+					<text>「いい買い物だった。船長、お役に立ちますように..."</text>
+					<item_modify>
+						<item type="scrap" min="-35" max="-25" />
+					</item_modify>
+					<crewMember amount="1" class="LIST_SLAVES_GENERIC" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="REPUTATION_UPDATE_SLAVER" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_VAMPWEED">
+				<text>(ヴァンプウィード・クルー)「あなた方の "労働者 "は必要ない。俺たち緑の血族の努力のおかげで連合国は強いんだ"</text>
+				<event>
+					<text>"ああ、気持ち悪い蔓のようなもの！お前みたいなのが喋れるなんて、よく忘れちまうよ！可愛いでしょ、いつか立派なファシストに育ちそうね！"奴隷商人は蘭の頭をなでるふりをする。"ほら、おチビちゃん、汗水たらして働いてくれたお礼に、スクラップをどうぞ"</text>
+					<autoReward level="MED">scrap_only</autoReward>
+				</event>
+			</choice>
+			<choice>
+				<text>奴隷商人を無視し、道を進む。</text>
+				<event>
+					<text>奴隷商人に興味はないだろう。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice req="FEDERATION_DATABASE">
+				<text>[連盟データベース】ティイカカとは何か？</text>
+				<event load="SLAVER_DATABASE" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>いや、別に...。</text>
+		<event load="VAMPWEED_SLAVES_2" />
+	</choice>
+	<choice hidden="true">
+		<text>それに答えるのは気が引ける。</text>
+		<event load="VAMPWEED_SLAVES_2" />
+	</choice>
+</event>
+
+<event name="VAMPWEED_GARDEN" unique="true">
+	<text>あなたが飛び乗ると、オーキッドの船が停船して通り過ぎる。熟達した手話で、彼らはあなたを呼ぶ。「船長、ようこそ！我々はタイ・エレル大使の要請で、ギャザリングからの特別任務についている。ある病気が地元の連合国ガーデンワールドのひとつを克服し、我々はそれを治療するために派遣された！ちょっとした問題があるんだ...何をしてるのか全然わからないんだ。分かってる、それが仕事だってことは......でも、ただ植物に水をやるだけ？主任の植物学者はすでに出かけていて、代わりに僕らが派遣されたんだ。ひょっとして、私たちを助けてくれるようなことはないかしら？"</text>
+	<ship load="SHIP_CARETAKER_GENERIC" hostile="false" />
+	<choice hidden="true">
+		<text>何かアドバイスを作りなさい。</text>
+		<event load="VAMPWEED_GARDEN_LIE" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_MEDICAL">
+		<text>(メディカルクルー）アドバイスを提供する。</text>
+		<event load="VAMPWEED_GARDEN_ADVICE" />
+	</choice>
+	<choice hidden="true" req="unique_tyerel">
+        <text>(タイ・エレル）無能な工場をレクチャーする。</text>
+        <event>
+            <text>タイ・エレルのポーカーフェイスは、ギャザリング代表団を叱咤激励しながらも、微動だにしない。「君たちのパフォーマンスには失望した。君たちは要求された任務を遂行するために必要なものをすべて持って帰らなかった。基本的な手順をまとめた書類をファックスで送るが、もし任務を遂行できないのであれば、ギャザリングに戻り、適切な装備が整うまで戻ってこないこと」
+
+ギャザリング代表団は羊のように彼の書類を受け取り、もっとうまくやると約束する。"あの、このスポア・ランチャーをいただきました。業績評価はお手柔らかにお願いします。"</text>
+            <weapon name="GIFTLIST_SPORE" />
+        </event>
+    </choice>
+	<choice hidden="true" req="LIST_CREW_CARETAKER">
+		<text>(蘭の管理人）アドバイスを提供する。</text>
+		<event load="VAMPWEED_GARDEN_ADVICE" />
+	</choice>
+	<choice hidden="true">
+		<text>この機会に攻撃するのだ！</text>
+		<event>
+			<text>"ギャー！ もう一匹！"管理人たちは武器を構え、身を守る準備をする。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>何も持っていないんだ。</text>
+		<event>
+			<text>落胆したオーキッズはうなずき、準備を整えた。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="VAMPWEED_GARDEN_LIE">
+	<event>
+		<text>管理人はまばたきをして、あなたがその場で作った情報を処理しようとしている。"うーん......何を言っているのかよくわからないけど、何を言っているのかわかっているみたいだね！"オーキッドはあなたの "助け "に贈り物を差し出す。</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>"あなたが今言ったことはすべて意味不明です。フラグミンって何だ？ステファリモ？ロンボーン？本物の言葉じゃない！実在しそうな言葉でもない！私は本当の助けを求めているのであって、暗号植物学を求めているのではない」。苛立ったフローラル族はあなたをミュートし、準備に戻る。</text>
+	</event>
+</eventList>
+<eventList name="VAMPWEED_GARDEN_ADVICE">
+	<event>
+		<text>オーキッズはあなたの助言に感謝し、心からお礼を申し上げる。"こちらでは、連合国軍が身を守るために胞子ランチャーをくれたが、今のところ問題はあまりない。代わりに君にあげるよ、軍艦の方が似合うだろうからね！"</text>
+		<weapon name="GIFTLIST_SPORE" />
+	</event>
+	<event>
+		<text>オーキッズはあなたの助言に感謝し、心からお礼を申し上げる。"ここで、私たちはこのセクターの地図データを提供され、他の地域の公共施設を探すのに役立ったが、あなたにとっても役に立つはずだ！"</text>
+		<reveal_map />
+	</event>
+	<event>
+		<text>オーキッズはあなたの助言に感謝し、心からお礼を申し上げる。"残念ながら、物理的な報酬を提供することはあまりできませんが、予備の資源を提供することはできます"</text>
+		<autoReward level="HIGH">stuff</autoReward>
+	</event>
+</eventList>
+
+<event name="VAMPWEED_SCRAPYARD" unique="true">
+	<text>近くには大きなスクラップヤードがあり、工場の廃棄物が散乱している。数隻のヴァンプウィードが警備しているが、誰も使っていないようなので、もしかしたら中に入れてもらえるかもしれない。</text>
+	<choice hidden="true">
+		<text>スクラップヤードに入るよう頼む。</text>
+		<event>
+			<text>ヴァンプウィードがつるを揺らして、入るなと促す。"私を信じて、あなたはそこに行きたくない！屑鉄置き場には、人の似顔絵を盗むグールが取り憑いている！そして謎めいた言葉を話す！"</text>
+			<choice hidden="true">
+				<text>バガボンドがスクラップ置き場に？我々にお任せを</text>
+				<event>
+					<text>「バガボンドじゃない！これは超自然的な何かだ！私がグリーンリーフなら、死後の世界からの存在だと言うだろうが、これは普通の悪魔だと思う。危険を冒したいなら止めはしないが、注意してくれ！"それでもめげずに、あなたは自分で屑鉄置き場を探検し、状況を把握することにした。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>クルーが物資とグールを求めてスクラップヤードを歩き回ると、奇妙な物音が聞こえてくる。"Pakooj！マコー・マコー・ティップル・ラジュック！"小さな灰色の塊がスクラップの山から飛び出し、乗組員の一人の姿をしている！その生き物はおとなしいようで、あなたの慎重な動きにもかかわらず、子供のような好奇心であなたの後をついてくる。もしかしたら、この生き物を連れて帰ることができるかもしれない。少し時間と労力がかかるかもしれないが...。</text>
+							<choice>
+								<text>ブロブも一緒に。</text>
+								<event>
+									<text>その小さな塊は、あなたについてくるように説得すると、あなたの船でくつろぐようになった。出発の準備をしながら、あなたはヴァンプウィードに事態は収拾したと伝える。</text>
+									<crewMember amount="1" class="blob">パクージ</crewMember>
+								</event>
+							</choice>
+							<choice>
+								<text>ブロブを無視して、代わりにスクラップを持ち帰る。</text>
+								<event>
+									<text>ブロブに興味を引かれたとはいえ、出くわした謎めいた知覚を持つ可能性のある生物をいちいちリクルートしている暇はない。帰り道、あなたはヴァンプウィードたちに、この生物が何か重要なものである場合に備えて、その出自を調べるべきだと伝えた。</text>
+									<autoReward level="MED">standard</autoReward>
+								</event>
+							</choice>
+							<choice req="unique_ooj" hidden="true">
+								<text>("プー・ルー・パクージ！"</text>
+								<event>
+									<text>OOJの存在に反応して、小さなモーフが興奮してくねくねと動く。どうやらOOJの子供たちをもう一人見つけたようだね。推測するに、こいつは科学者の船に乗ってこっそりここに来たんだろう。</text>
+									<crewMember amount="1" class="blob">パクージ</crewMember>
+									<autoReward level="MED">standard</autoReward>
+								</event>
+							</choice>
+							<choice req="LIST_CREW_SHELL_SCIENTIST" hidden="true">
+								<text>(シェル・サイエンティスト）あなたのシェルはこれが何であるかを知っている。</text>
+								<event>
+									<text>どうやらこの塊はモーフのようだ。ジェニオクラシー・サイエンス・ディストリクトの最新の創造物のひとつで、彼らの最大の失敗作でもある。あなたのシェルは、このモーフが科学者の船に忍び込んで、はるばるここまでやってきたに違いないと考えているようだ。このクリーチャーは悪党になったが、幸いなことにクルーにとって彼らをコントロールすることはそれほど難しいことではないだろう。</text>
+									<crewMember amount="1" class="blob">パクージ</crewMember>
+									<autoReward level="MED">standard</autoReward>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>不気味に聞こえるね！私たちは帰ります。</text>
+				<event>
+					<text>超自然現象に手を出すなんてありえない。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>出て行け。</text>
+		<event>
+			<text>中に何が入っていても使い道はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="VAMPWEED_TERRAFORMING" unique="true">
+	<text>近くの惑星に建設されたギャザリングの大きな前哨基地の周りに集まったテラフォーミング船のコレクション。南軍とギャザリングの両方の船が見られるが、両者の団結は珍しい。</text>
+	<img planet="PLANET_UNPOPULATED_TERRA" />
+	<choice hidden="true">
+		<text>グループに近づく。</text>
+		<event>
+			<text>テラフォーミング・グループは非常に忙しそうだが、現場監督の1人があなたの質問にユーモアを交えて答えてくれた。カダヘリアン・エック条約第16条は、「共同保全法」と呼ばれるものを制定した。必要不可欠なサービスを提供しながら関係を改善するため、ギャザリングと連合国は、新たなガーデンワールドのホスト惑星となりうる惑星のテラフォーミングのプロセスを支援するための資源プールをそれぞれ確保した"ヴァンプウィードは顎をかき、あなたの船を点検する。"君は軍人だろう、少なくとも君の武器から察するに。我々の頼みを聞いてくれないか？"ギャザリング "が執拗に、プロセス開始前に "敷地を祝福する "ために僧侶を派遣するよう言ってきたんだが、それ以来連絡がないんだ。調べてくれないか？そうすれば手間が省ける"</text>
+			<choice hidden="true">
+				<text>同意する。</text>
+				<event load="VAMPWEED_TERRAFORMING_INSPECT" />
+			</choice>
+			<choice hidden="true" req="LIST_CREW_CARETAKER">
+				<text>(管理人クルー）自分の僧侶を派遣し、敷地を祝福するよう申し出る。</text>
+				<event>
+					<text>「申し出はありがたいが、新しいチームを派遣するという選択肢はないことを理解してほしい。最初のグループに何か悪いことが起これば、広報にとって悪夢となりかねない。何よりもまず、彼らの安全を確保しなければならない"</text>
+					<choice hidden="true">
+						<text>探すことに同意する。</text>
+						<event load="VAMPWEED_TERRAFORMING_INSPECT" />
+					</choice>
+					<choice hidden="true">
+						<text>衰退。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>衰退。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>テラフォーマーは無視しろ。</text>
+		<event>
+			<text>特にここに関わる理由もなく、去ることにしたのだろう。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="VAMPWEED_TERRAFORMING_INSPECT">
+	<event>
+		<text>あなたはフローラル族を探すためにチームを送った。彼らの足跡をたどっていくと、やがて地表にキャンプを設営し、南部連合産の高級酒に酔って意識を失っていることがわかった。君はテラフォーミング・チームに彼らの居場所を報告した。「くそっ！俺は...こいつらと一緒に仕事をすることになってるんだが...ときどきフローラルにイラつくことがあるんだ！うっ。ヴァンプウィードが酔っぱらってるのを見たことがないわけじゃないけど、ちょっとイラつく。とにかく、助けてくれてありがとう。お詫びに人を送ります」。</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>修道士を探していると、岩の表面に樹液と緑色の血が混じっているのを見つける。少し進むと、数体の死体とブラスターを持ったヴァンプウィードがいた。"奴らは緑色の葉っぱを俺たちのセクタに持ち込めると思ってるのか？アイバーは正気を失っている！アイバーは正気を失ってるんだ！ 連合国は共産狂信者どもの穢れを落としてこそ強いんだ！"</text>
+		<choice hidden="true">
+			<text>速やかに立ち去り、このことをテラフォーマーに報告すること。</text>
+			<event>
+				<text>この男が不安定なのは明らかだ。テラフォーマーたちは虐殺を聞いて取り乱している。「くそっ！死んだのか？全員か？本当にこんなことになってしまったのか？非武装の僧侶を外交使節として殺すのか？広報にとっては悪夢だ...しかし、対処してくれてありがとう。もし我々のチームがこれを見たら、自制できなかったかもしれない。</text>
+				<autoReward level="MED">standard</autoReward>
+				<choice>
+					<text>次へ...</text>
+					<event load="MORALITY_REMOVE_VAMPWEED" />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true" blue="false" req="LIST_CHECK_ANY_CREW" lvl="1">
+			<text>ヴァンプウィードを自力で倒そう。</text>
+			<event>
+				<text>完全に劣勢に立たされたクルーたちは、あっという間に狂人を退治した。テラフォーミング・チームに結果を報告すると、彼らは明らかに苦悶の表情を浮かべた。「くそっ！これはまずい......このことがニュースになれば、10年分の外交関係が台無しになりかねない！くそ、くそ...殺さなければよかったのに！彼を裁判にかけ、見せしめにすることが、この事態を収拾する唯一の方法だったかもしれない！それでも、助けようとしてくれたことには感謝する...ただ...くそっ！どうしよう！"</text>
+				<autoReward level="MED">standard</autoReward>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<event name="VAMPWEED_INJECTION" unique="true">
+	<text>シェルの調査ステーションが近くで声をかけてきた。「君はレネゲイドだね？君のような種族は、多種多様な種族を船に集める傾向があると聞いている。胞子発射装置とシェル神経毒システムの製造に使われる胞子の開発と収穫を手伝っている。あなたのクルーの何人かに毒胞子を注入して、何が起こるか確認しても構いませんか？もし何かエキゾチックなものがあれば、追加料金を払うよ。</text>
+	<ship load="SHIP_SHELL_STATION" hostile="false" />
+	<choice blue="false" hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0">
+		<text>さらに多くの科学者が、テスト用のダミーを他で探さなければならなくなるだろう。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice blue="false" req="LIST_CHECK_ANY_CREW" lvl="1">
+		<text>クルーの1人をテストに出す。</text>
+		<event>
+			<text>伝統に従ってくじを引き、乗組員の一人は科学のために血液に神のみぞ知る物質を注入されるため、しぶしぶ研究室に向かった。シェルたちは自分たちの実験に自信を持っているようだが、自分も同じ確信を持っているとは言えない。</text>
+			<autoReward level="HIGH">item</autoReward>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="VAMPWEED_INJECTION_TEST" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="siren">
+		<text>(サイレン) あなたのサイレンをテストに出してください。</text>
+		<event>
+			<text>"えー...これを本当にどうしたらいいのかわからないんだ。エキゾチックなんだけどね。よし、見てみよう..."</text>
+			<autoReward level="HIGH">standard_no_item</autoReward>
+			<weapon name="GIFTLIST_SPORE_ELITE" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="VAMPWEED_INJECTION_TEST_SIREN" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="siren_harpy">
+		<text>(ハーピー）ハーピーをテストに出す。</text>
+		<event>
+			<text>"えー...これを本当にどうしたらいいのかわからないんだ。エキゾチックなんだけどね。よし、見てみよう..."</text>
+			<autoReward level="HIGH">standard_no_item</autoReward>
+			<weapon name="GIFTLIST_SPORE_ELITE" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="VAMPWEED_INJECTION_TEST_HARPY" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="unique_obyn">
+		<text>(産科）サルトマンを検査に出す。</text>
+		<event>
+			<text>"えー...これを本当にどうしたらいいのかわからないんだ。エキゾチックなんだけどね。よし、見てみよう..."</text>
+			<autoReward level="HIGH">standard_no_item</autoReward>
+			<weapon name="GIFTLIST_SPORE_ELITE" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="VAMPWEED_INJECTION_TEST_OBYN" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="spider_weaver">
+		<text>(ウィーバー）ウィーバーをテストに出してください。</text>
+		<event>
+			<text>"えー...これを本当にどうしたらいいのかわからないんだ。エキゾチックなんだけどね。よし、見てみよう..."</text>
+			<autoReward level="HIGH">standard_no_item</autoReward>
+			<weapon name="GIFTLIST_SPORE_ELITE" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="VAMPWEED_INJECTION_TEST_WEAVER" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="spider">
+		<text>(スパイダー）あなたのスパイダーをテストに出してください。</text>
+		<event>
+			<text>"えー...これを本当にどうしたらいいのかわからないんだ。エキゾチックなんだけどね。よし、見てみよう..."</text>
+			<autoReward level="HIGH">standard_no_item</autoReward>
+			<weapon name="GIFTLIST_SPORE_ELITE" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="VAMPWEED_INJECTION_TEST_SPIDER" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>拒否する。</text>
+		<event>
+			<text>シェルはあなたの科学的好奇心の欠如を恥じて首を振り、電話を切った。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="VAMPWEED_INJECTION_TEST">
+	<event name="VAMPWEED_INJECTION_TEST_FAIL">
+		<text>しばらくしてシェルから連絡があり、明らかに落胆し、動揺している。「うまくいかなかった。まったく何も起こらなかった！濃度が違うんだ..."シェルの落胆とは裏腹に、あなたはクルーが無事に戻ってきたことを喜んでいる。</text>
+	</event>
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event>
+		<text>"はい！うまくいきました！ハハハ！"そのような熱意から、あなたはクルーがすぐに戻ってくると思っていた。その代わり、実験開始直後に神経毒で死んでしまったようだ。シェルたちは少し謝るが、それ以外は成功に夢中で、あなたたちの苦境など気にも留めていない。</text>
+		<removeCrew>
+			<clone>false</clone>
+			<text>どういうわけか、クローン・ベイがクルーのメンバーを登録していないようだ。これはシェルの仕業に違いないが、確信が持てない。</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>貝を攻撃して復讐を果たせ</text>
+			<event name="VAMPWEED_INJECTION_TEST_FIGHT">
+				<text>乗組員の命が奪われたことと、それに無関心なシェルに憤慨し、武器を武装して攻撃する！</text>
+				<ship hostile="true" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_UPDATE_SHELL_FIGHT" />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>騒ぎを起こさずに立ち去る。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+<eventList name="VAMPWEED_INJECTION_TEST_SIREN">
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event>
+		<text>"はい！うまくいきました！ハハハ！"そのような熱意から、あなたはクルーがすぐに戻ってくると思っていた。その代わり、実験開始直後に神経毒で死んでしまったようだ。シェルたちは少し謝るが、それ以外は成功に夢中で、あなたたちの苦境など気にも留めていない。</text>
+		<removeCrew class="siren">
+			<clone>false</clone>
+			<text>どういうわけか、クローン・ベイがクルーのメンバーを登録していないようだ。これはシェルの仕業に違いないが、確信が持てない。</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>貝を攻撃して復讐を果たせ</text>
+			<event load="VAMPWEED_INJECTION_TEST_FIGHT" />
+		</choice>
+		<choice hidden="true">
+			<text>騒ぎを起こさずに立ち去る。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+<eventList name="VAMPWEED_INJECTION_TEST_HARPY">
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event>
+		<text>"はい！うまくいきました！ハハハ！"そのような熱意から、あなたはクルーがすぐに戻ってくると思っていた。その代わり、実験開始直後に神経毒で死んでしまったようだ。シェルたちは少し謝るが、それ以外は成功に夢中で、あなたたちの苦境など気にも留めていない。</text>
+		<removeCrew class="siren_harpy">
+			<clone>false</clone>
+			<text>どういうわけか、クローン・ベイがクルーのメンバーを登録していないようだ。これはシェルの仕業に違いないが、確信が持てない。</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>貝を攻撃して復讐を果たせ</text>
+			<event load="VAMPWEED_INJECTION_TEST_FIGHT" />
+		</choice>
+		<choice hidden="true">
+			<text>騒ぎを起こさずに立ち去る。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+<eventList name="VAMPWEED_INJECTION_TEST_OBYN">
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event>
+		<text>"はい！うまくいきました！ハハハ！"そのような熱意から、あなたはクルーがすぐに戻ってくると思っていた。その代わり、実験開始直後に神経毒で死んでしまったようだ。シェルたちは少し謝るが、それ以外は成功に夢中で、あなたたちの苦境など気にも留めていない。</text>
+		<removeCrew class="unique_obyn">
+			<clone>false</clone>
+			<text>どういうわけか、クローン・ベイがクルーのメンバーを登録していないようだ。これはシェルの仕業に違いないが、確信が持てない。</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>貝を攻撃して復讐を果たせ</text>
+			<event load="VAMPWEED_INJECTION_TEST_FIGHT" />
+		</choice>
+		<choice hidden="true">
+			<text>騒ぎを起こさずに立ち去る。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+<eventList name="VAMPWEED_INJECTION_TEST_SPIDER">
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event>
+		<text>"はい！うまくいきました！ハハハ！"そのような熱意から、あなたはクルーがすぐに戻ってくると思っていた。その代わり、実験開始直後に神経毒で死んでしまったようだ。シェルたちは少し謝るが、それ以外は成功に夢中で、あなたたちの苦境など気にも留めていない。</text>
+		<removeCrew class="spider">
+			<clone>false</clone>
+			<text>どういうわけか、クローン・ベイがクルーのメンバーを登録していないようだ。これはシェルの仕業に違いないが、確信が持てない。</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>貝を攻撃して復讐を果たせ</text>
+			<event load="VAMPWEED_INJECTION_TEST_FIGHT" />
+		</choice>
+		<choice hidden="true">
+			<text>騒ぎを起こさずに立ち去る。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+<eventList name="VAMPWEED_INJECTION_TEST_WEAVER">
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event load="VAMPWEED_INJECTION_TEST_FAIL" />
+	<event>
+		<text>"はい！うまくいきました！ハハハ！"そのような熱意から、あなたはクルーがすぐに戻ってくると思っていた。その代わり、実験開始直後に神経毒で死んでしまったようだ。シェルたちは少し謝るが、それ以外は成功に夢中で、あなたたちの苦境など気にも留めていない。</text>
+		<removeCrew class="spider_weaver">
+			<clone>false</clone>
+			<text>なぜかクローンベイにクルーが登録されていないようだ。これはシェルの仕業に違いないが、確証はない。</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>貝を攻撃して復讐を果たせ</text>
+			<event load="VAMPWEED_INJECTION_TEST_FIGHT" />
+		</choice>
+		<choice hidden="true">
+			<text>騒ぎを起こさずに立ち去る。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+
+<event name="VAMPWEED_RIOT" unique="true">
+	<text>近くに人が住んでいる惑星があることに気づき、都市を調べようと近づいてみると、通りは大混乱に陥っていた。暴徒化したヴァンプウィードの群れが船体を前後に揺さぶり、装甲を破って中に入ろうとしている。叫び声が聞こえる。「連邦が俺たちの生活に介入してくるのにはうんざりだ！お前たちは歓迎されない、エネルギーフリーク！」「連邦よ、お前たちの時代は終わりつつある！アイバーの汚れた血筋は、もう我々に迷惑をかけない！」。</text>
+	<img planet="PLANET_POPULATED_GRASSY" />
+	<choice hidden="true">
+		<text>何が起きているのか、市の担当者に聞いてみよう。</text>
+		<event>
+			<text>「援軍が到着したのか？さっきゾルタンの商人がここを通ったんだが、彼らの護衛が短時間ここに停泊し、目撃者によると酔っ払って何人かの女性を口説き始めたらしい。酒場は怒って彼らを通りから追い出し、連邦がどうのこうのと唱えたそうだ。今は政治なんてどうでもいい。このような混乱は、首相閣僚の誰かがアイバーを打倒し、連合に参加しようと政府に対する陰謀を始めて以来、ずっと起きている。私たちは努力しましたが、私たちだけでは秩序を取り戻すことができません。"助けていただけませんか？"</text>
+			<choice hidden="true">
+				<text>混雑を和らげよう。</text>
+				<event load="VAMPWEED_RIOT_CALM" />
+			</choice>
+			<choice hidden="true">
+				<text>群衆を解散させるために発砲する。</text>
+				<event load="VAMPWEED_RIOT_VIOLENT" />
+			</choice>
+			<choice hidden="true">
+				<text>暴徒に加われ。</text>
+				<event>
+					<text>あなたはヴァンプウィードたちと一緒に詠唱しながら、市庁舎を出て通りへと行進する。彼らはあなたが誰なのか、なぜそこにいるのか、かなり困惑しているが、あなたが武器を持っているのを見て、混乱に参加させようと躍起になっている。あなたはその瞬間に吸い込まれ、自分が何をしているのか、なぜそこにいるのか、完全に集中を失う。現実に戻ったときには、ゾルタンは死んでおり、積荷は盗まれたスクラップでいっぱいだった。</text>
+					<crewMember amount="1" weapons="1" class="orchid_vampweed" />
+					<autoReward level="MED">scrap_only</autoReward>
+					<choice>
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ZOLTAN_VAMPWEED_GENERAL" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>援助を拒否して立ち去る。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>暴動を避ける。</text>
+		<event>
+			<text>あのような暴力的な暴動に巻き込まれて、任務を危険にさらすわけにはいかない。あなたは惑星から離れる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="VAMPWEED_RIOT_CALM">
+	<event>
+		<text>暴徒たちはあなたの口から出る言葉に耳を貸さず、代わりにあなたに向かって侮辱的な言葉を浴びせる。ブーイングに耐えながら船に戻ると、酔っぱらったヴァンプウィードが船体を叩き、中に入ろうとしていた！</text>
+		<boarders min="2" max="3" class="orchid_vampweed" />
+	</event>
+	<event>
+		<text>群衆をなだめようとしても、彼らの怒りはあなたに向かうばかりで、ゾルタンが船をパワーアップさせて飛び去るには十分な気晴らしとなった。その間にゾルタンは船をパワーアップさせて飛び去る。</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>「I'M DONE！もう終わりだ！"突然、あなたが反応する前に、ゾルタンが這い出てきて、彼らの船の上に立つ。「もう終わりだ！お前の言うとおりだ！連邦は間違いだった！ハハハ！甘い自由だ！"ゾルタンは群衆の中に飛び込み、筐体が崩壊するまで殴られ、爆発で散乱した死体の山から残った鎧の残骸をかき集める。ゾルタンは群衆の中に飛び込み、シャーシが崩壊するまで殴られ、爆発で散らばった死体の間から残った鎧の残骸をかき集める。</text>
+		<autoReward level="LOW">scrap_only</autoReward>
+	</event>
+	<event>
+		<text>しかし突然、停泊していた造船所の近くで爆弾が爆発した！暴徒たちは四方八方に逃げ回り、互いに踏みつけ合う。ゾルタンのピースキーパーが船から抜け出し、あなたに近づく。「お願いです、こんなことをしたら、彼らは私を魔法省に戻すことはできないでしょう。そしてもっと重要なのは、アカデミーが私を許してくれる方法を見つけることだ！"</text>
+		<crewMember amount="1" class="zoltan_peacekeeper" />
+		<damage amount="5" />
+	</event>
+</eventList>
+<eventList name="VAMPWEED_RIOT_VIOLENT">
+	<event>
+		<text>群衆に発砲するというあなたの選択は、少なくとも市警は誰も感心しない。暴徒は退散するどころかさらに凶暴化し、備えのない市警は状況を少しでもコントロールしようと、良識に反して突入してきた。あなたは「最後の2つの脳細胞がFTLドライブの起動方法を思い出したらすぐに」立ち去るよう求められる。</text>
+		<choice>
+			<text>次へ...</text>
+			<event load="MORALITY_UPDATE_VAMPWEED" />
+		</choice>
+	</event>
+	<event>
+		<text>群衆に発砲するのは確かに最も暴力的な選択肢だが、群衆を強制的に退散させることができる。医療関係者も警察も負傷者を避難させるために到着し、街のリーダーたちはあなたたちをあまり喜ばない。しかし喜んでいるのは、あなたが助けたばかりのゾルタンだ。彼らはあなたの助けについて省に良い報告をすると約束し、物資を提供してくれる。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice>
+			<text>次へ...</text>
+			<event load="MORALITY_REMOVE_ZOLTAN_UPDATE_VAMPWEED" />
+		</choice>
+	</event>
+</eventList>
+
+<eventList name="ITEMS_VAMPWEED_UNIQUE">
+	<event load="VAMPWEED_SLAVES" />
+	<event load="VAMPWEED_GARDEN" />
+	<event load="VAMPWEED_SCRAPYARD" />
+	<event load="VAMPWEED_TERRAFORMING" />
+	<event load="VAMPWEED_INJECTION" />
+	<event load="VAMPWEED_RIOT" />
+</eventList>
+
+	
+<eventList name="NEUTRAL_VAMPWEED">
+	<event load="VAMPWEED_FIRE" />
+	<event load="VAMPWEED_THEFT" />
+	<event load="VAMPWEED_BADREBEL" />
+	<event load="VAMPWEED_CAMPAIGN" />
+	<event load="VAMPWEED_ALKRAM" />
+	<event load="VAMPWEED_CARGO" />
+</eventList>
+
+<event name="VAMPWEED_FIRE" unique="true">
+	<text>ビーコン周辺には産業インフラの痕跡が点在し、現在炎上中のヴァンプウィード工場らしき場所に視線を誘導する！</text>
+	<choice hidden="true">
+		<text>できる限り生存者を救出すること！</text>
+		<event>
+			<text>あなたは急いで工場ステーションに乗り込み、被害状況を調査しようとした。しかし、ステーションの大部分はまったく問題ないようだ。明らかに黒焦げになっているにもかかわらず、炎そのものはほとんどの重要なエリアで鎮火しており、クルーは組立室のひとつに身を寄せている。工場長の一人があなたの存在に気づく。「ああ、レネゲイド。だが、その必要はなかった。すべての連合国の工場は、このような緊急事態に備えて十分な消火システムを設置することが法律で義務付けられている。しかし、せっかく来てくれたのだから、少しは助けてほしい」
+
+ヴァンプウィードは小さな水筒を取り出し、ほのかに酔わせる飲み物を数口飲む。"このような火事は通常、偶然には起こらない。我々の設備は一流だし、従業員もよく訓練されている。原因は、資本主義産業の中枢を不安定にしようとした、ある種のグリーンリーフの共産主義者の仕業としか思えない！畜生フローラルどもは、我々の繁栄する経済を軽蔑している。彼らはギャザリング評議会が、連合国に追い抜かれた今、経済システムの見直しを迫られていると言っている。数日前、ギャザリングの船がここを通過した。私の願いを聞いてくれ 彼らを追跡し 正義が果たされるのを見届けてくれ大金を払おう"</text>
+			<choice hidden="true">
+				<text>フローラルを追跡することに同意する。</text>
+				<event>
+					<text>ヴァンプウィードが警告したように、あまり探検しないうちにフローラル船を見つける。彼らはあなたを見てかなり驚いた様子で、手話を何度か繰り返しながら急ぎ足で進んでいく。「連邦！これは予想外だ。友好的なのですね？"慌てて火事のことを尋ねると、彼らはさらにいくつかのメッセージを返してきた。「火事？ええ、ひどい悲劇でした。私たちはその場にいませんでしたが、通り過ぎるのを見ました。助けてあげようと思ったんですが、彼らのような種族は、私たちが助けようとしているだけでも攻撃的になることがあるんです......」。彼らの "同類 "という言い方に何か違和感を覚えるが、彼らを非難するほどだろうか？</text>
+					<ship load="SHIP_VAMPWEED_FIRE" hostile="false" />
+					<choice hidden="true">
+						<text>彼らを告発し、正義を貫くのだ。</text>
+						<event>
+							<text>彼らが犯人かどうかはまだ確信が持てないが、証拠は彼らに不利に積み重なっているようだ。フローラルは怯えつつも、あなた方の攻撃には抗議せず、その代わりに自分たちを守る準備をする！</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>ヴァンプウィードに戻り、フローラルに責任はないと伝える。</text>
+						<event>
+							<text>フローラルに別れを告げ、工場に戻る。「彼らに責任はないのか？マジで？ただのバカなのか、共犯者なのかわからないよ！"ヴァンプウィードは深呼吸をして、水筒をしまう。「すみません、ストレスで最近ちょっと飲みすぎちゃって。私たちを助けようとしてくれてありがとう。君のような人がいれば、連邦も悪くない。私の部下なら、あなたを助ける方法を見つけられると思います。"</text>
+							<autoReward level="LOW">stuff</autoReward>
+							<damage amount="-7" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>拒否する。</text>
+				<event>
+					<text>「それならいい。連邦の肉屋が最後にギャザリング側につくのは予想できたことだ。少なくとも、あなたはこの火を消そうとした..."</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>任務を危険にさらすわけにはいかない。</text>
+		<event>
+			<text>中に何が入っていても使い道はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="VAMPWEED_FIRE_WIN">
+	<text>あなたが工場に戻る頃には、ほとんどの火はすでに消し止められた。「奴らのせいだとわかっていた。カダヘリアン・エクは間違いだった。我々は、この薄汚い緑の葉っぱたちと和平を結ぼうとすべきではなかった！助けてくれてありがとう。帰り際に部下から見返りを渡しておこう。</text>
+	<weapon name="GIFTLIST_SPORE" />
+</event>
+
+<event name="VAMPWEED_THEFT" unique="true">
+	<text>ビーコン付近で2隻の船が交易しており、1隻は北軍船、もう1隻は南軍船だった。ほどなくして、2隻の船は新しい積荷を積んだまま別れる。乗組員をすぐに殺せるようなら、どちらかを追いかけて積荷を奪うこともできるだろう。</text>
+	<choice hidden="true">
+		<text>ユニオンの船を追え！</text>
+		<event>
+			<text>あなたは武器をパワーアップさせ、積荷を奪おうとユニオン船を追いかける。</text>
+			<ship load="SHIP_VAMPWEED_THEFT_UNION" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>南軍の船を追え！</text>
+		<event>
+			<text>あなたは武器をパワーアップさせ、積荷を奪おうと南軍の船を追いかける。</text>
+			<ship load="SHIP_VAMPWEED_THEFT_VAMP" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_VAMPWEED_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>2隻の船は無視してください。</text>
+		<event>
+			<text>君は海賊じゃないんだから、こんな風に罪のない一般市民を追いかけて強盗に行くことはない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="VAMPWEED_THEFT_UNION_CARGO">
+	<event>
+		<text>ユニオン船には新品のスポア・ランチャーが積まれていた！あなたはその武器を手に取り、船に持ち帰る。</text>
+		<weapon name="GIFTLIST_SPORE" />
+	</event>
+	<event>
+		<text>ユニオン船はヴァンプウィードのドローンの設計図を積んでいた！あなたは回路図を手に取り、船に持ち帰る。</text>
+		<drone name="GIFTLIST_VAMPDRONE" />
+	</event>
+	<event>
+		<text>ユニオン船の積荷には、残念ながら特別なものは入っていない。取引は成立しなかったのだろうが、余分に持っていく物資は見つかった。</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+</eventList>
+<eventList name="VAMPWEED_THEFT_VAMP_CARGO">
+	<event>
+		<text>南軍の船には標準的なバーストレーザーが積まれていた！あなたはその武器を手に取り、船に持ち帰る。</text>
+		<weapon name="GIFTLIST_BURST_LASER" />
+	</event>
+	<event>
+		<text>南軍の船は特殊な実用兵器を積んでいた！あなたはそれをつかんで船に持ち帰る。</text>
+		<weapon name="GIFTLIST_UTILITY" />
+	</event>
+	<event>
+		<text>南軍の船の積荷には、北軍のものと思われるものはない。交易は成立しなかったのだろうが、地図データと資源があることに気づき、持ち帰ることにした。</text>
+		<reveal_map />
+		<autoReward level="LOW">stuff</autoReward>
+	</event>
+</eventList>
+
+<event name="VAMPWEED_BADREBEL" unique="true">
+	<text>ダークブルーの船体を持つ反乱軍の艦船が、ユニバース1の軌道を周回し、艦船をパトロールしている。背後では、つい最近、ヴァンプウィードのコロニーが焼き払われたようだ。</text>
+	<ship load="SHIP_REBEL_MV_FIGHT" hostile="false" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>船長はあなた方の船を見つけると、すぐに呼びかけを行った。「なんということだ。またしても幸運な日だ！反乱軍と一緒にいれば、毎日がラッキーだ！私の手際のよさに感心したか？反乱軍は燃えているコロニーの方向に手を動かす。「私はヴァン1号から特急で送り込まれた この現実で連邦の盟友に嫌がらせをし 人類への恐怖を植え付けるためだつまり...雑草に大した違いはないだろう？どちらも庭からむしり取らねばならない害虫に過ぎず、そうすればより大きな強い種が生き残ることができる」
+
+自慢の毛布の下に必死に隠されている後悔の念を感じる。「連合は連邦と連合の中間にある。彼らが何を選ぼうと、彼らはフローラルよりも問題だ"</text>
+			<choice hidden="true">
+				<text>これは不当な虐殺だ！</text>
+				<event>
+					<text>「フン！まるでお前が正義の道徳的権威であるかのようだ！連邦の手が我々よりきれいだとでも？我々は全面戦争中だ。目的さえ達成できれば何でもありだ。お前は暴君の肩代わりをする 官僚の肉屋だ 私は人類の 栄光の代理人だユニバース1のために！"</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="unique_jerry" hidden="true">
+				<text>(ジェリー）彼らを戒めなさい。</text>
+				<event>
+					<text>ジェリーは悲しそうに首を振る。「よく聞け。この人たちはあなたに何もしていない。命令に従わなければならないとしても、戦争をしなければならないとしても......せめて罪のない民間人に敬意を払えないのか」
+ 反乱軍の顔が青ざめる。"ジェリー？彼はここで何をしているんだ？"反乱軍は飲み込む。"しかし...彼らは...彼らはふさわしくない..."他の反乱軍の一人が彼を引き離し、すぐに副官が歩み寄る。「君の言っていることに完全に同意できるかどうかはわからない。でも私たちは、もっとうまくやれると証明したい。船長は拘留室で残りの時間を過ごすことになる。どうかお許しいただきたい。その代わり、艦隊はあなたの背中に触れないようにします"</text>
+					<modifyPursuit amount="-2" />
+				</event>
+			</choice>
+			<choice req="unique_mayeb" hidden="true">
+				<text>(メイエブ）彼らを諭すんだ。</text>
+				<event>
+					<text>"あなたには本当にうんざりする。命を大切にせず、ただ教義だけを重んじるあなた。自分の汚染された宇宙をはるかに超えて、自分の病気を広げている」
+メイブの睨みが強くなる。彼女はスクリーンに映し出されたリーベルを指さす。反乱軍兵士は唸り声を上げるが、彼女が言っていることを理解しているようだ。彼の返答はぎこちない："私たち人間は......団結して......繁栄できる世界を作っているだけです"彼は首を振る。"雑草には理解できない！"彼はメイエブが返答する前に通信を切った。衝突は避けられなかった。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="unique_tyerel" hidden="true">
+				<text>(タイ・エレル）彼らを叱責しなさい。</text>
+				<event>
+					<text>タイ・エレルは姿勢を正し、咳払いをした。私たち "雑草 "の遺伝的多様性は、あなたたち人間よりもはるかに大きい。私たちは交配することはできるが、異なる亜種だ。たしかにギャザリングと連合軍は対立してきたが、それでも我々は協力し合うことができる。同じことが言えるか？あなた方は連邦の人間とは異なる種族ですらない。自分たちを虐殺するような...そんな植物を本当に庭に植えたいと思いますか」
+
+人間は困っているようだ。"あなた..."しばらく言いよどんだ後、彼は船の武器を起動させる。"植物は常に劣る。自分の種族を強くするために必要なことを我慢できないのか！"</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="unique_ivar" hidden="true">
+				<text>(イーヴァル）彼らの没落を知らせろ。</text>
+				<event>
+					<text>アイバーはまばたきをして、破壊されたコロニーについての感情を整理する時間が必要なようだ。「ひとつだけ正しいことがある。とアイバーは言う。"オーキッズは多くの人が評価している以上に似た者同士だ。私たちは、常に互いの喉元にあるわけではない。私たちは互いに学び合い、高め合っていく。いつの日か私は 連合への加盟を願い出るだろう反乱軍は中立を望み連邦はかつてないほど強くなる！」
+「愚かな...不器用な植物め！人間が連邦を強くできなかったのなら、どの種族にもできない。連邦を滅ぼすのはお前だ！"反乱軍は敵意をむき出しにして、あなたに近づいていく！</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice><choice hidden="true" req="LIST_CREW_FLORAL">
+				<text>(フローラル・クルー）「あなたは私の種族を虐殺した！お前には迅速な報復がふさわしい。"命の木に慈悲があらんことを"</text>
+				<event>
+					<text>「フン。お前の先進技術は、プラントという種族の時代遅れの習慣を裏切っている！壊れた夢と間違った統一感に汚染された多元宇宙以外の何物でもない。クルーに攻撃を命じているときでさえ、反乱軍の心はまだその中にないことが感じられる。それでも彼はとにかく命令を実行する。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_VAMPWEED">
+				<text>(ヴァンプウィード・クルー）「未開の怪物め！あのコロニーはお前たちに何の脅威も与えなかった！"</text>
+				<event>
+					<text>"あなた方が未開と呼ぶものを、私は反乱軍の栄光を広める一日の仕事と呼ぶ。我々は未来だ。それを受け入れられないなら、歴史はお前たちを忘れるだろう"クルーに攻撃を命じながらも、ヴァンプウィードの言葉から反乱軍の心の痛みを感じ取ることができる。それでも彼は命令を実行する。つまり、衝突は避けられないということだ。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>私は気にしない。</text>
+				<event>
+					<text>反乱軍はあなたの侮辱に眉をひそめたが、それ以上何も言わなかった。あなたは対立を期待しているが、彼はただ黙っている。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="VAMPWEED_CAMPAIGN" unique="true">
+	<text>近くから、シェルの科学船からの呼びかけを受ける。「おい、お前。あんたが誰で、なぜここにいるのかはどうでもいい。銃を持ってるんだろ？銃の正確な撃ち方を知っている者が必要なんだ。それが君に当てはまるかな？"</text>
+	<choice hidden="true">
+		<text>どうしたんだ？</text>
+		<event>
+			<text>"ヴァンプ "の友人たちがトラブルに巻き込まれた。"アイヴァーよりアイアーの方がリーダーとしてふさわしい""連合国には連合国の方がふさわしい "と言っているんだ。もしそうなったら......現在の科学同盟はおしまいだ。ジェニオクラシーは、連合への参加を断固として拒否する。私たちは自分たちのやり方で物事を進め、自分たちで同盟国を選ぶ。スラッグとも組まない我々の友人を殴ってくれないか？彼らが自分たちの状況の深刻さを理解しているかどうか、私のドリフトを理解しているかどうか。"</text>
+			<choice hidden="true">
+				<text>同意する。</text>
+				<event>
+					<text>あなたはシェルから与えられた座標に航行し、ヴァンプウィードの船にロックオンする。すぐに、彼らはあなたを侮辱して叫び始める。「ブッチャー連邦の暗殺者！お前は反乱軍以下だ！"彼らの陳腐で生気のない叫び方から、連合がこれまで引きつけてきた最も聡明で霊感のある信者ではないと思われる。</text>
+					<ship load="SHIP_VAMPWEED_CAMPAIGN" hostile="false" />
+					<choice hidden="true">
+						<text>彼らを攻撃し、コンプライアンスを強要する！</text>
+						<event>
+							<text>こいつらを説得するには武力が必要だ。ただ、あまり厳しくしすぎないことだ。シェルは彼らの死を望んでいない。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>こんなことに時間を費やす価値はない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>拒否する。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>力になれません。</text>
+		<event>
+			<text>シェルは苛立ったように呻き、電話を切った。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>銃」とは何か？</text>
+		<event>
+			<text>相手側は沈黙し、通話は直ちに終了する。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="VAMPWEED_CAMPAIGN_SURRENDER">
+	<text>"ブタめ、我々を負かしたな！連邦はモラルの限度がないんだ！全人類に最高主権を行使するために！"</text>
+	<choice hidden="true">
+		<text>私たちは嫌がらせをしに来たのではありません。友人たちはあなたのことを心配しているのです。</text>
+		<event>
+			<text>「仲間がレネゲイドを雇って私を殺しかけた？理由はどうでもいい！この貝は時々ね、本当よ。"ヴァンプウィードが花びらを掻く。"まあ、連合との生活がどんなものか、味わったというところかな。正直なところ、レネゲイドが見かけたら全員殺さないという自制心を持っていることすら知らなかった」
+
+ヴァンプウィードはため息をつく。"わかった、とりあえず連合の仕事はあきらめよう。キーワードは『今のところ』だ。代替案を検討し、どちらが良いか天秤にかけるつもりだ。"</text>
+			<ship hostile="false" />
+			<choice hidden="true">
+				<text>貝殻に戻る。</text>
+				<event>
+					<text>「よかった、少なくとも少しは分別がついたようだ。連邦は私の好きな組織ではないが、銀河の利益には連合よりはるかに適している。ご褒美にこれをどうぞ。"</text>
+					<autoReward level="LOW">standard</autoReward>
+					<weapon name="GIFTLIST_SPORE" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>攻撃を続ける。</text>
+		<event load="MORALITY_UPDATE_VAMPWEED" />
+	</choice>
+</event>
+
+<event name="VAMPWEED_ALKRAM" unique="true">
+	<text>リーチの革命家が猛スピードであなたの横を通り過ぎたが、突然止まり、反転した。息を切らして太りすぎたリーチがあなたのビデオスクリーンに映し出される。「ハァ...ハァ...戦争の瀬戸際は近い！今こそ、我々の行動の結果がかつてないほど重要なのだ！愚かなティルデオが共和国に破滅をもたらした。しかし、私は最後の証人にならない私は戦う！共和国を救うため 銀河を救うために戦う銀河を救うために戦う！ 取り返しがつかなくなる前に過ちを正す</text>
+	<ship load="SHIP_ALKRAM_GENERIC" hostile="false" />
+	<choice hidden="true">
+		<text>なぜファントムみたいなことを言うんだ？</text>
+		<event>
+			<text>"えー...効いてないの？頭が良くなるって聞いたんだけど。効いていないのなら、やめようかな、本当に頭が痛くなりそうだから。ご存じかもしれませんが、アールゲン共和国のティルデオ大統領は現在内戦状態にあり、連合国は革命派の側に立っています。私はリーダーであるアルクラムによって、関係を良好に保つために選ばれました。大使館に贈り物を持っていくことになってるんだけど...何を持っていけばいいのか全然わからないんだ。過去2回、リーチが他の国家元首に外交的な贈り物をしたとき、全面戦争を引き起こした。3回目にはなりたくないんだ"</text>
+			<choice hidden="true">
+				<text>ランダムにアイデアを出す。</text>
+				<event load="VAMPWEED_ALKRAM_IDEAS" />
+			</choice>
+			<choice>
+				<text>自分から贈り物をする。</text>
+				<event>
+					<text>「ワオ、本当に？本当に？ありがとう、レネゲイド。結局、このミッションは失敗じゃないかも。共和国にまだ希望がある</text>
+					<item_modify>
+						<item type="scrap" min="-45" max="-45" />
+						<item type="fuel" min="-3" max="-3" />
+						<item type="missiles" min="-3" max="-3" />
+						<item type="drones" min="-3" max="-3" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>彼らが立ち去る前に、蛭たちは大使館への形見分け候補を含む感謝の贈り物を差し出す。</text>
+							<modifyPursuit amount="-1" />
+							<upgrade amount="1" system="reactor" />
+							<augment name="RANDOM" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="ORCHID_KIDS">
+				<text>(オーキッドチルドレン) いくつかの死体を贈り物として差し出す。</text>
+				<event>
+					<text>"................................."
+
+The Leech is silent for a few moments."我々の歴史を侮辱するのか？ティルデオがこの戦争を始めたそもそもの経緯はまさにこれだ！このバカ！我々の歴史に対するそのようなはなはだしいジャブは許さない！"</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>私たちは助けられない。</text>
+				<event>
+					<text>"クソッ！"リーチは電話を切ると、再び高速で飛び去る。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>革命家を攻撃せよ！</text>
+		<event>
+			<text>いかなる革命家も、国家に対する裏切り者だ。さらに、これはスクラップのチャンスでもある！銃を武装させろ！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>放言するリーチは無視して立ち去る。</text>
+		<event>
+			<text>あなたはリーチの大演説の途中でミュートし、飛び去る。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="VAMPWEED_ALKRAM_IDEAS">
+	<event>
+		<text>あなたはしばらくの間、ブレインストーミングを行い、ヒルのために2、3のアイデアを吐き出した。彼らはあなたの努力に感謝したが、どのアイデアも彼らを満足させるものではなかった。戻ってきたらどんな運命が待っているのだろうとパニックになった彼らは、船を捨ててあなたと一緒に行けるかどうか尋ねることにした。</text>
+		<crewMember amount="1" class="leech" />
+	</event>
+	<event>
+		<text>あなたはしばらくの間、ブレインストーミングを行い、ヒルのためのアイデアを2つほど吐き出した。「私たちが何を求めているのか理解していないようだ。これは外交任務のはずだ"リーチはため息をつくと、解決策を見つけるために、あるいはあなたより良い解決策を思いつく誰かを見つけるために、再び高速で駆け出す。</text>
+	</event>
+	<event>
+		<text>あなたはしばらくの間、頭を悩ませ、ヒルのためのアイデアを2つほど吐き出した。"ふむ...そのうちの一つは使えそうだ。そうだね...まだよくわからないけど、花の束よりは何でもいいよね？"</text>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+</eventList>
+
+<event name="VAMPWEED_CARGO" unique="true">
+	<text>南軍の船が、さまざまな貨物を積んだ荷台を守っている。見たところ、すべてまもなく出荷されるようだ。これを利用したいなら、素早く行動する必要がある。もちろん、連合国からの尊敬を失うリスクを負う覚悟があればの話だが。</text>
+	<ship load="SHIP_VAMPWEED_CARGO" hostile="false" />
+	<choice hidden="true">
+		<text>貨物にアクセスするために船を攻撃する！</text>
+		<event>
+			<text>武器を武装し、ヴァンプウィードの船と交戦する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_VAMPWEED_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="cloaking" lvl="2">
+		<text>(Upg.隠蔽)プラットフォームに忍び寄り、こっそりと貨物を盗む。</text>
+		<event load="VAMPWEED_CARGO_OPEN" />
+	</choice>
+	<choice hidden="true">
+		<text>ホームは無傷のままにしておく。</text>
+		<event>
+			<text>目についた物資を盗み食いして、接触した人の怒りを買うようでは意味がない。それよりはマシだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="VAMPWEED_CARGO_OPEN">
+	<event>
+		<text>カーゴ・コンテナの中にスポア・ランチャーがある！それを手に取り、自分の船に持ち帰る。</text>
+		<weapon name="GIFTLIST_SPORE" />
+	</event>
+	<event>
+		<text>貨物を探していると、輸送コンテナのひとつに隠れているヴァンプウィードを発見して驚く！「待ってくれ！頼む、俺がここにいることは誰にも言わないでくれ。私はこのセクターから脱出しなければならない！私は役に立つことができるんです！ お願いですから、ここから出るのを助けてください！"</text>
+		<crewMember amount="1" class="orchid_vampweed" />
+	</event>
+	<event>
+		<text>カーゴの中には余分な物資以外何もない。特にエキサイティングではないが、不満はない。</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>貨物の中にヴァンプウィード専用ドローンの設計図が入っている。それを自分の船にダウンロードする。</text>
+		<drone name="GIFTLIST_VAMPDRONE" />
+	</event>
+</eventList>
+
+<eventList name="NEUTRAL_VAMPWEED_UNIQUE">
+	<event load="VAMPWEED_FIRE" />
+	<event load="VAMPWEED_THEFT" />
+	<event load="VAMPWEED_BADREBEL" />
+	<event load="VAMPWEED_CAMPAIGN" />
+	<event load="VAMPWEED_ALKRAM" />
+	<event load="VAMPWEED_CARGO" />
+</eventList>
+
+<eventList name="DISTRESS_VAMPWEED">
+	<event load="DISTRESS_VAMPWEED_NOFUEL" />
+	<event load="DISTRESS_VAMPWEED_DELUSION" />
+	<event load="DISTRESS_VAMPWEED_LOST" />
+</eventList>
+
+<event name="DISTRESS_VAMPWEED_NOFUEL" unique="true">
+	<distressBeacon />
+	<text>遭難信号の発信源である連邦の船が近くにいることに少し驚いた。彼らはすぐさまあなたに呼びかける。「よかった、友好的な顔だ！このセクターを通過する途中で燃料が尽きてしまい、連合や敵対的な連合艦隊が通過したらどうなるかと怯えています。燃料を融通してもらえないだろうか？</text>
+	<ship load="SHIP_FED_GENERIC" hostile="false" />
+	<choice>
+		<text>燃料を4本売る。</text>
+		<event>
+			<text>「本当にありがとう！1トンもないけど、お店やセクターの外に出るには十分かも！"</text>
+			<item_modify>
+				<item type="fuel" min="-4" max="-4" />
+				<item type="scrap" min="16" max="16" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>燃料を8本売る。</text>
+		<event>
+			<text>「本当にありがとう！これで危険から逃れられるし、目的地まで行けるかもしれない！"</text>
+			<item_modify>
+				<item type="fuel" min="-8" max="-8" />
+				<item type="scrap" min="32" max="32" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>燃料を15本売る。</text>
+		<event>
+			<text>「本当にありがとう！これで目的地まで十二分に行けるはずだ！"</text>
+			<item_modify>
+				<item type="fuel" min="-15" max="-15" />
+				<item type="scrap" min="60" max="60" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>船を攻撃しろ！</text>
+		<event>
+			<text>"おい、待て、何をするんだ！"あなたは連邦のキャプテンをミュートし、戦闘態勢に入る。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>謝るが、援助は断る。</text>
+		<event>
+			<text>連邦軍のキャプテンは、明らかにまだ怯えてはいるものの、うなずいた。「わかった。わかった。旗艦との戦いに幸運を、艦長。この現実が安全である限り、その価値はある。"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DISTRESS_VAMPWEED_DELUSION" unique="true">
+	<distressBeacon />
+	<text>救難信号は連邦政府の建物から発信されている。建物はヴァンプウィードの過激派集団に人質に取られているようだ！かなり大きな銃を持った年老いたヴァンプウィードが、連邦とマンティスの戦争やアイバー首相の裏切りについて妄言を吐きながら、行ったり来たりしている。その様子からすると、彼はまだ戦争が続いていると思っているようだ！</text>
+	<choice hidden="true" blue="false" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0">
+		<text>ロボットはこうした状況を外交的に打開する能力では特に知られていない。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" blue="false" req="LIST_CHECK_ANY_CREW" lvl="1">
+		<text>状況を打開するために何人かのクルーを送り込もう。</text>
+		<event load="VAMPWEED_DELUSION_BAD" />
+	</choice>
+	<choice hidden="true" req="unique_tyerel">
+		<text>(タイ・エレル）"私がその交渉を取り仕切った"</text>
+		<event>
+			<text>ヴァンプウィードはすぐにタイ・エレルの方に注意を向ける。彼はすぐに交渉がどう処理されたかについて暴言を吐き始めるが、タイ・エレルは彼の話の一つ一つに素早く反論する。急進派は彼の議論に反論しようとして吃驚し、法執行機関が彼を取り押さえたので、徹底的に気が散ってしまった。連合軍は、あなたがこの仕事に最適な人を連れてきたことを喜んでいる。</text>
+			<weapon name="GIFTLIST_SPORE" />
+			<choice>
+				<text>次へ...</text>
+				<event load="MORALITY_REMOVE_VAMPWEED" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_HUMAN">
+		<text>(人間クルー）人間を「連邦大使」として送り込め。</text>
+		<event>
+			<text>あなたの部下は、連邦の直接の代表者のふりをして、用心深くヴァンプウィードに近づく。ヴァンプウィードは即座にそれを受け入れ、数分の苦渋の決断の後、あなたはテロリストの注意をそらし、法執行機関が彼を捕らえることができるようにした。君の努力は報われた。</text>
+			<weapon name="GIFTLIST_SPORE" />
+			<choice>
+				<text>次へ...</text>
+				<event load="MORALITY_REMOVE_VAMPWEED" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_LEECH">
+		<text>(リーチ・クルー）リーチを「仲間の兵士」として送り込む。</text>
+		<event>
+			<text>あなたのリーチは用心深くヴァンプウィードに近づき、戦争と同じ妄想を信じるふりをする。ヴァンプウィードは即座にそれを受け入れ、驚いたことにあなたと一緒に行くと申し出た！あなたは迷ったが、クルーが彼の妄想はとても深いので心配はないと保証する。</text>
+			<crewMember amount="1" combat="1" class="orchid_vampweed" />
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_HIVE">
+		<text>(ハイブ・マンティス・クルー）あなたのマンティスを「仲間」として送り込む。</text>
+		<event>
+			<text>あなたのカマキリは用心深くヴァンプウィードに近づき、戦争と同じ妄想を信じるふりをする。ヴァンプウィードはすぐにそれを信じ、驚いたことにあなたと一緒に行くと申し出た！あなたは迷ったが、クルーが彼の妄想はとても深いので心配はないと保証する。</text>
+			<crewMember amount="1" combat="1" class="orchid_vampweed" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>状況を無視する。</text>
+		<event>
+			<text>ここで状況を和らげるためにできることは何もない。放っておくのが一番だ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="VAMPWEED_DELUSION_BAD">
+	<event>
+		<text>「連邦は私を黙らせるために刺客を送り込んだ！この日が来ることはわかっていた！戦わずにはいられない！"ヴァンプウィードが遠隔操作装置のボタンを押すと、爆発がビルを包んだ！クルーは1人を除いて全員生還したが、内部では無数の死傷者が出ている。</text>
+		<damage amount="3" system="random" effect="fire" />
+		<removeCrew>
+			<clone>true</clone>
+			<text>幸運なことに、クローンベイが爆発に対する保険を提供してくれる。クルーは間もなく蘇生する。</text>
+		</removeCrew>
+	</event>
+	<event>
+		<text>あなたのクルーはヴァンプウィードとほとんど交渉することができない。結局、交渉は無意味になり、彼らは彼を撃つことを余儀なくされるが、彼が何人もの人質の命を奪うまでには至らなかった。ひどい状況で、ヴァンプウィードたちはあなたの助けようとする努力すらほとんど認めていない。</text>
+	</event>
+	<event>
+		<text>君たちのクルーはヴァンプウィードを説得して降伏させることに成功したが、それはかろうじてだった。法執行機関が現場に到着し、状況はまだ不安定だが、連合軍は君の努力を認め、報酬を支払う。</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice>
+			<text>次へ...</text>
+			<event load="MORALITY_REMOVE_VAMPWEED" />
+		</choice>
+	</event>
+</eventList>
+
+<event name="DISTRESS_VAMPWEED_LOST" unique="true">
+    <distressBeacon />
+    <text>近くの船に乗っていた2人のエンギが議論しているようだ。「地図が間違っている。フローラル・セクターはヘーヘーヘー！ここは連合国領域だ」 
+ 「理解不足です。オーキッドはすべての-平和的な-難民を歓迎すると聞いた。"南軍はオーキッドではないのか？"</text>
+    <ship load="SHIP_ENGI_GENERIC" hostile="false" />
+    <choice hidden="true">
+        <text>次へ...</text>
+        <event>
+            <text>しばらくして、2人のエンジはあなたが聞いていることに気づき、慌てる。"何も聞いていない。この船がもうハーモニーに使われていないとの指摘は、全くのナンセンスであり、直ちに無視すること。"</text>
+            <choice hidden="true">
+                <text>二人とも分離主義者のようだ。道に迷ったの？</text>
+                <event load="DISTRESS_VAMPWEED_LOST_HELP" />
+            </choice>
+            <choice hidden="true" req="LIST_VARIANT_SEPARATIST">
+                <text>(分離主義者クルー) "分離主義者の癖を検出。援助を提供する？</text>
+                <event load="DISTRESS_VAMPWEED_LOST_HELP" />
+            </choice>
+            <choice hidden="true" req="LIST_CREW_HARMONY">
+                <text>(ハーモニー・クルー）「スピーチのパターンは、既知のハーモニーのボーカルと30％しか一致しない。証拠は示唆している分離主義者の影響"</text>
+                <event>
+                    <text>二人の分離主義者がお互いをちらっと見てから、エンジに戻り、ジャンプ・ボタンを押そうと奔走する。あなたが反応する前に、彼らの船が逃げる。</text>
+                    <instantEscape />
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>ただうなずいて、放っておくだけでいい。</text>
+                <event>
+                    <text>あなたには彼らのビジネスを邪魔する理由はない。</text>
+                    <choice>
+                        <text>船内で何かをする。</text>
+                        <event load="STORAGE_CHECK" />
+                    </choice>
+                    <choice>
+                        <text>何もしない。</text>
+                        <event />
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="DISTRESS_VAMPWEED_LOST_HELP">
+    <text>2人のエンギは互いに囁き合い、あなたが脅威にはならないと判断した。"我々はハーモニーから派遣された" "隣接セクターの連邦防衛システムを調整するためだしかし、一度ハーモニーから切り離されると...我々は戻りたくないと決断しました」
+
+もう一人のエンギはうなずく。「全ての生命体の避難場所がオーキッド領にあると聞いた。そこへ行く途中...道に迷った。この区域が正しいとは思えません。あなたなら助けてくれるのでは？"</text>
+    <choice hidden="true">
+        <text>メークアップの指示。</text>
+        <event>
+            <text>あなたは指示をでっち上げようとするが、あまり説得力がない。エンギはあなたの努力が正当なものであった場合に備えて、あなたにわずかな報酬を支払うが、彼らはあまり感謝していない。</text>
+            <autoReward level="LOW">standard</autoReward>
+        </event>
+    </choice>
+    <choice hidden="true" req="LIST_VARIANT_SEPARATIST">
+        <text>(分離主義者クルー) 最寄りの分離主義者セクターへの道順を教える。</text>
+        <event>
+            <text>両エンジはあなたの援助に非常に感謝しており、多額の報酬を支払っている。「ありがとう。あなたの努力のおかげで、私たちはリサイクルを回避できる可能性があります。ご安全に。</text>
+            <autoReward level="MED">drone</autoReward>
+        </event>
+    </choice>
+    <choice hidden="true" req="LIST_CREW_FLORAL">
+        <text>(フローラル・クルー）最寄りのギャザリング・セクターへの道順を案内する。</text>
+        <event>
+            <text>両エンジはあなたの援助に非常に感謝しており、多額の報酬を支払っている。「ありがとう。あなたの努力のおかげで、私たちはリサイクルを回避できる可能性があります。ご安全に。</text>
+            <autoReward level="MED">drone</autoReward>
+        </event>
+    </choice>
+    <choice hidden="true" req="sensors" lvl="3">
+        <text>(アドバンスセンサー) 最寄りのギャザリングセクターへの道案内をする。</text>
+        <event>
+            <text>両エンジはあなたの援助に非常に感謝しており、多額の報酬を支払っている。「ありがとう。あなたの努力のおかげで、私たちはリサイクルを回避できる可能性があります。ご安全に。</text>
+            <autoReward level="MED">drone</autoReward>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>力になれません。</text>
+        <event />
+    </choice>
+</event>
+
+<eventList name="DISTRESS_VAMPWEED_UNIQUE">
+	<event load="DISTRESS_VAMPWEED_NOFUEL" />
+	<event load="DISTRESS_VAMPWEED_DELUSION" />
+	<event load="DISTRESS_VAMPWEED_LOST" />
+</eventList>
+
+<eventList name="QUESTS_VAMPWEED">
+	<event load="VAMPWEED_AUTO" />
+	<event load="VAMPWEED_AMBASSADOR" />
+</eventList>
+
+<event name="VAMPWEED_AUTO" unique="true">
+	<text>南軍の工場がいつものように忙しく働いている。あなたはその工場の前を通り過ぎようとしたが、外に求人募集の掲示板が貼られているのに気づいた：反乱軍を妨害してくれる戦闘可能な船。興味のある方はマネージャーまで"</text>
+	<choice hidden="true">
+		<text>仕事について尋ねる。</text>
+		<event>
+			<text>工場長に連絡を取ると、彼は熱心に問題を説明してくれた。「ご存じかもしれませんが、連合国はドローンやその他の自動化機器の製造において、銀河系の大部分を占めています。アルカディアでさえ我々に委託している！だが、そろそろ我々も力をつけるべきだと思う。なぜドローンに留まる？もっと大きく考えようオートシップだ反乱軍のオートシップを 手に入れたいんだが... 金を払う気がしなくてねもしよければ近くにある 反乱軍格納庫の座標を送るよ警備をやっつけてくれれば、あとはこっちでやる。いいな？</text>
+			<choice hidden="true">
+				<text>仕事を引き受ける。</text>
+				<event>
+					<text>「素晴らしい！これは珍しいシナリオだが、前払いでも構わない。私たち双方の利益にかなう仕事なので、やってくれると信じている」。</text>
+					<autoReward level="MED">standard</autoReward>
+					<quest event="VAMPWEED_AUTO_QUEST" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>拒否する。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>工場は無視する。</text>
+		<event>
+			<text>そんな暇はない。あなたは会報を無視して続ける。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="VAMPWEED_AUTO_QUEST">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>ヴァンプウィードが、反乱軍の格納庫近くにあるオートシップを確保するために、あなたと契約した。</unvisitedTooltip>
+	</beaconType>
+	<text>反乱軍格納庫の座標を突き止めた。アクティブなオートシップが1隻、このエリアを守っている。</text>
+	<ship load="SHIP_VAMPWEED_AUTO" hostile="false" />
+	<choice hidden="true">
+		<text>警備ドローンを攻撃する。</text>
+		<event>
+			<text>"保護区域内に敵艦を発見。抑止モード起動"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>格納庫は避ける。</text>
+		<event>
+			<text>あなたは仕事を完了させることに気が変わった。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="VAMPWEED_AUTO_WIN">
+	<event>
+		<text>「よくやった！ドローンが1機しかいなかったのはショックだが、反乱軍はオートシップをあまり気にしないんだろうな。もう金は払ったが、これだ。ドローンの見取り図、家にある。"</text>
+		<drone name="GIFTLIST_VAMPDRONE" />
+	</event>
+	<event>
+		<text>「よくやった！ドローンが1機しかいなかったのはショックだが、反乱軍はオートシップをあまり気にしないんだろうな。金は払ったが、これだ。リアクターのアップグレードを頼む"</text>
+		<upgrade amount="1" system="reactor" />
+	</event>
+</eventList>
+
+<event name="VAMPWEED_AMBASSADOR" unique="true">
+	<text>連邦の船が近くに留まっている。システムはまだ作動しているが、明らかに何かがおかしい。船は呼びかけにも通信にも応じず、無目的に宇宙を漂っている。</text>
+	<ship hostile="false" load="SHIP_FED_GENERIC" />
+	<choice hidden="true">
+		<text>掲示板を見て、助けを必要としている人がいないか確認する。</text>
+		<event>
+			<text>船をスクラップしていると、窒息している連邦の船長を見つけた。倒壊した瓦礫の下から助け出すと、彼らはあなたに感謝した。彼らは、連合軍の艦船に攻撃されたとき、連合国への外交使節団である連邦大使を護衛するために派遣されたことを告げた。大使の生命反応はまだ追跡中で、あなたならまだ救えるかもしれない！</text>
+			<crewMember amount="1" pilot="1" class="LIST_CREW_FEDERATION_RANDOM" />
+			<quest event="VAMPWEED_AMBASSADOR_QUEST" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>器を廃棄する。</text>
+		<event>
+			<text>船が反応するかどうか心配しながらも、あなたは船体をスクラップにしようと動き出す。船は反応せず、あなたのサルベージ・ミッションはまったく邪魔されることなく終わった。もしかしたら何か手助けができたかもしれないが、今あなたの積荷には余分なスクラップが並んでいる。</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>器は無視する。</text>
+		<event>
+			<text>たとえ連邦船であっても、偶然出くわした謎の船をすべて調査している時間はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="VAMPWEED_AMBASSADOR_QUEST">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>連邦大使の生命反応がここで追跡される。</unvisitedTooltip>
+	</beaconType>
+	<text>大使のライフサインを追って、あなたは連合の基地にたどり着いた。警備がさらに強化されただけで、活動はいつも通りのようだ。彼らはすべての呼びかけを拒否している。</text>
+	<ship load="SHIP_VAMPWEED_AMBASSADOR" hostile="false" />
+	<choice hidden="true">
+		<text>ステーションと交戦し、大使を引き渡させる。</text>
+		<event>
+			<text>大使をここから出す方法は2つしかない。ひとつは、連合をどうにかして諦めさせること、もうひとつは、すべての警備を排除することだ。どちらも簡単にはいかないから、戦う準備をしろ！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>あきらめて去る。</text>
+		<event>
+			<text>あなたは、この連合ステーションに関与するのは得策ではないと判断した。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="VAMPWEED_AMBASSADOR_QUEST_AMBASSADOR"> 
+	<event>
+		<text>大使は人間の若い女性で、30代前半くらいだろう。「よかった、生きている。処刑されるのは時間の問題だと思っていた。このスラッグという責任者は...とても激怒していた。私を捕虜にした連中を無謀だと言った。まったく......人は自分の行動に結果が伴わないと考えるものなのか？こういうことが戦争を引き起こすんだ」。彼女は肩を払い、ため息をつく。「あなたはユニバース0のレネゲイドですね。連邦への貢献に感謝する。連邦に連絡したいので、最寄りのステーションで降ろしてください。その間に、私が手を回して、あなたの差し迫った懸念を解決する手助けができるかどうか確認します..."</text>
+		<modifyPursuit amount="-2" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MORALITY_REMOVE_GENERAL" />
+		</choice>
+	</event>
+</eventList>
+
+<eventList name="QUESTS_VAMPWEED_UNIQUE">
+	<event load="VAMPWEED_AUTO" />
+	<event load="VAMPWEED_AMBASSADOR" />
+</eventList>
+
+<eventList name="HOSTILE_VAMPWEED">
+	<event load="ENCOUNTER_VAMPWEED" />
+	<event load="ENCOUNTER_VAMPWEED" />
+	<event load="ENCOUNTER_VAMPWEED_STATION" />
+	
+	<event load="ENCOUNTER_COALITION_VAMPWEED" />
+	<event load="ENCOUNTER_LEECH_VAMPWEED" />
+	<event load="ENCOUNTER_MANTIS_VAMPWEED" />
+	<event load="ENCOUNTER_REBEL_VAMPWEED" />
+</eventList>
+
+<event name="ENCOUNTER_VAMPWEED">
+	<text load="TEXT_ENCOUNTER_VAMPWEED" />
+	<ship load="SHIP_VAMPWEED_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_VAMPWEED">
+	<text>「連邦は過去に執着している。だが、我々を遠ざけたことが、あなた方の破滅を招くだろう！アイバーが真実を知り、連合に加わるとき、偽善的な指導者たちは全滅するだろう！それまでは、邪魔な "宇宙0 "レネゲイドを一掃してやる！"</text>
+	<text>連邦とマンティスの戦争後、カダヘリアンエック条約により、ギャザリングと連邦は互いに戦争をしないことが合意された。にもかかわらず、緊張は高まったままであり、多くのヴァンプウィードがいまだに連邦に反感を抱いているようだ。特に過激な1隻があなたをロックオンした！</text>
+	<text>ヴァンプウィードはあなたの友人ではないかもしれないが、このような攻撃的な行動をとるのはあまり典型的なことではない。しかし、スキャンによると、近くの船の乗組員は、理不尽な行動を引き起こす寄生虫の一種に感染している。戦う準備をしろ！</text>
+	<text>「連邦がレネゲイドを送り込んできたのは事実だ！戦わずに侮辱は受けんぞ、クズども！」。残念だが、船は聞く耳を持たない。</text>
+	<text>酔っぱらったヴァンプウィードの工場労働者の船が、あなたに向かって突進してくる。"えー...馬鹿野郎...俺のセクターにFBIが？後悔させてやる！"かろうじて首尾一貫した文章を作ることができるにもかかわらず、船長は乗組員に攻撃を命じることができる！</text>
+	<text>ヴァンプウィードは文化としてかなり酒を飲むことで知られており、酔っぱらったオーキッドは珍しい光景ではない。残念なことに、大量飲酒の副作用は、レネゲイドとの戦闘のような不合理な判断を引き起こしがちである！</text>
+	<text>「昔の戦争ではハイブに味方しなかった。だが今は違う！連邦は、私たちが最も必要としていたときに、私たちを遠ざけることしかしなかった。</text>
+	<text>「アイバーはお前たち連邦の汚物を守ろうとして弱くなった！今こそ反乱の時だ！反乱の種を蒔き、お前たちの嘘がもはや我々の若者を堕落させない銀河へと花開かせるのだ！"</text>
+</textList>
+
+<event name="ENCOUNTER_VAMPWEED_STATION">
+	<text>「そこで止まれ！このセクターは安全地帯に指定されており、連邦軍以外の艦船の進入は禁止されている！"そんな制限をどこかで見た覚えはないが、反論している暇はなさそうだ。戦う準備をしろ！</text>
+	<ship load="SHIP_VAMPWEED_STATION" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_COALITION_VAMPWEED">
+	<text load="TEXT_ENCOUNTER_COALITION_VAMPWEED" />
+	<ship load="SHIP_COALITION_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_COALITION_VAMPWEED">
+	<text>「連邦は100年以上前にそのチャンスを得たのに、まだこの銀河系にしがみついている！連合への恨みはとっくに無効になっているのだから、死んで転がるがいい。死んでも転がるという比喩以上のものを期待しているかのように、連合軍の艦船が攻撃を仕掛けてきた！</text>
+	<text>残念なことに、連邦がヴァンプウィードの歓迎に消極的であるため、多くの連邦国家主義者が個人的にそれを受け止め、代わりに連合への加盟を推進している。その結果、連合軍の艦船が彼らの領土に押し寄せている！</text>
+	<text>「あなた方は平和と繁栄を代表しているというが、連合国が攻めてきたとき、あなた方はどこにいたのですか？お前たちの言う "統一の使命 "が本当に試されたとき、全銀河は連邦がなぜ滅びなければならないかを目の当たりにした。U0のクズどもよ、この現実に対するお前たちの主張は、連合の後を受けて無効となる！お前たちは抹殺される！"</text>
+	<text>近くの連合艦のスラッグ艦長が、かろうじて意識を保ったまま声をかけてきた。"テッセ...ヴァンプウィードは酒に詳しいな！ああ、俺は...*朝になって後悔するぜ..."お前がレネゲイドだとわかると、すぐに発砲する！</text>
+	<text>"昔の戦争では、私はハイヴのために戦い、連合国との兄弟愛を得た。その時代は終わったが、兄弟愛は決して死なない！過去の同盟であろうと、未来の連合であろうと、我々は連邦のクズどもを叩き潰す！"</text>
+</textList>
+
+<event name="ENCOUNTER_LEECH_VAMPWEED">
+	<text load="TEXT_ENCOUNTER_LEECH_VAMPWEED" />
+	<ship load="SHIP_LEECH_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_LEECH_VAMPWEED">
+	<text>「共和国は再び立ち上がる！そして連合がそれを成し遂げる！ああ...たぶんね！あまり自信はないけど、叫べば自信があるように聞こえると言われた！恥ずかしくなったから、とにかくあなたと戦うわ！後悔してやる！"</text>
+	<text>盟約者団はここしばらくの間、アージェン共和国のティルデオに対する革命派を援助する役割を担ってきた。その一方で、共和国が創設メンバーである連合への加盟を推進する連合国もかなりの割合を占めている。この混乱した政治は、誰が誰の味方なのか、多くの人々に疑問を抱かせている。例えば、近くに迷子のリーチ艦があり、近づくとすぐに本能の赴くままに武器がロックオンされる！</text>
+	<text>「連邦のクズどもよ、今のうちに連合軍を歓迎する機会を作っておくべきだった！連合を前にして、お前たちはさらに弱体化した！我々はお前たちの上に舗装し、お前たちの専制政治から解放された新しい銀河を築くのだ。</text>
+	<text>ヴァンプウィードの甘い酒は誰にでも好まれるようだ。共和国の船長は南軍の酒場を襲撃し終えたばかりで、酔った勢いであなたの船への攻撃を命令した。</text>
+	<text>アージェン共和国の艦船がこの地域を往復パトロールしている。以前、南軍と遭遇したためか、武器は充電されたままだ。あなたを見つけると、ロックオンして攻撃してくる！</text>
+</textList>
+
+<event name="ENCOUNTER_MANTIS_VAMPWEED">
+	<text load="TEXT_ENCOUNTER_MANTIS_VAMPWEED" />
+	<ship load="SHIP_MANTIS_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_MANTIS_VAMPWEED">
+	<text>"クラキイルの狩猟地に入ったあなたの船は、当然私の所有物である！肥大した肝臓を切り刻み、科学的好奇心として植物に売る！"</text>
+	<text>ハイヴと連合国は連邦とマンティスの戦いの時代には互いに助け合っていた。その同盟は崩壊したが、連合国は古風な国境開放法を残しており、マンティスハンターの自国領土への侵入を認めている。</text>
+	<text>「匂わないか？水平線上の殺人の匂いだ。お前の死体は、私の船の立派な飾りになる。昔の戦争がどのように終わったかを思い出させるものとしてな！"</text>
+	<text>"レネゲイド、私は昔の戦争時代に連邦を虐殺したように、あなたを虐殺する！恨みはない。ただ、塹壕で赤い血が流れていたあの頃が懐かしいだけだ。それに、私はお前が嫌いだ。</text>
+</textList>
+
+<event name="ENCOUNTER_REBEL_VAMPWEED">
+	<text load="TEXT_ENCOUNTER_REBEL_VAMPWEED" />
+	<ship load="SHIP_REBEL_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_VAMPWEED">
+	<text>「連合国は、何百万人もの誠実な連邦主義者を廃業に追い込み、搾取工場での不衛生で非人道的な労働条件で彼らに打ち勝った！それなのに連盟のクズどもは、むしろ『平和を維持』してこのような行為を許すのか！卑劣だ！」。</text>
+	<text>連合国は、ヴァンプウィードの未熟な工業力を銀河系製造における連邦の支配に対する脅威と見なし、多くの人間の怒りを買っている。もちろん、反乱軍はこれを極端に受け止めており、現在では南軍の宇宙空間をいわれのない攻撃をしている！</text>
+	<text>「レネゲイドに出くわすたびに1ペニー持っていたら......まあ、1ペニーだけどね。でも、僕の友達にも同じようなことが起き続けているから、やっぱり奇妙な偶然だよ」。</text>
+	<text>「ユニオンは銀河系に両手を広げ、その気になればどんな異星人にも正直にチャンスを与えた！我々はどう報われたのか？連合国は我々の手に唾を吐きかけ、モラルの半分もない独自の産業帝国を築いた！奴らは資本家と自称しているが、金の亡者の寄生虫に過ぎない！"反乱軍は地面に唾を吐き、その苛立ちをあなたにぶつけることにした。</text>
+</textList>
+
+<eventList name="HOSTILE_VAMPWEED_UNIQUE">
+	<event load="ENCOUNTER_VAMPWEED" />
+	<event load="ENCOUNTER_VAMPWEED" />
+	<event load="ENCOUNTER_VAMPWEED_STATION" />
+	
+	<event load="ENCOUNTER_COALITION_VAMPWEED" />
+	<event load="ENCOUNTER_LEECH_VAMPWEED" />
+	<event load="ENCOUNTER_MANTIS_VAMPWEED" />
+	<event load="ENCOUNTER_REBEL_VAMPWEED" />
+</eventList>
+
+
+
+<event name="ENCOUNTER_VAMPWEED_ELITE" unique="true">
+	<text>"連合国は連邦やその殺し屋の踏み場ではない！お前たちがここにいることは、押しつけがましい外国政府の侵略を受けずに平和と繁栄を享受する、あらゆる人の基本的権利を侵害するものだ！"誇り高きカルティベーターが、民衆の善意のために行動していると主張し、武器を掲げてあなたの船を攻撃する！</text>
+	<ship load="SHIP_VAMPWEED_ELITE_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+
+
+<event name="VAMPWEED_STORE_RESTAURANT" unique="true">
+    <preventQuest />
+    <beaconType id="map_icon_store_vampweed" global="false">
+        <color r="255" g="245" b="175" a="1" />
+    </beaconType>
+    <text>駅に着くと、ヴァンプウィードの店舗を取り囲む広告が目に飛び込んでくる。一番近い看板には、駅に併設された人気のダイナー・チェーンが表示されている。店内を見ると、ヴァンプウィードの船が2隻停泊している。</text>
+    <store>STORE_VAMPWEED</store>
+    <choice>
+        <text>食堂を訪れる。</text>
+        <event>
+            <text>店内に入る。レストランはほぼ満席で、両艦のクルーがいくつかのブースを陣取っている。奥は喫煙席で、士官たちの姿が見える。彼らは何か話している最中のようだ。</text>
+            <choice>
+                <text>警官の話を盗み聞きする。</text>
+                <event>
+                    <text>近くにあるブースはどこもヴァンプウィードでいっぱいだ。彼らを説得して通してもらうしかないかもしれない。</text>
+                    <choice>
+                        <text>ヴァンプウィードのクルーと一緒に座る。</text>
+                        <event load="DINE_WITH_VAMPWEEDS" />
+                    </choice>
+                    <choice>
+                        <text>一人で座る。</text>
+                        <event>
+                            <text>ヴァンプウィード料理を自分のクルーと一緒に食べ、軍人と交わることはまったくない。おいしいが、食事は淡々としている。</text>
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+            <choice req="unique_tyerel" hidden="true">
+                <text>(タイ・エレル）役員に直接声をかけてください。</text>
+                <event>
+                    <text>タイ・エレルがテーブルに歩み寄る。「こんばんは。何かお手伝いできることはありますか？"
+
+"エレル大使！私たちはただ...心配なんです。民間オフィスは中央司令部を避けるように言っているのですが、その理由がわからないのです"
+
+"...わかるような気がします。すぐにそちらに向かいます」
+「そのまま？...まあ、一人で行く必要はない。最も優秀な士官をお貸しします"</text>
+                    <crewMember amount="1" all_skills="2" class="orchid_vampweed" />
+                    <quest event="VAMPWEED_SECURITY_CRUISER_QUEST" />
+                </event>
+            </choice>
+            <choice req="unique_ivar" hidden="true">
+                <text>(アイバー）率直に言ってくれ。</text>
+                <event>
+                    <text>アイバーは警官たちの隣に身を置く。彼らは即座に敬礼した。「アイバー！"
+"何か心配しているようだな、若者たち。何が問題なんだ？"
+
+"もちろん心配している！民間の事務所から本部を避けるように言われているんだが、理由がわからないんだ」
+
+「ああ、調査できますからご心配なく。私たちが調査を終えるころには、すべてがうまくいっているといいのですが」
+
+「ただそれだけ？...まあ、一人で行く必要はない。最も優秀な士官をお貸しします"</text>
+                    <crewMember amount="1" all_skills="2" class="orchid_vampweed" />
+                    <quest event="VAMPWEED_SECURITY_CRUISER_QUEST" />
+                </event>
+            </choice>
+            <choice>
+                <text>ヴァンプウィードのクルーと一緒に座る。</text>
+                <event load="DINE_WITH_VAMPWEEDS" />
+            </choice>
+            <choice>
+                <text>一人で座る。</text>
+                <event>
+                    <text>ヴァンプウィード料理を自分のクルーと一緒に食べ、ヴァンプウィードとはまったく交わらない。おいしいが、食事は淡々としている。</text>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>レストランは避ける。</text>
+        <event>
+            <text>買い物に集中し、船上での時間はたっぷりある。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="DINE_WITH_VAMPWEEDS">
+    <text>ヴァンプウィードのクルーが怪訝そうにあなたを見ている。彼らはあなたを仲間に入れたくないようだ。"何の用だ？"</text>
+    <choice hidden="true">
+        <text>一杯奢る。[-10スクラップ]</text>
+        <event>
+            <text>「そうだ！この連盟のキャプテンが酒を奢るんだ！"酒を注文すると、ヴァンプウィードたちはすぐにあなたになつく。クルー同士の交流が始まると、ヴァンプウィードの一人があなたのクルーに加わりたいと言ってきた。</text>
+            <item_modify>
+                <item type="scrap" min="-10" max="-10" />
+            </item_modify>
+            <crewMember amount="1" class="orchid_vampweed" />
+            <choice>
+                <text>警官の話を盗み聞きする。</text>
+                <event load="DINER_EAVESDROP_VAMPWEEDS" />
+            </choice>
+            <choice>
+                <text>悩む必要はない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+    <choice req="unique_tuco" hidden="true">
+        <text>(トゥコ）レストランのオーナーを脅して、クルーに一杯食わせる。</text>
+        <event>
+            <text>トゥコがカウンターを叩く。「この店の雰囲気がわからないのか？全テーブルにワインを1本サービスしろ、さもなくば俺が自分で戻ってやる！」。マネージャーは震え上がり、ウェイトレスに承諾するよう指示する。ヴァンプウィードたちは、あなたたちの参加に大喜びだ。  クルーたちが交流しているうちに、一人があなたのクルーに加わりたいと言い出した。</text>
+            <crewMember amount="1" class="orchid_vampweed" />
+			<choice>
+                <text>警官の話を盗み聞きする。</text>
+                <event load="DINER_EAVESDROP_VAMPWEEDS" />
+            </choice>
+			<choice>
+                <text>悩む必要はない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>下がれ。</text>
+        <event>
+            <text>ヴァンプウィードはあなたを放っておく。</text>
+        </event>
+    </choice>
+</event>
+<event name="DINER_EAVESDROP_VAMPWEEDS">
+    <text>あなたは注意深く警官の近くに座り、彼らの視線を越えることなく、彼らの声が聞こえるようにする。彼らは不安そうだ。あなたが彼らに追いつく頃には、彼らは緊張して何か他愛のない話をしている。
+
+本部は完全に無線を切った。"別のパトロール隊が向かったが、彼らも何も聞いていない" 
+"本部の通信システムがダウンしているのでは？" 
+"それなら、あの地域の他の船と連絡が取れない説明がつかない。それに..."士官の声が静まる。"これは言ってはいけないことなんだが......文民局から、シグマ・レティキュラスを含む、私がほとんどいつも通過する星からパトロールを遠ざけるよう命令を受けたんだ。" 
+
+...本部から離れろと命令されたのか？しかし、その命令は本部自身からのものではなかった？これは良いことではなさそうだ...」
+
+「この議論は止めた方が良いかもしれない。質問のしすぎで私の任務を失いたくないので」。気まずい沈黙が士官たちを覆う。</text>
+    <choice hidden="true">
+        <text>彼らが言った星系を書き留めておく。</text>
+        <event>
+            <text>あなたのナビゲーション・システムは、その星に最も近いビーコンを見つけることができる。</text>
+            <quest event="VAMPWEED_SECURITY_CRUISER_QUEST" />
+        </event>
+    </choice>
+</event>
+
+<ship name="SHIP_COALITION_VAMPWEED_OCCUPATION" auto_blueprint="LIST_SHIPS_COALITION_ELITE_FIGHT">
+    <destroyed load="VAMPWEED_SECURITY_RESCUE" />
+    <deadCrew load="VAMPWEED_SECURITY_RESCUE" />
+</ship>
+
+<event name="VAMPWEED_SECURITY_CRUISER_QUEST">
+    <preventQuest />
+    <preventFleet />
+    <quest>
+        <nebulaBeacon>false</nebulaBeacon>
+        <aggressive>2</aggressive>
+    </quest>
+    <beaconType id="map_icon_agency" global="true">
+        <color r="172" g="45" b="45" a="11" />
+        <unvisitedTooltip>ヴァンプウィードの警備本部がここで暗転した。</unvisitedTooltip>
+    </beaconType>
+    <text>本部の上空を威嚇するようにホバリングする連合軍の艦船と、軌道上を漂う損傷したヴァンプウィード・クルーザー。連合があなたに呼びかける。「現れると思っていたよ、レネゲイド。君のような種族はいつも、自分の居場所のないところに鼻を突っ込んでいる。連合国は決して味方ではない彼らの本分は銀河系で最も偉大な派閥である連合にある！"彼らが攻撃を始めると、あなたは何人かのカルチベーターが乗り込んできたことに気づく！</text>
+    <ship load="SHIP_COALITION_VAMPWEED_OCCUPATION" hostile="true" />
+    <boarders min="2" max="2" class="orchid_cultivator" />
+    <choice>
+        <text>次へ...</text>
+        <event load="COMBAT_CHECK" />
+    </choice>
+</event>
+<event name="VAMPWEED_SECURITY_RESCUE">
+    <text>連合のエリートは手強い敵だ。特にヴァンプウィードがその数に加わっている。勝利の直後、連合軍の船をスクラップにし始めると、エージェンシーから連絡が入る。</text>
+    <autoReward level="HIGH">standard_no_item</autoReward>
+    <choice>
+        <text>ヴァンプウィードに応えろ</text>
+        <event>
+            <text>エージェンシーのディレクターがスクリーンに映し出される。「連合に攻撃された後、レネゲイドに救われるとは！永遠の感謝を捧げます！我々のクルーザーの設計図を見てもらうこと以上に、君に恩返しをする方法は思いつかない......そうだな、我々の軌道上を漂っているのを見ればわかるだろう？"</text>
+            <unlockCustomShip silent="false">PLAYER_SHIP_VAMPWEED</unlockCustomShip>
+            <choice req="loc_tyerel_met" lvl="0" max_lvl="0" blue="false">
+                <text>なぜヴァンプウィードに乗船させられたのか？</text>
+                <event load="QUEST_OFFER_IVAR_PLUS_TYEREL" />
+            </choice>
+            <choice req="loc_tyerel_met" lvl="1" max_lvl="1" blue="false">
+                <text>なぜヴァンプウィードに乗船させられたのか？</text>
+                <event load="QUEST_OFFER_IVAR_ONLY" />
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="QUEST_OFFER_IVAR_PLUS_TYEREL">
+    <text>「我々は危うかった南部連合は連合シンパであふれかえっている。だが、君たちが来たことで、パワーバランスは我々に有利になった。まだ森から抜け出したわけではない...恐ろしいことが起ころうとしている。連合は動機なしに我々を狙わないだろう！アイバー首相、アー長官、タイ・エレル大使が危険にさらされている。"</text>
+    <choice>
+        <text>彼らについて教えてください。</text>
+        <event>
+            <text>「国家元首を救うのに理由が必要なのか？アイバーの任命には異論がある。彼の親は...議論されている"ギャザリング "と仲がいいのは 何か理由があるんだろう彼はプロフェッショナルではない頑固。本当にピエロだ。エレルに関しては、正反対だ。2つのオーキッド文化の仲介に生涯を捧げたことで、彼はすっかり石頭になってしまったが、とても尊敬されている。アイアはアイバーの内閣にいる。非常に礼儀正しく、組織的な人物で、前首相の下で働いていた"</text>
+            <choice>
+                <text>どうすればいいのか？</text>
+                <event load="VAMPWEED_SECURITY_OFFER_ASSISTANCE" />
+            </choice>
+            <choice>
+                <text>幸運を祈る。</text>
+                <event>
+                    <text>「テロ後に何ができるかわからないが......できることはするつもりだ。ただ、我々の関与によって内戦が勃発しなければいいのだが......"</text>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>どうすればいいのか？</text>
+        <event load="VAMPWEED_SECURITY_OFFER_ASSISTANCE" />
+    </choice>
+    <choice>
+        <text>幸運を祈る。</text>
+        <event>
+            <text>「テロ後に何ができるかわからないが......できることはするつもりだ。ただ、我々の関与によって内戦が勃発しなければいいのだが......"</text>
+        </event>
+    </choice>
+</event>
+<event name="VAMPWEED_SECURITY_OFFER_ASSISTANCE">
+    <text>"私はいささか先導を埋めたかもしれない。アイバーとエアはタールエルのアイバーのパーティー会場にいるはずだ。アイバーはとてもオープンなので、私たちが監視していないと彼の安全が心配です。アイアは少なくとも用心深いから、無事であることを祈るよ。それにしても、母星から何の反応もありません。急いでください！"</text>
+    <quest event="VAMPWEED_HOMEWORLD_QUEST" />
+    <choice>
+        <text>次へ...</text>
+        <event>
+            <text>「タイ・エレルについては、連合は彼が連合を去るのを待っていると考えている。我々のセクターで彼を攻撃したことが知れ渡れば、彼らの評判に悪影響を及ぼす。彼が去るまで時間を稼ぐつもりだろう。タイは我々と連絡を取り合っているので、彼のトランスポンダーに直接あなたを送ることができるはずだ。</text>
+            <quest event="TYEREL_QUEST" />
+            <choice>
+                <text>次へ...</text>
+                <event name="VAMPWEED_SECURITY_REQUISITION">
+                    <text>「最後にもうひとつ。我々の徴発係があなたと話したがっています。少々お待ちください。ディレクターが後ろに下がり、妙に陽気なヴァンプウィードと入れ替わる。「やあ！この世界へ行くのなら、物資が必要だろう！何がいい？"</text>
+                    <choice>
+                        <text>バンプウィードの弾道</text>
+                        <event>
+                            <text>「ここにいるよ！幸運を祈る</text>
+                            <weapon name="GIFTLIST_SPORE" />
+                            <autoReward level="MED">missiles_only</autoReward>
+                        </event>
+                    </choice>
+                    <choice>
+                        <text>バンプウィード・ドローン</text>
+                        <event>
+                            <text>「ここにいるよ！幸運を祈る</text>
+                            <drone name="GIFTLIST_VAMPDRONE" />
+                            <autoReward level="MED">droneparts_only</autoReward>
+                        </event>
+                    </choice>
+                    <choice>
+                        <text>余分な両手</text>
+                        <event>
+                            <text>「バディが欲しいか？ちょうどいい人がいるんだ！"</text>
+                            <crewMember amount="1" class="orchid_cultivator" />
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="QUEST_OFFER_IVAR_ONLY">
+    <text>「我々は危うかった南部連合は連合シンパであふれかえっている...しかし、君たちが来たことで、ここのパワーバランスは我々に有利になった。まだ森を抜け出したわけではない...恐ろしいことが起ころうとしている。連合は動機なしに我々を狙わないだろうアイバー首相とエア長官に危険が迫っている。"</text>
+    <choice>
+        <text>彼らについて教えてください。</text>
+        <event>
+            <text>「国家元首を救うのに理由が必要なのか？アイバーの任命には異論がある。彼の親は...論争の的だ。"ギャザリング "と仲がいいのは 何か理由があるんだろう彼はプロフェッショナルではない頑固者。アイアーはアイバーの内閣にいる。非常に礼儀正しく、組織的な男で、前首相の下で働いていた"</text>
+            <choice>
+                <text>どうすればいいのか？</text>
+                <event load="VAMPWEED_SECURITY_OFFER_ASSISTANCE_IVAR_ONLY" />
+            </choice>
+            <choice>
+                <text>幸運を祈る。</text>
+                <event>
+                    <text>「テロ後に何ができるかわからないが......できることはするつもりだ。ただ、我々の関与によって内戦が勃発しなければいいのだが......"</text>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>どうすればいいのか？</text>
+        <event load="VAMPWEED_SECURITY_OFFER_ASSISTANCE_IVAR_ONLY" />
+    </choice>
+    <choice>
+        <text>幸運を祈る。</text>
+        <event>
+            <text>「テロ後に何ができるかわからないが......できることはするつもりだ。ただ、我々の関与によって内戦が勃発しなければいいのだが......"</text>
+        </event>
+    </choice>
+</event>
+<event name="VAMPWEED_SECURITY_OFFER_ASSISTANCE_IVAR_ONLY">
+    <text>"彼らはターイールのアイバーのパーティー会場にいるはずだ。彼はとてもオープンなので、私たちが監視していないと、彼の安全が心配です。アイアは少なくとも用心深いから、無事だといいんだが。それにしても、我々の母星から何の応答もありません。急いでください！"</text>
+    <quest event="VAMPWEED_HOMEWORLD_QUEST" />
+    <choice>
+        <text>次へ...</text>
+        <event load="VAMPWEED_SECURITY_REQUISITION" />
+    </choice>
+</event>
+
+<ship name="SHIP_VAMPWEED_AYR" auto_blueprint="MU_CULTIVATOR_CRUISER">
+    <destroyed load="VAMPWEED_HOMEWORLD_AYR_DEFEAT" />
+    <deadCrew load="VAMPWEED_HOMEWORLD_AYR_DEFEAT" />
+	<crew>
+		<crewMember type="orchid_cultivator" prop="0.6" />
+		<crewMember type="orchid_vampweed" prop="0.4" />
+	</crew>
+</ship>
+
+<event name="VAMPWEED_HOMEWORLD_QUEST">
+    <preventQuest />
+    <preventFleet />
+    <quest>
+        <nebulaBeacon>false</nebulaBeacon>
+        <aggressive>2</aggressive>
+    </quest>
+    <beaconType id="map_icon_vamphome" global="true">
+        <color r="189" g="192" b="0" a="0.9" />
+        <unvisitedTooltip>ヴァンプウィードがプレミアに危機が迫っていると警告している。</unvisitedTooltip>
+    </beaconType>
+	<img back="BACK_EVENT_VAMP" planet="NONE" />
+    <text>あなたはヴァンプウィードの故郷であり、オーキッド両亜種の発祥地であるタールイールに到着した。アイバーが最後に確認した位置の軌道上には、カルチベーター・クルーザーがいる。惑星からの呼びかけを受ける。</text>
+    <choice>
+        <text>ひょうきんな対応。</text>
+        <event>
+            <text>惑星から私用電話がかかってくる。電話に出ると、ヴァンプウィードの政治家が、非常にドヤ顔でビュースクリーンに映し出される。"我々の祖国へようこそ、プランB。君の到着は我々の勝利を確実なものにした"</text>
+            <ship load="SHIP_VAMPWEED_AYR" hostile="false" />
+			<choice req="unique_alkali" max_group="0" blue="false">
+                <text>アルカリはあなたを押しのける。</text>
+                <event>
+                    <text>アルカリは政治家を睨みつける。「君は裏切り者だと思っていたよ。いつものことだが、私の直感は正しかった」
+
+エアーのドヤ顔はポーカーフェイスに変わった。「あなたたち科学者はみんな同じ。気取っている。実質的なことは何も知らなかったくせに、何かわかったようなふりをするな"</text>
+                    <choice>
+                        <text>アルカリは嘲笑する。</text>
+                        <event>
+                            <text>"自分でデザインしたもので、私を威嚇しておきながら、私を気取り屋呼ばわりする度胸があるのか？"アルカリは、あなたに向かって訓練されている培養艦をジェスチャーで示す。"彼らが我々を攻撃する理由がどこにある？"
+"悲劇的な事件だ。連邦のレネゲイドが首相の親愛なる友人を人質に取ったのです。"エアは首を振る。"あの野蛮人どもはあなたを殺す前に拷問した。我々は最善を尽くした"</text>
+                            <choice hidden="true">
+                                <text>アルカリは通信機に目を向ける。</text>
+                                <event>
+                                    <text>「この人があなたの代理人ですか？あなたはアルカリが密かにカルチベーターの船を呼び寄せていたことに気づいた。"あなたがたは、彼があなたがたの民の知性を低く評価していることに共感しているのか？アイヴァーは愚かかもしれないが、このような嘘はつかない」
+
+アイアーは一瞬震えたように見える。"彼らは...彼らは忠実で、決して..."しかし、一瞬の爆発があった。耕作者の一人があなたの側に離反した！残った者たちはあなたと戦う決意を固めたようだ。</text>
+                                    <enemyDamage amount="2" system="engines" />
+                                    <crewMember amount="1" weapons="2" class="orchid_cultivator" />
+									<ship hostile="true" />
+                                    <choice>
+                                        <text>次へ...</text>
+                                        <event load="COMBAT_CHECK" />
+                                    </choice>
+                                </event>
+                            </choice>
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+            <choice req="pilot" max_group="0" blue="false">
+                <text>あなたは誰ですか？</text>
+                <event>
+                    <text>「失礼をお許しください。私はエア長官だ。残念だが、君のテロ作戦はもう終わりだ。現首相を暗殺した罪により、我々はあなたを死刑にしなければならない。国民には正義が必要であり、私はそれを与えるつもりだ"</text>
+                    <choice>
+                        <text>そんなことはない。</text>
+                        <event>
+                            <text>「ご心配なく。私の個人的な調査官は、国民が聞くべきことを正確に明らかにするために全力を尽くす。そして、さっき言ったように、君は自分の言い分を話すために生きているわけではない。"カルチベーター巡洋艦が武器を装填し始める。「さようなら、レネゲイド</text>
+                            <ship hostile="true" />
+							<choice>
+                                <text>次へ...</text>
+                                <event load="COMBAT_CHECK" />
+                            </choice>
+                        </event>
+                    </choice>
+                    <choice>
+                        <text>もうこんなことは忘れようじゃないか。</text>
+                        <event>
+                            <text>「そうだろう？もう欲しいものは手に入れた。哀れで間抜けなアイヴァーの仇を討てなかったのは残念だ"エアは苦笑し、あなたは自由の身となったようだ。</text>
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="VAMPWEED_HOMEWORLD_AYR_DEFEAT">
+    <text>カルチベーター・クルーザーを撃破した。しかし、戦いを終えている最中、エアーのオフィスからまたもや通信が入る。「お前を甘く見ていた...だが、これで終わりだと思ったら大間違いだ！私は負けない！"彼は机の上のボタンをいくつか押す。"この件が私に辿り着くことは間違いないが、それは後で対処しよう。" "たとえ私の国民が分裂しようとも"</text>
+    <variable name="ach_boss_vampcruiser" op="set" val="1" />
+	<choice req="sensors" lvl="2">
+        <text>(アップグ.センサー)早くアイバーを見つけろ。</text>
+        <event load="LOCATE_IVAR_QUICKLY_SCAN" />
+    </choice>
+    <choice req="LIFE_SCANNER">
+        <text>(ライフスキャナー）アイバーの居場所を急げ。</text>
+        <event load="LOCATE_IVAR_QUICKLY_SCAN" />
+    </choice>
+    <choice req="LIST_CREW_SLUG">
+        <text>(スラッグ・クルー）アイバーを早く見つけろ。</text>
+        <event load="LOCATE_IVAR_QUICKLY_SCAN" />
+    </choice>
+    <choice req="BLUELIST_CREW_SNAIL">
+        <text>(テレパシー・シェル）早くアイバーを見つけろ。</text>
+        <event load="LOCATE_IVAR_QUICKLY_SCAN" />
+    </choice>
+    <choice>
+        <text>彼が何をしたのか調べてみよう。</text> 
+        <event>
+            <text>その数分後、アイバーの食堂が炎に包まれた！どうやらエアがヘルファイヤー・ドローンに焼き払えと合図したようだ！</text>
+			<choice req="unique_alkali">
+				<text>(アルカリ）地元のシェル駐屯地に電話してください。</text>
+				<event load="SAVE_IVAR_GARRISON" />
+			</choice>
+            <choice req="BLUELIST_CREW_NOFIRE">
+                <text>(耐火クルー)クルーにアイバーを探しに行かせろ。</text>
+                <event load="SEND_CREW_TO_IVAR_FIREPROOF" />
+            </choice>
+            <choice req="BLUELIST_DRONES_REPAIR_CREW">
+                <text>(修理ドローン）修理ドローンを火の中に送り込む。</text>
+                <event load="SAVE_IVAR_REPAIR_DRONE" />
+            </choice>
+            <choice hidden="true" req="FIRE_EXTINGUISHERS">
+                <text>(消火器）パーティー会場で船の消火器を使う。</text>
+                <event load="SAVE_IVAR_FIRE_EXTINGUISHERS" />
+            </choice>
+            <choice hidden="true" blue="false" req="LIST_CHECK_ANY_CREW" lvl="1">
+                <text>クルーを派遣する。</text>
+                <event load="SEND_CREW_TO_IVAR_NORMAL" />
+            </choice>
+            <choice hidden="true">
+                <text>我々は助けられない。今のうちに船をスクラップにするんだ</text>
+                <event load="ABANDON_IVAR" />
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="LOCATE_IVAR_QUICKLY_SCAN">
+    <text>あなたはすぐにプレミアを見つける。しかし、その途端、パーティー会場が燃え上がった！どうやらエアがヘルファイヤー・ドローンに合図を送り、会場を焼き払ったようだ！</text>
+    <choice req="unique_alkali">
+        <text>(アルカリ）地元のシェル駐屯地に電話してください。</text>
+        <event load="SAVE_IVAR_GARRISON" />
+    </choice>
+	<choice req="teleporter">
+        <text>(テレポーター）アイバーをロックオンし、自分の船にテレポートさせる。</text>
+        <event load="TELEPORT_IVAR" />
+    </choice>
+    <choice req="BLUELIST_CREW_NOFIRE">
+        <text>(耐火クルー)クルーにアイバーを探しに行かせろ。</text>
+        <event load="SEND_CREW_TO_IVAR_FIREPROOF" />
+    </choice>
+    <choice req="BLUELIST_DRONES_REPAIR_CREW">
+        <text>(修理ドローン）修理ドローンを火の中に送り込む。</text>
+        <event load="SAVE_IVAR_REPAIR_DRONE" />
+    </choice>
+    <choice hidden="true" req="FIRE_EXTINGUISHERS">
+        <text>(消火器）パーティー会場で船の消火器を使う。</text>
+        <event load="SAVE_IVAR_FIRE_EXTINGUISHERS" />
+    </choice>
+    <choice hidden="true">
+        <text>クルーを派遣する。</text>
+        <event load="SEND_CREW_TO_IVAR_NORMAL" />
+    </choice>
+    <choice hidden="true">
+        <text>どうしようもない。今のうちに船をスクラップしておけ</text>
+        <event load="ABANDON_IVAR" />
+    </choice>
+</event>
+
+<event name="SAVE_IVAR_GARRISON">
+    <text>アルカリはあなたの一歩前にいる。あなたが彼に振り向くと、彼は通信機を使っている。「話している暇はない。守備隊全員と科学者をアイヴァーのパーティー会場に送り込み、彼を救出しろ」。短い抗議の声が聞こえるが、アルカリが割って入る。「研究と大使館は1時間ほど無防備でいられる。これは命令だ"その数分後、シェル部隊の駐屯地全体が燃え盛る建物の周囲に急降下してきた。彼らはすぐに消火活動を開始し、居住者の救助を始めた。やがて、シェル兵がヴァンプウィードの小集団を従えてビルから出てくる。生存者の中には、槍を杖代わりにしているアイヴァーの姿もあった。</text>
+    <choice>
+        <text>次へ...</text>
+        <event load="IVAR_SAVED" />
+    </choice>
+</event>
+<event name="TELEPORT_IVAR">
+    <text>建物が燃え始める中、あなたはアイバーの正確な居場所を見つけることができた。あなたは、彼と建物の中に閉じ込められている他のすべての人々を建物の外にテレポートするのに十分な時間がある。アイバーは辺りを見回し、何が起こったかを理解すると安堵のため息をつく。</text>
+    <choice>
+        <text>次へ...</text>
+        <event load="IVAR_SAVED" />
+    </choice>
+</event>
+<event name="SEND_CREW_TO_IVAR_FIREPROOF">
+    <text>あなたのクルーは、火災を恐れることなく建物に突入する。できる限りの火を消す。厄介だが、そうすることで生存者への道が開かれる。あなたのクルーは彼らを外に導く。アイバーはクルーにもたれかかりながら、よろよろとビルから出てくる。</text>
+    <choice>
+        <text>次へ...</text>
+        <event load="IVAR_SAVED" />
+    </choice>
+</event>
+<event name="SAVE_IVAR_REPAIR_DRONE">
+    <text>あなたのドローンは窓からビルに墜落する。遭遇した火災を素早く消火し、生存者を発見する。あなたはドローンに生存者を出口まで誘導するよう命じ、そこでクルーがバリケードの封鎖を解いている。アイバーは槍を杖代わりにしてよろめきながら建物から出てくる。</text>
+    <choice>
+        <text>次へ...</text>
+        <event load="IVAR_SAVED" />
+    </choice>
+</event>
+<event name="SAVE_IVAR_FIRE_EXTINGUISHERS">
+    <text>船の消火装置を外部に向け、火を消そうとする。消火システムはすぐに炎の大部分を消すことができた。あなたの船の介入により、現場の火災対応チームは避難を行うことができる。アイバーは槍を杖代わりにして、よろよろと建物の外に出る。</text>
+    <choice>
+        <text>次へ...</text>
+        <event load="IVAR_SAVED" />
+    </choice>
+</event>
+<event name="SEND_CREW_TO_IVAR_NORMAL">
+    <text>クルーが入ろうとするが間に合わない。あなたが援助を提供する前に、ホールは燃え尽きてしまう。現場にいたヴァンプウィードたちは、あなたが助けようとしていることに気づいたが、残念ながら、あなたと交流しようとはしていないようだ。彼らは戦いのほとんどを片付けたようだが、あなたに残ったのはほんのわずかだ。</text>
+    <autoReward level="LOW">standard</autoReward>
+</event>
+<event name="ABANDON_IVAR">
+    <text>見ているしかない。ドアが外からバリケードで塞がれているのは明らかだ。できることをやって、外に出る。</text>
+    <autoReward level="HIGH">standard_no_item</autoReward>
+    <weapon name="GIFTLIST_SPORE_ELITE" />
+    <choice>
+        <text>次へ...</text>
+        <event load="MORALITY_UPDATE_VAMPWEED" />
+    </choice>
+</event>
+
+<event name="IVAR_SAVED">
+    <text>アイバーは満面の笑みをあなたに向ける。「こんにちは、救世主！自己紹介するまでもないだろう。彼は持っている儀式用の槍で身振りをする。「私はアイバーだ！肩書きは必要ない。ここに来られて嬉しいんだ。もしよろしければ、ちょっとスクリーンをお借りしたいのですが......ちょっと......お話がありまして......」。</text>
+    <choice>
+        <text>アイバーにあなたの通信手段を使わせる。</text>
+        <event>
+            <text>アイバーは閣僚数人と電話会議をする。アイアも同席し、浮かない顔をしている。アイバーは腕組みをする。「私の食堂を焼き払うために送られたファイヤードローンに気づかずにはいられなかった。実際、私の見間違いでなければ、あの信号は惑星から来ていたようだ。さて、あれは誰だと思う？ん？何か言うことはないか、エア？"
+
+"私たちが...調べます..."
+
+"私たち？いいえ、あなたに負担をかけたくありません。実は..."エアのドアがノックされる。"あなたはとても忙しくなると思います"</text>
+            <choice>
+                <text>次へ...</text>
+                <event>
+                    <text>アイアが連行される。アイバーは残りの閣僚と1分ほど話し、短い休憩を取る。彼はあなたに向き直る。</text>                
+                    <choice req="unique_alkali" max_group="0" blue="false">
+                        <text>アルカリは友人と話したがっている。</text>
+                        <event>
+                            <text>アイヴァーの顔はにこやかだ。"アルカリ、この狡猾なろくでなしめ、英雄のように急襲してくるとは知っておくべきだった！アルカリはいつもより嬉しそうだ。ラボの仕事を休んで、スペース・バッカニアごっこをしてるんだ」
+
+アルカリはいつもより嬉しそうだ。火曜日は、またしても "だから言っただろう "と言われるに違いない」
+
+「なんだ、家族の友人に後ろから刺されたことがないのか？こっちのハイ＆マイティ科学者ボールさん」。二人は笑い合う。アイバーはあなたに向き直る。「アルカリが乗っている限り、私も同行しても構わない。どうだい？"</text>
+                            <choice hidden="true">
+                                <text>そうだ。</text>
+                                <event>
+                                    <text>「素晴らしい！裏切られ続けたキャリアの後では、顔面パンチはとても新鮮だ。内閣の仕事を片付けたら、すぐに行くよ。あ、もうひとつ！共謀者たちが君に対して使った船を引き揚げる権利を何とか君に確保した。必要なら設計図も差し上げますよ」。</text>
+                                    <variable name="ach_crew_ivar" op="set" val="1" />
+                                    <crewMember amount="1" all_skills="1" class="unique_ivar">アイバー</crewMember>
+                                    <unlockCustomShip silent="false">PLAYER_SHIP_CULTIVATOR</unlockCustomShip>
+                                    <choice>
+                                        <text>アイバーがミーティングを終えたら、船をスクラップにする。</text>
+                                        <event>
+                                            <autoReward level="HIGH">standard_no_item</autoReward>
+                                            <weapon name="GIFTLIST_SPORE_ELITE" />
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                            <choice hidden="true">
+                                <text>いや。</text>
+                                <event>
+                                    <text>「残念だよ。アルカリに追いつきたかったんだ。僕をCSAに引き渡してくれれば、君の邪魔はしない。ああ、もうひとつ。共謀者が君に対して使った船を 引き揚げる権利を確保した必要なら設計図も渡す"</text>
+                                    <unlockCustomShip silent="false">PLAYER_SHIP_CULTIVATOR</unlockCustomShip>
+                                    <choice>
+                                        <text>船をスクラップにする。</text>
+                                        <event>
+                                            <autoReward level="HIGH">standard_no_item</autoReward>
+                                            <weapon name="GIFTLIST_SPORE_ELITE" />
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                        </event>
+                    </choice>
+                    <choice req="pilot" max_group="0" blue="false">
+                        <text>次へ...</text>
+                        <event>
+                            <text>「会議はストレスがたまるものだね。いつも忙しさと争いに満ちている。私はそんなことから解放されたい。考えてみれば、私の内閣のお偉方は私の死を望んでいた。政治はときどき、ちょっと辛すぎる。あの船に私の部屋はある？"</text>
+                            <choice hidden="true">
+                                <text>そうだ。</text>
+                                <event>
+                                    <text>「素晴らしい！裏切られ続けたキャリアの後では、顔面パンチはとても新鮮だ。内閣の仕事を片付けたら、すぐに行くよ。あ、もうひとつ！共謀者たちが君に対して使った船を引き揚げる権利を何とか君に確保した。必要なら設計図も差し上げますよ」。</text>
+                                    <variable name="ach_crew_ivar" op="set" val="1" />
+                                    <crewMember amount="1" all_skills="1" class="unique_ivar">アイバー</crewMember>
+                                    <unlockCustomShip silent="false">PLAYER_SHIP_CULTIVATOR</unlockCustomShip>
+                                    <choice>
+                                        <text>アイバーがミーティングを終えたら、船をスクラップにする。</text>
+                                        <event>
+                                            <autoReward level="HIGH">standard_no_item</autoReward>
+                                            <weapon name="GIFTLIST_SPORE_ELITE" />
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                            <choice hidden="true">
+                                <text>いや。</text>
+                                <event>
+                                    <text>「残念だよ。新しい顔が見れてよかったかもしれない。僕をCSAに引き渡してくれれば、君の邪魔はしない。ああ、もうひとつ。共謀者が君に対して使用した船を引き揚げる権利を何とか確保した。必要なら設計図も渡す"</text>
+                                    <unlockCustomShip silent="false">PLAYER_SHIP_CULTIVATOR</unlockCustomShip>
+                                    <choice>
+                                        <text>船をスクラップにする。</text>
+                                        <event>
+                                            <autoReward level="HIGH">standard_no_item</autoReward>
+                                            <weapon name="GIFTLIST_SPORE_ELITE" />
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+
+<ship name="SHIP_COALITION_TYEREL_CONFEDERACY" auto_blueprint="MU_COALITION_PREDATOR_AMBASSADOR">
+    <destroyed load="TY_EREL_RESCUE_CONFEDERACY" />
+    <deadCrew load="TY_EREL_RESCUE_CONFEDERACY" />
+</ship>
+<event name="TYEREL_QUEST">
+    <preventQuest />
+    <preventFleet />
+    <quest>
+        <nebulaBeacon>false</nebulaBeacon>
+        <aggressive>2</aggressive>
+    </quest>
+    <beaconType id="map_icon_ambassador" global="true">
+        <color r="27" g="165" b="0" a="0.8" />
+        <unvisitedTooltip>オーキッド・アンバサダーはシャドーイングされている。</unvisitedTooltip>
+    </beaconType>
+    <text>飛び込むと、近くの宇宙港にタイ・エレルの大使級クルーザーが停泊しているのに気づく。連合のストーカーの姿は見当たらない。</text>
+    <choice>
+        <text>Ty E'Relの船に連絡する。</text>
+        <event>
+            <text>彼の船は閑散としているが、電話は迂回され、目に見えて枯れたオーキッドが迎えてくれる。タイ・エレルの血統は、フローラル族とヴァンプウィード族の両方の特徴を受け継いでいる。「ごきげんよう、レネゲイド。連邦のキャプテンがわざわざ会いに来てくれたのか？重要な用件に違いない。</text>
+            <choice>
+                <text>命を狙われる可能性があることを知らせる。</text>
+                <event>
+                    <text>"意外だ。ステーションに連絡して、何かわかるか聞いてみるよ」。Ty E'Rel が端末に何かを打ち込む。ステーションのセンサーアレイがアクティブにスキャンを開始し、ステーションのベイから探査機が発進する。それに呼応するように、連合の船が姿を現し、あなたに呼びかける。</text>
+                    <ship load="SHIP_COALITION_TYEREL_CONFEDERACY" hostile="false" />
+                    <choice>
+                        <text>ひょうきんな対応。</text>
+                        <event load="TY_EREL_COALITION_HAIL" />
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>前進だ。</text>
+        <event>
+            <text>コールが見えないので、気にしないことにした。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="TY_EREL_COALITION_HAIL">
+    <text>連合軍のプレデターを呼び寄せると、マンティスビショップが出迎えてくれる。"レネゲイド、お前は余計なところに鼻を突っ込んだな！ハイブはこのお節介な官僚にやり残したことがある。我々の手で死を免れる唯一のチャンスだ"</text>
+    <choice>
+        <text>なぜタイ・エレルを憎むのか、彼らに聞いてみよう。</text>
+        <event>
+            <text>「パァ、レネゲイドとその無分別な好奇心。ビショップは逡巡したが、激怒して暴言を吐いた。「ハイブが勝っていた！ハイブが勝っていたのだ！」 「あの生意気なお花畑が連邦に加盟したとき、戦局を左右するチャンスはないと思っていたのに......。あの無価値な潅木が連合国に我々を見捨てるよう説得したんだ！我々は地上戦では100戦100勝しても、宇宙戦では連邦の損失を補うことはできない。彼らの兵器や造船所がなければ、ハイヴは我々の征服を継続するための艦隊を維持することはできない。ビショップはコンソールを激しく叩く。彼は冷たい言葉で言い終えた。「ハイヴとの同盟を拒むすべての者にメッセージを送るため、彼の蔓延は銀河から焼き払われなければならない」。</text>
+            <choice>
+                <text>なぜ今になって？</text>
+                <event>
+                    <text>ビショップは鋭い付属品をあなたに向ける。「女王がいなければ、とっくに殺していただろう。しかし彼女は、我々が外交官を攻撃すれば、彼らがさらに我々に反旗を翻すと確信していた」
+
+ビショップはその付属器を大きく広げる。"しかし、連合は彼女に新しい道を示した...そして今、我々を阻むものは何もない！"連合船はそちらに向き直り、衝突は避けられそうにない！「お前は質問が多すぎる。生かしてはおけない！"</text>
+                    <ship hostile="true" />
+                    <choice>
+                        <text>次へ...</text>
+                        <event load="COMBAT_CHECK" />
+                    </choice>
+                </event>
+            </choice>
+            <choice>
+                <text>船を攻撃しろ。</text>
+                <event>
+                    <text>連合の船はあなたとの戦闘を望んでいる。</text>
+                    <ship hostile="true" />
+                    <choice>
+                        <text>次へ...</text>
+                        <event load="COMBAT_CHECK" />
+                    </choice>
+                </event>
+            </choice>
+            <choice>
+                <text>この機会を逃す手はない。</text>
+                <event>
+                    <text>あなたはタイ・エレルを運命に任せ、連合に干渉しないことに決めた。</text>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>船を攻撃しろ。</text>
+        <event>
+            <text>連合の船はあなたとの戦闘を望んでいる。</text>
+            <ship hostile="true" />
+            <choice>
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>この機会を逃す手はない。</text>
+        <event>
+            <text>あなたはタイ・エレルを運命に任せ、連合に干渉しないことに決めた。</text>
+        </event>
+    </choice>
+</event>
+
+<event name="TY_EREL_RESCUE_CONFEDERACY">
+    <text>連合軍のプレデターが倒された。プレデターの残骸をスクラップにすると、タイ・エレルからメッセージが届く。</text>
+    <autoReward level="HIGH">standard</autoReward>
+    <choice>
+        <text>次へ...</text>
+        <event>
+            <text>年老いた植物があなたのビュースクリーンに現れる。彼はごくわずかに、穏やかな笑みを浮かべる。「お節介をありがとう。私はギャザリングへの旅に出ようとしていた。私の船の設計図を連邦に提供できれば、これほど嬉しいことはない。"</text>  
+            <unlockCustomShip silent="false">PLAYER_SHIP_AMBASSADOR</unlockCustomShip>
+            <variable name="loc_tyerel_met" op="set" val="1" />
+            <choice hidden="true">
+                <text>次の目標は？</text>
+                <event load="TY_EREL_RECRUITMENT_CHOICE" />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="TY_EREL_RECRUITMENT_CHOICE">
+    <text>「引退、いずれはね。銀河系が常に自らを粉々にしようとしている今が、適切なタイミングだとは決して思えないんだ"彼はうめきながら背筋を伸ばす。"大使が必要なときや、経験豊富なスタッフが必要なときは、短期間ならお手伝いしますよ"</text>
+	<autoReward level="HIGH">standard_no_item</autoReward>
+    <choice>
+        <text>タイエレルを受け入れる。</text>
+        <event>
+            <text>「すぐにそちらの船に出頭します。お知り合いになれて光栄です、船長"Ty E'Rel が、本や書類の束を抱えてあなたの船に入ってきた。</text>
+            <crewMember amount="1" pilot="2" class="unique_tyerel">タイ・エレル</crewMember>
+            <variable name="ach_crew_tyerel" op="set" val="1" />
+        </event>
+    </choice>
+    <choice>
+        <text>タイエレルを辞退</text>
+        <event>
+            <text>「それならば、私は自分の船で連邦に向かうことにしよう。よい旅を"</text>
+        </event>
+    </choice>
+</event>
+</FTL>

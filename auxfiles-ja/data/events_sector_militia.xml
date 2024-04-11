@@ -1,0 +1,2002 @@
+<FTL>
+
+
+
+<event name="FINISH_BEACON_MILITIA">
+	<text id="finish_beacon" />
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="EXIT_FILLER_LIST" />
+	</choice>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+	
+<eventList name="ITEMS_MILITIA">
+	<event load="MILITIA_FREE_AMMO" />
+	<event load="MILITIA_CLANSMEN" />
+	<event load="MILITIA_AUTOGRAPHS" />
+	<event load="MILITIA_TEXTWALL" />
+</eventList>
+
+<event name="MILITIA_FREE_AMMO" unique="true">
+	<text load="MILITIA_FREE_AMMO" />
+	<autoReward level="MED">missiles_only</autoReward>
+	<choice>
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice>
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+<textList name="MILITIA_FREE_AMMO">
+	<text>近くには、かつて民兵の輸送船だったはずの焼け殻が漂っている。弾薬の入った木箱がひとつあるだけだ。</text>
+	<text>近くに地雷が漂っているのに気づいた。すべてではないにせよ、ほとんどは不活性で、おそらく何らかの訓練で使い残したものだろう。幸い、これなら比較的簡単に回収できる。</text>
+	<text>小型の給油ドローンが飛んできて停止し、あなたの船をスキャンして戻ってくる。ドローンはあなたを友軍と認識し、弾薬を無料で補給した後、再びスピードを上げて走り去る。</text>
+</textList>
+
+<event name="MILITIA_CLANSMEN" unique="true">
+	<text>小さな月の陰に隠れているスラッグ船から呼び出しを受ける。よく見ると、その船にはエキゾチック・ハンター・ギルドに所属するスラッグ族が乗っていた。</text>
+	<ship load="SHIP_CLAN_FIGHT" hostile="false" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>「多世界を旅する者にとって、素晴らしい船だ！民兵がどんな種族でも受け入れると聞いて、狩りに行く絶好の機会だと思ったんだ！でも、せっかくここに来てくれたんだから、もしかしたら提供できる標本があるんじゃないか？報酬は惜しみませんよ</text>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+				<text>ストローを引き、スラッグにクルーを与える。</text>
+				<event>
+					<text>スラッグはクルーたちを蹴散らしながら船に連れ帰る。"こいつは最高の戦利品だ！"お前にスクラップをやろう"</text>
+					<autoReward level="HIGH">scrap_only</autoReward>
+					<removeCrew>
+						<clone>false</clone>
+						<text>クルーはすぐに死んでしまうだろうが、彼らを殺人ハンターに差し出しておいて、クローンを作るのがいい考えだとは思わないだろう。</text>
+					</removeCrew>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>スラッグは、生命体を探知する能力があるにもかかわらず、どういうわけか、自分たちのもとへ送るべき人間が乗船していないことに気づいていないのだ......。</text>
+				<event load="OPTION_INVALID" />
+			</choice>
+			<choice hidden="true" req="LIST_CREW_CLAN">
+				<text>(クランズマン・クルー）自分もハンターだと主張する。</text>
+				<event>
+					<text>"ああ、またハンターか？このアイデアを思いついたのは俺が最初だと思ってたんだが...。あら、あなたの船は私のよりずっと大きいわ。きっともっと成功してるんだろうな！"スラッグはサービスを提供する。反乱軍を狩ることに抵抗がなければいいが。</text>
+					<crewMember amount="1" class="slug_clansman" />
+				</event>
+			</choice>
+			<choice hidden="true" req="CREW_FIREARMS">
+				<text>(改良型武器庫）自分自身がハンターだと主張する。</text>
+				<event>
+					<text>"ああ、またハンターか？このアイデアを思いついたのは俺が最初だと思ってたんだが...。あら、あなたの船は私のよりずっと大きいわ。きっともっと成功してるんだろうな！"スラッグはサービスを提供する。反乱軍を狩ることに抵抗がなければいいが。</text>
+					<crewMember amount="1" class="slug_clansman" />
+				</event>
+			</choice>
+			<choice>
+				<text>船を攻撃しろ！</text>
+				<event>
+					<text>クランズマンと交戦する。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>拒否する。</text>
+				<event load="MILITIA_CLANSMEN_REFUSE" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MILITIA_CLANSMEN_REFUSE">
+	<event>
+		<text>「恥を知れ。私はいつも礼儀正しくするよう心がけているんだけど、みんなが同意してくれることはめったにないんだ。まあ、これからはもっと楽しくなるだろう。</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>"ススクエア"藩士たちは飛び退く。</text>
+	</event>
+</eventList>
+
+<event name="MILITIA_AUTOGRAPHS" unique="true">
+	<text>遠くには民兵の支配下にある人口密度の高い惑星があり、行き来は盛んだ。地表にはマーケットがあるはずだ。</text>
+	<img planet="PLANET_POPULATED" />
+	<choice hidden="true">
+		<text>土地だ。</text>
+		<event>
+			<text>惑星に着陸して数分後、あなたは民間人、連邦将校、民兵の新兵に群がられた。彼らは君がマルチバース・レネゲイドであることを認識し、スターダムに乗り遅れたようだ。ここで君のような船を見るのは珍しいらしい。</text>
+			<choice hidden="true">
+				<text>ファンを無視して店を探す。</text>
+				<event>
+					<text>人ごみをかき分け、彼らに謝りながら進み、やがて買い物ができる市場を見つける。</text>
+					<store>STORE_STANDARD</store>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>サインはするが、船団が追いつく前に退散する。</text>
+				<event>
+					<text>あなたは観客に混じって話をしたり、サインをしたりすることにした。プレゼントももらったが、結局、反乱軍が到着する前に帰ることにした。</text>
+					<autoReward level="MED">stuff</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>しばらくファンと一緒にいてください。</text>
+				<event>
+					<text>あなたは群衆に混じって話をし、サインをすることにした。長くいればいるほど、たくさんのプレゼントをもらうが、結局、反乱軍にこれ以上追いつかれる前にやめなければならない。</text>
+					<autoReward level="HIGH">item</autoReward>
+					<modifyPursuit amount="2" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>今すぐ買い物に行く必要はない。</text>
+		<event>
+			<text>惑星を飛び越える。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="MILITIA_TEXTWALL" unique="true">
+	<text>ゾルタンのピースキーパーが近くに駐留し、数隻の民兵船と会話している。やがて、ゾルタン以外の船はすべて飛び去り、あなたは呼びかけを受ける。</text>
+	<ship load="SHIP_ZOLTAN_ELITE_GENERIC" hostile="false" />
+	<choice>
+		<text>次へ...</text>
+		<event>
+			<text>「こんにちは。私はボリーン、民兵隊のゾルタン兵士だ。銀河連合の次の会合で披露するつもりで、一生懸命スピーチを練っているんだが、誰もそれを聞こうとしないし、フィードバックもくれない。もしよければ、お聞かせ願えないでしょうか？"</text>
+			<choice hidden="true">
+				<text>同意する。</text>
+				<event>
+					<text>「素晴らしい！では始めましょう」。ボリーンは巨大な本を取り出し、目の前の机に叩きつけると、表紙を開いた。彼女は喉を鳴らし、読み始める...。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MILITIA_TEXTWALL_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>衰退。</text>
+				<event>
+					<text>"予想通りだ...続けろ..."</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="MILITIA_TEXTWALL_LOAD">
+	<variable name="loc_boline_repeat" op="add" val="1" />
+	<loadEvent ignoreUnique="true">MILITIA_TEXTWALL_TEXT</loadEvent>
+</event>
+<event name="MILITIA_TEXTWALL_TEXT">
+	<text>「銀河連邦の市民諸君、連邦の子会社であり、連邦領域における法の監督者である諸君、私は非常に重要な問題について諸君と話をするために来た。文明の夜明け以来、我々は戦争兵器に縛られてきた。人類、ゾルタン、アクエリアン、ロックマン、マンティス、そしてエンギやオーキッドに至るまで、あらゆる種族が互いに戦争をしてきた。この破壊の道具を放棄することは、我々の多くは想像を絶する...いや、我々の文明を悩ます邪悪で邪悪な考えを放棄することは。私たちは進化し、学び、成長したいと言う。しかし、復讐や憎悪という考えをいまだに大切にしている私たちに、それができるだろうか？"</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>「私の主張を強調するために、皆さんに話をしよう。悪名高きマンティスと人類の戦争の頃、後に連邦となる思想の種がやっと蒔かれたばかりの頃、人類は窮地に立たされていた。マンティスというはるかに危険で戦士のようなクリーチャーは、準備の整っていない人類のコロニーに大混乱を引き起こした。人類は当時唯一の同盟国であったエンギに助けを求めた。エンギはしぶしぶそれを受け入れたが、マンティスの収容所から奴隷を解放することが条件だった。両勢力は隣接する火星の支配権をめぐって何年も何年も戦った。火星はマンティスの拠点であり、侵略計画の要所として確保されていた。人類は停戦交渉や降伏をするどころか、絶滅寸前までマンティスと戦い続けた。マンティスは人間にも容赦せず、人類が根絶されるまで止まらなかった。"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>ボリーヌは咳払いをして、戸惑いながらも数ページをめくる。「このような恐ろしい戦争を起こした暴力的な種族はマンティスだけではありません。ロック・インクイジションは、おそらく銀河系で知られている最悪の戦いのひとつだ。自分たちが優れていると信じていたロックマンは、神聖なロック神政の名の下に、他の領土を要求するために、十字軍として知られる訓練された兵士を乗せた装甲船の大隊を送り出した。ロックマンをこのような暴力に駆り立てたクリソリック信仰は、ロックの長老たちが恐怖の戦術によって住民を奴隷化するために用いたものとまったく同じだった。明らかに不道徳な行為だが、ロック独裁政権が銀河系で最も暴力的で容赦ない勢力のひとつであることは、多くの人に知られている。"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>「ロックマン政府の宗教的迫害は、他の種族に対する不当な扱いにつながる野蛮主義の唯一の例ではない。カマキリの話に戻ると、カマキリ族は長年にわたり、修理に長けたエンギ族を奴隷にしてきた。マンティス種族はその解剖学的構造上、電子機器を使った精密な作業ができないことが多いが、その爪がドライバーやその他の工具の代わりに機能することは時々知られている。機能的に正反対の2つの種族の違いを比較するのは興味深い。似たような二重性はあまり見られないが、オーキッドとロックマンのクルーを一緒にすると、ロックマンの外装が硬いため火に強いという利点があるとコメントする者もいる。"</text>
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event>
+									<text>「しかし、酸素に依存するランは植物と相性が良いので、シェルと一緒にいる方がより効果的に機能するかもしれない。たった一本のランが、長期間にわたって生命維持装置の代わりを果たすことができるのは、科学的にも不思議なことである。多くの生物学者が、偶然にもその多くが貝であったが、ランの生態を研究しようと試みてきた。ご存じないかもしれないが、シェル族は科学的研究に重点を置いており、時には観光客や訪問船を拉致して、苦痛を伴わないとはいえ、迅速なテストを行うことさえある。そのため、ロックマンやマンティスのような理解力に乏しい種族とは、多くの文化的誤解が生じている。スラッグもまた貝に特別な関心を抱いているが、それは無邪気な理由からではない。エキゾチック・ハンター・ギルドと呼ばれるスラッグ趣味の一族が結成され、その特定の目的は希少生物やサピエント・クリーチャーを狩ることである。貝はその装甲能力から、彼らの主要な標的である。"</text>
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event>
+											<text>"恐ろしいことに、EHG、つまり前述のエキゾチック・ハンターズ・ギルドが率いる攻撃は、スラッグ拡大戦争として知られる、まだ比較的最近の一連の紛争とほぼ同義である。スラッグ拡大戦争の歴史はすでにご存知の方も多いと思いますが、そうでない方のために簡単にまとめておきます。"</text>
+											<choice hidden="true">
+												<text>次へ...</text>
+												<event>
+													<text>ボリーヌはページを舐め、次のページをめくる。わずかに咳き込み、胸を叩き、読み続ける。「反乱軍の台頭後、連邦軍は領土から反乱軍の船を排除することに専念した。そのため、宇宙空間の大部分は侵略者から無防備な状態となっていた。それまで裏切り者として連邦から疎まれていたスラッグは、このパターンに目をつけ、新たな領域への大移動を計画し始めた。最初は漠然としたセクタを攻撃していたが、やがて明確なセクタを攻撃する勇気が出てきた。スラッグがマンティスとロックの宇宙域に侵入を敢行したとき、これらの政府の不興を買った。ハイブもエルダーもスラッグに宣戦布告し、数年間戦った。最終的にスラッグスは降伏し、領土を返還した。しかし、彼らはそれだけにとどまらず、もともとの領土の一部も提供した。これがやがて、我々が連合と呼ぶようになった同盟関係へと発展していった。"</text>
+													<choice hidden="true">
+														<text>次へ...</text>
+														<event>
+															<text>「連邦宙域における連邦の保護の欠如は、民兵の台頭にもつながった。しかし、この話はここにいる誰もが知っていることだろうから、割愛しよう。"</text>
+															<choice hidden="true">
+																<text>ああ、よかった。</text>
+																<event>
+																	<text>「ご存じないかもしれませんが、連合についてお話します。連合とは、セスニアン・クラプトクラシー、ウルタリアン・セオクラシー、イェイティイク・ハイヴ、アージェン・リパブリックの間の休戦協定である。この4種族はおそらく銀河系で最も敵対的で致命的な種族であり、この同盟は連邦と反乱軍双方に恐怖をもたらした。連合は勢力を拡大し続け、いくつかのセクターを占領している。連合はまた、スラッグ・シーラフォーミングの技術を利用し、人工星雲を作るために星雲ガスを輸送する方法を取っている。この偽物の雲は星になることはできないが、それでもセンサーを誤作動させ、イオン嵐と同じ電流を発生させることさえある。"星雲セクターに行ったことのあるパイロットなら、ここにいる誰もが間違いなく知っている深宇宙の危険物だ。</text>
+																	<modifyPursuit amount="1" />
+																	<choice hidden="true">
+																		<text>次へ...</text>
+																		<event>
+																			<text>「しかし、スラッグスが開発したユニークな技術はセアラフォーミングだけではない。多くのスラッグは対バイオ兵器を使用しているが、少なくとも対バイオ兵器がピンクに移行する前は、そのオレンジ色が似ているため、しばしば粒子兵器と混同されていた。パーティクル技術は、ゾルタン種族が偶然ズフクエア社と共同開発したものだ。ええと......待って、スペルが違うよ」。</text>
+																			<choice hidden="true">
+																				<text>次へ...</text>
+																				<event>
+																					<text>「ズルフィカール？ズルフィガー？Zで始まるのは知ってるけど..."ボリーヌはテキストをめくりながら何かを探す。「あ、スペルはここにあった。ズルフィガー、それだ。さて、どこだったかな...。ああ、ページを失くしてしまった。もう一度やり直そうか？"</text>
+																					<choice hidden="true" req="loc_boline_repeat" lvl="0" max_lvl="3" blue="false">
+																						<text>次へ...</text>
+																						<event>
+																							<text>ボリーンはあなたの返答を待っている。</text>
+																							<choice hidden="true">
+																								<text>そうだ。</text>
+																								<event>
+																									<text>「オーケー、そう言うなら！」。ボリーンは1ページをめくる。"じゃあ、上から"</text>
+																									<choice hidden="true">
+																										<text>次へ...</text>
+																										<event load="MILITIA_TEXTWALL_LOAD" />
+																									</choice>
+																								</event>
+																							</choice>
+																							<choice hidden="true">
+																								<text>いや。</text>
+																								<event>
+																									<text>「ああ、わかった。十分フェアだ！"ボリーンは本をめくる。「そこまで聞いてくれてありがとう。それで、どうだった？"</text>
+																									<choice hidden="true">
+																										<text>かなりいい。</text>
+																										<event>
+																											<text>「本当に？気に入った？驚いたよ！感想をどうもありがとう。やばい、今まで誰も私のスピーチを褒めてくれなかった、自分のクルーでさえも！ねぇ......もしよかったら、あなたのクルーにならない？あなたの方がずっといい人そうだし、あなたの励ましがあれば、この原稿を発表までに仕上げることもできるかもしれない！"</text>
+																											<crewMember amount="1" class="zoltan_peacekeeper">ボリン</crewMember>
+																										</event>
+																									</choice>
+																									<choice hidden="true">
+																										<text>私の人生で最大の時間の無駄だった。</text>
+																										<event>
+																											<text>ボリーヌは恥ずかしそうに足元に視線を落とす。"ああ...わかった"彼女は通信を切る。そんなに無礼なことをする必要はなかっただろうが、少なくともこれ以上彼女のおしゃべりを聞く必要はない。</text>
+																										</event>
+																									</choice>
+																								</event>
+																							</choice>
+																						</event>
+																					</choice>
+																					<choice hidden="true" req="loc_boline_repeat" lvl="4" blue="false">
+																						<text>次へ...</text>
+																						<event>
+																							<text>ボリーンはあなたの返答を待っている。</text>
+																							<choice hidden="true">
+																								<text>そうだ。</text>
+																								<event>
+																									<text>「マジで？また？私のスピーチはもう5回も読んだわよ！バカにしてんのか？バカにしてんのか？ボリーンの武器がオンラインになった！</text>
+																									<achievement>ACH_EVENT_BOLINE</achievement>
+																									<ship hostile="true" />
+																									<choice hidden="true">
+																										<text>次へ...</text>
+																										<event load="COMBAT_CHECK" />
+																									</choice>
+																								</event>
+																							</choice>
+																							<choice hidden="true">
+																								<text>いや。</text>
+																								<event>
+																									<text>「ああ、わかった。十分フェアだ！"ボリーンは本をめくる。「そこまで聞いてくれてありがとう。それで、どうだった？"</text>
+																									<choice hidden="true">
+																										<text>かなりいい。</text>
+																										<event>
+																											<text>「本当に？気に入った？驚いたよ！感想をどうもありがとう。やばい、今まで誰も私のスピーチを褒めてくれなかった、自分のクルーでさえも！ねぇ......もしよかったら、あなたのクルーにならない？あなたの方がずっといい人そうだし、あなたの励ましがあれば、この原稿を発表までに仕上げることもできるかもしれない！"</text>
+																											<crewMember amount="1" class="zoltan_peacekeeper">ボリン</crewMember>
+																										</event>
+																									</choice>
+																									<choice hidden="true">
+																										<text>私の人生で最大の時間の無駄だった。</text>
+																										<event>
+																											<text>ボリーヌは恥ずかしそうに足元に視線を落とす。"ああ...わかった"彼女は通信を切る。そんなに無礼なことをする必要はなかっただろうが、少なくともこれ以上彼女のおしゃべりを聞く必要はない。</text>
+																										</event>
+																									</choice>
+																								</event>
+																							</choice>
+																						</event>
+																					</choice>
+																				</event>
+																			</choice>
+																		</event>
+																	</choice>
+																</event>
+															</choice>
+														</event>
+													</choice>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<eventList name="NEUTRAL_MILITIA">
+	<event load="MILITIA_CHOICE" />
+	<event load="MILITIA_DEPOT" />
+	<event load="MILITIA_TRAINIES" />
+	<event load="MILITIA_RECRUITMENT" />
+	<event load="MILITIA_COCKY_ZOLTAN" />
+</eventList> 
+
+<event name="MILITIA_CHOICE">
+	<text load="TEXT_MILITIA_CHOICE" />
+	<ship load="SHIP_MILITIA_ALL" hostile="false" />
+	<choice hidden="true">
+		<text>彼らと戦う！</text>
+		<event>
+			<text>武器をパワーアップし、民兵を攻撃する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>民兵の船は無視しろ。</text>
+		<event>
+			<text>民兵の船の横を通り過ぎる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<textList name="TEXT_MILITIA_CHOICE">
+	<text>民兵船が戦闘の後、船体の小さな修理をしている。近くに他の船はいない。</text>
+	<text>あなたは、民兵の別の船が少し離れたところを漂っているのに気づいた。その船は完全に機能しているが、どんな呼びかけも丁重に断る。</text>
+	<text>武装した民兵船がビーコンをパトロールしている。あなたの連邦の地位のため、彼らはあなたを気にしていません。</text>
+</textList>
+
+<event name="MILITIA_DEPOT" unique="true">
+	<text>近くに民兵の駐屯地を見つけた。旅人に物資を提供しているようだ。</text>
+	<ship load="SHIP_MILITIA_DEPOT" hostile="false" />
+	<choice>
+		<text>身分証明書を提出し、物資を調達する。</text>
+		<event>
+			<autoReward level="LOW">stuff</autoReward>
+			<status type="limit" target="enemy" system="artillery" amount="0" />
+		</event>
+	</choice>
+	<choice req="human_soldier">
+		<text>(ソルジャー・クルー) 物資の追加を要請する。</text>
+		<event>
+			<autoReward level="HIGH">stuff</autoReward>
+			<status type="limit" target="enemy" system="artillery" amount="0" />
+		</event>
+	</choice>
+	<choice req="LIST_CREW_MEDIC">
+		<text>(医療班）医療品を要請する。</text>
+		<event>
+			<autoReward level="MED">missiles_only</autoReward>
+			<weapon name="BOMB_HEAL" />
+			<status type="limit" target="enemy" system="artillery" amount="0" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>アタックなら、もっとできるはずだ！</text>
+		<event>
+			<text>武器をパワーアップし、民兵を攻撃する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>デポは無視しろ。</text>
+		<event>
+			<text>民兵の駐屯地を無視するのか。</text>
+			<status type="limit" target="enemy" system="artillery" amount="0" />
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="MILITIA_TRAINIES" unique="true">
+	<text>民兵の訓練がこのビーコンで行われているようだ。幸い、彼らは殺すことを目的としておらず、ビーコンから安全な距離にいる。</text>
+	<choice hidden="true">
+		<text>参加できるかどうか聞いてみよう。</text>
+		<event>
+			<text>先頭の指揮官が答える。「訓練に参加したいのか？どうぞ。船体を傷つけるのは構わないが、新人たちに致命傷を負わせないでくれ。クローンベイが絡むなら、不本意ながら...不手際は大目に見るが、とにかく自制してもらうのが一番だ。60秒後に訓練を終了する"</text>
+			<ship load="SHIP_MILITIA_TRAINING" hostile="true" />
+			<choice hidden="true">
+				<text>関与する！</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+			<triggeredEvent event="MILITIA_TRAINIES_WIN" thisFight="true" clearOnJump="true" time="60.0">
+				<triggeredEventBox load="DEFAULT_TIMER" pos="combat">
+					<warning time="10.0" flash="true" />
+					<tooltip>訓練はこのくらいの時間で終わる。それまで誰も殺さないように注意してください！</tooltip>
+				</triggeredEventBox>
+				<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+			</triggeredEvent>
+			<choice hidden="true">
+				<text>再考し、オプトアウトする。</text>
+				<event>
+					<text>考え直してみると、これに参加するのはあまりいいアイデアではないかもしれない。</text>
+					<ship hostile="false" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>デポは無視しろ。</text>
+		<event>
+			<text>ここには何の役にも立たない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="MILITIA_TRAINIES_KILL">
+	<text>どうやら君は誤って訓練をやりすぎたようだ。他の船は何が起こっているのか理解するのに時間がかかったが、あなたが仲間を殺したと知るやいなや、すぐに訓練を放棄してあなたに発砲した。船体は多少のダメージを受けたが、あなたは間一髪で飛び去ることができた。</text>
+	<damage amount="5" />
+	<ship hostile="false" />
+</event>
+<event name="MILITIA_TRAINIES_WIN">
+	<text>他の船が解散した後、司令官が直接あなたに連絡する。「助けてくれてありがとう！彼らは新兵で、実戦経験はほとんどない。実際のマルチバース・レネゲイドを相手にするのは、彼らにとってかなりの経験だっただろう！物資は少ないが 訓練に使ってる- オーグメントを 持ってきてくれ</text>
+	<augment name="GIFTLIST_AUGMENT_COMBAT" />
+	<ship hostile="false" />
+	<surrender />
+</event>
+
+<event name="MILITIA_RECRUITMENT" unique="true">
+	<text>反乱軍の船がこのビーコンに駐留している民兵募集センターにドッキングした。迅速なスキャンによると、反乱軍は民兵を人質に取っている。</text>
+	<ship load="SHIP_REBEL_MILITIA" hostile="false" />
+	<choice hidden="true">
+		<text>民兵を救出せよ</text>
+		<event>
+			<text>あなたは武器をパワーアップし、反乱軍を攻撃する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>反乱軍に連絡を取り、説得を試みる。</text>
+		<event load="MILITIA_RECRUITMENT_TALK" />
+	</choice>
+	<choice hidden="true" req="cloaking" lvl="2">
+		<text>(Upg.遮蔽)反乱軍の船を遮蔽し、乗船中にスクラップにする。</text>
+		<event>
+			<text>反乱軍が占領している今、彼らの船を守る者は誰もいない。マントのベールの下で、あなたはメッキの一部をはぎ取り、素早くその場を離れる。</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_MONK">
+		<text>(モンク・クルー）反乱軍の暴力的なやり方を辱める。</text>
+		<event>
+			<text>お坊さんはそれから30分、反乱軍の野蛮なやり方を侮辱し、民間人を守る義務を果たしているだけの男たちを攻撃する。反乱軍は自分たちを恥じて、何人かが床に崩れ落ちてすすり泣く。特に感動した一人が君の仲間になりたいと申し出、残りは民兵を放っておくことに同意する。</text>
+			<crewMember amount="1" class="human" />
+		</event>
+	</choice>
+	<choice hidden="true" req="CREW_FIREARMS">
+		<text>(改良型武器庫) 乗組員を武装させ、乗り込む。</text>
+		<event>
+			<text>クルーが武装しているのを見て、反乱軍はすぐにパニックに陥った。彼らは降伏し、民兵を解放する。ほとんどの兵士は反乱軍を処理するために残るが、1人の兵士があなたたちに加わろうとした！</text>
+			<crewMember amount="1" class="human" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>これには近づくな。</text>
+		<event>
+			<text>あなたは民兵センターを通り過ぎて飛ぶ。うまくいけば、事態は解決するだろう...君のおかげではないが。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="MILITIA_RECRUITMENT_TALK">
+	<event>
+		<text>反乱軍はあなたの話を聞こうともしない。彼らはクルーチームを送り込み、あなたが彼らの船と戦う間、あなたに乗り込んでくる。</text>
+		<boarders min="2" max="3" class="human_rebel" />
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>反乱軍は一歩下がってあなたの演説に耳を傾ける。あなたは、彼らが武器を置くまでは、うまくいかないと思った。民間人を攻撃したことを恥じ、彼らは船に戻り、ステーションを離れる。民兵たちはあなたに感謝し、助けてくれたお礼を払う。</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+</eventList>
+<event name="MILITIA_COCKY_ZOLTAN" unique="true">
+	<text>このビーコンにはゾルタン船の船団がいる。彼らはスーパーシールドの耐久力に関する訓練を行っているようだ。その中の1隻があなたに呼びかける："レネゲイド、いるか？民兵宇宙ではあまり見ない光景だな。このセクターの他の船と比べて、君は本当に目立つね..."</text>
+	<choice>
+		<text>どうしてですか？</text>
+		<event>
+			<text>「その場しのぎの寄せ集めの技術だ！我々の整然とした規律と高度なシールド技術と比べて、連邦は恥ずかしくないのか？連邦が我々の助けを求めるのも無理はない。これは "共同作業 "と宣伝されているかもしれないが、技術的に遅れをとっている以上、地元住民の安全を確保するのは我々の役目だ」 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+話を聞きつけた飛行隊長が、面目を保つために意見を述べる。「レネゲイドを困らせるのはやめろ。レネゲイドを困らせるのはやめろ。お前はまだ銀河の他の地域が何を提供できるかを見ていない。その甘さが破滅を招くのだ！"</text>
+			<choice hidden="true">
+				<text>スーパーシールドの不備を指摘する。</text>
+				<event>
+					<text>あなたは、彼らのシールドは、そのような武器に適した特殊な武器によって、合理的な時間で簡単にダウンさせることができると説明し、彼らの有名なスーパーシールドのように、過信は、より大きな銀河が持つものから彼らの安全を保証することはできないという事実を投げかける。この逆転劇に激昂した新人は、身を引けという命令に背き、あなたを攻撃する！司令官は不必要な流血を避けるよう懇願するが、攻撃者を思いとどまらせるためには実力行使に出るしかなさそうだ。</text>
+					<ship load="SHIP_ZOLTAN_COCKY_TAUNTED" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="weapons" lvl="6">
+				<text>(アドバンス・ウェポンズ) 自分の武器を誇示する。</text>
+				<event>
+					<text>あなたはゾルタンの新人に誇らしげに武器を見せ、彼らはその光景に目を見張る。指揮官は部下の高慢さを取り除いてくれたことに感謝し、褒美を差し出す。</text>
+					<autoReward level="LOW">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="artillery" lvl="3">
+				<text>(アドバンス砲兵) 自分の武器を誇示する。</text>
+				<event>
+					<text>あなたはゾルタンの新人に誇らしげに大砲を見せ、彼らはその光景に目を見張る。指揮官は部下の高慢さを取り除いてくれたことに感謝し、報酬を申し出る。</text>
+					<autoReward level="LOW">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="drones" lvl="5">
+				<text>(ドローン管制）技術的にそれほど遅れていないことを示す。</text>
+				<event>
+					<text>あなたは新人を驚かせながら、洗練されたドローン技術を誇らしげに披露する。指揮官は部下の驕りを晴らしてくれたあなたに感謝し、報酬を申し出る。</text>
+					<autoReward level="MED">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ENERGY_SHIELD">
+				<text>(エネルギー・シールド）技術的にそれほど遅れていないことを示す。</text>
+				<event>
+					<text>あなたは自分のスーパー・シールドを誇らしげに見せ、新人を驚かせた。指揮官は部下の慢心を解いてくれたことに感謝し、褒美を与える。</text>
+					<autoReward level="MED">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="BYPASS_AND_BOMB">
+				<text>(シールド・バイパス＋ボム）守りの隙を見せる。[-1ミサイル]</text>
+				<event>
+					<text>あなたはテレポートで敵の兵器システムにペイロードを撃ち込み、新人を驚かせた。レネゲイドがこんなクソ野郎だったとは！」。司令官は、部下に上達する方法を教えたからと報酬をくれるが、本当の動機はこれ以上のエスカレートを避け、あなたに去ってもらうことなのだろう。</text>
+					<item_modify>
+						<item type="missiles" min="-1" max="-1" />
+					</item_modify>
+					<autoReward level="HIGH">droneparts</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="BYPASS_AND_TELEPORT">
+				<text>(シールドバイパス＋テレポート）手下が対応する前に追い越す。</text>
+				<event>
+					<choiceRequiresCrew /> 
+					<text>あなたは搭乗部隊をテレポートさせ、簡単に全滅させた。スクラップを回収しようとするが、司令官が駆けつけて止めに入る！</text>
+					<autoReward level="LOW">standard</autoReward>
+					<ship load="SHIP_ZOLTAN_COCKY_CHIEF" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ZOLTAN_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>傲慢なゾルタンを無視して、他のことに時間を割く。</text>
+				<event>
+					<text>誰の意見も聞いていないのだから、それを聞き流すのは当然だ。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<eventList name="DISTRESS_MILITIA">
+	<event load="DISTRESS_MILITIA_KERNELS" />
+	<event load="DISTRESS_MILITIA_OUTPOST" />
+</eventList> 
+
+<event name="DISTRESS_MILITIA_KERNELS" unique="true">
+	<distressBeacon />
+	<text>遭難信号の発信源は、海賊船に襲われているオーキッド商人のようだ！支援すべきか？</text>
+	<ship load="SHIP_MILITIA_KERNELPIRATE" hostile="false" />
+	<choice hidden="true">
+		<text>蘭を救え</text>
+		<event>
+			<text>武器をパワーアップし、海賊船と交戦する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>船は無視する。</text>
+		<event>
+			<text>オーキッドの船はかなり武装しているから、自力で助かることを期待したい。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="MILITIA_KERNELS_SAVE">
+	<text>"オーキッド "はあなた方の援助に感謝している。彼らはこのセクターにいる民兵船にカーネル兵器を売るために派遣されたと説明する。あなたの助けの対価として、彼らは1つを無料で提供する。</text>
+	<weapon name="GIFTLIST_KERNEL" />
+</event>
+
+<event name="DISTRESS_MILITIA_OUTPOST" unique="true">
+	<distressBeacon />
+	<text>救難信号の発信源は、海賊の攻撃を受けている小さな民兵の前哨基地だ。民兵はうまく持ちこたえていないようだ。</text>
+	<ship load="SHIP_PIRATE_MILITIA_OUTPOST" hostile="false" />
+	<choice hidden="true">
+		<text>前哨基地を守れ。</text>
+		<event>
+			<text>武器をパワーアップし、海賊船と交戦する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="weapons" lvl="5">
+		<text>(武器アップ）海賊を脅す。</text>
+		<event>
+			<text>「おい、何様のつもりだ。わかったわかった、お前の勝ちだ、楽しんでこい！"海賊は飛び去る。疲労困憊の民兵ステーションは、何を試みても無防備のようだ。</text>
+			<instantEscape />
+			<choice hidden="true">
+				<text>民兵に安全だと伝えろ。</text>
+				<event>
+					<text>「そうでなければ、あの海賊の攻撃から生き延びることはできなかっただろう。必要ない燃料以外はあまり提供できない。"</text>
+					<autoReward level="LOW">fuel_only</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>乗組員の1人を奴隷として引き渡すよう要求する。</text>
+				<event>
+					<text>民兵たちには、あなたたちの要求を呑む以外に選択肢はない。</text>
+					<crewMember amount="1" class="random" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_GENERAL" /> 
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>駅を破壊し、残骸を略奪する。</text>
+				<event>
+					<text>予想通り、民兵の前哨基地はかろうじて身を守り、すぐに破壊された。</text>
+					<autoReward level="MED">standard</autoReward>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_UNION" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>私たちは助けることができない。</text>
+		<event>
+			<text>あなたは海賊と戦わないことに決めた。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<eventList name="QUESTS_MILITIA">
+	<event load="MILITIA_AUTOSEARCH" />
+</eventList> 
+
+<event name="MILITIA_AUTOSEARCH" unique="true">
+	<distressBeacon />
+	<text>近くにいた2隻の民兵船が、何かをめぐって口論しているのに気づく。よく聞いてみないとわからないが、オートシップに関することのようだ。</text>
+	<choice hidden="true">
+		<text>万歳。</text>
+		<event>
+			<text>"あれっ、もう一隻いたのか。前線での死傷者を減らすため、民兵オートシップの艦隊を独自に建造する可能性を検討しているところだ。だが、検討する前に反乱軍のオートシップを1隻拿捕して研究する必要がある。お願いがあるのだが、そのうちの1隻を探し出してもらえないだろうか？"</text>
+			<choice hidden="true">
+				<text>同意する。</text>
+				<event>
+					<text>「素晴らしい。調査したい船の座標を添付したが、ASBに近すぎる。しかし、ASBに近すぎる。大きな損害を与えずに船をおびき寄せることができれば、回収のために船を送ることができる。</text>
+					<quest event="MILITIA_AUTOSEARCH_QUEST" />
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_A55">
+				<text>(A55） A55 にオートシップデータを転送させる。</text>
+				<event>
+					<text>「これは素晴らしい！これは我々の開発を大幅にスピードアップしてくれるだろう"</text>
+					<autoReward level="MED">augment</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_ENGINEER">
+				<text>(エンジニアクルー) エンジニアにオートシップデータを転送させろ。</text>
+				<event>
+					<text>「これは素晴らしい！これは我々の開発を大幅にスピードアップしてくれるだろう"</text>
+					<autoReward level="MED">augment</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_COGNITIVE_ALL">
+				<text>(コグニティブ・クルー）コグニティブにオートシップ・データを転送させる。</text>
+				<event>
+					<text>「これは素晴らしい！これは我々の開発を大幅にスピードアップしてくれるだろう"</text>
+					<autoReward level="MED">augment</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>衰退。</text>
+				<event>
+					<text>"理解できる。では、どんな任務であれ、幸運を祈る"</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>盗聴よりももっと重要なことがある。</text>
+		<event>
+			<text>彼らが何を話していようと、あなたには関係ない。あなたは民兵の船を無視する。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="MILITIA_AUTOSEARCH_QUEST">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>民兵が研究のためにオートシップを囮にするよう要請してきた。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたは民兵が言っていたオートメーション船を発見した。遠くにASBの衛星がこちらに向かって旋回するのが見える。</text>
+	<ship load="SHIP_MILITIA_AUTOSEARCH" hostile="true" />
+	<choice hidden="true" req="PDS_DISABLE">
+		<text>(衛星の照準システムを無効にする。</text>
+		<event>
+			<text>衛星は即座に旋回を停止し、あなたの位置を検知できなくなる。それでもオートをおびき寄せなければならないが、ASBの追加リスクなしにそうすることができるようになった。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="FLARE_DISTRACTION">
+		<text>(フレア）ASBシステムを混乱させる。</text>
+		<event>
+			<text>衛星の近くにフレアを数発発射し、照準システムを混乱させる。ディスクの小ささを考えれば、衛星が簡単に破壊できるとは思えない。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>戦う準備をしろ</text>
+		<event>
+			<text>民兵の警告通り、ASBはあなた方の正確な位置をロックし、直ちに発砲を開始した。オートが逃げる前に大きなダメージを受けなければいいが。</text>
+			<environment type="PDS" target="player" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="MILITIA_AUTOSEARCH_LURE">
+	<text>あなたはオートシップをビーコンからおびき出すことに成功した。あなたは次の目的地まで船を追う準備をする。</text>
+	<quest event="MILITIA_AUTOSEARCH_QUEST_2" />
+</event>
+<event name="MILITIA_AUTOSEARCH_QUEST_2">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>誘い出されたオートシップの座標。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたは再びオートシップを追跡した。近くには先ほどの民兵の船がおり、すでにオートシップを点検している。</text>
+	<ship load="SHIP_MILITIA_AUTOSEARCH_2" hostile="false" />
+	<choice hidden="true">
+		<text>民兵万歳。</text>
+		<event>
+			<text>「よくやった。船はまだ使える状態で、素晴らしい！もちろん、これが給料だ。"</text>
+			<autoReward level="MED">stuff</autoReward>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>出発の準備をしていると、民兵の叫び声が耳に入る。振り向くと、オートシップが再び起動し、民兵の船の1隻を爆破して破壊している！オートシップは次にあなたを攻撃する。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+					<choice hidden="true" req="hacking" lvl="2">
+						<text>(Upg. Hacking) 被害が拡大する前にオートシップを無効にする。</text>
+						<event>
+							<text>オートシップを直ちに停止させる。破壊された船の乗組員は直ちに避難し、数人の命が失われただけだった。民兵はあなたに感謝する。</text>
+							<ship hostile="false" />
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<eventList name="HOSTILE_MILITIA">
+	<event load="ENCOUNTER_MILITIA_MISTAKE" />
+	<event load="ENCOUNTER_MILITIA_STATION_MISTAKE" />
+	
+	<event load="ENCOUNTER_MILITIA_ESCORT" />
+	
+	<event load="ENCOUNTER_PIRATE_MILITIA" />
+	<event load="ENCOUNTER_PIRATE_MILITIA_ONLY" />
+	<event load="ENCOUNTER_REBEL_MILITIA" />
+</eventList>
+
+<event name="ENCOUNTER_MILITIA_MISTAKE" unique="true">
+	<text load="TEXT_ENCOUNTER_MILITIA_MISTAKE" />
+	<ship load="SHIP_MILITIA_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_MILITIA_MISTAKE">
+	<text>民間船の残骸が近くを漂っているが、その一部を引き揚げようと思う間もなく、民兵の船があなたを攻撃者と勘違いし、民間人の仇を討とうと準備している。</text>
+	<text>あなたはこのビーコンで、民兵船との身分証明書をめぐってトラブルに巻き込まれ、ほどなくして事態は対立にまでヒートアップする！</text>
+	<text>このビーコンにいる民兵たちは、君たちのクルーのひとりを、懸賞金のかかった悪名高い海賊だと勘違いしているようだ。乗組員を引き渡すわけにはいかない。</text>
+	<text>あなたは民間人とケンカをしないようにしているが、民間人があなたとケンカをすることもある。どういうわけか、あなたはここで民兵の船を怒らせてしまった。</text>
+</textList>
+
+<event name="ENCOUNTER_MILITIA_STATION_MISTAKE" unique="true">
+	<text>このビーコンの近くで民兵の駐屯地に出くわす。どうやらこのビーコンを通過するには通行料が必要らしい。</text>
+	<ship load="SHIP_MILITIA_STATION" hostile="false" />
+	<choice>
+		<text>支払いを拒否する。</text>
+		<event>
+			<text>民兵ステーションは会話に時間をかけない。あなたが拒否した途端、彼らの武器がオンラインになる！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>通行料を払え。</text>
+		<event>
+			<text>民兵局が支払いを受け取り、続行が許可される。</text>
+			<item_modify>
+				<item type="scrap" min="-20" max="-10" />
+			</item_modify>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ENCOUNTER_MILITIA_ESCORT" unique="true">
+	<text>かつて民兵の輸送船だった廃墟が近くを漂っている。護衛の民兵が乗組員を混乱と恐怖に陥れ、攻撃者と間違えて身を守ろうとする！あなたは彼らに呼びかけるが、彼らは応答しない。</text>
+	<ship load="SHIP_MILITIA_ESCORTFIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_PIRATE_MILITIA">
+	<text load="TEXT_ENCOUNTER_PIRATE_MILITIA" />
+	<ship load="SHIP_PIRATE_ALL" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_PIRATE_MILITIA">
+	<text>民兵の宙域に侵入しようとするのは、大胆な海賊船長か、あるいは愚かな船長でなければならない。敵船が近づいてくるのに気づいたら、戦闘の準備をしながら後者であることを願う。</text>
+	<text>海賊船が近づいてくる。海賊船はこの海域で殺戮を繰り返しているに違いない！</text>
+	<text>軍事化が進んでいるにもかかわらず、海賊問題に悩まされているのは皮肉なものだ。一度殺してしまえば、誰もこの船を見逃すことはないだろう。</text>
+	<text>「民兵の船を期待していたんだろう！私の船を見て、さぞかし怯えたことだろう。モノローグの途中で相手の通信をミュートし、戦闘態勢に入る。</text>
+	<text>紫色の飛行機が通り過ぎるのを垣間見る。ほどなくして、海賊船が視界に入る。「はっはっは！多くの民兵の命を奪ってきたが、今度はお前たちの命を奪ってやる！戦いの準備をしろ！"</text>
+</textList>
+
+<event name="ENCOUNTER_PIRATE_MILITIA_ONLY">
+	<text load="TEXT_ENCOUNTER_PIRATE_MILITIA_ONLY" />
+	<ship load="SHIP_PIRATE_MILITIA" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_PIRATE_MILITIA_ONLY">
+	<text>民兵艦隊は大量の船を誇るが、それゆえに新たな乗り物を必要とする海賊の格好の標的にもなっている。海賊に操られた民兵の船が、武器をぶっ放して近づいてくる。</text>
+	<text>民兵から盗んだばかりの新装備を試そうとする海賊船が、あなたの船をロックオンして攻撃してくる！</text>
+	<text>最初は普通の民兵の船だと思ったが、船体を飾る海賊のペイントを見るまでは。海賊だ！</text>
+</textList>
+
+<event name="ENCOUNTER_REBEL_MILITIA">
+	<text load="TEXT_ENCOUNTER_REBEL_MILITIA" />
+	<ship load="SHIP_REBEL_ALL" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_MILITIA">
+	<text>"反乱は決して止むことはない！連邦に味方する者は皆殺しだ！"民間人を殺害することの道徳的優越性を疑うだろうが、反乱軍が戦いを望むなら、彼らは戦いを得るだろう。</text>
+	<text>その理由は想像もつかないが、反乱軍は民兵を恨んでいるようだ。ここにいる反乱軍の船は戦いに執念を燃やしているようだが、ここにいる船はあなたたちだけなので、彼らはあなたが満足のいく相手になると判断したようだ。</text>
+	<text>反乱軍の船が民兵ステーションの残骸を一掃した。あなたが飛び込んでから数秒後、彼らはあなたを見つけ、次のターゲットにすることにした。</text>
+	<text>民兵はこのセクターに反乱軍を入れないよう懸命に努力しているが、彼らの防衛力ではすべての反乱軍を防ぐことはできない。このセクターに進入してきた反乱軍の前方偵察機が、君達を見つけて攻撃してくる。</text>
+</textList>
+
+
+<event name="ENCOUNTER_MILITIA_ELITE" unique="true">
+	<text>エリート防衛隊の艦船は民兵艦隊の中でも屈指の殺傷力を誇るが、それには理由がある。高度に訓練された乗組員を誇るこれらの艦は、戦闘で混乱することはない。あなたにとって不運なことに、この船はあなたを脅威とみなし、攻撃してきた！</text>
+	<ship load="SHIP_MILITIA_ELITE_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+
+<event name="MILITIA_DETECTIVE" unique="true">
+	<preventQuest />
+	<text>近くの民間給油ステーションの周辺には、数隻の民兵船が停泊しているようだ。</text>
+	<ship load="SHIP_UNION_REFUEL_DETECTIVE" hostile="false" />
+	<status type="limit" target="enemy" system="sensors" amount="0" />
+	<choice hidden="true">
+		<text>現場を調査する。</text>
+		<event>
+			<text>民兵の一人が駅に停泊する際に抗議しようとしたが、緑色の服を着た人間が旧地球のデザインの小さな木製のパイプでタバコを吸っていた。"ああ、レネゲイドか。私はシャーロック・ヘインズ。地球出身だが、その後民兵組織に入った。今は民兵の探偵として働いているが、ちょっと厄介な事件が舞い込んできた。"助けてくれないか？"</text>
+			<choice hidden="true">
+				<text>何を助けるんだ？</text>
+				<event>
+					<text>「もちろん謎もある！昨夜、この駅でヘンリー・コールマンという男が射殺されました。"彼は反乱軍の情報を握っていた""しかしその正体は不明だこのステーションには4人しかいなかったが、今回の事件で3人になった。殺人の前後24時間、このステーションに停泊した船はなかった。</text>
+					<choice hidden="true">
+						<text>どっちが？</text>
+						<event>
+							<text>"なぜだ、初歩的なことだ......ああ、君の名前が何であれ。ということは、この3人のうち誰かが反乱軍のスパイに違いない！問題は、それが誰なのか？現実を飛び越える友である私を助けて、この事件を解決してくれないか？"</text>
+							<choice hidden="true">
+								<text>もちろんだ。</text>
+								<event>
+									<text>「ああ、素晴らしい！まだあまり調べていないのですが、何かあったら私に相談してください。ここに3人の容疑者がいます。トム・ニコルソンさん、エイミー・シェパードさん、ダニエル・ブラウン博士です。あなたの仮説を楽しみにしています</text>
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>衰退。</text>
+								<event>
+									<text>「ああ、残念だ。それなら行った方がいい。調査中に気を散らすわけにはいかないからね」。</text>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_haynes">
+		<text>(ヘインズ）駅万歳。</text>
+		<event>
+			<text>ヘインズはその呼びかけを受けたが、相手の鏡像のような自分の姿にショックを受けた。「聞いてくれ。トムだ。彼は対人ドローンを使い、ヘンリーを撃った。2人とも反乱軍のスパイだ。彼はダニエルからドローンコントロールの使い方を学んだ。時間がない 反乱軍の攻撃が迫っている分かったか？よし乗れ、格納庫を守るんだ"</text>
+			<variable name="ach_crew_haynes" op="set" val="1" />
+			<crewMember amount="1" class="unique_haynes">シャーロック・ヘインズ</crewMember>
+			<quest event="DETECTIVE_HANGARATTACK" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>駅は無視する。</text>
+		<event>
+			<text>ここで何か重要なことが起こったのは明らかだが、それはあなたには関係ない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DETECTIVE_EVIDENCE_MENU_LOAD">
+	<loadEvent ignoreUnique="true">DETECTIVE_EVIDENCE_MENU</loadEvent>
+</event>
+<event name="DETECTIVE_EVIDENCE_MENU">
+	<text>あなたは駅のロビーに立ち、周囲を観察する
+（好きな順番で何度でも調査できる）。</text>
+	<choice hidden="true">
+		<text>シャーロックか容疑者のひとりと話す。</text>
+		<event>
+			<text>誰と話したい？</text>
+			<choice hidden="true">
+				<text>シャーロックと話す</text>
+				<event load="DETECTIVE_TALK_SHERLOCK" />
+			</choice>
+			<choice hidden="true">
+				<text>トムと話すんだ。</text>
+				<event load="DETECTIVE_TALK_THOM" />
+			</choice>
+			<choice hidden="true">
+				<text>エイミーと話す。</text>
+				<event load="DETECTIVE_TALK_AMY" />
+			</choice>
+			<choice hidden="true">
+				<text>ダニエルと話す。</text>
+				<event load="DETECTIVE_TALK_DANIEL" />
+			</choice>
+			<choice hidden="true">
+				<text>気にするな。</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>死体を調べる。</text>
+		<event load="DETECTIVE_CORPSE" />
+	</choice>
+	<choice hidden="true">
+		<text>駅を点検する。</text>
+		<event>
+			<text>ステーションにはいくつかのシステムが搭載されている。どれを見たい？</text>
+			<choice hidden="true">
+				<text>ドアを調査する</text>
+				<event load="DETECTIVE_SYSTEM_DOORS" />
+			</choice>
+			<choice hidden="true">
+				<text>ドロンベイを調査せよ</text>
+				<event load="DETECTIVE_SYSTEM_DRONES" />
+			</choice>
+			<choice hidden="true">
+				<text>ライフサポートを調査せよ</text>
+				<event load="DETECTIVE_SYSTEM_OXYGEN" />
+			</choice>
+			<choice hidden="true">
+				<text>シールドを調査せよ</text>
+				<event load="DETECTIVE_SYSTEM_SHIELDS" />
+			</choice>
+			<choice hidden="true">
+				<text>センサーを調査する</text>
+				<event load="DETECTIVE_SYSTEM_SENSORS" />
+			</choice>
+			<choice hidden="true">
+				<text>武器を調査せよ</text>
+				<event load="DETECTIVE_SYSTEM_WEAPONS" />
+			</choice>
+			<choice hidden="true">
+				<text>気にするな。</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>容疑者を告発する。</text>
+		<event>
+			<text>シャーロックは眉をひそめる。"結論は出たのか？誰がヘンリーを撃ったんだ？」
+[容疑者を告発できるのは、話を聞いた容疑者に限られる]。</text>
+			<choice hidden="true" req="loc_evidence_dronekiller" blue="true">
+				<text>誰もヘンリー個人を殺していない。致命的な発砲をしたのはドローンだった！</text>
+				<event load="DETECTIVE_ACCUSE_DRONE" />
+			</choice>
+			<choice hidden="true" req="loc_evidence_thom" blue="false">
+				<text>トム・ニコルソンを告発する。</text>
+				<event load="DETECTIVE_ACCUSE_THOM" />
+			</choice>
+			<choice hidden="true" req="loc_evidence_amy" blue="false">
+				<text>エイミー・シェパードを告発する。</text>
+				<event load="DETECTIVE_ACCUSE_AMY" />
+			</choice>
+			<choice hidden="true" req="loc_evidence_daniel" blue="false">
+				<text>ダニエル・ブラウンを告発する。</text>
+				<event load="DETECTIVE_ACCUSE_DANIEL" />
+			</choice>
+			<choice hidden="true" req="loc_evidence_sherlock" blue="false">
+				<text>シャーロック・ヘインズを告発する。</text>
+				<event load="DETECTIVE_ACCUSE_SHERLOCK" />
+			</choice>
+			<choice hidden="true">
+				<text>気にしないで。私は調査を続ける必要がある。</text>
+				<event>
+					<text>シャーロックは苦笑する。「それならいい。このようなことに関しては、用心に越したことはない」。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DETECTIVE_CORPSE">
+	<text>あなたはヘンリーの死体に歩み寄る。背中に大きな火傷の跡がある。これはブラスターの攻撃によるものに違いないが、傷の半径が大きすぎて、通常の手持ちブラスターによるものとは思えない。</text>
+	<variable name="loc_evidence_burns" op="set" val="1" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_ACCUSE_SHERLOCK">
+	<text>あなたは容疑者に向かって長い一歩を踏み出し、振り向きざまにシャーロックに指を向けた。「私を告発するんですか？僕は今日までこの署にいなかったんだぞ？"</text>
+	<choice hidden="true" req="loc_spit" lvl="0" max_lvl="2" blue="false">
+		<text>まさに殺人犯が言いそうなことだ！</text>
+		<event load="DETECTIVE_WRONG" />
+	</choice>
+	<choice hidden="true" req="loc_spit" lvl="3" blue="false">
+		<text>まさに殺人犯が言いそうなことだ！</text>
+		<event>
+			<text>シャーロックは腕組みをしてあなたを睨みつける。「ここに押し入って、容疑者全員の顔に唾を吐きかけ、挙句に僕が犯人だと言うのか？出て行け。今すぐ出て行け。君はどうかしている。レネゲイドにこんな重大な仕事を任せた結果がこれだ」。</text>
+			<achievement>ACH_EVENT_MYSTERY</achievement>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DETECTIVE_ACCUSE_DRONE">
+	<text>シャーロックも他の容疑者同様、驚いた様子だ。「ドローンか。実に興味深い仮説だ！でも1つ引っかかるのは、誰かがドローンを操作していたはずだ。それは誰だ？</text>
+	<choice hidden="true" req="loc_evidence_oxygendaniel" lvl="0" blue="false" max_group="0">
+		<text>ダニエルだった！</text>
+		<event>
+			<text>ダニエルは、あなたが自分のせいにしたことにショックを受けているようだ。シャーロックはうなずく。「そう、ブラウン博士はここの技師長だ。しかし、彼がやったとは思えない！酸素システムをチェックし、ダニエルに話を聞けば、彼が昨夜アップグレード作業で忙しかったことがわかるはずだ。彼はヘンリーを殺すと同時にシステムをアップグレードすることはできなかったでしょう。"酸素のアップグレードには時間がかかりすぎるのです。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_WRONG" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="loc_evidence_oxygendaniel" lvl="1" blue="false" max_group="0">
+		<text>ダニエルの確かなアリバイをすでに見つけている。彼であるはずがない</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" max_group="1">
+		<text>エイミーだった！</text>
+		<event>
+			<text>エイミーの不敵な笑みがさらに暗くなる。シャーロックは首を振る。「シェパードさんには無理です。彼女はドローンシステムの経験がなく、ヘンリーを殺すのに十分な時間、ドローンを操作できたとは考えにくい"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_WRONG" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" max_group="2">
+		<text>トムだ！</text>
+		<event>
+			<text>トムの目が大きく見開かれる。え？いや、僕じゃないはずだ！ドローンなんて知らないよ！」。彼のお気楽な田舎訛りが突然消え、声が不安になる。</text>
+			<choice hidden="true" req="loc_evidence_thomlie">
+				<text>いや、それは嘘だ！</text>
+				<event>
+					<text>シャーロックは首をかしげる。あなたは、殺人が起きる少し前に、トムが実際にダニエルからドローンの操作方法を教わったことを説明した。シャーロックはしばらく考え込む。「そのとおりだ。その通りだ。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_CORRECT" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>シャーロックはうなずく。「ええ、トムさんの言うとおりです。この施設の技術責任者はトムではなくダニエルだった。ヘンリーを殺すのに十分な時間、トムがドローンを操作できたとはあまりに考えにくい"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_WRONG" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>うーん、わからない。</text>
+		<event>
+			<text>シャーロックは眉をひそめる。"誰がやったかも言えないのに、ここに来て荒唐無稽な推理はできない！探し続けろ"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DETECTIVE_ACCUSE_THOM">
+	<text>トムはあなたの非難に目を見開く。シャーロックはその場から立ち上がり、あなたに歩み寄る。「実に興味深い仮説だ。しかし、ヘンリーの傷を調べれば、ブラスターが凶器であるはずがないことに気づくだろう。ニコルソン氏は標準的な防衛用ピストルしか持っていない。このステーションでそのような痕跡を残せるのは対人ドローンだけであり、ニコルソン氏はドローンシステムの操作経験がない。"</text>
+	<choice hidden="true" req="loc_evidence_dronekiller" blue="true">
+		<text>確かにドローンは殺人の道具だった。誰がヘンリーを殺せと命令した？トムだ</text>
+		<event>
+			<text>え？いや、私であるはずがない！ドローンなんて知らないよ！」。彼のお気楽な田舎訛りが突然消え、声が不安になる。</text>
+			<choice hidden="true" req="loc_evidence_thomlie">
+				<text>いや、それは嘘だ！</text>
+				<event>
+					<text>シャーロックは首をかしげる。あなたは、殺人が起きる少し前に、トムが実際にダニエルからドローンの操作方法を教わったことを説明した。シャーロックはしばらく考え込む。「そのとおりだ。その通りだ。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_CORRECT" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>シャーロックはうなずく。「ええ、トムさんの言うとおりです。この施設の技術責任者はトムではなくダニエルだった。ヘンリーを殺すのに十分な時間、トムがドローンを操作できたとはあまりに考えにくい"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_WRONG" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_WRONG" />
+	</choice>
+</event>
+<event name="DETECTIVE_ACCUSE_AMY">
+	<text>エイミーがあなたを睨む。シャーロックはその場から立ち上がり、あなたに歩み寄る。「実に興味深い仮説だ。しかし、ヘンリーの傷を調べれば、ブラスターが凶器であるはずがないことに気づくだろう。シェパードさんは標準的な防衛用ピストルしか持っていない。このステーションでそのような痕跡を残せるのは対人ドローンだけであり、シェパードさんはドローンシステムの操作経験がない。"</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_WRONG" />
+	</choice>
+</event>
+<event name="DETECTIVE_ACCUSE_DANIEL">
+	<text>ダニエルは、あなたが自分を非難することに腹を立てているようだ。シャーロックはその場から立ち上がり、あなたに歩み寄る。「実に興味深い仮説だ。しかし、殺人のあった夜、ダニエルは忙しかった。酸素システムを検査し、ブラウン博士に話を聞けば、彼が一晩中システムのアップグレードに追われていたことがわかるはずだ。これでは、ドローン制御装置を無効にし、ヘンリーを殺すのに十分な時間は残されていないでしょう」。</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_WRONG" />
+	</choice>
+</event>
+<event name="DETECTIVE_WRONG">
+	<text>突然、照明が消え、ブラスターの炎が部屋中に鳴り響く！明かりが戻ると、容疑者と援軍はすでに逃走していた。シャーロックが叫ぶ。「くそっ！シャーロックが叫ぶ！逃げろ！殺人鬼が逃走中なんだから、ここはもう安全じゃないんだ！"さらに、あなたの船にはエミッターが設置されており、あなたの居場所を反乱軍の艦隊に送信していた。急いでください！</text>
+	<modifyPursuit amount="2" />
+</event>
+<textList name="TEXT_SHERLOCK_TALK"> 
+	<text>「興味深い事件ですね。被害者の情報がどの程度深刻なものなのかがわかればいいのですが。この事件がどれほど重要か判断するのは難しい。私は多くの殺人事件を扱ってきましたが、これほど仮定のある事件は初めてです</text>
+	<text>"不運なことに、彼らはすべて人間なんですね？一人がエイリアンだったら、きっと除外できただろう。あるいは、そうでなかったかもしれない。</text>
+	<text>「この仕事に飽きることはない。ただ、反乱軍の殺人事件だけはやめてほしいね。容疑者を追いつめている間に、流れ弾で何人も相棒を失っているんだ。"</text>
+	<text>シャーロックはリボルバーを磨くのに夢中だ。「僕はオールド・アースの技術が好きで、彼らの武器の職人技は驚くほど美しい。もしここでの事態がうまくいかなくなったとしても、容疑者が私の頭に弾丸を撃ち込む前に、私の狙いを信じて容疑者の頭に弾丸を撃ち込むことができればいいのだが......」。</text>
+	<text>「覚えておいてほしい！人が紡いだ物語よりも、物的証拠を信じなさい"</text>
+	
+	<text>「興味深い事件ですね。被害者の情報がどの程度深刻なものなのかがわかればいいのですが。この事件がどれほど重要か判断するのは難しい。私は多くの殺人事件を扱ってきましたが、これほど仮定のある事件は初めてです</text>
+	<text>"不運なことに、彼らはすべて人間なんですね？一人がエイリアンだったら、きっと除外できただろう。あるいは、そうでなかったかもしれない。</text>
+	<text>「この仕事に飽きることはない。ただ、反乱軍の殺人事件だけはやめてほしいね。容疑者を追いつめている間に、流れ弾で何人も相棒を失っているんだ。"</text>
+	<text>シャーロックはリボルバーを磨くのに夢中だ。「僕はオールド・アースの技術が好きで、彼らの武器の職人技は驚くほど美しい。もしここでの事態がうまくいかなくなったとしても、容疑者が私の頭に弾丸を撃ち込む前に、私の狙いを信じて容疑者の頭に弾丸を撃ち込むことができればいいのだが......」。</text>
+	<text>「覚えておいてほしい！人が紡いだ物語よりも、物的証拠を信じなさい"</text>
+
+	<text>「興味深い事件ですね。被害者の情報がどの程度深刻なものなのかがわかればいいのですが。この事件がどれほど重要か判断するのは難しい。私は多くの殺人事件を扱ってきましたが、これほど仮定のある事件は初めてです</text>
+	<text>"不運なことに、彼らはすべて人間なんですね？一人がエイリアンだったら、きっと除外できただろう。あるいは、そうでなかったかもしれない。</text>
+	<text>「この仕事に飽きることはない。ただ、反乱軍の殺人事件だけはやめてほしいね。容疑者を追いつめている間に、流れ弾で何人も相棒を失っているんだ。"</text>
+	<text>シャーロックはリボルバーを磨くのに夢中だ。「僕はオールド・アースの技術が好きで、彼らの武器の職人技は驚くほど美しい。もしここでの事態がうまくいかなくなったとしても、容疑者が私の頭に弾丸を撃ち込む前に、私の狙いを信じて容疑者の頭に弾丸を撃ち込むことができればいいのだが......」。</text>
+	<text>「覚えておいてほしい！人が紡いだ物語よりも、物的証拠を信じなさい"</text>
+	
+	<text>「興味深い事件ですね。被害者の情報がどの程度深刻なものなのかがわかればいいのですが。この事件がどれほど重要か判断するのは難しい。私は多くの殺人事件を扱ってきましたが、これほど仮定のある事件は初めてです</text>
+	<text>"不運なことに、彼らはすべて人間なんですね？一人がエイリアンだったら、きっと除外できただろう。あるいは、そうでなかったかもしれない。</text>
+	<text>「この仕事に飽きることはない。ただ、反乱軍の殺人事件だけはやめてほしいね。容疑者を追いつめている間に、流れ弾で何人も相棒を失っているんだ。"</text>
+	<text>シャーロックはリボルバーを磨くのに夢中だ。「僕はオールド・アースの技術が好きで、彼らの武器の職人技は驚くほど美しい。もしここでの事態がうまくいかなくなったとしても、容疑者が私の頭に弾丸を撃ち込む前に、私の狙いを信じて容疑者の頭に弾丸を撃ち込むことができればいいのだが......」。</text>
+	<text>「覚えておいてほしい！人が紡いだ物語よりも、物的証拠を信じなさい"</text>
+</textList>
+<event name="DETECTIVE_TALK_SHERLOCK">
+	<variable name="loc_evidence_sherlock" op="set" val="1" />
+	<text load="TEXT_SHERLOCK_TALK" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_TALK_THOM">
+	<text>トムに何を聞きたい？</text>
+	<variable name="loc_evidence_thom" op="set" val="1" />
+	<choice hidden="true">
+		<text>トムに彼自身のことを尋ねる。</text>
+		<event>
+			<text>トムは自分の人生について基本的なことを説明する。ロック・クルセイダーが彼の町に火を放つまでは、小さな地球型惑星で農夫をしていた。他に行くところもなく、彼は民兵に加わり、このようなことが他の誰にも起こらないように民間空間を守ることを決意した。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>トムが反乱軍とつながりがあるかどうかを尋ねる。</text>
+		<event>
+			<text>トムは首を振る。「いや、違います。反乱軍には何人も会ったが、友達になったことはない。私は常に連邦市民であり、忠誠を誓っています。"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>トムに放送局での仕事について聞いてみよう。</text>
+		<event>
+			<text>「私は重要なシステムを管理しています。農場にいたころは、いろいろな機器の操作方法を学ばなければならなかったんだけど、その知識がステーションの管理にも生かせるなんて信じられないよ！シールドや生命維持装置のメンテナンスも手伝うし、何か壊れたときには店で新しい部品を買うんだ。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>被害者についてトムに尋ねる。</text>
+		<event>
+			<text>「ヘンリーとはあまり話したことがなかった。彼はいつも無口で控えめだった。それでも、彼が死んでしまったと思うと、とても不思議です......"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>他の容疑者についてはトムに聞いてくれ。</text>
+		<event>
+			<text>トムに聞きたい容疑者は？</text>
+			<choice hidden="true">
+				<text>エイミー</text>
+				<event>
+					<text>「エイミー？彼女は......なんだろうね。いつも私たちにギャーギャーうるさいし、今まで見た中で一番短気。でもいい仕事をしているし、殺人を犯すような人とは思えない！でも、ヘンリーのことは好きじゃなかったけどね」。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>ダニエル</text>
+				<event>
+					<text>「ブラウン先生？ああ、彼はとても親切なおじいさんで、仕事にも熱心なんだ。殺人のことで、かなりショックを受けているのは想像できます。彼はいつもかわいそうなヘンリーと親しくしていましたから......"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>トムの顔に唾を吐く。</text>
+		<event>
+			<text>特に理由もなく、あなたはトムに唾を吐きかけることにした。シャーロックはあなたを睨むが、何も言わない。</text>
+			<variable name="loc_spit" op="add" val="1" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>トムに証拠について尋ねる。</text>
+		<event>
+			<text>どのような証拠についてトムに尋ねたいのですか？</text>
+			<choice hidden="true" req="loc_evidence_drones">
+				<text>ドローンシステムについてトムに尋ねてみよう。</text>
+				<event>
+					<text>「いや、ドローンを使う頭はない。その手のことはドクター・ブラウンを信頼している。そもそもドローンの電源の入れ方すらわからないんだから！"</text>
+					<choice hidden="true" req="loc_evidence_thomlie">
+						<text>トムの嘘を暴く</text>
+						<event load="DETECTIVE_TALK_THOM_LIE" />
+					</choice>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_evidence_sensors">
+				<text>センサーシステムについてはトムに尋ねてほしい。</text>
+                <event>
+                    <text>「録音がない？それは問題がありそうですね。でも、あなたは刑事だから、録音がなくても解決できるはずでしょう？"</text>
+                    <choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_evidence_oxygen">
+				<text>酸素システムについてはトムに尋ねてほしい。</text>
+				<event>
+					<text>「ああ、それは奇妙なことだ。システムをアップグレードしたのは私ではありません。昨夜は殺人の最中で忙しかったし、それ以来チェックする時間がなかったんだ。でも、前日はレベル1だったことは知っています」。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>気にするな。</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DETECTIVE_TALK_THOM_LIE">
+	<text>あなたは、ダニエルがトムにドローンの操作方法を学んでいると言ったことを指摘する。トムは何と答えていいかわからず、言いよどむ。あなたはそれ以上追及しないが、このことをメモしておく。</text>
+	<variable name="loc_evidence_thomcatch" op="set" val="1" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_TALK_AMY">
+	<text>エイミーに何を聞きたい？</text>
+	<variable name="loc_evidence_amy" op="set" val="1" />
+	<choice hidden="true">
+		<text>エイミーに自分のことを聞いてみよう。</text>
+		<event>
+			<text>エイミーは民兵に参加した理由について多くを語らない。故郷の惑星から脱出し、海賊を退治するのにいい方法だと思ったんだ。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>エイミーが反乱軍とつながりがあるかどうかを尋ねる。</text>
+		<event>
+			<text>エイミーは今にもあなたをひっぱたこうとしているように見える。"よくも、あんなくだらない連中と一緒にしてくれたな！反乱軍になったことはないし、これからもならない。話は終わりだ。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>エイミーに放送局での仕事について尋ねる。</text>
+		<event>
+			<text>「国境警備隊として働いていたが、対人ドローンを手に入れるまではね。以前は毎日のように海賊を蹴散らしていたが、今はあのクソ兵器室で一日中ボタンを押すのが日課だ！"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>被害者についてエイミーに尋ねる。</text>
+		<event>
+			<text>「ヘンリー？彼がここにいるなんて、半分も気づかなかったよ。いつもあの部屋に閉じこもって、食事や水の時だけ出てくるなんて、何て変人なんだ。彼が死んでも、このステーションでの生活は何も変わらない。ここは本当に退屈だ」。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>エイミーに他の容疑者について尋ねる。</text>
+		<event>
+			<text>エイミーに聞きたい容疑者は？</text>
+			<choice hidden="true">
+				<text>トムだ。</text>
+				<event>
+					<text>"トムは押しが強いんだ。いつも、ここでの暮らしがいかにいいものかをペラペラしゃべるんだ。このステーションに住んでていいことなんて何もねえんだよ！それでも...トムが人を殺す？考えられない...よっぽど演技がうまくない限りはね。"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>ダニエル</text>
+				<event>
+					<text>「あの老人？今にも塵になりそうな顔をしている！いつも思うんだが、彼は作業する無人機と同じくらい個性がない。だからヘンリーと仲良くなれたのかもしれない"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>エイミーの顔に唾を吐く。</text>
+		<event>
+			<text>特に理由もなく、あなたはエイミーに唾を吐きかけることにした。シャーロックはあなたを睨むが、何も言わない。</text>
+			<variable name="loc_spit" op="add" val="1" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>エイミーに証拠について尋ねる。</text>
+        <event>
+            <text>エイミーに尋ねたい証拠は何ですか？</text>
+            <choice hidden="true" req="loc_evidence_drones">
+                <text>エイミーにドローンシステムについて尋ねてみよう。</text>
+                <event>
+                    <text>「ドローンは？触ったことはない。あのロボットに海賊退治の仕事を奪われたんだ。もし俺が人殺しなら、ヘンリーの代わりに対人ドローンを狙っただろう。クソロボットはどうせ痛みを感じないんだから......"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_evidence_sensors">
+				<text>センサーシステムについてはエイミーに尋ねてください。</text>
+				<event>
+					<text>「録音がないんだろう。刑事というのは、録音がなくても物事を把握するものではないのか？何を話してほしいのかわからない」。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_evidence_oxygen">
+				<text>酸素システムについてはエイミーに尋ねてください。</text>
+				<event>
+					<text>「生命維持装置のことは何も知らない。それはすべてトムがやっていることで、私がやっていることではない"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>気にするな。</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DETECTIVE_TALK_DANIEL">
+	<text>ダニエルに何を聞きたい？</text>
+	<variable name="loc_evidence_daniel" op="set" val="1" />
+	<choice hidden="true">
+		<text>ダニエルに自分のことを尋ねる。</text>
+		<event>
+			<text>「私はただの年寄りだ。数年間ドローン技術を学び、アルカディア社でエンジニアとして働き、やがて退職した。でも...引退は性に合わないから、海辺の家で浪費する代わりに民兵に登録したんだ。"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ダニエルが反乱軍とつながりがあるかどうかを尋ねる。</text>
+		<event>
+			<text>ダニエルは足元に目を落とす。"反乱軍 "になったことはないが、彼らとの経験はある。アルカディアで働いていたとき、CICAプロジェクトの責任者になったんだ。中央情報部の戦闘アシスタントで、フリーローマー事故と呼ばれることが多い。これは反乱軍が自動化艦隊を構築するために使用したAIだったが、まさか彼らがそのような悪事に使用するとは思ってもみなかった。自分の技術がどのように使われたかを知ってから、私はすぐに辞職した」。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ダニエルに放送局での仕事について尋ねる。</text>
+		<event>
+			<text>「私は船のエンジニアだ。ドローンベイと対人用ドローンを導入するよう皆を説得してから、ずっとメンテナンスをしている。"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>被害者についてダニエルに尋ねる。</text>
+		<event>
+			<text>「ああ、かわいそうなヘンリー。彼はとてもいい人だった。よく彼の部屋で昼食を食べたものだ。ヘンリーがいつも控えめだったから、他の人たちが彼を知らなくて残念だった。ああ、ヘンリー、どうしてこんなことになってしまったんだ......"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ダニエルに他の容疑者について尋ねる。</text>
+		<event>
+			<text>ダニエルに聞きたい容疑者は？</text>
+			<choice hidden="true">
+				<text>トムだ。</text>
+				<event>
+					<text>「トムはいい人だ。ヘンリーほど親しくはなかったが、よく話をしたし、いつもハッピーなヤツだった。最近、トムはドローンシステムに特に興味を持ち、ドローンの操作について私に助けを求めてきた！彼はかなり覚えが早いが、私に何かを与えるために学んでいるのかもしれない。私はいつも生徒が欲しかったんだ..."</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>エイミー</text>
+				<event>
+					<text>「彼女のようなエネルギーがあればと思う。私たちに怒鳴るためにエネルギーを浪費するのは残念だ。彼女が武器を操る間、ほとんどの時間を独り言に費やしているのはありがたいことだ。指を差すのは好きじゃないけど、もし僕ら3人の誰かが誰かを殺すようなことになったら、たぶん彼女が犯人だと思う......"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ダニエルの顔に唾を吐きかける。</text>
+		<event>
+			<text>特に理由もなく、あなたはダニエルに唾を吐きかけることにした。シャーロックはあなたを睨むが、何も言わない。</text>
+			<variable name="loc_spit" op="add" val="1" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ダニエルに証拠について尋ねる。</text>
+		<event>
+			<text>どのような証拠についてダニエルに尋ねたいのですか？</text>
+			<choice hidden="true" req="loc_evidence_drones">
+				<text>ドローン・システムについてダニエルに尋ねる。</text>
+				<event load="DETECTIVE_TALK_DANIEL_EVIDENCE_DRONE" /> 
+			</choice>
+			<choice hidden="true" req="loc_evidence_sensors">
+				<text>ダニエルにセンサーシステムについて聞いてみよう。</text>
+				<event>
+					<text>「センサーが機能しなくなった？それは残念だ。しかし、録音がなくても、この背後にいる人物を捕まえる方法はきっとあるはずだ！"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_evidence_oxygen">
+				<text>酸素システムについてダニエルに尋ねる。</text>
+				<event load="DETECTIVE_TALK_DANIEL_EVIDENCE_OXYGEN" />
+			</choice>
+			<choice hidden="true">
+				<text>気にするな。</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DETECTIVE_TALK_DANIEL_EVIDENCE_OXYGEN">
+	<text>"ああ、そうなんだ！普段はトムが重要なシステムを担当しているんだけど、昨晩は彼がドローンの操作で忙しくて、私は何もすることがなかったんだ。だから、僕の古い骨を使って酸素をアップグレードすることにしたんだ。ヘンリーがいつも換気の悪さに文句を言っていたから......"</text>
+	<variable name="loc_evidence_oxygendaniel" op="set" val="1" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_TALK_DANIEL_EVIDENCE_DRONE">
+	<text>「もちろんです！船もステーションも、ドローン技術を装備しない限り完成しない。私はほとんどの時間をこのシステムの操作に費やしているが、トムがドローンの操作を教えてくれるよう頼んでから、彼もかなりの時間をこのシステムで過ごしている。</text>
+	<variable name="loc_evidence_thomlie" op="set" val="1" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_SYSTEM_DOORS">
+	<text>ドアシステムを点検する。ブラストドアを改良するための工事が行われたようだが、今回はほとんど関係ない。容疑者と被害者は全員、システムのデータベースに登録されているので、誰でも好きな場所に行くことができる。</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_SYSTEM_DRONES">
+	<text>ドローンベイを見てみる。ステーションのコンピューターにはあまり多くの設計図はないが、対人ドローンと標準的なコンバット・ドローンがあることに気づく。</text>
+	<variable name="loc_evidence_drones" op="set" val="1" />
+	<choice hidden="true">
+		<text>コンバット・ドローンを点検する。</text>
+		<event>
+			<text>このコンバット・スキーマティックは、システム購入後、合計3回しか使用されていないようだ。さらにデータを見ると、単にシステム購入時に付属していただけのようだ。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>対人ドローンを点検する。</text>
+		<event>
+			<text>コンピューターによると、対人ドローンは購入以来、合計38回使用されている。このセクターに海賊が流入しているため、このステーションが見なければならないボーダーの数は不利に多い。</text>
+			<variable name="loc_evidence_burns" op="set" val="1" />
+			<choice hidden="true">
+				<text>ドローンのレーザーを点検する。</text>
+				<event load="DETECTIVE_DRONE_CANNON" />
+			</choice>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ドローンを無視する。</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_DRONE_CANNON">
+	<text>対人ドローンのレーザーを点検する。驚いたことに、腕に装備されたキャノンは標準的な防衛用ブラスターよりもはるかに強力で、ヘンリーの死体にあったのと同じ大きさの火傷の跡を残すことができるようだ！</text>
+	<variable name="loc_evidence_dronekiller" op="set" val="1" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_SYSTEM_SHIELDS">
+	<text>シールドシステムを点検する。ここにあるものはすべて完璧に機能しているようだ。</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_SYSTEM_OXYGEN">
+	<text>酸素システムを点検する。システムは通常より高いレベルで作動しているように見えるし、原形を留めていない。見たところ、システムはごく最近アップグレードされたようだ。</text>
+	<variable name="loc_evidence_oxygen" op="set" val="1" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_SYSTEM_SENSORS">
+	<text>あなたはセンサーシステムを点検する。誰かがコンピューターに細工をし、殺人のあった夜の記録をすべて削除したようだ！他には何も手がかりはないが、誰かがやったに違いない...。</text>
+	<variable name="loc_evidence_sensors" op="set" val="1" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+<event name="DETECTIVE_SYSTEM_WEAPONS">
+	<text>あなたは武器システムを点検する。エイミーの名前が書かれた小さなバッグもある。ここが彼女のいつもの持ち場に違いない。</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DETECTIVE_EVIDENCE_MENU_LOAD" />
+	</choice>
+</event>
+
+<event name="DETECTIVE_CORRECT">
+	<text>トムは自分が捕まったことに気づく。必死にブラスターを取ろうとするが、シャーロックに膝を撃たれる。他の民兵が彼に手錠をかけに走り、エイミーとダニエルを安全な場所に護送する。シャーロックが銃を構え、礼を言う。「よくやった！さて、これが何なのか知る時が来た。</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>シャーロックの船内の誰もいない部屋で、椅子に縛られているトム。シャーロックは行ったり来たりしている。「君が反乱軍のスパイか？トムは椅子の上で震え、ロープを緩めようとする。結局、彼はあきらめた。「わかってないね！家族も友人も、みんなロックマンに殺されたんだ！エイリアンが人類にとって脅威であることの、これ以上の証拠があるだろうか？その攻撃中、連邦はどこにいた？自国民すら守れない連邦がそんなに偉いのか！」。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>シャーロックは部屋の反対側の椅子に座り、足を組む。「復讐のために反乱軍に加わったのか？トムはうなずく。「反乱軍は、連邦が決して与えてくれなかった銀河系を手に入れるチャンスを与えてくれる！人類にふさわしい銀河系を！」。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>シャーロックは嘲笑う。「よし、マニフェストは保留だ。僕らが気にしているのは、君が必死で防ごうとした情報だけだ」。トムは息を飲む。「言わない！</text>
+							<choice hidden="true">
+								<text>平手打ちだ。</text>
+								<event>
+									<text>トムの顔をひっぱたく。「わかった、話すよ！私はセクターを監視するために派遣された休眠エージェントだ。以前から反乱軍はこのセクターに侵入し、民兵の格納庫や武器庫を包囲する計画を立てていた。そして今日、その計画が実行されようとしている！私と同じステーションにいたのは、同じく反乱軍の潜入スパイ、ヘンリーだった。しかし、彼はあのブラウン老人に愛想をつかし、侵攻によってここにいる全員--ドクターでさえも--が危険にさらされると知ると、弱気になり、密告しようとしていた。私はあの臆病者を殺すことで、反乱軍の安全を確保したのだ！"</text>
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event>
+											<text>"ああ、さっきは彼らの秘密を全部しゃべって、彼らを確保したんだから大したもんだ"シャーロックは民兵の衛兵にトムの猿ぐつわをさせ、部屋から追い出すよう指示する。「彼の情報が正しければ、大変なことになる。中央格納庫に向かい、将軍に警告する必要がある！君の船は僕のよりずっと速そうだから、僕が乗っても構わないかな？"</text>
+											<variable name="ach_crew_haynes" op="set" val="1" />
+											<crewMember amount="1" class="unique_haynes">シャーロック・ヘインズ</crewMember>
+											<quest event="DETECTIVE_HANGARATTACK" />
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_MILITIA_BOSS" auto_blueprint="MU_MILITIA_BOSS">
+	<triggeredEvent event="DETECTIVE_HANGARATTACK_FAILURE" time="100" thisFight="true" clearOnJump="true">
+		<triggeredEventBox load="DEFAULT_TIMER">
+			<warning time="10.0" flash="true" />
+			<tooltip>この時間内にシールド・リアクターは使えなくなる。時間切れになる前に必ずドレッドノートを倒そう。</tooltip>
+		</triggeredEventBox>
+		<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+	</triggeredEvent>
+	<destroyed>
+		<text>ドレッドノートは爆発し、下界に破片を撒き散らし、下降する途中で数隻の船を破壊した。幸い、ジェネレーターは爆発によるダメージをほとんど受けない。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="DETECTIVE_HANGARATTACK_DESTROY" />    
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>ドレッドノートの乗組員は空っぽになった。船は惑星表面に落下し、途中で何隻かの船を破壊した。幸いなことに、ジェネレーターは衝撃によるダメージをほとんど受けていない。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>	
+			<event load="DETECTIVE_HANGARATTACK_DEADCREW" />    
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="human_soldier" prop="0.20" />
+		<crewMember type="human_engineer" prop="0.20" />
+		<crewMember type="LIST_CREW_REBEL_RANDOM" prop="0.60" />	
+	</crew>
+</ship>
+<event name="DETECTIVE_HANGARATTACK">
+	<preventQuest />
+	<preventFleet />
+	<quest>
+		<nebulaBeacon>false</nebulaBeacon>
+		<aggressive>2</aggressive>
+	</quest>
+	<beaconType id="map_icon_hangar" global="true">
+		<color r="84" g="201" b="30" a="1.0" />
+		<unvisitedTooltip>民兵の格納庫。</unvisitedTooltip>
+		<visitedTooltip>訪問場所</visitedTooltip>
+	</beaconType>
+	<text>遅すぎたようだ。すでに反乱軍は侵攻を開始しているようだ。遠くのほうで、巨大な民兵船が自軍の兵士に発砲している。反乱軍はすでにこの船を拿捕し、攻撃の指揮に使っているのだ！</text>
+	<img back="BACK_EVENT_HANGAR" planet="PLANET_INVISIBLE" />
+	<ship load="SHIP_MILITIA_BOSS" hostile="false" /> 
+	<choice hidden="true">
+		<text>民兵に声をかけ、手伝えるかどうか尋ねてくれ。</text>
+		<event>
+			<text>民兵の将軍が答える。「どんな助けでも必要だ！シールドジェネレーターを上げる前に反乱軍の船が何隻か入ってきた。残念なことに、反乱軍は致命的なダメージを与え、あのドレッドノートもシールドを破壊しようとしている。シールドが壊れるまで時間がない 俺たちは絶望的だドレッドノートを破壊できれば、あるいは捕獲できれば、シールド・ジェネレーターを修復し、反乱軍の艦隊を遠ざけることができるかもしれない！"</text>
+			<choice hidden="true">
+				<text>ドレッドノートと戦え</text>
+				<event>
+					<text>スラスターをパワーアップさせ、ジェネレーターを噴射しながら船を迎え撃つ。急ごう！</text>
+					<ship hostile="true" /> 
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>これは危険すぎる。</text>
+				<event>
+					<text>時間制限のあるあのような船と戦うのは、あなたがやりたがっていることではない。エンジンをパワーアップさせ、一刻も早くここを離れる準備をする。</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>逃げろ。</text>
+		<event>
+			<text>あんなのと戦うなんてとんでもない。できるだけ早く避難するんだ</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DETECTIVE_HANGARATTACK_FAILURE">
+	<text>背後から大爆発が起こり、青い光球が巨大なシールド・ジェネレーターを飲み込み、コンプレックス全体が灰と化す！シールドが破壊された今、ドレッドノートは飛び去り、反乱軍の艦隊が押し寄せてくる。</text>
+	<recallBoarders />
+	<choice hidden="true">
+		<text>走れ！</text>
+		<event>
+			<text>しかし、船体はミサイルを何発も受け、近くのドロップシップは兵士を数人乗せた。それでも、もっと悪い結末が待っていたかもしれない。とはいえ、民兵組織の存続には暗雲が立ち込めている。</text>
+			<instantEscape />
+			<damage amount="7" />
+			<boarders min="2" max="3" class="human_soldier" />
+		</event>
+	</choice>
+</event>
+<event name="DETECTIVE_HANGARATTACK_DESTROY">
+	<text>ジェネレーターを破壊するドレッドノートがなければ、シールド内で立ち往生している艦隊は使い物にならない。彼らは民兵の増援に素早く追い抜かれ、エンジニアのチームがすぐにダメージの修復に取り掛かる。反乱軍の艦隊が到着するも、格納庫に入る方法が見つからない。シールドに無意味な砲撃を浴びせるが、すぐにその努力が無駄であることに気づく。</text>
+	<variable name="ach_boss_mildread" op="set" val="1" />
+	<choice hidden="true">
+		<text>民兵司令部に連絡する。</text>
+		<event>
+			<text>民兵将校がお礼を言う。「あなたがいなければ、この建物は今頃クレーターのようになっていたでしょう。あなたの援助に十分なお返しはできませんが、努力は惜しみません"民兵はいくつかの物資を転送し、連邦を援助するための船の設計図を提供する。</text>
+			<autoReward level="MED">standard</autoReward>
+			<weapon name="LASER_BURST_8" />
+			<unlockCustomShip silent="false">PLAYER_SHIP_MILITIA</unlockCustomShip>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_REMOVE_GENERAL" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DETECTIVE_HANGARATTACK_DEADCREW"> 
+	<text>ジェネレーターを破壊するドレッドノートがなければ、シールド内で立ち往生している艦隊は使い物にならない。彼らは民兵の増援に素早く追い抜かれ、エンジニアのチームがすぐにダメージの修復に取り掛かる。反乱軍の艦隊が到着するも、格納庫に入る方法が見つからない。シールドに無意味な砲撃を浴びせるが、すぐにその努力が無駄であることに気づく。</text>
+	<variable name="ach_boss_mildread" op="set" val="1" />
+	<choice hidden="true">
+		<text>民兵司令部に連絡する。</text>
+		<event>
+			<text>民兵将校がお礼を言う。「あなたがいなければ、この建物は今頃クレーターのようになっていたでしょう。あなたの援助に十分なお返しはできませんが、努力は惜しみません"民兵はいくつかの物資を転送し、連邦を援助するための船の設計図を提供する。</text>
+			<autoReward level="HIGH">standard</autoReward>
+			<weapon name="LASER_BURST_8" />
+			<unlockCustomShip silent="false">PLAYER_SHIP_MILITIA</unlockCustomShip>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_REMOVE_GENERAL" />
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>

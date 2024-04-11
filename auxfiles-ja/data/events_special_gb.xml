@@ -1,0 +1,304 @@
+<FTL>
+<event name="STORAGE_CHECK_PROTONPACK_LOCATE_VAGABOND">
+	<text>データベースで最も近い船はバガボンド船らしい。座標をマークし、プロトンパックを止める。</text>
+	<quest event="PROTON_VAGABOND" />
+</event>
+<event name="STORAGE_CHECK_PROTONPACK_LOCATE_DYNASTY">
+	<text>データベースで一番近い船はダイナスティのようだ。座標を記録し、プロトンパックを止める。</text>
+	<quest event="PROTON_DYNASTY" />
+</event>
+<event name="STORAGE_CHECK_PROTONPACK_LOCATE_HAUNT">
+	<text>突然、優先順位の高いターゲットがいることを示す明るい光が点滅した。どうやらまた "ハウント "の仕業だ。こいつを追い詰めよう！</text>
+	<quest event="PROTON_HAUNT_LIST" />
+</event>
+
+<textList name="TEXT_PROTON_DYNASTY">	
+	<text>「魔物使いが狩りに来た？彼は殺しに来たのか？今夜、川には血が流れるだろうが、この紅い流れは私のものではなく、私が作ったものだ！"</text>
+	<text>ダイナスティの船が待ち構えているようだ。彼らは反乱軍の船が常に追いかけてくるのに慣れているはずだが、反乱軍であろうとなかろうと、あなたは彼らを殺しに来た別の船にすぎない。</text>
+	<text>「あなたの到着は予想外だった。さあ、決闘だ！この晴れやかな回転に、最も汚らわしくも決然とした魂が勝利をもたらすように！"なんて奇妙な言い回しなんだ。</text>
+	<text>予想通り、ダイナスティの船がここに停泊している。飛び込むや否や、彼らの武器はすでにオンラインになっている。</text>
+</textList>
+<event name="PROTON_DYNASTY">
+	<beaconType id="map_icon_dynasty" global="true">
+		<color r="0" g="205" b="255" a="1.0" />
+		<unvisitedTooltip>ダイナスティのターゲットの位置。</unvisitedTooltip>
+		<visitedTooltip>場所を探索。興味のあるものは何も残っていない。</visitedTooltip>
+	</beaconType>
+	<text load="TEXT_PROTON_DYNASTY" />
+	<ship load="SHIP_DYNASTY_FIGHT" hostile="true" />
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<textList name="TEXT_PROTON_VAGABOND">	
+	<text>「私たちを狩るのに飽きることはないのか？その飢えは決して満たされることはないのか？ああ、私は何のために子供を産むのか。傭兵どもに見せてやろうじゃないか。</text>
+	<text>バガボンドは危険と展望に満ちた生活を送っている。あなたは、彼らを殺しに来る他の船ではなく、新しい船にとって一生に一度の得点のチャンスでもあり、彼らはその機会を逃すつもりはない。</text>
+	<text>疲れ果てたバガボンドがあなたの目をじっと見つめる。何も言わなくても、今日ここから生きて帰れるのはあなたたち一人だけだとわかる。</text>
+	<text>あなたはこの難破船を、ただの生気のない金属の塊だと勘違いしそうになったが、そうではない。この船が生命を吹き返し、こちらに向かって動き出すとすぐに、それは明らかだ。</text>
+</textList>
+<event name="PROTON_VAGABOND">
+	<beaconType id="map_icon_vagabond" global="true">
+		<color r="241" g="152" b="19" a="1" />
+		<unvisitedTooltip>バガボンドのターゲットの位置。</unvisitedTooltip>
+		<visitedTooltip>場所を探索。興味のあるものは何も残っていない。</visitedTooltip>
+	</beaconType>
+	<text load="TEXT_PROTON_VAGABOND" />
+	<ship load="SHIP_GHOST_ALL" hostile="true" />
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<eventList name="PROTON_HAUNT_LIST">
+	<event load="PROTON_HAUNT_ELEANOR" />
+	<event load="PROTON_HAUNT_PSYCH" />
+	<event load="PROTON_HAUNT_SCOLERI" />
+	<event load="PROTON_HAUNT_SLIMER" />
+	<event load="PROTON_HAUNT_VINZ" />
+	<event load="PROTON_HAUNT_ZUUL" />
+</eventList>
+<event name="PROTON_HAUNT_DEFEAT">
+	<text>ターゲットを無力化したあなたは、彼らの積荷が何なのか覗き見せずにはいられない。中には古代の武器が入っているようだ。</text>
+	<weapon name="GIFTLIST_ANCIENT_BASIC" />
+	<unlockCustomShip silent="false">PLAYER_SHIP_GHOST_2</unlockCustomShip>
+</event>
+
+<ship name="SHIP_HAUNT_ELEANOR" auto_blueprint="MU_GB_ELEANOR_DROPSHIP">
+	<destroyed>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="phantom_goul_alpha" prop="0.33" />
+		<crewMember type="phantom_mare_alpha" prop="0.33" />
+		<crewMember type="phantom_wraith_alpha" prop="0.33" />
+	</crew>
+</ship>
+<event name="PROTON_HAUNT_ELEANOR">
+	<preventQuest />
+	<beaconType id="map_icon_haunt" global="true">
+		<color r="255" g="255" b="255" a="1.0" />
+		<unvisitedTooltip>ハントの場所。</unvisitedTooltip>
+		<visitedTooltip>探索された場所ハントの場所</visitedTooltip>
+	</beaconType>
+	<text>プロトンパックのデータベースによると、これはエルベネア、ハントのボス、ゴジオデオンの妻である。彼女もまたシェフだったが、今は夫の死を喜ばない凶悪な殺人鬼だ。もしかしたら今日、ついに二人を再会させることができるかもしれない。</text>
+	<ship load="SHIP_HAUNT_ELEANOR" hostile="true" />
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<ship name="SHIP_HAUNT_PSYCH" auto_blueprint="MU_GB_PSYCH_ABDUCTOR">
+	<destroyed>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="phantom_goul_alpha" prop="0.33" />
+		<crewMember type="phantom_mare_alpha" prop="0.33" />
+		<crewMember type="phantom_wraith_alpha" prop="0.33" />
+	</crew>
+</ship>
+<event name="PROTON_HAUNT_PSYCH">
+	<preventQuest />
+	<beaconType id="map_icon_haunt" global="true">
+		<color r="255" g="255" b="255" a="1.0" />
+		<unvisitedTooltip>ハントの場所。</unvisitedTooltip>
+		<visitedTooltip>探索された場所ハントの場所</visitedTooltip>
+	</beaconType>
+	<text>プロトンパックのデータベースによれば、これはゴジオデオンのお気に入りのバカ、サイカデリウスだ。どうやら主人に虐待されたせいで、発狂状態に追い込まれたようだ。もしかしたら今日、ついに彼を不幸から救ってくれるかもしれない。</text>
+	<ship load="SHIP_HAUNT_PSYCH" hostile="true" />
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<ship name="SHIP_HAUNT_SCOLERI" auto_blueprint="MU_GB_SCOLERI_ZAPPER">
+	<destroyed>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="phantom_goul_alpha" prop="0.33" />
+		<crewMember type="phantom_mare_alpha" prop="0.33" />
+		<crewMember type="phantom_wraith_alpha" prop="0.33" />
+	</crew>
+</ship>
+<event name="PROTON_HAUNT_SCOLERI">
+	<preventQuest />
+	<beaconType id="map_icon_haunt" global="true">
+		<color r="255" g="255" b="255" a="1.0" />
+		<unvisitedTooltip>ハントの場所。</unvisitedTooltip>
+		<visitedTooltip>探索された場所ハントの場所</visitedTooltip>
+	</beaconType>
+	<text>プロトン・パックのデータベースによれば、これはゴジオデオンの甥で、王朝の役人たちの処刑人も務めたソコラレイである。どうやら、虐待を受けた主人が彼を狂気状態に追い込んだようだ。さて、今日は役割を逆転させよう。</text>
+	<ship load="SHIP_HAUNT_SCOLERI" hostile="true" />
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<ship name="SHIP_HAUNT_SLIMER" auto_blueprint="MU_GB_SLIMER_HOSPICE">
+	<destroyed>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="phantom_goul_alpha" prop="0.33" />
+		<crewMember type="phantom_mare_alpha" prop="0.33" />
+		<crewMember type="phantom_wraith_alpha" prop="0.33" />
+	</crew>
+</ship>
+<event name="PROTON_HAUNT_SLIMER">
+	<preventQuest />
+	<beaconType id="map_icon_haunt" global="true">
+		<color r="255" g="255" b="255" a="1.0" />
+		<unvisitedTooltip>ハントの場所。</unvisitedTooltip>
+		<visitedTooltip>探索された場所ハントの場所</visitedTooltip>
+	</beaconType>
+	<text>プロトン・パックのデータベースによると、この太りすぎのバガボンドは、主にスライマーとして知られているが、ゴジオデオンのお気に入りのシェフであり、長年の友人でもあった。ゴジオデオンがそばにいなければ、彼はあなたのリストのチェックボックスに過ぎない。</text>
+	<ship load="SHIP_HAUNT_SLIMER" hostile="true" />
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<ship name="SHIP_HAUNT_VINZ" auto_blueprint="MU_GB_VINZ_STASH">
+	<destroyed>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="phantom_goul_alpha" prop="0.33" />
+		<crewMember type="phantom_mare_alpha" prop="0.33" />
+		<crewMember type="phantom_wraith_alpha" prop="0.33" />
+	</crew>
+</ship>
+<event name="PROTON_HAUNT_VINZ">
+	<preventQuest />
+	<beaconType id="map_icon_haunt" global="true">
+		<color r="255" g="255" b="255" a="1.0" />
+		<unvisitedTooltip>ハントの場所。</unvisitedTooltip>
+		<visitedTooltip>探索された場所ハントの場所</visitedTooltip>
+	</beaconType>
+	<text>プロトンパックのデータベースによると、あなたはゴジオデオンの最も信頼できるアドバイザーの一人であるヴィネザレオンに出くわしたようだ。この現実から彼を消してしまえば、もう脅威ではなくなることを祈る。</text>
+	<ship load="SHIP_HAUNT_VINZ" hostile="true" />
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<ship name="SHIP_HAUNT_ZUUL" auto_blueprint="MU_GB_ZUUL_GATE">
+	<destroyed>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>幽霊船は排除された。また1つ、リストから消えることになった。彼らが復讐のために多元宇宙の向こうから再び現れなければの話だが。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="PROTON_HAUNT_DEFEAT" />
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="phantom_goul_alpha" prop="0.33" />
+		<crewMember type="phantom_mare_alpha" prop="0.33" />
+		<crewMember type="phantom_wraith_alpha" prop="0.33" />
+	</crew>
+</ship>
+<event name="PROTON_HAUNT_ZUUL">
+	<preventQuest />
+	<beaconType id="map_icon_haunt" global="true">
+		<color r="255" g="255" b="255" a="1.0" />
+		<unvisitedTooltip>ハントの場所。</unvisitedTooltip>
+		<visitedTooltip>探索された場所ハントの場所</visitedTooltip>
+	</beaconType>
+	<text>プロトンパックのデータベースによると、あなたはゴジオデオンの最も信頼できるアドバイザーのひとり、ズルバザーレに出くわしたようだ。この現実から彼を消し去れば、もう脅威ではなくなることを祈る。</text>
+	<ship load="SHIP_HAUNT_ZUUL" hostile="true" />
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+</FTL>

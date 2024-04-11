@@ -1,0 +1,1861 @@
+<FTL>
+
+
+
+<event name="FINISH_BEACON_CRYSTAL">
+	<text id="finish_beacon" />
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="EXIT_FILLER_LIST" />
+	</choice>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+	
+<eventList name="ITEMS_CRYSTAL_MV">
+	<event load="CRYSTAL_FREE" />
+	<event load="CRYSTAL_FOREIGNER_MAP" />
+	<event load="CRYSTAL_CACHE_MV" />
+	<event load="CRYSTAL_SCRAP_EXCITED_MV" />
+	<event load="CRYSTAL_HUMAN_TESTS_MV" />
+	<event load="CRYSTAL_CHATTY_MV" />
+</eventList>
+
+<event name="CRYSTAL_FREE" unique="true">
+	<text load="TEXT_FREE_CRYSTAL" />
+	<weapon name="GIFTLIST_CRYSTAL" />
+	<choice>
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice>
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+<textList name="TEXT_FREE_CRYSTAL">
+	<text>近くのクリスタル船の残骸がむき出しになっているのに気づく。スクラップはほとんど残っていないが、スカベンジャーたちはクリスタルの武器を1つ見落としていたようだ！</text>
+	<text>小さなクリスタルの商人が、キーキーと甲高い声で声をかけてくる。「外国人！野蛮な異星人と和平を結ぶことは重要だ。この無料の戦争兵器があなたを癒してくれるかもしれない。"</text>
+	<text>水晶の貿易前哨地から取引依頼の電話がかかってきた。君は物資の数に目を通し、彼らの申し出が軍用武器と引き換えに外国の岩石のサンプルであることに気づく。</text>
+</textList>
+
+<event name="CRYSTAL_FOREIGNER_MAP" unique="true">
+	<text>近くに別の外国人がいることに気づく。彼らはあなたに呼びかけ、このセクターで収集した地図データを売らないかと持ちかけてきた。</text>
+	<ship load="SHIP_FOREIGNER_SCOUT" hostile="false" />
+	<choice>
+		<text>地図データを購入する。</text>
+		<event load="CRYSTAL_FOREIGNER_MAP_BUY" />
+	</choice>
+	<choice hidden="true">
+		<text>地図の品質は確認できない。辞退する。</text>
+		<event>
+			<text>スカウトの申し出を断り、先に進む。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_FOREIGNER_MAP_BUY">   
+	<event> 
+		<text>船は地図データをあなたの船のコンピューターに転送する。</text>
+		<reveal_map />
+		<item_modify>
+			<item type="scrap" min="-20" max="-20" />
+		</item_modify>
+	</event>
+	<event>
+		<text>船は地図データをあなたの船のコンピューターに転送する。</text>
+		<item_modify>
+			<item type="scrap" min="-20" max="-20" />
+		</item_modify>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event>
+				<text>地図をざっと見たが、何が何だかわからない。データが乱れており、多くの箇所で明らかに間違っている。あなたは、彼らが意図的に詐欺を働いたのかどうか疑っているが、このデータには何の価値もない！</text>
+				<choice hidden="true">
+					<text>それを彼らに突きつける。</text>
+					<event>
+						<text>「その地図は全く問題ありません。完全に良好なデータに対して返金はしません！"</text>
+						<choice hidden="true">
+							<text>力ずくで払い戻しを受ける！</text>
+							<event>
+								<text>武器を武装し、いずれにせよ払い戻しを強要する準備をするのだ。</text>
+								<ship hostile="true" />
+								<choice hidden="true">
+									<text>次へ...</text>
+									<event load="COMBAT_CHECK" />
+								</choice>
+							</event>
+						</choice>
+						<choice hidden="true" req="mind">
+							<text>(マインドコントロール）全額返金するよう『説得』する。</text>
+							<event>
+								<text>「君の言う通りだ。これは悪い地図だ。お金を返すべきだ。恥ずかしい限りだ。ブーフー。"</text>
+								<item_modify>
+									<item type="scrap" min="20" max="20" />
+								</item_modify>
+							</event>
+						</choice>
+						<choice hidden="true">
+							<text>ともかく、帰ろう。</text>
+							<event />
+						</choice>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>ともかく、帰ろう。</text>
+					<event />
+				</choice>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<event name="CRYSTAL_CACHE_MV" unique="true">
+	<text>軌道を回る巨大な小惑星からの奇妙なレーダー信号から、ある種のクリスタルの隠し場所が発見された。深いクレーターはクリスタルの厚い層で覆われ、中にあるものを安全に守っている。</text>
+	<choice hidden="true">
+		<text>持っている武器で突破を試みる。</text>
+		<event load="CRYSTAL_CACHE_MV_BREAK" />
+	</choice>
+	<choice hidden="true" req="BLUELIST_WEAPONS_HEAVY">
+		<text>(重い武器）武器を使う。</text>
+		<event>
+			<text>あなたの強力な武器が巨大なクリスタルの破片を砕き、アウェーチームが降りて様子を見るのに十分なスペースを残す。</text>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
+				<text>キャッシュを調査する</text>
+				<event load="CRYSTAL_CACHE_MV_LIST" />
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="0" max_lvl="0">
+				<text>これは素晴らしい火力の誇示だったが、あそこで誰が捜査するんだ？</text>
+				<event>
+					<text>あなたはキャッシュを無視して、船内で何かをする。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(クリスタル・クルー）クリスタル・クルーに武器を再調整してもらう。</text>
+		<event>
+			<text>あなたのクリスタルのクルーは、このタイプのクリスタルと共鳴するように武器の爆発周波数を調整することができ、バリアはほとんど抵抗を与えない。</text>
+			<choice hidden="true">
+				<text>キャッシュを調査する</text>
+				<event load="CRYSTAL_CACHE_MV_LIST" />
+			</choice>
+		</event>
+	</choice>	
+	<choice hidden="true">
+		<text>キャッシュは無視する。</text>
+		<event>
+			<text>あなたはキャッシュを無視して、船内で何かをする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_CACHE_MV_BREAK">
+	<event>
+		<text>しかし、クリスタルのバリアは強力なままだ。時間が経てば、諦めて先に進む。</text>
+	</event>
+	<event>
+		<text>しかし、クリスタルのバリアは強力なままだ。時間が経てば、諦めて先に進む。</text>
+	</event>
+	<event>
+		<text>しかし、幸運な一発が結晶の亀裂を直撃し、亀裂はさらに大きくなり、バリアの一部分全体が崩れ落ちる！</text>
+		<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
+			<text>キャッシュを調査する</text>
+			<event load="CRYSTAL_CACHE_LIST" />
+		</choice>
+		<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="0" max_lvl="0">
+			<text>あなたにとって不運なことに、キャッシュを調査するために派遣する人間がいないという事実は、運では変えられない。</text>
+			<event>
+				<text>あなたはキャッシュを無視して、船内で何かをする。</text>
+				<choice>
+					<text>船内で何かをする。</text>
+					<event load="STORAGE_CHECK" />
+				</choice>
+				<choice>
+					<text>何もしない。</text>
+					<event />
+				</choice>
+			</event>
+		</choice>
+	</event>
+</eventList>
+<eventList name="CRYSTAL_CACHE_MV_LIST">
+	<event>
+		<text>クレーターのふもとに到着したあなたのチームは、長い間忘れられていた武器の隠し場所を発見する。ほとんどの装備は使えないが、すべてではない！</text>
+		<weapon name="GIFTLIST_CRYSTAL" />
+		<autoReward level="LOW">stuff</autoReward>
+	</event>
+	<event>	
+		<text>アウェーチームはクレーターでキャッシュの持ち主に出迎えられる。あなたはできる限りのものを手に入れ、船に逃げ帰る！</text>
+		<weapon name="GIFTLIST_CRYSTAL" />
+		<autoReward level="LOW">stuff</autoReward>
+		<boarders min="2" max="3" class="crystal" />
+	</event>
+	<event>
+		<text>あなたはクルーにキャッシュを調べさせる。通信が途絶え その後すぐに 小惑星で重力の測定値が検出された特異点のブービートラップの 引き金に違いない引き込まれる前に 離れよう</text>
+		<choice hidden="true">
+			<text>今すぐ撤退しろ</text>
+			<event>
+				<text>あなたはインパルス・エンジンを限界までプッシュし、重力井戸から脱出することができた。クルーは備蓄品とともにテニスボール大になったが、あなたは無事だった。</text>
+				<removeCrew>
+					<clone>true</clone>
+					<text>幸運なことに、クローンベイがクルーを復活させることができる。</text>
+				</removeCrew>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>燃料をすべて爆発させ、乗組員や積荷とともに脱出する。</text>
+			<event>
+				<text>あなたは歪みの中心に急降下し、クルーと積荷を拾い上げる。そしてFTL燃料を射出して点火し、衝撃波を送って船を特異点の事象の地平線のはるか彼方まで突き進ませる。危なかった。</text>
+				<item_modify steal="true">
+					<item type="fuel" min="-999" max="-999" />
+				</item_modify>
+				<weapon name="RANDOM" />
+				<autoReward level="MED">scrap_only</autoReward>
+			</event>
+		</choice>
+		<choice hidden="true" req="teleporter" lvl="2">
+			<text>(アップグ・テレポーター) 乗員を船内に戻す。</text>
+			<event>
+				<text>重力の井戸から脱出するためエンジンを停止させ、妨害が激しい中、クルーをテレポーターでロックしようとする。エリア全体が特異点に飲み込まれる前に、あなたはかろうじて彼らを船内に戻すことができた。</text>
+			</event>
+		</choice>
+		<choice hidden="true" req="engines" lvl="7">
+			<text>(アドバンス・エンジン) 乗組員と積荷を救出せよ。</text>
+			<event>
+				<text>ディストーションの中心に急降下し、クルーと積荷を拾い上げる。最高級のインパルス・エンジンは、船全体が消費される前に、かろうじて船を重力の井戸から出すことができた。危なかった。</text>
+				<weapon name="RANDOM" />
+				<autoReward level="LOW">stuff</autoReward>
+			</event>
+		</choice>
+	</event>
+</eventList>
+		
+<event name="CRYSTAL_SCRAP_EXCITED_MV" unique="true">
+	<text>あなたは近くの有人惑星にあるプライベート・リレーから信号を受信した。「エイリアンの船だ！母星を離れてから、いつになったら見られるのかと思っていました！どうか、私は多くの工芸品のコレクターです。あなたにとってスクラップでも、私にとっては貴重なものなのでしょう。"</text>
+	<choice hidden="true">
+		<text>35スクラップを提供。</text>
+		<event>
+			<text>「これは..！これは...25世紀のロックマンのスラスト・スタビライザーか？何が望みだ？もっといい提案がある銀河系を見てみたい。一緒に行かないか？どうだ？</text>
+			<item_modify>    
+				<item type="scrap" min="-35" max="-35" />
+			</item_modify>	
+			<choice hidden="true">
+				<text>受け入れる。</text>
+				<event>
+					<text>"私は自分の持ち物を集めることもできない。ただ家族にメッセージを残すことだけを許可する。"クリスタルの存在がクルーに加わる。</text>
+					<crewMember amount="1" class="crystal" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>別の支払いを要求する。</text>
+				<event load="CRYSTAL_SCRAP_EXCITED_MV_LIST" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>彼を断る。</text>
+		<event>
+			<text>銀河系のどこにいても、スクラップは貴重だ。あなたは商品を持ち続け、ジャンプの準備をする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_SCRAP_EXCITED_MV_LIST">
+	<event>
+		<text>「いいだろう、現物支給だ。我々の種族が本来持っている能力を模倣した爆薬がある。おそらく、それはあなたが興味を持つだろう。"</text>
+		<weapon name="BOMB_LOCK" />
+	</event>
+	<event>
+		<text>「そうだな、現物支給だ。余分な船の武器がどこかに転がっている。それを使ってくれないか？</text>
+		<weapon name="CRYSTAL_BURST_2" />
+	</event>
+</eventList>
+
+<event name="CRYSTAL_HUMAN_TESTS_MV" unique="true">
+	<text>あなたはクリスタルの研究施設のようなものの近くに到着した。科学者が「またエイリアンだ。この銀河系のさまざまな種族についていろいろ聞いているんだが、君たちの生理機能にとても興味があるんだ！簡単なテストをさせてもらえませんか？"</text>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>クルーにテストをさせる。</text>
+		<event load="CRYSTAL_HUMAN_TESTS_MV_ACCEPT" />
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>科学者たちは被験者を他で探さなければならないだろう。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>拒否する。</text>
+		<event load="CRYSTAL_HUMAN_TESTS_MV_REFUSE" />
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>拒否する。</text>
+		<event>
+			<text>"なるほど。それは残念だ。おそらく次に出会う船は、科学の進歩に貢献できるだろう。"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ROCK">
+		<text>(ロックマン・クルーを派遣してください。</text>
+		<event>
+			<text>「進化したいとこよ！これは本当に素晴らしいことだ！私たちは、あなた方の種族に関する無数の歴史的記録を持っているが、過去数百年に関する情報が不足している。我々はこのスキャンから多くのことを学ぶことができる！どうぞ、これを受け取ってください"</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+		<choice hidden="true" req="LIST_CREW_OBYN">
+		<text>(ソルトマン・クルー）ソルトマン・クルーを派遣する。</text>
+		<event>
+			<text>「それは...？?ありえない...クリスタルとロックのミッシングリンク！これは本当に素晴らしい！君たちの種族に関する記録はほとんどない。このスキャンから学ぶことは多い。できるだけ早く分析しなければならない！これを受け取ってください。</text>
+			<autoReward level="HIGH">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(クリスタル・クルー）クリスタル・クルーを派遣してください。</text>
+		<event>
+			<text>"ああ...あなたは私たちの仲間だ。ご理解いただけなかったようですね。私は異星人のボランティアを頼んだ。自分のものは必要ない。"彼らは通信を切った。</text>
+		</event>
+	</choice>
+	<choice hidden="true" req="BACKUP_DNA"> 
+		<text>(バックアップDNAバンク）クルーのデータを送る。</text>
+		<event>
+			<text>「これは何だ？完全な遺伝子と個人のプロフィールがデジタルで保存されている？こんなことが可能だとは...。私たちの研究に計り知れない助けになるでしょう。どうか、あなたの協力と引き換えにこれを受け取ってください"</text>
+			<autoReward level="MED">weapon</autoReward>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_HUMAN_TESTS_MV_ACCEPT">
+	<event>
+		<text>しばらくして、科学者が戻ってきた。「私たちは...後悔しなければなりません...重大な誤算を犯しました。君たちの身体は予想以上に脆く、君の仲間は...壊れてしまった。我々は謝罪し、慰めとして軍用の素晴らしい武器を提供する"</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>あなたは彼らの謝罪を受け入れ、クローンベイが失われたクルーを蘇生中であることは言わないほうがいいと判断する。</text>
+		</removeCrew>
+		<autoReward level="LOW">weapon</autoReward>
+	</event>
+	<event>
+		<text>クルーはステーションに収容され、いくつかのスキャンとテストを受ける。「この機会を与えてくれてありがとう！君たちから多くを学びたい。報酬として物資が渡される。</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>大きな結晶体がクルーたちをステーションに案内し、スキャン・チャンバーにそっと案内する。数秒後、彼らは全ゲノムをマッピングし、必要なものはすべて持っていると告げる。報酬として略図をくれる。</text>
+		<autoReward level="LOW">drone</autoReward>
+	</event>
+</eventList>
+<eventList name="CRYSTAL_HUMAN_TESTS_MV_REFUSE">
+	<event>
+		<text>"なるほど。それは残念だ。おそらく次に出会う異星人は、科学の進歩に敬意を払ってくれるだろう。"</text>
+		<choice>
+			<text>船内で何かをする。</text>
+			<event load="STORAGE_CHECK" />
+		</choice>
+		<choice>
+			<text>何もしない。</text>
+			<event />
+		</choice>
+	</event>
+	<event>
+		<text>"なるほど。それは残念だ。おそらく次に出会う異星人は、科学の進歩に敬意を払ってくれるだろう。"</text>
+		<choice>
+			<text>船内で何かをする。</text>
+			<event load="STORAGE_CHECK" />
+		</choice>
+		<choice>
+			<text>何もしない。</text>
+			<event />
+		</choice>
+	</event>
+	<event>
+		<text>"なるほど。それは残念だ。しかし、このチャンスを逃してはならない。服従すれば、それなりの待遇を受けられるだろう！"近くに停泊していた軍艦が切り離され、あなたに突撃する。</text>
+		<ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+
+<event name="CRYSTAL_CHATTY_MV" unique="true">
+	<text>小さな民間船からのメッセージだ！お忙しいですか？質問してもいいですか？"</text>
+	<choice hidden="true">
+		<text>そうだ。</text>
+		<event>
+			<text>「何を食べる？文化は？寿命は？</text>
+			<choice hidden="true">
+				<text>彼の質問に答えようとする。</text>
+				<event load="CRYSTAL_CHATTY_MV_LIST" />
+			</choice>
+			<choice hidden="true">
+				<text>「時間がないんだ。</text>
+				<event>
+					<text>「なるほど。そうか。次に会う宇宙人はもっといい人かもしれない..."あなたはジャンプの準備をする。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>いや。</text>
+		<event>
+			<text>"なるほど...。忙しいんだね"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(クリスタル・クルー）クルーに話してもらいましょう。</text>
+		<event>
+			<text>「ワオ、君は我々の仲間だ！連邦と同盟を結んでいたとはな。迷惑はかけられないが、余った物資をどうぞ！"</text>
+			<autoReward level="RANDOM">fuel</autoReward>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_CHATTY_MV_LIST">
+	<event>
+		<text>特に興味深いこともないのに、長々と話す。「わあ、ありがとう。ほら、またエイリアンの船だ！君みたいに親切なのかな。反乱軍のステッカーを見て、あなたは彼らが友好的かどうか疑っている。彼らはあなたを見つけ、攻撃しようと動き出す。</text>
+		<ship load="SHIP_REBEL_FIGHT" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>特に興味深いこともないのに、長々と話す。「ありがとう！お役に立つかどうかわかりませんが、私たちはあなたに提供できる物資を持っています。もしかしたら旅で使えるかもしれませんよ！"</text>
+		<autoReward level="RANDOM">stuff</autoReward>
+	</event>
+	<event>
+		<text>特に興味深いこともないのに、長々と話す。「わあ、ありがとう！私の好奇心を満たすために、あなたの船体を少し修理できるかもしれない。僕らは修理が得意なんだ。"</text>
+		<damage amount="-6" />
+	</event>
+</eventList>
+
+	
+<eventList name="NEUTRAL_CRYSTAL_MV">
+	<event load="CRYSTAL_MONTY" />
+	<event load="CRYSTAL_TORTURE" />
+	<event load="CRYSTAL_AUTO_SURVEYOR" />
+	
+	<event load="CRYSTAL_REBEL_CRYSTAL_MV" />
+	<event load="CRYSTAL_REBEL_CRYSTAL2_MV" />
+	<event load="CRYSTAL_MANTIS_CRYSTAL_MV" />
+	<event load="CRYSTAL_PIRATE_CRYSTAL_MV" />
+	<event load="CRYSTAL_FED_MV" />
+	<event load="CRYSTAL_FED_DESERTER_MV" />
+	<event load="CRYSTAL_REQUEST_MV" />
+	<event load="CRYSTAL_HELP_DIG_MV" />
+</eventList>
+
+<event name="CRYSTAL_MONTY" unique="true">
+	<text>このビーコンに到着すると、クリスタルの船に呼び止められる。「止まれ！死の道標を渡ろうとする者は、3つの質問に答えなければならない。</text>
+	<ship load="SHIP_CRYSTAL_FIGHT" hostile="false" />
+	<choice hidden="true">
+		<text>私に質問してください。私は恐れていない。</text>
+		<event>
+			<text>"君の名前は？"</text>
+			<choice hidden="true">
+				<text>あなたの名前を伝えてください。</text>
+				<event>
+					<text>"あなたの探求は何ですか？"</text>
+					<choice hidden="true">
+						<text>フラッグシップを倒すこと。</text>
+						<event load="CRYSTAL_MONTY_FINAL" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>時間がないんだ、攻撃！</text>
+		<event>
+			<text>クリスタルの質問を無視して攻撃する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_MONTY_FINAL">
+	<event>
+		<text>"カマキリの女王の名前は？"</text>
+		<choice hidden="true" req="LIST_CREW_MANTIS">
+			<text>(カマキリクルー）答えはレイコンプリイナクラです。</text>
+			<event load="CRYSTAL_MONTY_CORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>カラプリンカ</text>
+			<event load="CRYSTAL_MONTY_INCORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>レイコンプリイナクラ</text>
+			<event load="CRYSTAL_MONTY_CORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>カワリイインカ</text>
+			<event load="CRYSTAL_MONTY_INCORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>リーコンポカワラ</text>
+			<event load="CRYSTAL_MONTY_INCORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>それは分からない！</text>
+			<event load="CRYSTAL_MONTY_UNKNOWN" />
+		</choice>
+	</event>
+	<event>
+		<text>"グランド・オーキッド・ガーデンの名前は？"</text>
+		<choice hidden="true" req="LIST_CREW_ORCHID">
+			<text>(オーキッド・クルー）答えはRt'lak Etです。</text>
+			<event load="CRYSTAL_MONTY_CORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>カター・レック</text>
+			<event load="CRYSTAL_MONTY_INCORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>パート・オエック</text>
+			<event load="CRYSTAL_MONTY_INCORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>ラトラック・エト</text>
+			<event load="CRYSTAL_MONTY_CORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>トレ・イェ</text>
+			<event load="CRYSTAL_MONTY_INCORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>それは分からない！</text>
+			<event load="CRYSTAL_MONTY_UNKNOWN" />
+		</choice>
+	</event>
+	<event>
+		<text>"ゾルタンの宗教の名前は？"</text>
+		<choice hidden="true" req="LIST_CREW_ZOLTAN">
+			<text>(ゾルタン・クルー）答えはイレシュクトリア主義だ。</text>
+			<event load="CRYSTAL_MONTY_CORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>イレシュトリア主義。</text>
+			<event load="CRYSTAL_MONTY_CORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>上昇主義。</text>
+			<event load="CRYSTAL_MONTY_INCORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>クリソリズム。</text>
+			<event load="CRYSTAL_MONTY_INCORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>グレート・アイ教会</text>
+			<event load="CRYSTAL_MONTY_INCORRECT" />
+		</choice>
+		<choice hidden="true">
+			<text>それは分からない！</text>
+			<event load="CRYSTAL_MONTY_UNKNOWN" />
+		</choice>
+	</event>
+</eventList>
+<event name="CRYSTAL_MONTY_CORRECT">
+	<text>「そうだ。行ってらっしゃい！"クリスタルたちが手を振って通り過ぎる。その場を去るとき、あなたは目の前でテストに失敗した船の残骸を見つけた。少し罪悪感を感じるが、この機会を無駄にせず、船をスクラップにする。</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+<event name="CRYSTAL_MONTY_INCORRECT">
+	<text>"ヒーヒー、間違っている！"クリスタルは武器の破片を船体に向けて発射し、攻撃に移る。</text>
+	<damage amount="3" />
+	<ship hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="CRYSTAL_MONTY_UNKNOWN">
+	<text>「まあ、いいか。クリスタルが攻撃に移る。</text>
+	<ship hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="CRYSTAL_AUTO_SURVEYOR" unique="true">
+	<text>反乱軍がクリスタルの新領土を偵察するために送り込んだと思われる、オート・サーベイヤー船が近くをパトロールしている。</text>
+	<ship load="SHIP_AUTO_REBEL_SPY" hostile="false" /> 
+	<choice hidden="true">
+		<text>船を攻撃し、ブラックボックスを手に入れればデータをダウンロードできる！</text>
+		<event>
+			<text>あなたは自動化された船と交戦する準備をする。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="hacking">
+		<text>(ハッキング）遠隔操作でデータをダウンロードする。</text>
+		<event>
+			<text>あなたは船に警告を発することなく、データのダウンロードに成功した。</text>
+			<reveal_map />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>オートシップは無視。</text>
+		<event>
+			<text>この船はあなたにとって何の興味もない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="CRYSTAL_TORTURE" unique="true">
+	<text>このビーコンは、ぞっとするような無気味な光景であなたを迎える。クリスタル・ステーションは、船体に何種類もの生物が埋め込まれており、ゆっくりと窒息したり、クリスタル・メッキの重みで押しつぶされたりしている。</text>
+	<ship load="SHIP_CRYSTAL_STATION_TORTURE" hostile="false" />
+	<choice hidden="true">
+		<text>彼らを攻撃する！</text>
+		<event>
+			<text>「哀れな生き物の仲間入りをしたいのか？そうさせておけ！"</text>
+			<boarders min="2" max="2" class="crystal" />
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>駅は無視する。</text>
+		<event>
+			<text>FTLがチャージされている間、ステーションはあなたにコンタクトしようとしない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DEAD_CREW_CRYSTAL_TORTURE">
+	<text load="TEXT_DEAD_CREW_CRYSTAL" />
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>ステーションをスクラップしている間、あなたは船に閉じ込められたクルーがまだかろうじて生きていることに気づく。</text>
+			<choice hidden="true" req="medbay" lvl="2">
+				<text>(Upg. Medbay） 彼らを治療する。</text>
+				<event>
+					<text>メドベイは彼らの傷を癒すが、死から蘇らせることはできない。多くの元囚人たちは助からなかったが、1人の幸運な魂がよみがえった。</text>
+					<crewMember amount="1" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>私たちにできることはあまりにも少ない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<event name="CRYSTAL_REBEL_CRYSTAL_MV" unique="true">
+	<text>到着するやいなや、クリスタルの破片がスクリーンを飛び交う。スキャナーを確認すると、クリスタルの船が反乱軍と交戦しているようだ！</text>
+	<choice hidden="true">
+		<text>反乱軍を攻撃せよ</text>
+		<event>
+			<text>あなたはクリスタルの船に自分の意図を伝え、反乱軍の船を迎え撃つために移動する。</text>
+			<ship load="SHIP_REBEL_CRYSTAL_REBEL_CRYSTAL" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>クリスタルの船を攻撃する。</text>
+		<event>
+			<text>あなたはクリスタルの船を迎撃するために移動する。反乱軍があなたの船をスキャンすると、すぐにジャンプする。あなたは、彼らが艦隊にあなたの位置を知らせるのではないかとうすうす感じているが、今のあなたの心配はそれくらいだ。</text>
+			<modifyPursuit amount="1" />
+			<ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>2隻の船が交戦中なので、気づかれないようにこっそり通り過ぎる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CRYSTAL_REBEL_CRYSTAL2_MV" unique="true">
+	<text>あなたは歓迎されない光景に出迎えられる。反乱軍の先遣艦が、遠くのクリスタリン艦に砲火を浴びせているのだ。</text>
+	<choice hidden="true">
+		<text>反乱軍の船と交戦しろ。</text>
+		<event>
+			<text>交戦する前に、クリスタルの船が直撃し、反乱軍の船を消し去った！彼らは叫ぶ："お前も他のエイリアンと同じだ！お前が連れてきたんだそう言って、大砲を向けてくる！</text>
+			<ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>放っておけばいい。</text>
+		<event>
+			<text>反乱軍が撃ってこない貴重な時間を利用するのが一番だ。あなたはジャンプの準備をする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="CRYSTAL_MANTIS_CRYSTAL_MV" unique="true">
+	<text>多数の民間船が逃げ惑うのを発見。発砲があり、犯人を見つける。マンティス艦が小型艦の1隻を攻撃している！</text>
+	<choice hidden="true">
+		<text>カマキリを攻撃せよ</text>
+		<event>
+			<text>あなたはインパルスエンジンを起動し、武器をチャージしながらマンティスと獲物の間を飛ぶ。あなたは彼らの全神経を集中させているようだ。</text>
+			<ship load="SHIP_MANTIS_CRYSTAL" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>あなたは目立たないようにし、素早くジャンプの準備をする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="CRYSTAL_PIRATE_CRYSTAL_MV" unique="true">
+	<text>ビーコンに到着した直後に海賊船が飛び込んでくる。武器で武装した小さなクリスタルの輸送船だ。</text>
+	<choice hidden="true">
+		<text>海賊を襲え。</text>
+		<event>
+			<text>海賊が民間船と交戦する前に、あなたは海賊を追い詰める。本当の脅威を察知すると、そちらに向き直る。</text>
+			<ship load="SHIP_PIRATE_CRYSTAL" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>クリスタルの船は自分たちで対処できると思っているのか。あなた自身の問題は十分ある。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_SAVED_MV">
+	<event>
+		<text>クリスタルの船に連絡すると、「私たちは戻るべきではありませんでした。私たちの周りは戦争と混沌です。二度と我々に話しかけないでくれ。彼らは通信を切った。</text>
+	</event>
+	<event>
+		<text>クリスタルの船からのメッセージだ。そもそもジャンプ・ビーコンを開いたのは、お前たちの一人だ！」。彼らはすぐに飛び去る。</text>
+	</event>
+	<event>
+		<text>助けてくれてありがとう。君たち外国人すべてが野蛮なわけではないとわかってよかった。これを褒美として受け取れ。"</text>
+		<autoReward level="RANDOM">stuff</autoReward>
+	</event>
+	<event>
+		<text>クリスタルの船から「よく来てくれた。助けてくれてありがとう。これを受け取ってください"</text>
+		<autoReward level="RANDOM">stuff</autoReward>
+	</event>
+	<event>
+		<text>ありがとう。我々は、あなた方エイリアンの野蛮な戦いには備えてなかった。今後、我々の種族を支援するつもりなら、我々の武器の一つをあげよう。"</text>
+		<weapon name="GIFTLIST_CRYSTAL" />
+	</event>
+</eventList>
+
+<event name="CRYSTAL_FED_MV" unique="true">
+	<text>近くで戦闘が行われているようだ。クリスタルの国境警備隊が連邦の小型船を追っている！</text>
+	<choice hidden="true">
+		<text>連邦の船を救え。</text>
+		<event>
+			<text>連邦軍の船がこれ以上の圧力に耐えられるようには見えない。飛んできて、クリスタルの船を迎え撃つ。</text>
+			<ship load="CRYSTAL_FED" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_CRYSTAL_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>出発の準備をする。</text>
+		<event>
+			<text>連邦の船が警備員の注意をそらしたので、あなたは自由に任務を続けることができる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTAL_FED_LIST_MV">
+	<event>
+		<text>「ありがとう！私たちはクリスタルを連盟に勧誘するために派遣されました。こんなに歓迎されるとは..."余った資材を転送してくれる。</text>
+		<autoReward level="RANDOM">stuff</autoReward>
+	</event>
+	<event>
+		<text>船はボロボロで今にも壊れそうだ。あなたはすぐに生存者の救助に向かうが、助かったのは1人だけだったようだ。彼らはお礼にあなたのクルーに加わりたいと申し出ている。</text>
+		<crewMember amount="1" />
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+</eventList>
+
+<event name="CRYSTAL_FED_DESERTER_MV" unique="true">
+	<text>一瞬、不具合かと思ったが、そうではなかった...珍しい連邦軍のエリート船を発見したのだ！彼らはあなたに連絡し、いくつかの調査の後、連邦艦隊を脱走し、他の連邦艦船がほとんど見つからないだろうと考え、クリスタルの中に隠れることにしたことを明らかにした。</text>
+	<ship load="SHIP_FED_ELITE_ALL" hostile="false" />
+	<choice hidden="false">
+		<text>物資を提供する。</text>
+		<event>
+			<text>物資を送ると、彼らは飛行計画をコンピューターにアップロードしてくれる！「連邦艦隊はまだ立っている。</text>
+			<item_modify>
+				<item type="fuel" min="-3" max="-1" />
+				<item type="scrap" min="-25" max="-15" />
+			</item_modify>
+			<reveal_map />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>裏切り者を攻撃せよ。</text>
+		<event>
+			<text>脱走兵は許されない。臆病者には発砲するのだ。連邦はあらゆる兵士を必要としている。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>放っておけばいい。</text>
+		<event>
+			<text>反乱軍の船団に追いつかれないよう、友好的な警告を送り、航行を開始する。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="CRYSTAL_REQUEST_MV" unique="true">
+    <text>到着した瞬間、近くにいるクリスタルの船が距離をとっているのに気づく。あなたを追い詰めようとしている "反乱軍 "は、行く先々で大混乱を起こしている。俺たちはこのゴミから逃げるためにここに来たんだ。</text>
+    <ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="false" />
+    <choice hidden="true">
+        <text>次へ...</text>
+        <event>
+            <text>"我々の人々への影響を最小限に抑えるため、我々のセクターを出る飛行経路を教えてほしい。私たちは市民的な立場を保ちたいし、危険性が増す分、"スクラップ "で支払っても構わない"</text>
+            <choice hidden="true">
+                <text>フライトプランを伝える。</text>
+                <event>
+                    <text>反乱軍を率いてここに来たのはあなたの本意ではないし、率直に言って、あなたはスクラップにすることもできた。クリスタルの船はすぐに反乱軍に知らせに飛び立った！</text>
+                    <autoReward level="HIGH">scrap_only</autoReward>
+                    <modifyPursuit amount="1" />
+					<instantEscape />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_REMOVE_CRYSTAL" />
+					</choice>
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>スクラップを受け入れるが、偽の飛行計画を渡す。</text>
+                <event load="CRYSTAL_REQUEST_LIST_MV" />
+            </choice>
+            <choice hidden="true" req="DISTRACTION_BUOY"> 
+                <text>(ディストラクション・ブイ）スクラップを受け入れるが、偽造した飛行計画を渡す。</text>
+                <event>
+                    <text>あなたの注意散漫なブイは、非常に説得力のあるフライトプランを作成することを可能にする。彼らはそれを真実として受け入れ、あなたにスクラップを与える。ごまかしは最も名誉ある戦術ではないかもしれないが、艦隊の先を行くことが最優先だ。</text>
+                    <autoReward level="HIGH">scrap_only</autoReward>
+                    <modifyPursuit amount="-1" />
+					<instantEscape />
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>拒否する。</text>
+                <event>
+                    <text>あなたは彼らに迷惑をかけたことを謝罪するが、選択の余地はないと説明する。彼らは理解したようで、通信回線を切って防御の準備に取り掛かる。</text>
+                    <choice>
+                        <text>船内で何かをする。</text>
+                        <event load="STORAGE_CHECK" />
+                    </choice>
+                    <choice>
+                        <text>何もしない。</text>
+                        <event />
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="CRYSTAL_REQUEST_LIST_MV">
+    <event>
+        <text>自分たちでは解釈できないが、クリスタル人はあなたのデータが反乱軍にとって何か意味があると推測している。追撃艦隊が軌道に復帰する前に、のんびりと航行するはずだ。</text>
+        <autoReward level="HIGH">scrap_only</autoReward>
+        <modifyPursuit amount="-1" />
+    </event>
+    <event>
+        <text>彼らはあなたの偽のテレメトリを一目見て、あなたが何をしたかに気づく。彼らはどうやら嘘をつかれたことをよく思っていないようだ！</text>
+        <ship hostile="true" />
+        <boarders min="1" max="2" class="crystal" />
+        <choice hidden="true">
+            <text>次へ...</text>
+            <event load="MORALITY_UPDATE_CRYSTAL_FIGHT" />
+        </choice>
+    </event>
+</eventList>
+		
+<event name="CRYSTAL_HELP_DIG_MV" unique="true">
+	<text>大きなクリスタルの船がここに浮かんでいる。彼らは叫ぶ：「エイリアン？なんと不思議な。助けてほしい。近くの惑星に人が埋まっていて、掘り出さなければならない。</text>
+	<ship load="SHIP_CRYSTAL_FIGHT_NOSURRENDER" hostile="false" />
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
+		<text>クルーを派遣する。</text>
+		<event>
+			<text>あなたは言われたとおりにクルー1名を惑星に派遣し、支援を要請する。彼らは大規模なクリスタルの発掘作業を発見し、これが数時間ではなく数日かかる作業であることがすぐに明らかになる。</text>
+			<choice hidden="true">
+				<text>クルーを置き去りにする。</text>
+				<event>
+					<text>あなたは連邦を救うことと、連邦が維持するために働いた原則を守ることの両方にコミットしている。クルーは残り 約束を果たすだろう - 銀河を救うのだ君にはまだ救うべき銀河がある。</text>
+					<autoReward level="HIGH">fuel</autoReward>
+					<removeCrew>
+						<clone>false</clone>
+						<text />
+					</removeCrew>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_REMOVE_CRYSTAL" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>男を引きずり出せ。</text>
+				<event>
+					<text>クリスタルのキャプテンから緊急の連絡が入る：「これはどういうことだ？我々を助ける気がなければ、単に断ることもできただろうが、これは......侮辱だ！」。彼は巨大な船をあなたに向け、あなたは命をかけて戦う準備をする。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_CRYSTAL_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>待ってくれ。</text>
+				<event>
+					<text>あなたが約束したことには、まだ意味がある。ジャンプを1サイクル待ち、クリスタルの船長に作戦の状況を尋ねる。「あなたの強さを尊重します。作戦にはもう1サイクルかかる。</text>
+					<modifyPursuit amount="1" />
+					<choice hidden="true">
+						<text>クルーを置き去りにする。</text>
+						<event>
+							<text>あなたは連邦を救うことと、連邦が維持するために働いた原則を守ることの両方にコミットしている。クルーは残り 約束を果たすだろう - 銀河を救うのだ君にはまだ救うべき銀河がある。</text>
+							<autoReward level="HIGH">fuel</autoReward>
+							<removeCrew>
+								<clone>false</clone>
+								<text />
+							</removeCrew>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>男を引きずり出せ。</text>
+						<event>
+							<text>クリスタルのキャプテンから緊急の連絡が入る：「これはどういうことだ？我々を助ける気がなければ、単に断ることもできただろうが、これは......侮辱だ！」。彼は巨大な船をあなたに向け、あなたは命をかけて戦う準備をする。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="MORALITY_UPDATE_CRYSTAL_FIGHT" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>待ってくれ。</text>
+						<event>
+							<text>反乱軍の艦隊が近づく中、また新たなサイクルが過ぎた。あなたは再び船長に連絡した。"エイリアン船長、我々の習慣に関する君の知識には感銘を受けた。"クルーは我々の敬意を表し そちらに向かっている"</text>
+							<modifyPursuit amount="1" />
+							<autoReward level="HIGH">scrap_only</autoReward>
+							<weapon name="CRYSTAL_HEAVY_2" />
+							<augment name="RANDOM" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="MORALITY_REMOVE_CRYSTAL" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0">
+		<text>クルーに余裕はないだろう。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice>
+		<text>拒否する。</text>
+		<event>
+			<text>「私たちは理解しています。あなたは多くのことを機械に頼っている。あなたの種族は軟弱で弱い。私たちはあなたの存在にさえほとんど気づかなかっただろう。よく飛びなさい"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<eventList name="NEUTRAL_CRYSTAL_UNIQUE">
+	<event load="CRYSTAL_MONTY" />
+	<event load="CRYSTAL_TORTURE" />
+	<event load="CRYSTAL_AUTO_SURVEYOR" />
+	
+	<event load="CRYSTAL_REBEL_CRYSTAL_MV" />
+	<event load="CRYSTAL_REBEL_CRYSTAL2_MV" />
+	<event load="CRYSTAL_PIRATE_CRYSTAL_MV" />
+	<event load="CRYSTAL_FED_MV" />
+	<event load="CRYSTAL_FED_DESERTER_MV" />
+	<event load="CRYSTAL_REQUEST_MV" />
+	<event load="CRYSTAL_HELP_DIG_MV" />
+</eventList>
+
+<eventList name="DISTRESS_CRYSTAL_MV">
+	<event load="DISTRESS_CRYSTAL_SICK_FIRE" />
+	<event load="DISTRESS_CRYSTAL_VAGABOND_CONFLICT" />
+	<event load="DISTRESS_REFUGEE_CRYSTAL" />
+</eventList>
+
+<event name="DISTRESS_CRYSTAL_SICK_FIRE" unique="true">
+    <distressBeacon />
+    <text>このビーコンにクリスタルのクリニックがある。煙が立ち上り、ステーションはクリスタルで封鎖されている。衛生兵が声をかけてくる。「助けてください！火災に対処していますが、身動きがとれません！患者の一人がリヤペルに悪い反応を示した。ロックダウンが制御できない以上、動けないんだ！"火の勢いはそれほど強くないようだ。素早く行動すれば、これ以上の被害が出る前に消火できるだろう。</text>
+    <choice req="teleporter" hidden="true">
+        <text>(テレポーター）火を消せ。</text>
+        <event>
+            <choiceRequiresCrew /> 
+            <text>あなたのクルーがステーションにテレポートし、消火活動を開始する。火はそれほど広がっていないので、あなたのクルーは怯えている患者を簡単に救うことができた。「ふー。危なかったな。診療所を救ってくれてありがとう。残念なことに、この患者は今の状態ではまだ治療が難しいでしょう......」。</text>
+            <autoReward level="MED">standard</autoReward>
+            <choice hidden="true" req="medbay" lvl="2">
+                <text>(上医療室)ロックダウンした横臥患者の治療を申し出る。</text>
+                <event load="CRYSTAL_SICK_TREATMENT" />
+            </choice>
+			<choice>
+				<text>次へ...</text>
+				<event />
+			</choice>
+        </event>
+    </choice>
+    <choice req="BLUELIST_CREW_NODOORS" hidden="true">
+        <text>(フェイシング・クルー）火を消せ。</text>
+        <event>
+            <text>あなたのクルーはクリスタルを通り過ぎ、診療所に入ることができた。火はそれほど広がっていないので、あなたのクルーは怯えている患者を簡単に救うことができる。「ふー。危なかった。診療所を救ってくれてありがとう。残念なことに、問題の患者は今の状態ではまだ治療が難しいだろう..."</text>
+            <autoReward level="MED">standard</autoReward>
+            <choice hidden="true" req="UPG_MEDBAY_AND_TELEPORT">
+                <text>(医療室＋テレポーター) 閉鎖された伏臥患者の治療を申し出る。</text>
+                <event load="CRYSTAL_SICK_TREATMENT" />
+            </choice>
+			<choice>
+				<text>次へ...</text>
+				<event />
+			</choice>
+        </event>
+    </choice>
+    <choice req="LIST_CREW_JERRY_GRIEF" hidden="true">
+        <text>(ジェリー）クリスタルのバリアを壊して火を消す。</text>
+        <event>
+            <text>ジェリーはまるでアクションヒーローのように診療所内に突入し、巨大な銃でドアを爆破する。火はそれほど広がっていなかったので、あなたのクルーは怯えている患者を簡単に救い、火を消すことができた。「ふー。危なかったな。診療所を救ってくれてありがとう。残念なことに、問題の患者は今の状態ではまだ治療が難しいでしょう......"</text>
+            <autoReward level="MED">standard</autoReward>
+            <choice hidden="true" req="medbay" lvl="2">
+				<text>(上医療室)ロックダウンした横臥患者の治療を申し出る。</text>
+                <event load="CRYSTAL_SICK_TREATMENT" />
+            </choice>
+			<choice>
+				<text>次へ...</text>
+				<event />
+			</choice>
+        </event>
+    </choice>
+	<choice req="rock_paladin" hidden="true">
+        <text>(パラディン・クルー）クリスタルのバリアを破壊し、火を消す。</text>
+        <event>
+            <text>あなたのパラディンはクリスタルを破り、診療所に入ることができた。火はそれほど広がっていないので、あなたのクルーは怯えている患者を救い、火を消すことが簡単にできる。「ふー。危なかった。診療所を救ってくれてありがとう。残念なことに、問題の患者は今の状態ではまだ治療が難しいでしょう..."</text>
+            <autoReward level="MED">standard</autoReward>
+            <choice hidden="true" req="medbay" lvl="2">
+				<text>(上医療室)ロックダウンした横臥患者の治療を申し出る。</text>
+                <event load="CRYSTAL_SICK_TREATMENT" />
+            </choice>
+			<choice>
+				<text>次へ...</text>
+				<event />
+			</choice>
+        </event>
+    </choice>
+    <choice req="LIST_CREW_MORPH_RECON" hidden="true">
+        <text>(偵察ドローン）偵察ドローンを使ってクリニックに侵入し、避難させる。</text>
+        <event>
+            <text>あなたのドローンが見事にドアを破壊し、病弱なクリスタルを避難させる。火はそれほど広がっていないので、クリニックのスタッフは避難しながら簡単に消火することができる。「ふー。危なかった。クリニックを救ってくれてありがとう。残念なことに、この患者は今の状態ではまだ治療が難しいでしょう......」。</text>
+            <autoReward level="MED">standard</autoReward>
+			<choice hidden="true" req="medbay" lvl="2">
+				<text>(上医療室)ロックダウンした横臥患者の治療を申し出る。</text>
+				<event load="CRYSTAL_SICK_TREATMENT" />
+            </choice>
+			<choice>
+				<text>次へ...</text>
+				<event />
+			</choice>
+        </event>
+    </choice>
+	<choice req="FIRE_EXTINGUISHERS" hidden="true">
+        <text>消火器システムは、ロックダウンされた状態ではクリニックと適切にインターフェースできない。</text>
+        <event load="OPTION_INVALID" />
+    </choice>
+    <choice hidden="true" blue="false" req="LIST_CHECK_ANY_CREW" lvl="1">
+        <text>クリスタルのバリアを破壊し、火を消す。</text>
+        <event load="CRYSTAL_DISTRESS_SICK_FIRE_BREAK" />
+    </choice>
+    <choice hidden="true">
+        <text>クリニックを無視する。</text>
+        <event>
+            <text>クリニックの火災が制御不能になり始め、多くの患者が死にそうになっている。あなたはこの厳しい現実を無視することに全力を尽くす。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="CRYSTAL_SICK_TREATMENT">
+    <text>クリスタルを自分の船に移し、患者の治療を行う。臨床医が言うように、患者は薬に悪い反応を示した。あなたは患者の症状を治療し、クリニックに戻すことができた。彼らは去る前に、彼らを助けてくれたお礼にと、クリスタルの技術の一部を差し出した。</text>
+    <weapon name="GIFTLIST_CRYSTAL" />
+</event>
+<eventList name="CRYSTAL_DISTRESS_SICK_FIRE_BREAK">
+    <event>
+        <text>どうやっても、へこたれない。不運なことに、火は制御不能になり始めた。病気のクリスタルは地獄から逃れられない。もうここでできることは何もない。</text>
+    </event>
+    <event>
+        <text>やがてあなたはロックダウンを突破するが、その時にはほとんどの患者が亡くなっていた。クリスタルたちは感謝しているが、亡くなった患者のことを悲しんでいるのは明らかだ。</text>
+        <autoReward level="LOW">stuff</autoReward>
+    </event>
+    <event>
+        <text>あなたのクルーは結晶の弱点を見つけ、火が広がる前に突破することができました。患者は全員救出できた。「ふー。危なかった。診療所を救ってくれてありがとう。残念なことに、問題の患者は今の状態ではまだ治療が難しいでしょう..."</text>
+		<autoReward level="MED">standard</autoReward>
+        <choice hidden="true" req="medbay" lvl="2">
+			<text>(上医療室)ロックダウンした横臥患者の治療を申し出る。</text>
+			<event load="CRYSTAL_SICK_TREATMENT" />
+		</choice>
+		<choice>
+			<text>次へ...</text>
+			<event />
+		</choice>
+    </event>
+</eventList>
+
+<event name="DISTRESS_CRYSTAL_VAGABOND_CONFLICT" unique="true">
+    <distressBeacon />
+    <text>クリスタル艦が別の艦から逃走している現場に到着。追跡者はオープンチャンネルで放送している。"最後の警告だ 害虫め帝国は廃船の再利用を許さない！"相手は必死に通信を送ってくる。「汝に懇願する！汝の助力を請う！"</text>
+    <choice>
+        <text>追いかけてくるクリスタルを攻撃する。</text>
+        <event>
+            <text>「よそ者め！国境内で法の執行を邪魔するのか？その横柄な態度は死んでもらうぞ！"クリスタルは標的をバガボンドの代わりにあなたに切り替える！</text>
+            <ship load="SHIP_CRYSTAL_PURSUING_VAGABOND" hostile="true" />
+            <choice>
+                <text>次へ...</text>
+                <event load="MORALITY_UPDATE_CRYSTAL_FIGHT" />
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>バガボンドを攻撃せよ</text>
+        <event>
+            <text>「残念だ！運が悪くなった！バガボンドは 船の間に追い詰められてる攻撃しやすい位置にいるようだ</text>
+            <ship load="SHIP_CRYSTAL_TAKEN_BY_VAGABONDS" hostile="true" />
+            <choice>
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="unique_dianesh">
+        <text>(ディアネシュ) 船の仲介をする。</text>
+        <event>
+            <text>「好戦的な諸君！クリスタルの女帝は、条件付きで平和的妥協に同意する。まず第一にバガボンド船、死亡したクリスタルの遺体はまだ船内にあるのか？"
+...遺体は隅に押し込めてあります"。バガボンドの船長は羊のように認める
+
+"いいだろう。我々は彼らの遺骨を要求し、シンチレーション霊廟に安置する。第二の条件：船と引き換えに、支払いと贈り物を提供すること。それが済んだら、我々のパトロール隊があなた方をセクターの出口まで護送します。</text>
+            <autoReward level="LOW">scrap_only</autoReward>
+            <weapon name="GIFTLIST_RUSTY" />
+            <choice hidden="true">
+                <text>次へ...</text>
+                <event>
+                    <text>「皇后陛下！あなたは寛大で賢明です。これが今後の新しい政策になるのでしょうか」
+
+ディアネシュは首を横に振る。「銀河系を旅し終わったら、外交政策を調整します。今のところは、これまで通り活動を続けてください"クリスタルたちは女王にささやかな賛辞を贈る。</text>
+                    <autoReward level="MED">scrap_only</autoReward>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="unique_dessius">
+        <text>(デシウス）バガボンドに船を引き渡すよう説得しろ。</text>
+        <event>
+            <text>デシウスは民衆に命じた。「汝はあまりにも高慢だ！ライバルに主権を与えよ。汝の命は、ここで死ぬよりも大きな価値があるはずだ！"この提案にバガボンドたちは船をクリスタルに譲る。彼らが船を離れると、一人があなたの船に乗せてほしいと主張する！</text>
+            <crewMember amount="1" class="LIST_CREW_GHOST_NOALPHA" />
+            <choice hidden="true">
+                <text>次へ...</text>
+                <event>
+                    <text>「連邦、あなたの外交手腕には感心させられた。あなたのおかげで発砲の必要はなかった。あなたの援助に感謝し、賛辞を贈ります。</text>
+                    <autoReward level="MED">standard</autoReward>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>手を出すな。</text>
+        <event>
+            <text>あなたは帝国の管轄に干渉しないと決めた。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="CRYSTAL_VAGABOND_RESCUED_AFTERMATH">
+    <event>
+        <text>あなたがクリスタルと戦っている間に、バガボンドたちは時間をかけて逃げ出したようだ。ここで他にできることはない。</text>
+    </event>
+    <event>
+        <text>バガボンズはあなたを待っていたようだ。"感謝の言葉もありません！"バガボンズの一人が、あなたの大義に加わることを誓う。</text>
+        <crewMember amount="1" class="LIST_CREW_GHOST_NOALPHA" />
+    </event>
+    <event>
+        <text>バガボンズはあなたを待っていたようだ。"感謝の言葉もありません！"彼らはあなたに武器を差し出す......しかし、それはより良い日数を見ているようだ。</text>
+        <weapon name="GIFTLIST_RUSTY" />
+    </event>
+</eventList>
+
+<event name="DISTRESS_REFUGEE_CRYSTAL" unique="true">
+	<distressBeacon />
+	<text>宇宙空間を漂う難民船に遭遇した。反乱軍の進撃から逃れ、燃料が尽きたようだ。救難ビーコンは作動しているが、誰か乗っているかはわからない。</text>
+	<choice>
+		<text>万歳。</text>
+		<event load="REFUGEE_HAIL_LIST_CRYSTAL" />
+	</choice>
+	<choice>
+		<text>難民を無視する。</text>
+		<event>
+			<text>難民を警戒しているようだが、船で何かするのは安全だと考えているのだろう。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>  
+<eventList name="REFUGEE_HAIL_LIST_CRYSTAL">
+	<event load="REFUGEE_TRADER" />
+	<event>
+		<text>あなたが難民船を呼び寄せたとき、クリスタルの船が突然星系に飛び込んできた......クリスタルがこのセクターに彼らの存在を認めていないのは明らかだ！</text>
+		<ship load="SHIP_CRYSTAL_REFUGEE" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+
+
+<eventList name="QUESTS_CRYSTAL_MV">
+	<event load="QUEST_CRYSTAL_REBEL_ATTACK_ORCHID" />
+</eventList>
+
+<event name="QUEST_CRYSTAL_REBEL_ATTACK_ORCHID" unique="true">
+    <text>到着すると、ギャザリングの船を追う反乱軍を発見。しかし、反乱軍はあなたに気づくと、代わりに攻撃してくる！</text>
+    <ship load="SHIP_REBEL_CRYSTAL_GATHERING" hostile="true" />
+    <choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+    </choice>    
+</event>
+<event name="CRYSTAL_ORCHID_SAVED">
+    <text>「君は我々に大きな貢献をしてくれた！残念なことに、あの反乱軍の攻撃で、私たちの護衛をしてくれていたクリスタルのスカウトが死んでしまった。とても重要な社会学会議があるんだ...そこに行くのを手伝ってもらえないかな？"</text>
+    <choice hidden="true">
+		<text>受け入れる。</text>
+		<event>
+			<text>「ありがとう。間に合えばいいのですが"</text>
+			<quest event="CRYSTAL_ORCHID_ESCORT_QUEST" />
+		</event>
+    </choice>    
+    <choice hidden="true">
+		<text>拒否する。</text>
+		<event>
+			<text>「別の道を探そう。友好的なクリスタルが助けてくれるといいんだが......"</text>
+		</event>
+    </choice>    
+</event>
+<event name="CRYSTAL_ORCHID_ESCORT_QUEST">
+	<beaconType id="map_icon_quest" global="true">
+  		<color r="69" g="168" b="235" a="1" />
+  	  <unvisitedTooltip>クリスタル社会学会議がここで開催される。</unvisitedTooltip>
+	</beaconType>
+    <text>オーキッド号の船員が、会議への到着を喜んで、あなたの後に飛び込んできた。「いつ到着されるかと思っていました。帝国はクトルヤエの社会学的見識に非常に興味を持っていました。案内してくれてありがとう。よろしければ会議中お残りください"楽しそうだが、やるべき任務がある。しかし、あなたたちは無料のビュッフェを試食することができる。オーキッドからプレゼントもある。</text>
+    <weapon name="GIFTLIST_KERNEL" />   
+</event>
+
+<eventList name="QUESTS_CRYSTAL_UNIQUE">
+	<event load="CRYSTALHOME_ZOLTENVOY" />
+</eventList>
+
+<event name="CRYSTALHOME_ZOLTENVOY" unique="true">
+	<text>勇敢なゾルタン船がクリスタル宇宙域の奥深くまで進入したようだが、船体に致命的な損傷を受け、いくつかの大規模な亀裂が生じている。</text>
+	<choice hidden="true">
+		<text>彼らを助けるんだ。</text>
+		<event>
+			<text>船に乗り込むが、時すでに遅し。片隅で瀕死のゾルタンが、あなたに最後の言葉を投げかける。"クリスタル...彼らはここにいた...これを彼らに渡してくれ...これを持っていけ。そのゾルタンは、ゾルタン製の大きな爆弾と、いくつかの座標を記した手紙の入った包みを滑らせ、やがて無となる。</text>
+			<quest event="CRYSTALHOME_ZOLTENVOY_DELIVERY" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>難破船を無視する。</text> 
+		<event>
+			<text>どうせ手遅れだろうし、努力する価値はない。あなたはゾルタンの船を無視する。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CRYSTALHOME_ZOLTENVOY_DELIVERY">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>瀕死のピースキーパーが教えてくれたセンチネル前哨基地の座標。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたはゾルタンから与えられた目的地に到着した。センチネル船が軍事作戦が行われていると思われる前哨基地を守っている。</text>
+	<choice hidden="true">
+		<text>ゾルタンがこれを届けたに違いない。</text>
+		<event load="CRYSTALHOME_ZOLTENVOY_DELIVERY_GIFT" />
+	</choice>
+	<choice hidden="true">
+		<text>爆弾を爆発させる。ゾルタン人は攻撃されたことへの復讐をしたかったに違いない。</text>
+		<event load="CRYSTALHOME_ZOLTENVOY_DELIVERY_EXPLODE" />
+	</choice>
+	<choice hidden="true">
+		<text>前哨地を避けろ。</text>
+		<event>
+			<text>ゾルタンの目的はわからないが、関わらない方がいい。爆弾を分解して弾薬にする。</text>
+			<autoReward level="LOW">missiles_only</autoReward>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="CRYSTALHOME_ZOLTENVOY_DELIVERY_GIFT">
+	<event>
+		<text>あなたは前哨基地を呼び出し、爆弾を届ける。クリスタルたちは困惑していたが、間もなくゾルタンの増援が飛び込んできた！ゾルタンはクリスタルを攻撃しに来たのだ！ゾルタンはクリスタルを攻撃しに来たのだ！</text>
+		<ship load="SHIP_ZOLTENVOY_PEACE" hostile="true" /> 
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>あなたは前哨地を訪れ、爆弾を届けた。クリスタルのおかげだ。ゾルタン人を襲ったものは海賊に違いない。おそらく、このあたりでよく見られるクリスタルの武器を使っていたのだろう。配達を終えてくれたお礼として、クリスタルはあなたに多額の報酬を支払う。</text>
+		<autoReward level="HIGH">standard</autoReward>
+	</event>
+</eventList>
+<eventList name="CRYSTALHOME_ZOLTENVOY_DELIVERY_EXPLODE">
+	<event>
+		<text>あなたは前哨基地に忍び込み、最も被害が大きそうな場所に爆弾を設置し、遠くから爆発させる。それは悲惨な効果をもたらし、クリスタルたちは明らかに不機嫌だ。海賊が特使を連れ去ったに違いない！戦闘準備だ！"ゾルタンの意図を誤解しているようだ。</text>
+		<ship load="SHIP_ZOLTENVOY_SENTINEL" hostile="true" /> 
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>あなたは前哨基地に忍び込み、最も被害が大きそうな場所に爆弾を設置し、遠くから爆発させる。それは悲惨な効果をもたらし、クリスタルたちは明らかに不機嫌になる。しかし、彼らが防衛のために船を送る前に、ゾルタンの援軍が飛び込んできて格納庫を破壊し、クリスタルズは降伏を余儀なくされる。ゾルタン人はあなたの助けを認め、報酬を与える。</text>
+		<autoReward level="LOW">item</autoReward>
+	</event>
+</eventList>
+
+<eventList name="HOSTILE_CRYSTAL_MV">
+	<event load="ENCOUNTER_CRYSTAL" />
+	<event load="ENCOUNTER_CRYSTAL_STATION" />
+	
+	<event load="CRYSTAL_CONVOY" />
+	<event load="CRYSTAL_HUNTER" />
+	
+	<event load="ENCOUNTER_REBEL_CRYSTAL" />
+	<event load="ENCOUNTER_ROCK_CRYSTAL" />
+	<event load="ENCOUNTER_COALITION_CRYSTAL" />
+</eventList>
+
+<event name="ENCOUNTER_CRYSTAL" unique="false">
+	<text load="TEXT_ENCOUNTER_CRYSTAL" />
+	<ship load="SHIP_CRYSTAL_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_CRYSTAL">
+	<text>クリスタルの船団の近くに到着した。一時停止して1隻をスキャンするが、彼らはすぐに反応し、あなたを撃退するために護衛を送り込んできた。交戦準備！</text>
+	<text>あなたはビーコンに到着し、すぐに自動メッセージか何かの警告に迎えられる。翻訳機はその目的を特定できないようだが、しばらくして警報が鳴り響き、敵艦が飛び込んできた！</text>
+	<text>というメッセージを受け取る。また価値のないエイリアンだらけの船のようだ。創造主に会う準備をしろ！"武器ロックを検出。</text>
+	<text>クリスタルの船からメッセージが届いている！戦士として、私の技量を試してみたい。あなたが返答する前に、彼らは攻撃に移る。</text>
+	<text>あなたは賑やかなセクターに到着した。最初は誰もあなたの船を気にとめなかったが、すぐに多くのスキャンサインが登録された。敵のウェポン・ロックに気づくほんの数秒前、あなたは自分がここで必要とされていないことを感じた！</text>
+	<text>あなたは交通量の多いノードの隣にジャンプしたが、やがて近くにいたすべての船があなたに気づき、あなたの忠誠心を疑って距離をとった。気まずい睨み合いの後、1隻の軍艦が他から離れ、あなたに突撃してきた。</text> 
+	<text>世界共通の翻訳機はほとんど理解できないが、"エイリアン"、"許可されている"、"ノー "という言葉ははっきりと伝わってくる。ここにいる権利を戦闘で証明しなければならない！</text>
+</textList>
+
+<event name="ENCOUNTER_CRYSTAL_STATION" unique="true">
+	<text>近くのクリスタル・ステーションがあなたたちの船に気づいた。「部外者は歓迎しない！すぐに出て行け！"彼らは武器で脅しをかけているようだ。</text>
+	<ship load="SHIP_CRYSTAL_STATION" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="CRYSTAL_CONVOY" unique="true">
+	<text>大型の民間船団がこの地域を通過しているようだ。あなたは敵意を示さないが、彼らは危険を顧みず、直ちに護衛艦を攻撃に向かわせる！</text>
+	<ship load="SHIP_CRYSTAL_CONVOY" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="CRYSTAL_HUNTER" unique="true">
+	<text>ジャンプと同時にクリスタルの破片が飛んでくる。加害者を見つけるためにスキャンすると、貨物室に多数の人間を乗せたクリスタルの船を発見する。エイリアンの船を追っているのだろう！</text>
+	<ship load="SHIP_CRYSTAL_HUNTER" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_REBEL_CRYSTAL">
+	<text load="TEXT_ENCOUNTER_REBEL_CRYSTAL" />
+	<ship load="SHIP_REBEL_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_CRYSTAL">
+    <text>反乱軍の船が近づいてくるのが見える。「このセクターは、スラッグ地獄に駐留していたときより悪いのか。お前たちを殺せば、やっといい場所に駐留できるかもしれない！"</text>
+    <text>反乱軍はまた新たな異星人の帰還を快く思っていない。特に激昂した反乱軍の艦船は、時間をかけずにあなたをロックして攻撃してくる！</text>
+    <text>あなたの後を追って反乱軍の船が近づいてくる。武器は武装しており、戦いが始まるのは間違いない。</text>
+</textList>
+
+<event name="ENCOUNTER_ROCK_CRYSTAL">
+	<text load="TEXT_ENCOUNTER_ROCK_CRYSTAL" />
+	<ship load="SHIP_ROCK_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_ROCK_CRYSTAL">
+	<text>クリスタルを観察・研究しに来たロックマニアが、あなたに気づいた。あなたがアイドルに危害を加えに来たと思い、攻撃してきた。</text>
+	<text>「お前たちは歓迎されない！この区域は神々によって選ばれたのだ！我々は神々の預言者であり、お前たちを排除する！"</text>
+	<text>自分勝手なロックマンの一団が、自分たちはクリスタルに選ばれ、あなたの船を破壊するために来たと言う。</text>
+</textList>
+
+<event name="ENCOUNTER_COALITION_CRYSTAL">
+	<text load="TEXT_ENCOUNTER_COALITION_CRYSTAL" />
+	<ship load="SHIP_COALITION_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_COALITION_CRYSTAL">
+	<text>不運にも、この領土を航行中の連合軍の船に出くわしたようだな。彼らはすぐにあなたを発見し、攻撃してきた！</text>
+	<text>連合軍の船が近くのクリスタル・ステーションの残骸をサルベージしている。しかし、あなたを見つけると、すぐにドックを外して攻撃してくる！</text>
+</textList>
+
+
+<eventList name="NEBULA_CRYSTAL">
+	<event load="NEBULA_ENCOUNTER_CRYSTAL" />
+
+	<event load="NEBULA_CRYSTAL_MIRROR" />
+</eventList>
+
+<event name="NEBULA_ENCOUNTER_CRYSTAL" unique="false">
+	<text load="TEXT_NEBULA_ENCOUNTER_CRYSTAL" />
+	<ship load="SHIP_CRYSTAL_FIGHT" hostile="true" />
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_NEBULA_ENCOUNTER_CRYSTAL">
+	<text>クリスタルの民は銀河のあちこちにある星雲にうまく適応しているようだ。雲の底に隠れていたハンターが、武器を構えて降りてくる！</text>
+	<text>孤独を愛するクリスタルたちが、茫漠とした雲の奥深くに避難するのは理にかなっている。ここにいる船が、邪魔をしたことを不満に思い、攻撃してくる！</text>
+	<text>あなたは星雲の中をこっそり進むクリスタルの船を見つけた。「俺はエイリアンから逃げるためにここに来たんだ！今度は追いかけてくるのか？衝突は避けられないようだ。</text>
+	<text>この星雲にいるのはあなただけではない。クリスタルの船が近づいてくる。</text>
+</textList>
+
+<event name="NEBULA_CRYSTAL_MIRROR" unique="true">
+	<text>遠くに見える惑星は、湖や川がいくつかあるだけで何の変哲もない。不思議なことに、池の隣に停泊するクリスタルの船を止めることはできなかった。</text>
+	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_MOONS" />
+	<status type="loss" target="player" system="sensors" amount="1" />
+	<choice>
+		<text>ドックと探検。</text>
+		<event>
+			<text>クリスタル号の船長が池のほとりに膝をつき、池を深く見つめている。その魅力について尋ねると、彼はこう答えた：「こんにちは、船長。池を覗いてみてください。今まで見た中で一番美しい生き物だと思いませんか？"何かの水生生物を期待して、あなたは身をかがめて見たが、水晶の船長の姿が映っているだけだった。</text>
+			<choice hidden="true">
+				<text>実に美しい。</text>
+				<event load="CRYSTAL_MIRROR_FLATTER" />
+			</choice>
+			<choice hidden="true">
+				<text>私はもっといいものを見てきた...</text>
+				<event load="CRYSTAL_MIRROR_DENIAL" />
+			</choice>
+			<choice hidden="true" req="unique_nights">
+				<text>(ナイツ）ナイツはその質問に答えたがっている。</text>
+				<event>
+					<text>ナイツはまだひどく酔っており、池によろめきながら近づき、"クリーチャー "をひと目見て、狂気の笑いを爆発させた。「HAHAHAHA！あれを美しいと言うのか？ほら、あの痩せっぽちのバスタード、ススロックノッグの方がこれより10倍はマシだ！お前の美的感覚はひどすぎて、俺は...」
+
+ナイツは最後まで言い切れず、飲み過ぎて吐いて池に直行した。彼の言葉にも、いまや変わり果てた "生き物 "にも怯え、クリスタルはその場に倒れた。</text>
+					<choice hidden="true">
+						<text>船長のクルーを呼んで、彼の様子を確認させる。</text>
+						<event>
+							<text>現場に到着したクルーは、船長が精神的ダメージで失神した直後に死亡したと結論づける。クルーが船長の死を "悼み"、少し興奮気味に自分たちの船に戻る間、彼らの副司令官は、この惑星から脱出するのを助けてくれたあなたに、控えめにいくらかの物資を送金する。</text>
+							<autoReward level="MED">standard</autoReward>
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event>
+									<text>船に戻る直前、オーキッドのプレトールがあなたの背中を叩く。彼らはどこからともなく現れたようで、過去の記憶はないが、この惑星に取り残されないためなら、あなたのために働くこともいとわないようだ。</text>
+									<crewMember amount="1" class="orchid_praetor">ナルキッソス</crewMember>
+								</event>		
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>地球を無視する。</text>
+		<event>
+			<text>観光なんてどうでもいいじゃないか。もっといいことがある。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<eventList name="CRYSTAL_MIRROR_FLATTER">
+	<event>
+		<text>「そうでしょう！君たちも私と同じように、真の美を見極める目を持った存在なのだな。この素晴らしい生き物を手放すのは忍びないが、敬意を表したい。私のクルーは私と同じような感謝の念を共有しておらず、我々の船で待ち焦がれている。おそらく、彼らの方があなたの任務に役立つでしょう。"</text>
+		<crewMember amount="1" class="crystal" />
+	</event>
+	<event>
+		<text>「そうでしょう！君たちも私と同じように、真の美を見極める目を持った存在なのだな。この素晴らしい生き物と別れるのは忍びないが、敬意を表したい。これ以上美しい場所を探すのに私の装備はもう必要ないだろうから、どうか私の技術を役立ててほしい"</text>
+		<weapon name="GIFTLIST_CRYSTAL" />
+		<autoReward level="LOW">scrap_only</autoReward>
+	</event>
+</eventList>
+<eventList name="CRYSTAL_MIRROR_DENIAL">
+	<event>
+		<text>「真の美しさを認めない愚か者たちだ！あなたたちエイリアンは、野蛮であるのと同じくらい教養がない。これ以上あなたたちと一緒にいたくない。そうだろう？クリスタルは池を愛おしそうに眺めることに戻る。あなたはこの変人を置いていくことにした。</text>
+	</event>
+	<event>
+		<text>「真の美しさを認めない愚か者たちだ！はあ、あなたたち異星人は野蛮であると同時に無教養だ。私は今、銀河系からこのような汚らわしい外国人を一掃することが私の義務だと考えている。すぐに戻ってくるよ、お嬢さん！"</text>
+		<ship load="SHIP_CRYSTAL_FIGHT" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>「何だと？よくもそんなことが言えるな！あの生き物の本当の姿を見せてやろう！」。あなたはクリスタルが攻撃してくると思ったが、その代わりに彼は池に飛び込み、「生き物を呼び出そう」とした。数分後、突然オーキッドがあなたの背中を叩いた。彼らは突然現れたようで、過去の記憶がないようだが、この惑星に取り残されないためなら、あなたのために働くこともいとわないようだ。</text>
+		<crewMember amount="1" class="orchid_caretaker">ナルキッソス</crewMember>
+	</event>
+</eventList>
+
+
+<event name="ENCOUNTER_CRYSTAL_ELITE" unique="true">
+	<text>クリスタルのセンチネルはクリスタル・セクターの守護者であり、民間人の兄弟よりもはるかに強い。軍用級の巡洋艦で新たな母星に侵入したことで、クリスタル人はあなたをセンチネル艦の報復に値する脅威と見なしました！</text>
+	<ship load="SHIP_CRYSTAL_ELITE_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+
+<ship name="SHIP_CRYSTAL_BOSS" auto_blueprint="MU_CRYSTAL_BOSS">
+	<surrender min="1" max="2" load="CRYSTAL_BOSS_SURRENDER" />
+	<destroyed load="CRYSTAL_BOSS_DEFEAT" />
+	<deadCrew load="CRYSTAL_BOSS_DEFEAT" />
+	<crew>
+		<crewMember type="crystal" prop="0.5" />
+		<crewMember type="crystal_sentinel" prop="0.5" />
+	</crew>
+</ship>
+<event name="CRYSTAL_SANCTUARY" unique="true">
+	<preventQuest />
+	<img back="BACK_EVENT_CRYSTALCONSTRUCTION" planet="NONE" />
+	<text>あなたは巨大な結晶社会を発見した。中央には巨大な仕掛けを囲む小さな村がある...何かのゲートウェイのようだが？</text>
+	<choice hidden="true">
+		<text>ゲートウェイを調査する</text>
+		<event>
+			<text>その仕掛けは、クリスタリン人がかつての母星を封鎖するために使用した装置「ウェイストーン」の大型版に似ているようだ。近づくと、巨大なクリスタルの巡洋艦が近づいてくる！</text>
+			<ship load="SHIP_CRYSTAL_BOSS" hostile="false" />
+			<choice hidden="true">
+				<text>ああ、ああ...。</text>
+				<event>
+					<text>儀礼的に塗られた紫色のクリスタルが、背景の者たちよりもはるかに背が高く、あなたの前に立っている。「私はディアネッシュ・クライエル皇后。あなたは外国人です。外国人は歓迎されません。連邦の援助には感謝している。しかし、我々はもはや連邦を必要としていない。そして、あなた方も我々を必要としていない。交渉しよう</text>
+					<choice hidden="true">
+						<text>何を交渉するんだ？</text>
+						<event>
+							<text>「ここを去る条件だ。あなたがここにいることは許可されていない。あなたのような人を知っています。ルウェン大使から話を聞いた。あなた方は野蛮人であり、殺人者です。お前たちのような反逆者が、最初に我々の故郷を奪ったのだ。そのようなことが再び起こることを私は許さない。お前たちが二度と戻ってこないように、どんなむなしい欲望でも満たしてやる。我が民は、あなた方にここにいてほしくないのです」。</text>
+							<choice hidden="true">
+								<text>武器を要求する</text>
+								<event>
+									<text>ディアネッシュは小型輸送船に、クリスタル専用兵器を運ぶようジェスチャーで指示する。「我々は君たちの要求を満たした。これ以上迫らない方がいいと思い、彼らの指示に従う。</text>
+									<weapon name="GIFTLIST_CRYSTAL_ELITE" />
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>リクエストクルー</text>
+								<event>
+									<text>ディアネッシュが小さな輸送船に近づくようジェスチャーする。その船はクリスタルの囚人を運び、刑期が終わるならと、あなたのクルーに加わることを熱望している。"私たちはあなたの要求を満たした。これ以上迫らない方がいいと考え、彼らの指示に従う。</text>
+									<crewMember amount="1" class="crystal_sentinel" />
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>修理を依頼する。</text>
+								<event>
+									<text>ディアネッシュは、支援船を寄港させ、完全な修理を施すようジェスチャーで指示する。「我々は君たちの要求を満たした。これ以上迫らず、彼らの指示に従うのが最善だと考える。</text>
+									<damage amount="-45" />
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>私たちはあなたに危害を加えるためにここに来たわけではない。私たちはあなたが言うほど悪人ではない</text>
+								<event>
+									<text>「でもね、そう主張することでしか、自分の意図を証明できないんだ。本心からそう思っているのなら、あなたはすでに去っているはずです。しかし、あなたは固執する。執着は脅迫だ。私の民は脅しには屈しない」。あなたはさらに抗議しようとするが、ディアネシュは聞く耳を持たない。彼女は手を振り、巡洋艦があなたを打ち倒すために動き出す。必ずしも流血で終わる必要はないが、クリスタルは簡単には言うことを聞かない。</text>
+									<ship hostile="true" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="COMBAT_CHECK" />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>その場所は無視する。</text>
+		<event>
+			<text>クリスタルの街に深く潜るのは、一般的に良い考えではない。この惑星から距離を置くことになる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CRYSTAL_BOSS_DEFEAT">
+	<text>あなたは巡洋艦を倒し、クリスタルの女帝を殺した。これは将来にとって悪い知らせにしかならないが、あなたは船の残骸を引き揚げることで満足した。</text>
+	<variable name="ach_boss_dianesh" op="set" val="1" />
+	<autoReward level="HIGH">standard</autoReward>
+	<weapon name="GIFTLIST_CRYSTAL_ELITE" />
+	<choice hidden="true">
+		<text>残された道は...。</text>
+		<event>
+			<text>これは間違いなく、クリスタルの人々の外国人に対する見方を傷つけるだけだろう。もしかしたら、未来の現実にはもっといい解決方法があるかもしれない......。</text>
+			<event load="MORALITY_UPDATE_CRYSTAL" />
+		</event>
+	</choice>
+</event>
+<event name="CRYSTAL_BOSS_SURRENDER">
+	<text>クリスタル・クルーザーとその乗組員たちは、最後の息の根を止めようとしている。船のエンジンは前後に揺れながら燃え上がり、もはやあなたについていくのがやっとだ。</text>
+	<choice hidden="true">
+		<text>彼らに慈悲を示せ。</text>
+		<event>
+			<text>武器をパワーダウンさせる。しばらくして、クリスタルたちも同じことをする。ディアネッシュがスクリーンに現れ、大きく息をつき、かつては滑らかだった顔に長いひびが入る。「それで...あなたは慈悲を選んだのですね。まさかこんなことになるとは..."</text>
+			<ship hostile="false" />
+			<recallBoarders ship="both" />
+			<choice>
+				<text>次へ...</text>
+				<event load="CRYSTAL_BOSS_MERCY" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>これを終わらせてくれ。</text>
+		<event>
+			<text>クリスタルに慈悲はない。</text>
+			<status type="limit" target="enemy" system="engines" amount="0" />
+		</event>
+	</choice>
+</event>
+<event name="CRYSTAL_BOSS_MERCY">
+	<text>あなたはディアネシュの案内で街の近くに船を着陸させる。大きなクリスタルのような存在が、ボロボロの巡洋艦から降り立ち、あなたに向かってくる。</text>
+	<variable name="ach_boss_dianesh" op="set" val="1" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>"私の思い違いがあったようだ。あなたには...このような攻撃をしてしまったことを心からお詫びします。私は高潔な女性です あなたを攻撃して 恥をかかせてしまいましたこんなことはさせませんルウェンが去った今、あなたにサービスを提供できるのは私しかいません。この件が片付いたら、連邦の中に私の仲間の居場所があるかどうか確かめましょう..."</text>
+			<unlockCustomShip silent="false">PLAYER_SHIP_CRYSTALLINE</unlockCustomShip>
+			<variable name="ach_crew_dianesh" op="set" val="1" />
+			<crewMember amount="1" class="unique_dianesh" shields="2">ダイアネッシュ</crewMember>
+			<autoReward level="HIGH">standard</autoReward>
+			<weapon name="GIFTLIST_CRYSTAL" />
+		</event>
+	</choice>
+</event>
+</FTL>

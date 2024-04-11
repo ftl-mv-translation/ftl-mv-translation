@@ -1,0 +1,1031 @@
+<FTL>
+	
+<event name="FINISH_BEACON">
+    <loadEventList seeded="true" first="false">
+		<event name="FINISH_BEACON_DEBT" req="LOANS" lvl="1" /> 
+		<event name="FINISH_BEACON_REAL" />
+	</loadEventList>
+</event>
+<event name="FINISH_BEACON_REAL">
+    <text>あなたは長距離ビーコンに到着した。FTLドライブの充電が完了したら、次のセクターにジャンプできる。</text>
+    <choice hidden="true">
+        <text>探検する</text>
+        <event load="EXIT_FILLER_LIST" />
+    </choice>
+    <choice hidden="true">
+        <text>船内で何かをする。</text>
+        <event load="STORAGE_CHECK" />
+    </choice>
+    <choice hidden="true">
+        <text>何もしない。</text>
+        <event />
+    </choice>
+</event>
+
+<event name="FINISH_BEACON_NEBULA">
+    <loadEventList seeded="true" first="true">
+		<event name="FINISH_BEACON_DEBT" req="LOANS" lvl="1" />
+		<event name="FINISH_BEACON_NEBULA_REAL" />
+	</loadEventList>
+</event>
+<event name="FINISH_BEACON_NEBULA_REAL">
+	<text>この長距離ビーコンは星雲の中にほとんど隠れている。FTLドライブをチャージすれば、次のセクターへジャンプできる。</text>
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="NEBULA_EXIT_FILLER_LIST" />
+	</choice>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+<event name="START_GAME">
+	<text />
+</event>
+
+<event name="START_BEACON_RELOAD">
+	<loadEvent>START_BEACON_PRESELECT</loadEvent>
+</event>
+<event name="START_BEACON">
+	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE" />
+	<loadEventList first="true" default="START_BEACON_REAL">
+		
+		<event name="START_BEACON_DYLAN" req="prof_dylan_met" lvl="1" />
+	</loadEventList>
+</event>
+<event name="START_BEACON_DYLAN">
+	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE" />
+	<metaVariable name="prof_dylan_counter" op="add" val="1" />
+	<loadEvent>START_BEACON_REAL</loadEvent>
+</event>
+<event name="START_BEACON_REAL">
+	<text>星々が飛び交う中、あなたは遠い宇宙の渦巻きを眺める。これはあなたのサガにおける次の章の始まりである。次は何が待っているのだろう？</text>
+	<queueEvent seeded="true">THE_JUDGES_VARIABLE_CLEAR</queueEvent>
+	<deathEvent>DEATH</deathEvent>
+	<variable name="loc_start_compatibility" op="set" val="1" />
+	<eventButton name="ADDON_TRC">
+        <event load="ADDON_TRC_INFO" />
+        <image border="0">addons/trc</image>
+        <customLocation x="115" y="7" />
+        <tooltip id="addon_hover_trc" />
+        <jumpClear>false</jumpClear>
+        <noDanger>false</noDanger>
+    </eventButton>
+	<eventButton name="UI_STORAGE_CHECK_BUTTON">
+        <event load="STORAGE_CHECK_BUTTON" />
+        <image>statusUI/top_storage</image>
+        <location>2</location>
+        <tooltip>ストレージメニューを開く。</tooltip>
+        <inactiveTooltip>Unavailable: You cannot do this while in danger!</inactiveTooltip>
+        <jumpClear>false</jumpClear>
+        <noDanger>true</noDanger>
+    </eventButton>
+	<eventButton name="UI_JUKEBOX">
+        <event load="STORAGE_CHECK_JUKEBOX" />
+        <image border="12">statusUI/top_music</image>
+        <customLocation x="338" y="46" />
+        <tooltip>ジュークボックスを開ける。</tooltip>
+        <inactiveTooltip>Unavailable.</inactiveTooltip>
+        <jumpClear>false</jumpClear>
+    </eventButton>
+	<eventButton name="UI_TOGGLE_BUTTON">
+		<event load="COMBAT_CHECK_TOGGLE_BUTTON" />
+        <image border="12">statusUI/top_toggle</image>
+        <customLocation x="105" y="110" />
+        <tooltip>自分の装備をトグルする。</tooltip>
+        <inactiveTooltip>Unavailable!</inactiveTooltip>
+        <jumpClear>false</jumpClear>
+        <noDanger>false</noDanger>
+    </eventButton>
+	<removeNebula />
+	<beaconType id="map_icon_start" global="false">
+		<color r="46" g="252" b="51" a="1" />
+	</beaconType>
+	<img back="BACKGROUND_LIGHTSPEED" planet="PLANET_INVISIBLE" />
+	<choice hidden="true">
+		<text>任務を遂行せよ。</text>
+		<event load="START_BEACON_CONFIGURE" />
+	</choice>
+	
+</event>
+<event name="START_BEACON_CONFIGURE">
+	<item_modify steal="true">
+		<item type="fuel" min="-999" max="-999" />
+		<item type="scrap" min="-999" max="-999" />
+	</item_modify>
+	<disableScrapScore />
+	<loadEventList first="true" generate="true">
+		<event name="START_BEACON_CONFIGURE_2" />
+	</loadEventList>
+</event>
+<event name="START_BEACON_CONFIGURE_2">
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="START_BEACON_PRESELECT" req="FOR_MULTIVERSE" lvl="1" />
+		<event name="START_BEACON_COMPATIBILITY" req="FOR_MULTIVERSE" max_lvl="0" />
+	</loadEventList>
+</event>
+<event name="START_BEACON_COMPATIBILITY">
+	<text>あなたはマルチバース用に設計されていない船でプレーしているようだ！これは間違っていると思いますか？私たちか適切な開発者が修正しますので、報告してください！
+問題を防ぐため、Multiverse用に作られていないシップや他のMODを使用しないことを強く推奨します。しかし、あなたがMultiverseを使用しているので、私たちは互換性のために必要ないくつかのマーカーを追加しました。もしあなたがプレイしているシップをMV対応にアップデートしたいが、方法がわからない場合は、フォーラムか私たちのディスコードで遠慮なく質問してください。</text>
+	<hiddenAug>SHIP_MULTIVERSE</hiddenAug>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="START_BEACON_PRESELECT" />
+	</choice>
+</event>
+<event name="START_BEACON_PRESELECT">
+	<text>ミッションが始まる前に、ワープベイに到着する前に準備する時間があるかもしれない。何をしたい？</text>
+	<choice hidden="true">
+		<text>任務を遂行せよ。</text>
+		<event name="LIGHTSPEED_DROPPOINT">
+			<text>名前連邦マルチバース・ドロップポイント
+タイプ：友好的
+優勢派閥連邦 
+ 脅威レベル：中程度（中立艦隊）
+
+宇宙間を移動するためのビーコンとして機能する建造物である、最も近い連邦のワープベイに到着しようとしている。</text>
+			<choice hidden="true">
+				<text>ハイパースピードを終了する。</text>
+				<event load="START_BEACON_PREP_LOAD" />
+			</choice>
+			
+			<choice hidden="true" req="LIST_START_AUG_CHECK">
+				<text>あなたは以下の[X]オーグメントを即座にインストールすることができ、それらを売却したり、型にはまらないスタッキングの恩恵を受けたりする選択肢を失う。もしそのままにしておくのであれば、後でストレージにアクセスできるようになったときにいつでも内蔵することができる。</text>
+				<event load="OPTION_INVALID" />
+			</choice>
+			<choice hidden="true" req="EX_PAYLOAD_CREATOR">
+				<text>ペイロード・ファブリケーター</text>
+				<event load="INSTALL_PAYLOAD_START" />
+			</choice>
+			<choice hidden="true" req="EX_O2_MASKS">
+				<text>レスピレーター</text>
+				<event load="INSTALL_RESPIRATOR_START" />
+			</choice>
+			<choice hidden="true" req="EX_FIRE_EXTINGUISHERS">
+				<text>消火器</text>
+				<event load="INSTALL_EXTINGUISHER_START" />
+			</choice>
+			<choice hidden="true" req="EX_BREACH_SEALANT">
+				<text>シーラント</text>
+				<event load="INSTALL_SEALANT_START" />
+			</choice>
+			<choice hidden="true" req="EX_ZOLTAN_BYPASS">
+				<text>ハードライト・バイパス</text>
+				<event load="INSTALL_BYPASS_START" />
+			</choice>
+			<choice hidden="true" req="EX_LIFE_SCANNER">
+				<text>生命体スキャナー</text>
+				<event load="INSTALL_LIFESCAN_START" />
+			</choice>
+			<choice hidden="true" req="EX_DEFENSE_SCRAMBLER">
+				<text>ディフェンス・スクランブラー</text>
+				<event load="INSTALL_SCRAMBLER_START" />
+			</choice>
+			<choice hidden="true" req="START_SHIELDBOOST"> 
+				<text>シールド・チャージ・ブースター</text>
+				<event load="INSTALL_SHIELDBOOST_START" />
+			</choice>
+			<choice hidden="true" req="START_IONARMOR"> 
+				<text>イオン・フィールド</text>
+				<event load="INSTALL_IONARMOR_START" />
+			</choice>
+			<choice hidden="true" req="EX_FTL_BOOSTER">
+				<text>FTLブースター</text>
+				<event load="INSTALL_FTLBOOST_START" />
+			</choice>
+			<choice hidden="true" req="START_RELOADER"> 
+				<text>リローダー</text>
+				<event load="INSTALL_RELOADER_START" />
+			</choice>
+			<choice hidden="true" req="EX_EXPLOSIVE_REPLICATOR">
+				<text>爆発レプリカント</text>
+				<event load="INSTALL_REPLICATOR_START" />
+			</choice>
+			<choice hidden="true" req="EX_CLOAK_FIRE">
+				<text>ステルス兵器</text>
+				<event load="INSTALL_CLOAKFIRE_START" />
+			</choice>
+			<choice hidden="true" req="EX_MEDBAY_NANO">
+				<text>メドボット</text>
+				<event load="INSTALL_MEDBOT_START" />
+			</choice>
+			<choice hidden="true" req="EX_MEDBAY_SPEED">
+				<text>医療用覚せい剤</text>
+				<event load="INSTALL_STIMS_START" />
+			</choice>
+			<choice hidden="true" req="EX_MEDBAY_RESISTANCE">
+				<text>安全ブランケット</text>
+				<event load="INSTALL_BLANKETS_START" />
+			</choice>
+			<choice hidden="true" req="EX_BACKUP_DNA">
+				<text>バックアップDNA</text>
+				<event load="INSTALL_DNA_START" />
+			</choice>
+			<choice hidden="true" req="EX_DRONE_SPEED">
+				<text>ドローンブースター</text>
+				<event load="INSTALL_DRONEBOOST_START" />
+			</choice>
+			<choice hidden="true" req="EX_TELEPORT_HEAL">
+				<text>再建型テレポーター</text>
+				<event load="INSTALL_RECONTELE_START" />
+			</choice>
+			<choice hidden="true" req="START_FTLJAM"> 
+				<text>FTLジャマー</text>
+				<event load="INSTALL_FTLJAM_START" />
+			</choice>
+			<choice hidden="true" req="EX_HACKING_STUN">
+				<text>神経ディスラプター</text>
+				<event load="INSTALL_NEURAL_START" />
+			</choice>
+			<choice hidden="true" req="START_GENERATOR"> 
+				<text>非常用発電機</text>
+				<event load="INSTALL_GENERATOR_START" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="prof_finalsector" lvl="0" max_lvl="0" blue="false">
+		<text>チャレンジレベルはロックされています。セクター8まで行ってアンロックしよう！</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="prof_finalsector" lvl="1" blue="false">
+		<text>チャレンジレベルについて学ぶ</text>
+		<event load="START_DIFFICULT_MENU" />
+	</choice>
+	<choice hidden="true" req="challenge_level" lvl="0" max_lvl="0" blue="false">
+		<text>--CASUAL--</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="SET_CASUAL" blue="false">
+		<text>カジュアルレベルに変更。</text>
+		<event>
+			<metaVariable name="challenge_level" op="set" val="0" />
+			<loadEvent>START_BEACON_PRESELECT</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true" req="INFO_NORMAL" blue="false">
+		<text>--スタンダード--。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="SET_NORMAL" blue="false">
+		<text>スタンダード・レベルに変更。</text>
+		<event>
+			<metaVariable name="challenge_level" op="set" val="1" />
+			<loadEvent>START_BEACON_PRESELECT</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true" req="challenge_level" lvl="2" max_lvl="2" blue="false">
+		<text>--チャレンジ--。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="SET_CHALLENGE" blue="false">
+		<text>チャレンジレベルに変更する。</text>
+		<event>
+			<metaVariable name="challenge_level" op="set" val="2" />
+			<loadEvent>START_BEACON_PRESELECT</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true" req="challenge_level" lvl="3" blue="false">
+		<text>--EXTREME--</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="SET_EXTREME" blue="false">
+		<text>エクストリームレベルに変更。</text>
+		<event>
+			<metaVariable name="challenge_level" op="set" val="3" />
+			<loadEvent>START_BEACON_PRESELECT</loadEvent>
+		</event>
+	</choice>
+	<choice hidden="true" req="FEDERATION_DATABASE" lvl="0" max_lvl="0">
+		<text>連盟データベースのエントリーをダウンロードする[初心者に強くお勧めします。］</text>
+		<event load="GIVE_DATABASE" />
+	</choice>
+	<choice hidden="true" req="FEDERATION_DATABASE" lvl="1" blue="false">
+		<text>フェデレーション・データベースのエントリーを読み直す。</text>
+		<event load="DATABASE_LOREDUMP" />
+	</choice>
+</event>
+
+<event name="INSTALL_PAYLOAD_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_PAYLOAD_CREATOR" />
+	<hiddenAug>PAYLOAD_CREATOR</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_RESPIRATOR_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_O2_MASKS" />
+	<hiddenAug>UPG_TECH_RESPIRATOR</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_EXTINGUISHER_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_FIRE_EXTINGUISHERS" />
+	<hiddenAug>UPG_TECH_EXTINGUISHERS</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_SEALANT_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_BREACH_SEALANT" />
+	<hiddenAug>UPG_TECH_SEALANT</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_BYPASS_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_ZOLTAN_BYPASS" />
+	<hiddenAug>UPG_TECH_BYPASS</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_LIFESCAN_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_LIFE_SCANNER" />
+	<hiddenAug>UPG_TECH_LIFEFORM</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_SCRAMBLER_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_DEFENSE_SCRAMBLER" />
+	<hiddenAug>UPG_TECH_SCRAMBLER</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_SHIELDBOOST_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_SHIELD_RECHARGE" />
+	<hiddenAug>UPG_SHIELDS_PERFORMANCE</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_IONARMOR_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_ION_ARMOR" />
+	<hiddenAug>UPG_SHIELD_ION</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_FTLBOOST_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_FTL_BOOSTER" />
+	<hiddenAug>UPG_ENGINES_PERFORMANCE</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_RELOADER_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_AUTO_COOLDOWN" />
+	<hiddenAug>UPG_WEAPONS_PERFORMANCE</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_REPLICATOR_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_EXPLOSIVE_REPLICATOR" />
+	<hiddenAug>UPG_WEAPONS_REPLICATOR</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_CLOAKFIRE_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_CLOAK_FIRE" />
+	<hiddenAug>UPG_CLOAK_FIRE</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_MEDBOT_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_MEDBAY_NANO" />
+	<hiddenAug>UPG_MEDBAY_NANO</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_STIMS_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_MEDBAY_SPEED" />
+	<hiddenAug>UPG_MEDBAY_SPEED</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_BLANKETS_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_MEDBAY_RESISTANCE" />
+	<hiddenAug>UPG_MEDBAY_RESISTANCE</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_DNA_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_BACKUP_DNA" />
+	<hiddenAug>UPG_CLONEBAY_DNA</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_DRONEBOOST_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_DRONE_SPEED" />
+	<hiddenAug>UPG_DRONE_SPEED</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_RECONTELE_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_TELEPORT_HEAL" />
+	<hiddenAug>UPG_TELEPORTER_HEAL</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_FTLJAM_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_FTL_JAMMER" />
+	<hiddenAug>UPG_HACK_JAMMER</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_NEURAL_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_HACKING_STUN" />
+	<hiddenAug>UPG_HACK_STUN</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_GENERATOR_START">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<remove name="EX_BATTERY_GENERATOR" />
+	<hiddenAug>UPG_BATTERY_GENERATOR</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+
+<event name="START_DIFFICULT_MENU">
+	<text>チャレンジレベルによって、マルチバースでの体験が変わります。一度ランを開始すると、変更することはできません！チャレンジレベルは、格納庫にある標準的な難易度スライダーとは独立しており、代替ではなく補完です。</text>
+	<choice hidden="true">
+		<text>カジュアルだ。</text>
+		<event>
+			<text>[CASUAL MODE：のんびりとゲームプレイを楽しみたい人向けのモード]
+スタート時のスクラップ：50🐋
+スタート時の燃料：25
+セクター1の出口にいる反乱軍の船はエリートではなくなる
+反乱軍のミニボスは決してスポーンせず、連邦の前哨基地は無料の修理を与える
+旅商人は常にかなりの無料ギフトを与え、弱体化し、殺されると強力なエナジーシールド・オーグメントを落とす
+トゥルー・エンディングの難易度を下げる。</text>
+			<choice>
+				<text>戻る。</text>
+				<event>
+					<loadEvent>START_DIFFICULT_MENU</loadEvent>
+				  </event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>スタンダード。</text>
+		<event>
+			<text>[STANDARD MODE：このMODが元々設計されていた通りにプレイする]
+スタート時のスクラップ：20
+スタート時の燃料：12
+セクター1の出口では弱体化した反乱軍のエリートが待ち構えている。反乱軍のミニボスは中程度の強さでスポーンし、貢物としてスクラップを取っていく 
+ 旅商人はドロップポイントとラストスタンドで小さなギフトを無料でくれる。</text>
+			<choice>
+				<text>戻る。</text>
+				<event>
+					<loadEvent>START_DIFFICULT_MENU</loadEvent>
+				  </event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>チャレンジだ。</text>
+		<event>
+			<text>[チャレンジモード：よりハードなチャレンジを求める人のためのモードだが、手に負えなくなることはない]
+スタート時のスクラップ：なし
+スタート時の燃料：10燃料
+反乱軍の艦隊は1ジャンプブーストを得る。セクター1の出口にいるエリートの難易度を上げる。 
+ミニボスはバフされ、貢物としてより多くのスクラップを要求する。ラストスタンドの修理ビーコンは常にエリート反乱軍に攻撃される。 
+旅商人は決して贈り物をせず、強くなり、殺されるとほとんどの状況で強力な武器を落とす。 
+トゥルー・エンディングの難易度を上げる。</text>
+			<choice>
+				<text>戻る。</text>
+				<event>
+					<loadEvent>START_DIFFICULT_MENU</loadEvent>
+				  </event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>エクストリームだ。</text>
+		<event>
+			<text>[EXTREME MODE：簡単すぎることに飽きた？地獄を味わいたい？これはあなたのためのモードかもしれない。]
+スタート時のスクラップ：なし
+スタート時の燃料：8
+
+スタートビーコンでの追加準備オプションは無効化される。セクター1の出口にいるエリートの難易度を上げる。 
+反乱軍のミニボスは大幅にバフされ、より大きなスクラップの貢ぎ物を要求し、5セクター以降は貢ぎ物を受け取らなくなる。ラストスタンドの修理ビーコンは常にMFKエースの攻撃下にあり、ラストスタンドのスタートビーコンはMFKピケットエースの攻撃下にあり、ジャンプで逃げられなくなる。旅商人は資源のスクラップが減り、強くなり、殺されるとほとんどの状況で強力な武器を落とします。 
+トゥルー・エンディングの難易度がさらに上がります。</text>
+			<choice>
+				<text>戻る。</text>
+				<event>
+					<loadEvent>START_DIFFICULT_MENU</loadEvent>
+				  </event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>戻る。</text>
+		<event>
+			<loadEvent>START_BEACON_PRESELECT</loadEvent>
+		  </event>
+	</choice>
+</event>
+<event name="GIVE_DATABASE">
+	<text>あなたはデータベースをダウンロードし、さまざまな派閥、個人、場所について読む機会を得た。これは物理的なメリットはありませんが、あなたの旅の成功への道しるべとなるでしょう。また、アトラスやインターナル・アップグレードのような新しいメカニックの詳細なチュートリアルも提供されます。</text>
+	<hiddenAug>FEDERATION_DATABASE</hiddenAug>
+	<choice hidden="true" req="pilot">
+		<text>[フェデレーション・データベース】自分の使命を思い出せ。</text>
+		<event name="DATABASE_LOREDUMP">
+			<text>艦長である君は今、銀河系だけでなく多元宇宙そのものにおける最大の紛争の中心的存在となっている。あなたの故郷である宇宙0での連邦内戦の終結後、銀河連邦はバンス提督と反乱軍を撃破し、銀河の支配権を確保した。</text>
+			<choice>
+				<text>続きを読む</text>
+				<event>
+					<text>連邦は他にもさまざまな紛争に苦しんでいた。特に、スラッグ・クレプトクラシー、マンティス・ハイヴ、ロック・セオクラシー、アージェン共和国が支持する危険な連合同盟との冷戦は有名である。この対立はついにアクエリアン領への侵攻へとエスカレートし、大きな損失をもたらした。連合の攻撃によって連邦が一時的に再び不安定化した後、バンスは反乱軍の本拠地から秘密裏に作戦を実行し、連合が求めていた厳重に保護された古代遺跡の引き揚げを試みた。</text>
+					<choice>
+						<text>続きを読む</text>
+						<event>
+							<text>詳細は不明だが、バンスのチームはこれらの廃墟の中から最初のマルチバース・ドライブを救い出し、それをリバースエンジニアリングして残りの反乱軍艦隊に搭載したと考えられている。連邦軍が反乱軍の本拠地を襲撃した後、バンスと彼の部下たちは宇宙1に逃れ、連邦を打倒するためにその現実の反乱軍と同盟を結んだ。現在、宇宙1は異次元反乱軍の作戦の中心地として機能し、宇宙0は反撃の指揮を執っている。</text>
+							<choice>
+								<text>続きを読む</text>
+								<event>
+									<text>両陣営は、自派閥の力と存続を確保するために現実を侵略し、終わりの見えない対立に陥っている。反乱軍は勇敢な蜂起という肩書きを掲げているが、単なる反乱をはるかに超えている。情報は乏しいが、宇宙1は荒涼とした産業ディストピアへと変貌を遂げ、連邦と人間以外の種族の完全消滅を目指す永遠の戦争の歯車に拍車がかかっているようだ。</text>
+									<choice>
+										<text>続きを読む</text>
+										<event>
+											<text>U0バンスの所在は現在のところ不明だが、バンス・プライムに忠誠を誓う民間訓練されたMFKエース部隊の不審な動きが多元宇宙のあちこちで目撃されている。MFKエースは、連邦の基地を破壊し反乱軍の勝利を確保するためにこの現実に派遣された強力な再設計されたフラッグシップ・モデルとともに、あなた方の最大の脅威となるであろう。</text>
+											<choice>
+												<text>続きを読む</text>
+												<event>
+													<text>そこで、あなたの出番となる。連邦に雇われた反逆者として、君の目的は単純だ。反乱軍がこの現実の攻略にこれ以上の労力を費やすことはないだろう。反乱軍の残存兵力を別の現実に向かわせる方がはるかに現実的だ。もし失敗すれば、この現実の連邦は間違いなく崩壊し、ここは反乱軍が奴隷にした現実の1つに過ぎなくなる。</text>
+													<achievement>ACH_ACC_DATABASE</achievement>
+													<choice hidden="true">
+														<text>今は以上だ。任務に取り掛かる時だ。</text>
+														<event load="START_BEACON_RELOAD" />
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>今はこれで十分だ。</text>
+												<event load="START_BEACON_RELOAD" />
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>今はこれで十分だ。</text>
+										<event load="START_BEACON_RELOAD" />
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>今はこれで十分だ。</text>
+								<event load="START_BEACON_RELOAD" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>今はこれで十分だ。</text>
+						<event load="START_BEACON_RELOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>今はこれで十分だ。</text>
+				<event load="START_BEACON_RELOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="START_BEACON_RELOAD" />
+	</choice>
+</event>
+<event name="START_BEACON_PREP_LOAD">
+	<backgroundObject name="HANGAR_SALUTE">
+		<layer z="0">background</layer>
+		<spawnArea x="0" y="324" w="0" h="0" />
+		<anim>hang_salute</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_BOXGUY">
+		<layer z="0">background</layer>
+		<spawnArea x="770" y="122" w="0" h="0" />
+		<anim>hang_boxguy</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_MANTISGRAB">
+		<layer z="0">background</layer>
+		<spawnArea x="174" y="291" w="0" h="0" />
+		<anim>hang_mantisgrab</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_TYPINGGUY">
+		<layer z="0">background</layer>
+		<spawnArea x="1020" y="135" w="0" h="0" />
+		<anim>hang_typingguy</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_CRYSTALREPAIR">
+		<layer z="0">background</layer>
+		<spawnArea x="960" y="123" w="0" h="0" />
+		<anim>hang_crystalrepair</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_BOXGIRL">
+		<layer z="0">background</layer>
+		<spawnArea x="206" y="163" w="0" h="0" />
+		<anim>hang_boxgirl</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_CLEAN">
+		<layer z="0">background</layer>
+		<spawnArea x="863" y="107" w="0" h="0" />
+		<anim>hang_clean</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_DOCTOR">
+		<layer z="0">background</layer>
+		<spawnArea x="1120" y="214" w="0" h="0" />
+		<anim>hang_doctor</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_POKER">
+		<layer z="0">background</layer>
+		<spawnArea x="977" y="160" w="0" h="0" />
+		<anim>hang_poker</anim>
+	</backgroundObject>
+	<backgroundObject name="HANGAR_KERNEL">
+		<layer z="0">background</layer>
+		<spawnArea x="835" y="412" w="0" h="0" />
+		<anim>hang_kernel</anim>
+	</backgroundObject>
+	<backgroundObject name="DETERGENT">
+		<layer z="0">background</layer>
+		<spawnArea x="207" y="163" w="0" h="0" center="true" />
+		<req lvl="0" max_lvl="200">stability</req> 
+		<anim>detergent</anim>
+		<hoverAnim>detergent_hover</hoverAnim>
+		<inactiveAnim hide="true" />
+		<tooltip>洗剤のボトル。</tooltip>
+		<clickAction>
+			<event load="DETERGENT_MODE" /> 
+			<destroy />
+		</clickAction>
+	</backgroundObject>
+	<backgroundObject name="GNOME">
+		<layer z="0">background</layer>
+		<spawnArea x="1154" y="390" w="0" h="0" center="true" />
+		<req lvl="1">chaos_mode_unlock</req>
+		<anim>gnome_object</anim>
+		<hoverAnim>gnome_object_hover</hoverAnim>
+		<inactiveAnim hide="true" />
+		<tooltip>ノームだ。</tooltip>
+		<clickAction>
+			<event load="CHAOS_MODE" /> 
+			<destroy />
+		</clickAction>
+	</backgroundObject>
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="START_BEACON_CASUAL" req="challenge_level" lvl="0" max_lvl="0" />
+		<event name="START_BEACON_NORMAL" req="challenge_level" lvl="1" max_lvl="1" />
+		<event name="START_BEACON_FLEETBOOST" req="challenge_level" lvl="2" max_lvl="2" />
+		<event name="START_BEACON_PREP_SKIP" req="challenge_level" lvl="3" />
+	</loadEventList>
+</event>
+
+<event name="START_BEACON_CASUAL">
+	<item_modify>
+		<item type="fuel" min="25" max="25" />
+		<item type="scrap" min="50" max="50" />
+	</item_modify>
+	<disableScrapScore />
+	<loadEvent>START_BEACON_PREP</loadEvent>
+</event>
+<event name="START_BEACON_NORMAL">
+	<item_modify>
+		<item type="fuel" min="12" max="12" />
+		<item type="scrap" min="20" max="20" />
+	</item_modify>
+	<disableScrapScore />
+	<loadEvent>START_BEACON_PREP</loadEvent>
+</event>
+<event name="START_BEACON_FLEETBOOST">
+    <text>艦隊が近づいてくる...。</text>
+	<changeBackground>BACK_SECTOR_START</changeBackground>
+	<modifyPursuit amount="1" />
+	<item_modify>
+		<item type="fuel" min="10" max="10" />
+	</item_modify>
+	<choice hidden="true">
+       <text>次へ...</text>
+       <event load="START_BEACON_PREP" />
+    </choice>
+</event>
+<event name="START_BEACON_PREP_SKIP">
+    <text>ハイパースピードからゆっくりと降り、着陸に安全な速度に移行し、下の格納庫に近づく。そこであなたの船は、この異国の銀河系に向かうための備蓄と準備を整える。</text>
+	<changeBackground>BACK_SECTOR_START</changeBackground>
+	<playSound>lightspeed</playSound>
+	<item_modify>
+		<item type="fuel" min="8" max="8" />
+	</item_modify>
+	<modifyPursuit amount="1" />
+	<choice hidden="true" req="ANY_BOON">
+		<text>格納庫のオペレーターがあなたを呼んでいる。</text>
+		<event load="START_BOON_MENU" />
+	</choice>
+	<choice hidden="true" req="magical_hat" lvl="1" blue="true">
+		<text>魔法の帽子を持って。</text>
+		<event load="MAGIC_HAT" />
+	</choice>
+	<choice hidden="true">
+       <text>次へ...</text>
+       <event load="START_BEACON_EXPLAIN_LOAD" />
+    </choice>
+</event>
+
+<event name="START_BEACON_PREP">
+	<text>ハイパースピードからゆっくりと降り、着陸に安全な速度に移行し、下の格納庫に近づく。そこであなたの船は、この異国の銀河系に向かうための備蓄と準備を整える。</text>
+	<changeBackground>BACK_SECTOR_START</changeBackground>
+	<playSound>lightspeed</playSound>
+	<choice hidden="true" req="ANY_BOON">
+		<text>格納庫のオペレーターがあなたを呼んでいる。</text>
+		<event load="START_BOON_MENU" />
+	</choice>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="START_BEACON_PREP_OPTIONS" />
+	</choice>
+</event>
+<event name="START_BEACON_PREP_OPTIONS">
+	<text>急いで船に向かうが、出発までまだ少し時間があることに気づく。だが、出発までまだ少し時間があることに気づく。</text>
+	<choice hidden="true" lvl="0" max_group="0" req="NO_WEAPON" blue="false">
+		<text>武器を持て。</text>
+		<event>
+			<text>いくつかの選択肢があるようだ。</text>
+			<choice>
+				<text>ベーシック・レーザーを手に入れる。</text>
+				<event>
+					<text>新しい武器に自信を持ち、任務を続行する準備をする。</text>
+					<weapon name="LASER_BURST_1" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="START_BEACON_EXPLAIN_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>シンプル・イオンを手にする。</text>
+				<event>
+					<text>新しい武器に自信を持ち、任務を続行する準備をする。</text>
+					<weapon name="ION_1" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="START_BEACON_EXPLAIN_LOAD" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>レト・ランチャーを手にする。</text>
+				<event>
+					<text>新しい武器に自信を持ち、任務を続行する準備をする。</text>
+					<weapon name="MISSILES_1" />
+					<item_modify>
+						<item type="missiles" min="2" max="2" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="START_BEACON_EXPLAIN_LOAD" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" lvl="1" max_group="0" req="NO_WEAPON" blue="false">
+		<text>無料の武器を手にすることはできない。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice req="pilot" lvl="1" max_group="2" blue="false">
+		<text>別のクルーを探す。</text>
+		<event>
+			<text>新しいクルーに自信を持ち、任務を続行する準備をする。</text>
+			<crewMember amount="1" class="human" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="3" blue="false">
+		<text>余分なリソースを手に入れる。</text>
+		<event>
+			<text>倉庫に余分な資源を入れ、任務を続行する準備をする。</text>
+			<item_modify>
+				<item type="fuel" min="2" max="2" />
+				<item type="scrap" min="10" max="10" />
+				<item type="missiles" min="2" max="2" />
+				<item type="drones" min="2" max="2" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="magical_hat" lvl="1" max_group="4" blue="true">
+		<text>魔法の帽子を持って。</text>
+		<event name="MAGIC_HAT">
+			<text>魔法の帽子は、理解しがたい非ユークリッド的な形と色で作られているにもかかわらず、あなたの心を暖かく朦朧とさせる。かぶったとたん、その気になればどこにも行けないような気がしてくる。</text>
+			<variable name="magical_hat_active" op="set" val="1" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="pilot" lvl="1" max_group="5" blue="false">
+		<text>今あるものでいい。艦隊に先手を打て！</text>
+		<event>
+			<text>余計なものは何も取らないことにして、先へ進む。</text>
+			<modifyPursuit amount="-2" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="START_BEACON_EXPLAIN_LOAD" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<event name="START_BOON_MENU">
+	<text>贈り物が待っているようだ。出所は不明だが、奇妙な筆記体で「最後の挑戦者に代わり、オブザーバーからの贈り物です。あなたとの出会いを心から待っています。またお会いしましょう。</text>
+	<choice hidden="true">
+		<text>贈り物を受け取れ。</text>
+		<event load="BOON_SELECT" />
+	</choice>
+	<choice hidden="true">
+		<text>贈り物を断る。</text>
+		<event>
+			<loadEvent>BOON_SELECT_CONTINUE</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="BOON_SELECT_CONTINUE">
+	<loadEventList seeded="false">
+		<event name="START_BEACON_PREP_OPTIONS" req="challenge_level" lvl="0" max_lvl="2" />
+		<event name="START_BEACON_EXPLAIN_LOAD" req="challenge_level" lvl="3" />
+	</loadEventList>
+</event>
+<event name="BOON_SELECT">
+	<loadEventList seeded="false">
+		<event name="BOON_SELECT_HUMAN" req="prof_z_boon_human" />
+		<event name="BOON_SELECT_HUMAN_2" req="prof_z_boon_human_2" />
+		<event name="BOON_SELECT_ENGI" req="prof_z_boon_engi" />
+		<event name="BOON_SELECT_ZOLTAN" req="prof_z_boon_zoltan" />
+		<event name="BOON_SELECT_OSMIAN" req="prof_z_boon_osmian" />
+		<event name="BOON_SELECT_ORCHID" req="prof_z_boon_orchid" />
+		<event name="BOON_SELECT_MANTIS" req="prof_z_boon_mantis" />
+		<event name="BOON_SELECT_MANTIS_2" req="prof_z_boon_mantis_2" />
+		<event name="BOON_SELECT_ROCK" req="prof_z_boon_rock" />
+		<event name="BOON_SELECT_ROCK_2" req="prof_z_boon_rock_2" />
+		<event name="BOON_SELECT_CRYSTAL" req="prof_z_boon_crystal" />
+		<event name="BOON_SELECT_SLUG" req="prof_z_boon_slug" />
+		<event name="BOON_SELECT_SLUG_2" req="prof_z_boon_slug_2" />
+		<event name="BOON_SELECT_SHELL" req="prof_z_boon_shell" />
+		<event name="BOON_SELECT_LEECH" req="prof_z_boon_leech" />
+		<event name="BOON_SELECT_GHOST" req="prof_z_boon_ghost" />
+		<event name="BOON_SELECT_LANIUS" req="prof_z_boon_lanius" />
+		<event name="BOON_SELECT_MORPH" req="prof_z_boon_morph" />
+		<event name="BOON_SELECT_LIZARD" req="prof_z_boon_lizard" />
+		<event name="BOON_SELECT_SPIDER" req="prof_z_boon_spider" />
+		<event name="BOON_SELECT_PONY" req="prof_z_boon_horse" />
+		<event name="BOON_SELECT_OBELISK" req="prof_z_boon_obelisk" />
+		<event name="BOON_SELECT_SIREN" req="prof_z_boon_siren" />
+		<event name="BOON_SELECT_UNIQUE" req="prof_z_boon_unique" />
+		<event name="BOON_SELECT_UNIQUEMECH" req="prof_z_boon_unique_m" />
+		<event name="BOON_SELECT_KIDS" req="prof_z_boon_kids" />
+		
+		<event name="BOON_SELECT_WEAPONS" req="prof_e_boon_weapons" />
+		<event name="BOON_SELECT_SHIELDS" req="prof_e_boon_shields" />
+		<event name="BOON_SELECT_ENGINES" req="prof_e_boon_engines" />
+		<event name="BOON_SELECT_MEDBAY" req="prof_e_boon_medbay" />
+		<event name="BOON_SELECT_CLONEBAY" req="prof_e_boon_clonebay" />
+		<event name="BOON_SELECT_OXYGEN" req="prof_e_boon_oxygen" />
+		<event name="BOON_SELECT_TELEPORTER" req="prof_e_boon_teleporter" />
+		<event name="BOON_SELECT_MIND" req="prof_e_boon_mind" />
+		<event name="BOON_SELECT_HACKING" req="prof_e_boon_hacking" />
+		<event name="BOON_SELECT_CLOAKING" req="prof_e_boon_cloaking" />
+		<event name="BOON_SELECT_TEMPORAL" req="prof_e_boon_temporal" />
+		<event name="BOON_SELECT_DRONES" req="prof_e_boon_drones" />
+		<event name="BOON_SELECT_SENSORS" req="prof_e_boon_sensors" />
+		<event name="BOON_SELECT_DOORS" req="prof_e_boon_doors" />
+		<event name="BOON_SELECT_PILOT" req="prof_e_boon_pilot" />
+		<event name="BOON_SELECT_BATTERY" req="prof_e_boon_battery" />
+		<event name="BOON_SELECT_REACTOR" req="prof_e_boon_reactor" />
+		
+		<event name="BOON_SELECT_STARTER" req="prof_r_boon_starter" />
+		<event name="BOON_SELECT_KERNELELITE" req="prof_r_boon_kernel" />
+		<event name="BOON_SELECT_CRYSTALELITE" req="prof_r_boon_crystal" />
+		<event name="BOON_SELECT_MINELAUNCHER" req="prof_r_boon_minelauncher" />
+		<event name="BOON_SELECT_NEWGEN" req="prof_r_boon_newgen" />
+		<event name="BOON_SELECT_AETHER" req="prof_r_boon_obelisk" />
+		<event name="BOON_SELECT_MERCHANTS" req="prof_r_boon_nexus" />
+		<event name="BOON_SELECT_SPECIAL" req="prof_r_boon_special" />
+		<event name="BOON_SELECT_TRANSPORT" req="prof_r_boon_transport" />
+		<event name="BOON_SELECT_MATH" req="prof_r_boon_math" />
+		<event name="BOON_SELECT_RENEGADE" req="prof_r_boon_renegade" />
+		<event name="BOON_SELECT_SENTRY" req="prof_r_boon_sentry" />
+		<event name="BOON_SELECT_CURA" req="prof_r_boon_cura" />
+		<event name="BOON_SELECT_CLONECANNON" req="prof_r_boon_clonecannon" />
+		<event name="BOON_SELECT_MODULAR" req="prof_r_boon_modular" />
+		<event name="BOON_SELECT_GATLING" req="prof_r_boon_gatling" />
+		<event name="BOON_SELECT_MERCHANTS" req="prof_r_boon_rift" />
+		<event name="BOON_SELECT_MADNESS" req="prof_r_boon_madness" />
+		
+		<event name="BOON_SELECT_CHAOS" req="prof_boon_chaos" />
+	</loadEventList>
+</event>
+
+<event name="START_BEACON_EXPLAIN_LOAD">
+	<loadEventList seeded="false" default="START_BEACON_EXPLAIN">
+		<event name="GIVE_POWERSURGE_2" req="STAGE_2" />
+		<event name="GIVE_POWERSURGE_3" req="STAGE_3" />
+		<event name="GIVE_EXTRALIFE" req="EXTRA_LIFE" />
+		<event name="GIVE_MVDRIVE" req="MULTIVERSE_DRIVE_GOOD" />
+		<event name="GIVE_UNSTABLE" req="EMERGENCY_DRIVE" />
+		<event name="GIVE_ATM" req="ATM_MACHINE" />
+		<event name="GIVE_SPORES" req="SPORE_SHIPMENT" />
+		<event name="GIVE_RECALL" req="LOCKED_GLOBAL_TELEPORT" />
+	</loadEventList>
+</event>
+<event name="GIVE_POWERSURGE_2">
+	<triggeredEvent event="FLAGSHIP_STAGE2_TRACKER" seeded="false" loops="999999999" jumps="1" />
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_POWERSURGE_3">
+	<triggeredEvent event="FLAGSHIP_STAGE3_TRACKER" seeded="false" loops="999999999" jumps="1" />
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_EXTRALIFE">
+	<triggeredEvent event="EXTRA_LIFE_HEAL" playerHull="3" clearOnJump="false" />
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_MVDRIVE">
+	<triggeredEvent event="MV_DRIVE_EXPLODE" loops="999999999">
+	  <jumps amount="1" type="1" />
+	</triggeredEvent>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_UNSTABLE">
+	<triggeredEvent event="UNSTABLE_CHECKER" loops="999999999" jumps="1" />
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_ATM">
+	<triggeredEvent name="ATM_CHECKER" event="ATM_MACHINE_WITHDRAW_CHECK" loops="999999999">
+	  <jumps amount="1" type="1" />
+	</triggeredEvent>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_SPORES">
+	<triggeredEvent name="SPORE_CHECKER" event="SPORE_WITHDRAW_CHECK" loops="999999999">
+	  <jumps amount="1" type="1" />
+	</triggeredEvent>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="GIVE_RECALL">
+	<eventButton name="UI_RECALL_BUTTON">
+        <event load="RECALL" />
+        <image border="12">statusUI/top_recall</image>
+		<customLocation x="105" y="140" />
+        <tooltip>乗組員を回収せよ。</tooltip>
+        <inactiveTooltip>Unavailable: You cannot do this while in danger!</inactiveTooltip>
+        <jumpClear>false</jumpClear>
+        <noDanger>true</noDanger>
+    </eventButton>
+	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+</event>
+<event name="START_BEACON_EXPLAIN">
+	<text>ようやくスーツに着替え、準備が整ったところで、あなたはビーコン・マップを見てみる。艦隊が差し迫った脅威になるまで、まだしばらく時間があるようだ。</text>
+	<choice hidden="true" req="prof_beacon_active" blue="true">
+		<text>奇妙なビーコンが近くにある。起動させてみる？</text>
+		<event>
+			<text>ビーコンがビープ音を鳴らし、宇宙の奥深くへと信号が跳ね返る。誰が聞いているのか、どこにいるのかわからないが、友好的であることを祈る。</text>
+			<achievement silent="false">ACH_ACC_SIGNAL</achievement>
+			<variable name="loc_beacon_active" op="set" val="1" />
+			<playSound>mysteriousBeacon</playSound>
+			<choice>
+				<text>次へ...</text>
+				<event>
+					<loadEvent>STORAGE_CHECK</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice>
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+<event name="BROKEN_START">
+	<text>注意互換性のないMODが検出され、Multiverseのコア機能の一部が壊れています。問題を排除するためにMODリストを再確認し、Multiverseのために設計されたMODを使用することが必須です。よくある問題の原因;
+Beginning Scrap advantage
+Engi Scrap advantage
+Any fleet removal mod
+Multiverseリリース以前に作られた、イベントを変更するMOD全般</text>
+	<choice hidden="true">
+		<text>免責条項をよくお読みください。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event />
+	</choice>
+</event>
+</FTL>

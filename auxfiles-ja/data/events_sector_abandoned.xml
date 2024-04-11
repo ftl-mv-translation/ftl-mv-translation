@@ -1,0 +1,1215 @@
+<FTL>
+
+
+
+
+
+	
+<eventList name="ITEMS_ABANDONED">
+	<event load="ABANDONED_CRYSTAL_TOURIST" />
+	<event load="ABANDONED_SLAVER_MOON" />
+	<event load="ABANDONED_COLONY" />
+	<event load="ABANDONED_LANIUS_SCRAP" />
+</eventList>
+
+<event name="ABANDONED_CRYSTAL_TOURIST" unique="true">
+	<text>焼け焦げた難破船や、とうの昔に忘れ去られたステーションの枯れ果てた骸骨の間を、クリスタル号が小走りに通り過ぎていく。彼らはあなたに気づいていないようだ。</text>
+	<ship load="SHIP_CRYSTAL_GENERIC" hostile="false" />
+	<choice hidden="true">
+		<text>彼らに連絡を。</text>
+		<event>
+			<text>「ああ、こんにちは！見かけなかったから、風景の一部かと思ったよ。なんて素晴らしいセクターなんだ！船のデザインも面白いし、ここに住んでいる人のセンスは抜群だね。"</text>
+			<choice hidden="true">
+				<text>この部門が放棄されたことを説明する。</text>
+				<event>
+					<text>「なんてこった。自分がいかに無知であるかがよくわかる。このセクターを何ヶ月も歩き回っているんだ！一緒に行こうか、君は他の場所にも行ったことがあるみたいだし」。</text>
+					<crewMember amount="1" class="crystal" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>あなたのミッションに役立つものがあるかどうか尋ねてみてください。</text>
+				<event>
+					<text>「ああ、確かに。これらの魅力的な建造物から遺物を集めているんだ。持ち主が気にしなければいいのですが、誰も家にいなかったので......もしかしたら使い道が見つかるかもしれません"</text>
+					<autoReward level="LOW">augment</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_CRYSTAL">
+				<text>(クリスタル・クルー）データ・ストレージへのアクセスを要求する。</text>
+				<event>
+					<text>「私たちの地図？もちろんです！お役に立つはずです。よい旅を！"</text>
+					<reveal_map />
+				</event>
+			</choice>
+			<choice hidden="true" req="hacking">
+				<text>(ハッキング）データストレージにリモートアクセスする。</text>
+				<event>
+					<text>クリスタルと世間話をしている間に、ハッキングシステムを設定し、彼らのデータストレージを読み取り、マップデータをダウンロードする。ダウンロードが完了したら、別れを惜しみ、クリスタルたちは「ありがとう」とささやかなご褒美をくれる。</text>
+					<autoReward level="LOW">stuff</autoReward>
+					<reveal_map />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>無視するんだ。</text>
+		<event>
+			<text>見知らぬクリスタルの船に興味はないだろう。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ABANDONED_SLAVER_MOON" unique="true">
+	<text>正体不明の船からの非常にかすかな信号が、ローカル星系の小さな月から発信されている。少し途切れ途切れだが、"労働者たちよ。</text>
+	<img planet="PLANET_MOONS" />
+	<choice hidden="true">
+		<text>もっと寄せろ。</text>
+		<event>
+			<text>奴隷商人が近くの月で "商品 "を売っているようだ。このセクターは連邦の目から遠く離れている。</text>
+			<ship load="SHIP_SLAVER_ALL" hostile="false" />
+			<choice hidden="true">
+				<text>提供される奴隷をチェック</text>
+				<event>
+					<text>奴隷商人たちはあなたの関心に気づき、いくつかの提案を示す。</text>
+					<choice> 
+						<text>奴隷を買え。</text>
+						<event load="PIRATE_ODDSHOP_SLAVE" />
+					</choice>
+					<choice>
+						<text>奴隷を買え。</text>
+						<event load="PIRATE_ODDSHOP_SLAVE" />
+					</choice>
+					<choice>
+						<text>エリート奴隷を買う。</text>
+						<event load="PIRATE_ODDSHOP_SLAVE_ELITE" />
+					</choice>
+					<choice hidden="true">
+						<text>気にするな。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>奴隷商人を攻撃しろ！</text>
+				<event>
+					<text>奴隷商人たちは、ここなら安全だと思っていたかもしれないが、君たちが到着したことで、彼らのビジネスをこれ以上続けさせるわけにはいかなくなった。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>出て行け。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>月も信号も無視。</text>
+		<event>
+			<text>これはある種の奴隷貿易であることは明らかだし、あなたには関心がない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ABANDONED_COLONY" unique="true">
+	<text>近くの惑星には、放棄されたコロニーが横たわっている。地表に設置された防衛タレットは電力不足のため無効になっているようだが、確証はない。潜んでいる船は見当たらないが、隠れていないとは限らない。</text>
+	<img planet="PLANET_POPULATED" />
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="ABANDONED_COLONY_EXPLORE" />
+	</choice>
+	<choice hidden="true" req="PDS_DISABLE">
+		<text>(シグナル・ディリューター）防衛タレットがオフラインであることを確認しろ。</text>
+		<event load="ABANDONED_COLONY_EXPLORE_NOTURRETS" />
+	</choice>
+	<choice hidden="true" req="FLARE_DISTRACTION">
+		<text>(照明弾) 照明弾を発射し、防衛タレットを撹乱しながら探索する。</text>
+		<event load="ABANDONED_COLONY_EXPLORE_NOTURRETS" />
+	</choice>
+	<choice hidden="true" req="sensors" lvl="3">
+		<text>(アドバンスセンサー)コロニーをもっと重くスキャンしろ。</text>
+		<event load="ABANDONED_COLONY_EXPLORE_SCANS" />
+	</choice>
+	<choice hidden="true" req="ADV_SCANNERS">
+		<text>(長距離スキャナー)コロニーをもっと重くスキャンしてくれ。</text>
+		<event load="ABANDONED_COLONY_EXPLORE_SCANS" />
+	</choice>
+	<choice>
+		<text>コロニーは無視する。</text>
+		<event>
+			<text>放棄されたコロニーをすべて探索する時間はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ABANDONED_COLONY_EXPLORE">
+	<event>
+		<text>どうやらタレットにはまだ余力があるようだ。タレットはあなたの船をロックオンし、防御を狙い、軽いダメージを与える。それ以上ひどいことをされる前に引き離す。</text>
+		<damage amount="3" />
+	</event>
+	<event>
+		<text>コロニーは海賊の逃亡者をかくまっていたことが判明した。彼らの正体がばれた今、彼らは身を守り、あなたを攻撃する。</text>
+		<ship load="SHIP_PIRATE_ALL" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>幸運なことに、タレットはオフラインのままで、あなたたちを迎え撃つ船は現れなかった。コロニーの残骸から集められるものはすべて持ち帰る。</text>
+		<autoReward level="MED">item</autoReward>
+	</event>
+</eventList>
+<eventList name="ABANDONED_COLONY_EXPLORE_NOTURRETS">
+	<event>
+		<text>コロニーは海賊の逃亡者をかくまっていたことが判明した。彼らの正体がばれた今、彼らは身を守り、あなたを攻撃する。</text>
+		<ship load="SHIP_PIRATE_ALL" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>幸運なことに、タレットはオフラインのままで、あなたたちを迎え撃つ船は現れなかった。コロニーの残骸から集められるものはすべて持ち帰る。</text>
+		<autoReward level="MED">item</autoReward>
+	</event>
+</eventList>
+<eventList name="ABANDONED_COLONY_EXPLORE_SCANS">
+	<event>
+		<text>スキャンによると、タレットはまだバックアップジェネレーターに接続されている。作動中に近づくのは危険すぎる。</text>
+	</event>
+	<event>
+		<text>海賊の逃亡犯がコロニーに潜伏しているようだが、まだあなたには会っていないようだ。</text>
+		<ship load="SHIP_PIRATE_ALL" hostile="false" />
+		<choice hidden="true">
+			<text>海賊と交戦する。</text>
+			<event>
+				<text>自分たちの正体がばれたことに気づいた海賊たちは、身を守り、あなたを攻撃する。</text>
+				<ship hostile="true" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="COMBAT_CHECK" />
+				</choice>
+			</event>
+		</choice>
+		<choice>
+			<text>海賊を避け、瓦礫の一部をスクラップにする。</text>
+			<event>
+				<autoReward level="MED">stuff</autoReward>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>スキャンの結果、船は発見されず、タレットもオフラインであることが確認された。コロニーの残骸から集められるものはすべて持ち帰る。</text>
+		<autoReward level="MED">item</autoReward>
+	</event>
+</eventList>
+
+<event name="ABANDONED_LANIUS_SCRAP" unique="true">
+	<text>到着すると、遠くでエリート防衛隊とラニウスの2隻がドッグファイトを繰り広げている。民兵は1隻を撃墜し、もう1隻はFTLドライブを起動させて逃走する。仕事を終わらせようと躍起になっていた民兵の船は追撃し、同様に飛び去った。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+	
+<eventList name="NEUTRAL_ABANDONED">
+	<event load="ABANDONED_CIVILIAN_LOST_ITEMS" />
+	<event load="ABANDONED_WRECK" />
+	<event load="ABANDONED_REBEL_DELUSIONAL" />
+	<event load="ABANDONED_GHOST_LANIUS_DUEL" />
+
+	<event load="ABANDONED_PIRATE_CIVILIAN" />
+	<event load="ABANDONED_LANIUS_AUTO_REBEL" />
+	<event load="ABANDONED_LANIUS_GROUP_AUTO" />
+	<event load="ABANDONED_FUELING_STATION" />
+</eventList>
+
+<event name="ABANDONED_CIVILIAN_LOST_ITEMS" unique="true">
+	<text>民間船からの要請だ。"あなたは連邦の通信を使用しています" "連邦の支持をお願いします我々はこのセクターから避難を余儀なくされた民間人の一人だが、重要な私物を残してきた。この船は戦闘用に設計されておらず、ここにいるのは危険です。私たちの持ち物を引き取ってもらえませんか？もちろん金は払う。</text>
+	<choice hidden="true">
+		<text>自分の荷物を持つことに同意する。</text>
+		<event>
+			<text>コロニーに近づくと、敵対するバガボンドの船が飛び出してくる！</text>
+			<ship load="SHIP_GHOST_LOST_ITEMS" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+			<choice hidden="true" req="LIST_CREW_VAGABOND">
+				<text>(バガボンド・クルー）アグレッシブな船を推理する。</text>
+				<event>
+					<text>あなたのバガボンドは他のゴーストに身を引くよう説得する。彼らはルーズキャノンのスカベンジャーかもしれないが、実際にあなたと戦うよりも自分たちを守ることに興味があるようだ。</text>
+					<ship hostile="false" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="ABANDONED_CIVILIAN_LOST_ITEMS_WIN" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>私たちは助けられない。</text>
+		<event>
+			<text>民間人はがっかりしているが、理解はしているという。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ABANDONED_CIVILIAN_LOST_ITEMS_WIN">
+	<text>数枚の家族写真、子供のおもちゃの箱、無名のマンティス将軍の剣のレプリカ。民間人は喜んであなたに報酬を支払う。</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+
+<event name="ABANDONED_WRECK" unique="true">
+	<text>近くには古い船の残骸が漂っているが、まだ物資が残っている可能性がある。</text>
+	<choice hidden="true">
+		<text>廃車にする。</text>
+		<event load="ABANDONED_WRECK_SALVAGE" />
+	</choice>
+	<choice>
+		<text>無視するんだ。</text>
+		<event>
+			<text>このセクターに群がる不潔なラニウスやゴースト、海賊よりも、あなたたちの方が高い基準を持っている。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ABANDONED_WRECK_SALVAGE">
+	<event>
+		<text>沈没船にたどり着く前に、民兵の船が急襲してくる。サルベージ任務を続行するには、まず彼らを始末しなければならない。</text>
+		<ship load="SHIP_MILITIA_WRECK" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>どうやら誤算だったようだ。残骸にはまだ人が住んでいる。元の乗組員ではなく、むしろ怒ったゴーストの一団が、自分たちの船をバラバラにしようとするあなたの試みに満足していないのだ。</text>
+		<ship load="SHIP_GHOST_ALL" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>残骸をスクラップしている間は平然としている。</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+</eventList>
+
+<event name="ABANDONED_REBEL_DELUSIONAL" unique="true">
+	<text>反乱軍の船（おそらく反乱軍艦隊からはぐれた船）が、あなたに声をかけてきた。「戦い、恐怖！この戦いで我らを苦しめ、そして今、とどめを刺しに来たのか？我々の周りで市民が死に、惑星が燃えているのに、自国民を助けるより我々と戦うのか？"</text>
+	<ship load="SHIP_REBEL_FIGHT" hostile="false" />
+	<choice hidden="true">
+		<text>反乱軍には、戦いはずっと前に終わったと説明するんだ。</text>
+		<event load="ABANDONED_REBEL_DELUSIONAL_EXPLAIN" />
+	</choice>
+	<choice hidden="true" req="unique_jerry">
+		<text>(ジェリー）反逆者を慰めるんだ。</text>
+		<event>
+			<text>反乱軍はジェリーを見て驚き、落ち着いたようだ。ジェリーは、ここにいる誰もが自分たちを支持しており、自分たち以上に民間人が死んだり惑星が燃えたりするのを見たくないのだと優しく伝える。キャプテンはジェリーに安心感を覚え、参加を申し出る。</text>
+			<crewMember amount="1" class="human" pilot="1" />
+		</event>
+	</choice>
+	<choice hidden="true" req="human_mfk">
+		<text>(MFKエースクルー) 彼らを慰めるために、反乱軍の船であると主張する。</text>
+		<event>
+			<text>反乱軍のキャプテンは完全に妄想を抱いているが、安心させている。PTSDの一種に違いない。戦闘はすでに終わっていると説得することはできないので、船長を説得して、代わりにあなたのクルーに加わってもらい、"脱出 "する。</text>
+			<crewMember amount="1" class="human" pilot="1" />
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGINEER">
+		<text>(エンジニア・クルー) 彼らを慰めるために、反乱軍の船だと名乗れ。</text>
+		<event>
+			<text>反乱軍のキャプテンは完全に妄想を抱いているが、安心させている。PTSDの一種に違いない。戦闘はすでに終わっていると説得することはできないので、船長を説得して、代わりにあなたのクルーに加わってもらい、"脱出 "する。</text>
+			<crewMember amount="1" class="human" pilot="1" />
+		</event>
+	</choice>
+	<choice hidden="true" req="mind" lvl="1">
+		<text>(マインド・コントロール）戦いはすでに終わったと信じ込ませる。</text>
+		<event>
+			<text>あなたのマインド・コントロールは、彼の心に感染した狂気に対抗するのに苦労している！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="mind" lvl="2">
+		<text>(マインド・コントロール）戦いはすでに終わったと彼に信じ込ませる。</text>
+		<event>
+			<text>あなたのマインドコントロールが、反乱軍キャプテンの狂気を一時的に消し去った。新たに発見した明晰さで彼に状況を説明すると、彼の反応に驚く。「私は何週間もこの区域をさまよい、気が狂いそうだった。この反乱軍は、人に安らぎを与えるのに適していない。このような日々から離れる時が来たのかもしれない"</text>
+			<crewMember amount="1" class="human" all_skills="1" />
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_MEDIC">
+		<text>(衛生兵に反乱軍を評価させろ。</text>
+		<event>
+			<text>衛生兵は反乱軍兵士を注意深くチェックし、頭をすっきりさせるためにいくつかの頭の体操をさせる。そして、新たに発見した明晰な頭で、彼に状況を説明した。「私は何週間もこの区域をさまよい、気が狂いそうだった。この反乱軍は、人に安らぎを与えるのに適していない。このような日々から離れる時が来たのかもしれない"</text>
+			<crewMember amount="1" class="human" all_skills="1" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>反乱軍と戦え</text>
+		<event>
+			<text>反乱軍はこのセクターでまだ続いている "戦い "について妄想しているかもしれないが、だからといって、彼らが無力化しなければならない脅威でないということにはならない。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>反乱軍はクレイジーだ。避けろ。</text>
+		<event>
+			<text>幸運なことに、反乱軍はまだ妄言に忙しく、あなたがこっそりと逃げていくのに気づかない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ABANDONED_REBEL_DELUSIONAL_EXPLAIN">
+	<event>
+		<text>反乱軍は妄信的で、あなたの話を聞こうとしない。彼らはあなたの言うことを何一つ信じず、やがて激怒してあなたを攻撃することに決める。</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>反乱軍は正気を失っており、ある種のPTSDを患っているのは明らかだ。彼らは加速し、あなたたちと衝突しようとしていることに気づかない。舵を切ろうとしても船体は衝突する。反乱軍の船は衝突の矢面に立たされ、危うくなる。あなたの船はまだダメージを受けているが、少なくともスクラップを得ることはできる。</text>
+		<damage amount="5" effect="breach" />
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+	<event>
+		<text>反乱軍はあなたの言うことを何も理解できず、彼らがPTSDの一種に違いないことは明らかだ。戦闘はとっくに終わっていると説得することもできないので、船長を説得し、代わりに「脱出」するためにあなたのクルーに加わるよう説得する。</text>
+		<crewMember amount="1" class="human" pilot="1" />
+	</event>
+</eventList>
+
+<event name="ABANDONED_GHOST_LANIUS_DUEL" unique="true">
+	<text>バガボンド号とラニウス号が難破船をめぐって、旧世界のカウボーイ顔負けの方法でにらみ合いをしているようだ。</text>
+	<choice hidden="true">
+		<text>バガボンドを助け、ラニウスと戦う。</text>
+		<event>
+			<text>スラスターのパワーを上げ、ラニウスの船に近づく。</text>
+			<ship load="SHIP_LANIUS_DUEL" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_GHOST">
+		<text>(ゴーストクルー）バガボンドに降伏するよう説得する。</text>
+		<event>
+			<text>しかし、あなたのゴーストはバガボンドに理由を話すことに成功した。彼らは飛び去り、ラニウスはあなたに呼びかける。"平和の調整に向かってさまよいながら、コミュニケーションを印象づける。平和へのさらなる関与。分かち合ってくれるか？"どうやら彼らは、この抗争の発端となった難破船を共有しようと申し出ているようだ。</text>
+			<autoReward level="HIGH">item</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ラニウスを助け、バガボンドと戦う。</text>
+		<event>
+			<text>スラスターのパワーを上げ、バガボンド船に近づく。</text>
+			<ship load="SHIP_GHOST_DUEL" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_LANIUS">
+		<text>(ラニウス・クルー）ラニウスを説得して降伏させる。</text>
+		<event>
+			<text>彼らは確かに他の誰の言うことも聞かないが、あなたのラニウスは彼らの仲間を説得することに成功した。彼らは飛び去り、バガボンドはあなたを呼んだ。「君の言葉遣いには感心させられる。野蛮な金属獣をどうやって説得したんだ？まあいい。今が善行の時らしく、私の番だ」。どうやら彼らは、この確執の発端となった難破船を分け合おうと言っているようだ。</text>
+			<autoReward level="HIGH">item</autoReward>
+		</event>
+	</choice>
+	<choice>
+		<text>これらの船は互いにふさわしい。</text>
+		<event>
+			<text>部分的に攻撃的で、謎めいた、エイリアンを漁る種族が存在する中で、ゴーストとラニウスは互いに最もふさわしい2種族だ。どちらの船が勝つかでクルーが賭けをするのを阻止するため、あなたは船の周りを何度もチェックする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ABANDONED_GHOST_LANIUS_DUEL_GHOST">
+	<text>ゴーストが単にあなたに借りを返そうとしているのか、それともラニウスの強敵を簡単に相手にする船を恐れているのかはわからないが、ゴーストはあなたを避けて飛び去った。ゴーストたちはあなたを避けて飛び去った。</text>
+	<autoReward level="MED">stuff</autoReward>
+</event>
+<event name="ABANDONED_GHOST_LANIUS_DUEL_LANIUS">
+	<text>ラニウスとの意思疎通は難しいが、残骸を2隻の船で均等に分けるという取引に成功した。</text>
+	<autoReward level="MED">stuff</autoReward>
+</event>
+
+<event name="ABANDONED_PIRATE_CIVILIAN">
+	<text load="ABANDONED_PIRATE_CIVILIAN_TEXT" />
+	<ship load="SHIP_PIRATE_CIVILIAN_LANIUS" hostile="false" />
+	<choice hidden="true">
+		<text>海賊を襲え。</text>
+		<event>
+			<text>武器をチャージすると、すぐに海賊船の注意を引く。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="FLARE_DISTRACTION" hidden="true">
+		<text>(照明弾）照明弾で注意をそらし、民間船が逃げられるようにする。</text>
+		<event>
+			<text>海賊は突然の照明弾に驚くが、すぐに自分一人ではないことに気づく。照明弾がどこから来ているのかわからず、海賊は大きな船と戦う危険を冒すよりもむしろ逃げた。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="SAVE_CIVILIAN_LIST" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>衝突を避ける。</text>
+		<event>
+			<text>残念ながら、この戦争やラニウスの侵略によって被害を受けたすべての人々を救うことは、あなたの使命ではない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<textList name="ABANDONED_PIRATE_CIVILIAN_TEXT">
+	<text>あなたは、海賊スカベンジャーたちによって "買収 "されようとしている廃鉱施設を発見する。しかし、すぐに民間輸送船から「助けてくれ！海賊に捕まり、逃げようとしていたんだ。民間船に乗り込む一隻の海賊船を目撃する。</text>
+	<text>あなたともう1隻の船が飛び込んだ後、隠れていた海賊船が姿を現した。センサーによると、海賊は非武装の民間船を追って飛び立つ前に、あなたの船の武器システムを素早くスキャンしたようだ。</text>
+	<text>海賊船が給油所に停泊中の小型船に発砲している。ワイドバンドのチャンネルで放送している。船長の怒鳴り声を中途半端な速度でキャッチする。「...あの忌々しいスカベンジャーと取引しているのを見たぞ。レッド・ジャイアント一味を切り崩そうとしたらどうなるか、教えてやる！"</text>
+</textList>
+
+<event name="ABANDONED_LANIUS_AUTO_REBEL" unique="true">
+	<text>反乱軍の自動偵察機を吸収しようとしているラニウス艦に出くわす。ラニウスを追い払えば、それを利用できるかもしれない。</text>
+	<ship load="SHIP_LANIUS_AUTO" hostile="false" />
+	<choice hidden="true">
+		<text>船と戦え。</text>
+		<event>
+			<text>あなたは武器をパワーアップし、すぐに船の注意を引く。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_LANIUS" hidden="true">
+		<text>(ラニウス・クルー) まずオートシップへのアクセスを要求してください。</text>
+		<event>
+			<text>他のラニウスは最初、縄張り意識をむき出しにしてオートを手放そうとしなかったが、データストアをダウンロードするだけだと説明すると、ラニウスはそれを受け入れた。オートシップにはまだ艦隊に自分の位置を警告するシステムが完全に機能していることがわかったので、偽のデータを与えて地図情報をダウンロードする。</text>
+			<modifyPursuit amount="-1" />
+			<reveal_map />
+		</event>
+	</choice>
+	<choice req="FLARE_DISTRACTION" hidden="true">
+		<text>(フレア）フレアを使ってラニウスをオートから遠ざける。</text>
+		<event>
+			<text>ラニウスは視力が低く、注意力が低いという話を聞いたことがあるだろうが、それが事実であろうとなかろうと、このラニウスは確かにフレアに引き寄せられる。円盤を追いかけるために一時的にオートから離れ、あなたが近づくのに十分な時間を与える。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="LANIUS_AUTO_REBEL_LIST" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>放っておけばいい。</text>
+		<event>
+			<text>障害を持つスカウトがどのような手助けをしようとも、他のラニウスと戦うリスクに見合うものではない。あなたは先に進む準備をする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="LANIUS_AUTO_REBEL_LIST">
+	<event>	
+		<text>スクラップにする前に、スカウトから周囲のビーコンに関するかなりの量のデータを取り出すことができる。</text> 
+		<autoReward level="LOW">scrap_only</autoReward>
+		<reveal_map />
+	</event>
+	<event>
+		<text>この船には、反乱軍艦隊にあなたの船との接触を警告する方法が組み込まれている。あなたは自分の船の居場所に関する偽のデータを送り、しばらくの間、艦隊を尾行させないようにする。</text>
+		<autoReward level="LOW">scrap_only</autoReward>
+		<modifyPursuit amount="-1" />
+	</event>
+</eventList>
+
+<event name="ABANDONED_LANIUS_GROUP_AUTO" unique="true">
+	<text>ラニウス艦が反乱軍前方基地とその自動偵察機を吸収しているのに気づく。彼らは攻撃的ではないようだ。彼らの金属への欲求は役に立つのだろうか？</text>
+	<choice hidden="true">
+		<text>反乱軍を遅らせるために彼らを使おう。</text>
+		<event load="LANIUS_GROUP_AUTO_OUTCOME" />
+	</choice>
+	<choice hidden="true">
+		<text>放っておけばいい。</text>
+		<event>
+			<text>そのままにしておいた方がいいと判断したのだろう。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_LANIUS">
+		<text>(ラニウス・クルー）反乱軍を遅らせるために彼らを使おう。</text>
+		<event>
+			<text>あなたのクルーが艦隊の接近と、前方の偵察に使っている自動船の数を伝える。彼らはあなたに感謝し、あなたが来た方向にジャンプする準備をする。うまくいけば艦隊を遅らせることができるだろう。あなたは反乱軍ステーションの残骸をスクラップにする。</text>
+			<autoReward level="MED">standard</autoReward>
+			<modifyPursuit amount="-1" />
+		</event>
+	</choice>
+</event>
+<eventList name="LANIUS_GROUP_AUTO_OUTCOME">
+	<event>
+		<text>近づいてくる反乱軍の艦隊には、無数の自動化された船が偵察にきていることを伝えようと最善を尽くす。しかし、翻訳装置が故障したのか、それとも単に興味がないのか。彼らはチャンネルを切り、船を吸収し続ける。</text>
+	</event>
+	<event>
+		<text>あなたは、近づいてくる反乱軍艦隊には無数の自動化された船が偵察しているという考えを伝えようと最善を尽くす。あなたが誤解しているのかどうかは定かではないが、彼らはあなたの提案を嘲笑しているように見える。ほとんどの艦船は自分たちのしていたことを続けているが、1隻だけあなたと戦おうとする艦船がいる。</text>
+		<ship load="SHIP_LANIUS_FIGHT" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>あなたは、近づいてくる反乱軍の艦隊には無数の自動化された艦船が偵察にきていることを、懸命に伝えようとする。彼らは助言に感謝し、あなたが来た方向にジャンプする準備をする。うまくいけば艦隊を遅らせることができるだろう。あなたは反乱軍ステーションの残骸をスクラップにする。</text>
+		<autoReward level="MED">standard</autoReward>
+		<modifyPursuit amount="-1" />
+	</event>
+</eventList>
+
+<event name="ABANDONED_FUELING_STATION" unique="true">
+	<text>ビーコンの近くに給油プラットフォームがあるが、放送信号は文字化けしており、メッセージを聞き取ることはできない。</text>
+	<choice>
+		<text>ホームを呼び出し、コミュニケーションを試みる。</text>
+		<event>
+			<text>通信システムから悲鳴が聞こえ、放送が突然途切れる。プラットフォームが突然動き出し、ラニウスの船であることがわかる！</text>
+			<ship load="SHIP_LANIUS_FUELING_STATION" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>プラットフォームとドッキング。</text>
+		<event>
+			<text>あなたの船は給油ステーションのバースのひとつに入り、休息に感謝している。</text>
+			<choice hidden="true">
+				<text>給油の合図。</text>
+				<event load="ABANDONED_FUELING_STATION_LIST" />
+			</choice>
+			<choice req="doors" lvl="2" hidden="true">
+				<text>(ブラストドア）ブラストドアを固定する。</text>
+				<event>
+					<text>強化されたドアは、ラニウスの待ち伏せからあなたを救う。ラニウスはドアと船体に群がり、あなたの船を焼き尽くそうとする。冷静に、武器アレイで彼らを一人ずつ一掃し、ステーションを制圧して燃料を奪う。</text>
+					<item_modify>
+						<item type="fuel" min="5" max="5" />
+					</item_modify>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>プラットフォームは無視する。</text>
+		<event>
+			<text>ホームを離れ、ジャンプの準備をする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ABANDONED_FUELING_STATION_LIST">
+	<event>
+		<text>あなたの船のダッシュボードが突然、警告で点灯した！ラニウスがプラットフォームに乗り込み、あなたの船に乗り込んできた。隠れていたクルーザーが姿を現す！</text>
+		<ship load="SHIP_LANIUS_FUELING_STATION" hostile="true" />
+		<boarders breach="true" min="1" max="1" class="lanius" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>束の間の休息と思われたのも束の間、ラニウスの罠にはまる。最初の警告はエンジンルームからの爆発で、その数分後にはセンサー範囲にラニウス艦が探知される！</text>
+		<ship load="SHIP_LANIUS_FUELING_STATION" hostile="true" />
+		<damage amount="3" system="engines" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>呼びかけても誰も応答しない。あなたはスキャンを実行し、ステーションが最近放棄されたことを発見した。出発する前に燃料を空にする。</text> 
+		<item_modify>
+			<item type="fuel" min="3" max="5" />
+		</item_modify>
+		<choice>
+			<text>次へ...</text>
+			<event />
+		</choice>
+		<choice req="sensors" lvl="2" hidden="true" max_group="0">
+			<text>(センサーのアップグレード) 最大感度で別のスキャンを実行する。</text>
+			<event>
+				<text>さらに重点的にスキャンしてみると、補助給油プラットフォームのひとつに未所持の燃料があることがわかった。</text>
+				<item_modify>
+					<item type="fuel" min="1" max="3" />
+				</item_modify>
+			</event>
+		</choice>
+		<choice req="sensors" lvl="3" hidden="true" max_group="0">
+			<text>(アドバンスセンサー) 最大感度でもう一回スキャンを実行する。</text>
+			<event>
+				<text>さらに重点的なスキャンを行い、補助給油プラットフォームのひとつに、未所有の燃料とドローンの部品があることを発見する。</text>
+				<item_modify>
+					<item type="fuel" min="2" max="3" />
+					<item type="drones" min="1" max="3" />
+				</item_modify>
+			</event>
+		</choice>
+		<choice req="ADV_SCANNERS" lvl="3" hidden="true" max_group="0">
+			<text>(ロングレンジスキャナ) 最大感度で再度スキャンを実行する。</text>
+			<event>
+				<text>さらに重点的なスキャンを行い、補助給油プラットフォームのひとつに、未所有の燃料とドローンの部品があることを発見する。</text>
+				<item_modify>
+					<item type="fuel" min="2" max="3" />
+					<item type="drones" min="1" max="3" />
+				</item_modify>
+			</event>
+		</choice>
+	</event>
+</eventList>
+<event name="ABANDONED_FUELING_STATION_END">
+	<text>ラニウスはステーションの燃料備蓄には無関心だったようで、燃料はかなり残っている。あなたは自分の船に積めるだけ積んで、次のビーコンにジャンプする準備をする。</text>
+	<item_modify>
+		<item type="fuel" min="3" max="5" />
+	</item_modify>
+</event>
+
+<eventList name="DISTRESS_ABANDONED">
+	<event load="DISTRESS_ABANDONED_GHOST_CONSTRUCTION" />
+	<event load="DISTRESS_ABANDONED_ASTEROID_COLONY" />
+	<event load="DISTRESS_ABANDONED_STOLEN_TECH" />
+</eventList>
+
+<event name="DISTRESS_ABANDONED_GHOST_CONSTRUCTION" unique="true">
+	<distressBeacon />
+	<text>連邦の建設船がバガボンドの一族に攻撃されている。「助けてくれゴーストが我々の船を狙っている！何とかしてくれ！"</text>
+	<choice hidden="true">
+		<text>彼らの船とドッキングし、ゴーストを引き離す。</text>
+		<event>
+			<text>ゴーストはあなたのドッキングに気づき、より大きなあなたの船を優先して現在の目標を放棄した。連邦のクルーはあなたの援助に感謝し、報酬を提供する。</text>
+			<autoReward level="LOW">stuff</autoReward>
+			<boarders min="3" max="4" class="phantom_mare" />
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_ANTIBIO_NOMISSILE">
+		<text>(対バイオ兵器）ゴーストを退治する。</text>
+		<event>
+			<text>連邦のクルーに危害を加えないよう注意しながら、ゴーストを簡単に消し去った。彼らは感謝し、あなたに物資を支払う。</text>
+			<autoReward level="LOW">stuff</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_BOMBS_CREWDAMAGE">
+		<text>(乗員ダメージ爆弾兵器) ゴーストを退治せよ。[-3ミサイル]</text>
+		<event>
+			<text>連邦のクルーに危害を加えないよう注意しながら、ゴーストを簡単に消し去った。彼らは感謝し、あなたに物資を支払う。</text>
+			<autoReward level="LOW">stuff</autoReward>
+			<item_modify>
+				<item type="missiles" min="-3" max="-3" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="PROTON_PACK">
+		<text>(プロトンパック）ゴーストをバキュームする。</text>
+		<event>
+			<text>プロトンパックを連邦の船に接続し、ゴーストを1体ずつ捕獲する。その効率に感心した連邦軍は、報酬を2倍にすると申し出た。</text>
+			<autoReward level="HIGH">stuff</autoReward>
+		</event>
+	</choice>
+	<choice>
+		<text>無視するんだ。</text>
+		<event>
+			<text>ゴーストを相手に船を危険にさらすことはできない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DISTRESS_ABANDONED_ASTEROID_COLONY" unique="true">
+	<distressBeacon />
+	<text>廃墟と化したスペース・コロニーが近くを漂い、そのシールド・ジェネレーターにはもはや機能しない巨大な穴が開いていた。救難信号は、その骸骨のような残骸の中に身を潜めている難民の一団から発せられたようだ。「助けてくれ！我々のスキャンによると、巨大な隕石がこのコロニーにまっすぐ向かっている。</text>
+	<choice hidden="true">
+		<text>難民を助けよう。</text>
+		<event>
+			<text>しかし、小惑星を止める方法はまだ必要だ。</text>
+			<choice hidden="true">
+				<text>多少のダメージなら耐えられる。船を小惑星の前に設置しろ。</text>
+				<event>
+					<text>最も賢い選択ではないが、うまくいけば地獄だ。かなり大きな打撃を受けたが、小惑星は接触した瞬間に砕け散った。難民たちはあなたの助けに感謝し、古い入植者たちが残したオーグメントのひとつと、彼らが必要としない物資を提供する。</text>
+					<damage amount="8" />
+					<autoReward level="LOW">stuff</autoReward>
+					<augment name="RANDOM" />
+				</event>
+			</choice>
+			<choice hidden="true" req="shields" lvl="6">
+				<text>(アドバンスシールド）シールドで小惑星をそらす。</text>
+				<event>
+					<text>シールドが一撃を受け、小惑星を粉砕する。いくつかの破片が船体をかすめるが、それ以外は無傷だ。難民たちはあなたの助けに感謝し、古い入植者たちが残したオーグメントのひとつと、彼らが必要としない物資を提供する。</text>
+					<damage amount="2" />
+					<autoReward level="LOW">stuff</autoReward>
+					<augment name="RANDOM" />
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_ARMOR">
+				<text>(船体装甲）あなたの装甲は打撃を受けることができる。小惑星を跳ね返す。</text>
+				<event>
+					<text>小惑星が船体に衝突しても、小惑星が船体に衝突したことに変わりはなく、アーマーに関係なく多少のダメージを受ける。それでもあなたはほとんどのダメージに耐え、小惑星は衝突で砕け散る。難民はあなたの助けに感謝し、古い入植者が残したオーグメントのひとつと、彼らが必要としない物資を提供する。</text>
+					<damage amount="2" />
+					<autoReward level="LOW">stuff</autoReward>
+					<augment name="RANDOM" />
+				</event>
+			</choice>
+			<choice>
+				<text>結局のところ、私たちはどうすることもできない。</text>
+				<event>
+					<text>通信をミュートして飛び立つ。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>力になれない。</text>
+		<event>
+			<text>通信をミュートして飛び立つ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DISTRESS_ABANDONED_STOLEN_TECH" unique="true">
+	<distressBeacon />
+	<text>遭難信号の発信源であるエンギ船から連絡が入る。「救助を要請する詳細は？ラニウスの軍艦が ドローン技術を導入したエンギ船は装備が貧弱で 戦闘準備ができていない君の船で十分だ連邦が引き受ければ 報酬を支払う"</text>
+	<choice hidden="true">
+		<text>ラニウスを追い詰めることに同意する。</text>
+		<event>
+			<text>ラニウスはそう遠くないが、すでに回路図をダウンロードし、オリジナルのドローンを消費してしまったようだ。取り戻したいなら、彼らのデータバンクからダウンロードする方法を見つけなければならない。</text>
+			<choice hidden="true">
+				<text>ラニウスの船と戦い、回路図を取り戻そうとする。</text>
+				<event>
+					<text>あなたはラニウス艦と戦うことにした。回路図を取り戻したいなら、彼らのコンピューターが損傷していないことを確認する必要がある。</text>
+					<ship load="SHIP_LANIUS_STOLEN_DRONE" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="hacking">
+				<text>(ハッキング）相手のシステムをハッキングし、回路図を転送する。</text>
+				<event>
+					<text>データ転送は問題なく行われたが、あなたはラニウスにあなたの存在を知らせた。</text>
+					<ship load="SHIP_LANIUS_STOLEN_DRONE_HACK" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="ADV_SCANNERS">
+				<text>(長距離スキャナー）回路図をコンピュータに転送する。</text>
+				<event>
+					<text>データ転送は問題なく行われ、ラニウスはあなたの存在に気づかないままだ。</text>
+					<choice hidden="true">
+						<text>エンジニアに連絡する。</text>
+						<event load="DISTRESS_ABANDONED_STOLEN_TECH_WIN" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="sensors" lvl="3">
+				<text>(Adv.センサー）回路図をコンピュータに転送する。</text>
+				<event>
+					<text>データ転送は問題なく行われ、ラニウスはあなたの存在に気づかないままだ。</text>
+					<choice hidden="true">
+						<text>エンジニアに連絡する。</text>
+						<event load="DISTRESS_ABANDONED_STOLEN_TECH_WIN" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>走れるうちに走れ。</text>
+		<event>
+			<text>エンジンをパワーアップし、コンピューターが信号を検知できなくなるまで遠くへ飛ぶ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DISTRESS_ABANDONED_STOLEN_TECH_WIN">
+	<text>エンジは自分たちのドローンが破壊されたことを喜ばなかったが、それでも回路図の代金を支払うと申し出た。</text> 
+	<choice>
+		<text>支払いを受け入れる。</text>
+		<event>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice req="drones">
+		<text>(ドローン操縦）自分でドローンを組み立て、エンジに渡す。</text>
+		<event>
+			<text>エンギ船に移す前に、ドローン技術を簡単に構築する。</text>
+			<item_modify>
+				<item type="drones" min="-1" max="-1" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>エンジは困惑し、自分たちでもドローンを組み立てられるのに、なぜあなたが自分でドローンを作る必要があるのかと困惑する。彼らはあなたにドローンを預け、代わりに設計図を受け取り、代金を振り込んだ。</text>
+					<autoReward level="MED">standard</autoReward>
+					<drone name="RANDOM" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<eventList name="QUEST_ABANDONED">
+	<event load="QUEST_ABANDONED_RAID" />
+</eventList>
+
+<event name="QUEST_ABANDONED_RAID" unique="true">
+	<text>最初はこのシステムはごく普通のものに見えたが、コンピューターに表示される点滅は、目には見えない船からの新しいひょうを示す。</text>
+	<img planet="PLANET_UNPOPULATED" />
+	<choice hidden="true">
+		<text>対応する。</text>
+		<event>
+			<text>通信インターフェイスを開くとすぐに、近くの惑星の影からそそり立つ海賊船を発見した。「おい、フェディ！仕事の依頼だ。俺と俺の仲間は、この立派なコロニーに物資を探しに行っていたんだが、どこからともなく、トゲトゲの金属野郎が集まってきたんだ！どこからともなくだ頼みがある ラニウスの船を片付けてくれそれが望みなら、俺たちには金がある..."</text>
+			<choice hidden="true">
+				<text>ラニウスを殺すことに同意する。</text>
+				<event>
+					<text>海賊がコロニーまでの座標を教えてくれる。</text>
+					<quest event="QUEST_ABANDONED_RAID_COLONY" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>相手の申し出を断る。</text>
+				<event>
+					<text>傭兵稼業ではないと説明し、通信を切る。</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>走れるうちに走れ。</text>
+		<event>
+			<text>エンジンをパワーアップし、コンピューターが信号を検知できなくなるまで遠くへ飛ぶ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ABANDONED_RAID_COLONY">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>ある海賊が、放棄されたコロニーにいるラニウス船の存在を一掃してほしいと依頼してきた。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたは放棄されたコロニーに到着した。思っていたよりずっと守られているようだ。小さいとはいえ、ラニウスの船が何十隻も近くに眠っている。</text> 
+	<img planet="PLANET_POPULATED" />
+	<choice hidden="true">
+		<text>ラニウスのリーダーを攻撃し、他の選手を追い払う。</text>
+		<event>
+			<text>あなたは最も強い船、危険なエリート・ラニウスを選び出す。ラニウスを仕留めれば、他の小型船はここに留まることに興味を示さなくなるだろう。</text>
+			<ship load="SHIP_LANIUS_RAID_ELITE" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>小型船を1隻選び出せ。</text>
+		<event>
+			<text>ラニウスの小型船を1隻選び、交戦する。</text>
+			<ship load="SHIP_LANIUS_RAID" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>これは悪い考えだ。相手がまだ気づいていないうちに、そそくさと逃げよう。</text>
+		<event>
+			<text>これはあなたが期待していたものとは違う。海賊は他の人を探さなければならない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ABANDONED_RAID_WIN">
+	<text>コロニーがラニウスによって保護されなくなった今、あなたには選択しなければならないことがある。</text> 
+	<choice hidden="true">
+		<text>海賊に連絡し、植民地がラニウスの脅威から解放されたことを伝える。</text>
+		<event>
+			<text>ほどなくして海賊が飛び込んできて、助けてくれてありがとうと言う。彼らはあなたに物資と新品の武器を支払う。</text>
+			<autoReward level="MED">weapon</autoReward>
+		</event>
+	</choice>
+	<choice>
+		<text>海賊のことは忘れて、自分でコロニーをスクラップにしてしまえ。</text>
+		<event>
+			<text>海賊がやってくる前に、コロニーからできる限りのものをかき集める。</text>
+			<autoReward level="HIGH">standard</autoReward>
+		</event>
+	</choice>
+</event>
+
+
+<eventList name="HOSTILE_ABANDONED">
+	<event load="ENCOUNTER_LANIUS_ABANDONED" />
+	<event load="ENCOUNTER_GHOST_ABANDONED" />
+	<event load="ENCOUNTER_PIRATE_ABANDONED" />
+	<event load="ENCOUNTER_REBEL_ABANDONED" />
+	<event load="ENCOUNTER_MILITIA_ABANDONED" />
+</eventList>
+
+<event name="ENCOUNTER_LANIUS_ABANDONED">
+	<loadEventList first="false" generate="true">
+		<event name="ENCOUNTER_LANIUS_ABANDONED_REGULAR" />
+		<event name="ENCOUNTER_LANIUS_ABANDONED_SUN" />
+	</loadEventList>
+</event>
+<event name="ENCOUNTER_LANIUS_ABANDONED_REGULAR">
+	<text load="TEXT_ENCOUNTER_LANIUS_ABANDONED" />
+	<ship load="SHIP_LANIUS_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_LANIUS_ABANDONED">
+	<text>ラニウスの船は、飛び込むとすぐに放棄された衛星の再利用を止める。すべてのヘイルをブロックし、武器にパワーを与える。</text>
+	<text>到着すると、武装したラニウス艦がひどく損傷した反乱軍のパトロール船を引き揚げる準備をしていた。あなたの到着に気づいたラニウスは、その日2番目の標的を迎え撃つため、貪欲に動き出した。</text>
+	<text>ラニウスはターゲットを選ばない。スクラップがあれば喜んで奪うだろう。不運なことに、君は近くのラニウス艦に発見され、急襲された。</text>
+	<text>ラニウスは友好的なことで知られているわけではないが、異常に攻撃的な軍艦があなたの船をロックオンし、武器を準備している。</text>
+	<text>あなたはラニウス艦が重武装したゾルタン平和維持戦闘機の最後の残骸を溶かしているところに出くわした。最新の戦果を守りたい彼らは、あなたにチャンスを与えず、即座に攻撃を仕掛けてくる。</text>
+	<text>簡単なサルベージを狙うラニウスの船があなたを発見し、迎撃に移る。</text>
+</textList>
+<event name="ENCOUNTER_LANIUS_ABANDONED_SUN" unique="true">
+	<text>ラニウスの船から呼び出しがあり、近くの星についてくだらないことを話している。"熱よ...死ね、ここにいてはならない！"警告のつもりなのだろうが、彼らは攻撃もしてくる。彼らの動機に戸惑うが、自分の船を守るしかない。</text>
+	<ship load="SHIP_LANIUS_GENERIC" hostile="true" />
+	<environment type="sun" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_GHOST_ABANDONED">
+	<loadEventList first="false" generate="true">
+		<event name="ENCOUNTER_GHOST_ABANDONED_REGULAR" />
+		<event name="ENCOUNTER_GHOST_ABANDONED_ASTEROID" />
+	</loadEventList>
+</event>
+<event name="ENCOUNTER_GHOST_ABANDONED_REGULAR">
+	<text load="TEXT_ENCOUNTER_GHOST_ABANDONED" />
+	<ship load="SHIP_GHOST_ALL" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_GHOST_ABANDONED">
+    <text>ゴーストは新しい船を手に入れるのが大好きで、たいていはもっと簡単な獲物を狙う。にもかかわらず、ここにいるバガボンド船は移住する準備ができているようで、あなたの船をターゲットに選んだ。</text>
+    <text>ほとんどのゴーストがほとんど機能していない残骸に住み着く理由はわからないが、ここの敵対的な船は少しばかり基準が高いようで、次にあなたの船を選んだようだ。</text>
+    <text>あなたは機能不全に陥り、激しく損傷した船から呼びかけを受けた。あなたは応答しようとしたが、どういうわけかその船の住民であるゴーストの一族を怒らせてしまったようだ。</text>
+    <text>ここで目にする船の種類は増え続けており、『狂ったガス生命体でいっぱいの難破船』もリストに加えられるようだ。</text>
+    <text>ゴーストは超対立的なことで知られていないが、興味をそそる船を見つけると、恥ずかしがらずに奪おうとする。明らかに、あなたはここでかなりの印象を与えた。</text>
+    <text>ゴーストがいることに気づく前に、このビーコンで残骸を引き揚げようとするミスを犯しそうになったが、時すでに遅し。彼らは今、あなたに気づき、攻撃に移る。</text>
+</textList>
+<event name="ENCOUNTER_GHOST_ABANDONED_ASTEROID" unique="true">
+	<text>ゴーストシップがこの小惑星帯に新しい船を探しに来た。危険な場所にもかかわらず、彼らはあなたの船との和解を望んでいるようだ。</text>
+	<ship load="SHIP_GHOST_ALL" hostile="true" />
+	<environment type="asteroid" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_PIRATE_ABANDONED">
+	<text load="TEXT_ENCOUNTER_PIRATE_ABANDONED" />
+	<ship load="SHIP_PIRATE_ALL" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_PIRATE_ABANDONED">
+	<text>海賊が何よりも好むものといえば、スクラップだ。たいていの海賊は空の船を引き揚げに来るが、ここにいる海賊は代わりにあんたを襲うことにしたんだ。</text>
+	<text>近くの海賊船があなたに気づいた。海賊船は、あなたがもっと大きな賞金を運んでくれることを期待して、現在引き揚げている難破船を放棄した。</text>
+	<text>このセクターは海賊を惹きつけることが証明されており、このビーコンで待ち受ける対決につながったのは不運な事実だ。</text>
+	<text>危険があろうとなかろうと、多額の懸賞金の誘惑に勝てる海賊はほとんどいない。</text>
+	<text>海賊がすでにこのビーコンへの道を見つけ、戦いを望んでいるようだ。</text>
+	<text>驚いたことに、古い民兵輸送船を漁る海賊船が、最新の獲物を捨てて代わりにあなたと戦うことを好んだ。</text>
+</textList>
+
+<event name="ENCOUNTER_REBEL_ABANDONED">
+	<text load="TEXT_ENCOUNTER_REBEL_ABANDONED" />
+	<ship load="SHIP_REBEL_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_ABANDONED">
+	<text>このセクターでの戦闘が終わって久しいが、反乱軍の船がまだ残っているようだ。</text>
+	<text>反乱軍の大尉が呼びかける：「戦いの代償がわかったか？あきらめて反乱軍に政権を譲りなさい、その方が皆のためです"</text>
+	<text>ここに停泊している反乱軍の船は、戦わずしてあなた方を逃がすつもりはない。戦いに備えよ</text>
+	<text>避難後、反乱軍の大半はこのセクターを去ったと思っていただろうが、数隻が残り、これまでと同様に戦闘態勢を整えているようだ。</text>
+	<text>「ははは！また空っぽのコロニーを期待していたんだろうが、最初から俺だったんだ！"近くの反乱軍の船が船体をロックして攻撃してくる。</text>
+	<text>反乱軍の船が待ち伏せていたようだ。連邦の船が通りかかるのを待ち伏せしている。戦いは避けられない</text>
+</textList>
+
+<event name="ENCOUNTER_MILITIA_ABANDONED" unique="true">
+	<text>このセクターを必死で守ろうとする近くの民兵船がミスを犯し、あなたを廃品回収業者と見なしたようだ。説明する時間はない。彼らは通信をミュートし、すぐに突入してくるからだ。</text>
+	<ship load="SHIP_MILITIA_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+
+
+
+
+
+
+</FTL>

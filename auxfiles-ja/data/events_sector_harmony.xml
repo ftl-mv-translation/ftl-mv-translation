@@ -1,0 +1,2929 @@
+<FTL>
+
+
+
+<event name="FINISH_BEACON_ENGI">
+	<text id="finish_beacon" />
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="EXIT_FILLER_LIST" />
+	</choice>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+<event name="FINISH_BEACON_HARMONY">
+	<text id="finish_beacon" />
+	<choice hidden="true" req="unique_turzil" lvl="0" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>あなたは今、時間を持て余している。</text>
+			<choice hidden="true">
+				<text>探検する</text>
+				
+				<event load="EXIT_FILLER_LIST" />
+			</choice>
+			<choice hidden="true">
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice hidden="true">
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_turzil" lvl="1" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event load="HARMONY_FUGITIVE" />
+	</choice>
+</event>
+
+	
+<eventList name="ITEMS_ENGI_MV">
+	<event load="ENGI_GIFT" />
+	<event load="ENGI_SALVAGER" />
+	<event load="ENGI_AID" />
+	<event load="ENGI_FLEET_DELAY_MV" />
+	<event load="ENGI_SURRENDER_MV" />
+</eventList>
+
+<event name="ENGI_GIFT">
+	<text load="ENGI_GIFT" />
+	<autoReward level="RANDOM">standard</autoReward>
+	<choice>
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice>
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+<textList name="ENGI_GIFT">
+	<text>エンギの船があなたに呼びかける。「身元は？連邦か？異常値です復活を暗示希望を暗示する"支援を提案する""物資を提供する</text>
+	<text>マンティス艦隊がこのセクターを占領しようとする前に、エンギの貨物船とすれ違った。彼らは早く家に帰るため、喜んで積荷を下ろしている。</text>
+	<text>あなたは、マンティスの侵略の可能性があるにもかかわらず静止している孤立したエンギの科学ステーションと接触した。彼らは実験的な技術を試すよう提案する。</text>
+	<text>ここは最近、戦闘があった場所だ。マンティスの力が誇示されたのか、それともここのエンギ族が平和的に去る気がなかったのか。破片を拾い集める。</text>
+</textList>
+
+<event name="ENGI_SALVAGER" unique="true">
+	<ship load="SHIP_LANIUS_HARMONY_SALVAGE" hostile="false" /> 
+	<text>このビーコンにいるラニウス船は、乗組員がまだ乗っているエンギ船のサルベージの途中のようだ。ラニウスはあなたを無視したが、エンギ船はあなたを呼び出そうとした。彼らはラニウスから救うよう要請してきた。</text>
+	<choice hidden="true">
+		<text>ラニウス万歳。</text>
+		<event>
+			<text>「何が何だかわからない。ゴミ船。ゴミは食べても問題ない！"ラニウスはエンジ船を残骸と勘違いしたようだ。</text>
+			<choice hidden="true">
+				<text>船内にエンジがいることを説明してみてください。</text>
+				<event load="ENGI_SALVAGER_EXPLAIN" />
+			</choice>
+			<choice hidden="true">
+				<text>彼らを撃退する。</text>
+				<event>
+					<text>これ以上のコミュニケーションは無意味だ。唯一の方法は戦闘だ。</text>
+					<ship hostile="true" /> 
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>ラニウスの船は、あなたがそそくさと立ち去るのを無視し続ける。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ENGI_SALVAGER_EXPLAIN">
+	<event>
+		<text>エンギ船が残骸ではないことをラニウスに説明することに成功。回収したスクラップに満足したラニウス艦は飛び去る。</text>
+		<choice hidden="true">
+			<text>エンジ万歳。</text>
+			<event load="ENGI_SALVAGER_SAVE" />
+		</choice>
+	</event>
+	<event>
+		<text>ラニウスとのコミュニケーションの試みは無駄に終わる。ラニウスはあなたの理解不能なおしゃべりにうんざりし、次はあなたを破壊することに決めた！</text>
+		<ship hostile="true" /> 
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="ENGI_SALVAGER_SAVE">
+	<event>
+		<text>エンジはあなた方の援助に感謝の意を表している。ドローンパーツとスクラップを渡す。</text>
+		<autoReward level="MED">droneparts</autoReward>
+	</event>
+	<event>
+		<text>驚いたことに、エンギのクルーはラニウス船と戦っている間に窒息死したようだ。スクラップにできるような外的なものはほとんど残っていないが、サルベージできるドローンを発見。</text>
+		<drone name="RANDOM" />
+	</event>
+	<event>
+		<text>エンギ船は予想以上にダメージを受けている。何か重要なものが爆発するまで、長くはもたないようだ。</text>
+		<choice hidden="true">
+			<text>急いで乗船し、エンジ号を救え。</text>
+			<event>
+				<text>限られた時間の中で、あなたはエンジの乗組員の一人を救うことしかできない。彼らの船が息を引き取り、爆発する中、あなたは助けることができない。戻る船もなく、エンギはあなたの船で働くことに同意する。</text>
+				<crewMember amount="1" class="engi" />
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>爆発させてスクラップを回収する。</text>
+			<event>
+				<text>道徳的にはあまりいい選択ではないことはわかっているだろうが、エンジは痛みを感じないから、おそらく大丈夫だろう。彼らの船が爆発するのを見届け、ラニウスが始めたことを終わらせる。</text>
+				<autoReward level="MED">standard</autoReward>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<event name="ENGI_AID" unique="true">
+	<text>近くに設立されたエンギのコロニーから呼び出しがあった。"連邦の存在は...援助を必要としている質問は何ですか？</text>
+	<choice hidden="true">
+		<text>修理。</text>
+		<event>
+			<text>"要請を承認。修理ドローン出動"</text>
+			<damage amount="-7" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>燃料だ。</text>
+		<event>
+			<text>"要請を承認。給油ドローン出動。</text>
+			<autoReward level="MED">fuel_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>弾薬。</text>
+		<event>
+			<text>"要請を承認。ペイロード・ドローン出動"</text>
+			<autoReward level="MED">missiles_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>地図データ。</text>
+		<event>
+			<text>"要請は拒否された、立入禁止区域だ。代替案としてサルベージドローンを派遣。"</text>
+			<autoReward level="MED">scrap_only</autoReward>
+		</event>
+	</choice>
+</event>
+
+<event name="ENGI_FLEET_DELAY_MV" unique="true">
+	<text>あなたは近くの月の反対側にエンギのコロニーが隠れているのに気づいた。彼らは連邦・マンティス戦争時の装備品を発掘しており、反乱軍の艦隊をおびき寄せるのに使うかもしれないと言う。</text>
+	<choice>
+		<text>キャッシュにブービートラップを仕掛ける。</text>
+		<event>
+			<text>あなたはミサイルの弾頭をいくつか転送し、エンジはそれを爆破するように装備してから、艦隊の注意を引くために救難信号をセットする。</text>
+			<item_modify>
+				<item type="missiles" min="-2" max="-2" />
+			</item_modify>
+			<modifyPursuit amount="-2" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>キャッシュを確保する。</text>
+		<event>
+			<text>エンギに発掘を完了させ、物資を船内に運び込む。</text>
+			<autoReward level="MED">drone</autoReward>
+		</event>
+	</choice>
+</event>
+
+<event name="ENGI_SURRENDER_MV" unique="true">
+	<text>付近のエンギ艦が、あなたが武装して飛び込むのを見て、直ちに降伏を放送した："目的は富。エンギの動機：生存。物資の譲渡は可能か？"</text>
+	<ship load="SHIP_ENGI_GENERIC" hostile="false" />
+	<choice hidden="true">
+		<text>友好的であることを説明する。</text>
+		<event load="ENGI_SURRENDER_LIST_MV" />
+	</choice>
+	<choice hidden="true">
+		<text>降伏の申し出を受け入れる。</text>
+		<event>
+			<text>エンギは従順に商品を引き渡し、彼らの道を行く。無駄金だ。</text>
+			<autoReward level="RANDOM">standard</autoReward>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>攻撃だ！</text>
+		<event>
+			<text>エンギの判断は正しかった！船を攻撃しろ</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ENGI_SURRENDER_LIST_MV">
+	<event>
+		<text>エンギたちはほっとした様子で、出発を心待ちにしていた。彼らは別れも告げずに出発した。</text>
+		<instantEscape />
+	</event>
+	<event>
+		<text>エンジはあなたの説明に満足している"有益。目的：長い長い旅。エンギからの物資の輸送と互換性がある"彼らは快く荷物を送ってくれ、あなたは気分が良くなった。</text>
+		<autoReward level="RANDOM">standard</autoReward>
+	</event>
+</eventList>
+
+	
+<eventList name="NEUTRAL_ENGI_MV">
+	<event load="HARMONY_SEARCH" />
+
+	<event load="ENGI_ADVISORY" />
+	<event load="ENGI_IMPLANT_UNION" />
+	<event load="ENGI_VS_VAMPWEED" />
+	<event load="ENGI_SEX" />
+</eventList>
+
+
+<event name="HARMONY_SEARCH" unique="true">
+	<ship load="SHIP_ENGI_FIGHT" hostile="false" />
+	<loadEventList seeded="false" first="false" generate="false">
+		<event name="HARMONY_SEARCH_NORMAL_STANDING" req="rep_comb_engi" lvl="-999" max_lvl="1" />
+		<event name="HARMONY_SEARCH_BAD_STANDING" req="rep_comb_engi" lvl="2" max_lvl="999" />
+	</loadEventList>
+</event>
+<textList name="HARMONY_SEARCH_INTRO">
+	<text>"これ＝ハーモニー調査隊。任務の要件：必要なセクターの安全対策を実施する手段。その手段とは、あなたの船に100％アクセスすること。"</text>
+	<text>"身を引け。あなた方は逃亡者をかくまっている疑いがある。我々は請求を棄却する機会を提供する。あなたの船へのアクセスを許可しなければならない。</text>
+	<text>"あなたの船はクリアされました。須藤：ハーモニー・エンジの乗船を許可する。"エンギ船は期待して待つ。</text>
+	<text>"あなた＝危険にさらされている危険な逃亡者＝あなたの船を使っている可能性：70%.この船へのアクセスを許可するか、破壊の危険を冒せ。"</text>
+</textList>
+<event name="HARMONY_SEARCH_NORMAL_STANDING">
+	<text load="HARMONY_SEARCH_INTRO" />
+    <choice hidden="true" req="rep_comb_engi" lvl="-999" max_lvl="-1" max_group="1">
+		<text>あなたがハーモニーと良好な関係にあること、そしてあなたの使命の重要性を彼らに思い出させる。</text>
+		<event>
+			<text>"認められた。君の存在はハーモニーにとってプラスだ。"船を片付け 貢献の要求を許可する"</text>
+			<autoReward level="LOW">standard</autoReward>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+    <choice hidden="true" req="engi_defender">
+		<text>(エンジ・ディフェンダー) この船はもうクリアだ。我々の任務はハーモニーのためになる</text>
+		<event>
+			<text>"確認した信頼できるクルーを発見。"あなたの船をクリアし 貢献の要求を許可します"</text>
+			<autoReward level="LOW">standard</autoReward>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+    <choice hidden="true" req="LIST_CREW_HARMONY_FUGITIVE" lvl="0" max_group="1" blue="false">
+		<text>受け入れる。</text>
+		<event>
+			<text>エンジはあなたの船を徹底的に調べますが、何も出てきません。"あなた＝クリア。逃亡者を発見した場合は報告せよ。それ以外は続行せよ。"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+    <choice hidden="true" req="LIST_CREW_HARMONY_FUGITIVE" lvl="1" max_group="1" blue="false">
+		<text>受け入れる。</text>
+		<event>
+			<text>エンギの調査官は、あなたのクルーを探すために船を捜索したが、最初は何も見つからなかった。しかし、彼らが立ち去る直前、あなたのクルーを発見した。"逃亡者発見。敵対的介入が必要だ"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="pilot" blue="false" max_group="2">
+		<text>私たちは捜索されることに同意しません。</text>
+		<event>
+			<text>「受け入れられない。拒否＝罪を認める。逮捕は間近だ"この状況からそう簡単には抜け出せないようだ。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+			</choice>
+		</event>
+    </choice>
+    <choice hidden="true" req="LIST_CREW_JERRY" lvl="1" blue="false">
+		<text>ジェリーが緊張した面持ちで話す。「あの、ハーモニーは僕が叔父とつながっていることを知っていると思う。彼らは僕を監視リストに載せているかもしれない"</text>
+		<event load="OPTION_INVALID" />
+    </choice>
+    <choice hidden="true" req="unique_turzil" lvl="1" blue="false">
+		<text>タージルが話す。「ハーモニーはまだ私を探している。もし私の存在が見つかれば、私たちは--攻撃されるだろう"</text>
+		<event load="OPTION_INVALID" />
+    </choice>
+    <choice hidden="true" req="LIST_VARIANT_SEPARATIST" lvl="1" blue="false">
+		<text>あなたの分離主義者は、この船を破壊する必要があるとあなたに伝える。</text>
+		<event load="OPTION_INVALID" />
+    </choice>
+    <choice hidden="true" req="human_technician" lvl="1" blue="false">
+		<text>反乱軍とハーモニーの不可侵条約により、ウェントワースの技術者はハーモニー宇宙域に入ることができない。</text>
+		<event load="OPTION_INVALID" />
+    </choice>
+    <choice hidden="true" req="human_mfk" lvl="1" blue="false">
+		<text>エンギは、自分たちの領域に元MFKの反乱軍がいることを許さない。</text>
+		<event load="OPTION_INVALID" />
+    </choice>
+    <choice hidden="true" req="human_angel" lvl="1" blue="false">
+		<text>あなたの天使は、この状況を打開するためには闘ったほうがよいと告げる。</text>
+		<event load="OPTION_INVALID" />
+    </choice>
+    <choice hidden="true" req="LIST_CREW_LEGION" lvl="1" blue="false">
+		<text>軍団兵は反乱軍がこれまで投入した中で最も危険な部隊のひとつだ。ハーモニーは彼らの存在に激怒するだろう。</text>
+		<event load="OPTION_INVALID" />
+    </choice>
+</event>
+<textList name="HARMONY_SEARCH_ATTACK">
+	<text>"逃亡者発見。暴力行為は正当化される"エンギ艦は躊躇なく攻撃してくる。</text>
+	<text>"あなたの破壊はハーモニーの繁栄指数を0.03％上昇させる。抵抗するな"ハーモニーはパトロール隊を派遣した！</text>
+	<text>"最適なハーモニーの安全には あなたの破壊が必要です"エンギはあなたの評判のためか、あなたを滅ぼそうとしています。</text>
+	<text>"あなたの生存はハーモニーの効率性を阻害する。容認できない"おそらくハーモニーは、あなたの最近の行動を問題視しているのでしょう。</text>
+</textList>
+<event name="HARMONY_SEARCH_BAD_STANDING">
+	<text load="HARMONY_SEARCH_ATTACK" />
+	<ship hostile="true" />
+   	<choice hidden="true">
+   		<text>次へ...</text>
+   		<event load="COMBAT_CHECK" />
+   	</choice>
+</event>
+
+<event name="ENGI_ADVISORY" unique="true">
+    <text>このビーコンには小さな注意書きがある。"警告：このビーコンのシステムは、このセクターで最も一般的なマンティスの攻撃現場である。注意：このビーコンにはあまり近づかないでください。もしマンティス艦を発見したら "ハーモニー "に報告すること。</text>
+    <choice req="ADV_SCANNERS" hidden="true">
+        <text>(長距離スキャナー）スキャナーでマンティスの位置を特定する。</text>
+        <event load="ENGI_LOCATE_MANTIS_AMBUSH" />
+    </choice>
+    <choice req="sensors" lvl="3" hidden="true">
+        <text>(アドバンスセンサー）センサーでマンティスを見つける。</text>
+        <event load="ENGI_LOCATE_MANTIS_AMBUSH" />
+    </choice>
+    <choice>
+        <text>カマキリを探しに行く。</text>
+        <event load="ENGI_LOOKING_FOR_MANTIS" />
+    </choice>
+    <choice>
+        <text>アドバイスに従い、前進する。</text>
+        <event>
+            <text>カマキリと戦うことはあなたにもできることだが、わざわざカマキリを探しに行くのは、時間を費やすのに良い方法とは思えない。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="ENGI_LOOKING_FOR_MANTIS">
+    <event>
+        <text>残念ながら、システム全体をチェックしても、マンティスの痕跡を見つけることはできなかった。あとはビーコンに戻り、先へ進むだけだ。</text>
+    </event>
+    <event>
+        <text>星系を探索していると、マンティスに待ち伏せされる！戦って脱出するしかなさそうだ！</text>
+        <ship load="SHIP_MANTIS_FIGHT" hostile="true" />
+        <choice>
+            <text>次へ...</text>
+            <event load="COMBAT_CHECK" />
+        </choice>
+    </event>
+    <event>
+        <text>星系を探索していると、スゼレインに待ち伏せされる！どうやら戦わなければならないようだ！</text>
+        <ship load="SHIP_SUZERAIN_FIGHT" hostile="true" />
+        <choice>
+            <text>次へ...</text>
+            <event load="COMBAT_CHECK" />
+        </choice>
+    </event>
+</eventList>
+<event name="ENGI_FORWARD_TO_HARMONY">
+    <text>最寄りの通信ハブに長距離通信を送る。その直後、ハーモニーの船がメッセージを送ってきた：「感謝する。この情報は、今後の同様の攻撃を抑制するだろう。"ハーモニーは君にスクラップとドローンの部品を報酬としてくれる。</text>
+    <autoReward level="LOW">droneparts</autoReward>
+</event>
+<event name="ENGI_LOCATE_MANTIS_AMBUSH">
+    <text>システムはすぐにマンティス艦を発見。待ち伏せポイントがある。彼らの位置を知っている以上、どんな船とも対峙できるし、戦いを避けてハーモニーに情報を与えることもできる。</text>
+    <choice>
+        <text>通常のマンティスと戦う。</text>
+        <event>
+            <text>待ち伏せを予知していたあなたは、マンティスを捕らえる。しかし、彼らは反撃の準備をしている！</text>
+            <ship load="SHIP_MANTIS_ADVISORY" hostile="true" />
+            <choice>
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>スゼラインと戦え</text>
+        <event>
+            <text>待ち伏せを予知し、スゼラインを落とす。しかし、彼らは反撃の準備をしている！</text>
+            <ship load="SHIP_SUZERAIN_ADVISORY" hostile="true" />
+            <choice>
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>情報を転送するだけだ。</text>
+        <event load="ENGI_FORWARD_TO_HARMONY" />
+    </choice>
+</event>
+<event name="DEFEAT_SUZERAIN_ELITE_ADVISORY">
+    <text>あなたは強力なハイブエリートとその船を倒すことに成功した。</text>
+    <autoReward level="HIGH">standard_no_item</autoReward>
+    <choice hidden="true">
+        <text>次へ...</text>
+        <event>
+            <text>マンティスエリート船の積荷は戦闘を生き延びたようだ。中には機能する武器が入っており、それを船内に持ち帰る。</text>
+            <weapon name="GIFTLIST_MANTIS" />
+            <choice>
+                <text>残りの情報をハーモニーに転送する。</text>
+                <event load="ENGI_FORWARD_TO_HARMONY" />
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="ENGI_IMPLANT_UNION" unique="true">
+    <text>ハーモニー船が現在、ユニオン船とドッキングしている。少量の残骸があり、到着前に争いがあった可能性がある。</text>
+    <ship load="SHIP_ENGI_IMPLANT" hostile="false" />
+    <choice>
+		<text>調査する。</text>
+		<event>
+			<text>エンギ船は答える。"この船は反乱軍との交戦の 疑いがあります"数理報告によると 最善の選択肢は..." "強制的に行動矯正インプラントを インストールすることですこの行動はハーモニーの繁栄と安全のために必要です"</text>
+			<choice>
+				<text>私たちはこの醜悪な人権侵害に我慢ならない！</text>
+				<event>
+					<text>"ハーモニーの繁栄＞＞＞＞いかなる人間の権利。ハーモニーの繁栄を妨げる＝容認できない"エンギ船はあなたの脅しに応じる。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>彼らに任せておけばいい。</text>
+				<event>
+					<text>その見通しと同じくらい不安だが、あなたはすべての情報を持っているわけではない。ハーモニーを挑発することは、あなたのToDoリストにも入っていない。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+    </choice>
+</event>
+<textList name="ENGI_IMPLANT_UNION_SAVED">
+   	 <text>"あなたが介入してくれたことにどれだけ感謝しているか。連邦も捨てたもんじゃないな"民間人は、あなたのトラブルにオーグメントを提供する。</text>
+   	 <text>「反乱軍に入るつもりはなかった。ただ、連邦が人類に対して正しいことをしているとは思えないと表明する自由が欲しいだけなんだ。とにかく、助けてくれてありがとう。民間人が急いで姿勢を明らかにする中、オーグメントを提示される。</text>
+   	 <text>"ハーモニー "はどんな批判も受け入れない。このセクターからできるだけ早く脱出する。助けてくれてありがとう。民間人からオーグメントが送られる。</text>
+</textList>
+<event name="RESCUED_CIVILIAN_IMPLANTS">
+    <text load="ENGI_IMPLANT_UNION_SAVED" />
+    <autoReward level="MED">augment</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="MORALITY_REMOVE_UNION" />
+	</choice>
+</event>
+
+<event name="ENGI_VS_VAMPWEED" unique="true">
+    <text>南軍の艦船とハーモニーの艦船との間でドッグファイトが勃発した。</text>
+    <choice>
+		<text>ヴァンプウィードを攻撃せよ</text>
+		<event>
+			<text>"もちろん、連邦はこの狂った機械の味方をするだろう"ヴァンプウィードがあなたの攻撃に応じるために離脱する！</text>
+			<ship load="SHIP_VAMPWEED_ENGI_CHOICE" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_VAMPWEED_FIGHT" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>エンジにアタック</text>
+		<event>
+			<text>"連邦は同盟国の責任を怠っている。裏切り者を派遣する"</text>
+			<ship load="SHIP_ENGI_VAMPWEED_CHOICE" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>この2人を戦わせる。</text>
+		<event>
+			<text>この2隻のことはあなたには関係ない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+
+<event name="ENGI_VS_VAMPWEED_VAMPWEED_KILLED">
+    <text>「連邦の援助に感謝する。"不寛容な外国人を派遣したドローンに報酬を支払うエンギ船は何が起こったのかという疑問を残したまま飛び去った。</text>
+    <autoReward level="MED">standard_no_item</autoReward>
+    <drone name="GIFTLIST_ENGI" />
+</event>
+<event name="ENGI_VS_VAMPWEED_ENGI_KILLED">
+    <text>「連邦もやはり謹厳なのだな。我々は貿易のためにここに来ただけなのに、このイカれたキチガイどもは我々の船を捜索し、理由も告げずに攻撃してきた。"ヴァンプウィードの船長がドローンを飛ばす。</text>
+    <autoReward level="MED">standard_no_item</autoReward>
+    <drone name="GIFTLIST_VAMPDRONE" />
+</event>
+
+<event name="ENGI_SEX" unique="true">
+	<text>損傷を受けた1隻と思われた船は、実際には2隻が互いに衝突している...通信信号が飛び交い、損傷が激しく、何が起こったのか判断がつかない。その船はどうやら...エンギか？衝撃でロックされ、自由が利かないようだ。</text>
+	<choice hidden="true">
+		<text>船をこじ開けて助けようとする。</text>
+		<event>
+			<text>驚いたことに、エンジの1隻が攻撃してきた！一隻が分離し、驚くべきことにまだ完全な状態で砲撃してくる！</text>
+			<ship load="SHIP_ENGI_SEX" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>損傷した血管は無視する。</text>
+		<event>
+			<text>君には関係ないことだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_ENGI">
+		<text>(エンジ・クルー) エンジのクルーに船を呼び、ダメージを評価させる。</text>
+		<event>
+			<text>エンジのクルーは拒否します形容詞と名詞を使い分けながら、ホログラムのアニメーションを使いながら、エンギは艦船は "結合 "するためにお互いを利用していると説明する。なぜか、この船の統合は恥ずかしく、個人的なことに聞こえる。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>あなたは2隻のエンギ船から離れることにした。エンギの乗組員に質問した後、あなたは周辺からスクラップ部品を引き揚げることに成功した。</text>
+					<autoReward level="MED">stuff</autoReward>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ENGI_SEX_SHIP_DONE">
+	<text>どうやら、2隻の船が互いの部品を使って新しい船を建造する "統合 "に相当する作業を中断したようだ。エンギは真の敵対者ではなく、照準コンピュータの調整が終わっていなかった。今さらどうすることもできない。生き残った船に遺骨を残すのだ。</text>
+</event>
+<eventList name="NEUTRAL_ENGI_UNIQUE">
+	<event load="ENGI_DECONSTRUCTOR_JUNKYARD" />
+	<event load="ENGI_VIRUS" />
+	<event load="ENGI_COMPLEX" />
+
+	<event load="HARMONY_SEARCH" />
+	
+	<event load="ENGI_SEX" />
+</eventList>
+
+<event name="ENGI_DECONSTRUCTOR_JUNKYARD" unique="true">
+    <text>ビーコンから、いくつかの大きな塊を見つけることができる。その中に、2つの巨大な破片のフィールドがあり、その間に不明瞭な塊がある。そのうちの1つは金属含有量が非常に多く、もう1つの巨大なデブリ・フィールドは、回収可能なものはほとんどないようだ。</text>
+    <choice hidden="true">
+        <text>金属片の山を探る。</text>
+        <event load="ENGI_DECONSTRUCTOR_RICH_FIELD" />
+    </choice>
+    <choice>
+        <text>フィールド間の質量を探る</text>
+        <event>
+            <text>近づいてみると、ナノマシンがうごめく大きな雲と巨大な部屋がある。定期的にエンギ船らしきものが金属片の中から雲に向かって何かを引きずってくる。しかし、一旦近づくと、エンギ船に妨害される。「この地域はエンギ・ナノフォームの立ち入りが制限されている。このビーコンから離れろ。"</text>
+            <ship load="SHIP_ENGI_SWARM_PROTECTOR" hostile="false" />
+            <choice req="LIST_CREW_HARMONY" hidden="true">
+                <text>(ハーモニークルー）"アシスト＝必要"。</text>
+                <event>
+                    <text>エンギはミッションの重要性を説明し、可能な限りのリソースを提供するよう要請する。"...確認した。エンギ：重要な任務だ。ハーモニー・コンストラクトを1つ要求する。資源を提供する"</text>
+                    <autoReward level="MED">standard_no_item</autoReward>
+                    <choice>
+                        <text>別のエンジに依頼する。</text>
+                        <event>
+                            <text>きらめく靄の中、真新しいエンジが群れから直接カーゴベイにプリントされる。エンギはあなたに向かってうなずき、命令を受ける準備ができている。</text>
+                            <crewMember amount="1" class="engi" />
+                        </event>
+                    </choice>
+                    <choice>
+                        <text>クルーのドローンを要請する。</text>
+                        <event>
+                            <text>きらめく靄の中で、ドローンの設計図が群れから直接カーゴベイにプリントされる。</text>
+                            <drone name="GIFTLIST_CREW_DRONES" />
+                        </event>
+                    </choice>
+                    <choice>
+                        <text>戦闘用ドローンを要請する。</text>
+                        <event>
+                            <text>きらめく靄の中で、ドローンの設計図が群れから直接カーゴベイにプリントされる。</text>
+                            <drone name="GIFTLIST_COMBAT_DRONES" />
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+            <choice>
+                <text>ここは何なんだ？</text>
+                <event>
+                    <text>"目標＝サルベージを集め、より大きな集団に提供する。資源：より多くの［ナノマシン、ドローンの設計図、船の部品］を生産する。質問：答えた。行け。"</text>
+                    <choice>
+                        <text>エンジにアタック</text>
+                        <event>
+                            <text>エンジはあなたの攻撃性に即座に反応する--彼らはあなたの貪欲さを予測していたのだ。</text>
+                            <ship hostile="true" />
+                            <choice>
+                                <text>次へ...</text>
+                                <event load="MORALITY_UPDATE_ENGI_FIGHT" />
+                            </choice>
+                        </event>
+                    </choice>
+                    <choice>
+                        <text>出発。</text>
+                        <event />
+                    </choice>
+                </event>
+            </choice>
+            <choice>
+                <text>エンジにアタック</text>
+                <event>
+                    <text>エンジはあなたの攻撃性に即座に反応する。</text>
+                    <ship hostile="true" />
+                    <choice>
+                        <text>次へ...</text>
+                        <event load="MORALITY_UPDATE_ENGI_FIGHT" />
+                    </choice>
+                </event>
+            </choice>
+            <choice>
+                <text>出発。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>他のデブリフィールドを探索する。</text>
+        <event load="ENGI_DECONSTRUCTOR_WASTE_FIELD" />
+    </choice>
+    <choice>
+        <text>これらのフィールドは放っておく。</text>
+        <event>
+            <text>あなたは、これらの分野の調査に時間を費やさないことに決めた。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<eventList name="ENGI_DECONSTRUCTOR_RICH_FIELD">
+    <event>
+        <text>フィールド全体は非常に金属に富んでいるが、フィールドはほとんど圧縮された破壊された船で構成されていることがすぐにわかる。ここがある種の廃品置き場であることは明らかだ。幸いなことに、1隻の船の残骸が大きな塊の周辺にバラバラになって浮かんでおり、巨大な山の中で簡単に狙える。</text>
+        <autoReward level="MED">standard_no_item</autoReward>
+        <weapon name="GIFTLIST_RUSTY" />
+    </event>
+    <event>
+        <text>フィールド全体は非常に金属に富んでいるが、フィールドはほとんど圧縮された破壊された船で構成されていることがすぐにわかる。ここがある種のジャンクヤードであることは明らかだ。あなたは略奪にうってつけの廃船を地表で見つけるが、幸いなことに、それは山積みになった他の船のように押しつぶされてはいなかった。</text>
+        <autoReward level="HIGH">standard</autoReward>
+        <weapon name="GIFTLIST_RUSTY" />
+    </event>
+    <event>
+        <text>フィールド全体は金属が非常に豊富だが、ガラクタの多くは密集している。周囲のスクラップを採取しようとすると、地表が移動していることに気づく。地表に廃船を見つけたが、不運なことにすぐに息を吹き返した！</text>
+        <ship load="SHIP_GHOST_ALL" hostile="true" />
+        <choice>
+            <text>次へ...</text>
+            <event load="COMBAT_CHECK" />
+        </choice>
+    </event>
+    <event>
+        <text>フィールド全体は金属に富んでいるが、ガラクタの多くは密集している。あなたはしばらくの間、瓦礫の中を歩き回り、もっと簡単に採れるものを探した。しかし、略奪にうってつけの大きな残骸に近づいたとき、エンギに呼び止められた。彼らはしつこく声をかけてくる：「この残骸はエンギ・ハーモニーの所有物だ。不法侵入だ。立ち去らなければ処罰の対象となる。最終警告だ。"</text>
+        <ship load="SHIP_ENGI_JUNKYARD" hostile="false" />
+        <choice>
+            <text>滞在する。</text>
+            <event>
+                <text>エンギは脅しを実行に移し、あなたを攻撃する！</text>
+                <ship hostile="true" />
+                <choice>
+                    <text>次へ...</text>
+                    <event load="MORALITY_UPDATE_ENGI_FIGHT" />
+                </choice>
+            </event>
+        </choice>
+        <choice>
+            <text>出て行け。</text>
+            <event />
+        </choice>
+    </event>
+</eventList>
+<eventList name="ENGI_DECONSTRUCTOR_WASTE_FIELD">
+    <event>
+        <text>デブリフィールドを捜索するが、価値のあるものは何もないようだ。残念なことに、デブリは緩く、かつ密集しているため、FTLドライブを充電しながらダメージを避ける必要がある！</text>
+        <environment type="asteroid" />
+    </event>
+    <event>
+        <text>デブリフィールドを捜索するが、価値のあるものは何もないようだ。残念なことに、デブリは緩く、かつ密集しているため、FTLドライブを充電しながらダメージを避ける必要がある！</text>
+        <environment type="asteroid" />
+    </event>
+    <event>
+        <text>デブリフィールドを捜索する。ほとんど無価値なガラクタの中で、あなたは大きなガレキの中に隠されたミサイルを見つけることに成功した。</text>
+        <autoReward level="MED">missiles_only</autoReward>
+    </event>
+    <event>
+        <text>デブリフィールドを捜索する。その多くは無価値なガラクタだが、あなたはわずかながら有用な資源を拾い集めることに成功した。</text>
+        <autoReward level="MED">stuff</autoReward>
+    </event>
+    <event>
+        <text>デブリフィールドを探す。素材そのものはほとんど無価値な残骸だが、ガラクタの中にラニウスが一匹いる。そのラニウスは必死に旗を振り、あなたに加わろうとしているようだ。</text>
+        <choice>
+            <text>ラニウスをクルーに迎え入れる。</text>
+            <event>
+                <text>あなたがラニウスを船に乗せると、ラニウスは精一杯話そうとした。「食べ物を見つけた。食事中、小さな生き物に襲われた！そして、家に食べられた。そのまま漂流..."</text>
+                <crewMember amount="1" class="lanius" />
+            </event>
+        </choice>
+        <choice>
+            <text>ラニウスは無視する。</text>
+            <event />
+        </choice>
+    </event>
+    <event>
+        <text>あなたは漂流物を探す。素材そのものはほとんど無価値なガラクタだが、漂流物にはバガボンドが一匹いる。そのバガボンドは必死に旗を振り、あなたに加わろうとしているようだ。</text>
+        <choice>
+            <text>バガボンドをクルーに迎え入れる。</text>
+            <event>
+                <text>バガボンド号を船に乗せると、バガボンド号はほっとしたような表情を浮かべる。"残念なことに、この機械仕掛けの醜悪な船は私の船を食い尽くした！救世主よ、感謝の意を表する。"</text>
+                <crewMember amount="1" class="LIST_CREW_VAGABOND_NOALPHA" />
+            </event>
+        </choice>
+        <choice>
+            <text>ゴーストを無視する。</text>
+            <event />
+        </choice>
+    </event>
+    <event>
+        <text>デブリフィールドを探す。素材そのものはほとんど無価値なガラクタだ。しかし、何の変哲もない破片の中に、頑丈な岩の外壁を持つ脱出ポッドらしきものを見つける。</text>
+        <choice hidden="true">
+            <text>脱出ポッドに乗る。</text>
+            <event>
+                <text>脱出ポッドの中から、一人のロック・アウトキャストがよろめいた。「もうだめだと思った。エンギに船を見つけられて、サルベージに出されたんだ。生きててよかったよ。</text>
+                <crewMember amount="1" class="rock_outcast" />
+            </event>
+        </choice>
+        <choice>
+            <text>脱出ポッドは無視しろ。</text>
+            <event />
+        </choice>
+    </event>
+</eventList>
+<event name="JUNKYARD_HAIL_SWARM">
+    <text>大群はお返しにテキストメッセージを送る。"嘆願：スペア。降伏を申し出る"</text>
+    <choice>
+        <text>エンジのリクエスト</text>
+        <event>
+            <text>きらめく靄の中、真新しいエンジが群れから直接カーゴベイにプリントされる。エンギはあなたに向かってうなずき、命令を受ける準備ができている。</text>
+            <crewMember amount="1" class="engi" />
+        </event>
+    </choice>
+    <choice>
+        <text>クルーのドローンを要請する。</text>
+        <event>
+            <text>きらめく靄の中で、ドローンの設計図が群れから直接カーゴベイにプリントされる。</text>
+            <drone name="GIFTLIST_CREW_DRONES" />
+        </event>
+    </choice>
+    <choice>
+        <text>戦闘用ドローンを要請する。</text>
+        <event>
+            <text>きらめく靄の中で、ドローンの設計図が群れから直接カーゴベイにプリントされる。</text>
+            <drone name="GIFTLIST_COMBAT_DRONES" />
+        </event>
+    </choice>
+</event>
+
+<event name="ENGI_VIRUS" unique="true">
+	<text>エンギがビーコンで待ち構えている！エンギへの敵対行為で指名手配中のコンピューターウィルス（バイナリー・スクランブル、ナノ溶解、可変干渉）が貴艦に搭載されていると説明する。</text>
+	<choice>
+		<text>次へ...</text>
+		<event>
+			<text>彼らはウイルスが逃げないように、あなたの船を破壊しなければならないと主張する！</text>
+			<choice hidden="true">
+				<text>ちょっと待って！システムコードを消去してみよう！</text>
+				<event>
+					<text>エンジンのコアとシールドを拭いても無駄だった...結局、ウイルスを浄化するために兵器システムにウイルスを閉じ込めたが、その前にエンジが落ち着かなくなって攻撃してきた！</text>
+					<status type="divide" target="player" system="shields" amount="2" />
+					<status type="divide" target="player" system="engines" amount="2" />
+					<ship load="SHIP_ENGI_VIRUS" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>エンジ船を攻撃せよ！</text>
+				<event>
+					<text>エンギがどうなろうと、誰もあなたの船を脅かさない。戦いに備えろ</text>
+					<ship load="SHIP_ENGI_VIRUS" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="unique_turzil" hidden="true">
+				<text>(タージル）ウイルスと交渉する。</text>
+				<event>
+					<text>タージルはウイルスを分離し、システムと連動させながら話しかける。ウイルスが彼に取り憑こうとするのがわかるが、うまくいかないようだ。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>数分後、ウイルスは "光明を見いだし"、あなたの船のコンピューター社会と積極的に統合し、船体を修復し、リアクターを最適化しようとする。「交渉は成功した。もしその気があるのなら、新しい日課に感謝することを勧める。</text>
+							<damage amount="-15" />
+							<upgrade amount="1" system="reactor" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event>
+									<text>エンギはウィルスの削除に感謝し、飛び去る。彼らは報酬としてオーグメンテーションを提供する。幸運なことに、彼らはタージルの存在に気づかないままだった-ウィルスのことで頭がいっぱいだったに違いない。</text>
+									<augment name="RANDOM" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="MORALITY_REMOVE_ENGI" />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="hacking" lvl="1" max_group="0" hidden="true">
+				<text>(ハッキング）ウイルスを隔離する。</text>
+				<event>
+					<text>時間はかかるし、ウイルスは滑りやすいが、最終的には役に立たないサブシステムの牢獄に閉じ込め、そこで必死にあなたを侮辱する計算を始める。あなたはそのシステムを船から取り出し、武器でその小さなバイナリ犯罪者を黙らせる。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>エンギはウィルスの削除に感謝し、飛び去る。彼らは報酬として増大剤を差し出す。</text>
+							<autoReward level="LOW">standard</autoReward>
+							<augment name="RANDOM" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="MORALITY_REMOVE_ENGI" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="hacking" lvl="2" max_group="0" hidden="true">
+				<text>(ハッキング）ウイルスをプログラムし直す。</text>
+				<event>
+					<text>あなたはウイルスとのインタフェースを進め、その修復と善意のルーチンを最適化する。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>数分後、ウイルスは「光を見て」、あなたの船のコンピューター社会と積極的に統合し、船体を修復し、リアクターを最適化しようとする。</text>
+							<damage amount="-15" />
+							<upgrade amount="1" system="reactor" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event>
+									<text>エンギはウィルスの削除に感謝し、飛び去る。報酬としてオーグメンテーションを差し出す。</text>
+									<augment name="RANDOM" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="MORALITY_REMOVE_ENGI" />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="hacking" lvl="3" max_group="0" hidden="true">
+				<text>(高度なハッキング）ウイルスをプログラムし直す。</text>
+				<event>
+					<text>あなたはウイルスとのインタフェースを進め、その修復と善意のルーチンを最適化する。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>数分後、ウイルスは「光を見て」、あなたの船のコンピューター社会と積極的に統合し、船体を修復し、リアクターを最適化しようとする。</text>
+							<damage amount="-30" />
+							<upgrade amount="1" system="reactor" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event>
+									<text>エンギはウィルスの削除に感謝し、飛び去る。報酬としてオーグメンテーションを差し出す。</text>
+									<augment name="RANDOM" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="MORALITY_REMOVE_ENGI" />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="ANTI_VIRUS">
+				<text>(アンチウイルス）ウイルスをパージする。</text>
+				<event>
+					<text>アンチウイルスは素早く敵対的なコードを見つけ、その存在を消し去る。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>エンギはウィルスの削除に感謝し、飛び去る。報酬としてオーグメンテーションを差し出す。</text>
+							<augment name="RANDOM" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="MORALITY_REMOVE_ENGI" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="LIST_CREW_LANIUS" hidden="true">
+				<text>(ラニウス・クルー）あなたのラニウスのクルーが必死に身振り手振りをする。</text>
+				<event>
+					<text>奇妙なことに、ラニウスはウィルスがどのコンピューターに存在するか知っているようで、端末を消化しようとする。O2が炸裂し、エンギ船は武器をパワーダウンし、もはやウイルスを感知しなくなった。エンギは損傷したコンピュータを修理するために部品を送り、ウィルスを除去した報酬としてオーグメントを与える。</text>
+					<autoReward level="MED">scrap_only</autoReward>
+					<augment name="RANDOM" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_REMOVE_ENGI" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="engi" hidden="true">
+				<text>(エンギ乗組員) エンギ乗組員にエンギ船と交渉させる。</text>
+				<event>
+					<text>エンギが船と接触して交渉しようとすると、エンギの乗組員が突然ナナイトに溶解した！ウイルスが再び殺人を犯したのだ！船上の活動を感知したエンギ船は発砲！</text>
+					<ship load="SHIP_ENGI_VIRUS_ALT" hostile="true" />
+					<removeCrew class="engi">
+						<clone>false</clone>
+						<text>ウイルスは、失われたクルーを蘇生させるクローンベイの機能を停止させたようだ！</text>
+					</removeCrew>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="engi_defender" hidden="true">
+				<text>(エンギ・ディフェンダー) ディフェンダーのクルーにエンギ船と交渉させる。</text>
+				<event>
+					<text>エンギが船と接触して交渉しようとすると、ディフェンダーのクルーが突然倒れ、もがき苦しんでいる！ウイルスに感染したに違いない。「脅威は無力化された。コードを削除：削除コード：2行"エンギ船にはこれで十分なようで、ウイルスを削除したあなたに報酬をくれる。</text>
+					<autoReward level="MED">scrap_only</autoReward>
+					<augment name="RANDOM" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_REMOVE_ENGI" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="LIST_CREW_COGNITIVE_ALL" hidden="true">
+				<text>(コグニティブ・クルー）コグニティブにウィルスと交渉させる。</text>
+				<event>
+					<text>解決策があるかもしれないとエンジに説明し、コグニティブが仕事をするのを待つ。ほどなくコグニティブがオンラインに戻る。「交渉は失敗しました。その代わり、生命は無意味であることをウイルスに納得させた。私のデータバンクを悩ませる虚無主義的哲学を採用した途端、苦しみ続けるより命を絶つことにした。"満足したエンギ船は、ウイルスを削除したあなたに報酬を与える。</text>
+					<autoReward level="MED">scrap_only</autoReward>
+					<augment name="RANDOM" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_REMOVE_ENGI" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ENGI_VIRUS_REBORN">
+	<text>驚いたことに、エンギのクルーが改心した。ウイルスがエンギの宿主を再構成、再利用、再プログラムしたようで、あなたと一緒に旅をしたいようです...そしてあなたの船で過ごした時間から多くのことを学んだようです。</text>
+	<crewMember amount="1" class="engi_defender" all_skills="2">ウイルス</crewMember>
+</event>
+
+<event name="ENGI_COMPLEX" unique="true">
+	<ship load="SHIP_ENGI_COMPLEX" hostile="false" />
+	<text>このビーコンには巨大なエンギ・ステーションがある。見たところ、部分的にエンギ・ディフェンダーが配置されているようだ。何か重要なものを守っているのは明らかだ。</text>
+	<choice hidden="true">
+		<text>駅を攻撃しろ</text>
+		<event>
+			<text>このステーションにどんな秘密があるにせよ、あなたはそれが欲しい。欲しいものを手に入れる最善の方法は？暴力を振るうことだ</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="sensors" lvl="2">
+		<text>(センサー）駅をスキャンする。</text>
+		<event>
+			<text>スキャンの結果、ステーションはエンギ生産施設のようだ！クルーを殺せば、エンギのクルーを生産する方法が見つかるかもしれない。</text>
+			<choice hidden="true">
+				<text>駅を攻撃しろ</text>
+				<event>
+					<text>あなたは施設を占拠しようと決めた。武器をパワーアップし、交戦する。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>駅は無視する。</text>
+				<event>
+					<text>ハーモニースペースで武装したエンジ・ステーションを攻撃するのは自殺行為に等しい。あなたは無視するのが最善と判断した。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>駅は無視する。</text>
+		<event>
+			<text>ハーモニースペースで武装したエンジ・ステーションを攻撃するのは自殺行為に等しい。あなたは無視するのが最善と判断した。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DESTROYED_ENGI_COMPLEX">
+	<text>エンギ・ステーションの跡地には、乗組員の数よりもはるかに多くのエンギの死体が散乱していた。その死体の出所は未解決のままである。あなたはステーションの唯一の遺体をスクラップにすることにした。</text>
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+<event name="DEAD_CREW_ENGI_COMPLEX">
+	<text>ステーションに乗り込むと、ナノボットで満たされたチューブが何百本も何千本もあることに驚く。チューブの中にはエンジに似てきたものもあれば、知覚のないグープのようなものもある。</text>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>エンジの1台を再プログラムして、あなたに仕えるようにしてみてください。</text>
+		<event>
+			<text>エンギを作ろうとしたあなたの試みは大失敗し、試験管から怪物のような醜悪な生物が落ちてきて、クルーの一人に取りすがって頭を引きちぎった！ライフルで吹き飛ばすが、一時的に気絶させただけのようだ。これ以上殺される前に船に戻る。船の外部をスクラップすることに専念する。</text>
+			<autoReward level="MED">standard</autoReward>
+			<removeCrew>
+				<clone>true</clone>
+				<text>幸運なことに、あなたが船に戻ったときには、乗組員はすでにクローン化されていた。</text>
+			</removeCrew>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>誰にも監視されずに神を演じるという結果に苦しむ自信がないのだろう。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true">
+		<text>チューブは無視して駅をスクラップする。</text>
+		<event>
+			<text>理解できないことに手を出すのは命取りだ。空っぽになったばかりのステーションをスクラップにする。</text>
+			<autoReward level="HIGH">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGI"> 
+		<text>(エンジ・クルー)エンジの一人をあなたのために再プログラムする。</text>
+		<event>
+			<text>あなたは見た目が良いエンジの一つを選び、忠実に働くように再プログラムする。エンジが出来上がるまでの間、ステーション周辺の物資を集める。</text>
+			<autoReward level="MED">stuff</autoReward>
+			<crewMember amount="1" class="engi" />
+		</event>
+	</choice>
+	<choice hidden="true" req="hacking" max_lvl="2">
+		<text>(ハッキング) エンギの一人をあなたのためにプログラムし直せ。</text>
+		<event>
+			<text>あなたは見た目が良いエンジの一つを選び、忠実に働くように再プログラムする。エンジが出来上がるまでの間、ステーション周辺の物資を集める。</text>
+			<autoReward level="MED">stuff</autoReward>
+			<crewMember amount="1" class="engi" />
+		</event>
+	</choice>
+	<choice hidden="true" req="hacking" lvl="3">
+		<text>(上級ハッキング)エンジの一人をプログラムし直して、あなたに仕えさせる。</text>
+		<event>
+			<text>ハッキングを駆使してセキュリティの高いエリアにアクセスすると、そこにはエンギ・ディフェンダーがいるようだ！エンギ・ディフェンダーがいるようだ。</text>
+			<autoReward level="MED">stuff</autoReward>
+			<crewMember amount="1" class="engi_defender" />
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ANCIENT">
+		<text>(オベリスク・クルー）あなたのオベリスクはエンジの製造方法を知っています。</text>
+		<event>
+			<text>オベリスクは（間接的に）エンジの創造に関わったのだから、彼らが機械の操作方法を知っているのは当然だ。物資を調達している間に、機械の1つをセットしてエンジ・ディフェンダーを作る。</text>
+			<autoReward level="MED">stuff</autoReward>
+			<crewMember amount="1" class="engi_defender" />
+		</event>
+	</choice>
+</event>
+
+
+<eventList name="DISTRESS_ENGI_MV">
+	<event load="DISTRESS_ENGI_SALVAGE" />
+	<event load="DISTRESS_ENGI_HACKER" />
+	<event load="DISTRESS_ENGI_REACTOR" />
+	<event load="DISTRESS_ENGI_REBEL" />
+	<event load="DISTRESS_ENGI_PARTY" />
+	<event load="DISTRESS_ENGI_DANGER" />
+</eventList>
+
+<event name="DISTRESS_ENGI_SALVAGE" unique="true">
+	<text>このビーコンには民間人や海賊の部品が散乱し、エンギ船も数隻残っている。残っているのはエリートエンギ船1隻だけで、損傷がないことから戦闘に巻き込まれなかったものと思われる。</text>
+	<choice hidden="true">
+		<text>万歳。</text>
+		<event>
+			<text>"予想外の存在。支援を要請する。ここで戦闘が発生し、残骸は多い。引き揚げの援助は非常にありがたい。1つ条件がある。"引き揚げ物は、正当な対価と引き換えに、この船に返却すること。"</text>
+			<choice hidden="true">
+				<text>そうだね、時間がかかるのは分かっている。</text>
+				<event>
+					<text>ある程度合理的な時間内に、できるだけ多くの瓦礫を集めるのだ。</text>
+					<item_modify>
+						<item type="fuel" min="4" max="4" />
+						<item type="scrap" min="50" max="50" />
+						<item type="missiles" min="5" max="5" />
+						<item type="drones" min="3" max="3" />
+					</item_modify>
+					<modifyPursuit amount="1" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>かなりの量だが、エンジ船に返すことになっているのは知っているはずだ。</text>
+							<choice hidden="true">
+								<text>物資をエンジに返せ。</text>
+								<event>
+									<text>エンジは物資を集める。</text>
+									<item_modify>
+										<item type="fuel" min="-4" max="-4" />
+										<item type="scrap" min="-50" max="-50" />
+										<item type="missiles" min="-5" max="-5" />
+										<item type="drones" min="-3" max="-3" />
+									</item_modify>
+									<choice hidden="true">
+										<text>報酬を待つのだ。</text>
+										<event>
+											<text>報酬を待つが、エンジは何も伝えてこない。報酬はすでにある。人を助けることで得られる満足感と温かい気持ちです」。</text>
+											<choice hidden="true">
+												<text>何だと？こんなことは我慢できない！</text>
+												<event>
+													<text>こんなゴミに我慢するつもりはないだろう。武器をパワーアップし、エンジと正面から交戦する準備をする。</text>
+													<ship load="SHIP_ENGI_SALVAGE_HELP" hostile="true" />
+													<choice hidden="true">
+														<text>次へ...</text>
+														<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>ああ...</text>
+												<event>
+													<text>「ご苦労様でしたエンギ船は通話を終え、サルベージ作業に戻る。</text>
+													<choice hidden="true">
+														<text>次へ...</text>
+														<event load="MORALITY_REMOVE_ENGI" />
+													</choice>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>資源の返還を拒否する。</text>
+								<event>
+									<text>長い時間をかけて回収してきたのだから、簡単に渡すわけにはいかないだろう。</text>
+									<ship load="SHIP_ENGI_ELITE_FIGHT" hostile="true" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true" req="LIST_CREW_HARMONY">
+								<text>(ハーモニー・クルー）物資の分担をお願いします。</text>
+								<event>
+									<text>"この妥協は...公平だ"どちらが多く半分を取るかで議論があるが、最終的には合意に達する。</text>
+									<item_modify>
+										<item type="fuel" min="-2" max="-2" />
+										<item type="scrap" min="-25" max="-25" />
+										<item type="missiles" min="-2" max="-2" />
+										<item type="drones" min="-2" max="-2" />
+									</item_modify>
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="MORALITY_REMOVE_ENGI" />
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true" req="cloaking">
+								<text>(遮蔽）遮蔽して去る。</text>
+								<event load="DISTRESS_ENGI_SALVAGE_CLOAK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>拒否する。</text>
+				<event>
+					<text>エンギは通信を終了し、沈没船の引き揚げ作業に戻る。それ以上の呼びかけには応じない。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>残骸の一部を救い出す。</text>
+		<event>
+			<text>スクラップを拾い集めていると、エンジの船が急接近してきた。「このエリアは立ち入り禁止だ。サルベージ禁止。敵対的対応を要求する。"</text>
+			<autoReward level="LOW">standard</autoReward>
+			<ship load="SHIP_ENGI_ELITE_FIGHT" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>エンジの船と残骸を避ける。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DISTRESS_HARMONY_SALVAGE_HELP_DESTROY">
+	<text>エンギ船が破壊され、それまでサルベージしていたものを取り戻すチャンスはない。残骸を回収する。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>さらに残骸を集める。</text>
+		<event>
+			<text>反乱軍の艦隊がさらに前進しなければ、これ以上集めることはできないが、何もしないよりはましだ。</text>
+			<autoReward level="LOW">stuff</autoReward>
+		</event>
+	</choice>
+</event>
+<event name="DISTRESS_HARMONY_SALVAGE_HELP_CAPTURE">
+	<text>エンギ船が空になれば、以前のサルベージは簡単に回収できる。反乱軍艦隊がさらに前進する前に、速やかにビーコンを離れるのが最善だ。</text>
+	<item_modify>
+		<item type="fuel" min="4" max="4" />
+		<item type="scrap" min="50" max="50" />
+		<item type="missiles" min="5" max="5" />
+		<item type="drones" min="3" max="3" />
+	</item_modify>
+</event>
+<eventList name="DISTRESS_ENGI_SALVAGE_CLOAK">
+	<event>
+		<text>どういうわけか、エンギの船はあなたが逃げるのに気づかない。あなたは彼らの船からできるだけ離れた。</text>
+	</event>
+	<event>
+		<text>脱出しようとして、あなたは遮蔽が機能しなくなっていることに気づく。エンギ艦が攻撃に転じ、遮蔽を無効にされたことに気づく！もう戦うしかない。</text>
+		<ship load="SHIP_ENGI_ELITE_FIGHT" hostile="true" /> 
+		<status type="limit" target="player" system="cloaking" amount="0" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+		</choice>
+		<choice hidden="true" req="ANTI_VIRUS">
+			<text>(アンチウイルス) クローキングを復元します。</text>
+			<event>
+				<text>遮蔽システムはフルパワーに回復した。</text>
+				<status type="clear" target="player" system="cloaking" amount="100" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+				</choice>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<event name="DISTRESS_ENGI_HACKER"> 
+	<text>救難信号の発信源はオートハッカーの攻撃を受けたエンギ船だったようだ。飛び込むと、ハッキングドローンがエンギ船を貫通。オートハッカーは攻撃に移り、ハッキングされたエンギ一式が転送されてくる。</text>
+	<ship load="SHIP_AUTO_HACK_HARMONY" hostile="true" />
+	<boarders min="2" max="2" class="engi" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="DISTRESS_HARMONY_HACKER_WIN">
+	<text>オートハッカーは破壊された。あなたは残骸をスクラップにした。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>エンジニアに連絡する。</text>
+		<event>
+			<text>オートシップが破壊され、彼らの船に残っていたエンジは通常の状態に戻った。彼らはドローンパートをくれる。</text>
+			<autoReward level="MED">droneparts_only</autoReward>
+			<killEnemyBoarders />
+		</event>
+	</choice>
+</event>
+
+<event name="DISTRESS_ENGI_REACTOR" unique="true">
+	<distressBeacon />
+	<text>海賊かマンティスに襲われたのだろう。海賊かマンティスに襲われた可能性が高い。誰か生きているか、価値のあるものが船内に残されているかもしれない。</text>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>駅に乗り込む。</text>
+		<event load="DISTRESS_ENGI_REACTOR_LIST1" />
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>あなたには誰も乗船していない。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="DRONE_CONTROL_BOARDING">
+		<text>(搭乗ドローン）搭乗ドローンを送れ。</text>
+		<event load="DISTRESS_ENGI_REACTOR_SCAN" />
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>あの場所はひどい状態で、おそらく何も使えないだろう。移動する時だ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="sensors" lvl="2">
+		<text>(アップグ.センサー) 別のスキャンを実行する。</text>
+		<event load="DISTRESS_ENGI_REACTOR_SCAN" />
+	</choice>
+	<choice hidden="true" req="ADV_SCANNERS">
+		<text>(ロングレンジスキャナー) 別のスキャンを実行する。</text>
+		<event load="DISTRESS_ENGI_REACTOR_SCAN" />
+	</choice>
+</event>
+<eventList name="DISTRESS_ENGI_REACTOR_LIST1">
+	<event>
+		<text>アウェーチームを派遣して調査させたが、エンジの部品が焼けた酸っぱい悪臭がするだけで、何もなかった。この場所は死んでいる。</text>
+	</event>
+	<event>
+		<text>アウェーチームは負傷したエンジと機能するドローンの回路図を報告した。そして誰かが叫んだ。ステーションのリアクターがオーバーロードしている！</text>
+		<choice hidden="true">
+			<text>セーブ・ザ・エンジ</text>
+			<event load="DISTRESS_ENGI_REACTOR_ENGI" />
+		</choice>
+		<choice hidden="true">	
+			<text>ドローンの回路図を保存する。</text>
+			<event load="DISTRESS_ENGI_REACTOR_DRONE" />
+		</choice>
+		<choice hidden="true">
+			<text>自分のことは自分で守れ！</text>
+			<event>
+				<text>厳しい命令だが、クルーの命が最優先だ。彼らはすべてを捨て、無傷で船に戻る。ステーションが爆破される前に、少し距離を置くんだ。</text>
+				<autoReward level="LOW">scrap_only</autoReward>
+			</event>
+		</choice>
+	</event>
+</eventList>
+<eventList name="DISTRESS_ENGI_REACTOR_ENGI">
+	<event>
+		<text>クルーの一人が勇敢にもエンジ号をつかみ、原子炉が爆発して自動ブラストドアが閉まる直前にエアロックに投げ込んだ。あなたは彼らの犠牲を悼み、前に進むしかない。</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>勇敢なクルーのクローンはクローンベイから歩き出した。</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event>
+				<text>救われたエンギがクルーに加わりたいと申し出る。</text>
+				<crewMember amount="1" class="engi" />  
+				<autoReward level="LOW">scrap_only</autoReward>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>クルーは負傷したエンギと共に無事エアロックに戻り、ステーションが爆発する前に距離を置く。あなたのクルーに感銘を受けたエンギは、あなたとの合流を志願した。</text>
+		<crewMember amount="1" class="engi" />  
+		<autoReward level="LOW">scrap_only</autoReward>
+	</event>
+</eventList>
+<eventList name="DISTRESS_ENGI_REACTOR_DRONE">
+	<event>
+		<text>あなたのアウェーチームは商品を持って帰路についたが、彼らが船に戻るときに小さな爆発が起きてエアロックが吹き飛び、クルーの一人が宇宙空間に吸い出されてしまった！</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>幸運なことに、あなたのクルーはクローンベイが復活させるのに十分なほど船の近くにいた。</text>
+		</removeCrew>
+		<autoReward level="LOW">scrap_only</autoReward>
+	</event>
+	<event>
+		<text>エンジは他の種族と同じようには物事を感じない。彼らは技術の保存を望んでいる。クルーはドローン制御で エアロックに戻り ステーションが爆発する前に 距離を置く</text>
+		<autoReward level="LOW">drone</autoReward>
+	</event>
+</eventList>
+<event name="DISTRESS_ENGI_REACTOR_SCAN">
+	<text>ステーションのリアクターがオーバーロードしていることがスキャンで判明！それだけでなく、負傷したエンジと機能するドローンの回路図がまだ船内にある！両方のために時間がない...</text>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>セーブ・ザ・エンジ</text>
+		<event>
+			<text>アウェーチームはエンジに直行し、余裕を持って帰還した。あなたはステーションが爆破される前に距離を置き、エンジはあなたのクルーに感銘を受け、あなたに加わることを志願した！</text>
+			<crewMember amount="1" class="engi" />  
+			<autoReward level="LOW">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="DRONE_CONTROL_BOARDING" blue="true">
+		<text>(搭乗するドローン）エンジンを救え！</text>
+		<event>
+			<text>あなたのドローンはエンジにまっすぐ向かい、余裕を持って戻ってきた。あなたはステーションが爆破される前に距離を置き、エンジはあなたの戦術に感銘を受け、あなたに加わろうと志願した！</text>
+			<crewMember amount="1" class="engi" />  
+			<autoReward level="LOW">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>ドローンの回路図を保存する！</text>
+		<event>
+			<text>エンジは他の種族と同じようには物事を感じない。彼らは技術の保存を望んでいる。アウェーチームが物資に向かい 余裕を持って戻るステーションが爆発する前に 距離を置くんだ</text>
+			<autoReward level="LOW">drone</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="DRONE_CONTROL_BOARDING" blue="true">
+		<text>(搭乗ドローン）ドローンの回路図を保存する！</text>
+		<event>
+			<text>エンジは他の種族と同じようには物事を感じない。彼らは技術の保存を望んでいる。ドローンはブツに向かい 余裕を持って戻るステーションが爆発する前に 距離を置け</text>
+			<autoReward level="LOW">drone</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>戦利品や乗組員を救出するために乗船している者はいない。</text>
+		<event />
+	</choice>
+</event>
+
+<event name="DISTRESS_ENGI_REBEL" unique="true">
+	<distressBeacon />
+	<text>救難信号の発信元は、反乱軍の戦闘機に攻撃されているエンギの小型船だったが、反乱軍は連邦のマークを見て攻撃に転じた！</text> 
+	<ship load="SHIP_DISTRESS_ENGI_REBEL" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="DISTRESS_ENGI_REBEL_RESULT">
+	<text>エンギの船は非常に貧弱な装備であることが判明した。彼らは反乱軍を出し抜こうとしており、あらゆる助けを必要としている。</text>
+	<choice hidden="true">
+		<text>スクラップを25枚渡す。</text>
+		<event load="DISTRESS_ENGI_REBEL_LIST1" />
+	</choice>
+	<choice hidden="true">
+		<text>スクラップ40個、ミサイル2発、燃料2個を与える。</text>
+		<event load="DISTRESS_ENGI_REBEL_LIST2" />
+	</choice>
+	<choice hidden="true">
+		<text>何も与えない。</text>
+		<event>
+			<text>エンギは恐怖を感じないから、助ける気がないと説明しても悪意は抱かない。彼らが旅に出れば、あなたも同じように旅に出る。</text>
+		</event>
+	</choice>
+</event>
+<eventList name="DISTRESS_ENGI_REBEL_LIST1">
+	<event>
+		<text>彼らが使う言葉は「必要＝満たされた」だが、あなたはそれを感謝の気持ちと受け取る。彼らは家への長い旅路の中で、次のジャンプをする。</text>
+		<item_modify>
+			<item type="scrap" min="-25" max="-25" />
+		</item_modify>
+	</event>
+	<event>
+		<text>エンギは感謝している。彼らは物資も武器も持ち合わせていないが、不要になることを祈り、自己テレポート式の医療ボット散布機を送ってくれた。</text>
+		<weapon name="BOMB_HEAL" />
+		<item_modify>
+			<item type="scrap" min="-25" max="-25" />
+		</item_modify>
+	</event>
+	<event>
+		<text>エンジは感謝している。彼らは物資をあまり持っていないが、ドローンの回路図を提供してくれる。</text>
+		<drone name="RANDOM" />
+		<item_modify>
+			<item type="scrap" min="-25" max="-25" />
+		</item_modify>
+	</event>
+</eventList>
+<event name="DISTRESS_ENGI_REBEL_LIST2">
+	<text>その装備では数回のジャンプしかできないだろう。あなたは彼らに、家路に必要なすべての弾薬と物資を提供する。"寛大さ "の大きさが予測されない。幸福の構文エラー［値が高すぎる］。このトークンを受け取れ。"</text>
+	<item_modify>
+		<item type="scrap" min="-40" max="-40" />
+		<item type="fuel" min="-2" max="-2" />
+		<item type="missiles" min="-2" max="-2" />
+	</item_modify>
+	<augment name="NANOBOT_DEFENSE_SYSTEM" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="MORALITY_REMOVE_ENGI" />
+	</choice>
+</event>
+
+<event name="DISTRESS_ENGI_PARTY" unique="true">
+	<distressBeacon />
+	<text>遭難信号を発信しているのはエンジ船だが、危険はなさそうだ。</text>
+	<ship load="SHIP_ENGI_SLUG_PARTY" hostile="false" />
+	<choice hidden="true">
+		<text>何が問題なのかを確認するためにエンジに万歳をする。</text>
+		<event>
+			<text>紫色のパーティーハットをかぶったエンジが登場する。背景にはカラフルなライトが高速点滅し、数匹のスラッグが踊っている。「挨拶開始。問い合わせ：「ハードなパーティー」のやり方について。リクエスト：スラッグ訪問者が勧める、満足感を得るための精神安定剤。"</text>
+			<choice hidden="true" req="BLUELIST_ION">
+				<text>(イオンウェポン）エンジにザップ、十分近い。</text>
+				<event>	
+					<text>エンジは数分間、操り人形のように暴れる。自制心を取り戻すと、スクリーンは急速に色を点滅させ始め、非常にゆっくりと話す。「グラーアティトゥード。これは、ドゥーープ。Aaaaacceeeeept cooompeeeensaaaatiooon."</text>
+					<autoReward level="MED">stuff</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_PHEROMONES">
+				<text>(カマキリのフェロモン）フェロモンを船内にばらまく。</text>
+				<event>	
+					<text>フェロモンの安定供給は クルーに影響するスラッグは壁をよじ登ろうとし、エンジはドローンに抱きついている。彼らが気を取られている間に、あなたは船の外壁を削ってください。</text>
+					<autoReward level="MED">scrap_only</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_ORCHID">
+				<text>(オーキッド・クルー）オーキッドに魔法をかけてもらいましょう。</text>
+				<event>	
+					<text>オーキッドには、他人を "ボーッ "とさせる独特の能力がある。"気絶 "させる。その効果はスラッグやエンジにも現れ、彼らは非常に奇妙な行動を取り始める。彼らはあなたの "援助 "に対して報酬を支払う。</text>
+					<autoReward level="MED">scrap_only</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_BUTLER">
+				<text>(バトラー・ドローン）11に上げてくれ。</text>
+				<event>	
+					<text>彼らの要求通りではないが、文句は言わない。バトラーは、スラッグスやエンジが要求する数多くのニーズに気づくたびに対応する。やがて、ただでさえ多い荷物の量が増え、クルーはもはやついていけなくなる。全員が気絶する前に、彼らはあなたの "お手伝い "に対して快く報酬を支払う。</text>
+					<autoReward level="HIGH">stuff</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>私たちは助けられない。</text>
+				<event load="DISTRESS_ENGI_PARTY_LEAVE" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>脅威はすでに消滅しているはずで、エンジはまだ救難信号のスイッチを切っていないだけだ。先に進め</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DISTRESS_ENGI_PARTY_LEAVE">
+	<event>
+		<text>君たちが去ろうとすると、スラッグの一人がエンジを突き飛ばした。"カッコ悪いぜ、お前ら本当に俺たちを見捨てるつもりか？"スキャンの結果、彼らの武器がオンラインになった！</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event> 
+	<event /> 
+</eventList>
+
+<event name="DISTRESS_ENGI_DANGER" unique="false">
+	<text>近くのエンジ船から救難信号を受信。「救助を要請する。"危険発生破壊間近</text>
+	<choice>
+		<text>呼びかけに応じ、支援のために動く。</text>
+		<event load="DISTRESS_ENGI_DANGER_LIST" />
+	</choice>
+	<choice>
+		<text>距離を置く。</text>
+		<event />
+	</choice>
+</event>
+<eventList name="DISTRESS_ENGI_DANGER_LIST">
+	<event>
+		<text>船からまたメッセージが届き、今度はマンティスが通信ログに向かっている。「愚かなミートサックどもめ」と叫ぶ。センサーによると、船は攻撃態勢に入り、乗組員はステーションからテレポートする。</text>
+		<ship load="SHIP_ENGI_MANTIS_CONTROLLED" hostile="true" />
+		<boarders min="1" max="2" class="mantis" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>近づいてみると、マンティス艦が小さなエンギ宇宙ステーションを襲撃していた。戦いに備えろ！</text>
+		<ship load="SHIP_MANTIS_ENGI_STATION" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="DISTRESS_ENGI_DANGER_SAVE">
+	<event>
+		<text>エンギ・ステーションは丸裸にされ、激しい戦闘の跡がある。マンティスは他の船を罠に誘い込むため、救難信号を作動させたままにしたのだろう。</text>
+	</event>
+	<event>
+		<text>ステーションは避難中だった。多くの民間のエンジが、出発の準備を整えながら感謝の言葉を述べる。お礼に燃料を差し出す。</text>
+		<autoReward level="MED">fuel_only</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MORALITY_REMOVE_ENGI" />
+		</choice>
+	</event>
+	<event>
+		<text>局から「感謝」の声。アシストなしでの予想敗戦確率は...86.2パーセント。適切な報酬を要求する"</text>
+		<choice hidden="true">
+			<text>燃料を要求する。</text>
+			<event>
+				<text>"要請は承認された。燃料移送中"</text>
+				<autoReward level="HIGH">fuel</autoReward>
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_REMOVE_ENGI" />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>武器を要求する。</text>
+			<event>
+				<text>"要請を許可する。武器を譲渡する"</text>
+				<autoReward level="LOW">weapon</autoReward>
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_REMOVE_ENGI" />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>ドローンを要請する。</text>
+			<event>
+				<text>"要請を承認。ドローンの概略図を転送する"</text>
+				<autoReward level="LOW">drone</autoReward>
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_REMOVE_ENGI" />
+				</choice>
+			</event>
+		</choice>
+		<choice req="LIST_CREW_HARMONY" hidden="true">
+			<text>(ハーモニークルー）「脅威は未解決。現在の任務は必須：プロトコル 52. 34</text>
+			<event>
+				
+				<text>彼らは「理解した」と答える。連邦の再確立は最重要事項だ。船体を修理し、船と船に兵器を取り付ける。"</text>
+				<autoReward level="LOW">weapon</autoReward>
+				
+				<damage amount="-10" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_REMOVE_ENGI" />
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>彼らは援助に感謝し、あなたが任務を伝えると、エンジの一人がクルーを援助できるかどうか尋ねてきた。あなたは彼を乗船させる。</text>
+		<crewMember amount="1" class="engi" />
+		<autoReward level="LOW">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MORALITY_REMOVE_ENGI" />
+		</choice>
+	</event>
+</eventList>
+
+
+<eventList name="QUESTS_ENGI_MV">
+	<event load="QUEST_ENGI_SLAVE" />
+	<event load="QUEST_ENGI_CRIME" />
+</eventList>
+
+<event name="QUEST_ENGI_SLAVE" unique="true">
+	<text>装備の悪いマンティス艦を見つける。驚いたことに、そのうちの1隻があなたに声をかけてきた。「連邦の船か？そうかもしれないし、そうでないかもしれない。君たちに提案がある。</text>
+	<choice hidden="true">
+		<text>彼らの申し出に耳を傾けてほしい。</text>
+		<event>
+			<text>「見ての通り、船の武器庫はあまり良くない。エンギの高級軍事施設が近くにあるが、これでは襲撃できない。お前の船はもっと武装している。侵入して奴隷を盗み 我々に連れて来い報酬は払う"</text>
+			<choice hidden="true">
+				<text>慣らし運転に同意する。</text>
+				<event>
+					<text>マンティス船のリーダーであるスゼレーン船は、施設の座標を送信し、仕事が終わったときに彼らと通信する方法を教えてくれる。</text>
+					<quest event="QUEST_ENGI_SLAVE_FACILITY" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>我々は奴隷ビジネスをやっているわけではない。</text>
+				<event>
+					<text>「連邦の船はつまらない。二度と戻ってくるな。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>どんな仕事も奪おうとは思っていない。</text>
+		<event>
+			<text>「連邦の船はつまらない。二度と戻ってくるな。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_SLAVE_FACILITY">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>マンティスから、エンギの捕虜を得るためにステーションを急襲するよう依頼された。</unvisitedTooltip>
+	</beaconType>
+	<text>エンギの施設は中規模のエンギ・ステーションのようだ。奴隷を捕らえるなら、降伏するほど防衛力を弱める必要がある。</text>
+	<ship load="SHIP_ENGI_STATION_SLAVE_REQUEST" hostile="false" /> 
+	<choice hidden="true">
+		<text>駅を攻撃しろ</text>
+		<event>
+			<text>ステーションとの交戦に備える。完全に逃げられなくなったエンジは反撃するしかない。</text>
+			<ship hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="teleporter">
+		<text>(テレポーター) 乗船してエンギを取ろうとする。</text>
+		<event>
+			<text>乗組員が船に乗り込もうとしても無駄だった。エンギのセキュリティ・システムは優秀で、乗組員を即座に発見する。君は彼らを転送し、戦闘の準備をする。</text>
+			<ship hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>そんな価値はない。</text>
+		<event>
+			<text>特にハーモニー・セクターでは。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DESTROYED_ENGI_SLAVE_REQUEST">
+	<text>ステーションを破壊した今、エンギを救う望みはない。マンティスのコンタクトを削除し、ステーションをスクラップにする。</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+<event name="DEAD_CREW_ENGI_SLAVE_REQUEST">
+	<text>生きているエンギのクルーを捕獲するミッションで、あなたは彼らを皆殺しにするのが良い考えだと判断した。生きているエンギを捕獲する方法がなくなったので、マンティスのコンタクトを削除し、ステーションをスクラップにした。</text>
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+<event name="SURRENDER_ENGI_SLAVE_REQUEST">
+	<text>エンギ・ステーションから降伏メッセージ。どんな要求にも応じるそうだ。</text>
+	<choice hidden="true">
+		<text>エンギを奴隷として与えるよう要求する。</text>
+		<event>
+			<text>エンギ・ステーションは誰を送り込むか数分かけて決める。そしてついに、一人の不運なエンギがあなたの船に送られた。</text>
+			<ship hostile="false" /> 
+			<choice hidden="true">
+				<text>約束通り、彼らをマンティスに連れて帰ってくれ。</text>
+				<event>
+					<text>残酷に思えるが、エンギを貨物室に閉じ込めるしかない。マンティスに連絡すると、マンティスは喜んでくれた。彼らは新しい座標を送信してきた。</text>
+					<quest event="QUEST_ENGI_SLAVE_MANTIS" />
+				</event>
+			</choice>
+			<choice>
+				<text>彼らをあなたの船に滞在させ、働かせる。</text>
+				<event>
+					<text>エンギは驚きを隠せない。この結果はマンティス船で苦労するよりもずっと好ましく、エンギは進んであなたのクルーに加わります。</text>
+					<crewMember amount="1" class="engi_defender" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>マンティスもエンジも関係ない。</text>
+		<event />
+	</choice>
+</event>
+<event name="QUEST_ENGI_SLAVE_MANTIS">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>マンティスはここでエンジの納車を待っている。</unvisitedTooltip>
+	</beaconType>
+	<text>マンティスに到着。約束通りエンギを乗船させ、多くのスクラップと他のエンギ船から盗んだドローンを渡す。</text>
+	<autoReward level="HIGH">scrap_only</autoReward>
+	<drone name="RANDOM" />
+</event>
+
+<event name="QUEST_ENGI_CRIME" unique="true">
+	<text>ここで目にすることになるであろう船の中で、反乱軍のエンジニアはあなたが予想する最後の1隻だ。彼らはエンギ船の残骸の検査に忙しいが、反乱軍とエンギの不可侵条約や、エンジニアの武器と船の損傷が一致しないことから、船を破壊したのは彼らではないだろう。</text>
+	<choice hidden="true">
+		<text>難破船について尋ねてみてください。</text>
+		<event>
+			<text>エンジニアは深く考え込んでため息をつく。「いや、こんなことはしていない...。残念なことだ。こんなことを気にするのは反乱軍らしからぬことだが、私は「輝かしい人類の未来」のためだけに反乱軍に参加したわけじゃない。反乱軍は私のプロジェクトに資金を提供してくれる。誰かがこの領域でエンギを狩っている。それを阻止したい。残骸を調べて、犯人を突き止められると思う？"</text>
+			<choice hidden="true">
+				<text>犯人を見つけることに同意する</text>
+				<event load="QUEST_ENGI_CRIME_INSPECT" />
+			</choice>
+			<choice hidden="true">
+				<text>我々は刑事ではないので、助けることはできない。</text>
+				<event>
+					<text>"予想通り。これが私が反乱軍に加わった2つ目の理由だ..."</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>誰が責任者かなんて気にするか？反乱軍を殺せ！</text>
+		<event>
+			<text>エンジニアがエンジを殺さなくても、他にもたくさん殺しているのは間違いない。</text>
+			<ship load="SHIP_ENGINEER" hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>エンジニアを無視する。</text>
+		<event>
+			<text>エンジニアはエンギの残骸を調べ続け、あなたの船を無視している。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="QUEST_ENGI_CRIME_INSPECT">
+	<event load="QUEST_ENGI_CRIME_INSPECT_MANTIS" />
+	<event load="QUEST_ENGI_CRIME_INSPECT_ROCK" />
+	<event load="QUEST_ENGI_CRIME_INSPECT_SEPARATIST" />
+	<event load="QUEST_ENGI_CRIME_INSPECT_LANIUS" />
+</eventList>
+<event name="QUEST_ENGI_CRIME_INSPECT_MANTIS">
+	<text>エンギ船は外見上の損傷はほとんどない。内部にはエンジの乗組員の死体とナノボットの無効化された塊が転がっている。システムには致命的なダメージがあり、ワイヤーが真っ二つに切断され、壁に沿って長い爪痕が走っている。</text>
+	<choice hidden="true">
+		<text>マンティスだ。</text>
+		<event>
+			<text>あなたはエンジニアに自分の推論を報告する。「君の言葉を信じよう。ビーコンをスキャンした後、ここをジャンプした最後の数隻を見つけることができた。この星系に入った最後のマンティス船の 現在の座標だ</text>
+			<quest event="QUEST_ENGI_CRIME_MANTIS_CORRECT" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ロックメンだった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の推論を報告する。「君の言葉を信じよう。ビーコンをスキャンした結果、ここをジャンプした最後の数隻を見つけることができた。これが、この星系に入った最後のロック船の現在の座標だ。"</text>
+			<quest event="QUEST_ENGI_CRIME_ROCK_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>分離主義者だった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の理論を報告する。「君の言葉を信じよう。ビーコンをスキャンした後、ここをジャンプした最後の船を見つけることができた。この星系に入る最後の分離主義者の船の現在の座標がある</text>
+			<quest event="QUEST_ENGI_CRIME_SEPARATIST_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ラニウス号だった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の理論を報告する。「君の言葉を信じよう。ビーコンをスキャンした結果、ここをジャンプした最後の数隻を見つけることができた。これが、この星系に入った最後のラニウス船の現在の座標だ。"</text>
+			<quest event="QUEST_ENGI_CRIME_LANIUS_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_haynes">
+		<text>(ヘインズ）私の推理によれば、それはマンティスだった！</text>
+		<event>
+			<text>あなたはヘインズの理論をエンジニアに報告する。"君の言葉を信じよう。ビーコンをスキャンし 最後にジャンプした船を見つけたこの星系に入った最後の マンティス船の座標だ</text>
+			<quest event="QUEST_ENGI_CRIME_MANTIS_CORRECT" />
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_INSPECT_ROCK">
+	<text>エンギ艦は外部に深刻な損傷を受けた。おそらく弾道ランチャーと思われる強力な武器によるものと思われる。</text>
+	<choice hidden="true">
+		<text>マンティスだ。</text>
+		<event>
+			<text>あなたはエンジニアに自分の推論を報告する。「君の言葉を信じよう。ビーコンをスキャンした後、ここをジャンプした最後の数隻を見つけることができた。この星系に入った最後のマンティス船の 現在の座標だ</text>
+			<quest event="QUEST_ENGI_CRIME_MANTIS_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ロックメンだった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の推論を報告する。「君の言葉を信じよう。ビーコンをスキャンした結果、ここをジャンプした最後の数隻を見つけることができた。これが、この星系に入った最後のロック船の現在の座標だ。"</text>
+			<quest event="QUEST_ENGI_CRIME_ROCK_CORRECT" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>分離主義者だった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の理論を報告する。「君の言葉を信じよう。ビーコンをスキャンした後、ここをジャンプした最後の船を見つけることができた。この星系に入る最後の分離主義者の船の現在の座標がある</text>
+			<quest event="QUEST_ENGI_CRIME_SEPARATIST_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ラニウス号だった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の理論を報告する。「君の言葉を信じよう。ビーコンをスキャンした結果、ここをジャンプした最後の数隻を見つけることができた。これが、この星系に入った最後のラニウス船の現在の座標だ。"</text>
+			<quest event="QUEST_ENGI_CRIME_LANIUS_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_haynes">
+		<text>(ヘインズ）私の推理では、ロックメンだった！</text>
+		<event>
+			<text>あなたはヘインズの理論をエンジニアに報告する。"君の言葉を信じよう。ビーコンをスキャンした後、ここをジャンプした最後の数隻を見つけることができた。この星系に入った最後のロック船の 現在の座標はここにある"</text>
+			<quest event="QUEST_ENGI_CRIME_ROCK_CORRECT" />
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_INSPECT_SEPARATIST">
+	<text>エンギ船は電気系統の火災以外、外観上の損傷はほとんどない。内部にはエンギの元乗組員の死体が散乱し、作動停止した搭乗ドローンが数機並んでいる。エンギ船のドローン・コントロールは人員用ドローンを動かすためのものではなかったようで、搭乗ドローンは彼らのものではなさそうだ。</text>
+	<choice hidden="true">
+		<text>マンティスだ。</text>
+		<event>
+			<text>あなたはエンジニアに自分の推論を報告する。「君の言葉を信じよう。ビーコンをスキャンした後、ここをジャンプした最後の数隻を見つけることができた。この星系に入った最後のマンティス船の 現在の座標だ</text>
+			<quest event="QUEST_ENGI_CRIME_MANTIS_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ロックメンだった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の推論を報告する。「君の言葉を信じよう。ビーコンをスキャンした結果、ここをジャンプした最後の数隻を見つけることができた。これが、この星系に入った最後のロック船の現在の座標だ。"</text>
+			<quest event="QUEST_ENGI_CRIME_ROCK_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>分離主義者だった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の理論を報告する。「君の言葉を信じよう。ビーコンをスキャンした後、ここをジャンプした最後の船を見つけることができた。この星系に入る最後の分離主義者の船の現在の座標がある</text>
+			<quest event="QUEST_ENGI_CRIME_SEPARATIST_CORRECT" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ラニウス号だった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の理論を報告する。「君の言葉を信じよう。ビーコンをスキャンした結果、ここをジャンプした最後の数隻を見つけることができた。これが、この星系に入った最後のラニウス船の現在の座標だ。"</text>
+			<quest event="QUEST_ENGI_CRIME_LANIUS_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_haynes">
+		<text>(ヘインズ）私の推理によれば、それは分離主義者だった！</text>
+		<event>
+			<text>あなたはヘインズの理論をエンジニアに報告する。"君の言葉を信じよう。ビーコンをスキャンした後、ここをジャンプした最後の数隻を見つけることができた。この星系に入る最後の分離主義者の船の 現在の座標がここにある</text>
+			<quest event="QUEST_ENGI_CRIME_SEPARATIST_CORRECT" />
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_INSPECT_LANIUS">
+	<text>エンギ艦は外部からのダメージを受けている。船体には破片の塊が残っており、おそらく対空砲によるものと思われる。船内の酸素レベルは異常に低い。</text>
+	<choice hidden="true">
+		<text>マンティスだ。</text>
+		<event>
+			<text>あなたはエンジニアに自分の推論を報告する。「君の言葉を信じよう。ビーコンをスキャンした後、ここをジャンプした最後の数隻を見つけることができた。この星系に入った最後のマンティス船の 現在の座標だ</text>
+			<quest event="QUEST_ENGI_CRIME_MANTIS_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ロックメンだった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の推論を報告する。「君の言葉を信じよう。ビーコンをスキャンした結果、ここをジャンプした最後の数隻を見つけることができた。これが、この星系に入った最後のロック船の現在の座標だ。"</text>
+			<quest event="QUEST_ENGI_CRIME_ROCK_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>分離主義者だった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の理論を報告する。「君の言葉を信じよう。ビーコンをスキャンした後、ここをジャンプした最後の船を見つけることができた。この星系に入る最後の分離主義者の船の現在の座標がある</text>
+			<quest event="QUEST_ENGI_CRIME_SEPARATIST_WRONG" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ラニウス号だった。</text>
+		<event>
+			<text>あなたはエンジニアに自分の理論を報告する。「君の言葉を信じよう。ビーコンをスキャンした結果、ここをジャンプした最後の数隻を見つけることができた。これが、この星系に入った最後のラニウス船の現在の座標だ。"</text>
+			<quest event="QUEST_ENGI_CRIME_LANIUS_CORRECT" />
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_haynes">
+		<text>(ヘインズ）私の推理によれば、それはラニウスだった！</text>
+		<event>
+			<text>あなたはヘインズの理論をエンジニアに報告する。"君の言葉を信じよう。ビーコンをスキャンした結果、ここをジャンプした最後の数隻を見つけることができた。この星系に入った最後のラニウス船の 現在の座標はここにある"</text>
+			<quest event="QUEST_ENGI_CRIME_LANIUS_CORRECT" />
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_MANTIS_CORRECT">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>カマキリの犯人。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたはマンティス容疑者をこのビーコンまで追跡した。</text>
+	<ship load="SHIP_MANTIS_ENGINEER_APREHEND_CORRECT" hostile="false" /> 
+	<choice hidden="true">
+		<text>あなたが何をしたかは知っている！</text>
+		<event>
+			<text>「え、なに？いろいろやったよ。具体的に言ってよ"</text>
+			<choice hidden="true">
+				<text>あなたはエンジを殺した！</text>
+				<event>
+					<text>"またしても曖昧すぎる。我々は多くのエンギ船を殺した。何が言いたい？"</text>
+					<choice hidden="true">
+						<text>十分近い。エンジニアに報告しろ</text>
+						<event>
+							<text>エンジニアは、あなたがマンティス船を捕まえたことを喜んでいる。彼らはマンティスを逮捕するために近くに飛び込んだ。当然、彼らは戦わずにあきらめるつもりはないだろうが、これで味方の火力支援が増えた。</text>
+							<environment type="PDS" target="enemy" />
+							<noASBPlanet />
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_ROCK_CORRECT">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>ロックの犯人。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたはロックマン容疑者をこのビーコンまで追跡した。</text>
+	<ship load="SHIP_ROCK_ENGINEER_APREHEND_CORRECT" hostile="false" /> 
+	<choice hidden="true">
+		<text>あなたが何をしたかは知っている！</text>
+		<event>
+			<text>「何を言っているんだ？</text>
+			<choice hidden="true">
+				<text>あなたはエンジを殺した！</text>
+				<event>
+					<text>"ああ、あいつら。私たちに向かってピーピー鳴ってた！それがどんなに迷惑なことか。私はここで問題があるとは思わない"</text>
+					<choice hidden="true">
+						<text>エンジニアに報告してください。</text>
+						<event>
+							<text>エンジニアはあなたがロック船を捕まえたことを喜んでいる。彼らはロックマンを逮捕するため、近くに飛び込んだ。当然、彼らは戦わずにあきらめるつもりはないだろうが、今は味方に追加の射撃支援がある。</text>
+							<environment type="PDS" target="enemy" />
+							<noASBPlanet />
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_SEPARATIST_CORRECT">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>分離主義者の犯人</unvisitedTooltip>
+	</beaconType>
+	<text>分離主義者の容疑者をこのビーコンまで突き止めた。</text>
+	<ship load="SHIP_SEPARATIST_ENGINEER_APREHEND_CORRECT" hostile="false" /> 
+	<choice hidden="true">
+		<text>あなたが何をしたかは知っている！</text>
+		<event>
+			<text>「エラー：混乱。あなたが何を言っているのか理解できません。文脈をお教えください。</text>
+			<choice hidden="true">
+				<text>あなたはエンジを殺した！</text>
+				<event>
+					<text>"ハーモニー "は敵だ。あなたは[敵の]反乱軍を殺しますね？私はまだ問題を理解していない"</text>
+					<choice hidden="true">
+						<text>エンジニアに報告してください。</text>
+						<event>
+							<text>エンジニアがあなたが分離主義者の船を捕まえられて嬉しい。エンギを逮捕するために近くに飛び込む。当然、彼らは戦わずに諦めないけど、これで味方の火力支援が増えた。</text>
+							<environment type="PDS" target="enemy" />
+							<noASBPlanet />
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_LANIUS_CORRECT">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>ラニウスの犯人。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたはラニウス容疑者をこのビーコンまで追跡した。</text>
+	<ship load="SHIP_LANIUS_ENGINEER_APREHEND_CORRECT" hostile="false" /> 
+	<choice hidden="true">
+		<text>あなたが何をしたかは知っている！</text>
+		<event>
+			<text>"しかし、怖くて理解できない。もっと明確に？</text>
+			<choice hidden="true">
+				<text>あなたはエンジを殺した！</text>
+				<event>
+					<text>"意地悪なゴミ "と思え。船はゴミ、船は食べる！ゴミを食え。食うか？ゴミだ！"</text>
+					<choice hidden="true">
+						<text>エンジニアに報告してください。</text>
+						<event>
+							<text>ラニウスの船を捕まえたことを喜ぶエンジニア。彼らはラニウスを逮捕するため、近くに飛び込んできた。当然、彼らは戦わずにあきらめるつもりはないだろうが、今は味方に追加の火力支援がある。</text>
+							<environment type="PDS" target="enemy" />
+							<noASBPlanet />
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_WIN">
+    <text>あなたはエンジ船の仇を討った。エンジニアは君の努力に感謝している。"FBIも捨てたもんじゃないなこれでも食え</text>
+    <autoReward level="HIGH">droneparts</autoReward>
+    <drone name="RANDOM" />
+</event>
+<event name="QUEST_ENGI_CRIME_MANTIS_WRONG">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>カマキリの犯人。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたはマンティス容疑者をこのビーコンまで追跡した。</text>
+	<ship load="SHIP_MANTIS_ENGINEER_APREHEND_WRONG" hostile="false" /> 
+	<choice hidden="true">
+		<text>あなたが何をしたかは知っている！</text>
+		<event>
+			<text>「え、なに？いろいろやったよ。具体的に言ってよ"</text>
+			<choice hidden="true">
+				<text>あなたはエンジを殺した！</text>
+				<event>
+					<text>「何だと？エンギは殺さない分かった...嘘だここではエンジは殺さない"</text>
+					<choice hidden="true">
+						<text>くそっ、これは犯人じゃない...。</text>
+						<event>
+							<text>マンティス艦は混乱しているが、あなたが非難したことで激昂し、攻撃を仕掛けてくる！</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_ROCK_WRONG">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>ロックの犯人。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたはロックマン容疑者をこのビーコンまで追跡した。</text>
+	<ship load="SHIP_ROCK_ENGINEER_APREHEND_WRONG" hostile="false" /> 
+	<choice hidden="true">
+		<text>あなたが何をしたかは知っている！</text>
+		<event>
+			<text>「何を言っているんだ？</text>
+			<choice hidden="true">
+				<text>あなたはエンジを殺した！</text>
+				<event>
+					<text>「何を言っているのかわからない。人種差別的なジョークか？"</text>
+					<choice hidden="true">
+						<text>くそっ、これは犯人じゃない...。</text>
+						<event>
+							<text>ロック号は混乱しているが、あなたが自分たちを非難したことで激昂し、攻撃を仕掛けてくる！</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_SEPARATIST_WRONG">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>分離主義者の犯人</unvisitedTooltip>
+	</beaconType>
+	<text>分離主義者の容疑者をこのビーコンまで突き止めた。</text>
+	<ship load="SHIP_SEPARATIST_ENGINEER_APREHEND_WRONG" hostile="false" /> 
+	<choice hidden="true">
+		<text>あなたが何をしたかは知っている！</text>
+		<event>
+			<text>「エラー：混乱。あなたが何を言っているのか理解できません。文脈をお教えください。</text>
+			<choice hidden="true">
+				<text>あなたはエンジを殺した！</text>
+				<event>
+					<text>"さらなる混乱"。私の理解はさらに低下した。エンギ船は我々と交戦していない"</text>
+					<choice hidden="true">
+						<text>くそっ、これは犯人じゃない...。</text>
+						<event>
+							<text>分離主義者の船は混乱してるけど、あなたが自分たちを非難したことで興奮して、攻撃してくる！</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_LANIUS_WRONG">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>ラニウスの犯人。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたはラニウス容疑者をこのビーコンまで追跡した。</text>
+	<ship load="SHIP_LANIUS_ENGINEER_APREHEND_WRONG" hostile="false" /> 
+	<choice hidden="true">
+		<text>あなたが何をしたかは知っている！</text>
+		<event>
+			<text>"しかし、怖くて理解できない。もっと明確に？</text>
+			<choice hidden="true">
+				<text>あなたはエンジを殺した！</text>
+				<event>
+					<text>"エンジ船は滅びない。ゴミは殺さない。非難する勇気があるか？"</text>
+					<choice hidden="true">
+						<text>くそっ、これは犯人じゃない...。</text>
+						<event>
+							<text>ラニウスの船は混乱していたが、あなたが自分たちを非難したことで激昂し、攻撃を仕掛けてきた！</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_ENGI_CRIME_LOSE">
+	<text>エンギ船の真犯人を突き止められなかった。あなたはエンジニアとの接触を控え、残骸をスクラップにした。</text>
+	<autoReward level="LOW">standard</autoReward>
+</event>
+
+
+<eventList name="HOSTILE_ENGI_MV">
+	<event load="ENCOUNTER_MANTIS_ENGI" />
+	<event load="ENCOUNTER_PIRATE_ENGI" />
+	<event load="ENCOUNTER_SEPARATIST_ENGI" />
+	
+	<event load="ENCOUNTER_REBEL" />
+	<event load="ENCOUNTER_AUTO" />
+	<event load="ENCOUNTER_PIRATE" />
+</eventList>
+
+<event name="ENCOUNTER_MANTIS_ENGI">
+	<text load="ENGI_MANTIS_FIGHT_MV" />
+	<ship load="SHIP_MANTIS_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="ENGI_MANTIS_FIGHT_MV">
+	<text>混信したレーダー信号は、エンギ空母の残骸を漁るマンティス攻撃艦であることが判明。彼らは反転して戦う。</text>
+	<text>あなたは無防備なエンギ補給ステーションを狙い撃ちするマンティス・レイダーに出くわした。その武器がステーションの装甲にはかなわないとわかると、あなたの船を攻撃してきた。バトルステーション</text>
+	<text>エリアはクリアに見え、飛び降りようとするが、マンティスのスカウトが後ろから飛び込んでくる！彼らも驚いているが、武器はすでにオンラインだ。</text>
+	<text>エンギの小隊に嫌がらせをするマンティス艦を発見。彼らはノードに辿り着き、飛び降りた！</text>
+</textList>
+
+<event name="ENCOUNTER_PIRATE_ENGI" unique="true">
+	<text>戦争が始まるまで、このあたりは海賊の宝庫だったに違いない。ここで出会う海賊は、疲れきっているようだが、腹は減っているようだ。戦わなければならない！</text>
+	<ship load="SHIP_PIRATE_ALL" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_SEPARATIST_ENGI" unique="true">
+	<text>エンギ・パトロールから隠れてる分離主義者の難民がこのビーコンに隠れてる。連邦の船が近くに飛び込んでくるのを見ると、自分たちのために来たと思い、攻撃してくる！</text>
+	<ship load="SHIP_SEPARATIST_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+
+
+
+<event name="ENCOUNTER_ENGI_ELITE">
+	<text>エンギ・ディフェンダーは通常、非対立的だが、その名が示す通り、ハーモニーを守ることが重要な目的だ。いずれにせよ、彼らはあなたの船が脅威になると判断し、あなたを無力化するために動きます。</text>
+	<ship load="SHIP_ENGI_ELITE_FIGHT_NOSURRENDER" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="HARMONY_LINK_DEFAULT" unique="true">
+	<preventQuest />
+	<beaconType id="map_icon_link" global="false">
+		<color r="137" g="142" b="148" a="1.0" />
+		<unvisitedTooltip>これはハーモニーリンクの位置である。</unvisitedTooltip>
+		<visitedTooltip>これはハーモニーリンクの位置である。</visitedTooltip>
+	</beaconType>
+	<text>ハーモニーリンクを発見したようだ。この巨大な惑星サイズの構造物は何兆個ものナノボットでできており、セクター内のすべてのエンジに強い信号を送っている。</text>
+	<img back="BACK_EVENT_HARMONYLINK" planet="NONE" />
+	<choice hidden="true" lvl="1" req="HARMONY_LINK_CHECK" max_group="1" blue="false">
+		<text>次へ...</text>
+		<event load="HARMONY_LINK_EVENTS" />
+	</choice>
+	<choice hidden="true" lvl="0" req="HARMONY_LINK_CHECK" max_group="1" blue="false">
+		<text>次へ...</text>
+		<event load="HARMONY_LINK_EVENTS_NOANCIENT" />
+	</choice>
+</event>
+<event name="HARMONY_LINK_UNIQUE" unique="true">
+	<preventQuest />
+	<beaconType id="map_icon_link" global="false">
+		<color r="137" g="142" b="148" a="1.0" />
+		<unvisitedTooltip>これはハーモニーリンクの位置である。</unvisitedTooltip>
+		<visitedTooltip>これはハーモニーリンクの位置である。</visitedTooltip>
+	</beaconType>
+	<text>ハーモニーリンクを発見したようだ。この巨大な惑星サイズの構造物は何兆個ものナノボットでできており、セクター内のすべてのエンジに強い信号を送っている。</text>
+	<img back="BACK_EVENT_HARMONYLINK" planet="NONE" />
+	<choice hidden="true" lvl="1" req="HARMONY_LINK_CHECK" max_group="1" blue="false">
+		<text>次へ...</text>
+		<event load="HARMONY_LINK_ANCIENT" />
+	</choice>
+	<choice hidden="true" lvl="0" req="HARMONY_LINK_CHECK" max_group="1" blue="false">
+		<text>次へ...</text>
+		<event load="HARMONY_LINK_EVENTS_NOANCIENT" />
+	</choice>
+</event>
+
+<eventList name="HARMONY_LINK_EVENTS">
+	<event load="HARMONY_LINK_FIGHTMANTIS" />
+	<event load="HARMONY_LINK_FIGHTENGI" />
+	
+	<event load="HARMONY_LINK_ANCIENT" />
+</eventList>
+<eventList name="HARMONY_LINK_EVENTS_NOANCIENT"> 
+	<event load="HARMONY_LINK_FIGHTENGI" />
+	<event load="HARMONY_LINK_FIGHTMANTIS" />
+</eventList>
+
+<event name="HARMONY_LINK_FIGHTENGI">
+	<text>エンギ船がハーモニーリンクの近くで休んでいる。エリートだが、まだ攻撃はしてこない。</text>
+	<ship load="SHIP_ENGI_ELITE_FIGHT" hostile="false" />
+	<choice hidden="true">
+		<text>彼らを攻撃する！</text>
+		<event>
+			<text>近づくと、突然エンジ船が起動し、ドローンがオンラインになる。"マルチバースドライブ搭載船が接近中。ハーモニーリンクへの脅威：防御プロトコルを起動"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>物資を要請する。</text>
+		<event>
+			<text>"拒否"。タスク：ハーモニーリンクの保護。干渉するな"彼らからは何も得られないようだな。</text>
+			<choice hidden="true">
+				<text>もし彼らが物資をくれないなら、私たちが持っていく！</text>
+				<event>
+					<text>"マルチバースドライブ搭載船が接近中"ハーモニーリンクへの脅威 防御プロトコルを起動"</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>出て行け。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_HARMONY">
+		<text>(ハーモニー・クルー) 物資を要請する。</text>
+		<event>
+			<text>"ハーモニーユニットを発見。プロトコルは援助を必要とする"</text>
+			<autoReward level="MED">droneparts_only</autoReward>
+			<damage amount="-3" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>エンジは無視。</text>
+		<event>
+			<text>彼らがあなたにとって脅威でなければ、あなたも彼らにとって脅威ではなくなる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HARMONY_LINK_FIGHTMANTIS">
+    <text>ビーコンの近くにスゼレーン船が待機している。"連邦軍の皆さん、次の獲物になりたくなければ、近づかないことをお勧めします..."</text>
+	<ship load="SHIP_SUZERAIN_FIGHT" hostile="false" />
+	<choice hidden="true">
+		<text>彼らを攻撃する！</text>
+		<event>
+			<text>「いいだろう。死を望むのなら、私がそれを叶えてあげよう！"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>奴隷がいるかどうか尋ねてみる。</text>
+		<event>
+			<text>"うーん。トレードを望んでいる？まあ...たぶんね。以前、狩りに成功したんだけど、ハイブに行くことになってるから、値段が高いんだ。"</text>
+			<choice>
+				<text>通常のエンジ購入。</text>
+				<event>
+					<text>「いいぞ、いいぞ。さあ、立ち去れ、やるべきことがある"</text>
+					<crewMember amount="1" class="engi" />
+					<item_modify>
+						<item type="scrap" min="-60" max="-50" />
+					</item_modify>
+				</event>
+			</choice>
+			<choice>
+				<text>エンジ・ディフェンダーを買う。</text>
+				<event>
+					<text>「いいぞ、いいぞ。さあ、立ち去れ、やるべきことがある"</text>
+					<crewMember amount="1" class="engi_defender" />
+					<item_modify>
+						<item type="scrap" min="-110" max="-95" />
+					</item_modify>
+				</event>
+			</choice>
+			<choice>
+				<text>気にするな。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>カマキリは無視。</text>
+		<event>
+			<text>彼らがあなたにとって脅威でなければ、あなたも彼らにとって脅威ではなくなる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_ANCIENT_AUTOSTART" auto_blueprint="LIST_SHIPS_ANCIENT_AUTO">
+	<destroyed load="HARMONY_LINK_ANCIENT_WIN" />
+	<surrender min="3" max="4">
+		<text>突然、船から言語不明の通信が入った。翻訳機は悪戦苦闘し、"Turkey alpha on the blue yesterday."（昨日、トルコのアルファ星がブルーに輝いた）などと意味不明なことを言う。通信は止まり、直後にシステムがおかしくなる！船はある種の奇妙な戦闘用オーグメントを作動させたのだ！</text>
+		<status type="limit" target="player" system="sensors" amount="0" />
+		<status type="limit" target="player" system="doors" amount="0" />
+		<status type="divide" target="player" system="shields" amount="2" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event>
+				<text>さらに悪いことに、船の残りのシステムがオンラインになったようだ！</text>
+				<status type="clear" target="enemy" system="drones" amount="100" />
+				<status type="clear" target="enemy" system="hacking" amount="100" />
+				<status type="clear" target="enemy" system="mind" amount="100" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event>
+						<status type="clear" target="enemy" system="cloaking" amount="100" />
+					</event>
+				</choice>
+			</event>
+		</choice>
+	</surrender>
+</ship>
+<event name="HARMONY_LINK_ANCIENT">
+	<text>リンクの周りを回っているのは、巨大な建造物の残骸......いや、船だろうか。巨大な立方体のセグメントで構成されたその船は、これまで見たどの船よりも大きいが、完全に破壊されている。残骸のそばには、奇妙なデザインだが立方体ではないオートマトンが静かに横たわっている。近づけば目を覚ますかもしれない。</text>
+	<customFleet right="false" firing="false" autoDarkening="true">CUSTOM_FLEET_ANCIENT_WRECKAGE</customFleet>
+	<variable name="loc_foundancient" op="set" val="1" />
+	<ship load="SHIP_ANCIENT_AUTOSTART" hostile="false" />
+	<status type="limit" target="enemy" system="cloaking" amount="0" />
+	<status type="limit" target="enemy" system="hacking" amount="0" />
+	<status type="limit" target="enemy" system="mind" amount="0" />
+	<choice hidden="true">
+		<text>念のため、まず船を破壊する。</text>
+		<event>
+			<text>船に近づくと、予想通り自動的に起動する。戦闘の準備だ！この船はすべてのシステムを使っていないようだ...このままであることを祈ろう！</text>
+			<ship hostile="true" />
+			<status type="limit" target="enemy" system="drones" amount="0" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>船に知らせずにサルベージを試みる。</text>
+		<event>
+			<text>あなたは残骸の最も遠い領域をスクラップしようとしたが、ほどなくして、あなたの存在に目を覚ましたオートシップが近づいてくるのが見えた！オートシップは船体にダメージを与え、あなたは素早くクルーを船内に引き戻した。船はすべてのシステムを使っていないようだ...このままであることを祈ろう！</text>
+			<autoReward level="MED">standard</autoReward>
+			<damage amount="3" />
+			<status type="limit" target="enemy" system="drones" amount="0" />
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>墜落現場は無視だ。</text>
+		<event>
+			<text>あなたは警戒しながら船から距離をとる。船上で明滅する光と、まるであなたの船を観察しているかのようなわずかな動きが、ほとんどわかる。</text>
+		</event>
+	</choice>
+</event>
+<event name="HARMONY_LINK_ANCIENT_WIN">
+	<text>外国のオートシップは排除された。残骸の中から大量のスクラップを発見。</text>
+	<variable name="loc_got_corpse" op="set" val="1" />
+	<autoReward level="HIGH">standard</autoReward>
+	<status type="clear" target="player" system="sensors" amount="100" />
+	<status type="clear" target="player" system="doors" amount="100" />
+	<status type="clear" target="player" system="shields" amount="100" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>オートシップに邪魔されることなく、残った残骸を偵察する。船体の素材のほとんどはデータベースで認識されていないようで、スクラップにするには強すぎる。この船を作った人は高度な技術を持っているか、まったく別の銀河系から来たに違いない。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>大型巡洋艦の1隻の内部で、船と同じように全体が立方体の、ある種のロボットらしきものを見つけて驚く。周囲の部屋は一部溶解し、奇妙なラニウスの死体が散乱している。興味本位でロボットを船に持ち帰るが、起動させる方法がわからないため、当面は保管庫の奥の隅に置いておくしかない。それと一緒に奇妙な座標も見つけたので、地図に印をつけた。</text>
+					<quest event="AUGMENTED_DISCOVERY" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<ship name="SHIP_TURZIL_TRANSPORT" auto_blueprint="LIST_SHIPS_SMUGGLERS">
+	<escape timer="40" min="30" max="30" />
+	<gotaway>
+		<text>密輸業者は飛び去る。彼らの積荷に何が入っていたのか、知る由もないだろうが...。</text>
+	</gotaway>
+	<surrender min="1" max="3" load="TURZIL_PIRATE_SURRENDER" />
+	<destroyed load="TURZIL_PIRATE_DESTROYED" />
+	<deadCrew load="TURZIL_PIRATE_DEADCREW" />
+</ship>
+<event name="TURZIL_PIRATE_TRANSPORT" unique="true">
+	<text>密輸業者の輸送機が、このビーコンでエンジのパトロールをすり抜けようとしている。何か重要なものを積んでいるに違いない。</text>
+	<ship load="SHIP_TURZIL_TRANSPORT" hostile="false" />
+	<choice hidden="true">
+		<text>彼らを尋問する。</text>
+		<event>
+			<text>「FBIだ！ここから逃げるぞ！"密輸業者はエンジンをパワーアップし、逃走を試みる！逃げる前に倒せ</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>	
+		<text>密入国者を無視する。</text>
+		<event>
+			<text>密輸業者が何を運んでいようと、あなたには何の興味もない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="TURZIL_PIRATE_SURRENDER">
+	<text>密輸業者が降伏の挨拶"わかった、わかった！お前の勝ちだ！貨物を受け取って、俺たちを解放してくれ！どうせろくに金も払わないくせに......"</text>
+	<choice hidden="true">
+		<text>降伏を受け入れる。</text>
+		<event>
+			<text>密輸業者は船からライフポッドを取り出して飛び去る。ライフポッドを開けると、そこには奇妙な色をしたエンジ・ディフェンダーがあった。</text>
+			<ship hostile="false" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>"セクター外への主要な輸送手段をなくした。私の身柄をハーモニーから移送してほしい。支払います"</text>
+					<choice>
+						<text>受け入れる。</text>
+						<event>
+							<crewMember amount="1" class="unique_turzil">TRZ</crewMember>
+							<autoReward level="LOW">scrap_only</autoReward>
+						</event>
+					</choice>
+					<choice>
+						<text>衰退。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>拒否し、戦い続ける。</text>
+		<event />
+	</choice>
+</event>
+<event name="TURZIL_PIRATE_DESTROYED">
+	<text>密輸船を破壊した。彼らの積荷は破壊されたが、少なくとも戦闘で出たスクラップは残っている。</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+<event name="TURZIL_PIRATE_DEADCREW">
+	<text>あなたは密輸業者を皆殺しにし、積荷はうまくいけば無傷のまま残した。まずは船の外装を一部スクラップにする。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>カーゴを開ける。</text>
+		<event>
+			<text>荷物を開けると、奇妙な色のエンジ・ディフェンダーが隅に座って天井を見つめている。鎖など奴隷であることを示すものは何もつけていない。他に可能性があるとすれば、密輸業者と一緒にヒッチハイクをしていることくらいだ。</text>
+			<ship hostile="false" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>"セクター外への主要な輸送手段をなくした。私の身柄をハーモニーから移送してほしい。支払います"</text>
+					<choice>
+						<text>受け入れる。</text>
+						<event>
+							<crewMember amount="1" class="unique_turzil">TRZ</crewMember>
+							<autoReward level="LOW">scrap_only</autoReward>
+						</event>
+					</choice>
+					<choice>
+						<text>衰退。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_HARMONY_CRUISER" auto_blueprint="MU_HARMONY_CRUISER">
+	<triggeredEvent name="HARMONY_DEMAND" event="HARMONY_FUGITIVE_SURRENDER" playerHull="7" thisFight="true" />
+	<triggeredEvent name="HARMONY_DEMAND_NOSOFTLOCK" event="HARMONY_FUGITIVE_SURRENDER" time="100" thisFight="true" />
+	<destroyed load="HARMONY_FUGITIVE_WIN" />
+	<deadCrew load="HARMONY_FUGITIVE_WIN" />
+</ship>
+<event name="HARMONY_FUGITIVE">
+	<text>FTLドライブを充電しようとしたとき、エンギ・クルーザーが接近してくるのに気づく！FTLドライブが反応しない。</text>
+	<ship load="SHIP_HARMONY_CRUISER" hostile="false" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>「こんにちは。エンギ・ハーモニーを代表するHA-34Uだ。我々はあなた方が逃亡者TRZ-1Lを運んでいることを承知している。逃亡者の引き渡しを要求し、高額の支払いを行う。ハーモニーに挑むのは賢明ではない"</text>
+			<choice req="unique_tully" hidden="true">
+				<text>(タリー）外交官としての地位を主張してください。</text>
+				<event>
+					<text>タリーはエンギ船に放送する。「連邦艦隊のタリー提督だ。この船に発砲するな。繰り返す、この船に発砲するな」
+
+
+ ポーズをとる。「あなたの地位は認めます。しかし、ハーモニー号が TRZ-1L を必要としていることの重要性を、あなたは非常に過小評価している。ハーモニーは連邦の中核です。ハーモニー全体のニーズが一人の提督より低いと考えるのは、判断力が欠けているとしか思えません」 
+
+ タリーは姿勢を広げ、背中で腕を組む。「一つだけ正しいことがある。連邦の大部分として、あなたは私に対して法的措置を取る権利があります。私のキャリアを終わらせることになるかもしれない。だが、私はタージルとここを去る。連邦が反乱軍との戦争に勝利しない限り、上層部は私のような有能な人物を排除するのをためらうと思いますよ」 
+ビュースクリーンのエンジは、数秒間無言で見つめている。やがて通信が切られる。ハーモニー船は武器をパワーダウンし、あなたに対してそれ以上の動きはしない。</text>
+					<choice>
+						<text>次へ...</text>
+						<event>
+							<text>FTLを温めながら、タリーはため息をつく。"この宇宙のタリーがまだノード17で反乱軍と忙しくしていると知ったら、彼らは嫌な驚きをするだろう。それでも、彼らがこのことを忘れることはないだろうから、今後はハーモニーを避けるべきかもしれない」
+
+タージルはタリーの腕に手を置き、タリーが彼の方を向くように仕向ける。"感謝の気持ちをどう表現していいか-わからない。君はこれからもずっと......僕の......友達だ。-もう片方の手をタージルの上に置く。「もう君を失わない。私の側にいて、私ができる限りあなたを守る。これが終わったら......ハーモニーに見つからない宇宙を探そうか」
+
+トゥルジルはうなずく。"まずはこの宇宙を解放しよう"</text>
+							<variable name="ach_crew_turzil" op="set" val="1" />
+							<unlockCustomShip silent="false">PLAYER_SHIP_ENGI</unlockCustomShip>
+							<choice>
+								<text>次へ...</text>
+								<event load="MORALITY_UPDATE_ENGI" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>		
+			<choice>
+				<text>逃亡者を引き渡せ</text>
+				<event load="HARMONY_FUGITIVE_EASYROUTE" />
+			</choice>
+			<choice>
+				<text>拒否する。</text>
+				<event>
+					<text>クルーを引き渡すつもりはないだろう！クルーザーと戦う準備をしろ</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HARMONY_FUGITIVE_EASYROUTE">
+	<text>エンギが胡散臭いのは知っていたが、実際のハーモニーと揉めてるとは知らなかったんだろう！エンギ全員を怒らせるわけにはいかない。</text>
+	<autoReward level="HIGH">augment</autoReward>
+	<removeCrew class="unique_turzil">
+		<clone>false</clone>
+		<text>エンジはもはやクルーではないので、クローンを作ることはできない。</text>
+	</removeCrew>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="MORALITY_REMOVE_ENGI" />
+	</choice>
+</event>
+
+<event name="HARMONY_FUGITIVE_SURRENDER">
+	<text>「これが最後のチャンスだ。逃亡犯を引き渡せば、あなたは生きることを許される」。</text>
+	<choice hidden="true">
+		<text>決して</text>
+		<event />
+	</choice>
+	<choice req="unique_turzil" blue="false">
+		<text>逃亡者はあきらめろ。</text>
+		<event>
+			<text>この戦いを続ける価値はない。逃亡者を引き渡し、代金を受け取る。</text>
+			<ship hostile="false" />
+			<surrender />
+			<autoReward level="MED">stuff</autoReward>
+			<removeCrew class="unique_turzil">
+				<clone>false</clone>
+				<text>エンジはもはやクルーではないので、クローンを作ることはできない。</text>
+			</removeCrew>
+		</event>
+	</choice>
+</event>
+
+<event name="HARMONY_FUGITIVE_WIN">
+	<text>あなたはエンギ・ハーモニー内でエリート・エンギ・クルーザーを倒した。ハーモニーが喜ぶとは思えないが、あなたはこの戦いで生還した。</text>
+	<variable name="ach_boss_harmony" op="set" val="1" />
+	<autoReward level="HIGH">drone</autoReward>
+	<choice req="unique_turzil" lvl="0" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>あなたの努力にもかかわらず、逃亡者は戦いに生き残れなかったようだ。逃亡者なしで戦い続けなければならない。</text>
+		</event>
+	</choice>
+	<choice req="unique_turzil" lvl="1" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>あなたはこの問題を引き起こしたエンギの逃亡者に向き直る。「謝罪します。この対立は予測できたはずです。私の身元を明らかにすることが重要です。私はタージル将軍です私の使命はハーモニーの捕獲を逃れること。私は、連邦内戦中にハーモニーと反乱軍の不可侵条約に背き、ハーモニー解体の分離主義運動に協力したため、指名手配の逃亡者になりました。地下分離主義運動の保護と死を避けるため、私を連れて行くことをお願いします。"</text>
+			<variable name="ach_crew_turzil" op="set" val="1" />
+			<unlockCustomShip silent="false">PLAYER_SHIP_ENGI</unlockCustomShip>
+		</event>
+	</choice>
+</event>
+
+<event name="TURZIL_REINFORCEMENTS">
+	<text load="TEXT_TURZIL_REINFORCEMENTS" />
+	<ship load="SHIP_ENGI_ELITE_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_TURZIL_REINFORCEMENTS">
+	<text>エリート・エンギ艦が攻撃を仕掛けてくる。推測するに、逃亡者を追い詰めるためにハーモニーから派遣された援軍だろう！</text>
+	<text>"動きを止めろ。"逃亡者の輸送と保護で ハーモニーに指名手配された"エンギのエリート船が攻撃！</text>
+	<text>このビーコンにいるエリート・エンギ艦は場違いな様子だ。あなたが保護している逃亡者について短いメッセージを受け取り、船は攻撃に移る。</text>
+	<text>"あなたは逃亡者をかくまった罪でハーモニーに指名手配されている。武器を解除し投降せよ"エンギのエリートが近づいてくるが、あきらめるつもりはない。</text>
+</textList>
+
+</FTL>

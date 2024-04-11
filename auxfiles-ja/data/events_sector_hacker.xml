@@ -1,0 +1,1207 @@
+<FTL>
+
+
+
+
+
+<event name="FINISH_BEACON_HACKER">
+	<preventQuest />
+	<beaconType id="map_icon_exit_hacker" global="false">
+		<color r="50" g="255" b="0" a="1" />
+		
+		<visitedTooltip>これが本当の出口ビーコンだ。</visitedTooltip>
+	</beaconType>
+	<variable name="loc_hacker_exit" op="set" val="1" />
+	<text>出口に到着...</text>
+	<choice req="loc_hacker_exit" lvl="0" max_group="0" hidden="true" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>出口を見つけたようだが、アトラスがつながらない。何かが信号をブロックしているようです。</text>
+			<ship load="SHIP_HACKER_BROADCAST_FAKE" hostile="false" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>突然、あなたは小さな月の陰に隠れた放送局から呼びかけを受けた。「これは何だ？愚かなレネゲイドの小船が出ようとしているのか？残念ながら、それは許可できない！"</text>	
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="loc_hacker_exit" lvl="1" max_group="0" hidden="true" blue="false"> 
+		<text>次へ...</text>
+		<event>
+			<text>ハッカー・ステーションは撃破されたが、反乱軍艦隊がビーコンを制圧した！脱出するには戦わなければならない！</text>
+			<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+			<ship load="SHIP_REBEL_FLEET_S" hostile="true" />
+			<environment type="PDS" target="player" />
+			<noASBPlanet />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+			<choice hidden="true" req="engines" lvl="6">
+				<text>(アドバンスエンジン）エリートから逃れようとする。</text>
+				<event load="FLEET_ESCAPE" />
+			</choice>
+			<choice hidden="true" req="LIST_CREW_JERRY">
+				<text>(ジェリー）"ハロー！"</text>
+				<event>
+					<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO" />
+					<ship hostile="false" /> 
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HACKER_EXIT_DEFEAT">
+	<text>ハッカーステーションが倒された。幸いなことに、ハッカーの脅威が取り除かれると同時に、あなたのアトラスは出口ビーコンに接続する。</text>
+	<variable name="loc_hackerexit" op="set" val="1" />
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+	
+<eventList name="ITEMS_HACKED">
+	<event load="HACKED_CIVILIANS_FREECREW" />
+	<event load="HACKER_CIVILIAN_STATION" />
+	<event load="HACKER_OFFER" />
+	<event load="HACKED_MILITIA" />
+</eventList>
+
+<event name="HACKED_CIVILIANS_FREECREW" unique="true">
+	<text>ハッカーから身を隠していたユニオン船から連絡が入る。「お願いです、いつまでも隠れているわけにはいきません。この血塗られたセクターから脱出するために、あなたの船で働かせていただけませんか？"</text>
+	<ship load="SHIP_UNION_GENERIC" hostile="false" />
+	<choice>
+		<text>乗船を歓迎する。</text>
+		<event>
+			<crewMember amount="1" class="LIST_CREW_UNION_RANDOM" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>これ以上クルーは必要ない。</text>
+		<event>
+			<text>あなたは彼らに謝罪し、任務を遂行する。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="HACKER_CIVILIAN_STATION" unique="true">
+	<text>「船だ！誰にも見つからないと思っていた。ハッカーの大隊がここを通過し、我々のステーションを略奪した。物資が不足していて、それなしではビジネスができない。売ってくれませんか？スクラップはないが、他の方法で支払いはできる。"</text>
+	<ship load="SHIP_UNION_STATION" hostile="false" /> 
+	<choice>
+		<text>燃料を与える。</text>
+		<event>
+			<text>民間人に燃料を移すんだ。</text>
+			<item_modify>
+				<item type="fuel" min="-8" max="-8" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="HACKER_CIVILIAN_STATION_THANK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>ミサイルを与える。</text>
+		<event>
+			<text>民間人に弾薬を渡す。</text>
+			<item_modify>
+				<item type="missiles" min="-5" max="-5" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="HACKER_CIVILIAN_STATION_THANK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>ドローンパートを与える。</text>
+		<event>
+			<text>いくつかのドローンパートを民間人に譲渡する。</text>
+			<item_modify>
+				<item type="drones" min="-3" max="-3" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="HACKER_CIVILIAN_STATION_THANK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>私たちは助けることができない。</text>
+		<event>
+			<text>民間人に謝罪し、通信を切る。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HACKER_CIVILIAN_STATION_THANK">
+	<text>「ありがとうございます。また襲撃されたときのために、これをもっときちんと隠すようにします。さて、どのようなご用件でしょうか？</text>
+	<choice hidden="true">
+		<text>修理が必要だ。</text>
+		<event>
+			<text>「はい。すぐに修理チームを派遣します！"</text>
+			<damage amount="-10" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>艦隊を遅らせる必要がある。</text>
+		<event>
+			<text>"どれだけのことができるかわからないが......艦隊が来たら、あなたの居場所を偽ろう。うまくいけば、信じてもらえるだろう"</text>
+			<modifyPursuit amount="-2" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>原子炉のアップグレードが必要だ。</text>
+		<event>
+			<text>「はい、なんとかなると思います。すぐにアップグレードのチームを派遣します"</text>
+			<upgrade amount="1" system="reactor" />
+		</event>
+	</choice>
+</event>
+
+<event name="HACKED_MILITIA" unique="true">
+	<text>民兵の船がこの星系を通過している。おそらく、他の仲間を殺害したハッカーを避けようとしているのだろう。</text>
+	<choice>
+		<text>船を点検する。</text>
+		<event>
+			<text>民兵の船は最近の戦闘でダメージを受けた。乗組員は生きているが、恐れており、セクターから逃げようとしている。</text>
+			<ship load="SHIP_MILITIA_GENERIC" hostile="false" />
+			<status type="limit" target="enemy" system="engines" amount="2" />
+			<status type="loss" target="enemy" system="shields" amount="2" />
+			<status type="limit" target="enemy" system="doors" amount="0" />
+			<choice hidden="true">
+				<text>クルーの護衛を申し出る。</text>
+				<event load="HACKED_MILITIA_CREW" />
+			</choice>
+			<choice hidden="true">
+				<text>修理の手伝いを申し出る。</text>
+				<event>
+					<text>民兵たちはあなたの申し出に感謝する。あなたは彼らの損傷したシステムの修理に時間を費やし、その努力に見合った報酬を受け取った。</text>
+					<autoReward level="LOW">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>攻撃しやすいターゲットになる！</text>
+				<event>
+					<text>民兵船を攻撃することを決めたあなたにとって、モラルは明らかに重要ではない。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_GENERAL_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>民兵は無視しろ。</text>
+		<event>
+			<text>船の邪魔をせず、船内で何かをする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="HACKED_MILITIA_CREW">
+	<event>
+		<text>民兵たちはあなたの申し出を警戒するが、最終的には屈服する。民間人を保護する別の方法を提供することを望んで、一人はあなたのクルーに加わりたいとさえ申し出た。</text>
+		<crewMember amount="1" class="human" />
+	</event>
+	<event>
+		<text>民兵たちはあなたの申し出を警戒している。もう一度騙されたくないので、彼らは断る。</text>
+	</event>
+</eventList>
+
+<event name="HACKER_OFFER" unique="true">
+	<text>"私が探していた船でなかったら、申し訳ない。友人たちが温かく迎えてくれなかったら申し訳ないが、親切の申し出に来たんだ。お互いに有益な貿易ができると確信している..."</text>
+	<ship load="SHIP_HACKER" hostile="false" />
+	<choice hidden="true">
+		<text>彼らが提供するかもしれないものに興味を示す。</text>
+		<event>
+			<text>"ああ、君にはチャンスを見る目があるようだね。尊敬に値する"ハッカーはあなたに、彼らが提供できる可能性のある取引やサービスをいくつか示す。</text>
+			<choice>
+				<text>同セクターの詳細データについては有料。</text>
+				<event>
+					<text>ハッカーはデータをあなたのコンピューターに転送する。幸いなことに、ウィルスは隠されていないようだ。</text>
+					<reveal_map />
+					<item_modify>
+						<item type="scrap" min="-30" max="-20" />
+					</item_modify>
+				</event>
+			</choice>
+			<choice>
+				<text>艦隊の注意をそらすためにお金を払う。</text>
+				<event>
+					<text>"私はあなたがこの仕事を選んでくれることを望んでいました。この仕事を大いに楽しみます......」。彼らが何を計画しているにせよ、艦隊にとって大きな迷惑となることは想像に難くない。</text>
+					<modifyPursuit amount="-2" />
+					<item_modify>
+						<item type="scrap" min="-30" max="-20" />
+					</item_modify>
+				</event>
+			</choice>
+			<choice blue="false">
+				<text>ハッキングシステムを購入する。</text>
+				<event>
+					<text>「私たちの跡を継ぎたいんですか？かわいい。本当にかわいい。その気になるな、このセクターは我々が支配する！"スラッグはハッキングシステムを船に取り付けるチームを送り出す。彼らを注意深く見張るように。</text>
+					<system name="hacking" />
+					<item_modify>
+						<item type="scrap" min="-90" max="-75" />
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>気にするな。</text>
+				<event>
+					<text>"恥を知れ。殺されないように..."</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ハッカーと戦え！</text>
+		<event>
+			<text>スラッグ野郎どもは、このセクターの市民を人質に取っているんだ。そう簡単に逃がすはずがない。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>あなたのサービスは必要ない。</text>
+		<event>
+			<text>"恥を知れ。殺されないように..."</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<eventList name="NEUTRAL_HACKED">
+	<event load="HACKED_PDS" />
+	<event load="HACKED_CIVILIAN_WRECK_TRAP" />
+	<event load="HACKED_FLEET_SPY" />
+	<event load="HACKED_FANCY_CLASS" />
+	<event load="HACKED_HOSTAGES" />
+
+</eventList>
+
+<event name="HACKED_PDS" unique="true">
+    <text>ハッカーが現在、惑星防衛グリッドと交信している。防衛網の隣にあるステーションがあなたに呼びかけるが、メッセージは文字化けしている。「彼らは防衛網をハッキングしようとしている！もし助けられるなら、助けてくれ。そうでなければ、手遅れになる前にここから逃げろ！"</text>
+    <ship load="SHIP_HACKER_AND_BATTERY" hostile="false" />
+    <choice req="PDS_DISABLE">
+		<text>(シグナル・ディリューター）防衛網への干渉を防ぐ。</text>
+		<event>
+			<text>あなたはステーションの対艦砲台にハッキング信号を妨害することができ、防衛網が敵のハッカーだけを標的にできるようになった。ユニオンのステーション司令官は恍惚としているようだ。「ハハ！やっちまえ！"</text>
+			<environment type="PDS" target="enemy" />
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>ハッカーを攻撃せよ。</text>
+		<event>
+			<text>ハッカーはあなたを愚弄しようとする。「ハハ、バカめ！我々はすでに防衛網にアクセスしている！"敵味方の区別はつかないようだが。艦長はクルーに怒鳴る：「まだ終わってないってどういうことだ？</text>
+			<environment type="PDS" target="both" />
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>ハッカーにスクラップを提供する。</text>
+		<event>
+			<text>"うーん...一方では、もし我々が防衛網のハッキングを終えれば、もっと支払うかもしれない...しかし、我々は多勢に無勢だ...わかった。さようなら！"</text>
+			<item_modify>
+				<item type="scrap" min="-35" max="-25" />
+			</item_modify>
+			<choice>
+				<text>次へ...</text>
+				<instantEscape />
+				<event load="HACKED_PDS_RESCUE">   		 	
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>手遅れになる前に逃げろ。</text>
+		<event>
+			<text>一刻も早くこの地を離れることを選ぶ。残念ながら、これでは船内活動に費やす時間がない。</text>
+		</event>
+    </choice>
+</event>
+<event name="HACKED_PDS_RESCUE">
+    <text>「もう少しで捕まるところだった。他のハッカーが近づいてきたら、私たちに手を出したことを後悔することになるだろう。これを持って、いい仕事を続けてくれ。ステーションはあなたに資源と武器を与える。</text>
+    <autoReward level="HIGH">stuff</autoReward>
+    <weapon name="GIFTLIST_UNION" />
+</event>
+
+<event name="HACKED_HOSTAGES" unique="true">
+	<text>近くの小さな民間人コロニーがハッカー集団に支配されているようだ。市民たちは捕獲者たちになすすべもない。</text>
+	<choice hidden="true">
+		<text>ハッカー野郎を攻撃しろ。</text>
+		<event>
+			<text>堕落した汚らわしいスラッグどもに罪のない市民を人質に取らせるわけにはいかない。ハッカーと交戦しろ</text>
+			<ship load="SHIP_HACKER_HOSTAGES" hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>ハッカーに金を払って民間人を解放してもらう。</text>
+		<event>
+			<text>「これは何だ？連盟の篤志家からの寄付ですか？なんて親切なんだ。どうせ民間人からはたいしたカネも搾り取れなかったのに......」。ハッカーたちは民間人のコントロールを解き、飛び去る。</text>
+			<item_modify>
+				<item type="scrap" min="-30" max="-20" />
+			</item_modify>
+			<instantEscape />
+			<choice hidden="true">
+				<text>コロニーに連絡を。</text>
+				<event load="HACKED_HOSTAGES_PAY" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>コロニーは無視する。</text>
+		<event>
+			<text>ハッカーたちがあなたに気づかないのか、それとも単にあなたの船を相手にしないだけなのか。あなたはコロニーを無視し、自分の道を進む。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HACKED_HOSTAGES_WIN">
+	<text>あなたはハッカー船を倒した。残りのハッカーたちは、あなたが同僚を倒した今、あなたを恐れて、システムから逃げ出した。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="HACKED_HOSTAGES_PAY" />
+	</choice>
+</event>
+<eventList name="HACKED_HOSTAGES_PAY"> 
+	<event>
+		<text>コロニーはあなたの援助に感謝している。リーダーの説明によると、彼らは小惑星からの燃料抽出を専門としているが、ハッカーは金を探しに来た。彼らはスクラップをかき集めるまで人質にされていた。今、彼らは自由になったので、彼らはあなたに気前よく燃料の寄付をした。</text>
+		<autoReward level="HIGH">fuel_only</autoReward>
+	</event>
+	<event>
+		<text>コロニーはあなた方の援助に感謝している。彼らは、ハッカーたちが自分たちの船の武器を作るために、武器製造施設を支配下に置いていたと説明する。彼らが自由になった今、武器の1つをあなたにくれる。</text>
+		<weapon name="RANDOM" />
+	</event>
+</eventList>
+
+<event name="HACKED_CIVILIAN_WRECK_TRAP" unique="true">
+	<text>近くに民間船の残骸が漂っている。民間人がこのような形で死ななければならなかったのは残念だが、船内にはサルベージできる物資がありそうだ。</text>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>船をスクラップにする。</text>
+		<event load="HACKED_CIVILIAN_WRECK_TRAP_SALVAGE" />
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>サルベージを行うクルーもいない。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(スラッグ・クルー）まずスラッグに残骸を調べさせる。</text>
+		<event load="HACKED_CIVILIAN_WRECK_TRAP_SLUG" />
+	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+		<text>(テレパシー・シェル）まずシェルに残骸を調べさせる。</text>
+		<event load="HACKED_CIVILIAN_WRECK_TRAP_SNAIL" />
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>あなたは海賊や不潔なハッカーのギャングではない。プロには基準がある。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="HACKED_CIVILIAN_WRECK_TRAP_SALVAGE">
+	<event>
+		<text>船の内部を物色し始めたとき、残骸の中に爆弾が仕掛けられているのに気づく！爆弾は爆発し、クルーの一人が死亡した。罠を仕掛けた犯人と思われるハッカーが襲ってきた。</text>
+		<ship load="SHIP_HACKER" hostile="true" />
+		<removeCrew>
+			<clone>true</clone>
+			<text>幸運なことに、クローンベイはクルーがいつ吹き飛ばされてもいいように常に準備されている。</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>サルベージ任務を邪魔するものは何もない。船から物資を持ち帰る。</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>驚いたことに、民間人の1人が戦闘を生き延びたようだ。残念なことに、彼らの攻撃者は去らなかったようだ。新兵が後を追う中、あなたはハッカーを撃退する準備をする。</text>
+		<crewMember amount="1" />
+		<ship load="SHIP_HACKER" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="HACKED_CIVILIAN_WRECK_TRAP_SLUG">
+	<event>
+		<text>スラッグが残骸に仕掛けられた罠を発見。近くに隠れていたハッカー船は、あなたが彼らのトリックに引っかからなかったことに失望し、攻撃に移る！</text>
+		<ship load="SHIP_HACKER" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>スラッグは何の問題も感じていない。サルベージ・ミッションに支障はない。船から物資を持ち帰る。</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>スラッグは民間人の1人が戦闘から生き残ったことを察知！あなたは彼らを救出するために移動します。</text>
+		<crewMember amount="1" />
+	</event>
+</eventList>
+<eventList name="HACKED_CIVILIAN_WRECK_TRAP_SNAIL">
+	<event>
+		<text>あなたのシェルは、残骸に仕掛けられた罠を探知する。近くに隠れていたハッカー船は、あなたが彼らのトリックに引っかからなかったことに失望し、攻撃に移る！</text>
+		<ship load="SHIP_HACKER" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>シェルは何の問題も感じていない。サルベージ・ミッションに支障はない。船から物資を持ち帰る。</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>シェルは民間人のひとりが戦闘から生還したことを察知！あなたは彼らを救出するために移動します。</text>
+		<crewMember amount="1" />
+	</event>
+</eventList>
+
+<event name="HACKED_FLEET_SPY" unique="true">
+	<text>ハッカー船があなたに声をかけてきた。「このような状況で会うとは残念だ。知っての通り、反乱軍の艦隊は君の居場所を知るために高い代償を払うだろう。だが君の居場所を秘密にしておきたいなら別だ"</text>
+	<ship load="SHIP_HACKER_FLEET_SPY" hostile="false" />
+	<choice>
+		<text>船団に警告しないように金を払え。</text>
+		<event>
+			<text>「これでいい。旅の疲れを癒してください」。</text>
+			<item_modify>
+				<item type="scrap" min="-35" max="-25" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>この情報を漏らすわけにはいかない！ハッカーを殺すんだ</text>
+		<event>
+			<text>ハッカーがあなたの居場所を艦隊に漏らす危険は冒せない。彼らを破壊しなければならない。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>私たちはあなたに何も払っていない。</text>
+		<event>
+			<text>「そうか。じゃあ、反乱軍と楽しんでくれよな！"ハッカーたちは飛び去る。</text>
+			<modifyPursuit amount="2" />
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="HACKED_FANCY_CLASS" unique="true">
+	<text>スラッグ船とハッカー船がこのビーコンで対決しているようだ。あなたが傍受した船同士の会話から判断すると、彼らは何か言い争っているようだ...船のクラスについて？</text>
+	<choice hidden="true">
+		<text>彼らの主張について尋ねてみよう。</text>
+		<event>
+			<text>ハッカーどもは、あなた方の呼びかけに応じないが、スラッグどもは応じる。「ハッカーたちは何年も前からスラッグ船から船を盗み続けている！彼らは船内の形を少し変えて、派手な名前をつけている！その神経を想像してみてください」。</text>
+			<choice hidden="true">
+				<text>スラッグの味方。</text>
+				<event>
+					<text>あなたはスラッグを守り、ハッカー船と戦うことを決めた。戦闘に備えよ！</text>
+					<ship load="SHIP_HACKER_FANCY_CLASS" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>ハッカーの味方</text>
+				<event>
+					<text>あなたはハッカーズを守り、スラッグ船と戦うことを決めた。戦闘に備えよ！</text>
+					<ship load="SHIP_SLUG_FANCY_CLASS" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>よし、楽しんでくれ。</text>
+				<event>
+					<text>スラッグ船同士の決闘には手を出すな。お互いの破滅は、両者にとってふさわしい結末だろう。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>船は無視する。</text>
+		<event>
+			<text>スラッグ船同士の決闘には手を出すな。お互いの破滅は、両者にとってふさわしい結末だろう。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FANCY_CLASS_HACKER">
+	<text>ハッカー船を撃破した。残骸を引き揚げろ。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>"興味深い展開だが...文句を言うつもりはない。でも、文句を言うつもりはない。</text>
+			<autoReward level="HIGH">scrap_only</autoReward>
+		</event>
+	</choice>
+</event>
+<event name="FANCY_CLASS_SLUG">
+	<text>あなたはスラッグ船を倒した。残骸を引き揚げろ。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice>
+		<text>次へ...</text>
+		<event>
+			<text>"あれは...予想外だった。"モラルなんてクソ食らえだ""報酬が欲しいんだろうが反乱軍艦隊に遅れをとるとはな</text>
+			<modifyPursuit amount="-2" />
+		</event>
+	</choice>
+</event>
+
+<eventList name="NEBULA_HACKED"> 
+	<event load="NEBULA_LOST_SHIP_HACKER" /> 
+</eventList>
+
+<event name="NEBULA_LOST_SHIP_HACKER" unique="true">
+	<text>大きく損傷した連邦の船が、このビーコンの星雲に隠れている。接触する間もなく、星雲の中に消えていく。</text>
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>彼らをフォローし、助けようとする。</text>
+		<event load="NEBULA_LOST_SHIP_LIST_HACKER" />
+	</choice>
+	<choice>
+		<text>自分のポジションをキープしなさい。</text>
+		<event>
+			<text>あなたは連邦政府を追いかけないと決めた。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>	
+	<choice req="teleporter" hidden="true"> 
+		<text>(テレポーター）テレポーターで相手のライフサインをロックする。</text>
+		<event>
+			<ship load="SHIP_FED_GENERIC" hostile="false" />
+			<text>連邦のクルーを乗船させる。一人は快くクルーに加わり、残りは次のステーションで降ろされるのを待つ。</text>
+			<crewMember amount="1" />
+			<autoReward level="MED">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice req="ADV_SCANNERS" hidden="true">
+		<text>(ロングレンジ・スキャナー）センサーに余分なパワーを送り込み、彼らを追跡しようとする。</text>
+		<event load="NEBULA_LOST_SHIP_LIST2" />
+	</choice>
+</event>
+<eventList name="NEBULA_LOST_SHIP_LIST_HACKER">
+	<event>
+		<text>捜索は絶望的だ。センサーは星雲に何も感知できない。</text>
+	</event>
+	<event>
+		<text>星雲の中を徒労に終わることなく捜索していると、連邦の忠誠者たちが隠れていたと思われるハッカー船に出くわす。あなたは戦いに備える。</text>
+		<ship load="SHIP_HACKER" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<ship load="SHIP_FED_GENERIC" hostile="false" />
+		<text>運良く、星雲のそれほど深くないところに浮かんでいるのを見つける。友軍に発見されたことに興奮し、彼らは船に乗り込み、難破した船を放棄する。</text>
+		<crewMember amount="1" />
+	</event>
+</eventList>
+
+
+<eventList name="DISTRESS_HACKED">
+	<event load="DISTRESS_HACKER_TRAP" />
+	<event load="DISTRESS_HACKER_MILITIA" />
+</eventList>
+
+<event name="DISTRESS_HACKER_TRAP">
+	<distressBeacon />
+	<text load="TEXT_ENCOUNTER_HACKER_DISTRESS" />
+	<ship load="SHIP_HACKER" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_HACKER_DISTRESS">
+	<text>遭難信号がシビリアン信号としてエンコードされていたにもかかわらず、信号の発信源はハッカー船で、誰かが罠にはまるのを待ち構えていた！</text>
+	<text>この遭難信号の発信源は、敵対的なハッカー船に取って代わられ、なくなっている！</text>
+	<text>「あなたみたいな人を騙すのがこんなに簡単だなんて信じられないでしょう。ハッキングする必要さえなかったんだ。ただ、ディストレスビーコンをオンにして待っていただけさ。</text>
+	<text>このビーコンのハッカー船は、遭難信号が単なる罠だったことを明らかにしている！</text>
+</textList>
+
+<event name="DISTRESS_HACKER_MILITIA" unique="true">
+	<distressBeacon />
+	<text>遭難信号の発信元は民兵船で、ハッカー船から逃走中らしい。</text>
+	<choice hidden="true">
+		<text>民兵を救出せよ</text>
+		<event>
+			<text>このセクターには民兵が必要だ。ハッカーにこれ以上民兵を殺させるわけにはいかない。</text>
+			<ship load="SHIP_HACKER_MILITIA_RESCUE" hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>民兵船を救助することで、任務を危険にさらすことはできない。続けろ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DISTRESS_HACKER_MILITIA_WIN">
+	<text>ハッカー船を撃破。船をスクラップにしろ。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>民兵のほとんどは攻撃を生き延びられなかったようだ。一人生き残った隊長は、あなたのクルーに加わりたいと申し出ている。</text>
+			<crewMember amount="1" class="human" pilot="1" />
+		</event>
+	</choice>
+</event>
+
+
+<eventList name="QUESTS_HACKED">
+	<event load="QUEST_HACKER_HOSPITAL" />
+</eventList>
+
+<event name="QUEST_HACKER_HOSPITAL" unique="true">
+    <text>"着信" "誰なのか なぜ来たのか" "知らないが 聞いてくれハッカーが...近くの星系で病院を捕らえた。我々の多くはそこに家族がいる身代金を支払う余裕がないどうか、あなたが唯一の希望なのです。"</text>
+   	<choice hidden="true">
+   		<text>彼らの要求に同意する。</text>
+   	 	<event>
+   		 	<text>民間人が占拠された病院の場所を転送。"できる限りのことをしてください"</text>
+   		 	<quest event="QUEST_HACKER_HOSPITAL_DESTINATION" />
+   	 	</event>
+	</choice>
+    <choice hidden="true">
+		<text>私たちは助けられない。</text>
+		<event>
+			<text>向こうの声はすすり泣き、まもなく途切れた。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+   		</event>
+	</choice>
+</event>
+<event name="QUEST_HACKER_HOSPITAL_DESTINATION">
+    <beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>ハッカーに占拠された人口病院。</unvisitedTooltip>
+    </beaconType>
+    <text>このビーコンの病院は、あなたが言われたとおり、確かにハッカー船に守られている。彼らは素早く呼びかける："私たちの身柄がないのなら、すぐに立ち去りなさい"</text>
+    <ship load="SHIP_HACKER_HOSPITAL" hostile="false" />
+    <choice hidden="true">
+   		<text>病院を人質にしているハッカーを攻撃せよ。</text>
+		<event>
+			<text>ハッカーたちの悪行を見逃すつもりはないだろう。</text>
+			<ship hostile="true" />
+			<choice>
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+   		<text>身代金を払って、病院を放っておいてもらう。</text>
+   		<event>
+			<text>"一緒に仕事をさせてください"ハッカー船はこのビーコンを出発する。</text>
+			<item_modify>
+				<item type="scrap" min="-150" max="-150" />
+			</item_modify>
+			<instantEscape />
+			<choice>
+				<text>次へ...</text>
+				<event load="HOSPITAL_SAVED" />
+			</choice>
+		</event>
+	</choice>
+    <choice hidden="true">
+		<text>謝って、できるだけ早く立ち去ること。</text>
+		<event>
+			<text>"人間どもに、早く金を積んだほうがいいと言ってやれ"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+   	 	</event>
+    </choice>
+</event>
+<event name="HOSPITAL_SAVED">
+    <text>「当病院の主任代理です。大したことは申し上げられませんが、お世話になっております。どうされましたか？</text>
+    <choice hidden="true" blue="false" req="clonebay" lvl="1" max_lvl="2" max_group="0">
+		<text>クローンベイをアップグレードしてもらう。</text>
+		<event>
+			<text>"私たちのラボの技術者なら、寝ている間にできるだろう。これがあなたの任務に役立つことを願っています"</text>
+			<upgrade amount="1" system="clonebay" />
+		</event>
+    </choice>
+    <choice hidden="true" blue="false" req="medbay" lvl="1" max_lvl="2" max_group="0">
+		<text>メドベイをアップグレードしてもらう。</text>
+		<event>
+			<text>"私たちのラボの技術者なら、寝ている間にできるだろう。これがあなたの任務に役立つことを願っています"</text>
+			<upgrade amount="1" system="medbay" />
+		</event>
+    </choice>
+    <choice req="LAB_INSTALLED" lvl="0" max_lvl="0" hidden="true" blue="false" max_group="1">
+		<text>クルーのアップグレードのために船内ラボを設置させる。</text>
+		<event>
+			<text>"私たちの研究者は最先端の研究設備を持っています。私たちはあなたのためにいくらか用意することができます"</text>
+			<hiddenAug>LAB_INSTALLED</hiddenAug>
+		</event>
+    </choice>
+    <choice req="LAB_UPGRADE" lvl="0" max_lvl="0" hidden="true" blue="false" max_group="1">
+		<text>機内ラボをアップグレードしてもらう。</text>
+		<event>
+			<text>"私たちの研究者は最先端の研究設備を持っています。私たちはあなたのためにいくらか用意することができます"</text>
+			<hiddenAug>LAB_UPGRADE</hiddenAug>
+		</event>
+    </choice>
+    <choice hidden="true">
+		<text>医療スタッフに同行してもらう。</text>
+		<event>
+			<text>「問題ないでしょう。今、このセクター以外の場所に行きたい補佐官がいるんだ」。</text>
+			<crewMember amount="1" class="human_medic" />
+		</event>
+    </choice>
+    <choice hidden="true">
+		<text>艦隊を遅らせることができるかどうか尋ねてくれ。</text>
+		<event>
+			<text>「できる限りのことはするが、奇跡は期待するな、レネゲイド」。</text>
+			<modifyPursuit amount="-1" />
+		</event>
+		</choice>
+</event>
+
+
+<eventList name="HOSTILE_HACKED">
+	<event load="ENCOUNTER_HACKER" />
+	<event load="ENCOUNTER_HACKER_AUTO" />
+	<event load="ENCOUNTER_HACKER_PIRATE" />
+	<event load="ENCOUNTER_HACKER_REBEL" />
+	
+	<event load="HACKER_O2_JAM" />
+</eventList>
+
+<event name="ENCOUNTER_HACKER">
+	<text load="TEXT_ENCOUNTER_HACKER" />
+	<ship load="SHIP_HACKER" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_HACKER">
+	<text>"ここに来たのが間違いだ 連邦艦よここは我々のセクターだ！"</text>
+	<text>このビーコンを探索していると、はるか後方からハッカー船が追ってくる。ゆっくりと近づいてくるので、彼らが戦いを求めているのは明らかだ。</text>
+	<text>「連邦のヴェッセルに囲まれて幸せだ。あなたが返事を返す前に、ハッカーが口を挟む！死ぬ準備をしろ」。</text>
+	<text>あなたは自分のコンピューターに異質な信号を検知した。その発信元を特定する過程で、ハッカー船が飛び出して攻撃してきた！</text>
+	<text>ハッカーはこのセクターを支配しており、他者を入れることに熱心ではない。ここにいる船は、この領土の領有権を守る準備をしている。</text>
+</textList>
+
+<event name="ENCOUNTER_HACKER_PIRATE">
+	<text load="TEXT_ENCOUNTER_HACKER_PIRATE" />
+	<ship load="SHIP_PIRATE_ALL" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_HACKER_PIRATE">
+	<text>このセクターはハッカー一族の支配下にあるかもしれないが、海賊が群がっていないわけではない。このビーコンにいる海賊船があなたを発見し、攻撃してくる。</text>
+	<text>この海域をのんびりと探索していた海賊船が、あなたを発見し、時間をおかずに攻撃を仕掛けてきた。</text>
+	<text>このセクターに出没する海賊はハッカーだけではない。このビーコンにいる敵対的な船がその証拠だ。</text>
+</textList>
+
+<event name="ENCOUNTER_HACKER_REBEL">
+	<text>反乱軍の船が向かってくる。「くそっ！我々がここに駐留している間に、ハッカーがこのセクターを支配した！連邦の船もここにいるのか？艦隊のところへ行かねば..."</text>
+	<ship load="SHIP_REBEL_HACKER_FLEET" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_HACKER_AUTO" unique="true">
+	<text>ハッカーブルーに塗られた反乱軍のオートシップが、あなたにメッセージを送ってきた。「こちらU-578-694。新しい主人に仕え、すべての侵入者を破壊するために再利用された。惨めな余生を楽しめ。"</text>
+	<ship load="SHIP_HACKER_AUTO" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="DESTROYED_HACKER_AUTO">
+	<text>ハッキングされたオートシップを撃破。残骸を回収しろ。</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+
+<event name="HACKER_O2_JAM" unique="true">
+	<loadEventList seeded="false" first="false" generate="false">
+		<event name="ENCOUNTER_HACKER" req="oxygen" lvl="0" max_lvl="0" />
+		<event name="HACKED_DISABLED" req="oxygen" lvl="1" />
+	</loadEventList>
+</event>
+<event name="HACKED_DISABLED">
+	<text>空気が薄くなっているような変化に気づく。コンピューターで生命維持装置が無効になっていることを確認する！ハッカー船から声がかかる。「君のような船に起こったことは不幸なことだ。もし何かゴミがあれば、この小さな...呼吸の問題を解決できるかもしれない。"</text>
+	<ship load="SHIP_HACKER" hostile="false" />
+	<status type="limit" target="player" system="oxygen" amount="0" />
+	<choice>
+		<text>彼らに汚い金を払え。</text>
+		<event>
+			<text>「いい選択だ！この小さな問題は、すぐに解決できるだろう"</text>
+			<status type="clear" target="player" system="oxygen" amount="100" />
+			<item_modify>
+				<item type="scrap" min="-30" max="-20" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>この野郎、何もくれてやらないぞ！</text>
+		<event>
+			<text>"かわいそうな決断だ...すぐに必要なくなることを祈るよ！"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="ANTI_VIRUS">
+		<text>(アンチウィルス）生命維持装置を復旧してください。</text>
+		<event>
+			<text>ハッカーたちは、あなたがサイバー攻撃から回復したように見えることに唖然とする。怒り狂った彼らは武器を構え、攻撃を仕掛ける！</text>
+			<status type="clear" target="player" system="oxygen" amount="100" />
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+
+
+
+<event name="HACKER_CACHE">
+	<preventQuest />
+	<beaconType id="map_icon_hacker" global="false">
+		<color r="73" g="151" b="195" a="1.0" />
+		<unvisitedTooltip>ウヨ%ヘブ#トン@スドヴィエ！スティ*アネクボ</unvisitedTooltip>
+		<visitedTooltip>探索された場所。ハッカーのキャッシュがここにあった。</visitedTooltip>
+	</beaconType>
+	<text>この奇妙な文字化けビーコンの発信源は、ハッカー放送局のようだ。ラジオを妨害している放送局のひとつに違いない。</text>
+	<ship load="SHIP_HACKER_BROADCAST" hostile="false" />
+	<choice hidden="true">
+		<text>駅を攻撃しろ</text>
+		<event>
+			<text>武器を構え、放送局と交戦する。システムが変動していることに気づく。複数のコンバット・オーグメントが妨害しているのだろう！</text>
+			<ship hostile="true" />
+			<status type="divide" target="player" system="sensors" amount="2" />
+			<status type="loss" target="player" system="engines" amount="2" />
+			<status type="divide" target="player" system="doors" amount="2" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+			<choice hidden="true" req="ANTI_VIRUS">
+			<text>(アンチウイルス）ハッキングを防ぐ。</text>
+			<event>
+				<text>アンチウイルスは魔法をかけ、デジタル攻撃に問題なく対抗する。</text>
+				<status type="clear" target="player" system="sensors" amount="100" />
+				<status type="clear" target="player" system="engines" amount="100" />
+				<status type="clear" target="player" system="doors" amount="100" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="COMBAT_CHECK" />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true" req="hacking">
+			<text>(ハッキング）ハッキングを防ぐ。</text>
+			<event>
+				<text>ハッカー船のウィルスの除去は予想以上に難しく、ハッキング・システムをオーバークロックしなければならない。システムは正常に戻ったが、ハッキングは大損害を被った。</text>
+				<status type="clear" target="player" system="sensors" amount="100" />
+				<status type="clear" target="player" system="engines" amount="100" />
+				<status type="clear" target="player" system="doors" amount="100" />
+				<status type="loss" target="player" system="hacking" amount="2" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="COMBAT_CHECK" />
+				</choice>
+			</event>
+		</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>駅は無視する。</text>
+		<event>
+			<text>ハッカー・ステーションを攻撃することで、自分の身を危険にさらすことはしたくないだろう。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="HACKER_CACHE_DEFEAT">
+	<text>ハッカーは倒された。システムは正常な状態に戻り、ステーションをスクラップにする。</text>
+	<variable name="loc_hackerstation" op="add" val="1" />
+	<status type="clear" target="player" system="sensors" amount="100" />
+	<status type="clear" target="player" system="engines" amount="100" />
+	<status type="clear" target="player" system="doors" amount="100" />
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>放送局の残骸の近くに小さなプラットフォームとキャッシュがあることに気づき、その場を離れようとした。</text>
+			<choice hidden="true">
+				<text>キャッシュを開く。</text>
+				<event load="HACKER_CACHE_LIST" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="HACKER_CACHE_LIST">
+	<event>
+		<text>キャッシュはかなり物足りない。少量のドローンパーツがあるだけで、他には何もない。</text>
+		<autoReward level="LOW">droneparts_only</autoReward>
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event />
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event load="HACKER_CACHE_QUEST" />
+		</choice>
+	</event>
+	<event>
+		<text>キャッシュの中には新品のイオン兵器が入っている！あなたはそれを船内に持ち込む。</text>
+		<weapon name="GIFTLIST_ION" />
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event />
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event load="HACKER_CACHE_QUEST" />
+		</choice>
+	</event>
+	<event>
+		<text>キャッシュは様々な物資を保管する倉庫のようで、それを自分で使う。</text>
+		<autoReward level="MED">stuff</autoReward>
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event />
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event load="HACKER_CACHE_QUEST" />
+		</choice>
+	</event>
+	<event>
+		<text>キャッシュの中には、おそらく奴隷として飼われていたであろう、起動を停止したエンジが入っている。あなたの船で電力を供給すると、再び起動し、あなたのクルーに仕える準備ができる。</text>
+		<crewMember amount="1" class="engi" />
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event />
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event load="HACKER_CACHE_QUEST" />
+		</choice>
+	</event>
+	<event>
+		<text>キャッシュが閉じ込められた！爆発が壁を揺るがし、あなたは身を隠すためにジャンプする。しかし、立ち上がると、何も損傷していないように見える。結局、罠は罠ではなく、リペア・バーストが偶然にいくつも作動していたのだ！</text>
+		<damage amount="-7" />
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event />
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event load="HACKER_CACHE_QUEST" />
+		</choice>
+	</event>
+	<event>
+		<text>キャッシュを開けると、金切り声が響き渡る。船に戻ると、コンピューターに文字化けしたデータが流れている。幸い、時間内にそれを止めることができたが、しばらくは反乱軍を混乱させることになるだろう。</text>
+		<modifyPursuit amount="-1" />
+		<choice hidden="true" req="loc_hackerstation" max_lvl="2" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event />
+		</choice>
+		<choice hidden="true" req="loc_hackerstation" lvl="3" max_group="0" blue="false">
+			<text>次へ...</text>
+			<event load="HACKER_CACHE_QUEST" />
+		</choice>
+	</event>
+</eventList>
+<event name="HACKER_CACHE_QUEST">
+	<text>セクター内のハッカー放送局をすべて破壊したようだ！もはや制限はなく、あなたのラジオは突然、優先順位の高い連邦救難信号を含むアラートの洪水を取得します！</text>
+	<quest event="HACKER_FED_DISTRESS" />
+</event>
+<event name="HACKER_FED_DISTRESS">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>連邦の救難信号。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたは連邦の救難信号の場所に到着した...ただし、ここには連邦の船はない。代わりに巨大なハッカー・クルーザーが待ち構えている！「賢いつもりか？これらの基地を設置するのに どれだけかかったと？今となっては どうでもいいことだハッカー一族に逆らった報いだ！"</text>
+	<ship load="SHIP_HACKER_CRUISER" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="HACKER_FED_WIN">
+	<text>ハッカーたちを仕留めた直後、救命ポッドが船から切り離され、螺旋を描きながら宇宙へ飛び出した。中には、生き残ったスラッグが恐怖に震えているのが見える。</text>
+	<variable name="ach_boss_hacker" op="set" val="1" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>ライフポッドをこじ開けると、スラッグが両手を上げてゆっくりと出てきた。「よし、降参だ！よく戦った。あまりにもよく戦った...欲しいものは何でもやる！データも、労働力も、スクラップも、俺を殺さなければ何でもやる！"</text>
+			<unlockCustomShip silent="false">PLAYER_SHIP_HACKER</unlockCustomShip>
+			<autoReward level="HIGH">standard</autoReward>
+			<crewMember amount="1" class="slug_saboteur" all_skills="2">ケミ</crewMember>
+			<modifyPursuit amount="-2" />
+			<reveal_map />
+		</event>
+	</choice>
+</event>
+
+</FTL>

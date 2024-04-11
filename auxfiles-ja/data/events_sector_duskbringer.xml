@@ -1,0 +1,2630 @@
+<FTL>
+
+
+
+<event name="FINISH_BEACON_DUSKBRINGER">
+	<text id="finish_beacon" />
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="EXIT_FILLER_LIST" />
+	</choice>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+	
+<eventList name="ITEMS_DUSKBRINGER">
+	<event load="DUSK_PLANNERS" />
+	<event load="DUSK_MILITIA_ESCORT" />
+	<event load="DUSK_SLAVER_TRADE" />
+	<event load="DUSK_PROPAGANDA" />
+	<event load="DUSK_IDOL" />
+</eventList>
+
+<event name="DUSK_PLANNERS" unique="true">
+	<text>安全地帯の外で反乱軍の非軍事船を見かけるのは珍しいが、オートエスコートが近くの星系で何かを準備しているらしい反乱軍の建築家一行を先導している。</text>
+	<ship load="SHIP_AUTO_ESCORT" hostile="false" />
+	<choice hidden="true">
+		<text>船万歳。</text>
+		<event>
+			<text>反乱軍はあなたのしつこさにかなりイライラしているようだ。「忙しいんだよ、バカ！近くに新しい居住区を作ろうとしているんだ。どこかで孤児を殺さないのか？"</text>
+			<choice hidden="true">
+				<text>このセクターはダスクブリンガーが支配しているのでは？</text>
+				<event>
+					<text>"まあ、そうだね。だが、ユニバース1はすぐに彼らを一掃する。"強硬派から解放された後の 人口増加に備え-" "先遣隊を送った最近は元戦争地域が大流行だ"</text>
+					<choice hidden="true">
+						<text>放っておけばいい。</text>
+						<event />
+					</choice>
+					<choice hidden="true" req="LIST_CREW_DUSK">
+						<text>(ダスクブリンガー・クルー)彼らをだまして、そのままダスク艦隊に向かわせる。</text>
+						<event>
+							<text>あなたは口八丁手八丁で反乱軍を説得し、ダスクブリンガーの前哨基地と思われる方向へ向かわせる。これで反乱軍を少し遅らせることができる。</text>
+							<modifyPursuit amount="-2" />
+						</event>
+					</choice>
+					<choice hidden="true" req="LIST_CREW_ENGINEER">
+						<text>(エンジニア・クルー) 反乱軍からの派遣だと信じ込ませろ。</text>
+						<event>
+							<text>"ユニバース1 "が "レネゲイド "を雇う？いつからだ？バンスが理性的じゃないのは知ってるけど......本当に？文句を言うつもりはないもしここを通るなら...罠にかからないよう注意してくれ。これがフライトプランだ。"</text>
+							<reveal_map />
+						</event>
+					</choice>
+					<choice hidden="true" req="sensors" lvl="3">
+						<text>(アドバンス・センサーズ）彼らに良い場所を勧める。</text>
+						<event>
+							<text>最初は半信半疑だったかもしれないが、地図の図面を見て、反乱軍も自分たちが一等地にいることに気づいたようだ。"レネゲイド "は子犬を蹴る以外にも役に立つようだ。そうだな！それで肉体のスーツを作らずに済むなら、金は払うよ。"</text>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="ADV_SCANNERS">
+						<text>(ロングレンジ・スキャナー）彼らに良い場所を勧める。</text>
+						<event>
+							<text>最初は半信半疑だったかもしれないが、地図の図面を見て、反乱軍も自分たちが一等地にいることに気づいたようだ。"レネゲイド "は子犬を蹴る以外にも役に立つようだ。そうだな！それで肉体のスーツを作らずに済むなら、金は払うよ。"</text>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>護衛を攻撃する。</text>
+		<event>
+			<text>あなたが発砲するとすぐに護衛艦があなたの船体をロックし、反乱軍は飛び去って、あなただけがドローンと戦うことになる。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>建築家を無視する。</text>
+		<event>
+			<text>彼らは軍隊ではないかもしれないが、だからといって反乱軍が手を出しても安全というわけではない。放っておいた方がいい。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DUSK_MILITIA_ESCORT" unique="true">
+	<text>連邦の友軍はこの辺りではあまり見かけないが、護衛に守られた民兵の輸送船が通りかかっている。彼らはあなたに気づいているはずだが、接触しようとはしない。</text>
+	<ship load="SHIP_MILITIA_DUSK_ESCORT" hostile="false" />
+	<choice hidden="true">
+		<text>アプローチ</text>
+		<event>
+			<text>輸送船はダメージを受けたようだ。ダメージの内容から判断すると、エネルギー・キャノンのようで、ダスクブリンガーに攻撃された可能性が高い。</text>
+			<choice>
+				<text>修理のためにスクラップを提供する。</text>
+				<event>
+					<text>民兵たちはあなたの申し出に驚いたが、快く受け入れてくれた。</text>
+					<item_modify>
+						<item type="scrap" min="-25" max="-15" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>彼らは、あなたの寛大な寄付に対する感謝として、贈り物を差し出す。</text>
+							<autoReward level="LOW">missiles_only</autoReward>
+							<weapon name="RANDOM" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>彼らは格好の標的だ。攻撃だ！</text>
+				<event>
+					<text>護衛艦はあなたの攻撃を逃すつもりはない。輸送船は反撃することもできず、絶望の中で戦いを見守る。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_GENERAL_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="DRONE_CONTROL_REPAIR_ALL">
+				<text>(修理ドローン) ドローンを使って相手の船を修理することを申し出る。</text>
+				<event>
+					<text>民兵たちはあなたの申し出に驚いたが、快く受け入れてくれた。</text>
+					<item_modify>
+						<item type="drones" min="-1" max="-1" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>彼らは、あなたの寛大な寄付に対する感謝として、贈り物を差し出す。</text>
+							<autoReward level="LOW">missiles_only</autoReward>
+							<weapon name="RANDOM" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="BLUELIST_BOMB_REPAIR">
+				<text>(修理クラスター) 爆弾を使って相手の船を修理すると申し出る。</text>
+				<event>
+					<text>民兵たちはあなたの申し出に驚いたが、快く受け入れてくれた。</text>
+					<item_modify>
+						<item type="missiles" min="-1" max="-1" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>彼らは、あなたの寛大な寄付に対する感謝として、贈り物を差し出す。</text>
+							<autoReward level="LOW">missiles_only</autoReward>
+							<weapon name="RANDOM" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="BEAM_REPAIR">
+				<text>(プロハルビーム) 彼らの船を修理するためにビームの使用を申し出る。</text>
+				<event>
+					<text>民兵たちはあなたの申し出に驚いたが、快く受け入れてくれた。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>彼らは、あなたの寛大な寄付に対する感謝として、贈り物を差し出す。</text>
+							<autoReward level="LOW">missiles_only</autoReward>
+							<weapon name="RANDOM" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="REPAIR_ARM">
+				<text>(リペアアーム) アームを使って船体の修理を申し出る。</text>
+				<event>
+					<text>民兵たちはあなたの申し出に驚いたが、快く受け入れてくれた。</text>
+					<item_modify>
+						<item type="scrap" min="-5" max="-5" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>彼らは、あなたの寛大な寄付に対する感謝として、贈り物を差し出す。</text>
+							<autoReward level="LOW">missiles_only</autoReward>
+							<weapon name="RANDOM" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>無視するんだ。</text>
+				<event>
+					<text>キャラバン隊はあなたを気にせず、やがて船は飛び去っていく。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>民兵は君たちを気にせず、やがて船は飛び去っていく。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_MILITIA_ESCORT_SURRENDER"> 
+	<text>護衛の民兵は、輸送船を無防備なままにして逃げることはできない。その代わり、彼らは降伏することを選択し、あなたに自分たちを生かしてほしいと懇願する。</text>
+	<choice>
+		<text>彼らを生かそう。</text>
+		<event>
+			<text>あなたは攻撃から撤退することにした。特使はほぼ完全に破壊されたままであり、ダスクブリンガーが到着する前に2人を救うには、輸送船の修理が間に合わない可能性が高い。それでも彼らは、自分たちを「助けてくれた」ことへの「感謝」として、輸送船の積荷から武器を手渡す。</text>
+			<weapon name="RANDOM" />
+			<ship hostile="false" />
+		</event>
+	</choice>
+	<choice>
+		<text>戦い続けるんだ。</text>
+		<event>
+			<ship hostile="true" />
+		</event>
+	</choice>
+</event>
+<event name="DUSK_MILITIA_ESCORT_DESTROY">
+	<text>護衛は破壊され、輸送機は無防備のままだ。逃げ場もなく、完全になすがままだ。</text>
+	<choice hidden="true">
+		<text>輸送船を破壊し、残骸を引き揚げろ。</text>
+		<event>
+			<text>輸送船に乗っていた民兵たちは、あなたに助けてくれるよう懇願したが、あなたは通信を打ち切り、彼らの船を破壊した。その船は予想以上に激しく爆発し、衝撃波があなたの船を投げ飛ばし、破片が船体に飛び散った。船が何を積んでいたのかはわからないが、爆発性の何かだったに違いない。残りの積荷が破壊されたのは確かだが、まだサルベージできる残骸が残っている。</text>
+			<autoReward level="MED">scrap_only</autoReward>
+			<damage amount="2" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>貨物の移送を要求する。</text>
+		<event>
+			<text>民兵たちはあなたの要求に応えようと急いだ。どうやら彼らの船には、あなたが所有権を持つ高級爆薬と弾道兵器が積まれていたようだ。あなたは彼らを見殺しにする。</text>
+			<autoReward level="HIGH">missiles_only</autoReward>
+			<weapon name="GIFTLIST_EXPLOSIVES" />
+		</event>
+	</choice>
+</event>
+
+<event name="DUSK_SLAVER_TRADE" unique="true">
+	<text>このビーコンにジャンプして間もなく、奴隷商人も近くにジャンプしてきた。彼らはあなたを呼んでいる。「レネゲイドか。レネゲイドか。乗組員は必要ないのか？"</text>
+	<choice hidden="true">
+		<text>奴隷に会わせてくれと頼む。</text>
+		<event load="DUSK_SLAVER_TRADE_BUY" />
+	</choice>
+	<choice hidden="true">
+		<text>あいつらを殺せ。</text>
+		<event>
+			<text>「残念だ。男たちよ、銃を構えろ！"</text>
+			<ship load="SHIP_SLAVER_ALL" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>奴隷商人とは取引しない。</text>
+		<event>
+			<text>"はい、そうです。ダスキーの相手を楽しんでくれ！"彼らは飛び去り、直後にダスクブリンガーの船が飛び込んできた。奴隷商人たちは尾行されていたのだろう！</text>
+			<ship load="SHIP_DUSK_FIGHT" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DUSK_SLAVER_TRADE_BUY">
+	<event>
+		<text>あなたが興味を示す前に、奴隷船を追っていたダスクブリンガーが飛び込んできて、海賊たちを破壊する。海賊は時間を無駄にすることなく、あなたを破壊するために移動する！</text>
+		<ship load="SHIP_DUSK_FIGHT" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event> 
+	<event>
+		<text>"思いがけない光景だな船長 乗船してください 興味をそそるものが... あるか見てみましょう"</text>
+		<choice hidden="true">
+			<text>ご乗車ください。</text>
+			<event load="DUSK_SLAVER_TRADE_BUY_2" />
+		</choice>
+	</event> 
+</eventList>
+<event name="DUSK_SLAVER_TRADE_BUY_2">
+	<text>奴隷船の中は決してきれいな光景ではない。周囲には様々なエイリアンが壁に鎖でつながれ、その多くは体中に気持ちの悪いあざや傷跡がある。今、奴隷商人に反旗を翻すことは死刑宣告に等しいから、誰かを買うか、外に出た方がいい。</text>
+	<choice>
+		<text>エンジ購入。</text>
+		<event>
+			<text>"素晴らしい選択だ！"海賊は奴隷の鎖を外し、あなたのほうに放り投げる。あなたは奴隷を船に連れ戻し、解放されたことを伝える。ダスクブリンガーは海賊ほど悪者ではないのかもしれない。</text>
+			<crewMember amount="1" class="engi" />
+			<item_modify>
+				<item type="scrap" min="-45" max="-45" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ロックマンを買う。</text>
+		<event>
+			<text>"素晴らしい選択だ！"海賊は奴隷の鎖を外し、あなたのほうに放り投げる。あなたは奴隷を船に連れ戻し、解放されたことを伝える。ダスクブリンガーは海賊ほど悪者ではないのかもしれない。</text>
+			<crewMember amount="1" class="rock" />
+			<item_modify>
+				<item type="scrap" min="-35" max="-35" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ヴァンプウィードを買う。</text>
+		<event>
+			<text>"素晴らしい選択だ！"海賊は奴隷の鎖を外し、あなたのほうに放り投げる。あなたは奴隷を船に連れ戻し、解放されたことを伝える。ダスクブリンガーは海賊ほど悪者ではないのかもしれない。</text>
+			<crewMember amount="1" class="orchid_vampweed" />
+			<item_modify>
+				<item type="scrap" min="-40" max="-40" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>出て行け。</text>
+		<event>
+			<text>「残念だ。もし人手が足りなくなったら、またいつでも私たちを探してください！"あなたは、彼らがあなたを捕虜にしようと考える前に、さっさとその場を立ち去った。</text>
+		</event>
+	</choice>
+</event>
+
+<event name="DUSK_PROPAGANDA" unique="true">
+	<text>近くに巨大な機械が浮かんでいる。大きさは放送局に似ているが、全自動でゾルタンが作ったもののようだ。無線機から嘘の情報が入り始めるとすぐに、これがある種の自動プロパガンダ放送局であることが明らかになる。「連邦士官は赤ん坊を食べる！それは事実だ！子供たちのことを考えろ。今すぐダスクブリンガーに参加し、怪物に報いを受けさせるのだ！"</text>
+	<choice hidden="true">
+		<text>マシンを解体してスクラップにする。</text>
+		<event>
+			<text>ダスクブリンガーとそのファシストの嘘は地獄に落ちろ。マシンの動力源を分解し、外皮を剥ぐ。</text>
+			<autoReward level="MED">droneparts</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGI">
+		<text>(エンジ・クルー) あなたの居場所について嘘を広めるよう、マシンをプログラムし直す。</text>
+		<event>
+			<text>反乱軍とダスクブリンガーは協力し合うこともあったが、このようなプロパガンダから助言を得ることはなかった。だが、君の船の位置は彼らにとって見逃せない情報だし、ダスクブリンガーが嘘をつく理由もないだろう。</text>
+			<modifyPursuit amount="-3" />
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGINEER">
+		<text>(エンジニアクルー) あなたの居場所について嘘を広めるよう、マシンをプログラムし直せ。</text>
+		<event>
+			<text>反乱軍とダスクブリンガーは協力し合うこともあったが、このようなプロパガンダから助言を得ることはなかった。だが、君の船の位置は彼らにとって見逃せない情報だし、ダスクブリンガーが嘘をつく理由もないだろう。</text>
+			<modifyPursuit amount="-3" />
+		</event>
+	</choice>
+	<choice hidden="true" req="hacking">
+		<text>(ハッキング）あなたの居場所について嘘を広めるようにマシンをプログラムし直す。</text>
+		<event>
+			<text>反乱軍とダスクブリンガーは協力し合うこともあったが、このようなプロパガンダから助言を得ることはなかった。だが、君の船の位置は彼らにとって見逃せない情報だし、ダスクブリンガーが嘘をつく理由もないだろう。</text>
+			<modifyPursuit amount="-3" />
+		</event>
+	</choice>
+</event>
+
+<event name="DUSK_IDOL" unique="true">
+	<text>あなたはダスクブリンガーの若い兵士から呼び出しを受けた。最初は何か脅し文句でもあるのかと思ったが、そうではなく、多元宇宙を旅する者に直接会えることに驚いているようだった。"ワオ、君は特別なタイムリープ船なんだね！"</text>
+	<ship load="SHIP_DUSK_GENERIC" hostile="false" />
+	<choice hidden="true">
+		<text>そうだね。</text>
+		<event>
+			<text>"ワオ！オーオー、地球に行ったことある？こんな男がいた...ああ、これが写真だ！"彼は群衆に向かって敬礼する男の小さな白黒写真を掲げる。「彼は僕のヒーローなんだ！彼の名前を人間の言葉でどう言えばいいのかわからないんだけど、有名な指導者みたいな人で、もう少しで世界を征服するところだったとかなんとか！彼に会ったことはありますか？</text>
+			<choice hidden="true">
+				<text>嘘をつき、嘘をついたと言う。</text>
+				<event load="DUSK_IDOL_LIE" />
+			</choice>
+			<choice hidden="true">
+				<text>本当のことを言いなさい。</text>
+				<event>
+					<text>「そうなのか？男...まあ、楽しいおしゃべりだ！殺してやる</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_HUMAN">
+				<text>(人間クルー）あなたの人間はそれが誰だか知っている。</text>
+				<event>
+					<text>あなたの人間は咳払いをして、写真の男は英雄ではなかったこと、そして彼が死んだ後何年も旧地球人のほとんどが彼を恨んでいたことを簡単に説明する。「ああ。私は彼が有名な人間の戦士だったに違いないと思っていた！ある意味、私は正しかったと思う...でも、そうじゃなかった。あなたは私よりずっと多くのことを知っている！ああ、指揮官に怒られちゃう...でも、この機会を逃すわけにはいかないんだ！"</text>
+					<crewMember amount="1" class="zoltan_devotee" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DUSK_IDOL_LIE">
+	<event>
+		<text>「本当に？それは驚きだ！この機会を逃すわけにはいかない！"</text>
+		<crewMember amount="1" class="zoltan_devotee" />
+	</event>
+	<event>
+		<text>ダスクブリンガーがその男について次々と質問してくるが、どう答えていいかわからない。やがて彼はあなたの策略を見破り始め、船に攻撃を命じる！</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+
+<eventList name="ITEMS_DUSK_UNIQUE">
+	<event load="DUSK_MFKHELP" />
+	<event load="DUSK_DNA" />
+
+	
+	<event load="DUSK_PROPAGANDA" />
+	<event load="DUSK_IDOL" />
+</eventList>
+
+<event name="DUSK_MFKHELP" unique="true">
+	<text>最も近い惑星の地表にあるゾルタンの都市は、最近の攻撃で甚大な被害を受けたようだ。MFKの船が軌道上に停泊し、安全な距離から都市を観察している。その意図が何なのかはよくわからない。</text>
+	<img planet="PLANET_POPULATED" />
+	<ship load="SHIP_REBEL_SELITE_FIGHT" hostile="false" />
+	<choice hidden="true">
+		<text>船万歳。</text>
+		<event>
+			<text>最初は、MFKはあなたの呼びかけに応じない。しかし、何度も何度もしつこく呼びかけると、ようやく返事が返ってくる。「ああ、聞こえてるよ。ちくしょう、俺たちに嫌がらせをする以外にすることはないのか？何がしたいんだ？</text>
+			<choice hidden="true">
+				<text>あなたにはその責任があるのですか？</text>
+				<event>
+					<text>「責任？いや、我々はこの混乱を一掃するために派遣されたのだ。ユニバース1が大きくなりすぎて、地方のリベリオンの政治をどうするか決められると思ってるんだ！内戦も戦ったんだかつての反乱軍が犯した過ちは 人間が優れているからといって 他種族と協力できないと考えたことだゾルタンを見てみろ彼らには分かる確かにイデオロギー的には 相容れない部分もある だが異なる種族は 統一され分離されたほうがいいと 我々は同意できるだが宇宙1のエゴは行き過ぎたダスクブリンガーを全滅させる気だ私の意見など無視しろ私たちは生存者を見つけ、医療施設に案内する。役に立ちたいなら、手伝ってみるといい。"</text>
+					<choice hidden="true">
+						<text>時間がかかるだろうが、生存者の所在を確認する手助けをする。</text>
+						<event>
+							<text>あなたはチームを街に送り込み、廃墟の中を進む。何人かの生存者を見つけたが、十数人に満たない。哀れな数だが、反乱軍も似たようなものだ。「畜生！畜生、畜生、畜生！"MFKは地面を足で踏みつけ、拳を握る。「この無意味な破壊を見ろ。民間人を狙うのか？これが俺たちのやってきたことか？この街には軍事施設すらなく、貿易港だった！南北戦争のころは、艦隊は純粋に職業的なもので、私たちは領土を押さえていたが、人々は商売を続けていた。今、艦隊は都市を焼き尽くし、その航跡に巻き込まれた哀れな船を殺す、荒れ狂う死の前兆となっている」。彼は深呼吸をし、感情を取り戻そうとする。「ともあれ、協力に感謝する。この人たちを近くの医療施設に移し、後で捜索に戻る。帰り際に部下に渡しておくものがある。"</text>
+							<modifyPursuit amount="1" />
+							<damage amount="-7" />
+							<autoReward level="MED">item</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="LIST_CREW_SLUG">
+						<text>(スラッグ・クルー）生存者を探すのを手伝う。</text>
+						<event load="DUSK_MFKHELP_GOOD_CREW" />
+					</choice>
+					<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+						<text>(テレパシー・シェル）生存者を探すのを手伝ってくれ。</text>
+						<event load="DUSK_MFKHELP_GOOD_CREW" />
+					</choice>
+					<choice hidden="true" req="UPG_TECH_LIFEFORM">
+						<text>(生命体スキャナー) 生存者の所在を確認する。</text>
+						<event load="DUSK_MFKHELP_GOOD" />
+					</choice>
+					<choice hidden="true" req="sensors" lvl="3">
+						<text>(アドバンスセンサー) 生存者の位置特定を支援する。</text>
+						<event load="DUSK_MFKHELP_GOOD" />
+					</choice>
+					<choice hidden="true">
+						<text>とにかく攻撃だ。</text>
+						<event>
+							<text>"レネゲイドのクズどもめ、いつも邪魔ばかりしやがって！お前らは英雄でも正義の十字軍でもない、モラルのない害虫だ！"</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>私たちは助けていない。去れ。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>脅すんだ。</text>
+				<event>
+					<text>"何様のつもりだ？お前のようなレネゲイドのクズはともかく、リベリオンは誰からもそんな言葉は受け取らない！"</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>あなたはかわいいと思う。</text>
+				<event>
+					<text>MFKは電話を切り、通信をミュートする。呼びかけを続けると、船は街の反対側へ飛んでいく。</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>MFKの船を攻撃する！</text>
+		<event>
+			<text>"レネゲードめ、視界に入る者を地獄に落とすとはな。お前たちがいなくなれば、宇宙全体が安全になる！"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>街も船も無視して。</text>
+		<event>
+			<text>MFKに近づきすぎるリスクを冒さない方がいい。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DUSK_MFKHELP_GOOD">
+	<text>スキャナーの助けを借りて、数十人の生存者をすぐに見つける。全員ではないが、反乱軍の2倍以上の数だ。「君は献身的だ。私は反乱軍を誤解していたようだ。あなた方は正義の十字軍かもしれない...少なくとも私が思っていたような無感情な暗殺者ではない」
+
+MFKは廃墟を調査するために振り返る。「この被害はすべて不必要で、まったく無意味だった。民間人を狙うなんて、何を考えているんだ？ここには軍事施設はなく、貿易港だった！かつては純粋な職業であった我々の艦隊は、都市を焼き尽くし、その航跡に巻き込まれた哀れな船を殺す、荒れ狂う死の前兆となった。どれも原因とは関係ない。自己中心的な狂人たちによる無目的な破壊だ。あるいは...サイコパスAIか。あんなものを作るべきじゃなかったC.I.C.A.プロジェクトは間違いだった。あれがやったことは、バンスをますます残忍な方法へと強制することだけだ」ȾMFKは深いため息をつく。「率直に言って、私はあなたがあのクソフラッグシップを粉々に吹き飛ばすのを応援している。連邦は嫌いだが、完成された無限のデスマシンより、腐敗した無目的な官僚機構の方が好きだ。帰りに部下が見返りを 与えてやる"</text>
+	<damage amount="-10" />
+	<autoReward level="HIGH">item</autoReward>
+</event>
+<event name="DUSK_MFKHELP_GOOD_CREW">
+	<text>クルーの助けを借りて、あなたは数十人の生存者をすぐに見つける。全員ではないが、反乱軍の2倍以上の数だ。「君は献身的だ。私は反乱軍を誤解していたようだ。あなた方は正義の十字軍かもしれない...少なくとも私が思っていたような無感情な暗殺者ではない」
+
+MFKは廃墟を調査するために振り返る。「この被害はすべて不必要で、まったく無意味だった。民間人を狙うなんて、何を考えているんだ？ここには軍事施設はなく、貿易港だった！かつては純粋な職業であった我々の艦隊は、都市を焼き尽くし、その航跡に巻き込まれた哀れな船を殺す、荒れ狂う死の前兆となった。どれも原因とは関係ない。自己中心的な狂人たちによる無目的な破壊だ。あるいは...サイコパスAIか。あんなものを作るべきじゃなかったC.I.C.A.プロジェクトは間違いだった。あれがやったことは、バンスをますます残忍な方法へと強制することだけだ」ȾMFKは深いため息をつく。「率直に言って、私はあなたがあのクソフラッグシップを粉々に吹き飛ばすのを応援している。連邦は嫌いだが、完成された無限のデスマシンより、腐敗した無目的な官僚機構の方が好きだ。帰りに部下が見返りを 与えてやる"</text>
+	<damage amount="-10" />
+	<autoReward level="HIGH">item</autoReward>
+</event>
+
+<event name="DUSK_DNA" unique="true">
+	<text>遠く離れた惑星だが、人口が多いことが確認できる。巨大なダスクブリンガーの建造物があり、厳重に要塞化され、一部が森に隠されている。スキャンによると、大量の電力が施設に引き込まれている。</text>
+	<img planet="PLANET_POPULATED" />
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>土地と調査</text>
+		<event>
+			<text>あなたは見つからないように地上に降り、生い茂る木々の中に身を隠す。クルーは重装備のダスクブリンガー兵士2人に守られた建造物の入り口まで徒歩で進む。</text>
+			<choice hidden="true">
+				<text>撃ち抜くんだ！</text>
+				<event load="DUSK_DNA_BREAKIN" />
+			</choice>
+			<choice hidden="true">
+				<text>リスクが高すぎる。</text>
+				<event load="DUSK_DNA_RETREAT" />
+			</choice>
+			<choice hidden="true" req="LIST_CREW_SABOTEUR">
+				<text>(スラッグのサボタージュ）中に忍び込め。</text>
+				<event load="DUSK_DNA_INSIDE" />
+			</choice>
+			<choice hidden="true" req="zoltan_monk">
+				<text>(モンク・クルー）自分のモンクに見張りを気絶させる。</text>
+				<event load="DUSK_DNA_INSIDE" />
+			</choice>
+			<choice hidden="true" req="LIST_CREW_DUSK">
+				<text>(ダスクブリンガー・クルー)警備員に声をかけて通り過ぎろ。</text>
+				<event load="DUSK_DNA_INSIDE" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>一人でダスクブリンガーの施設には近づけない。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true">
+		<text>施設を無視する。</text>
+		<event>
+			<text>ダスクブリンガーの巨大建造物に立ち寄ることは、あなたの任務リストにはない。あなたは惑星を通り過ぎる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DUSK_DNA_BREAKIN">
+	<event>
+		<text>あなたはダスクブリンガーの護衛を過小評価し、すぐに倒せると考えていた。しかし、彼らは素早い攻撃を仕掛け、乗組員の一人が負傷して地面に倒れた。幸いなことに、他の誰かが怪我をする前に、あなたは黙って彼らを制圧することができた。</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>幸いなことに、乗組員は船に戻って蘇生し、急いで戻ってきた。</text>
+		</removeCrew>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="DUSK_DNA_INSIDE" />
+		</choice>
+	</event>
+	<event>
+		<text>乗組員はダスクブリンガー兵を静かに制圧した。あなたは建物の中に進む。</text>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="DUSK_DNA_INSIDE" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="DUSK_DNA_RETREAT">
+	<event>
+		<text>連盟史上最も早い再考となるかもしれないが、転ばぬ先の杖だ。</text>
+	</event>
+	<event>
+		<text>クルーに船に戻るよう命じると、ダスクブリンガーのパトロール船が船内を調査していた！出発する前に、こいつらを始末する必要がありそうだ。</text>
+		<ship load="SHIP_DUSK_FIGHT" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+<event name="DUSK_DNA_INSIDE">
+	<text>施設に入ると、試験管のようなものがずらりと並んでいるのに驚く。それぞれに小さなデジタル・ラベルが貼られ、異なるシリアル番号で表示されている。</text>
+	<choice>
+		<text>続ける。</text>
+		<event>
+			<text>この機械が巨大なDNAバンクの一種に違いないことに気づくには、しばらく時間がかかる！この技術のいくつかを解体して持ち帰ることもできるし、ダスクブリンガーの兵士のクローンを作って自分のために働かせることもできるだろう。</text>
+			<choice hidden="true" req="clonebay" blue="false" lvl="0" max_lvl="0" max_group="0">
+				<text>クローン技術を手に入れろ[クローンベイを設置し、バックアップDNAを付与する。］</text>
+				<event>
+					<text>クローン技術の一部を解体し、船に持ち帰る。</text>
+					<augment name="EX_BACKUP_DNA" />
+					<system name="clonebay" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DUSK_DNA_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="clonebay" lvl="1" blue="false" max_group="0">
+				<text>クローニング技術を手に入れよう[DNAのバックアップとクローニング・アップグレード1回分無料]。</text>
+				<event>
+					<text>クローン技術の一部を解体し、船に持ち帰る。</text>
+					<augment name="EX_BACKUP_DNA" />
+					<upgrade amount="1" system="clonebay" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DUSK_DNA_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="pilot" max_group="1" blue="false">
+				<text>ダスクブリンガー殉教者のクローン。</text>
+				<event>
+					<text>あなたはすぐにダスクブリンガー殉教者用の小瓶を手に入れ、個人的な記憶はすべて消去するが、スキルや訓練は消去しないことを確認する。新しいクルーがマシンから誕生し、その行方がまったくわからなくなったところで、あなたは彼らが今仕えている連邦について伝え、出発の準備をする。</text>
+					<crewMember amount="1" class="zoltan_martyr" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="DUSK_DNA_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_DNA_FIGHT">
+	<text>施設を出ると、ダスクブリンガーの精鋭艦が近づいてきて、警報が鳴る。思ったほど気づかれていなかったようだ！</text>
+	<ship load="SHIP_DUSK_ELITE_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<eventList name="NEBULA_DUSK_UNIQUE">
+	<event load="NEBULA_DUSK_INFILTRATION" />
+	<event load="NEBULA_DUSK_PRISONERS" />
+</eventList>
+
+<event name="NEBULA_DUSK_INFILTRATION" unique="true">
+	<text>イオンの嵐にもかかわらず、かろうじて雲の中に別の船の船体が見える。近づいてみると、ダスクブリンガーのエリートステーションだ！選択肢を考える間もなく、そう遠くない場所にいる遮蔽船から呼びかけを受ける。</text>
+	<ship load="SHIP_DUSK_INFILTRATION" hostile="false" />
+	<environment type="storm" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>遮蔽された船は連合軍の船のようで、タフそうなリーチ・アンペアが率いる。このような船は滅多にお目にかかれない。「本題に入ろう。お互い好きではないし、主張も違う。だが、少なくとも1つだけ同意できることがある。ダスクブリンガーは最悪だ。しばらく前、連合への加盟を検討させようとする動きがあった。これは厳密には機密扱いになるはずだが、そんなことは気にしないほど愚かな考えだった。あのファシストどもは、我々の『機能不全に陥った似非連邦』に加わるくらいなら、便所掃除人の種族になることを諦めた方が早いと言っていた。我々はこのステーションに潜入し 連合が貿易取引で得たかった 技術を盗む極秘作戦に駆り出された協力してくれるなら..."</text>
+			<choice hidden="true">
+				<text>何をするんだ？</text>
+				<event>
+					<text>「ごめんね、レネゲイドとこんなに長く話して、銃撃されないことに慣れてないんだ。それに、君を侮辱しないように必死なんだ。カウンセラーに相談してるんだ。とにかく、技術的なことは教えてあげるよ。でも、誰にも言っちゃダメだよ。連合司令部は私の尻に敷かれる...リーチの尻よりもね。我々がすべきことは、ゾルタンの "蔓延 "を一掃し、ステーションを奪うことだ。秘密裏にと言ったのは分かってる。連合評議会のスラッグどもはこれを隠密と呼ぶんだ、だから静かにしろ。"</text>
+					<choice hidden="true">
+						<text>入った。</text>
+						<event>
+							<text>「完璧だ。だが、聞くが......君は "片付け "の方が得意なのか？私のクルーが乗り込み、あなたが終わるまで火力支援をしてくれるか、私たちが支援する間、あなたのクルーを送り込むか、どちらかだ。</text>
+							<choice hidden="true">
+								<text>私たちは搭乗できる。</text>
+								<event>
+									<text>アンペールはうなずき、通信を切る。両艦が姿を現し、ステーションと交戦し、ステーションが応戦する。ダスクブリンガー船のクルーを排除する間、連合船が射撃支援を行う。</text>
+									<triggeredEvent event="DUSK_INFILTRATION_SUPPORT" time="25" thisFight="true">
+										<warningMessage id="warning_support" r="120" g="255" b="120" x="444" y="46" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true" />
+									</triggeredEvent>
+									<ship hostile="true" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="COMBAT_CHECK" />
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>私たちがお手伝いします。</text>
+								<event>
+									<text>アンペールはうなずき、通信を切る。両艦が姿を現し、ステーションと交戦し、ステーションが応戦する。連合チームが任務を終えるまで、ステーションを破壊せずに食い止めればいい！</text>
+									<triggeredEvent event="DUSK_INFILTRATION_SUCCESS" time="90" thisFight="true">
+										<triggeredEventBox load="DEFAULT_TIMER" pos="default">
+											<warning time="10.0" flash="true" />
+											<tooltip>連合軍の船が潜入を終えるまでの時間。</tooltip>
+										</triggeredEventBox>
+										<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+									</triggeredEvent>
+									<ship hostile="true" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="COMBAT_CHECK" />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>我々は連合と組んでいるわけではない。</text>
+						<event>
+							<text>リーチは "典型的な "と不平を言ったが、それ以上何も言わなかった。彼らの船は再び遮蔽し、間もなく飛び去る。</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_INFILTRATION_SUPPORT">
+	<superBarrage player="true" name="SUPPORT_BOMBS" />
+</event>
+<event name="DUSK_INFILTRATION_SUCCESS">
+	<text>突然、ステーションが静まり返り、あなたは連合から呼びかけを受ける。「よくやった、最初の仕事は終わった。先にドックに入り、技術者を捜索しよう。"</text>
+	<ship hostile="false" />
+	<recallBoarders ship="both" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="DUSK_INFILTRATION_SEARCH" />
+	</choice>
+</event>
+<event name="DUSK_INFILTRATION_SEARCH">
+	<text>あなたのクルーも連合のクルーも、ステーション内を探し回り、棚をひっくり返したり、箱を空けたりしている。何を探しているのかよくわからないが、見ればわかると思っているのだろう。やがて "ラボ "と書かれた部屋に出くわし、この発見に連合も興奮したようだ。</text>
+	<choice hidden="true">
+		<text>ラボを開く。</text>
+		<event>
+			<text>研究室のドアを引き開けると、中にあった爆発物が作動した。研究室は壊滅的な被害を受け、消火の見込みはない。あなたはまだ煙で咳き込みながら、自分の船に戻った。「くそっ、くそっ、くそっ！戦いの最中、奴らが我々を騙すために細工したのは間違いない！連合にケツを掘られる！俺は切り刻まれて見せしめにされるんだ！私は戻れない。私を連れて行って！私は役に立つ、誓う"</text>
+			<crewMember amount="1" class="leech_ampere">オーデン</crewMember>
+		</event>
+	</choice>
+	<choice hidden="true" req="sensors" lvl="3">
+		<text>(アドバンスセンサー）ラボ内をスキャンする。</text>
+		<event load="DUSK_INFILTRATION_LAB" />
+	</choice>
+	<choice hidden="true" req="ADV_SCANNERS">
+		<text>(長距離スキャナー）研究室の内部をスキャンする。</text>
+		<event load="DUSK_INFILTRATION_LAB" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(スラッグクルー）研究室内の罠を感知する。</text>
+		<event load="DUSK_INFILTRATION_LAB" />
+	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+		<text>(テレパシー・シェル）ラボ内の罠を感知する。</text>
+		<event load="DUSK_INFILTRATION_LAB" />
+	</choice>
+</event>
+<event name="DUSK_INFILTRATION_LAB">
+	<text>さらに詳しく調べると、ダスクブリンガーが研究室内に爆発装置を仕掛けており、ドアを開けると爆発するようにセットされていることがわかった。そうでなければ、連合に悪い知らせを伝えなければならない。</text>
+	<choice hidden="true">
+		<text>入る方法はない。</text>
+		<event>
+			<text>この知らせを聞いたアンペールはパニックに陥る。「くそ、くそ、くそ！戦いの最中に俺たちを騙すために細工をしたのは間違いない！何もなしで帰ったら 連合にケツを掘られる私は切り刻まれ、見せしめにされる！私は戻れない。私を連れて行くんだ！私は役に立つ、誓う"</text>
+			<crewMember amount="1" class="leech_ampere">オーデン</crewMember>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ELITE">
+		<text>(エリートクルー）爆弾を解除しろ。</text>
+		<event load="DUSK_INFILTRATION_TECH" />
+	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_NODOORS">
+		<text>(フェイシング・クルー）爆弾を解除してください。</text>
+		<event load="DUSK_INFILTRATION_TECH" />
+	</choice>
+</event>
+<event name="DUSK_INFILTRATION_TECH">
+	<text>君のクルーは爆弾を解除し、研究室を開けることに成功した。そこには、多元宇宙で最も貴重で希少な物質の1つであるエーテルを濃縮して鍛造した奇妙なサイバネティクスがずらりと並んでいた。ダスクブリンガーがどのようにしてこれを手に入れたのかは謎だが、君たちはその分け前を手に入れたことを喜んでいる。連合は、少し取り乱しながらも感謝の意を示す。"結局、私は処刑されることはなかった...この愚かな特攻作戦が、すべて琥珀計画から脱走した罰だったと思うと..."リーチはあなたをちらりと見る。「最後の部分は忘れてくれ。だが取引は取引だ。技術を分けよう"</text>
+	<augment name="ANCIENT_DNA" />
+</event>
+
+<event name="NEBULA_DUSK_PRISONERS" unique="true">
+	<text>星雲内に漂う無人惑星を小さな月が周回している。スキャンした結果、捕虜用の厳重な刑務所があることがわかった。ダスクブリンガーが知っているように、そこには連邦や宇宙省の職員、U1艦隊の捕虜が収容されている可能性が高い。</text>
+	<environment type="nebula" />
+	<choice hidden="true">
+		<text>攻撃して囚人を脱走させる！</text>
+		<event load="DUSK_PRISONERS_RISKY" />
+	</choice>
+	<choice hidden="true" req="teleporter">
+		<text>(テレポーター）気づかれないように中にビームを入れる。</text>
+		<event load="DUSK_PRISONERS_SUCCESS" />
+	</choice>
+	<choice hidden="true" req="LOCKED_GLOBAL_TELEPORT">
+		<text>(中央テレポート）気づかれないように中にビームを入れる。</text>
+		<event load="DUSK_PRISONERS_SUCCESS" />
+	</choice>
+	<choice hidden="true" req="cloaking">
+		<text>(遮蔽）遮蔽して、クルーに気づかれないように中に入れる。</text>
+		<event load="DUSK_PRISONERS_SUCCESS" />
+	</choice>
+	<choice hidden="true">
+		<text>危険は冒せない。</text>
+		<event>
+			<text>誘惑に駆られたとしても、そんなことができるわけがない。あなたは刑務所を後にする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DUSK_PRISONERS_RISKY">
+	<event>
+		<text>刑務所に侵入しようとするが、計画通りにはいかない。防衛システムがあなたの船に穴を開け、あなたが引き離す前に兵士たちが乗り込んでくる！</text>
+		<damage amount="3" />
+		<boarders min="2" max="2" class="zoltan_devotee" />
+	</event>
+	<event>
+		<text>危険は伴うが、あなたは力ずくでセキュリティーを突破し、ビルの中に入ることに成功した。</text>
+		<choice hidden="false">
+			<text>次へ...</text>
+			<event load="DUSK_PRISONERS_SUCCESS" />
+		</choice>
+	</event>
+</eventList>
+<event name="DUSK_PRISONERS_SUCCESS">
+	<text>中への試みは成功した。予想通り、連邦軍兵士、反乱軍将校、魔法省職員、さらにはエンギや神政学僧侶の一団など、多種多様な囚人が収容されている独房がいくつかある！看守に捕まるまでの時間は限られているが、何人か脱獄させることができるかもしれない。</text>
+	<choice hidden="true">
+		<text>省内の平和維持要員を1人救え。</text>
+		<event>
+			<text>ゾルタンはあなたの援助に感謝している。"このファシストどもは連邦と本省の関係を根底から破壊する危険がある。成功させるわけにはいかない！"檻を壊して彼らを解放するが、警報が鳴り響き、ダスクブリンガーがあなたのいる場所に向かって行進する音が聞こえる。自己紹介をしている暇はない！</text>
+			<crewMember amount="1" class="zoltan_peacekeeper" />
+			<choice>
+				<text>出て行け！</text>
+				<event load="DUSK_PRISONERS_LEAVE" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>連邦の衛生兵の一人を救え。</text>
+		<event>
+			<text>"人間 "が援助に感謝してる"ダスクブリンガーが我々の船を 徴求した時-" "戦地へ向かう人道的輸送船に 乗っていた私は彼らが我々の存在を尊重すると思っていたが、ダスクブリンガーは例外を認めないようだ。"檻を壊して中の囚人を解放するが、警報が鳴り響き、ダスクブリンガーがあなたたちのいる場所に向かって行進する音が聞こえる。自己紹介をしている暇はない。早くここを出なければならない！</text>
+			<crewMember amount="1" class="human_medic" />
+			<choice>
+				<text>出て行け！</text>
+				<event load="DUSK_PRISONERS_LEAVE" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>セオクラシー十字軍の一人を救え。</text>
+		<event>
+			<text>ロックマンはあなたの援助に感謝している。"宣教師の船を守る任務があったのだが" "まだ省があると勘違いして" "ダスクブリンガー・セクターを通過してしまったゾルタンどもめ、聖なる探求など彼らの救済に値しない。"あなたは檻を壊し、中の囚人を解放したが、警報が鳴り響き、ダスクブリンガーがあなたのいる場所に向かって行進するのが聞こえた。自己紹介をしている暇はない、早くここから逃げなければならない！</text>
+			<crewMember amount="1" class="rock_crusader" />
+			<choice>
+				<text>出て行け！</text>
+				<event load="DUSK_PRISONERS_LEAVE" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_PRISONERS_LEAVE">
+	<text>刑務所を後にしようとしたとき、ダスクの船が急襲してきた。それはエリート看守で、彼らは満足していない。戦闘に備えろ！</text>
+	<ship load="SHIP_DUSK_ELITE_JAILER" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+	
+<eventList name="NEUTRAL_DUSKBRINGER">
+	<event load="DUSK_YOUNG" />
+	<event load="DUSK_SNEAKYREBEL" />
+	<event load="DUSK_HARASS" />
+	<event load="DUSK_TEAMUP" />
+	<event load="DUSK_PIRATES_HIDING" />
+	<event load="DUSK_IDIOT" />
+</eventList>
+
+<event name="DUSK_YOUNG" unique="true">
+	<text>まだ大人にもなっていない若いダスクブリンガーが、あなたに向かって突進してくる。「連邦の豚め！ここはゾルタン宇宙域だ。お前は歓迎されてない！俺はここにいる！お前たちを破滅させてやる！連邦軍とレネゲイドは朝飯前だ！俺のヒーロー デボラックのようにな俺は出世する！最強で忠実で最凶のダスクブリンガーになるんだ！靴が震えるだろ？</text>
+	<ship load="SHIP_DUSK_YOUNG" hostile="false" />
+	<choice hidden="true">
+		<text>兵士になるには若すぎないか？</text>
+		<event>
+			<text>ゾルタンは地面に唾を吐いた。「ブタ、聞いてんのか？俺は兵士じゃない。俺はダスクブリンガーだ。最強のダスクブリンガーだ！レネゲイドを平然と殺すそうだみんなに愛される ヒーローなんだ震えてろ ブタ！</text>
+			<choice hidden="true">
+				<text>それで兵士になれるのか？</text>
+				<event>
+					<text>「なんだって？ふっふっふ、豚め、よくわかったもんだ！兵士は洗脳された下僕にすぎない 干し草を食い 大義のために死ぬだけだダスクブリンガーは未来の戦士だゾルタン族の運命をもたらすんだ未来の栄光を知ってるのか 豚？話はもういい栄光の未来の本当の意味を教えてやる！"</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>怖いふりをする。</text>
+				<event>
+					<text>「そう、そうやって震えて！小さな赤ん坊のように震えろ、そうだろ？ハハハ！お前らレネゲイドは臆病者の集まりだ！ブタ野郎、同情するよ。ほら、憐れみのスクラップでも食らえ、そうだろ？ハッ！"</text>
+					<choice>
+						<text>憐れみのスクラップを取る。</text>
+						<event>
+							<text>「いいぞ、いいぞ！気が変わってお前を殺す前に出て行け、ブタ！"ゾルタンの声には安堵のようなものが感じられる。まるであなたと戦わなくて済むことを喜んでいるかのようだ。</text>
+							<autoReward level="LOW">scrap_only</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>侮辱に報復し、戦う！</text>
+						<event>
+							<text>"そうか......今がその時だ、豚よ！覚悟しておけ！"</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>何も言わずに戦闘を開始する。</text>
+		<event>
+			<text>こんなことに時間を費やしても仕方がない。武器を装備し、戦う準備をするのだ。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="unique_devorak" hidden="true">
+        <text>(デヴォラック）ダスクブリンガーを落ち着かせろ。</text>
+        <event>
+            <text>「安心してくださいデボラックは優しく言う。"誰にも感動を与える必要はない"
+"デヴォラック？"ダスクブリンガーは驚いたような声で、生意気な声が敬意のこもったものに変わる。"レネゲイドの船で何をしているんだ？"
+
+"無理しなくていい。君の人生はこれからだ。何のために戦うのかがわからない限り、戦うべきではない。そしてもっと重要なのは、何と戦っているのかということだ」
+
+風が抜けて、子供はうなずく。一瞬、彼はあなたに加わろうとしたように見えたが、デヴォラックは首を振った。代わりに、彼の乗組員は武器を含む積荷を引き渡す。</text>
+            <autoReward level="MED">standard</autoReward>
+            <weapon name="GIFTLIST_DUSK" />
+        </event>
+    </choice>
+</event>
+<event name="DUSK_YOUNG_SURRENDER">
+	<text>「よし、ブタ、よくやった、よくやった！俺の船をめちゃくちゃにしたんだ。自慢できるだろ？自分を褒めてやれよ最凶のダスクブリンガーだまだまだ続くぞでも、自分で証明したんだから、同情してやる！"</text>
+	<choice hidden="true">
+		<text>彼の哀れみを受け入れなさい。</text>
+		<event>
+			<text>「ああ、君は賢いね！今度からゾルタン宇宙域に迷い込む前によく考えろ、いいな？ここには豚の居場所はないんだ！"</text>
+			<ship hostile="false" />
+			<autoReward level="LOW">item</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>何も言わず、彼を助ける。</text>
+		<event>
+			<text>"何も取らないのか？俺を逃がすのか、ブタ？何をバカなことを言ってるんだ？お前は人殺し、殺し屋だ。俺は格好の標的だろ？カネを取らないなら 助けてくれるのか？"</text>
+			<ship hostile="false" />
+			<choice hidden="true">
+				<text>君はダスクブリンガーでも兵士でもない。ただの子供だ。</text>
+				<event>
+					<text>"ガキじゃねえ、ブタ！俺はダスクブリンガーだ！冷血で緑色の肌の ゾルタン大好きダスクブリンガーだ！最凶のダスクブリンガーを侮辱するとは何事だ！"強気な物言いとは裏腹に、ゾルタンは接触を再開しようとはしない。「その代償はまた今度な。でも今じゃない...休まなきゃ。休まないと。もし反乱軍が来たら、お前が反対側に行ったと言うよ。好意だとは思わないでくれ。</text>
+					<modifyPursuit amount="-2" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>ダスクブリンガーに狙われたくない。</text>
+				<event>
+					<text>"ああ、それで真実が明らかになったんだね？君は賢いね！尊敬するよ！心配するなブタ、俺がついてる！俺たち賢い奴は団結しなきゃな！ダスクブリンガーがお前に辛く当たらないようにしてやるからな！"</text>
+					<crewMember amount="1" class="zoltan_devotee" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>彼を仕留める。</text>
+		<event />
+	</choice>
+</event>
+
+<event name="DUSK_SNEAKYREBEL" unique="true">
+	<text>最初は荒涼としたビーコンに見えたが、遠くのほうで青い光が目に飛び込んでくる。どうやら、発見されるのを避けようとするMV反乱軍の船のようだ。</text>
+	<choice hidden="true">
+		<text>気づかれないように尾行を試みる。</text>
+		<event load="DUSK_SNEAKYREBEL_FOLLOW" />
+	</choice>
+	<choice hidden="true" req="cloaking">
+		<text>(遮蔽して)彼らを追え。</text>
+		<event load="DUSK_SNEAKYREBEL_FOLLOW_GOOD" />
+	</choice>
+	<choice hidden="true">
+		<text>船万歳。</text>
+		<event>
+			<text>反乱軍のキャプテンはあなたを見て驚いている。「レネゲイド？くそ、見つからないようにしたかったのに...聞いてくれ！私たちはユニバース1の人間じゃない。全員が大量虐殺を支持してるわけじゃない私は反乱軍に参加した バンスが銀河に平和をもたらしてくれると 思ったからだしかし、これは行き過ぎだ。ダスクブリンガーの前哨基地に 物資を届ける途中だそれで満足するなら、物資を少し分けてもいい"</text>
+			<ship load="SHIP_DUSK_SNEAKYREBEL_NOSURRENDER" hostile="false" />
+			<choice hidden="false">
+				<text>賄賂を受け取れ。</text>
+				<event>
+					<autoReward level="HIGH">stuff</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>元反乱軍であろうとなかろうと、ダスクブリンガーの手に物資を渡すわけにはいかない！</text>
+				<event>
+					<text>銃を武装し、戦いに備える。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>反乱軍を攻撃せよ</text>
+		<event>
+			<text>あなたが武器をパワーアップすると、反乱軍のキャプテンは抗議しようとしたが、遅すぎた。すでにロックオンされ、発砲している！</text>
+			<ship load="SHIP_DUSK_SNEAKYREBEL" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>反乱軍の船は無視しろ。</text>
+		<event>
+			<text>このような危険な領域で反乱軍を追うのは悪い考えだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DUSK_SNEAKYREBEL_FOLLOW">
+	<event load="DUSK_SNEAKYREBEL_FOLLOW_GOOD" />
+	<event>
+		<text>反乱軍を尾行しようとしたが失敗。すぐに見つかり、船はすぐに飛び去る。</text>
+	</event>
+</eventList>
+<event name="DUSK_SNEAKYREBEL_FOLLOW_GOOD">
+	<text>しばらく船を尾行し、やがて遠くにダスクブリンガーの前哨基地を発見する。その船がダスクブリンガーを待ち伏せしに来たのかと思い始めたその時、驚いたことに、その船がドックに着き、貨物の積み下ろしを始めた！船上で何が起きているのか、あなたは通信を傍受する。「この船を手に入れるのは簡単じゃなかった。"この船を手に入れるのは 容易じゃなかった" "命令には逆らったが..." "ユニバース1は..." "私の生殖器に..."彼らは反乱軍の一員で ダスクブリンガーに協力してる</text>
+	<choice hidden="true">
+		<text>後ろで待機し、物資を盗もうとする。</text>
+		<event>
+			<text>ほどなくして反乱軍の船がドッキングを解除し、ジャンプして去っていった。不運なことに、ダスクブリンガーは思った以上に準備ができていて、自分たちを守ろうとする！</text>
+			<autoReward level="MED">stuff</autoReward>
+			<ship load="SHIP_DUSK_FIGHT" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>出て行け。</text>
+		<event />
+	</choice>
+</event>
+
+<event name="DUSK_HARASS" unique="true">
+	<text>大破した防衛省の船に護衛されていた修道士の輸送船団が、ダスクブリンガーのパトロール船に近くで止められた。傍受した通信周波数によると、ダスクブリンガーは省船の存在を僧侶への嫌がらせのチャンスとして利用しているようだ。</text>
+	<ship load="SHIP_DUSK_HARASS" hostile="false" />
+	<choice hidden="true">
+		<text>修道士を守れ。</text>
+		<event>
+			<text>「反逆の汚物？私たちのセクターに？いきなり修道士を守るとは何事だ？"ダスクブリンガー船は防御を高め、自衛の準備をする。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ダスクブリンガーを脅して身を引かせる。</text>
+		<event load="DUSK_HARASS_THREAT" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_DUSK">
+		<text>(ダスクブリンガー・クルー）ダスクブリンガーを懲らしめる。</text>
+		<event>
+			<text>クルーは元同僚の行動に憤慨している。"我々の目的はゾルタン人の正当な栄誉だ！ソレイの言葉に従わないゾルタンに対しても簡単に暴言を吐くようでは、その使命に何の意味がある？"他のダスクブリンガーは恥じて頭を下げ、流血することなく船に戻った。</text>
+			<choice hidden="true">
+				<text>修道士に連絡してください。</text>
+				<event load="DUSK_HARASS_WIN" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>護衛艦は無視しろ。</text>
+		<event>
+			<text>僧侶を守りに行くのは君の義務じゃない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DUSK_HARASS_THREAT">
+	<event>
+		<text>ダスクブリンガーは脅しに屈しない。"レネゲイド、気づいてなかったかもしれないが、ここは俺たちの縄張りだ！"ダスクブリンガーを脅す者はいない""特に我々の領域では"</text>
+		<boarders min="2" max="2" class="zoltan_devotee" />
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>自分たちが捕まったことに驚いたダスクブリンガーたちは、すぐに降伏し、わずかな賄賂を渡して飛び去った。</text>
+		<autoReward level="LOW">standard</autoReward>
+		<choice hidden="true">
+			<text>修道士に連絡してください。</text>
+			<event load="DUSK_HARASS_WIN" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="DUSK_HARASS_WIN">
+	<event>
+		<text>修道士たちは恐怖に怯えており、早口で何を言っているのか翻訳機でも聞き取れない。幸いなことに、彼らを護衛していたピースキーパーの1人が少し持ちこたえ、彼らを助けたお礼として報酬をくれるという。</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>護衛船の生命維持装置に異常が発生し、乗組員全員が窒息死したようだ。無防備になった修道士たちは行き場を失い、一緒に来てくれるよう懇願する。</text>
+		<crewMember amount="1" class="zoltan_monk" />
+	</event>
+</eventList>
+
+<event name="DUSK_TEAMUP" unique="true">
+	<text>光速ジャンプの後、気を取り直す暇もないほど、このビーコン周辺は大混乱に陥っている。ダスクブリンガー、エリート反乱軍、ロック、ゾルタン艦がドッグファイトの真っ最中だ。</text>
+	<choice>
+		<text>反乱軍のエリート船と戦え</text>
+		<event>
+			<text>四方八方から銃声が飛び交う中、混沌とした乱闘に加わり、反乱軍へと一直線に向かう。</text>
+			<ship load="SHIP_REBEL_TEAMUP" hostile="true" />
+			<environment type="PDS" target="all" />
+			<noASBPlanet />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>ダスクブリンガー船と戦う。</text>
+		<event>
+			<text>四方八方から銃声が飛び交う中、あなたは混沌とした乱闘に加わり、ダスクブリンガーへと一直線に向かう。</text>
+			<ship load="SHIP_DUSKBRINGER_TEAMUP" hostile="true" />
+			<environment type="PDS" target="all" />
+			<noASBPlanet />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>ゾルタン船と戦う。</text>
+		<event>
+			<text>四方八方から銃声が飛び交う混沌とした乱闘に加わり、ゾルタンに向かって直進する。</text>
+			<ship load="SHIP_ZOLTAN_TEAMUP" hostile="true" />
+			<environment type="PDS" target="all" />
+			<noASBPlanet />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ZOLTAN_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>ロック船と戦う。</text>
+		<event>
+			<text>四方八方から銃声が飛び交う混沌とした乱闘に加わり、ロックマンに向かって一直線。</text>
+			<ship load="SHIP_ROCK_TEAMUP" hostile="true" />
+			<environment type="PDS" target="all" />
+			<noASBPlanet />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ここから出て行け</text>
+		<event>
+			<text>可能な限り速くジャンプして逃げる。ロックマンが「臆病者め！」と叫んでいるのを通信機越しにキャッチするが、やがて、彼らには届かないほど遠くにいる。</text>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_TEAMUP_REBEL">
+	<text>あなたが反乱軍艦に勝利すると、他の艦は攻撃をやめる。ダスクブリンガーは逃げるが、ゾルタンとロックは礼を言う。ゾルタン船は船体の修理に当たり、ロック船は弾薬をくれる。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<damage amount="-7" />
+	<removeHazards />
+	<item_modify>
+		<item type="missiles" min="3" max="5" />
+	</item_modify>
+</event>
+<event name="DUSK_TEAMUP_DUSK">
+	<text>黄昏の船は破壊され、反乱軍は味方を失った。どの船よりも装備は良いが、3人には敵わない。彼らは降伏し、飛び去る。ゾルタンとロックマンは君たちの助けに感謝し、協力して船体を修復する。</text>
+	<autoReward level="MED">standard</autoReward>
+	<damage amount="-5" />
+	<removeHazards />
+</event>
+<event name="DUSK_TEAMUP_ZOLTAN">
+	<text>あなたはゾルタンを倒し、ロックマンは味方を失った。彼らは希望を捨て、神風に乗ってダスクブリンガー艦に突っ込み、両艦をほぼ即座に破壊した。最後の生き残りである反乱軍の船があなたに呼びかける。「よし、これは面白い。君たちの居場所を我が艦隊に報告すべきだろうが、実のところ、君たちの助けがなければ、この危機を脱することはできなかっただろう。だが、あまり正確ではないだろう。だが、正確な位置は伝わらないだろう。あなたは反乱軍の協力に驚いたが、喜んでそれを受け入れた。</text>
+	<autoReward level="MED">standard</autoReward>
+	<modifyPursuit amount="-1" />
+	<removeHazards />
+</event>
+<event name="DUSK_TEAMUP_ROCK">
+    <text>ロック号が爆発した。戦いのダメージによるものか、それとも最後の自爆か。あなたの船は無傷だが、破片の一部がゾルタンに飛んでいき、シールドを破壊する。ダスクブリンガーはすぐにこの船を処分する。多勢に無勢となり、最悪の事態を疑うが、他の2隻は攻撃しようとしない。ダスクブリンガーは残骸を引き揚げる気もなく、飛び去る。反乱軍があなたに声をかける。「よし、これは面白い。君たちの居場所を我が艦隊に報告すべきだろうが、実のところ、君たちの助けなしには、あそこから脱出できなかったと思う。だが、あまり正確ではないだろう。実際、数回のジャンプの間、艦隊を迷わせることになるだろう」。君は反乱軍の協力に驚いたが、快く引き受けた。</text>
+    <autoReward level="MED">standard</autoReward>
+    <modifyPursuit amount="-1" />
+	<removeHazards />
+</event>
+
+<event name="DUSK_PIRATES_HIDING" unique="true">
+	<text>果てしなく続くダスクブリンガーのパトロールから逃れるため、海賊の一団が小さな月の影に避難している。彼らがあなたを見ることができるかどうか、あなたは疑っている。</text>
+	<img planet="PLANET_UNPOPULATED_SMALL" />
+	<choice hidden="true">
+		<text>海賊に連絡しろ。</text>
+		<event load="DUSK_PIRATES_HIDING_CONTACT" />
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>海賊は隠れている場所から動かない。他のことをしても安全だと思うが、念のため彼らから目を離さないように。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DUSK_PIRATES_HIDING_CONTACT">
+	<event>
+		<text>他の海賊たちは、あなたを見つけるや否や別の方向に散らばって逃げていったが、ひときわ怒り狂った海賊があなたに声をかけた。「FRBか？失せろ！爆発物だらけのナチと一緒に生き残るのは大変なんだ、お前まで相手にする必要はない！"</text>
+		<ship load="SHIP_PIRATE_ALL" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event> 
+	<event>
+		<text>驚いたことに、あなたが近づいても海賊たちは誰も動かない。一人があなたに声をかけ、あなたの意図を知りたがっている。</text>
+		<choice hidden="true">
+			<text>攻撃だ！</text>
+			<event>
+				<text>ほとんどの海賊は、フルサイズの巡洋艦を相手にしたくないと逃げていく。しかし、1隻は、あなたを破壊する能力に自信を持ち、残っている。</text>
+				<ship load="SHIP_PIRATE_ALL" hostile="true" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="COMBAT_CHECK" />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>交換を申し出る。</text>
+			<event>
+				<text>海賊たちは互いにささやき合っている。しばらく待つと、リーダーと思しき人物が口を開いた。"よし、じっくり考えてみた。少しくらいの取引は痛くも痒くもないが、何か疑わしいことがあると疑った瞬間、お前たちを粉々に吹き飛ばすぞ。"海賊の言うこととは皮肉なものだと思ったが、彼らの条件に同意する。</text>
+				<store>STORE_PIRATE</store>
+			</event>
+		</choice>
+	</event> 
+</eventList>
+
+<event name="DUSK_IDIOT" unique="true">
+	<text>近くにいたダスクブリンガー船から声がかかる。痩せこけたゾルタンが現れるが、彼は間違った方向を向いている。彼は間違いに気づき振り向くが、すでにバカであることがバレている。"連邦の船はここでは歓迎されない！規約違反だ......ええと......そのうちのひとつに違反している。連邦の船だろ？"</text>
+	<ship load="SHIP_DUSK_GENERIC" hostile="false" />
+	<choice hidden="true">
+		<text>そうだ。</text>
+		<event>
+			<text>「素晴らしい！前回の失敗のあと、自分を証明するチャンスだ！デボラックは大喜びだ！"彼は武器をパワーアップして攻撃する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>いや。</text>
+		<event>
+			<text>「ああ、失礼しました。素晴らしい一日を！"彼は通信を終了し、飛び去る。何かトリックがあるのではないかと疑うが、何も起こらない。なんてバカなんだ。</text>
+			<instantEscape />
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice req="unique_devorak" hidden="true">
+        <text>(デボラック）"ここで重要なのはそこではない"。</text>
+        <event>
+            <text>デボラックの姿を見て、ダスクブリンガーは口ごもり始めた。「デ、デボラック！お前...見たのか？"デヴォラックはため息をつき、首をかしげる。照れくさそうに顔を覆うダスクブリンガー。"運が良かった...今週何度も失敗したうちの一つが、たまたま大物の前だった..."
+"兵士よ、君は本領を発揮できていないようだ。奮闘しているのなら、何かもっといいことがあるのでは？何か楽しいことはありますか」
+「うーん...お菓子作りがちょっと好きかな...。でも、爆発するたびに、ちょっとずつ下手になっていく気がして、しばらくやってないんだ」
+
+「だったら、大義のために死ぬのはやめなさい。生きて、好きなことをやりなさい"目に涙を浮かべながら、ダスクブリンガーはうなずく。彼の船はアイドルにスクラップをプレゼントする。</text>
+            <autoReward level="HIGH">standard</autoReward>
+        </event>
+    </choice>
+</event>
+
+<eventList name="NEUTRAL_DUSK_UNIQUE">
+	<event load="DUSK_JAILER_CHOICE" />
+
+	<event load="DUSK_YOUNG" />
+	<event load="DUSK_SNEAKYREBEL" />
+	
+	<event load="DUSK_TEAMUP" />
+	<event load="DUSK_PIRATES_HIDING" />
+	<event load="DUSK_IDIOT" />
+</eventList>
+
+<event name="DUSK_JAILER_CHOICE" unique="true">
+	<text>ダスクブリンガーは領土への侵入者を好まないため、囚人を移送するためにこの地域をパトロールするジェイラー船を見かけることは珍しくない。そのような船の1隻がここに寄港し、センサーの再調整を行っている。</text>
+	<ship load="SHIP_DUSK_JAILER" hostile="false" />
+	<choice hidden="true">
+		<text>相手が気を取られている間に攻撃する！</text>
+		<event>
+			<text>囚人たちを生かしたいのなら、彼らの乗組員も殺さなければならない。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="FIREARMS_AND_TELEPORT">
+		<text>(武器庫＋テレポーター）看守に嵐を起こせ。</text>
+		<event>
+			<text>完全武装したクルーはジェイラーに乗り込み、すぐにダスクブリンガーのクルーたちを倒す。牢番を囚人にして、すぐに殺されそうにない監禁されている全員を解放する。</text>
+			<crewMember amount="1" class="LIST_CREW_FEDERATION" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>看守を避ける。</text>
+		<event>
+			<text>牢番は気づかないようだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_JAILER_KILL">
+	<text>あなたは看守を破壊したが、不運なことに捕虜は誰も爆発から生き延びられなかった。あなたは残骸をスクラップにし、漂流する死体を避けようとする。</text> 
+	<autoReward level="MED">standard</autoReward>
+</event>
+<event name="DUSK_JAILER_CAPTURE">
+	<text>牢番のクルーは死んだが、ほとんどの捕虜は生き残った。彼らのほとんどは、あなたが砦を出たらすぐに降ろしてほしいと要求するが、1人は残ってあなたの船で働きたいと志願した。</text> 
+	<autoReward level="MED">standard</autoReward>
+	<crewMember amount="1" />
+</event>
+
+<eventList name="DISTRESS_DUSKBRINGER">
+	<event load="DISTRESS_DUSK_MONASTERY" />
+	<event load="DISTRESS_DUSK_DAMAGEDFLEET" />
+	<event load="DISTRESS_DUSK_FEDERATION" />
+</eventList>
+
+<event name="DISTRESS_DUSK_MONASTERY" unique="true">
+	<distressBeacon />
+	<text>イレシュクトリア修道院は通常、惑星の地表に建てられるが、救難信号を発信しているこのビーコンのように、大きな宇宙ステーションに建てられるものもある。残念なことに、これは敵対者にとって格好の標的となる。海賊グループが修道院を人質に取り、ダスクブリンガー部隊が解放交渉を試みている。</text>
+	<choice hidden="true">
+		<text>海賊がステーションを支配し続けるのを助け、ダスクブリンガーを撃退せよ。</text>
+		<event>
+			<text>あなたの介入は混乱を引き起こし、やがて海賊もダスクブリンガーも互いに群がるようになる。あなたは一番近い船に乗り込む。</text>
+			<ship load="SHIP_DUSK_MONASTERY" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ダスクブリンガーが海賊から修道院を奪還するのを助けよう。</text>
+		<event>
+			<text>あなたはその場に急降下し、一番近い海賊船に向かって武器をぶっ放す。ダスクブリンガーは混乱するが、戦うしかないことを悟り、やがて双方が戦闘に巻き込まれる。</text>
+			<ship load="SHIP_PIRATE_MONASTERY" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>巻き込まれるな。</text>
+		<event>
+			<text>こんなことに首を突っ込む必要はない。気づかれないようにするんだ</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_MONASTERY_PIRATE_WIN">
+	<text>海賊団のリーダーと思われる男が、あなたを呼び止める。"ハッ！ とんでもないパフォーマンスだった。感謝するぜ、船長。で、何の用だ？"</text>
+	<choice hidden="true">
+		<text>修道士を解放せよ。</text>
+		<event>
+			<text>「冗談じゃない。じゃあどうやって儲けるんだ？"あなたは彼らに、聖なる遺物を闇市場で売ることを提案した。「ああ...わかった。ああ...わかったよ。変人どもを解放してやる"海賊は僧侶たちを解放する。行き場のない修道士たちを、次に出会う聖地で降ろしてやると申し出る。大半は同意するが、若い僧侶の一人が仲間に加わりたいと申し出る。</text>
+			<crewMember amount="1" class="zoltan_monk" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>僧侶の貴重品が欲しいんだ。</text>
+		<event>
+			<text>"ああ、わかった。どうせなら、宗教フリークを人質にして、政府からとんでもない懸賞金を交渉しよう。国庫の戦利品を手に入れるんだ」。</text>
+			<autoReward level="RANDOM">standard</autoReward>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_MONASTERY_DUSK_WIN">
+	<text>あなたを呼ぼうとするダスクブリンガーがいないと、あなたは彼らのリーダーに手を伸ばす。"はい...はい。君はずいぶんと優位性を誇示してくれたが、それが親切心からだとは思えない。何が望みだ？"</text>
+	<choice hidden="true">
+		<text>反乱軍に我々の居場所の偽情報を伝えろ。</text>
+		<event>
+			<text>"このせいで殉教してしまう..."彼は明らかにあなたの要求に不満そうだが、ダスクブリンガーは受け入れる。あなたはただ、彼があなたを裏切ることなく、本当に嘘をつくことを願うだけだ。</text>
+			<modifyPursuit amount="-1" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>軍事物資が欲しい。</text>
+		<event>
+			<text>「そうだね。みんなそうだろう......。私はこの銃でFRBを殺したかったのであって、FRBに贈りたかったわけではない"彼はしぶしぶ自分の武器と弾薬を渡す。</text>
+			<autoReward level="LOW">missiles_only</autoReward>
+			<weapon name="RANDOM" />
+		</event>
+	</choice>
+</event>
+
+<event name="DISTRESS_DUSK_DAMAGEDFLEET" unique="true">
+	<distressBeacon />
+	<text>遭難信号の発信元は普通の船ではない。遠くに見えるのは巨大なゾルタン艦隊の船で、見たところドレッドノートだ。致命的なダメージを受け、船のかなりの部分が完全に減圧されている。</text>
+	<img back="BACK_EVENT_ZOLTFLEET_DAMAGED" planet="PLANET_INVISIBLE" />
+	<choice hidden="true">
+		<text>ドックに入り、助けようとする。</text>
+		<event>
+			<text>ゾルタンの船長は、広い格納庫の中であなたを緊急に出迎えた。「援軍が到着した。ゾルタンの大臣がダスクブリンガー・セクターに小艦隊を派遣した。我々は彼らがどれほど強くなっているのか気づかず、驚くべき効率で我々の艦隊を破壊した。残っているのは我々だけだが、修理をしなければ長くはもたないだろう。医療と生命維持システムは大きなダメージを受けたが、完全に破壊されたわけではない。修理の望みはまだあるが、そこにたどり着くまでの道は酸素がまったくなく、敵がまだ徘徊している可能性もある」。</text>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+				<text>生命維持装置を修理するクルーを何人か送ってくれ。</text>
+				<event load="DISTRESS_DUSK_DAMAGEDFLEET_DISPATCH" />
+			</choice>
+			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+				<text>修理をするクルーもいない。</text>
+				<event load="OPTION_INVALID" />
+			</choice>
+			<choice hidden="true" req="BLUELIST_CREW_NO2">
+				<text>(嫌気性クルー)生命維持装置の修理にクルーを向かわせろ。</text>
+				<event>
+					<text>酸素を必要としないため、クルーはシステムの修復に全く苦労しない。酸素レベルが十分に安定したら、残ったゾルタンのクルーは船内にいるダスクブリンガーを探し出し、処分する。全てが片付くと、ゾルタンの船長はあなたの援助に感謝し、多額の報酬を支払う。</text>
+					<autoReward level="HIGH">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="zoltan_osmian">
+				<text>(生命維持装置を修理するため、ホログラムを送れ。</text>
+				<event>
+					<text>酸素を必要としないため、クルーのホログラムはシステムの修復に全く苦労しない。酸素レベルが十分に安定したら、残りのゾルタンクルーは船内にいるダスクブリンガーを探し出し、処分する。全てが片付くと、ゾルタンの船長はあなたの協力に感謝し、多額の報酬を支払う。</text>
+					<autoReward level="HIGH">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="DRONE_CONTROL_REPAIR_CREW">
+				<text>(修理ドローン）生命維持装置を修理するためにドローンを送る。</text>
+				<event>
+					<text>酸素を必要としないため、ドローンはシステムの修復に全く苦労しない。酸素レベルが十分に安定したら、残りのゾルタンクルーが船内にいるダスクブリンガーを探し出し、処分する。全てが片付くと、ゾルタンの船長はあなたの協力に感謝し、多額の報酬を支払う。</text>
+					<autoReward level="HIGH">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>修理の手伝いはできないが、できるだけ多くのクルーをカーゴで運ぶことはできる。</text>
+				<event>
+					<text>「最適とは言えないが、唯一の選択肢かもしれない。ゾルタ人は急いで乗り込んだ。ほとんどの者は近くのステーションに降ろされたが、船長は残った。"今日は大変お世話になった、お返しをしないのは残念だ。私はこのセクターでの任務を果たせなかったが、君たちの任務達成の手助けができるかもしれない。"</text>
+					<crewMember amount="1" class="zoltan" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>艦隊の船は無視する。</text>
+		<event>
+			<text>このような大きさの船が、少なくとも小さな艦隊を伴わずにこのような敵地に来ることはない。すぐに援軍が到着するだろう。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DISTRESS_DUSK_DAMAGEDFLEET_DISPATCH">
+	<event>
+		<text>君のチームは任務の成功を報告し、戻ってきた。酸素レベルが十分に安定したら、残りのゾルタンの乗組員は船内にいるダスクブリンガーを探し出し、処分する。全てが片付くと、ゾルタンの船長はあなたの協力に感謝し、多額の報酬を支払う。</text>
+		<autoReward level="HIGH">weapon</autoReward>
+	</event>
+	<event>
+		<text>ほとんどのクルーは無傷で帰還したが、1名は間に合わなかった。途中でダスクブリンガーと遭遇し、銃撃戦に巻き込まれたという。あなたは自分の失敗をゾルタ人に謝罪するが、他にできることはない。</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>幸運なことに、あなたのクルーはクローンを作ることができた。</text>
+		</removeCrew>
+	</event>
+</eventList>
+
+<event name="DISTRESS_DUSK_FEDERATION" unique="true">
+	<distressBeacon />
+	<text>遭難信号の発信源は、エンジンに穴の開いた置き去りにされた連邦船だった。「助かった。ダスクブリンガーのパトロールが我々の位置を艦隊に知らせるまで、救助は来ないだろうと心配していた。お願いです、ダメージを何とかしてもらえませんか、燃料を貸してもらえませんか。燃料がひどく漏れているのですが、少しでもあれば、店までたどり着けるかもしれません。"</text>
+	<ship load="SHIP_FED_GENERIC" hostile="false" />
+	<choice>
+		<text>燃料を与える。</text>
+		<event>
+			<text>「ありがとう、キャプテン。私たちが到着する前に、すべてが漏れてしまわないことを祈ります"</text>
+			<item_modify>
+				<item type="fuel" min="-3" max="-2" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>「ありがとう。どうせこれを売って燃料を買うつもりだったんだ」。</text>
+					<augment name="RANDOM" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="DRONE_CONTROL_REPAIR_ALL">
+		<text>(修理ドローン）ドローンを使ってエンジンを修理する。</text>
+		<event>
+			<text>ドローンは完璧に機能し、裂け目を塞いだ。</text>
+			<item_modify>
+				<item type="drones" min="-1" max="-1" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>「ありがとう。どうせこれを売って燃料を買うつもりだったんだ」。</text>
+					<augment name="RANDOM" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="BLUELIST_BOMB_REPAIR">
+		<text>(修理クラスター）爆弾を使ってエンジンを修理する。</text>
+		<event>
+			<text>爆弾は完璧に機能し、裂け目を塞いだ。</text>
+			<item_modify>
+				<item type="missiles" min="-1" max="-1" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>「ありがとう。どうせこれを売って燃料を買うつもりだったんだ」。</text>
+					<augment name="RANDOM" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="BEAM_REPAIR">
+		<text>(プロハルビーム）ビームを使ってエンジンを修理する。</text>
+		<event>
+			<text>プロハルビームは完璧に機能し、裂け目を塞ぐ。損傷箇所がほとんどわからなくなるまで、そう時間はかからない。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>「ありがとう。どうせこれを売って燃料を買うつもりだったんだ」。</text>
+					<augment name="RANDOM" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="COMBAT_REPAIR">
+		<text>(修理ロボット散布) ナノボットを放ち、エンジンを修理させる。</text>
+		<event>
+			<text>ナノボットが素早く動き、裂け目を塞ぐ。ダメージの範囲がほとんどわからなくなるまで、そう時間はかからない。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>「ありがとう。どうせこれを売って燃料を買うつもりだったんだ」。</text>
+					<augment name="RANDOM" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>私たちは助けることができない。</text>
+		<event>
+			<text>「私たちを置き去りにするの？連邦のキャプテンは落ち着きを取り戻してから再び話す。「わかった。幸運を祈る、艦長。通信を終える。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<eventList name="DISTRESS_DUSK_UNIQUE">
+	<event load="DISTRESS_DUSK_ABOUT_DUSK" />
+
+	<event load="DISTRESS_DUSK_DAMAGEDFLEET" />
+	<event load="DISTRESS_DUSK_FEDERATION" />
+</eventList>
+
+<event name="DISTRESS_DUSK_ABOUT_DUSK" unique="true">
+	<distressBeacon />
+    <text>救難信号の発信源はダスクブリンガー船だが、危険な状況にはないようだ。「完璧だレネゲイドだ質問があるその名をどう思う？"ダスクブリンガーどんな意味だ？"</text>
+    <ship load="SHIP_DUSK_ALL" hostile="false" />
+	<choice>
+   		<text>ゴシックのスーパーヴィラン集団。</text>
+		<event>
+			<text>"かなりクールだと思うよ。そして、なぜそれを...あれを思い出すと言うのですか？"</text>
+			<choice hidden="true">
+				<text>威風堂々とした日暮れをイメージさせる。</text>
+				<event>
+					<text>「ああ、そうなのか？言葉の使い方がうまいな、レネゲイド""ダスクブリンガー "は "ダスクブリンガー "の "屑 "を差し出す。</text>
+					<autoReward level="HIGH">scrap_only</autoReward>
+				</event>
+			</choice>    
+			<choice hidden="true">
+				<text>物事が暗くなることを望む陰気な不気味さとは？</text>
+				<event>
+					<text>「罵り合いはやめてくれ。納得のいかない説明だが、まあいい。"ダスクブリンガーは無造作に資源を投げつける。</text>
+					<autoReward level="LOW">stuff</autoReward>
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>気取ったエッジロードの集まり。</text>
+		<event>
+			<text>"辛辣だ...しかし、あながち不正確ではないかもしれない。なぜそう思うのか、説明してくれないか？"</text>
+			<choice hidden="true">
+				<text>敵に闇をもたらすというのは、ちょっとダサい言い方だ。</text>
+				<event>
+					<text>「つまり、そういうことなのか？私たちは闇の使者？それで十分だ"ダスクブリンガーは答えるための資料をくれる。"そして、あなたはただ嫉妬して怒っている"</text>
+					<autoReward level="MED">stuff</autoReward>
+				</event>
+			</choice>    
+			<choice hidden="true">
+				<text>ゾルタン人はいつも気取っている。</text>
+				<event>
+					<text>「ふざけるな、バカ。俺たちの地域に来て、簡単な質問をしただけで侮辱を始めるのか？"船は武器をパワーアップさせ、あなたを攻撃する。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>    
+		</event>
+    </choice>
+    <choice hidden="true">
+		<text>無名のスクリーム・オー・バンド。</text>
+		<event>
+			<text>"私にはこの概念がない...あなたの言う "Scream-o "の概念がない。どんな音楽ですか？"あなたは（比較的）ポピュラーなスクリーモの曲のオーディオファイルを送る。「うわあ...これは本当に私に語りかけてくる！人間がこんな音を出せるとは思わなかった。質問の答えにはなっていませんが、今はこのままにしておきます。ちょっと調べたいことがあるんだ」。感謝するダスクブリンガーは、あなたに贈り物をする。</text>
+			<weapon name="GIFTLIST_DUSK" />
+		</event>
+    </choice>
+    <choice>
+		<text>私はただ、あなたたちを間抜けで爆発しそうなクズとしか思っていない。</text>
+		<event>
+			<text>"まあ、今はただ意地悪なだけだ。あのね。今、これは必要ない。死体でも食ってろ、この野郎」。船は武器をパワーアップし、あなたを攻撃する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+    <choice>
+		<text>純粋に考えたこともなかった。</text>
+		<event>
+			<text>「いつも考えている。"夕暮れ "って何だろう？夕暮れ」とは？どういう意味なんだろう？どう感じたらいいんだろう？</text>
+			<choice hidden="true">
+				<text>この言葉の文化的なニュアンスを説明する。</text>
+				<event>
+					<text>"薄暗い "から "暗い "になる期間の終わりなのか？でも、明るいところから暗いところへ一瞬で行くのではないのですか？"あなたはさらに、惑星では日没は大気を通して起こるのが一般的で、単に太陽を見えなくするよりも、そのプロセスがより緩やかであることを説明する。「そのうち、惑星の表面に行ってみようかな。行ったことがないんだ。君はよくしてくれたから、何かご褒美をあげてもいいかな」。</text>
+					<autoReward level="MED">scrap_only</autoReward>
+				</event>
+			</choice>    
+			<choice hidden="true">
+				<text>夕暮れのタイムラプスを送る。</text>
+				<event>
+					<text>ダスクブリンガーは、あなたが送ったタイムリープを数分間眺めた。「これはすごい。これが私たちのもたらしたものなら、どうやら私たちは正しいことをしているようだ。これが報酬だ、友よ。"</text>
+					<weapon name="GIFTLIST_DUSK" />
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>愚かな質問だ。</text>
+		<event>
+			<text>「どうでもいい。じゃあ、他の人に頼もう"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+   	 	</event>
+    </choice>
+</event>
+
+
+<eventList name="QUESTS_DUSKBRINGER">
+	<event load="QUEST_DUSK_HIJACK" />
+</eventList>
+
+<event name="QUEST_DUSK_HIJACK" unique="true"> 
+	<text>ゾルタンのエンジニアが近くの月を周回しており、船長は心配そうに行ったり来たりしている。あなたが現れると、彼らはすぐにあなたを呼んだ。「よかった！ダスクブリンガーが私の乗っていたオートシップをハイジャックした。すぐに取り戻さなければ、データドライブに保存されているデータを抜き取られてしまう。</text>
+	<img planet="PLANET_MOONS" />
+	<ship load="SHIP_ZOLTAN_GENERIC" hostile="false" />
+	<choice>
+		<text>エンジニアの申し出を受け入れる。</text>
+		<event>
+			<text>「素晴らしい！ダスクブリンガーがその情報を手に入れたら悲惨なことになる。"</text>
+			<autoReward level="LOW">fuel_only</autoReward>
+			<quest event="QUEST_DUSK_HIJACK_AUTO" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>申し出を無視して船を攻撃する！</text>
+		<event>
+			<text>セクタースキャンは必要ないが、この男の船のスクラップは利用できるだろう！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ZOLTAN_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>衰退。</text>
+		<event>
+			<text>セクタースキャンは必要ないので、オファーを断る。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_DUSK_HIJACK_AUTO">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>省庁のオートシップがダスクブリンガーに乗っ取られた。ここで回収せよ。</unvisitedTooltip>
+	</beaconType>
+	<text>近くに小さなダスクブリンガー研究前哨基地が建設され、問題のオートシップが外に停泊している。レネゲイドとしての直感を働かせれば（そして基本的な常識を働かせれば）、対立せずにこの状況を打開する方法は限られているのは明らかだ。</text>
+	<ship load="SHIP_DUSK_HIJACK" hostile="false" />
+	<choice hidden="true">
+		<text>前哨基地を攻撃せよ！</text>
+		<event>
+			<text>幸運なことに、オートがドッキングしているプラットフォームは十分に離れている。ダスクブリンガーに砲火を集中させろ！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>気が変わったら出て行け。</text>
+		<event>
+			<text>結局、これは価値がないのかもしれない。エンジニアはオートを取り戻すために他の誰かを見つけなければならない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_HIJACK_WIN">
+	<text>「完璧だ！彼女も無事に戻ってきたね！魔法省がレネゲイドに懸念を表明したのは性急すぎたのかもしれない。約束のセクター地図だ</text>
+	<reveal_map />
+</event>
+
+<eventList name="QUESTS_DUSK_UNIQUE">
+	<event load="QUEST_DUSK_PISSED" />
+</eventList>
+
+<event name="QUEST_DUSK_PISSED" unique="true">
+	<text>ダスクブリンガーの小艦隊がこのビーコンを封鎖している。あなたはこっそり通り過ぎようとしたが、ダスクブリンガー船団があなたを止めに飛んできた。戦闘が間近に迫っていると思ったが、代わりに呼びかけを受けた。「連邦の船か？異例だが、頼みがある..."</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>あなたは、とても奇妙な家具が置かれた大きな会議室に迎えられる。壁にはアンティークの地図や武器が並び、ダスクブリンガー殉教者が革張りの肘掛け椅子に座り、お茶をすすっている。「はい、こんにちは。政治的な関係で敵同士になってしまったが、今日はお互いに有益な合意に達することができると思う。お気づきのように、ウェントワース1号が協定を裏切るよう命じて以来、宇宙1からの侵入者は我々にとって大きな問題となっている。私と部下はこの汚物を 我々から排除する任務に就いたこの辺りの未知の勢力から 補給されている 反乱軍の司令官が トラブルを起こしているそいつを殺せば 見返りをやろうこれは公正な取引か？"</text>
+			<choice hidden="true">
+				<text>受け入れる。</text>
+				<event>
+					<text>「とても素晴らしい。このバカの座標はここだ。肩書きは...エヘン...カイル司令官だ。うう、なんと不愉快な..."</text>
+					<quest event="DUSK_PISSED_QUEST" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>衰退。</text>
+				<event>
+					<text>「残念だ。よし、みんな、どう対処するかわかるな？"ダスクブリンガー兵は武器を手に、あなたを船から追い出す。エリート艦が派遣され、あなたたちを破壊する。</text>
+					<ship load="SHIP_DUSK_ELITE_FIGHT" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_PISSED_QUEST">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>カイル司令官はダスクブリンガーに混乱を仕掛けている。</unvisitedTooltip>
+	</beaconType>
+    <text>ダスクブリンガーが指定した目的地に到着した。反乱軍の巨大な船がゾルタンの小さな集落を攻撃している。</text>
+    <ship load="SHIP_KYLE" hostile="false" />
+    <choice hidden="true" blue="false" req="prof_finalsector" lvl="0" max_lvl="0">
+        <text>反乱軍万歳。</text>
+        <event>
+            <text>"さて、これは誰でしょう？俺が誰だかわかるか？カイル、おまえのケツを蹴り上げてやる！おまえに何をするか想像がつくか？彼は少し間を置いた。「バカのために説明してやる。蹴ってやる......"どうするか決める間、あなたは彼をミュートする。</text>
+            <choice hidden="true">
+                <text>撃ち殺せ。</text>
+                <event>
+                    <text>あなたはカイルのミュートを一時的に解除するが、露骨な侮辱を長々と繰り返した後、残りの戦いのためにミュートを解除し、攻撃の準備をする。</text>
+                    <ship hostile="true" />
+                    <choice hidden="true">
+                        <text>次へ...</text>
+                        <event load="COMBAT_CHECK" />
+                    </choice>
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>彼は私たちの時間を費やすに値しない。ダスクに任せておけばいい。</text>
+                <event>
+                    <text>エンジンをリバースに切り替え、反乱軍の船から飛び立つ。どうしていつも変な仕事をさせられるんだ？</text>
+                </event>
+            </choice>
+        </event>
+    </choice>
+	<choice hidden="true" blue="false" req="prof_finalsector" lvl="1">
+        <text>反乱軍万歳。</text>
+        <event>
+            <text>「誰だろう？そんなはずはない！お前は妹を恫喝し続けるクソガキだ！俺が誰かわかるか？カイル、おまえのケツを蹴飛ばしてやる！おまえに何をするか、想像がつくだろう？"彼は少し間を置いた。「バカのために説明してやる。蹴ってやる......"どうするか決める間、あなたは彼をミュートする。</text>
+            <choice hidden="true">
+                <text>撃ち殺せ。</text>
+                <event>
+                    <text>あなたはカイルのミュートを一時的に解除するが、露骨な侮辱を長々と繰り返した後、残りの戦いのためにミュートを解除し、攻撃の準備をする。</text>
+                    <ship hostile="true" />
+                    <choice hidden="true">
+                        <text>次へ...</text>
+                        <event load="COMBAT_CHECK" />
+                    </choice>
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>彼は私たちの時間を費やすに値しない。ダスクに任せておけばいい。</text>
+                <event>
+                    <text>エンジンをリバースに切り替え、反乱軍の船から飛び立つ。どうしていつも変な仕事をさせられるんだ？</text>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="DUSK_PISSED_DEFEAT">
+	<text>「そんなはずはない！私のお尻が...蹴られた...。父さんが怒るぞ反乱軍の船は無力化されたカイルの船の残骸を かき集めろ</text>
+	<achievement>ACH_EVENT_KYLE</achievement>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>反乱軍の船をスクラップしていると、船から小型ポッドが飛び出してくるのに気づく。別の通信システムにいたため、まだミュートしていない。カイルがスクリーンに映し出され、彼の特大のメロンのような顔が赤く汗ばんでいる。"まだ話は終わってないぞ、連邦の間抜けども..."ダスクブリンガー空母がシステムに飛び込み、ポッドを一撃で破壊する前に、カイルはこの最後の侮辱を言い終わらなかった。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>先ほどと同じダスクブリンガーから万歳三唱を受ける。「よくやった。戦いに参加するためにもっと早く到着できなかったのは残念だが、君が十分な仕事をしたのはわかった。君は自分の職務を全うした......大部分において......だから私も自分の職務を全うしよう"</text>
+					<crewMember amount="1" class="zoltan_martyr" all_skills="1">レディン</crewMember>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<eventList name="HOSTILE_DUSKBRINGER">
+	<event load="ENCOUNTER_DUSKBRINGER" />
+	<event load="ENCOUNTER_DUSKBRINGER_STATION" />
+	<event load="ENCOUNTER_PIRATE_DUSKBRINGER" />
+	<event load="ENCOUNTER_REBEL_DUSKBRINGER" />
+	
+	<event load="DUSK_ROCK_FANATICS" />
+	<event load="DUSK_PIRATE_CAPTURE" />
+	<event load="DUSK_ZOLTAN_UNSURE" />
+</eventList>
+
+<event name="ENCOUNTER_DUSKBRINGER">
+	<text load="TEXT_ENCOUNTER_DUSKBRINGER" />
+	<ship load="SHIP_DUSK_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_DUSKBRINGER">
+	<text>ダスクブリンガーは通常のゾルタン人よりも過激だ。通常、彼らは見つけ次第殺すことを好み、この船も同じことを試みている。</text>
+	<text>ダスクブリンガーは、反乱軍の蜂起について特に連邦を非難している。ここにはすでにダスクブリンガーの船があり、彼らは恩を仇で返すつもりだ。</text>
+	<text>ダスクブリンガーについて説明する方法はたくさんある。そのひとつは、過度に攻撃的なスペースナチスかもしれないが、船が攻撃してくる前にそれ以上のことを考える時間はないだろう！</text>
+	<text>ダスクブリンガーが 猛スピードで接近中武器を装備しろ！</text>
+	<text>ダスクブリンガーのパトロール隊は、不要な訪問者を追い払うため、しばしばこの区域を偵察している。これらのパトロールの1つがあなたを発見し、攻撃に移る。</text>
+	<text>"貪欲で堕落した レネゲイドの豚めお前の存在は規約R78-Tに違反する！消去される準備をしろ！"彼らの怒りは単純なプロトコル違反によるものではないと思われるが、戦う以外に選択肢はない。</text>
+</textList>
+
+<event name="ENCOUNTER_DUSKBRINGER_STATION" unique="true">
+	<text load="TEXT_ENCOUNTER_DUSKBRINGER_STATION" />
+	<ship load="SHIP_DUSK_STATION" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_DUSKBRINGER_STATION">
+	<text>"未確認船、この星系は立ち入り禁止..." "クソッ、連邦軍だ！"近くのダスクブリンガー・ステーションが武器庫を起動し、攻撃態勢に入る。</text>
+	<text>ダスクブリンガーは驚くことに、ゾルタンよりも国境を守ることに慎重だ。あなたたちのような船を追い払うためにここに造られたステーションがあなたたちを見つけると、戦いは避けられない。</text>
+</textList>
+
+<event name="ENCOUNTER_REBEL_DUSKBRINGER">
+	<text load="TEXT_ENCOUNTER_REBEL_DUSKBRINGER" />
+	<ship load="SHIP_REBEL_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_DUSKBRINGER">
+	<text>気取った反乱軍の船長が声をかけてきた。"連邦が腐敗していることを証明する必要があるか？" "お前の存在が反乱を1つだけでなく 2つも引き起こしているのだぞ"</text>
+	<text>反乱軍とダスクブリンガーは奇妙な関係にある。互いに好意を抱いているといえば嘘になるが、連邦への憎悪をめぐって弱い絆で結ばれている。このビーコンにいる反乱軍の船は、この憎しみがまだ冷めていないことを証明するのに時間を要さなかった。</text>
+	<text>ここは彼らの領土ではないが、ダスクブリンガー・セクターでは反乱軍は珍しい存在ではない。彼らの船に遭遇したようだな。</text>
+	<text>「ゾルタンのバカどもは好きとは言えない。ミニ宇宙ナチスか何かだ。とにかく、死ぬ時間だ！"</text>
+	<text>このビーコンで反乱軍の船に呼び出される。「ここに来るなんて、勇ましいじゃないか。君が敵を殺すのがどれほど好きかを考えると、ここで君に会えるとは思わなかったよ。おかしいな、偶然にも私もまったく同じことをするのが好きなんだ！"</text>
+</textList>
+
+<event name="ENCOUNTER_PIRATE_DUSKBRINGER">
+	<text load="TEXT_ENCOUNTER_PIRATE_DUSKBRINGER" />
+	<ship load="SHIP_PIRATE_ALL" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_PIRATE_DUSKBRINGER">
+	<text>ダスクブリンガーから身を隠している海賊が、すでにこのビーコンを占拠している。彼らはあなたの船を攻撃する自信があるようだ！</text>
+	<text>2隻の海賊船の間で周波数を拾う。"あぁ、ゾルタンの野郎め...いや、全ては計画通りに進んでいる...あぁ、くそ、連邦！"どうやら気づかれたようだ。1隻は逃げるが、もう1隻が攻撃してくる！</text>
+	<text>海賊勢力を必死に抑え込もうとしているにもかかわらず、ダスクブリンガー・セクターではかなりの量の地下闇市場や奴隷取引が行われている。海賊がなぜこのようなことをするのか、ゾルタンに自分たちの優位性を知らしめるためなのか、それとも他の下心があるのか、そんなことはどうでもいい！</text>
+	<text>「FRB？このセクターに？なんて不思議なんだ。近寄らなければよかったのに、アミーゴ。ダスクが最大の脅威だと思うかもしれないが、それは間違いだ。このセクターは俺たち海賊のものだ！"</text>
+	<text>「連邦もか？なんで俺たちだけ休めないんだ！"このビーコンにいる海賊は、お前の存在を喜んでいないようだ。戦闘準備だ。</text>
+</textList>
+
+<event name="DUSK_ROCK_FANATICS" unique="true">
+    <text>ロックマンは常にゾルタン文化に魅了されてきたため、ダスクブリンガーの意見に同調する者がいても無理はない。ここのロック船は明らかにダスクブリンガーへの献身を真剣に受け止めており、あなたを倒そうと躍起になっている。</text>
+    <ship load="SHIP_ROCK_DUSKBRINGER" hostile="true" />
+    <choice hidden="true">
+        <text>次へ...</text>
+        <event load="COMBAT_CHECK" />
+    </choice>
+</event>
+
+<event name="DUSK_PIRATE_CAPTURE" unique="true">
+	<text>このビーコンには2隻の船、ダスクブリンガーと海賊がいる。2隻は攻撃してこない。ダスクブリンガーの船には誰もおらず、元のクルーが海賊船に乗っていることに気づく。通信機で彼らの会話を聞く。「くそっ！- 連邦の船、戻る時間がない。ここから戦うしかない！"</text>
+	<ship load="SHIP_DUSK_PIRATE_CAPTURE" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="DUSK_ZOLTAN_UNSURE" unique="true">
+    <text>あなたはゾルタン船から呼び出しを受ける。船長は自信なさげに話す：連邦あなたのせいで、この戦争は予想以上にエスカレートしています。もはやあなた方だけでなく、銀河の他の種族にも影響を及ぼしています。ダスクブリンガーの怒りを鎮める方法を提案していただきたい。"</text>
+    <ship load="SHIP_ZOLTAN_FIGHT" hostile="false" /> 
+    <choice>
+        <text>リーベルの手に渡る可能性が高いことを承知で、フライトプランを彼らに渡す。</text>
+        <event>
+            <text>ダスクブリンガーと反乱軍は連邦に関する情報を共有することで知られている。それでも、あなたはゾルタン船に情報を渡し、ゾルタンは満足したようだ。</text>
+            <modifyPursuit amount="1" />
+        </event>
+    </choice>
+    <choice>
+        <text>ゾルタンを助けるためにスクラップを寄付する。</text>
+        <event>
+            <text>貴重なスクラップを手放すのは簡単なことではないが、少なくとも少しでもゾルタ人の助けになることは分かっているはずだ。</text>
+            <item_modify>
+                <item type="scrap" min="-25" max="-25" />
+            </item_modify>
+        </event>
+    </choice>
+    <choice req="LIST_CREW_ZOLTAN_CAPITAL">
+        <text>(ミニストリークルー）ゾルタ人に説教して、あなたが平和の道を知っていることを説得しなさい。</text>
+        <event>
+            <text>あなたのゾルタンは非暴力と平和主義の理想について、長く退屈な講義を始めた。あなたは退屈で昏睡しそうになったが、他のゾルタン船のクルーは感情的に動かされたようだ。あなたは他の軍国主義的な連邦船とは違うと確信し、彼らはあなたを通した。</text>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>ダスクへの対処は我々の問題ではない。</text>
+        <event>
+            <text>「そう言われると思っていた。政府内の分裂をさらに拡大させることで、我々の生活様式を破壊し続けることを、ただ見過ごすわけにはいかないのだ"</text>
+            <ship hostile="true" />
+            <choice hidden="true">
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<eventList name="HOSTILE_DUSK_UNIQUE">
+	<event load="ENCOUNTER_DUSKBRINGER" />
+	<event load="ENCOUNTER_DUSKBRINGER_STATION" />
+	<event load="ENCOUNTER_PIRATE_DUSKBRINGER" />
+	<event load="ENCOUNTER_REBEL_DUSKBRINGER_CAPITOL" />
+
+	<event load="DUSK_ROCK_FANATICS" />
+	<event load="DUSK_PIRATE_CAPTURE" />
+	<event load="DUSK_ZOLTAN_UNSURE" />
+</eventList>
+
+<event name="ENCOUNTER_REBEL_DUSKBRINGER_CAPITOL">
+	<text load="TEXT_ENCOUNTER_REBEL_DUSKBRINGER_CAPITOL" />
+	<ship load="SHIP_REBEL_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_DUSKBRINGER_CAPITOL">
+	<text>反乱軍のこのセクターへの侵攻は、ダスクブリンガーだけでなく、あなた方にとっても悪い知らせだ。反乱軍の前方偵察機があなたの位置をロックし、攻撃を仕掛けてくる。</text>
+	<text>「これはいい展開じゃないか。ゾルタンとの戦いから抜け出せないと思っていたのに、FRBが現れたんだ。ラッキーな日だ！"</text>
+	<text>血に飢えた反乱軍の脅威は避けたいところだが、あいにくこの遭遇は選択肢を与えてくれない。敵対する反乱軍の船が近づいてくる！</text>
+
+	<text>気取った反乱軍の船長が声をかけてきた。"連邦が腐敗していることを証明する必要があるか？" "お前の存在が反乱を1つだけでなく 2つも引き起こしているのだぞ"</text>
+	<text>「ゾルタンのバカどもは好きとは言えない。ミニ宇宙ナチスか何かだ。とにかく、死ぬ時間だ！"</text>
+	<text>このビーコンで反乱軍の船に呼び出される。「ここに来るなんて、勇ましいじゃないか。君が敵を殺すのがどれほど好きかを考えると、ここで君に会えるとは思わなかったよ。おかしいな、偶然にも私もまったく同じことをするのが好きなんだ！"</text>
+</textList>
+
+<event name="ENCOUNTER_DUSKBRINGER_ELITE" unique="true">
+	<text>ニューオーダーには、ダスクブリンガー組織の最も献身的なメンバーしかいない。連邦を崩壊させようとする彼らを止めることはできない。ニュー・オーダーの船が急襲し、銃を乱射し、あなたを破壊しようとする。どうやらあなたも同じことをしなければならないようだ。</text>
+	<ship load="SHIP_DUSK_ELITE_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="DUSK_CLONECANNON" unique="true">
+	<text>マルチバース・レネゲイドとしての旅で、あなたは奇妙な光景をたくさん見てきたが、近くのオートシップに括り付けられた銃のようなものは見たことがないと思う。後ろに見えるのは...クローンベイ？</text>
+	<ship load="SHIP_DUSK_AUTOCLONER" hostile="false" /> 
+	<choice hidden="true">
+		<text>船に近づき、武器を取り外そうとする。</text>
+		<event>
+			<text>船に近づくと、武器が起動する。いつもの装甲をまとったダスクブリンガーが銃から顔を出し、無害な状態であなたの船の横を通り過ぎ、宇宙の真空の中で爆発した。数秒後、また同じゾルタンが銃から飛び出してきた。奇妙だ...。</text>
+			<ship hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>危険は冒せない。</text>
+		<event>
+			<text>そうしたいのはやまやまだが、警戒させることなくオートシップから何かを取り出すことはできない。あなたは船を置き去りにする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DUSK_CLONECANNON_ESCAPING">
+	<text>オートシップのエンジンが作動し、逆噴射する。逃げようとしている！</text>
+</event>
+<event name="DUSK_CLONECANNON_GOTAWAY">
+	<text>奇妙な船は飛び去り、あなたはビーコンに取り残される。</text>
+</event>
+<event name="DUSK_CLONECANNON_DEFEAT">
+	<text>自動船が爆発し、破片が飛び散る。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>残骸を探せ。</text>
+		<event>
+			<text>驚いたことに、残骸から奇妙な武器が発見された。船内に持ち込むと、ダスクブリンガーがまだ生きていた。常にクローン化されているため、彼は自分の人生をほとんど覚えておらず、単に「プロジェクタイル」と名乗っている。彼にはこの銃以外何も残っていないので、もしあなたがこのまま彼を使い続けるのであれば、その名の通り彼を使い続けてほしいと頼む。</text>
+			<weapon name="CLONE_CANNON" />
+			<crewMember amount="1" class="zoltan_devotee">発射体</crewMember>
+		</event>
+	</choice>
+</event>
+
+
+<event name="NEBULA_ANURAK" unique="true">
+	<preventQuest />
+	<text>不運なことに、あなたは特に濃いイオン嵐の真っ只中に飛び込んでしまった。星雲の中をすり抜けていく2隻の別々の船らしきものを見つけたが、コンタクトを開始する前に、もう1隻の船から謎の呼びかけを受け、すぐに雲の中に消えてしまった。</text>
+	<environment type="storm" />
+	<choice hidden="true">
+		<text>謎の船を追え</text>
+		<event>
+			<text>しばらくは他の船から目をそらし、自分を呼んできた船を尾行する。ようやく着陸し、その船が小さなシャトルだと気づくまで、あなたはその船を見つけることができなかった。その隣には、典型的なイレシュクトリアのローブをまとったオーキッドが待ち構えており、手招きしながらついてくるように言う。「あなたはレネゲイドですね？こちらへどうぞ。マスターがお待ちです。</text>
+			<choice hidden="true">
+				<text>オーキッドにしよう。</text>
+				<event>
+					<text>疑問がすぐに解決されることを願いながら、オーキッド号についていくと、大きな戦車のような船があった。データベースによると、これはダスクブリンガーの軍用トラックを再利用したもので、もともとは迅速な地上展開のために最大20人の兵士を乗せられるように設計されていた。現在は、武器アレイの代わりに、物干し竿やバッテリー駆動の小型テラリウムといった基本的なユーティリティが搭載されているようだ。オーキッドはお辞儀をしてドアを指し、中に入るよう勧める。</text>
+					<choice hidden="true">
+						<text>車両に乗り込む。</text>
+						<event load="ANURAK_SOUP_OFFER" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>他の船を追え。</text>
+		<event>
+			<text>あなたは反乱軍と思われる人物を1時間近く追跡しようとしたが、二度と彼らを発見することはできなかった。失望と苛立ちを覚えたあなたは、反乱軍の艦隊があなたを大きく追い詰める前にその場を離れることにした。</text>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>出て行け。</text>
+		<event>
+			<text>どちらの謎にも惹かれないあなたは、その場を去るのが最善の行動だと判断する。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ANURAK_SOUP_OFFER">
+	<text>入ってすぐ、香辛料とお香が混ざったような異様な臭いが漂い、クルーの何人かがむせる。隣の部屋から鍋や小物のガラガラという音が聞こえ、長い装飾のついたローブを着たゾルタンが、大きな金属製の鍋で何か奇妙な調合品--スープかもしれないが、この匂いではわからない--をかき混ぜているのが見えた。「友よ！友達だといいね！」
+
+傷ついたシャーシの不具合で足を引きずりながら、ゾルタンは足早にあなたに向かってくる。あなたに近づくと、彼はあなたの顔に手を当て、まるであなたが本物かどうかわからないかのように、あなたの特徴を触り始める。「レネゲイドだ。目を見ればわかる。否定するな！私は男だ。男とは何か？それは後の問題だ、フン--平和の！私たちはそれをそう呼んでいるのだと思う。それでも、私は尊敬できる！世界は殺し屋を必要としている......。そうでないことを願うよ。でも、必要なんだ！それが君の仕事だクールだスープはいかがですか？"
+
+ 突然の話題の転換にあなたは油断したが、これが何なのか理解したいのなら、イエスと答えるべきだと思った。</text>
+	<choice hidden="true" req="unique_guntput">
+		<text>ガントパットはこのゾルタンを認めている。</text>
+		<event>
+			<text>「アヌラクどこに行った？あなたは姿を消した...そしてヘクターはほぼ無抵抗で押し寄せた！ガントパット族のために、ガントパットは答えを要求する！」
+
+ ゾルタンはため息をつく。「ごめんなさい、ガントパット。座ってください。I will tell you all about it over soup."
+
+Guntput takes a seat, and you're pulled into doing so as well.
+
+"Yes, that's one soup for my lizard friend, one soup for... what did you say your name was again?"あなたは彼に答えようとしたが、彼はそれを遮った。「ああ、そうだ、そうだ。君の名前は...。シェル...ケン...ブライ...そうだ！君はシェルスケンブリーだね？はい、間違いなくあなたの名前のようです。"彼はあなたの乗組員全員にスープを配り続け、彼らの名前も間違える
+
+"ガントパットの友人は私の友人..."彼は、ガントパットが期待に満ちた眼差しで自分を見つめているのに気づく。「ああ、そうだ。では、私の話をしよう。そうだね。あのね、全ては僕の子供時代から始まるんだ..."アヌラクは、現在の境遇に至ったあらゆる些細なことについてしゃべり始めるが、その説明の仕方は、ほとんど重要でない些細なことを半ば明確にするために、たびたび要点から逸れるため、より多くの疑問を抱かせる結果となる。あなたは彼の長ったらしい説明に耳を傾けたりそっぽを向いたりしていたが、なんとか最後の一言を聞き取ることができた。「......それはある種の窮地だった。私の死であなたを危険にさらすことなく、あなたのために留まり、死ぬことはできなかった。早く死ぬことで、あなたを苦しめずに済んだのです。それはさておき、私にはダスクブリンガーとしての日々から追いつめられている他の責任があるのです」
+
+「聖人にしては、散漫なイタチのような話し方だな。しかし...ガントパットはあなたが去った理由を知っている、だからガントパットは許す。全ては良い結末を迎えた」
+
+とかげが秘密の部屋からスルスルと出てきて、スープの入ったボウルをすくい上げる。トカゲとガントパットは見つめ合い、トカゲはコンパートメントに戻る。</text>
+			<choice>
+				<text>ダスクブリンガーだと言っていたのは何だったんだ？</text>
+				<event>
+					<text>「そうだね！私はダスクブリンガーだった。大きな間違いだった！私たちは皆、魔法省や連邦に腹を立てていたし、輝かしい未来の甘い約束はとても魅力的だった！だが栄光などなかった栄光かもしれない。栄光の定義は？いや、違う。いや、そんなことはない！スープのおかわりはいかがですか？"
+
+あなたの返事を待たずに、アヌラックは椅子を脇に押しやると、よろめきながらスープポットのところに戻り、別のボウルを取ってきてあなたの前に投げ捨てた。「私はスープが大好きだ！最高の液体だ。嘘だ。いいえ、嘘ではありません
+
+今までの人生で多くの失敗をしてきました。個人的には、ここに残って彼らから身を隠したい。残念ながら、友人のデボラックはそうしなかった。彼のことは聞いたことがあるかもしれないし、ないかもしれない。彼はフェドマンティス戦争の古参兵で、ダスクブリンガーのウォーヒーローだ。ダスクブリンガーとは無縁だ。我々の "栄光ある "指導者たちから見れば、彼のミスは運動への献身が弱かったことらしい。今、彼は私たち2人を窮地に陥れている！あはは、あはは......やれやれ......"</text>
+					<choice hidden="true">
+						<text>何が起こったのか？</text>
+						<event load="ANURAK_EXPLAIN_2" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>スープのために滞在する。</text>
+		<event>
+			<text>ゾルタンは手を叩きながらしばらくスープについて語り、棚から柄杓を取り出し大きな鍋をかき混ぜる。彼がベルを鳴らすと、さらに何人かのローブを着た人々が部屋に入ってきた。ゾルタンが彼らに給仕をしているとき、あなたは秘密の小部屋が開けられ、トカゲのような生き物が出てきて、スープの入ったボウルをすくい上げ、誰にも見つからずに消えていくことにも気づく。 
+
+すべての人がスープを受け取ると、ゾルタンは一緒に座ろうと手招きし、数秒でボウルを全部飲み干し始める。「私のスープを手際よく受け入れてくれた今、私たちは本当に友達になったと思う！なんて素敵なんだろう、新しい友達に会うのは大好きだ。I!- 私はアヌラク。あなたにとってどんな名前であろうと、それが私の名前だ。そして君は...いや、待って、言わないでくれ。うーん...うーん。"アヌラックはしばらくの間、君の顔をじっと見つめるが、直接目を合わせることはない。「君はまるで...シェル...ケン...ブライ...シェルスケンブリー！そう、それが君の名前だ！間違いない。こんにちは、シェルスケンブリー！」
+
+アヌラクはテーブルの上に身を乗り出し、スープボウルを倒し、手を伸ばしてあなたの手を握った。"お会いできて嬉しいです！"</text>
+			<choice hidden="true">
+				<text>それは僕の名前じゃない。</text>
+				<event>
+					<text>アヌラクはあなたを無視し、その代わりに、さっきのオーキッドが雑巾を持ってきて、こぼれたスープを拭き取るのを手伝うと、少し体を動かした。"シェルスケンブリー、君は何が起こっているのかとても興味があるだろう！どんな質問にも答えるよ！いや、どんな質問でもじゃない。いくつかの質問にね。実は君の助けが必要なんだ！昔 私はダスクブリンガーだった大きな間違いだった。でも、時代は違った！私たちは皆 魔法省や 連邦に怒り狂い 輝かしい未来の甘い約束に 心を奪われていただが栄光などなかった栄光かもしれない。栄光の定義は？いや、違う。いや、そんなことはない！スープのおかわりはいかがですか？"
+
+あなたの返事を待たずに、アヌラックは椅子を脇に押しやると、よろめきながらスープポットのところに戻り、別のボウルを取ってきてあなたの前に投げ捨てた。「私はスープが大好きだ！最高の液体だ。嘘だ。いいえ、嘘ではありません
+
+今までの人生で多くの失敗をしてきました。個人的には、ここに残って彼らから身を隠したい。残念ながら、友人のデボラックはそうしなかった。彼のことは聞いたことがあるかもしれないし、ないかもしれない。彼はフェドマンティス戦争の古参兵で、ダスクブリンガーのウォーヒーローだ。ダスクブリンガーとは無縁だ。我々の "栄光ある "指導者たちから見れば、彼のミスは運動への献身が弱かったことらしい。今、彼は私たち2人を窮地に陥れている！あはは、あはは......やれやれ......"</text>
+					<choice hidden="true">
+						<text>何が起こったのか？</text>
+						<event load="ANURAK_EXPLAIN_2" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>結構だ。</text>
+		<event>
+			<text>和尚は顔をしかめたが、首をかしげ、スープポットのほうに足を引きずった。「スープがない、スープがない。スープなし、スープなし。わかったよ、出て行け。もうこれ以上彼と交渉する価値はないと、あなたは判断した。</text>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_ANURAK_FIGHT" auto_blueprint="MU_DUSK_BATTLESHIP_ELITE">
+	<destroyed load="ANURAK_WIN" />
+	<deadCrew load="ANURAK_WIN" />
+</ship>
+<event name="ANURAK_EXPLAIN_2">
+	<text>「デボラックと私は過去に一緒に仕事をしたことがある！彼はダスクブリンガーズを去りたいと言ったんだ！誰もそんなことしない！少なくとも、そんなことをしたら、次のサイクルまで生きられない！ダスクブリンガーは 私を巻き込んだのよ私は自分の信念を見つけた。率直に言って、私は今のままでいい。しばらくの間、魔法省に身を隠していたんだが、暗殺者が私を迎えに来たため、死を偽装せざるを得なかった。今はここに隠れているが、当然、彼らはまだ私を追っている！この事態を収拾する唯一の方法は、デヴォラックを見つけ出し、彼との関わりを明らかにしてもらうことだと思う
+
+そこで君の出番だ！そうだ、シェルスケンブリー！私は非暴力の誓いを立てているので、命をかけずにデボラックに行くことはできない。もし君が親切にも連れて行ってくれるのなら、きっと君に親切な報いを与えるよう説得できるだろう！スープも作ってあげよう！どうだい？</text>
+	<choice hidden="true">
+		<text>協力するよ。</text>
+		<event>
+			<text>アヌラックはあなたの背中を叩き、熱心にお礼を言い、2、3回お辞儀をして3杯目のスープを頼む。散乱する銃声と船が大気圏に突入する轟音が、それまで静寂に包まれていた惑星を打ち壊す。慌てて外に出て状況を確認すると、ダスクブリンガーの精鋭が近づいてくるのが見えた。アヌラックは慌てる！キャラバンは自分たちでは守れない！助けてくれ、さもないと全員処刑される！そうなったら、誰が貧しく飢えた人々のためにスープを作るんだ！"</text>
+			<ship load="SHIP_ANURAK_FIGHT" hostile="false" />
+			<choice hidden="true">
+				<text>キャラバンを守れ</text>
+				<event>
+					<text>見知らぬモンクはよくしゃべるかもしれない。だが、ダスクブリンガーがアヌラクに近づけば、キャラバンの他の住民も危険にさらされるかもしれない。あなたは戦闘の準備をする。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>このチャンスを逃す手はない！</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>私たちはこの件には関与していない。</text>
+		<event>
+			<text>「助けてくれないの？シェルスケンブリー、私はあなたを信頼していた！知り合って10分で、友達になれたと思ったのに！そんな...そんな..."</text>
+		</event>
+	</choice>
+</event>
+<event name="ANURAK_WIN">
+	<text>ダスクブリンガー船は倒され、惑星の地表に大きなクレーターを残した。アヌラックに再び連絡する前に、あなたは急襲して残骸を回収する。</text>
+	<autoReward level="HIGH">weapon</autoReward>
+	<choice hidden="true">
+		<text>アヌラックと話す。</text>
+		<event>
+			<text>あなたが戻ってくると、アヌラクはあなたのために拍手をし、周囲を見回し、他の僧侶たちにも拍手をするよう説得するために手を挙げた。「ブラボー！よくやった！でも...もう見つかっちゃったよ！これはまずい！待てよ...大袈裟か？くそっ、大袈裟に言うな！いや、そんなことはない。ダメなんだ！どうしよう、どうしよう...。ええと...私の船！この辺に埋めたんだ。持って行ってくれ シェルズケンブリー追跡されてるかも？ダスクブリンガーに関係するものは全部処分しないと！"</text>
+			<unlockCustomShip>PLAYER_SHIP_DUSKBRINGER</unlockCustomShip>
+			<choice hidden="true">
+				<text>あなたには計画があった。デボラックを見つけるまで、あなたを守る。</text>
+				<event>
+					<text>「ああ、シェルスケンブリー！その通りだ、忘れるわけがない！計画だ！大した計画じゃない。そうかな？そうだな...よし、わかった。じゃあ、行こうか！デボラックがいたアジトの座標を転送しよう。時間を無駄にせず急ごう！"</text>
+					<variable name="ach_crew_anurak" op="set" val="1" />
+					<crewMember amount="1" class="unique_anurak">アヌラク</crewMember>
+					<quest event="DEVORAK_HIDEOUT" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>運が悪かったな。</text>
+				<event>
+					<text>"あら、そんなに迷惑だったかしら？くそっ......これ以上は訊けないけど、友達だと思ってたんだ、シェルスケンブリー！ああ、惨めだ！"</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DEVORAK_HIDEOUT">
+	<quest>
+		<nonNebulaBeacon>true</nonNebulaBeacon>
+		<nebulaBeacon>false</nebulaBeacon>
+	</quest>
+	<beaconType id="map_icon_hideout" global="true">
+		<color r="255" g="125" b="0" a="1.0" />
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+		<unvisitedTooltip>デボラックの隠れ家の場所。</unvisitedTooltip>
+	</beaconType>
+	<preventQuest />
+	<preventFleet />
+	<text>あなたはアヌラックが教えてくれた隠れ家の座標を突き止めた。ダスクブリンガー革命の勃発時に放棄された旧省の研究前哨基地だ。しかし、外も中もほとんど活動していないようだ。バイオスキャンによると、中にいるのは1人だけだが、ゾルタンではないようだ。何かがおかしい。</text>
+	<img back="BACKGROUND_EVENT_DEVORAKHIDEOUT" planet="NONE" />
+	<choice hidden="true">
+		<text>隠れ家に入る。</text>
+		<event>
+			<text>近くの着陸台に降り立ち、錆びついたドアを開けると、床一面に散乱したダスクブリンガーの装甲に気づく。明らかに死体はないが、かすかな残留エネルギーの痕跡から、兵士たちは全員ここで死んだと思われる。アジトの奥に進むと、メインロビーがある。かつては科学の前哨基地で、今は元テロリストの隠れ家だったにしては驚くほど居心地がよく、グレーのアーマーを着た男が腕をぶら下げたままソファに寝そべって待っている。「よかった。よかった。モンクのアジトの近くで君の船を見つけたから、いつ来るかと思ってたよ。バカなグリーン・フリークどもは、待てと言ったのに怒りを抑えられなかった！それでどうなったか見てみろ。男はソファから立ち上がり、その身長の高さを見せつけた。彼はMFKのヘルメットを脱いでテーブルに置き、手を差し伸べる。「一方、私はレネゲイドに絡むほど愚かではない。名前はサジタリウス。まあ、そうでもないよ。ジャックだ。バエルは僕のことをサジタリウスって呼ぶんだ。彼は笑顔を見せると、テーブルの向こう側にさらに手を伸ばし、握手を求める。</text>
+			<choice hidden="true">
+				<text>握手をする。</text>
+				<event name="DEVORAK_HIDEOUT_ANGEL">
+					<text>あなたが彼の手をつかもうとした瞬間、彼はその手を滑らかに後ろにスライドさせ、指鉄砲を突き上げる。「ああ、遅かった！あはは！毎回やられるよ」。傭兵はくるりと回転し、ソファに背を向ける。「さて、挨拶もそこそこに、始めようか？そうしよう！もしあなたが観察力があり、知識が豊富なら--そうでなくても悪気はない！- 私が天使であることにお気づきだろう。シンジケートのチンピラの一人で、ヴァエルの手先、その他もろもろ。私は傭兵で、優秀だ。物事を成し遂げる。レネゲイドと傭兵の仲が悪いのは知ってる。でも、俺たちは効率重視のビジネスをしている。効率的な方法を見つけたんだ以前あったあまり派手でないプランのお返しみたいなものだけど、君を巻き込んで、本当にすべてのソックスを吹き飛ばすようなものを作れると思うんだ！」
+男はポケットからタバコを取り出し、袖に内蔵された小型火炎放射器から出す炎で火をつける。「和尚に会ったのだから、デヴォラックという名前くらいは知っているだろう。ゾルタン人が "肉体的魅力 "をどのように表現するのかよくわからないが、どうやら彼はかなりがっしりしているらしい。ダスクブリンガーだけでなく、魔法省の寵児でもある！確かに、ミスター・レイは魔法省の志ある若者たちにとって「愛国者」と「反逆者」の間のグレーゾーンに存在している。誰もがルメイ大臣の腐敗した学部に嫌気がさし、日に日にダスクブリンガーのような過激な場に足を向ける者が増えている。"</text>
+					<choice hidden="true">
+						<text>これはどこへ行くんだ？</text>
+						<event>
+							<text>ジャックは唇に指を当て、あなたを押し黙らせる。「シー、忍耐レネゲイド！バックストーリーや文脈を気にしないのか？最初にシーンを作らないと、この仕事のどこが面白いんだ！"天使が喉を鳴らす。「さて、どこだったかな？ああ、そうだ。デヴォラックはダスクブリンガー運動の申し子になっている！彼の顔だけで、無数のゾルタンが魔法省を裏切るよう説得された。彼は "テロリスト "たちの中では穏健派と見られている。合理的で理性的な人物で、この混乱を引き起こした堕落した省の役人だけに反旗を翻している。でも、それは少なくとも彼らがそう言っているだけだ。彼が多元宇宙で一番いい奴だろうが、狂暴なサイコパスだろうが、どうでもいい。彼は私のターゲットだから、彼がどんな人間であろうと、彼は死ぬことになるんだ」
+
+ジャックは一旦立ち止まり、これを頭に叩き込んでから続ける。「でもね、これは普通の殺しじゃないんだ。私を雇ったのはダスクブリンガーたち自身なんだ！デボラックがまた寝返ったのではと恐れられている。ダスクブリンガーにとって 重要な時期に... 悲惨なことになるぞユニバース1の裏切り？とても有利だ例えば...ダスクブリンガーを糾弾する前に、反乱軍がデボラックを殺したとする。ジャックは指を鳴らしてうなずいた。「それは実に有利だ。反乱軍が最後の一線を越えることになるし、魔法省はもちろん何もしない。騙されやすい若者たちに、英雄の仇を討つために自分たちの役割を果たす必要があると思わせるには十分だ。今、十分な時間があれば、きっと自然にそうなるだろうが、時間は私の依頼人の味方ではない。"</text>
+							<choice hidden="true">
+								<text>推測するに、あなたはデボラック暗殺を反乱軍になすりつけようとしている。</text>
+								<event>
+									<text>"ライタムンド！一緒に旅をしていたダスクブリンガーが罠を仕掛けるはずだった。デボラックをおびき出し 僕らが急襲するタイミングで... ピューってねモンクを追うのにリスクは想定してなかった非暴力主義だしねだが、そこにいたそして今、ルアーは死んだ。だから、率直に言って、ある意味、君は私の恩人だと思う。お前が計画を台無しにしたんだ。これはウィンウィンだ！君は戦犯を排除し ダスクは愚かな戦争と プロパガンダの燃料を得る 私はバエルに尻馬に乗るのをやめてもらう断れないだろ？でもモンクが必要だデボラックに近くて 彼を引きずり出せる奴だまだ一緒か？"</text>
+									<choice hidden="true" req="unique_anurak" blue="false">
+										<text>彼はここにいる。</text>
+										<event>
+											<text>あなたはアヌラクに目を向ける。彼もまた会話をずっと聞いていた。彼は誰も聞いていない冗談に緊張した面持ちで笑い、ジャックを見る。「よかった。この計画はまだうまくいくかもしれないということだ！"ジャックはアヌラクに近づく。「聞いてくれ、君の友人を突き出すのは難しいかもしれない、そうだろう？でも、それで何が得られるか考えてみて！ダスクブリンガーと手を切りたいんだろ？お前がデボラクの仲間だと ダスクに思われてるからだそうすれば ダスクブリンガーへの脅威も消える自由の身だほらな？誰もが得をするんだ！この申し出を断れるか？"</text>
+											<choice hidden="true">
+												<text>オファーを受け入れる。</text>
+												<event name="DEVORAK_HIDEOUT_ANGEL_ACCEPT">
+													<text>ジャックはあなたの背中を叩き、まるでずっと前からお互いを知っていたかのように半ば抱き合う。「よかった！これがレネゲードのいいところだ。君は借金を返済することの利点を理解している。この業界では、地位の高い友人を持つことは常に助けになるだろ？まあ、これ以上時間を無駄にするつもりはない。座標を修正したら、すぐに出発しよう」。ジャックはあなたに親指を立て、立ち去ろうとする。ドアを出る前に、肩越しに振り返って最後の警告をする。「レネゲイドをおびき寄せるためにそこにいるのか。君はデヴォラックをおびき出すためにそこにいる。もし俺に妙な真似をしようものなら、俺のブーツがお前の喉を潰す、それがお前が感じる最後の感覚になるだろう"</text>
+													<quest event="DEVORAK_FINALE" />
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>衰退。</text>
+												<event name="DEVORAK_HIDEOUT_ANGEL_DECLINE">
+													<text>ジャックの笑顔はすぐに消え、不吉な視線に変わった。「ふふふ。そう、それがレネゲイドというものだろう？社会からできるだけ多くの金を搾り取ろうとしない限り、社会には何も貢献しない。借金を返す気もない。私に選択の余地があれば、お前を殺すが、ヴァエルが特にお前を憎んでいるように、それは不必要な巻き添えを食うだけだ。だが、邪魔はするな"</text>
+												</event>
+											</choice>
+											<choice hidden="true" req="unique_irwin">
+												<text>(アーウィンは）かろうじて何かを我慢しているようだ。</text>
+												<event>
+													<text>あなたはアーウィンを見渡した。彼は今、不安そうに揺れながら、触手が白くなるほど強くブランダーバスを握っている。彼は銃をジャックに向け、こう叫んだ！シンジケートの野郎ども！」と叫ぶ！お前の秘密は知っている！お前の秘密を知っている！計画も一瞬たりとも信用できん！君はもっと何か企んでいる、私にはわかるんだ！」
+
+ジャックは優しく笑う。"まあ、乙女座にスリップを与えたイタコでないならね！よくやった、本当に。あの男はシンジケートにとって何の価値もない。だからお前の世話になったんだなぜ怒るんだ？まだ陰謀の国にいるのか？何だと思う？誰もが多元宇宙を 支配しようとしている秘密でもなんでもない、よく知られたことだ」
+
+ジャックはあなたを振り返る。"邪魔が入ったので、キャプテンの返答を聞こう。どうする？"</text>
+													<choice hidden="true">
+														<text>オファーを受け入れる。</text>
+														<event load="DEVORAK_HIDEOUT_ANGEL_ACCEPT" />
+													</choice>
+													<choice hidden="true">
+														<text>衰退。</text>
+														<event load="DEVORAK_HIDEOUT_ANGEL_DECLINE" />
+													</choice>
+												</event>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true" req="unique_anurak" lvl="0" max_lvl="0" blue="false">
+										<text>彼はもう私たちとはいない。</text>
+										<event>
+											<text>ジャックはがっかりして頭を垂れる。"もちろん、君が彼を引き留めるにはあまりに無謀だと知っておくべきだった。レネゲードにはいつも失望させられるよ。頼りないし、借金を返すあてがない。それならいい。シンジケートは将来、お前たちを別の用途に使うだろう。耳を傾けておくように。ヴァイエルは汚い債務者を長く囲っておくのを好まないからな。"</text>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>拒否する。</text>
+				<event>
+					<text>男は微笑みながら、手を伸ばしたままそこに立っている。こんな状況にもかかわらず、気まずいのは彼ではなく自分のほうだと感じずにはいられない。数分が経ち、あなたは彼が握手をするまで話を続けるつもりがないことに気づいた。プライドをかなぐり捨てて、そのまま行ったほうがいい。</text>
+					<choice hidden="true">
+						<text>握手をする。</text>
+						<event load="DEVORAK_HIDEOUT_ANGEL" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>出て行け。</text>
+		<event>
+			<text>これは非常に疑わしい。あまり近づかない方がいい。デボラックの状況がどうであれ、君はもう関わるな。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DEVORAK_FINALE">
+	<quest>
+		<nonNebulaBeacon>true</nonNebulaBeacon>
+		<nebulaBeacon>false</nebulaBeacon>
+		<nextSector>true</nextSector>
+	</quest>
+	<beaconType id="map_icon_devorak" global="true">
+		<color r="255" g="125" b="0" a="1.0" />
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+		<unvisitedTooltip>デボラックの本当の場所。</unvisitedTooltip>
+	</beaconType>
+	<preventQuest />
+	<preventFleet />
+	<text>元テロリストの秘密の隠れ家と思いきや、ゾルタン人や他の種族で溢れかえった賑やかな都市惑星だった。ここはある種の貿易拠点のようだが、座標は怪しげなドッキングポートの隣にある小さな着陸パッドへと導いてくれる。</text>
+	<img back="BACK_EVENT_DUSKCAP" planet="NONE" />
+	<choice hidden="true" req="unique_anurak" lvl="0" max_lvl="0" blue="false">
+		<text>アヌラックがいなければ、デヴォラックをおびき出す方法がない。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="unique_anurak" blue="false">
+		<text>アヌラクを送り込んでデヴォラックを探せ。</text>
+		<event>
+			<text>あなたはアヌラクの後を追ってドッキング・ポートに向かった。しかし、彼の奇妙な足取りはいつも以上に無様で、あなたは彼があなたと同じように何をすべきかわからないと思った。アヌラックが屈強なアウトキャストが守る小さな金属製のドアに近づくと、あなたは周囲を一瞥した。ジャックは見当たらないし、シンジケートや反乱軍の船も見当たらない。これで良かったのかもしれない！ドアを守る男。君のように。ドアの側に立っているからだ！"アヌラックは不快そうに笑い、ロックマンはうなる。「私は女よ」
+「ああ、そうそう。もちろん、怒らせるつもりはなかった！ドアマンというのは性別を意味するのではなく、あなたが『ドアを守る男』であるというだけのことです。男というのは「ロックマン」のように、最も性別にとらわれない形である！私も性別を問わないが、あまり......」。ロックマンはまた唸る。「黙れ。ここに用がない限り、お前は歓迎されない」。彼女はあなたたちを見上げる。"特にレネゲイドはお断りだ"
+アヌラックはうなずく。「ああ、もちろんだ。ここに用があるのは確かだ！友人のシェルスケンブリーと私はデヴォラックという男を探しに来た！背は高くて、薄緑色で、オレンジ色の剣を持ってる。ロックマンは腕を組む。「聞いたことがない。仮に知っていたとしても、パスワードがない限り誰も近づけさせない」
+
+「パスワード？パスワード？パスワードなんて知らないよ。まあ、多くのパスワードを知っている。でも私が知っているパスワードが、あなたが知っているパスワードと同じかどうかはわからない。スープを作ろうか？それで中に入れるのか？"
+"いいえ"ロックマンは横に下がり、ドアをさらに塞ぐ。他の数人の衛兵（全員ゾルタン）が物陰に隠れ、あなたたちを見ているのに気づく。</text>
+			<choice hidden="true">
+				<text>もし彼がここにいるのなら、彼にメッセージを伝えてもらえないだろうか？</text>
+				<event>
+					<text>あなたの提案を聞いて、アヌラックはうなずいた。"はい、彼にメッセージを送ってください！アヌラックがここにいる、彼を探していると伝えてくれ。重要な個人的な仕事の話があるんだ」
+「で、なんで私があなたのために何かしなきゃいけないの、坊主？お前のタイプは知っている。俺は昔、宗教狂信者の首をはね飛ばしたことがあるんだ」
+
+アヌラクの名を嬉しそうに叫ぶ荒い声でロックマンは言葉を切る。「アヌラク！ついに来たか！"ほっそりとしたゾルタンがドアから出てきて、アヌラクを兄弟のように抱きしめる。「旧友よ！トカゲの惑星で死んだと聞いていたぞ！"デヴォラックは少し離れて旧友の顔を見る。アヌラックは彼の抱擁の中で不快そうにもだえる。</text>
+					<choice hidden="true">
+						<text>あなたがデボラック？</text>
+						<event>
+							<text>デボラックは、まるであなたがそこにいることに初めて気づいたかのように、あなたの方を振り向いた。彼はあなたの目を死んだように無表情に見つめ、あなたをとても不快にさせる。「私は誰ですか？いや、違う。私はデボラックではない。私は光とエネルギーの空洞の殻にすぎない。ゾルタンは背後から手を伸ばし、オレンジ色に光る剣を取り出し、あなたに差し出した。「これがデヴォラックだ。この聖なる剣は、かつて私であった者の魂を流すものだ。これが私の本質であり、生命力だ。もしこの剣が滅びるなら、私も滅びるだろう"彼はその剣に少し愛おしそうに微笑み、そしてまたそれを収納した。 
+
+で、親愛なる友よ、なぜここに来たのだ？アヌラックは息を呑む。「その......ええと......ええと......その......あのね......気にしないで！あはは...えへへ..."デヴォラックは首を振る。"おいおい、教えてくれてもいいじゃないか！私たち、知り合ってから......ずっと？気が変わったのか？私を助けに来たのか？反乱軍の裏切りは、ダスクブリンガーを解散させるのに必要な弾薬だと思うんだ！この混乱を止めるチャンスだ！"アヌラックはついに憤慨し、デヴォラックを切り捨てた。「あなたの愚かな自殺計画に私が関わるのを断ち切ってほしい！あんたは自分が殺されるし、もっと重要なのは、私が殺されることだ！こんなことに関わりたくない、出て行け」
+
+デヴォラックは混乱しているようだ。「でも...でもアヌラック、これはどうやって出るかなんだ。反撃して、なぜダスクブリンガーに勝たせてはいけないのか、皆に正確に示すんだ。何もしないわけにはいかないんだ！」
+
+アヌラクは頭を振り続け、自分の頬を叩いてぐるぐる回る。"ダメダメダメダメ！聞こえなかったのか？外に出たいんだ！出て行け！アウト！アウト！"今にも精神的に崩壊しそうなその時、爆発が起きて全員が転げ落ちる！</text>
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event>
+									<text>スカイラインを見上げ、約束通り反乱軍の艦船が見えると思っていた！連邦の巡洋艦が街に降り立ち、その後に小型艦艇の艦隊が続き、「英雄的に」急襲してきたダスクブリンガーたちと戦闘を繰り広げている。裏切りだ！これは反乱軍へのさらなる反感を買うための陰謀ではなく、連邦との全面戦争を正当化するための陰謀だったのだ！ 
+「ダスクブリンガー過激派よ、直ちに武器と人身を連邦の法に委ねよ！この一度きりの警告で、我々は街の防衛線に発砲し、テロリストを武力で排除する。その声は明らかにジャックのものだが、代わりに連邦の役人のようなふりをしている。デヴォラックはショックを受け、裏切られた。「お前は......だからここにいるのか！私を裏切りに来たのか！これが何をもたらすかわかっているのか？連邦全体が崩壊しかねない！この街は魔法省の管轄だ！彼らはこんなことを許さない！」
+
+アヌラクは今、泣き崩れ、何度も何度も "What have I done what have I DONE!"と唱えている。</text>
+									<ship load="SHIP_JACK" hostile="false" />
+									<choice hidden="true">
+										<text>何とかしなければ！船を攻撃しろ</text>
+										<event>
+											<text>あなたはここで大失敗を犯したが、今がそれを修正するチャンスだ。残念なことに、ダスクブリンガーと "連邦 "の両軍はこの一戦では君に敵対しているので、支援はあまり期待できない！</text>
+											<triggeredEvent event="JACK_BOARDERS" time="25" thisFight="true">
+												<warningMessage id="warning_boarders" r="255" g="0" b="0" x="444" y="46" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true" />
+											</triggeredEvent>
+											<ship hostile="true" /> 
+											<choice hidden="true">
+												<text>次へ...</text>
+												<event load="COMBAT_CHECK" />
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>早くここから出る必要がある！</text>
+										<event>
+											<text>あなたはアヌラックを引きずって船へと急ぐ。デヴォラックは母国語で何か侮辱的な言葉を叫んだが、彼と他の乗組員たちに激しい銃撃が降り注ぐ前に、それ以上何かをする余裕はなかった。本格的な戦闘が始まる前に、あなたはかろうじて街の外に出ることができた。</text>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>気が変わったら出て行け。</text>
+		<event>
+			<text>これは非常に疑わしい。あまり近づかない方がいい。デボラックの状況がどうであれ、君はもう関わるな。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_JACK" auto_blueprint="MU_FED_CRUISER_FAKE">
+	<destroyed load="JACK_DEFEAT" />
+	<deadCrew load="JACK_DEFEAT" />
+</ship>
+<event name="JACK_BOARDERS">
+	<boarders min="2" max="2" class="zoltan_devotee" />
+</event>
+<event name="JACK_DEFEAT">
+	<text>シンジケートの傭兵とその船は敗北した。連邦の巡洋艦は、墜落した船にしてはスムーズに着陸パッドに突っ込む。戦闘はまだ続いているが、大きな脅威が取り除かれたことを実感して、数隻の船が立ち止まる。</text>
+	<variable name="ach_boss_jack" op="set" val="1" />
+	<choice hidden="true" req="unique_anurak" lvl="1" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>戦闘の靄の中で、あなたは、何機もの放送用ドローンが街の周りに集まり、あなたたちを観察していることに気づかなかった。アヌラックもそのことに気づいたようで、何かが彼を襲った。彼は残骸に駆け寄り、数分後、もがき苦しむ遺体を持って現れた。アヌラックが地面に叩きつけ、ヘルメットを引き剥がしたのは、重傷を負ったジャックだった。彼はヘルメットを高く掲げ、カメラの向きが間違っていることに気づいて振り返る！シンジケートはこの背後にいる！このヘルメットを見ろ！MFKのヘルメットのように見えるが、違う！反乱軍のものでもない！天使だ天国の天使じゃない！シンジケートのエンジェルだ！傭兵だシンジケートの！あの...あの..."ダスクブリンガーは何年もの間、連邦が弱体化し、全盛期には役に立たなくなったと訴えてきた！しかし、この数年間、ダスクブリンガーが連邦に対する憎しみを真に正当化できたことは一度もない！確かに連邦は不完全であり、不完全な人々が不完全な政府を運営している。しかし、連邦は真の銀河、いや、多宇宙の平和という普遍的な夢を象徴している。ダスクブリンガーはこの平和を望んでおらず、絶望の中で最後の手段を見つけた。傭兵を雇い、この銀河系をさらに危険で極悪非道な場所にしている海賊のクズどもを雇い、平和省貿易港に連邦軍の襲撃を仕掛けるのだ！これが自称英雄の行動なのか？自国のため、銀河のためなら死も厭わない人々の行動なのか？それとも、この多元宇宙で統一を達成するために残された、おそらく唯一の希望を犠牲にして権力を掌握しようとするテロリスト集団の仕業なのか？"</text>
+			<choice hidden="true">
+				<text>引き続きお聞きください。</text>
+				<event name="DEVORAK_SPEECH">
+					<text>デヴォラックはジャックから離れ、剣を抜き、空に向けて構える。「私はデボラック・レイ。あなた方の多くにとって、私は英雄である。ある者にとっては過激派かもしれない。私にとっては、その両方であり、あるいはどちらでもない。私は戦争で苦い思いをした兵士であり、苦い思いの中で連邦に裏切られた。連邦の一部の企業や反乱軍の地下組織による不当な行動を、連邦全体の行動であるかのように錯覚させた。悪意ある過激な勢力に食い物にされたのは、彼らが銀河系を変えられると言ったからだ。ダスクブリンガーがすべての問題を解決してくれると信じたかった。しかし、彼らにはできない。ダスクブリンガーこそが問題なのだ！この多元宇宙が分裂している限り、反乱軍の疫病やその他の脅威から解放されることはない。ファシズムやナショナリズムは 数十年の争いと死への道でしかないかつて同じように極悪非道なインクイジションを打倒するためにあれほど団結していた連邦が、どうしてこんなに簡単にバラバラになってしまうのでしょうか」
+
+デヴォラックは剣を振り下ろし、カメラドローンの一つに狙いを定める。「ゾルタンの同胞たちよ、今こそ未来を変えるチャンスだ。ダスクブリンガーを名乗るなら、鎧と武器を捨て、この恐怖を捨てるのに遅すぎるということはない。連邦や魔法省への忠誠に疑問を抱いているのであれば、憎き反乱軍とほぼ同じイデオロギーを持つ集団の心ない兵士となるために、自分がどのような大義を捨てることになるのかを考えてほしい！それでもなお、省あるいは連邦の忠実な同盟者であるならば、この平和が永遠に続くようにすることがあなた方の義務であることに変わりはない。ダスクブリンガーのような輩がこの銀河にいる限り、あなた方とあなた方の平和は決して安泰ではないのだ。デヴォラックは一礼し、剣を収めた。彼の周りでは、背後のビルの影からゾルタンが現れ、ダスクブリンガーに対して様々なことを叫んでいる。港湾労働者や他の市民も参加し、上空で戦っていたダスクブリンガーの船が何隻か飛び去っていく。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>カメラが他の場所の様子を捉えるために離れ始めると、デボラックはあなたに向き直る。「今日ここに来たあなたの真意はわからない。しかし、もし私を殺すために来たのなら、あなたは考えを改めたことを示した。私と同じような旅をしてきたあなたを今追い返したら、私は何を学んだだろう？"デヴォラックは背後を見る。"残念ながら、私は...今、本当に行くところがないんだ。ここまで考えていなかった。だから......任務の手助けが必要かい？私は船を保管しているんだ。私にとってとても大切なものなんだけど、もう二度と飛ばせるとは思えない。でも、もう飛べないと思う。爆破されないようにね。"</text>
+							<autoReward level="MED">standard</autoReward>
+							<crewMember amount="1" all_skills="1" class="unique_devorak">デボラック</crewMember>
+							<variable name="ach_crew_devorak" op="set" val="1" />
+							<unlockCustomShip silent="false">PLAYER_SHIP_PEACEKEEPER</unlockCustomShip>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>注意を払うのをやめて待つ。</text>
+				<event name="DEVORAK_SKIP">
+					<text>このような壮大なシーンは好きではないので、デボラックが用事を済ませるのを待つことにした。うたた寝をしようとしたとき、突然デボラックがあなたのそばで顔をほころばせ、あなたは驚いた。「あなたが今日ここに来た真意はわからない。しかし、もし私を殺すために来たのなら、あなたは考えを改めたようだ。私と同じような旅をしてきたあなたを今追い返したら、私は何を学んだだろう？残念ながら、私は...もう本当に行くところがないんだ。ここまで考えていなかった。任務のために何か助けが必要ですか？保管中の船があるんだ。僕にとって大切な船なんだけど、もう二度と飛べないと思う。でも、もう飛ぶことはできないと思う。爆破されないようにね」。</text>
+					<autoReward level="MED">standard</autoReward>
+					<crewMember amount="1" all_skills="1" class="unique_devorak">デボラック</crewMember>
+					<variable name="ach_crew_devorak" op="set" val="1" />
+					<unlockCustomShip silent="false">PLAYER_SHIP_PEACEKEEPER</unlockCustomShip>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_anurak" lvl="0" max_lvl="0" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>戦闘の靄の中で、あなたはいくつかの放送ドローンが街の周囲に集まり、あなたを観察していることにまったく気づかなかった。デヴォラックもそれに気づいたようで、残骸に駆け寄り、数分後にもがき苦しむ遺体を持って現れた。重傷を負ったジャックだ。デヴォラックは地面に叩きつけ、ヘルメットを引き剥がす。ダスクブリンガーは何年もの間、連邦は弱体化し、全盛期には役に立たなくなったと訴え、連邦省は同盟から分離し、新たな包括的帝国になるべきだと主張してきた！しかし、この数年間、ダスクブリンガーが連邦に対する憎しみを真に正当化できたことは一度もない！確かに連邦は不完全であり、不完全な人々が不完全な政府を運営している。しかし、連邦は真の銀河、いや、多宇宙の平和という普遍的な夢を象徴している。ダスクブリンガーはこの平和を望んでおらず、絶望の中で最後の手段を見つけた。傭兵を雇い、この銀河系をさらに危険で極悪非道な場所にしている海賊のクズどもを雇い、平和省貿易港に連邦軍の襲撃を仕掛けるのだ！これが自称英雄の行動なのか？自国のため、銀河のためなら死も厭わない人々の行動なのか？それとも、この多元宇宙で統一を達成するために残された、おそらく唯一の希望を犠牲にして権力を掌握しようとするテロリスト集団の仕業なのか？"</text>
+			<choice hidden="true">
+				<text>引き続きお聞きください。</text>
+				<event load="DEVORAK_SPEECH" />
+			</choice>
+			<choice hidden="true">
+				<text>注意を払うのをやめて待つ。</text>
+				<event load="DEVORAK_SKIP" />
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>

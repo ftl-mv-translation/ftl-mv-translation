@@ -1,0 +1,1468 @@
+<FTL>
+
+
+
+<event name="FINISH_BEACON_SPIDER">
+	<text id="finish_beacon" />
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="EXIT_FILLER_LIST" />
+	</choice>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+	
+<eventList name="ITEMS_INFESTATION">
+	<event load="INFESTATION_RACE" />
+	<event load="INFESTATION_SLAVERS" />
+	<event load="INFESTATION_ORPHAN" />
+	<event load="INFESTED_WRECKAGE" />
+</eventList>
+
+<event name="INFESTATION_RACE" unique="true">
+    <text>このビーコンはブルードの支配下にある。しかし、敵対する船はないようだ。その代わり、近くの小惑星のドームがメッセージを放送している。そのメッセージは、ダサい障害物競走場の中から発信されているようだ！今ここで行われているこのレースは、全銀河で最高のレースイベントだ！イェッサーリー、見たこともない最速の巨大エイリアン蜘蛛に賭けよう！最速の標本に匹敵する クモをお持ちの方は... 臆することなく ご登録くださいただし、リトルリーグではプレーできないのでご注意を！"</text>
+    <variable name="loc_race_success" op="set" min="1" max="20" />
+    <choice req="LIST_CREW_SPIDER">
+		<text>(G.A.S.）自分のスパイダーを出場者として提出する。</text>
+		<event>
+			<text>ホストが興奮気味に迎えてくれる。「素晴らしい、素晴らしい！今日はゲストに来ていただきました！レネゲイドの出場はまだありません。フェロモン、ジュース、ボディスーツなど、ランナーのスピードを向上させるものは一切使用できませんのでご注意ください。"</text>
+			<choice blue="false" lvl="1" req="LAB_SPIDER_PREDATOR" max_group="0">
+				<text>次へ...</text>
+				<event>
+					<variable name="loc_race_success" op="add" val="6" />
+					<loadEvent>SPIDER_RACE_SPIDER_CHOICE</loadEvent>
+				</event>
+			</choice>
+			<choice blue="false" lvl="0" req="LAB_SPIDER_PREDATOR" max_group="0">
+				<text>次へ...</text>
+				<event load="SPIDER_RACE_SPIDER_CHOICE" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="LIST_CREW_BLOB_SPIDER">
+		<text>(G.A.S.モーフ）出場者としてモーフを提出する。</text>
+		<event>
+			<text>ホストはあなたを歓迎し始めるが、あなたが見せたクモを訝しげに見る。「こんなクモ...見たことない...」。彼は数秒間考えるのを止め、怪しげなスパイダーモーフをよく見る。</text>
+			<choice blue="false" lvl="1" req="LAB_MORPH_DOOR" max_group="0">
+				<text>次へ...</text>
+				<event>
+					<variable name="loc_race_success" op="add" val="6" />
+					<loadEvent>SPIDER_RACE_MORPH_BEGRUDGING_ALLOW</loadEvent>
+				</event>
+			</choice>
+			<choice blue="false" lvl="1" req="EX_LAB_MORPH_DOOR" max_group="0">
+				<text>続ける。</text>
+				<event>
+					<variable name="loc_race_success" op="add" val="6" />
+					<loadEvent>SPIDER_RACE_MORPH_BEGRUDGING_ALLOW</loadEvent>
+				</event>
+			</choice>
+			<choice blue="false" lvl="0" req="LAB_MORPH_DOOR" max_group="0">
+				<text>次へ...</text>
+				<event load="SPIDER_RACE_MORPH_BEGRUDGING_ALLOW" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>ランダムなクモに賭ける。</text>
+		<event>
+			<text>スパイダーの1人に賭ける。</text>
+			<item_modify>
+				<item type="scrap" min="-30" max="-30" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="SPIDER_GAMBLE" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>申し出を無視する。</text>
+		<event>
+			<text>ブルードはもうあなたに接触しようとしない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+<event name="SPIDER_RACE_MORPH_BEGRUDGING_ALLOW">
+    <text>ホストはため息をついて肩をすくめる。「レネゲイドに任せておけば、あなたを驚かせることができる。私は出場者としてこれを受け入れることができそうだ。フェロモン、ジュース、ボディスーツなど、ランナーのスピードを向上させるものは一切使用できません。"</text>
+    <choice blue="false" lvl="1" req="LAB_MORPH_HEALTH" max_group="0">
+		<text>次へ...</text>
+		<event>
+			<variable name="loc_race_success" op="add" val="-5" />
+			<loadEvent>SPIDER_RACE_MORPH_CHOICE</loadEvent>
+		</event>
+    </choice>
+    <choice blue="false" lvl="1" req="EX_LAB_MORPH_HEALTH" max_group="0">
+		<text>次へ...</text>
+		<event>
+			<variable name="loc_race_success" op="add" val="-5" />
+			<loadEvent>SPIDER_RACE_MORPH_CHOICE</loadEvent>
+		</event>
+    </choice>
+    <choice blue="false" lvl="0" req="LAB_MORPH_HEALTH" max_group="0">
+		<text>次へ...</text>
+		<event load="SPIDER_RACE_MORPH_CHOICE" />
+    </choice>
+</event>
+<event name="SPIDER_RACE_SPIDER_STARTING">
+    <text>あなたのスパイダーが線路に飛び降りる。レースが始まろうとしている。アナウンサーがカウントダウンを始める。"3...2...1..."</text>
+    <choice req="unique_queen">
+		<text>(スパイダークイーン）あなたのスパイダーを優しい咆哮で応援しましょう。</text>
+		<event>
+			<variable name="loc_race_success" op="add" val="5" />
+			<loadEvent>SPIDER_RACE_RESULTS</loadEvent>
+		</event>
+    </choice>
+    <choice>
+		<text>スパイダーを応援しよう</text>
+		<event load="SPIDER_RACE_RESULTS" />
+    </choice>
+</event>
+<event name="SPIDER_RACE_SPIDER_CHOICE">
+    <text>「今日はどのスパイダーに入るんだい？</text>
+    <choice req="unique_queen">
+		<text>クイーン</text>
+		<event>
+			<text>"あら！クモの女王様？すごい！かなり大きく見えるが。障害物には対応できるかもしれないが、生のスピードという点では、ほとんどの子孫に負けるだろう！彼女のお手並み拝見といこう。"</text>
+			<variable name="loc_race_success" op="add" val="3" />
+			<choice>
+				<text>次へ...</text>
+				<event>
+					<text>あなたのスパイダーが線路に飛び降りる。レースが始まろうとしている。アナウンサーがカウントダウンを始める。"3...2...1..."</text>
+					<choice>
+						<text>スパイダーを応援しよう</text>
+						<event load="SPIDER_RACE_RESULTS" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice req="spider_venom_chaos">
+		<text>毒クイーン</text>
+		<event>
+			<text>"やれやれ！これはいったい何なんだ？このクモは背筋を凍らせる...すべてのクモがそうであるように！これを考え出したのは、クレイジーで高度なオルタナティヴ・ブルードだけだ。</text>
+			<variable name="loc_race_success" op="add" val="4" />
+			<choice>
+				<text>次へ...</text>
+				<event load="SPIDER_RACE_SPIDER_STARTING" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="spider_venom">
+		<text>毒クイーン</text>
+		<event>
+			<text>"やれやれ！これはいったい何なんだ？このクモは背筋を凍らせる...すべてのクモがそうであるように！これを考え出したのは、クレイジーで高度なオルタナティヴ・ブルードだけだ。</text>
+			<variable name="loc_race_success" op="add" val="4" />
+			<choice>
+				<text>次へ...</text>
+				<event load="SPIDER_RACE_SPIDER_STARTING" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="spider_weaver">
+		<text>ウィーバー</text>
+		<event>
+			<text>「直感に反する選択と言わざるを得ない。ウィーバーは他のクモ類に比べ、すばしっこさは劣るが......知能は驚くほど高い。だが、彼らの知性は驚くほど優れている。"君が勝つとは思っていないが、何か裏があるのは確かだ"</text>
+			<variable name="loc_race_success" op="add" val="1" />
+			<choice>
+				<text>次へ...</text>
+				<event load="SPIDER_RACE_SPIDER_STARTING" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="spider">
+		<text>アダルト・スパイダー</text>
+		<event>
+			<text>「当然だ。一般的な成体のクモは、このコンテストで選ばれるクモだ。とても速く、レースができる。どれだけいいレースができるか見てみよう。"</text>
+			<variable name="loc_race_success" op="add" val="5" />
+			<choice>
+				<text>次へ...</text>
+				<event load="SPIDER_RACE_SPIDER_STARTING" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="spider_hatch">
+		<text>ハッチリング</text>
+		<event>
+			<text>"うーん、当ててぇな。子グモが一番速いから勝てると思っているのか？まあ、君が最初に挑戦するわけじゃないけど、警告しておくよ、君のクモが回らなければならない障害物は、経験の浅い子クモにはかなり手強いんだ。でも、小さな出場者でもやり遂げることができるんだ」。</text>
+			<variable name="loc_race_success" op="add" val="0" />
+			<choice>
+				<text>次へ...</text>
+				<event load="SPIDER_RACE_SPIDER_STARTING" />
+			</choice>
+		</event>
+    </choice>
+</event>
+<event name="SPIDER_RACE_MORPH_STARTING">
+    <text>あなたのスパイダーモーフが線路に滑り降りる。レースが始まる。アナウンサーがカウントダウンを始める。"3...2...1..."</text>
+    <choice req="goldqueen">
+		<text>(Malform Queen) 友好的な咆哮で味方を応援する。</text>
+		<event>
+			<variable name="loc_race_success" op="add" val="5" />
+			<loadEvent>SPIDER_RACE_RESULTS</loadEvent>
+		</event>
+    </choice>
+    <choice>
+		<text>モーフを応援しよう。</text>
+		<event load="SPIDER_RACE_RESULTS" />
+    </choice>
+</event>
+<event name="SPIDER_RACE_MORPH_CHOICE">
+    <text>どのモーフにエントリーしますか？</text>
+    <choice req="goldqueen">
+		<text>マルフォーム・クイーン</text>
+		<event>
+			<text>「あれは...ゴールデン・クイーン？彼女がどれほどのスピードなのか、私には見当がつかない。興味を持って見ているよ"</text>
+			<variable name="loc_race_success" op="add" val="3" />
+			<choice>
+				<text>次へ...</text>
+				<event>
+					<text>あなたのスパイダーモーフが線路に滑り降りる。レースが始まる。アナウンサーがカウントダウンを始める。"3...2...1..."</text>
+					<choice>
+						<text>スパイダーを応援しよう</text>
+						<event load="SPIDER_RACE_RESULTS" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice req="blobweaver">
+		<text>ウィーバー</text>
+		<event>
+			<text>"ウィーバー "のようだ。普通ならダメだと言うだろうが、これには手がかりがない。勝てるとは思えないが、何か裏がありそうだ"</text>
+			<variable name="loc_race_success" op="add" val="1" />
+			<choice>
+				<text>次へ...</text>
+				<event load="SPIDER_RACE_MORPH_STARTING" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="blobspider">
+		<text>スパイダー</text>
+		<event>
+			<text>「確かに普通の大人のクモのようだ。とても速く、レースができる。レースの腕前を見てみよう」。</text>
+			<variable name="loc_race_success" op="add" val="5" />
+			<choice>
+				<text>次へ...</text>
+				<event load="SPIDER_RACE_MORPH_STARTING" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="blobhatch">
+		<text>ハッチリング</text>
+		<event>
+			<text>"うーん、当ててぇな。子グモが一番速いから勝てると思っているのか？まあ、君が最初に挑戦するわけじゃないけど、警告しておくよ、君のクモが回らなければならない障害物は、経験の浅い子クモにはかなり手強いんだ。でも、小さな出場者でもやり遂げることができるんだ」。</text>
+			<variable name="loc_race_success" op="add" val="0" />
+			<choice>
+				<text>次へ...</text>
+				<event load="SPIDER_RACE_MORPH_STARTING" />
+			</choice>
+		</event>
+    </choice>
+</event>
+<event name="SPIDER_RACE_RESULTS">
+    <text>クモのクルーがレース場に向かう。カウントダウンが始まるのを、あなたと他のクルーは期待して座っている...。</text>
+    <choice>
+		<text>レースを始めよう</text>
+		<event>
+			<loadEventList seeded="false" first="true" generate="false">
+				<event req="loc_race_success" lvl="31">
+					<text>あなたのクモはフィールドを巧みに横切る。まるで障害物を無視しているかのように、まるで何の挑戦もないかのようにレース場を縫っていく。他のライバルたちは皆、埃にまみれている。観客は一斉に息をのむ。あなたのクモがゴールラインを通過すると、観客は立ち上がり、あなたのクモの見事なパフォーマンスに拍手を送る。あなたのクモは信じられないほど誇らしげに見える。司会者が口ごもる。「どうして？世界記録です！こんなに速いクモは見たことがありません。殿堂入りをさせていただきます！"記録達成のボーナスに加え、賞金を受け取る！</text>
+					<disableScrapAugments />
+					<item_modify>
+						<item type="scrap" min="200" max="200" />
+					</item_modify>
+				</event>
+				<event req="loc_race_success" lvl="25" max_lvl="30">
+					<text>クモは素早くスタートを切ります。あなたのクモは、各障害物を素早く乗り越え、レーストラックを軽々と周回します。他の競技者たちは後塵を拝するが、あと一歩及ばない。観客は、あなたのクモの巧みな操縦に熱狂する。フィニッシュラインを通過するとき、司会者があなたのクモの勝利を宣言する。「皆さん、私たちはサメを相手にしていました！これはすばしっこいゾウリムシだ！"あなたのクモは表彰台で嬉しそうにさえずる。司会者はあなたに大量のスクラップの山を授与する。</text>
+					<disableScrapAugments />
+					<item_modify>
+						<item type="scrap" min="100" max="100" />
+					</item_modify>
+				</event>
+				<event req="loc_race_success" lvl="20" max_lvl="24">
+					<text>レースは勢いよくスタートし、あなたのクモは先頭集団に追いつく。自分のクモが障害物をくぐり抜け、良いペースを保つのを見守る。終始、緊迫した接戦だ。クルーたちは、クモがゴールに近づくにつれて歓声を上げる。ゴール間際、あなたのクモはゴールラインを通過するために必要な最後のスピードを手に入れます。あなたのクモの勝ちです！"そして、あなたの勝者です！チャーリー・ブラウンが優勝です！大逆転だ！"あなたのクモの努力に100スクラップが与えられます。</text>
+					<disableScrapAugments />
+					<item_modify>
+						<item type="scrap" min="100" max="100" />
+					</item_modify>
+				</event>
+				<event req="loc_race_success" lvl="15" max_lvl="19">
+					<text>レースは勢いよくスタートし、自分のクモはなんとか先頭集団についていく。他のクモのスピードに対応し、障害物を回避するのは難しい。あなたのクモは、先頭を走るクモに追いつくのに必死です。クモたちがゴールに近づくにつれ、あなたのクモは全力を尽くしてかろうじて2位に食い込む。司会者が優勝者を発表するが、あなたは他のクルーと一緒にクモの銀メダルを祝う。準優勝でも、ささやかなご褒美はもらえる。</text>
+					<disableScrapAugments />
+					<item_modify>
+						<item type="scrap" min="50" max="50" />
+					</item_modify>
+				</event>
+				<event req="loc_race_success" lvl="8" max_lvl="14">
+					<text>レースが始まり、あなたのクモはベストを尽くす。しかし、ついていっても経験不足は明らかで、なかなか先頭には立てない。あなたのクモは果敢に頑張るが、最終的に数匹のクモがあなたのクモより先にゴールすることに成功する。もっとうまくいったかもしれないが、クルー仲間はあなたのクモの努力に拍手を送っている。</text>
+				</event>
+				<event req="loc_race_success" lvl="1" max_lvl="13">
+					<text>レースが始まるが、あなたのクモは準備不足のようだ。あなたのクモがレーサーでないことはすぐに明らかになり、他のクモに大きく遅れをとる。あなたのクモはレースを完走しようと半狂乱で努力するが、最初からビリになりそうなのは明らかだった。あなたのクモは羊のような顔をして戻ってきた。</text>
+				</event>
+				<event req="loc_race_success" lvl="-100" max_lvl="0">
+					<text>レースはスタートしたが...観客は、あなたのクモがのろのろとフィールドを引きずっているのを見て、笑いに包まれる。屈辱的なディスプレイで、あなたのクモはフィールドから引きずり出される前にレースを終えることさえできなかった。観客はあなたの恥ずべきプレーをすぐに忘れることはないだろう。</text>
+				</event>
+			</loadEventList>
+		</event>
+    </choice>
+</event>
+<event name="SPIDER_GAMBLE">
+    <loadEventList seeded="false" first="true" generate="false">
+   	 <event req="loc_race_success" lvl="16">
+   		 <text>最も魅力的なクモに賭けるのだ。クモがレース場を横切り、障害物を避け、フィールドを猛スピードで駆け抜けていくのを見る。あなたの選択は正しかったようだ。最後の瞬間、あなたのピックは一気にスピードを上げ、ゴールラインを駆け抜け、見事な勝利を手にした！</text>
+   		 <disableScrapAugments />
+   		 <item_modify>
+   			 <item type="scrap" min="100" max="100" />
+   		 </item_modify>
+   	 </event>
+   	 <event req="loc_race_success" lvl="0" max_lvl="15">
+   		 <text>最も魅力的なクモに賭ける。クモは一斉にゴールラインを通過し、あなたの選んだクモは中団に位置する。クモたちは次々とゴールラインを通過し、あなたが選んだクモは真ん中あたりに位置する。あなたは配当を逃したようだ。</text>
+   	 </event>
+    </loadEventList>
+</event>
+
+<event name="INFESTATION_SLAVERS" unique="true">
+	<text>あるティイカカ船が、通りかかった船に信じられないほど安い値段で奴隷を提供している。さらに尋ねると、彼らは説明する：「クモを売る商売に来たんだ！儲かるぞ、ははは！残念だが...スペースがないため、長年の労働者を連れて出発しなければならない。この値段なら、新しい労働者はどうだろう？"</text>
+	<ship load="SHIP_SLAVER_ALL" hostile="false" />
+	<choice>
+		<text>奴隷を買え。</text>
+		<event>
+			<text>「いい選択だ！きっと君のためになるだろう"</text>
+			<crewMember amount="1" />
+			<item_modify>
+				<item type="scrap" min="-30" max="-15" />
+			</item_modify>
+			<choice hidden="true">
+                <text>次へ...</text>
+                <event load="REPUTATION_UPDATE_SLAVER" />
+            </choice>
+		</event>
+	</choice>
+	<choice req="rep_comb_slaver" lvl="1" blue="false"> 
+        <text>[評判: 1+] エキゾチックな奴隷を買う。</text>
+        <event>
+			<text>「いい選択だ！きっと君のためになるだろう"</text>
+            <item_modify>
+                <item type="scrap" min="-60" max="-45" />
+            </item_modify>
+            <crewMember amount="1" class="LIST_SLAVES_GREAT" />
+			<choice hidden="true">
+                <text>次へ...</text>
+                <event load="REPUTATION_UPDATE_SLAVER" />
+            </choice>
+		</event>
+    </choice>
+	<choice>
+		<text>船と戦え。</text>
+		<event>
+			<text>民兵の最後の仕事は、他の船にクモを売る奴隷商人だ。海賊の始末は君がやってくれ！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="REPUTATION_DECREASE_SLAVER_COMBAT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>衰退。</text>
+		<event>
+			<text>"お前の負けだ、息子よ！"奴隷商人は電話を切った。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="INFESTATION_ORPHAN" unique="true"> 
+	<text>この星系には船はいない。退屈しのぎに近くの惑星をスキャンしてみると、実は長い洞窟システムがあることがわかった！見てみる価値はありそうだ。</text>
+	<img planet="PLANET_UNPOPULATED_TERRA" />
+	<choice hidden="true">
+		<text>洞窟を探検する。</text>
+		<event>
+			<text>洞窟の奥深くまで入っていくと、それほど遠くないところで子供の泣き声が聞こえてくる。</text>
+			<choice hidden="true">
+				<text>ソースを探せ</text>
+				<event>
+					<text>あなたは泣き声のする方へ向かうと、巨大なクモに追われているロックマンの子供に出くわした！泣き声ではなく、遊びの笑い声だと気づいたとき、あなたは銃を撃とうとした。ロックマンは何度もつまずき、クモは彼らが立ち上がるのを辛抱強く待ってから追いかけ続ける。</text>
+					<choice hidden="true">
+						<text>子供を救出する！</text>
+						<event>
+							<text>武器を構えてクモを撃つが、ほとんど当たらない！周囲のトンネルから数匹のウィーバーが這い出てきた。あなたはクモに追われながら船に戻る！</text>
+							<boarders min="2" max="3" class="spider_weaver" />
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>平和的に自分の存在をアピールする。</text>
+						<event>
+							<text>あなたは銃を構え、咳払いをして自分の存在を示す。あなたはロックマンに話しかけようとする。「ビジター？めったにお目にかかれない！こちらは友人のシャーロット、私はウィルバーだ！両親の船がここに墜落して以来、彼女はずっと僕を見守ってくれているんだ！"あなたはさらにウィルバーに質問し、彼がまだ幼い頃からここにいたことを知った。</text>
+							<choice hidden="true">
+								<text>ウィルバーを連れて行くと申し出る。</text>
+								<event>
+									<text>「私を連れ去るの？この惑星を離れるのは何年ぶりだろう！さよならを言わせてくれ！"ロックマンはクモに駆け寄り、大きく抱きしめてから、あなたの元へ駆け寄る。洞窟を出て振り返ると、クモがあなたを見ていた。もしあなたがよく知っていたら、クモは悲しそうだったと言っただろう。</text>
+									<crewMember amount="1" class="rock">ウィルバー</crewMember>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>難破現場見学のリクエスト</text>
+								<event>
+									<text>「いいとも！」。ウィルバーはあなたについてくるよう合図し、トンネルを走り抜ける。卵に覆われた巨大な船の残骸が眠っている大きな部屋に入るまで、あなたはついていく。「この船はもう機能しないが、自由にスクラップにしてくれ！感傷的なものは何年も前に取り除いてある」。</text>
+									<autoReward level="HIGH">scrap_only</autoReward>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>気づかれないようにする。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>今の道を進み、音を無視する。</text>
+				<event>
+					<text>旅を続けていると、壁沿いに蜘蛛の巣を張った古ぼけたロッククルーザーの破片に出くわした。クモがいないか素早くチェックし、自分一人であることを確認したら、運べるだけ集めて船に持ち帰る。</text>
+					<autoReward level="LOW">scrap_only</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>いや、いや、いや、今すぐここから出て行け。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>地球を無視する。</text>
+		<event>
+			<text>巨大なエイリアンのクモがはびこるセクターにスペランキングに行かないのが一番だ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="INFESTED_WRECKAGE" unique="true">
+	<text>近くには民間船の小さな残骸が漂っている。</text>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>船体をスクラップにする。</text>
+		<event load="INFESTED_WRECKAGE_SCRAP" />
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>乗組員やさらなるスキャンなしでサルベージを行うことは不可能で、リスクが高すぎる。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true">
+		<text>残骸は無視しろ。</text>
+		<event>
+			<text>残骸は、まるで命を失ったかのように、あなたの前を漂い続けている。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SLUG">
+		<text>(スラッグクルー）生命反応をチェックする。</text>
+		<event load="INFESTED_WRECKAGE_MIND" />
+	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+		<text>(テレパシー・シェル）生命反応をチェック。</text>
+		<event load="INFESTED_WRECKAGE_MIND" />
+	</choice>
+	<choice hidden="true" req="LIFE_SCANNER">
+		<text>(生命体スキャナー）残骸をスキャンしろ。</text>
+		<event load="INFESTED_WRECKAGE_SCAN" />
+	</choice>
+	<choice hidden="true" req="sensors" lvl="2">
+		<text>(残骸をスキャンしろ。</text>
+		<event load="INFESTED_WRECKAGE_SCAN" />
+	</choice>
+</event>
+<eventList name="INFESTED_WRECKAGE_SCRAP">
+	<event>
+		<text>船内には数十匹のクモの死骸が散乱している。操舵席には負傷しながらも生きている船長が座っている。船は破壊されたが、彼はあなたのクルーに加わりたいと申し出た。</text>
+		<crewMember amount="1" />
+	</event>
+	<event>
+		<text>意外なことに、残骸の中にはクモはいない。船の外壁を削る。</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>予想通り、船はクモであふれかえっていた。あなたは何とかクルーを時間内に引き戻そうとするが、クモの大群を止めることはできない。</text>
+		<boarders min="2" max="3" class="spider" />
+	</event>
+	<event>
+		<text>案の定、船にはクモがうようよしている。あなたは乗組員に戻るよう命じるが、時すでに遅し、乗組員のひとりがクモの群れの犠牲になった。クモが船に乗り込む前に、あなたは素早く難破船から切り離す。</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>あなたの乗組員はすでにクローン化され、今ではクモ恐怖症の深い感覚を持つようになっている。</text>
+		</removeCrew>
+	</event>
+</eventList>
+<eventList name="INFESTED_WRECKAGE_SCAN">
+	<event>
+		<text>残骸をスキャンしてみると、クモがうようよしている。あなたは、この船を無視するのが最善だと判断した。</text>
+	</event>
+	<event>
+		<text>あなたはすぐに船内に生命体がいないかスキャンする。幸運なことに、クモを含めて生物は残っていないようだ。あなたは無事に船体をスクラップにした。</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+</eventList>
+<eventList name="INFESTED_WRECKAGE_MIND">
+	<event>
+		<text>クルーが、残骸にはクモがたくさんいると言う。あなたはその船を無視するのが最善だと判断する。</text>
+	</event>
+	<event>
+		<text>乗組員は生命体の可能性のあるものを探している。幸運にも、クモを含め、生物は残っていないようだ。あなたは安全に船体をスクラップする。</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+</eventList>
+	
+<eventList name="NEUTRAL_INFESTATION">
+	<event load="BROOD_CIVILIAN" />
+	<event load="INFESTATION_CIVILIAN" />
+	<event load="INFESTATION_SHELL" />
+	<event load="INFESTATION_MAFIA" />
+	<event load="INFESTATION_BAKE_SALE" />
+	<event load="INFESTATION_PURGER" />
+</eventList>
+
+<event name="BROOD_CIVILIAN" unique="true">
+	<text>ブルードは民兵を標的にしているかもしれないが、それでも海賊だ。民間船がブルードの船から攻撃を受けている！</text>
+	<ship load="SHIP_BROOD_RESCUE" hostile="false" />
+	<choice>
+		<text>民間船を援助する。</text>
+		<event>
+			<text>武器をパワーアップし、海賊船と交戦する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>手を出すな。</text>
+		<event>
+			<text>戦闘によって、彼らはあなたのスキャン範囲から外れる。しばらくすると、救難信号が鳴り止む。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="INFESTATION_CIVILIAN" unique="true">
+	<text>民間船からの呼びかけを受ける。「助けてくれ、クモだらけの船から攻撃を受けている！どうしていつもこうなるんだ！"</text>
+	<ship load="SHIP_INFESTED_RESCUE" hostile="false" />
+	<choice>
+		<text>民間船を援助する。</text>
+		<event>
+			<text>武器をパワーアップし、はびこる船と交戦する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>手を出すな。</text>
+		<event>
+			<text>戦闘によって、彼らはあなたのスキャン範囲から外れる。しばらくすると、救難信号が鳴り止む。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="INFESTATION_SHELL" unique="true">
+	<text>シェルの科学船が、はびこる船が散発的にビーコンの周囲を行ったり来たりするのを見ている。飛び込んで間もなく、彼らはあなたに呼びかける。「こんにちは。幼いクモを探しています。リスクは承知している。</text>
+	<ship load="SHIP_SHELL_BROOD" hostile="false" />
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>子ガメを捕獲するため、侵入した船にチームを送り込む。</text>
+		<event load="INFESTATION_SHELL_RISKY" />
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>また別の科学者は、別の場所で助けを見つけなければならないだろう。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="teleporter">
+		<text>(テレポーター）危険を冒さずにクモをビームバックさせる。</text>
+		<event>
+			<text>クモをロックオンし、自分の船に転送する。捕獲したら、シェル船に呼びかける。</text>
+			<choice hidden="true">
+				<text>シェルに連絡を</text>
+				<event load="INFESTATION_SHELL_REWARD" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>衰退。</text>
+		<event>
+			<text>"理解できる。誰もが科学の趣味を持っているわけではないのだから"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="INFESTATION_SHELL_RISKY">
+	<event>
+		<text>乗組員は船に乗り込むが、すぐにクモの襲撃を受ける！クモたちは船に戻ったが、一人が助からなかった。クモが暴れる体を引きずりながら、あなたは助けることができない。シェルたちはあなたの損失を詫び、「補償」のためにわずかな量のスクラップを差し出す。</text>
+		<autoReward level="LOW">scrap_only</autoReward>
+		<removeCrew>
+			<clone>true</clone>
+			<text>幸い、乗組員はすでにクローン化されているが、根深いクモ恐怖症を抱えている。</text>
+		</removeCrew>
+	</event>
+	<event>
+		<text>クルーにとって幸運なことに、ほとんどのクモは眠っている。クモたちは静かに廊下を歩き、子グモの一匹を捕まえて船に逃げ帰る。</text>
+		<choice hidden="true">
+			<text>シェルに連絡を</text>
+			<event load="INFESTATION_SHELL_REWARD" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="INFESTATION_SHELL_REWARD">
+	<event>
+		<text>貝はあなたの協力に感謝する。"これは我々の研究に大いに役立つだろう。この蔓延を防ぐための第一歩は、このクモの特徴を理解することだ！"</text>
+		<autoReward level="HIGH">weapon</autoReward>
+	</event>
+	<event>
+		<text>"ありがとう...これでブルードは大いに助かる！"彼らの武器がオンラインになり、これが罠であることを示す！</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+
+<event name="INFESTATION_MAFIA" unique="true">  
+	<text>民兵とブルードの間で激しい戦闘が繰り広げられている。遠くには武装した大型の海賊ヨットが発砲している。</text>
+	<choice hidden="true">
+		<text>ヨットに乗れば、気づかれずに周囲を見渡せるほど広い。</text>
+		<event>
+			<text>一歩足を踏み入れると、そこには大小さまざまな人種が歩いている。内装は深紅の壁紙で覆われ、床はベルベットのカーペット。まるで奇妙なホテルのようだ...そして奇妙に武装したホテルのようだ。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>ヨットの奥に進むと、2つのドアがあることに気づく。ひとつは「ナイトクラブ」、もうひとつは「高級軍用爆薬 [アクセス禁止!!!]」と書かれている。</text>
+					<choice hidden="true">
+						<text>クラブをチェックする</text>
+						<event>
+							<text>ナイトクラブに足を踏み入れると、他の海賊たちが見守る中、ステージ上のポールの周りでクモが魅惑的に踊っていた。あなたはすぐにドアを閉め、代わりに爆発物の部屋に向かった。</text>
+							<choice hidden="true">
+								<text>爆発物の部屋を調べる。</text>
+								<event load="INFESTATION_MAFIA_EXPLOSIVES" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>爆発物の部屋を調べる。</text>
+						<event load="INFESTATION_MAFIA_EXPLOSIVES" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>早く出て行け。</text>
+		<event>
+			<text>あなたは戦いから飛び立つ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_MAFIA_EXPLOSIVES">
+	<text>部屋の壁には爆薬が並べられ、その多くには小さな頭蓋骨がプリントされている。</text>
+	<choice hidden="true">
+		<text>爆薬をいくつか手に入れる。</text>
+		<event>
+			<text>真っ赤な鎧に身を包んだダスクブリンガーが小型爆弾を抱え、部屋に飛び込んでくる。「FBIが俺の縄張りに？ああ、今、あなたは本当に私を怒らせた！"</text>
+			<autoReward level="HIGH">missiles_only</autoReward>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>走り去ろうとすると、ダスクブリンガーと他の数人のブルードメンバーに追いかけられる。ヨットから降りたときも、異様な色をしたダスクブリンガーの海賊に追いかけられる。</text>
+					<ship load="SHIP_CHERRI" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>海賊から盗んではいけない。</text>
+		<event load="INFESTATION_MAFIA_EARLYLEAVE" />
+	</choice>
+</event>
+<eventList name="INFESTATION_MAFIA_EARLYLEAVE">
+	<event>
+		<text>ヨットから出ようと走っていると、数人の海賊に見つかる。間一髪で船に戻るが、ブルードの船が猛追してくる！</text>
+		<ship load="SHIP_BROOD" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event />
+</eventList>
+
+<event name="INFESTATION_BAKE_SALE" unique="true">  
+	<text>ビーコンにブルードの船が停泊しているのに気づいて飛びついたが、彼らは攻撃しようとはしなかった。その代わり、ドーナツとサイダーで小さな模擬店の宣伝をしている。「クモの、クモによる、クモのための！」子グモを膝に乗せた海賊が言う。</text>
+	<ship load="SHIP_BROOD_MUFFET" hostile="false" />
+	<choice hidden="true">
+		<text>ドーナツを食べて。</text>
+		<event>
+			<text>「おお、気前がいいね。お金を払ってくれるといいんだけど。ドーナツはこの辺じゃ999ドルもするんだ！"</text>
+			<choice>
+				<text>払ってくれ。</text>
+				<event>
+					<text>"アフフフフ...いつでも戻ってきて..."ブルード船は電話を切る。</text>
+					<item_modify>
+						<item type="scrap" min="-999" max="-999" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="SCAM_UNLOCK" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>とんでもない！</text>
+				<event>
+					<text>「バカなことを言うな。お金を払わずにどこにも行かないでよ！フフフ...次のケーキの材料になるに違いない！"エンジンの出力が低下していることに気づく。コンバット・オーグメントを使用しているに違いない。</text>
+					<status type="divide" target="player" system="engines" amount="2" />
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+					<choice hidden="true" req="ANTI_VIRUS">
+						<text>(アンチウイルス）エンジンパワーを回復させます。</text>
+						<event>
+							<text>エンジンはフルパワーに戻り、あなたは迫ってくる戦いに注意を向ける。</text>
+							<status type="clear" target="player" system="engines" amount="100" />
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ブルードの船は無視する。</text>
+		<event load="INFESTATION_BAKE_SALE_LEAVE" />
+	</choice>
+</event>
+<eventList name="INFESTATION_BAKE_SALE_LEAVE">
+	<event>
+		<text>帰ろうとすると、またメッセージが届く。「ケチケチしないで！戻ってきなさい、あなた..."ブルード船が武器を構える。</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>海賊とは取引しないことだ。</text>
+		<choice>
+			<text>船内で何かをする。</text>
+			<event load="STORAGE_CHECK" />
+		</choice>
+		<choice>
+			<text>何もしない。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+
+<event name="INFESTATION_PURGER" unique="true">
+	<text>周囲には、かつて船だったものの焼け跡がある。そのどれにも生命反応は見られない。残骸の中央には小さな民間ステーションがあり、重く改造されたオートガードがそれを守っている。</text>
+	<ship load="SHIP_AUTO_PURGER" hostile="false" />
+	<choice hidden="true">
+		<text>駅万歳。</text>
+		<event>
+			<text>"もう一人？近寄るな、近寄るな！お前らクモ野郎はお断りだ！これ以上近づいたら、他のクモがはびこる残骸と同じ最期を遂げるぞ！」。民間人の妄想のようだ。</text>
+			<choice hidden="true">
+				<text>オートシップを攻撃せよ</text>
+				<event>
+					<text>民間人が他の船を殺し続けるのを放っておくことはできない。彼らを止めるにはオートシップを破壊しなければならない。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>彼らの警告に耳を傾け、近づかないことだ。</text>
+				<event>
+					<text>そのオートシップに手を出すことに特に興味はないだろう。あなたはステーションを避ける。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_PURGER_WIN">
+	<text>オート・パーガーは始末された。あなたは船の残骸をスクラップにした。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>"ああ、クモだ、進化している！"民間人が通信をミュートし、船体から高価な大型レーザー砲が何門も伸びる。こいつらは本気だ。今はそっとしておくのが最善だろう。幸い、そのおかげでオートシップを調査する時間ができた！</text>
+			<weapon name="LASER_FIRE_SPECIAL" />
+		</event>
+	</choice>
+</event>
+
+
+<eventList name="DISTRESS_INFESTATION">
+	<event load="DISTRESS_BROOD_CIVILIAN" />
+	<event load="DISTRESS_INFESTATION_CIVILIAN" />
+	<event load="DISTRESS_INFESTATION_CRASH" />
+</eventList>
+
+<event name="DISTRESS_BROOD_CIVILIAN" unique="true">
+	<distressBeacon />
+	<text>ブルードの船が、救難信号を出した民間船に向かって発砲している。あなたが何かしない限り、民間人に勝ち目はない。</text>
+	<ship load="SHIP_BROOD_RESCUE" hostile="false" />
+	<choice>
+		<text>民間船を援助する。</text>
+		<event>
+			<text>武器をパワーアップし、海賊船と交戦する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>手を出すな。</text>
+		<event>
+			<text>戦闘によって、彼らはあなたのスキャン範囲から外れる。しばらくすると、救難信号が鳴り止む。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DISTRESS_INFESTATION_CIVILIAN" unique="true">
+	<distressBeacon />
+	<text>この救難信号には2隻の船があるが、1隻だけがまだ元の所有者の管理下にある。はびこる船が民間人を狙っており、もうすぐそこまで来ているようだ！</text>
+	<ship load="SHIP_INFESTED_RESCUE" hostile="false" />
+	<choice>
+		<text>民間船を援助する。</text>
+		<event>
+			<text>武器をパワーアップし、はびこる船と交戦する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>手を出すな。</text>
+		<event>
+			<text>戦闘によって、彼らはあなたのスキャン範囲から外れる。しばらくすると、救難信号が鳴り止む。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="DISTRESS_INFESTATION_CRASH" unique="true"> 
+	<distressBeacon />
+	<text>近くの森の惑星に遭難信号の発信源があるようだ。</text>
+	<img planet="PLANET_POPULATED_GRASSY" />
+	<choice hidden="true">
+		<text>調査する。</text>
+		<event>
+			<text>パイロットを地表に近づけると、2本の木に挟まれた難破したEDC民兵船を発見する。人の民兵が、1人は明るいオレンジ色の髪、もう1人は顔に長い傷跡があり、丸眼鏡をかけている。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>あなたは車を降り、民兵のほうに歩いていく。静かにしないと、クモに聞かれちゃうよ。ここには巨大な巣がある。いや、物資の隠し場所がクモに取られたと聞いたんだ。取り戻すんだ</text>
+					<choice hidden="true">
+						<text>蜂の巣を避けることに同意する。</text>
+						<event>
+							<text>クモを起こさないように気をつけながら、あなたは船に戻った。クモの仲間は残っていたが、バカなことに自分ひとりでキャッシュを取り戻そうと決めた。</text>
+							<crewMember amount="1" class="human_soldier">ロナルド・ウェストリー</crewMember>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>キャッシュを狙うことに同意する。</text>
+						<event>
+							<text>あなたは蜂の巣に向かって急ぎ、メガネをかけたミリタリアンがそれに続く。丘を貫く洞窟に足を踏み入れると、蜘蛛の巣に覆われたキャッシュを発見した。あなたはそれを肩に担いで船に戻ったが、クモの大群があなたの居場所を警戒して追いかけてきた！</text>
+							<crewMember amount="1" class="human">ハロルド・ポーター</crewMember>
+							<autoReward level="MED">item</autoReward>
+							<boarders min="4" max="5" class="spider" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>地球を避ける。</text>
+		<event>
+			<text>下に何があるかわからないが、このセクターでは何も信用できない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+
+<eventList name="QUEST_INFESTATION">
+	<event load="INFESTATION_PHOTOGRAPHER" />
+</eventList>
+
+<event name="INFESTATION_PHOTOGRAPHER" unique="true"> 
+	<text>あなたは、ほとんどの民間人がこのセクターから避難したと思っていたが、1隻の船が数隻の大型空母の残骸を捜索している。</text>
+	<ship load="SHIP_UNION_GENERIC" hostile="false" />
+	<choice hidden="true">
+		<text>万歳。</text>
+		<event>
+			<text>「JJが怒るぞ。あなたが現れてくれてとても幸運です。コアワールドの小さな新聞社「トランペット」の者です。カメラマンが派遣されたんですが 行方不明なんです彼を探してもらえないだろうか？我々はこのセクターのために十分な武器を持っていない..."</text>
+			<quest event="INFESTATION_PHOTOGRAPHER_QUEST" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>民間人を無視する。</text>
+		<event>
+			<text>民間船は放っておけ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_PHOTOGRAPHER_QUEST">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>あなたは迷子になった写真家を捜索し、救出するよう依頼された。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたは民間人から与えられた座標に到着した。文明の痕跡はほとんどないが、地球型惑星が星系内にある。ここはきっと...</text>
+	<img planet="PLANET_UNPOPULATED_TERRA" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>撮影者を見つけるのに時間はかからない。胸がはちきれそうなほど痩せた人間が、クモの大群に勝利して立っている。彼はあなたの船に向かって叫ぶ。「恐れよ、我こそは蜘蛛男！クモの王、そしてやがて人間の王になるのだ！"</text>
+			<choice hidden="true">
+				<text>な、なんだって？</text>
+				<event>
+					<text>地上から、ほとんどクモで占められているが、まだ機能している連邦の船が浮かび上がってくる。クモ男」は船に飛び乗り、あなたと戦おうと立ち上がる！</text>
+					<ship load="SHIP_SPIDERMAN" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_PHOTOGRAPHER_DESTROY">
+	<text>大破した船は地面に倒れ込み、数百匹のクモを押し潰し、さらに大勢を飛ばした。大群が散り散りになったので、あなたも着陸し、素早くサルベージを集める。</text>
+	<autoReward level="MED">standard</autoReward> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>残念ながら、これはカメラマンが死んだことを意味する。今、民間船に報告する理由はない。</text>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_PHOTOGRAPHER_DEADCREW">
+	<text>クルーがいなくなった船は地面に倒れ込み、数百匹のクモを粉砕し、さらに多くのクモを飛ばした。大群が散り散りになったので、あなたも着地し、素早くサルベージを集める。</text>
+	<autoReward level="HIGH">standard</autoReward> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>残念ながら、これはカメラマンが死んだことを意味する。今、民間船に報告する理由はない。</text>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_PHOTOGRAPHER_SURRENDER">
+	<text>連邦の船が煙を上げてシャッターを切ると、かつてのカメラマンから呼び出しがかかる。「もうクモの王にはなりたくない！」。</text>
+	<choice hidden="true">
+		<text>生かしておけ。</text>
+		<event>
+			<text>連邦の船は惑星の地表まで戻り、人間は下船する。</text>
+			<ship hostile="false" />
+			<choice hidden="true">
+				<text>最寄りの駅で下ろして報酬をもらう。</text>
+				<event>
+					<text>カメラマンを最寄りの駅に降ろすと、先ほどの民間人が待っていた。彼らは感謝し、燃料とスクラップを恵んでくれた。</text>
+					<autoReward level="MED">fuel</autoReward> 
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>彼にあなたの船のポジションを提供する。</text>
+				<event>
+					<text>カメラマンと "クモの王 "という2つの職業に終止符を打った彼は、あなたのために働くことを厭わない。</text>
+					<crewMember amount="1" class="human">ピーター</crewMember>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視して仕留める。</text>
+		<event />
+	</choice>
+</event>
+
+
+<eventList name="HOSTILE_INFESTATION">
+	<event load="ENCOUNTER_INFESTED" />
+	<event load="ENCOUNTER_INFESTED_ENGI" />
+	<event load="ENCOUNTER_BROOD" />
+	<event load="ENCOUNTER_CLANSMEN_INFESTATION" />
+</eventList>
+
+<event name="ENCOUNTER_INFESTED"> 
+	<text load="TEXT_ENCOUNTER_INFESTED" />
+	<ship load="SHIP_INFESTED" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_INFESTED">
+	<text>隣の船に呼びかけようとするが、返ってくるのはクリック音とビビリ音の連続だ。この船ははびこっている！</text>
+	<text>異常に知能の高いクモが多いこのセクターでは、用心に越したことはない。迅速なスキャンで、ここの船がはびこっていることが判明し、船が攻撃に移ったとき、あなたの疑いは確信に変わった。</text>
+	<text>はびこる船が移動してきた。またクモだらけの船が来たようだな！</text>
+	<text>このセクターにクモがはびこるというのは、民兵の冗談ではなかった。クモに操られた完全な機能を持つ艦船が攻勢をかけながら近づいてくる！</text>
+	
+	
+</textList>
+
+<event name="ENCOUNTER_INFESTED_ENGI" unique="true"> 
+	<text>こんな危険なセクターの奥深くでエンギ船を見かけるとは珍しい驚きだ。呼びかけを試みるが、文字化けした応答とヒスノイズが返ってくるだけだ。船にはクモがはびこっているに違いない！</text>
+	<ship load="SHIP_INFESTED_ENGI" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_BROOD">
+	<text load="TEXT_ENCOUNTER_BROOD" />
+	<ship load="SHIP_BROOD" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_BROOD">
+	<text planet="PLANET_MOONS">ブルードの船が近くの月の影に隠れて船を待っている。あなたたちが連邦軍だとわかると、彼らはクモをあなたたちに放つことにした！</text>
+	<text>ブルード船についての警備員の警告を覚えているだろう。武器化したクモを連れたブルード船が近づいてくる。</text>
+	<text>民間の船があなたに短いメッセージを送った後、飛び去っていった。"クレイジーなクモ人間、近づくな！"その船の意味を理解する間もなく、どこからともなく敵対的なブルード船が現れ、攻撃を仕掛けてくる！</text>
+	<text>巨大なレーザー・キャノンを持ち、永遠に燃え続けるロックマンの船ほど脅威的なものはない。幸いなことに、このビーコンで出迎えるのはそのような船ではないが、それでも良い光景ではない。狂ったブルード艦が襲いかかり、衝突は避けられないようだ。</text>
+	<text>「私を恐れよ！クモを恐れろ！"クモに取り憑かれた海賊船が殺気を放ちながらあなたに迫ってくる前に、あなたに答えるチャンスは与えられない。</text>
+	
+	
+</textList>
+
+<event name="ENCOUNTER_CLANSMEN_INFESTATION">
+	<text load="TEXT_ENCOUNTER_CLANSMEN_INFESTATION" />
+	<ship load="SHIP_CLAN_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_CLANSMEN_INFESTATION">
+	<text>"蜘蛛どもにはうんざりだ。挑戦のために来たが、クモの仲間は殺すのが簡単すぎる。俺は挑戦がしたいんだ......お前のような奴にな！"</text>
+	<text>クランズメンはエキゾチックな狩りを楽しんでおり、スパイダーはまさにそれだ。しかし、だからといって、あなたのような船をわざわざ狩りに行かないわけではない！</text>
+	<text>"失せろ、連邦捜査官！このセクターは俺の狩場だ、お前らのじゃない！」。怒ったナメクジが武器を構える！</text>
+	<text>怒ったナメクジほど危険なものはない。"クソスパイダーが 俺のクルーを食いやがったお前もだ。じっとしてろ、殺らせてくれ、一度でいいから簡単に殺したいんだ！"</text>
+	
+	
+</textList>
+
+
+
+
+
+<ship name="SHIP_BROOD_CRUISER" auto_blueprint="MU_BROOD_CRUISER">
+	<destroyed load="INFESTATION_IRWIN_WIN" />
+	<deadCrew load="INFESTATION_IRWIN_WIN" />
+	<crew>
+		<crewMember type="LIST_CREW_PIRATE_RANDOM" prop="0.5" />
+		<crewMember type="LIST_CREW_SPIDER_RANDOM" prop="0.5" />
+	</crew>
+</ship>
+<event name="INFESTATION_IRWIN" unique="true">
+	<preventQuest />
+	<preventFleet />
+	<quest>
+		<nebulaBeacon>false</nebulaBeacon>
+		<aggressive>2</aggressive>
+	</quest>
+	<beaconType id="map_icon_irwin" global="true">
+		<color r="235" g="95" b="255" a="1.0" />
+	</beaconType>
+	<text>民兵が雇ったレネゲイドの最後の座標だ。ここには奇妙な施設が建設され、巨大な民間輸送船がこの惑星を出ようとしている。あなたは入り口の外に停まっている遠くの奇妙な形をした船を見つける。</text>
+	<img back="BACK_EVENT_SPIDERLAB" planet="NONE" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>見つからないように注意しながら近づく。ブルードカラーの大型マンティス巡洋艦だ。巨大なソーラーパネルの後ろに着地し、2隻の船の会話を聞く。どうやらアーウィンは、エースのユニフォームをペイントしたような服装のブルードメンバーと話をしているようだ。</text>
+			<ship load="SHIP_BROOD_CRUISER" hostile="false" />
+			<choice hidden="true" req="loc_beentonest" blue="false" lvl="0" max_group="0">
+				<text>次へ...</text>
+				<event>
+					<text>"へへっ、やあ乙女座。なあ、悪いとは思うんだが......」。アーウィンはその堂々たる姿に遮られた。ヴァエルは疲れている。お前の無能さにも、好戦的な態度にも、多元宇宙を支配する操り人形機関についての非常識な陰謀にもな！君の仕事はただ一つ、DNAを回収することだった。それでどうなった？何もせずに戻ってきた奴らは巣ごと吹き飛ばす気だそれを許容しろと言うのか？"
+"
+"
+"
+"
+"
+？ヴェクの不祥事でレネゲデスの評判が落ちた後、私を雇うよう防衛幹部を説得するのは簡単じゃなかったんだ！」⎦⎦⎦⎦。アーウィンは抗議を続けるが、またしても遮られた。時間が経ちすぎている。好機は限られている。ヴァエルはブルードと取引をした、彼らがDNAを回収してくれる。もう用はない アービンお前はただの "抜け殻 "だ」。ヴィルゴはレーザーを取り出し、アーウィンを狙う。</text>
+					<choice hidden="true">
+						<text>介入する。</text>
+						<event>
+							<text>このアーウィンという男が役に立つ情報を持っているかもしれない。君はカバーから飛び出し、自分の武器を構える。乙女座は動揺する様子もなく、ただ武器を引っ込め、ブルード船に急ぎ戻る！アーウィンは驚いて船に戻るが、海賊のミサイルで止められ、エンジンを破壊される。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>何もしない。</text>
+						<event>
+							<text>ナメクジが必死に命乞いをするのをあなたは見ていた。彼は一度だけ撃ち、クランズマンは自分の緑色の血の水たまりの中で地面に倒れた。乙女座は後ろにいた海賊たちに、行く前にアーウィンの船を破壊するよう命じる。どうやら、これがお前たちの出航の合図らしい。</text>
+							<instantEscape />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_beentonest" blue="false" lvl="1" max_group="0">
+				<text>次へ...</text>
+				<event>
+					<text>"へへっ、やあ乙女座。なあ、悪いとは思うんだが......」。アーウィンはその堂々とした姿に遮られた。ヴァエルは疲れている。お前の無能さにも、好戦的な態度にも、多元宇宙を支配する操り人形機関についての非常識な陰謀にもな！君の仕事はただ一つ、DNAを回収することだった。それでどうなった？何もせずに戻ってきた巣は爆破され サンプルの回収は不可能だ私にこれを容認しろというのか」
+「えーと...はい？いいか、ヴェクの不祥事でレネゲデスの評判が落ちた後、私を雇うよう防衛幹部を説得するのは簡単じゃなかったんだ！」。アーウィンは抗議を続けるが、またしても遮られた。時間が経ちすぎた。チャンスはもうない。もう用はない。お前はただの徒労に過ぎない"ヴィルゴはレーザーを取り出し、アーウィンを狙う。</text>
+					<choice hidden="true">
+						<text>介入する。</text>
+						<event>
+							<text>このアーウィンという男が役に立つ情報を持っているかもしれない。君はカバーから飛び出し、自分の武器を構える。乙女座は動揺する様子もなく、ただ武器を引っ込め、ブルード船に急ぎ戻る！アーウィンは驚いて船に戻るが、海賊のミサイルで止められ、エンジンを破壊される。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>何もしない。</text>
+						<event>
+							<text>ナメクジが必死に命乞いをするのをあなたは見ていた。彼は一度だけ撃ち、クランズマンは自分の緑色の血の水たまりの中で地面に倒れた。乙女座は後ろにいた海賊たちに、行く前にアーウィンの船を破壊するよう命じる。どうやら、これがお前たちの出航の合図らしい。</text>
+							<instantEscape />
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_IRWIN_WIN">
+	<text>ブルード巡洋艦が倒された。ブルード巡洋艦は地面に倒れ、あなたはその残骸をかき集める。</text>
+	<variable name="loc_angels_killed" op="add" val="1" />
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>アーウィンをチェックする。</text>
+		<event>
+			<text>ナメクジはあなたが近づいてくるのを見ると、すぐに全く怖がっていないふりをするが、彼の奇妙なブランダバスのような銃の周りの触手は白くなっている。「俺たちレネゲデスが互いを助け合う術を知っていてよかった！さて、料金はいくらだ？この種のサービスがタダでないことは知っている。俺はバカじゃない。"</text>
+			<choice hidden="true">
+				<text>報酬は求めていない。でも、情報提供は惜しみません。</text>
+				<event>
+					<text>「ハハッ！何という暴動だ。ここではっきりさせておこう。情報は金である。金がすべてであり、すべてが金である。このマルチバースにタダで働く人間などいない。親切はただの手段だ。好意は白紙の小切手だ。お前はレネゲイドだ、俺を馬鹿にするな。我々は博愛主義者ではない 傭兵だ値札付きの人殺しだこの商売を長くやってきてよくわかったよ。"</text>
+					<choice hidden="true">
+						<text>そういう問題じゃない。乙女座の彼について教えてください。</text>
+						<event>
+							<text>「あなたが何と言おうと。乙女座は...天使だった。シンジケートのヴァエルに仕えていた。彼は一番最近の依頼人だったんだが、問題はヴァエルが普段は悪党を相手にしないってことなんだ。彼の傭兵は普段から彼のために働いており、彼の私に対する忍耐は短いものだった。"乙女座は私が従うと約束してくれた"</text>
+							<choice hidden="true">
+								<text>何のフォロースルー？</text>
+								<event>
+									<text>「ある種のDNAを盗んでいる。このG.A.S.も、ヴェクも、ブラブラも、みんな同じものをベースにしている。俺は生物学者じゃないから、何を言っているのかわからない。重要なのは、バエルがライト議員が怖気づき、この件に水を差そうとしているのを察知したことだ。大ブームの前にヴァエルにDNAを持ってくることを SSSPOSSSEDしたんだ でも俺は生きてるのが好きなんだ"</text>
+									<choice hidden="true">
+										<text>以前はクランズマンだったのでは？</text>
+										<event>
+											<text>"ああああ。そうだった。でも、ビリー・ヘクターに騙されて、あいつの奴隷貿易に巻き込まれたんだ。ある日、友達のレンジャー、シルヴァンを連れてくるまではうまくいってたんだ。彼は助けてくれると思ったんだが、それどころか妙な態度だった。俺は彼が危険人物だと気づいたんだが、俺が望んだようにただ死ぬのではなく、俺の艦隊を爆破して、ギルドに俺のヘクターへの関与をリークしたんだ。実は隷属は神聖なルールのひとつを破るもので、だから俺は追放されたんだ。だから俺はブーイングされたんだ！彼らはいつもあなたを裏切る。あるいは、彼らはマルチヴァーサル・オーダーから派遣された秘密工作員かもしれない！"</text>
+											<choice hidden="true">
+												<text>そうだね...</text>
+												<event>
+													<text>"それはともかく、乗り物が必要なんだ。君はレネゲイドだから、いつでも助けてくれるだろう。だから取引しよう！俺が乗組員になって 利益を折半する取引？ダメか？まあいい、数字は後で考えよう...俺の船はもう必要ないから、好きに使ってくれ。</text>
+													<crewMember amount="1" combat="2" class="unique_irwin">アーウィン</crewMember>
+													<variable name="ach_boss_brood" op="set" val="1" />
+													<variable name="ach_crew_irwin" op="set" val="1" />
+													<autoReward level="MED">standard</autoReward>
+													<unlockCustomShip silent="false">PLAYER_SHIP_SPIDER</unlockCustomShip>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_MILITIA_CRUISER" auto_blueprint="MU_MILITIA_CRUISER">
+	<destroyed load="INFESTATION_NEST_WIN" />
+	<deadCrew load="INFESTATION_NEST_WIN" />
+</ship>
+<event name="INFESTATION_NEST">
+	<preventQuest />
+	<preventFleet />
+	<beaconType id="map_icon_nest" global="true">
+		<color r="63" g="73" b="77" a="1.0" />
+	</beaconType>
+	<quest>
+		<nebulaBeacon>false</nebulaBeacon>
+		<aggressive>2</aggressive>
+	</quest>
+	<text>あなたはクモの巣に到着した。この惑星は不気味な雰囲気に包まれている。上空では民兵とブルードがこの惑星の支配権をめぐって争っているが、あなたは混乱をすり抜け、巨大な洞窟近くの地表に降り立つことができた。</text>
+	<img back="BACK_EVENT_NEST" planet="NONE" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>モンゴメリから遠くで呼びかけを受ける。"あなたが作った - 配送船が損傷 - 爆弾が洞窟で失われた - あなたが必要 - 見つけ出して - 巣を破壊する - 内部のブルード - 慎重に！"</text>
+			<choice hidden="true">
+				<text>洞窟に入る。</text>
+				<event>
+					<text>岩盤の空虚な迷宮を、自分の船からの光だけを頼りに暗闇の中に突入する。民兵の船の残骸のようなもののそばを通り過ぎる。幸いなことに、積荷の中に無傷の爆弾を見つけ、自分の船に持ち帰る。</text>
+					<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+						<text>私たちが爆発させなければ、誰も爆発させることはできない。</text>
+						<event>
+							<text>ここで失敗すれば、最初の船と同じ運命をたどることになりかねない。やがて坑道は洞窟の中心と思われる場所へと続く。巨大なほぼ完全な球形の部屋の壁には、何万個もの卵が入った穴が並んでいる。これが自然の産物であるはずがない。この部屋は意図的に設計されている。</text>
+							<choice hidden="true">
+								<text>こっそりと爆弾を設置し始める。</text>
+								<event>
+									<text>クルーはクモを起こさずに爆弾を配線しようと急ぐ。君の記憶では、これは地球でヴェクに対して使われたものと同じデザインだ。そのうちの1つは宇宙から見える爆発を起こすことができ、惑星全体に巨大な地震を引き起こした。それを見るために近くにいたくはないだろう。</text>
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event>
+											<text>最後の3つ目の爆弾の配線中、クルーの1人がつまずき、爆弾の金属板を地面に落としてしまう。その瞬間、洞窟中のクモが一斉に鳴き声を上げた。数秒後、巨大な咆哮が彼らを黙らせ、男3人分の大きさの怪物が地面から噴出した。これは女王に違いない。彼女の8つの目はすべてあなたを見つめているが、攻撃はしてこない。まるで警告を発しているかのようだ。</text>
+											<choice hidden="true">
+												<text>レーザーを置け。</text>
+												<event>
+													<text>自殺行為に等しいが、クモを怒らせるような危険は冒したくない。これまで見てきた限りでは、彼らは民兵が認めている以上に頭が良さそうだし、もしかしたら、もしかしたら、誰も死なずにここから脱出できるかもしれない。女王はこの行動に気づいたようで、あなたから後ずさりする。彼女の周りには何匹かの子ガメが彼女の足にまとわりついていたが、彼女が振り返って孵化場の壁の穴を這うと、彼らは散っていった。まるであなたについてきてほしいかのようだ。</text>
+													<choice hidden="true">
+														<text>彼女に続け</text>
+														<event>
+															<text>トンネルを這うように抜けると、そこは船や実験器具が並ぶ巨大な長方形の部屋だった。壁にこびりついた汚れを拭き取ると、その下には錆びた金属がある。ここはある時点では研究センターだったが、匂いから判断して、スタッフは全員死んでいる。あなたは女王が壁のチューブの列に歩いていくのを見た。そこにはたくさんのエキゾチックな生き物がいて、そのうちのいくつかはブルードが使っているG.A.S.やヴェクなどの昆虫型の怪物に不気味なほど似ている。近くの机に目をやると、そこにはよりによってオスカー・ライト宛ての手紙があった。その隣には、ある種のクルーザーの設計図が入ったドングルがあり、あなたはそれをポケットに入れた。</text>
+															<variable name="loc_beentonest" op="set" val="1" />
+															<choice hidden="true">
+																<text>手紙を読む</text>
+																<event>
+																	<text>「親愛なる上院議員、
+計画の変更がありました。あなたの昆虫型DNAのテスト方法は、私と評議会の双方を深く悩ませました。私のチームはとにかく新しい候補者を見つけた。もう実験を続ける必要はない。君たちが今日あるのは、提督との付き合いのおかげであり、提督不在の今、新しい指導者たちは寛大ではないことを忘れないでほしい。私は、あなたの幸福を願って、この手紙を書いているのです。頭に銃弾を受けたまま目覚めたくなければ、何としてでも証拠を隠滅することを勧める
+
+自分が何をすべきかわかっているはずだ、オスカー。二度と反乱軍を失望させるな。
+誠意を込めて、E.W.博士。"</text>
+																	<choice hidden="true">
+																		<text>次へ...</text>
+																		<event>
+																			<text>どう考えればいいのかわからないが、時間がない。モンゴメリが後ろから声をかけ、手紙を捨てるように命じた。「ゆっくり振り向くんだ、キャプテン。その紙を置いて、私と一緒に来るんだ。爆弾を爆発させて立ち去るんだ」。</text>
+																			<ship load="SHIP_MILITIA_CRUISER" hostile="false" />
+																			<choice hidden="true">
+																				<text>モンゴメリに手紙のことを問いただす。</text>
+																				<event>
+																					<text>モンゴメリは、あなたが言い終わる前に切り出した。「EDCがここにいる理由は何だと思う？本当にブルードが黒幕だと思ったのか？バカな海賊が連邦のコアワールドの安全を脅かすとでも？いや だが連邦は 議員の意図に無知だブルードは実在する。だが、この件以前は何者でもなかった。インセクトロイドを放ったのは我々だ地球にヴェクを植え付けた今思えば ひどい決断だった だから我々はここにいる実験は失敗だった議員と反乱軍との関係を 暴く危険は冒せませんあなたはお荷物ですだが、負債を処分するのは私の得意とするところだ"</text>
+																					<ship hostile="true" />
+																					<choice hidden="true">
+																						<text>次へ...</text>
+																						<event load="COMBAT_CHECK" />
+																					</choice>
+																				</event>
+																			</choice>
+																			<choice hidden="true">
+																				<text>研究室とクモを見捨てて立ち去る。</text>
+																				<event>
+																					<text>あなたは女王を最後に見て、急いでラボを出た。巨大なEDCクルーザーを発見し、モンゴメリーが乗り込む。遠くでクモの大群が追いかけてくるが、あなたは速すぎる。爆弾が船内をまばゆい光で満たし、2隻とも間一髪で脱出する。それがようやく収まると、モンゴメリーが最後にもう一度、あなたに呼びかける。"下で何も見なかった、わかったか？"君はうなずく。「よかった。君の協力には報いるが、あそこに何があったかを他の誰かに話すのは良くない判断だと理解してほしい"</text>
+																					<autoReward level="HIGH">weapon</autoReward>
+																				</event>
+																			</choice>
+																		</event>
+																	</choice>
+																</event>
+															</choice>
+														</event>
+													</choice>
+													<choice hidden="true">
+														<text>今すぐ帰れ。</text>
+														<event />
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>チャンスを逃さず、女王を撃つ。</text>
+												<event>
+													<text>ここで他のことをするのは自殺行為だ。あなたは女王を吹き飛ばしたが、その弾丸は彼女の硬くなった外骨格にはほとんど効かなかった。女王は残りの子供たちとともにあなたに向かって突進し、クルーの一人を手足から引きちぎってしまう。仕方なく船に戻り、洞窟の外へ急ぐ。遠くから引き金を引くと、爆弾は一度に爆発し、すべてを飲み込むようなまばゆい閃光を放つ。そして一瞬にして光は静まり、地表には巨大なクレーターが残るのみとなった。ブルード軍は失敗を見て飛び去り、民兵はあなたに感謝する。G.A.S.はもういない。</text>
+													<variable name="loc_itb" op="add" val="1" />
+													<autoReward level="HIGH">weapon</autoReward>
+													<removeCrew>
+														<clone>true</clone>
+														<text>幸い、クルーはクローン・ベイのおかげで回復できたが、今後は永久にクモ恐怖症に苦しむことになるだろう。</text>
+													</removeCrew>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+						<text>あなたは起爆シーケンスをセットアップするチームを欠いている。</text>
+						<event load="OPTION_INVALID" />
+					</choice>
+					<choice hidden="true">
+						<text>爆弾は持って帰って、もっと優秀な人に渡してください。</text>
+						<event>
+							<text>無事に爆弾を回収したあなたは、洞窟を出てモンゴメリーを呼ぶ。民兵の船が爆薬を回収するために戦闘から離脱し、報酬をくれる。</text>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>これは危険すぎる。</text>
+				<event>
+					<text>一人でクモの大群に立ち向かうのは危険だ！あなたは戦いから離れる。</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTATION_NEST_WIN">
+	<text>モントゴメリーは結局、あなたを止めるには十分ではなかった。彼の船に乗っていた他の乗組員たちは彼の意図に気づいていなかっただろうが、彼らは必要な犠牲者だった。</text>
+	<variable name="ach_boss_milcruiser" op="set" val="1" />
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>墜落した残骸をスクラップしていると、瀕死の男のうめき声が聞こえ、残骸の一部に突き刺さっているモンゴメリを発見する。彼はあなたに向き直り、息を引き取る間際にこうつぶやいた。エースは...決して失敗しない」。彼は起爆装置を持ったまま手を上げ、スイッチを入れる。瞬時に近くのレンフィールド爆弾が作動し、壊滅へのカウントダウンが始まる。</text>
+			<variable name="loc_itb" op="add" val="1" />
+			<choice hidden="true">
+				<text>女王を救出しなければならない！</text>
+				<event>
+					<text>あなたは孵化場に駆け戻り、そこで数匹の子ガメが泣き叫ぶのを慰めている女王を見つけた。カウントダウンする爆弾のドーンという音にかき消されそうになりながらも、女王はあなたを見つけ、事態の深刻さを理解した。あなたは船に戻り、飛び立つ。壁が揺れ、背後の地獄が拡大するなか、トンネルを駆け抜ける。エンジンを最大推力に切り替え、惑星から離陸する。</text>
+					<crewMember amount="1" class="unique_queen" combat="2">ザ・クイーン</crewMember>
+					<variable name="ach_crew_queen" op="set" val="1" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>さまざまな疑問が頭の中を駆け巡る。なぜ反乱軍はクモとヴェクをテストしたのか？新たな候補者」とは何なのか？E.W.博士とは何者なのか？これらの疑問のどれかに答えが出るかどうかはわからないが、あまり長居はできない。女王は無事とはいえ、子供たちを失ったことに心を痛めているのは明らかだ。あなたが彼女を救わなかったら、種全体が絶滅していた可能性が高い。今、あなたにできることは、他のエースが死んだことを喜び、任務を遂行することだけだ。いつか、あなたであろうと他のキャプテンであろうと、誰かがこの事件の真相を解明してくれるだろう。あなたは先ほどのドングルを取り出し、後で使うために設計図のデータを船にダウンロードする。</text>
+							<unlockCustomShip silent="false">PLAYER_SHIP_BROOD</unlockCustomShip>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>

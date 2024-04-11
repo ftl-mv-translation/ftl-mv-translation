@@ -1,0 +1,1440 @@
+<FTL>
+
+
+
+<event name="FINISH_BEACON_FEDERATION">
+	<text id="finish_beacon" />
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="EXIT_FILLER_LIST" />
+	</choice>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+
+	
+<eventList name="ITEMS_FEDERATION">
+	<event load="FEDERATION_SUPPLY" />
+	<event load="FEDERATION_FREECREW" />
+	<event load="FEDERATION_RANT" />
+	<event load="FEDERATION_AMMO" />
+</eventList>
+
+<event name="FEDERATION_SUPPLY" unique="true">
+	<text>ここで完全に軍事化された連邦軍ステーションを発見するが、彼らは通り過ぎる連邦の同盟船に物資を売っているようだ。</text>
+	<ship load="SHIP_FED_STATION_SUPPLIES" hostile="false" />
+	<choice>
+		<text>燃料を購入する。</text>
+		<event>
+			<item_modify>
+				<item type="fuel" min="5" max="7" />
+				<item type="scrap" min="-20" max="-10" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>弾薬を購入する。</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="8" max="10" />
+				<item type="scrap" min="-40" max="-25" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>武器を購入する。</text>
+		<event>
+			<item_modify>
+				<item type="scrap" min="-60" max="-40" />
+			</item_modify>
+			<weapon name="RANDOM" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>駅を攻撃しろ</text>
+		<event>
+			<text>同盟国の連邦軍基地でさえも、誰もあなたから安全ではない。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_GENERAL_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>駅は無視する。</text>
+		<event>
+			<text>あなたは駅に興味がない。あなたは彼らを無視する。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FED_SUPPLY_STATION_KILL">
+	<text>連合軍ステーションへの不必要で、いわれのない、野蛮な攻撃は成功した。残りはスクラップだ</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+
+<event name="FEDERATION_FREECREW" unique="true">
+	<text>損傷した連邦船から呼び出し。「友好的な顔だ我々の船は壊滅的なダメージを受け、修復の見込みはない。私を乗船させていただけませんか？私はシールド技術者です 私の技術でお役に立てると確信しています"</text>
+	<choice hidden="true">
+		<text>乗船を歓迎する。</text>
+		<event load="FEDERATION_FREECREW_WELCOME" />
+	</choice>
+	<choice hidden="true">
+		<text>これ以上クルーは必要ない。</text>
+		<event>
+			<text>「ああ...わかった。他の船が助けに来る前にシールドが破裂しないよう、うまくコントロールできるといいんだが......"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="FEDERATION_FREECREW_WELCOME">
+	<event>
+		<text>連盟役員はあなたの援助に感謝している。</text>
+		<crewMember amount="1" class="human" shields="1" />
+	</event>
+	<event>
+		<text>人間があなたの船に乗ってくると、彼はレーザーを引き出してあなたを撃つ。幸運にも誰も撃たれなかったが、反乱軍の船が近くでクロークを解き、攻撃してきた。罠だった！</text>
+		<boarders min="1" max="1" class="human" />
+		<ship load="SHIP_REBEL_FIGHT" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+
+<event name="FEDERATION_RANT" unique="true">
+	<text>飛び込んで間もなく、ゾルタンの船に呼び止められた。「人生はサイクルだ。バランスを崩してはならない。これでわかるか？</text>
+	<ship load="SHIP_ZOLTAN_FIGHT" hostile="false" />
+	<choice hidden="true">
+		<text>もちろんだ。</text>
+		<event>
+			<text>「あなたは他の人たちのように盲目ではないのですね。多くの人が私たちのメッセージを聞きに来たが、正しく理解して帰った人はほとんどいない。あなたは恵まれている。あなた方の歩む道が幸運で満たされますように」。</text>
+			<modifyPursuit amount="-1" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>そうでもないよ。</text>
+		<event>
+			<text>「バランスは保たれなければならない。それを守るのは君ではない"ゾルタンは通信をミュートし、飛び去る。</text>
+			<instantEscape />
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>講義をしている時間はない。</text>
+		<event>
+			<text>「これは講義ではなく、単なる教訓だ。あなたのように悟りを拒む者こそが、このサイクルを危険にさらすのだ。あなた方は粛清されなければならない。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="FEDERATION_AMMO" unique="true">
+	<text>連邦ステーションがスクラップと引き換えに弾薬の要求を出している。需要が高いのは、反乱軍の封鎖が増加しているためだろう。</text>
+	<choice>
+		<text>ミサイルを3発売る。</text>
+		<event>
+			<disableScrapAugments />
+			<item_modify>
+				<item type="scrap" min="21" max="21" />
+				<item type="missiles" min="-3" max="-3" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ミサイル7発を売る。</text>
+		<event>
+			<disableScrapAugments />
+			<item_modify>
+				<item type="scrap" min="49" max="49" />
+				<item type="missiles" min="-7" max="-7" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice>
+		<text>ミサイル12発を売る。</text>
+		<event>
+			<disableScrapAugments />
+			<item_modify>
+				<item type="scrap" min="84" max="84" />
+				<item type="missiles" min="-12" max="-12" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>売るものは何もない。</text>
+		<event>
+			<text>あなたは駅を無視する。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<eventList name="NEUTRAL_FEDERATION">
+	<event load="FEDERATION_REBEL_CHOICE" />
+	<event load="FEDERATION_BROKEN_DRONE" />
+	<event load="FEDERATION_NODAMAGE_TEST" />
+	<event load="FEDERATION_HANGAR_RAID" />
+	<event load="FEDERATION_SHIPCLASS" />
+</eventList>
+
+<event name="FEDERATION_REBEL_CHOICE">
+	<text load="TEXT_FED_REBEL_CHOICE" />
+	<ship load="SHIP_REBEL_FIGHT" hostile="false" />
+	<choice hidden="true">
+		<text>船と戦え。</text>
+		<event>
+			<text>あなたが助けられる限り、反乱軍を生かしておくことはできない。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>船を避けろ。</text>
+		<event>
+			<text>反乱軍の船と戦う気はないのか。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<textList name="TEXT_FED_REBEL_CHOICE">
+	<text>反乱軍の船がこのビーコンで 小さな修理をしています彼らは君の存在に気づいていない。</text>
+	<text>近くにいる反乱軍の船が連邦の船を探している。どういうわけか、彼らはまだあなたを見ていません。</text>
+	<text>このセクターは反乱軍の一等地だ。連邦軍を殺したがっているにもかかわらず、ここの反乱軍の船は君たちを無視している。</text>
+	<text>このビーコンにいる反乱軍の船は、戦うために連邦の船を偵察している。まだ君たちを見ていない。</text>
+</textList>
+
+<event name="FEDERATION_BROKEN_DRONE" unique="true">
+	<text>近くにある連邦の自動補給ドローンが不調で、スパークし、時折文字化けした意味のないメッセージを送ってくる。深刻なダメージを受けたに違いない。</text>
+	<ship load="SHIP_FED_BROKEN_DRONE" hostile="false" />
+	<choice hidden="true">
+		<text>ドローンとの接触を試みる。</text>
+		<event load="FED_BROKEN_SUPPLY_DRONE_ACTIVATE" />
+	</choice>
+	<choice hidden="true">
+		<text>ドローンをサルベージする。</text>
+		<event load="FED_BROKEN_SUPPLY_DRONE_SALVAGE" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGI">
+		<text>(ドローンを修理しろ。</text>
+		<event>
+			<text>エンジはオートシップやドローンの修理に慣れており、簡単に問題を特定する。オートシップが直ると、物資を配給し、船体を修復する。</text>
+			<autoReward level="RANDOM">stuff</autoReward>
+			<damage amount="-5" />
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGINEER">
+		<text>(エンジニアクルー）ドローンを修理しろ。</text>
+		<event>
+			<text>エンジニアは、彼らは反乱軍のオートシップでしか働いたことがないと説明しようとするが、とにかくやってみるよう説得する。彼らは、何かがうまくいかず船が敵対的になる前に、船体を修理するのに十分な時間、ドローンを動かすことに成功する！</text>
+			<ship hostile="true" />
+			<damage amount="-5" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="DRONE_CONTROL_REPAIR_ALL">
+		<text>(ドローンを修理する) ドローンを修理する。[1ドローン]</text>
+		<event>
+			<text>修理ドローンはオートシップを素早く修理する。修理が終わると、物資を配給し、船体を修復する。</text>
+			<autoReward level="RANDOM">stuff</autoReward>
+			<damage amount="-5" />
+			<item_modify>
+				<item type="drones" min="-1" max="-1" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_LANIUS">
+		<text>(ラニウス・クルー）ラニウスにドローンを引き揚げさせる。</text>
+		<event>
+			<text>あなたのラニウスは、ドローンの防衛機能を作動させないために何を分解すべきかを正確に把握しているため、ほとんど苦労することなくドローンをサルベージすることができる。</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>オートシップは無視。</text>
+		<event>
+			<text>あなたは機能不全のオートマトンには興味がない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="FED_BROKEN_SUPPLY_DRONE_ACTIVATE">
+	<event>
+		<text>あなたは船にIDを送信し、まだ物資を配給できることを期待しようとした。しかし、あなたの船を識別するのに苦労しているようで、突然攻撃してきた！</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>幸運なことに、ドローンは大きく損傷しているものの、あなたの連邦IDをスキャンし、物資を送信することができる。</text>
+		<autoReward level="LOW">stuff</autoReward>
+	</event>
+</eventList>
+<eventList name="FED_BROKEN_SUPPLY_DRONE_SALVAGE">
+	<event>
+		<text>ドローンをサルベージしていると、突然敵意をむき出しにして攻撃してくる！</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>ドローンはほとんど反応しないままだ。武器はオンラインになったが、発射できないままだ。</text>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+</eventList>
+
+<event name="FEDERATION_NODAMAGE_TEST" unique="true">
+	<text>このビーコンには連邦の科学ステーションがある。呼びかけはないが、全ては整然としており、スキャナーは内部の定期的な活動を感知する。奇妙な形をした連邦のオートドローンが数機、外壁に繋がれている。</text>
+	<choice hidden="true">
+		<text>彼らに連絡を。</text>
+		<event>
+			<text>"お前は誰だ、何がしたいんだ......何てこった！マルチバース・シップか。光栄です君の任務が重要なのは 理解している だが頼みがある最新の戦闘AIを試すため 軍艦が必要なんですテストが終わるまで 少し撃ってくれその後、どんな損害も修理する"</text>
+			<choice hidden="true">
+				<text>ドローンのテストに同意する。</text>
+				<event>
+					<text>「素晴らしい！すぐアクティブになるから、ちょっと待ってて。覚えておいてくれ、イオン兵器やシステム損傷はいいが、船体にダメージを与えないように。"</text>
+					<ship load="SHIP_FED_TEST_DRONE" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>結構だ。</text>
+				<event>
+					<text>「十分にフェアだ</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>駅は無視する。</text>
+		<event>
+			<text>あなたは駅に興味がない。あなたは彼らを無視する。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FED_NODAMAGE_TEST_DESTROY">
+	<text>「一体何だったんだ！船を傷つけるな。今すぐここから出て行け。今度からは指示されたら素直に聞くんだぞ"</text>
+</event>
+<event name="FED_NODAMAGE_TEST_DAMAGE">
+	<text>「慎重に、慎重に！船を傷つけるなと言ったはずだ！結局のところ、君がこの任務に最適だったとは思えない。もっと指示に従える人が見つかるといいんだけど......"</text>
+	<ship hostile="false" />
+</event>
+<event name="FED_NODAMAGE_TEST_WIN">
+	<text>オートシップが停止し、連邦のエンジニアが再びあなたに声をかける。「完璧だ！助けてくれてありがとう。船体の修理をしておきますので、他の技術もご自由にお使いください。"</text>
+	<ship hostile="false" />
+	<damage amount="-30" />
+	<autoReward level="MED">droneparts</autoReward>
+	<weapon name="RANDOM" />
+</event>
+
+<event name="FEDERATION_HANGAR_RAID" unique="true">
+	<text>近くの惑星に連邦の大型格納庫が建設された。連邦の船なら誰でもドック入りできる。</text>
+	<choice hidden="true">
+		<text>ドック</text>
+		<event>
+			<text>IDを送信し、まもなく入国が許可される。修理チームがあなたの船に燃料を補給し、修理を行うために移動してきた。</text>
+			<autoReward level="HIGH">fuel_only</autoReward>
+			<damage amount="-7" />
+			<choice hidden="true">
+				<text>出て行け。</text>
+				<event>
+					<text>格納庫を出ると、サイレンが鳴り響く。反乱軍の中隊が近づいてくる！惑星防衛キャノンは圧倒され、ほとんどの反乱軍は通り抜けることができた。エリート艦があなたをロックオンして攻撃してくる！</text>
+					<ship load="SHIP_REBEL_ELITE_FIGHT" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>格納庫は無視する。</text>
+		<event>
+			<text>魅力的だが、時間を無駄にすることはできない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="FEDERATION_SHIPCLASS" unique="true">
+	<text>近くの連邦船から呼び出し要請が来ている。</text>
+	<ship load="SHIP_FED_FIGHT" hostile="false" />
+	<choice hidden="true">
+		<text>答えてあげてください。</text>
+		<event>
+			<text>中年の人間がスクリーンに現れる。"ごきげんよう、レネゲイド・クルーズ......ええと、船は？"</text>
+			<choice>
+				<text>どうしたんだ？</text>
+				<event>
+					<text>「巡洋艦といえば、今日では事実上、あなたのような船を指す言葉でしょうが......私の歴史への興味は、長年にわたって海軍用語がおぼろげになってきたという事実に我慢がならないのです。巡洋艦が適切に運用されるには、それ以上のマンパワーが必要だった！君のような船を指すのに、もっと正確な別の名前はないのか？"</text>
+					<choice hidden="true">
+						<text>戦艦だ。</text>
+						<event load="FEDERATION_SHIPCLASS_WRONG" />
+					</choice>
+					<choice hidden="true">
+						<text>ボンバーだ。</text>
+						<event load="FEDERATION_SHIPCLASS_WRONG" />
+					</choice>
+					<choice hidden="true">
+						<text>コルベット</text>
+						<event load="FEDERATION_SHIPCLASS_WRONG" />
+					</choice>
+					<choice hidden="true">
+						<text>デストロイヤー</text>
+						<event load="FEDERATION_SHIPCLASS_WRONG" />
+					</choice>
+					<choice hidden="true">
+						<text>ファイターだ。</text>
+						<event load="FEDERATION_SHIPCLASS_WRONG" />
+					</choice>
+					<choice hidden="true">
+						<text>フリゲート</text>
+						<event load="FEDERATION_SHIPCLASS_WRONG" />
+					</choice>
+					<choice>
+						<text>すべてを複雑にするのではなく、宇宙船と言えばいい。</text>
+						<event>
+							<text>"...へぇ。確かに、間違ってはいないよ、それは認めるけど......でも、すぐに古くなるし、疲れるよ。私は...誰か他の人を探して、その人たちの考えを集めてきます"</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>失礼だが、緊急でない限り、今は時間を無駄にする余裕はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="FEDERATION_SHIPCLASS_WRONG">
+	<event load="FEDERATION_SHIPCLASS_ARGUE" />
+	<event load="FEDERATION_SHIPCLASS_ARGUE" />
+	<event load="FEDERATION_SHIPCLASS_ARGUE" />
+	<event>
+		<text>"その方が...しっくりこない。今となっては、何の意味があるのだろう？戦争そのものが新たな形を取り、そのお返しに適応していったように、私たちは文明として進歩し、自分たちの思うとおりに条件を適応させてきたということなのだろう。過去にこだわることで、私は現在のルールを忘れるようになった......。試しにこれを受け取ってくれ"</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+</eventList>
+<event name="FEDERATION_SHIPCLASS_ARGUE">
+	<text>「なんですって？それは、あなたの船に使う言葉としてもふさわしくない！最近、我々の過去をわざわざ研究して、その明らかな誤解の問題を正そうとする者はいないのか？"</text>
+	<choice>
+		<text>そんなことでケチをつける必要はない。</text>
+		<event>
+			<text>「ペティ？私はあなたのような落ちぶれたレネゲイドにバカにされるために歴史愛好家になったんじゃない！よくもそんなふうに私を馬鹿にしたものだ。お前の居場所を教えてやる！"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>この男が発砲する不合理な口実を思いつく前に、立ち去れ。</text>
+		<event />
+	</choice>
+</event>
+
+<eventList name="DISTRESS_FEDERATION">
+	<event load="DISTRESS_FEDERATION_COLONY_HOSTAGE" />
+	<event load="DISTRESS_FEDERATION_EMBASSY" />
+</eventList>
+
+<event name="DISTRESS_FEDERATION_COLONY_HOSTAGE" unique="true">
+	<distressBeacon />
+	<text>このビーコンに到着すると、そこには連邦船と、旧式のテクノロジーを搭載した奇妙な重装甲輸送船がいた。連邦船から呼び出しがかかる。「フリーモン提督だ。重大な危機が迫っている。あの海賊輸送船には重要な人質が乗っており、発砲するわけにはいかない。連邦将校は間を置き、こう続ける。「要求が満たされなければ、軌道上からコロニーを攻撃すると脅している。</text>
+	<img planet="PLANET_POPULATED" />
+    <choice>
+		<text>次へ...</text>
+		<event>
+			<text>フリモン提督はため息をつく。「彼らの要求のひとつは強力な船で、それを奪う手段を持っている。もし戦えるほど接近しようものなら、彼らは搭乗ポッドを送り込み、船を乗っ取ろうとするだろう。だが、大勢の攻撃者に対処できれば、反撃に転じることができ、人質を救えるかもしれない。やってくれるか？"</text>
+			<choice>
+				<text>海賊を引き受けることに同意する。</text>
+				<event>
+					<text>「幸運を祈るよ、レネゲイド。何をすべきかわかっているはずだ。搭乗ポッドが 猛スピードで 向かってくる戦いの準備をするんだ！</text>
+					<choice req="BLUELIST_DRONES_DEFENSE_STRONG">
+						<text>(強力防衛ドローン）防衛ドローンでポッドの撃墜を試みる。</text>
+						<event>
+							<text>あなたの防衛ドローンは接近してくるポッドに向かって発射する。ポッドはタフだが、あなたのドローンは到着前にポッドの1つを破壊するのに十分なパワーがある。もう1機はまだ突破を試みている！</text>
+							<boarders min="1" max="1" class="LIST_CREW_PIRATE_RANDOM" />
+							<damage amount="0" system="room" effect="breach" />
+							<variable name="loc_colony_drone_deployed" op="set" val="1" />
+							<item_modify>
+								<item type="drones" min="-1" max="-1" />
+							</item_modify>
+							<triggeredEvent event="FEDERATION_BOARDINGPODS_WAVE2" time="12" thisFight="false" clearOnJump="true">
+								<triggeredEventBox load="DEFAULT_SMALL">
+									<tooltip>さらに搭乗ポッドが近づいてくる！</tooltip>
+								</triggeredEventBox>
+								<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+							</triggeredEvent>
+						</event>
+					</choice>
+					<choice req="BLUELIST_DRONES_DEFENSE_WEAK">
+						<text>(弱い防衛ドローン）防衛ドローンでポッドの撃墜を試みる。</text>
+						<event load="FEDERATION_WEAK_DEFENSE_1" />
+					</choice>
+					<choice req="LIST_CHECK_ENERGY_SHIELD" lvl="1" blue="false">
+						<text>次へ...</text>
+						<event>
+							<text>ポッドはエナジーシールドに衝撃を与える。残念ながら、トンネルに入るのを阻止することはできなかった。戦わなければならない！</text>
+							<boarders min="2" max="2" class="LIST_CREW_PIRATE_RANDOM" />
+							<damage amount="0" system="room" effect="breach" />
+							<triggeredEvent event="FEDERATION_BOARDINGPODS_WAVE2" time="12" thisFight="false" clearOnJump="true">
+								<triggeredEventBox load="DEFAULT_SMALL">
+									<tooltip>さらに搭乗ポッドが近づいてくる！</tooltip>
+								</triggeredEventBox>
+								<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+							</triggeredEvent>
+						</event>
+					</choice>
+					<choice req="LIST_CHECK_ENERGY_SHIELD" lvl="0" max_lvl="0" blue="false">
+						<text>次へ...</text>
+						<event>
+							<text>最初の2隻のポッドが船体を突き破る。戦いだ！</text>
+							<boarders min="2" max="2" class="LIST_CREW_PIRATE_RANDOM" />
+							<damage amount="0" system="room" effect="breach" />
+							<triggeredEvent event="FEDERATION_BOARDINGPODS_WAVE2" time="12" thisFight="false" clearOnJump="true">
+								<triggeredEventBox load="DEFAULT_SMALL">
+									<tooltip>さらに搭乗ポッドが近づいてくる！</tooltip>
+								</triggeredEventBox>
+								<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+							</triggeredEvent>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>フリーモンに、君のクルーはまだ準備ができていないと伝えてくれ。</text>
+				<event>
+					<text>「それが無理なら、別の方法を考えよう。幸運を祈る"</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+    </choice>
+</event>
+<event name="FEDERATION_BOARDINGPODS_WAVE2">
+    <text>さらに3機の搭乗ポッドが船体に向かって突っ込んでくる。海賊は本気で船を奪おうとしている。</text>
+    <choice req="BLUELIST_DRONES_DEFENSE_STRONG"> 
+		<text>(強力防衛ドローン）防衛ドローンでポッドの撃墜を試みる。</text>
+		<event>
+			<text>あなたの防衛ドローンは迫り来るポッドに向かって発射する。ポッドは手ごわいが、あなたのドローンは十分な威力があり、ポッドの1つをあなたに到達する前に破壊することができる。残りの2機はまだ突破を試みている！</text>
+			<boarders min="2" max="2" class="LIST_CREW_PIRATE_RANDOM" />
+			<damage amount="0" system="room" effect="breach" />
+			<variable name="loc_colony_drone_deployed" op="set" val="1" />
+			<item_modify>
+				<item type="drones" min="-1" max="-1" />
+			</item_modify>
+			<triggeredEvent event="FEDERATION_BOARDINGPODS_WAVE3" time="15" thisFight="false" clearOnJump="true">
+				<triggeredEventBox load="DEFAULT_SMALL">
+					<tooltip>さらに搭乗ポッドが近づいてくる！</tooltip>
+				</triggeredEventBox>
+				<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+			</triggeredEvent>
+		</event>
+    </choice>
+	<choice req="DEFENSE_STRONG_DEPLOYED"> 
+		<text>(強力防衛ドローン）防衛ドローンでポッドの撃墜を試みる。</text>
+		<event>
+			<text>あなたの防衛ドローンは迫り来るポッドに向かって発射する。ポッドは手ごわいが、あなたのドローンは十分な威力があり、ポッドの1つをあなたに到達する前に破壊することができる。残りの2機はまだ突破を試みている！</text>
+			<boarders min="2" max="2" class="LIST_CREW_PIRATE_RANDOM" />
+			<damage amount="0" system="room" effect="breach" />
+			<triggeredEvent event="FEDERATION_BOARDINGPODS_WAVE3" time="15" thisFight="false" clearOnJump="true">
+				<triggeredEventBox load="DEFAULT_SMALL">
+					<tooltip>さらに搭乗ポッドが近づいてくる！</tooltip>
+				</triggeredEventBox>
+				<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+			</triggeredEvent>
+		</event>
+    </choice>
+	<choice req="BLUELIST_DRONES_DEFENSE_WEAK"> 
+		<text>(弱い防衛ドローン）防衛ドローンでポッドの撃墜を試みる。</text>
+		<event>
+			<text>あなたはついにドローンを配備することを決めた...。</text>
+			<item_modify>
+				<item type="drones" min="-1" max="-1" />
+			</item_modify>
+			<variable name="loc_colony_drone_weak_deployed" op="set" val="1" />
+			<choice>
+				<text>次へ...</text>
+				<event load="FEDERATION_WEAK_DEFENSE_2" />
+			</choice>
+		</event>
+    </choice>
+	<choice req="DEFENSE_WEAK_DEPLOYED"> 
+		<text>(弱い防衛ドローン）防衛ドローンでポッドの撃墜を試みる。</text>
+		<event load="FEDERATION_WEAK_DEFENSE_2" />
+    </choice>
+    <choice>
+		<text>次へ...</text>
+		<event>
+			<text>3隻のポッドがすべてあなたの船に侵入。さらに多くのポッドが向かってくるに違いない！</text>
+			<boarders min="3" max="3" class="LIST_CREW_PIRATE_RANDOM" />
+			<damage amount="0" system="room" effect="breach" />
+			<triggeredEvent event="FEDERATION_BOARDINGPODS_WAVE3" time="15" thisFight="false" clearOnJump="true">
+				<triggeredEventBox load="DEFAULT_SMALL">
+					<tooltip>さらに搭乗ポッドが近づいてくる！</tooltip>
+				</triggeredEventBox>
+				<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+			</triggeredEvent>
+		</event>
+    </choice>
+</event>
+<eventList name="FEDERATION_WEAK_DEFENSE_1">
+    <event>
+		<text>防御ドローンが一撃を放つが、無駄だ。搭乗しているクルー全員と戦わなければならない！</text>
+		<boarders min="2" max="2" class="LIST_CREW_PIRATE_RANDOM" />
+		<damage amount="0" system="room" effect="breach" />
+		<variable name="loc_colony_drone_weak_deployed" op="set" val="1" />
+		<item_modify>
+			<item type="drones" min="-1" max="-1" />
+		</item_modify>
+		<triggeredEvent event="FEDERATION_BOARDINGPODS_WAVE2" time="12" thisFight="false" clearOnJump="true">
+			<triggeredEventBox load="DEFAULT_SMALL">
+				<tooltip>さらに搭乗ポッドが近づいてくる！</tooltip>
+			</triggeredEventBox>
+			<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+		</triggeredEvent>
+    </event>
+    <event>
+		<text>防衛ドローンの1発目はポッドの1つをよろめかせ、2発目はポッドを叩き落とし、搭乗ポッドをコースアウトさせることに成功する。もう一方のポッドにはまだ対処しなければならない！</text>
+		<boarders min="1" max="1" class="LIST_CREW_PIRATE_RANDOM" />
+		<damage amount="0" system="room" effect="breach" />
+		<variable name="loc_colony_drone_weak_deployed" op="set" val="1" />
+		<item_modify>
+			<item type="drones" min="-1" max="-1" />
+		</item_modify>
+		<triggeredEvent event="FEDERATION_BOARDINGPODS_WAVE2" time="12" thisFight="false" clearOnJump="true">
+			<triggeredEventBox load="DEFAULT_SMALL">
+				<tooltip>さらに搭乗ポッドが近づいてくる！</tooltip>
+			</triggeredEventBox>
+			<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+		</triggeredEvent>
+    </event>
+</eventList>
+
+<eventList name="FEDERATION_WEAK_DEFENSE_2">
+    <event>
+		<text>防御ドローンが一撃を放つが、無駄だ。搭乗しているクルー全員と戦わなければならない！</text>
+		<boarders min="3" max="3" class="LIST_CREW_PIRATE_RANDOM" />
+		<damage amount="0" system="room" effect="breach" />
+		<triggeredEvent event="FEDERATION_BOARDINGPODS_WAVE3" time="15" thisFight="false" clearOnJump="true">
+			<triggeredEventBox load="DEFAULT_SMALL">
+				<tooltip>さらに搭乗ポッドが近づいてくる！</tooltip>
+			</triggeredEventBox>
+			<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+		</triggeredEvent>
+    </event>
+    <event>
+		<text>防衛ドローンの1発目はポッドの1つをよろめかせ、2発目はポッドを叩き落とし、搭乗ポッドをコースアウトさせることに成功する。まだ他のポッドを処理しなければならない！</text>
+		<boarders min="2" max="2" class="LIST_CREW_PIRATE_RANDOM" />
+		<damage amount="0" system="room" effect="breach" />
+		<triggeredEvent event="FEDERATION_BOARDINGPODS_WAVE3" time="15" thisFight="false" clearOnJump="true">
+			<triggeredEventBox load="DEFAULT_SMALL">
+				<tooltip>さらに搭乗ポッドが近づいてくる！</tooltip>
+			</triggeredEventBox>
+			<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+		</triggeredEvent>
+    </event>
+</eventList>
+<eventList name="FEDERATION_WEAK_DEFENSE_3">
+    <event>
+		<text>防御ドローンが一撃を放つが、無駄だ。搭乗しているクルー全員と戦わなければならない！</text>
+		<boarders min="4" max="4" class="LIST_CREW_PIRATE_RANDOM" />
+		<damage amount="0" system="room" effect="breach" />
+    </event>
+    <event>
+		<text>防衛ドローンの1発目はポッドの1つをよろめかせ、2発目はポッドを叩き落とし、搭乗ポッドをコースアウトさせることに成功する。まだ他のポッドを処理しなければならない！</text>
+		<boarders min="3" max="3" class="LIST_CREW_PIRATE_RANDOM" />
+		<damage amount="0" system="room" effect="breach" />
+    </event>
+</eventList>
+
+<event name="FEDERATION_BOARDINGPODS_WAVE3">
+    <text>船の奪取に全力を尽くしている。さらに4機のポッドが接近中！</text>
+    <triggeredEvent event="FEDERATION_BOARDINGPODS_WIN" thisFight="false" clearOnJump="true">
+		<enemyCrew amount="0" includeClonebay="false" />
+	</triggeredEvent>
+    <choice req="BLUELIST_DRONES_DEFENSE_STRONG"> 
+		<text>(強力防衛ドローン）防衛ドローンでポッドの撃墜を試みる。</text>
+		<event>
+			<text>防衛ドローンは迫り来るポッドに向かって発射する。ポッドはタフだが、防衛ドローンの威力は十分で、ポッドのうち1機を先に破壊する。残りの3機はまだ突破を試みている。これで終わりだ！</text>
+			<boarders min="3" max="3" class="LIST_CREW_PIRATE_RANDOM" />
+			<damage amount="0" system="room" effect="breach" />
+			<variable name="loc_colony_drone_deployed" op="set" val="1" />
+			<item_modify>
+				<item type="drones" min="-1" max="-1" />
+			</item_modify>
+		</event>
+    </choice>
+	<choice req="DEFENSE_STRONG_DEPLOYED"> 
+		<text>(強力防衛ドローン）防衛ドローンでポッドの撃墜を試みる。</text>
+		<event>
+			<text>あなたの防衛ドローンは向かってくるポッドに向かって発射する。ポッドはタフだが、防衛ドローンの威力は十分で、ポッドのうち1機を先に破壊する。残りの3機はまだ突破を試みている。いよいよだ！</text>
+			<boarders min="3" max="3" class="LIST_CREW_PIRATE_RANDOM" />
+			<damage amount="0" system="room" effect="breach" />
+		</event>
+    </choice>
+	<choice req="BLUELIST_DRONES_DEFENSE_WEAK"> 
+		<text>(弱い防衛ドローン）防衛ドローンでポッドの撃墜を試みる。</text>
+		<event>
+			<text>あなたはついにドローンを配備することを決めた...。</text>
+			<item_modify>
+				<item type="drones" min="-1" max="-1" />
+			</item_modify>
+			<variable name="loc_colony_drone_deployed" op="set" val="1" />
+			<choice>
+				<text>次へ...</text>
+				<event load="FEDERATION_WEAK_DEFENSE_3" />
+			</choice>
+		</event>
+    </choice>
+	<choice req="DEFENSE_WEAK_DEPLOYED"> 
+		<text>(弱い防衛ドローン）防衛ドローンでポッドの撃墜を試みる。</text>
+		<event load="FEDERATION_WEAK_DEFENSE_3" />
+    </choice>
+    <choice>
+		<text>次へ...</text>
+		<event>
+			<text>4つのポッドすべてがあなたの船に侵入する。これだ！</text>
+			<boarders min="4" max="4" class="LIST_CREW_PIRATE_RANDOM" />
+			<damage amount="0" system="room" effect="breach" />
+		</event>
+    </choice>
+</event>
+<event name="FEDERATION_BOARDINGPODS_WIN">
+    <text>「フリーモンだ。人質の確保に成功した。君たちの活躍に感謝する。我々は全員を安全な場所に連れて行くつもりだ。海賊の船には軍用装備があった。"欲しければ、君のものだ"提督がクルーに海賊の荷物を持ってこさせると、そのうちの一人がさらわれた子供からの礼状を渡す。</text>
+    <autoReward level="HIGH">weapon</autoReward>
+	<variable name="loc_colony_drone_deployed" op="set" val="0" />
+	<variable name="loc_colony_drone_weak_deployed" op="set" val="0" />
+    <choice>
+		<text>次へ...</text>
+		<event load="MORALITY_REMOVE_GENERAL" />
+    </choice>
+</event>
+
+<event name="DISTRESS_FEDERATION_EMBASSY" unique="true">
+	<distressBeacon />
+	<text>繰り返される遭難信号が、あなたを地元省大使館へと導く。ここで救難信号を見つけるのは驚くべきことだが、駅の外にダスクブリンガー船が停泊しているため、さらに不安になる。</text>
+	<ship load="SHIP_DUSK_FED_EMBASSY" hostile="false" /> 
+	<choice hidden="true">
+		<text>大使館に乗り込む。</text>
+		<event>
+			<text>あなたは2つある格納庫のうちの1つにこっそりとドッキングし、中央ロビーに向かう。到着すると、無数の民間人と警備員（主に省人だが、他の種族も多数）が縛られ、猿ぐつわをされていた。数人の警備員が銃を構えて立っているが、民間人を危険にさらすことなく行動することはできない。完全武装したダスクブリンガーのチームが数人の役人の頭に銃を突きつけ、リーダーが前後に行進している。「我々の種族が自己満足に浸る時代は終わった！ゾルタン族は灰燼に帰した文明の灰の中から立ち上がったのではない！統一連盟は神話だ今こそ我々が立ち上がり、星々の中で正当な地位を主張する時だ！」。ゾルタンは、まるでどこかで聞いた演説を復唱するかのように、硬い口調で話す。</text>
+			<choice hidden="true">
+				<text>ダスクブリンガーを撃つ。</text>
+				<event load="FED_EMBASSY_KILL" />
+			</choice>
+			<choice req="unique_devorak" hidden="true">
+				<text>(デボラック）状況をデスカレートさせる。</text>
+				<event load="FED_EMBASSY_DEVORAK" />
+			</choice>
+			<choice hidden="true">
+				<text>正体を明かし、ダスクブリンガーと議論を試みる。</text>
+				<event load="FED_EMBASSY_DEBATE" />
+			</choice>
+			<choice hidden="true">
+				<text>この瞬間に去るんだ。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>大使館は避ける。</text>
+		<event>
+			<text>これは、関わる価値があるというには、あまりにもリスクが高すぎる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FED_EMBASSY_MESSY">
+	<text>大使館員はあなたの介入を快く思っていない。「なぜ連邦はレネゲイドを雇おうとするのですか？彼らはあなた方のように他人の命を無謀に扱います！この人たちは誰も死ぬ必要はなかった。</text>
+	<choice hidden="true">
+		<text>謝って立ち去る。</text>
+		<event>
+			<text>ゾルタンがあなたの謝罪を受け入れていないことはわかるが、少なくともわめき散らすのをやめ、事態の収拾に向かった。</text>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>あなたは状況をまったくコントロールできていなかった！</text>
+		<event>
+			<text>あなたの無神経な対応は、ゾルタンをさらに怒らせるだけだ。「あなたが決めることではないわ。今、我々は外交上の悪夢を目の当たりにしている。君を雇っただけでなく、君のようなタイプの人間を合法的にこの銀河に存在させているプロジェクトが、君がこのような行動をとったときに、支援を受け続けられると本当に思っているのか？"事態がさらに悪化する前に、あなたはその場を去るのが最善だと考えた。</text>
+			<choice>
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ZOLTAN" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>報酬としてスクラップを提供する。</text>
+		<event>
+			<text>「スクラップ30枚で償えると本気で思っているのか？お前の無謀な行動のせいで、少なくとも12人が死んだんだぞ」。ゾルタンは両手を頭の上に置き、行ったり来たりしている。「遺族への弁償はおろか、物的損害の補填にもならない。いいから...行け。ここに用はない"</text>
+			<item_modify>
+				<item type="scrap" min="-30" max="-30" />
+			</item_modify>
+		</event>
+	</choice>
+</event>
+<eventList name="FED_EMBASSY_KILL">
+	<event>
+		<text>ブラスターを抜き、ダスクブリンガーの胸を撃つ。無言の待ち伏せにまったく準備ができていなかったダスクブリンガーは、爆発ベストを起動させる前に死んだ。側にいた警備員たちも戦いに加わり、あなたは驚くほど早くダスクブリンガーを一掃することに成功する。脅威は一掃され、大使館の職員はあなたに報酬を支払う。</text>
+		<autoReward level="HIGH">augment</autoReward>
+	</event>
+	<event load="FED_EMBASSY_BAD" />
+	<event load="FED_EMBASSY_BAD" />
+</eventList>
+<event name="FED_EMBASSY_BAD">
+	<text>残念なことに、危険な動きはすぐに狂う。ダスクブリンガーは素早く反応し、爆発ベストを作動させ、何人もの人質を殺害する。警備兵が戦いに加わる中、あなたは船へ退却し、外にいる敵対的な船を撃退することを余儀なくされる。</text>
+	<ship hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="FED_EMBASSY_GOOD">
+	<text>大使館の責任者までが、あなたの助けを求めて握手を求めてきた。「今日、流血が起きたのは残念だ。君は銃ではなく言葉で相手を武装解除させた。あなたが彼らを説得して彼らのやり方を捨てさせることができたとは思えないが、我々の種の多くは古い原則を捨てたようだ。いずれにせよ、これが報酬だ」。</text>
+	<crewMember amount="1" class="zoltan_peacekeeper" />
+	<autoReward level="HIGH">augment</autoReward>
+	<choice>
+		<text>次へ...</text>
+		<event load="MORALITY_REMOVE_ZOLTAN" />
+	</choice>
+</event>
+<event name="FED_EMBASSY_DEVORAK">
+    <text>デボラックは、皆の頭を回転させながら、表に出てくる。"我々は決して声なきものではない、兵士よ。魔法省が評議会に座るということは、細心の注意を払うということだ。若い種族が決して取らないほどの用心深さだ」
+「将軍？なぜここに？レネゲイドの船に？"
+
+"身を引け、兵士。これは命令だ。言いたいことは分かった。人質を解放して立ち去れ」
+
+"しかし、我々は...これは..."ダスクブリンガーは目に見えて姿勢を緩める。"そうです、将軍。...たとえあなた方が誰も死ななかったとしても、このことは忘れないでしょう"</text>
+    <choice>
+        <text>ゾルタンと話す。</text>
+        <event>
+            <text>"信じられない、平和的に解決したのか？"ゾルタンは畏敬の念を抱く。"これが報酬だ。そして、反乱軍とのこの仕事の後、ここでのポジションを提供できるかもしれない"
+
+"私...何？あなたが...？"デヴォラックは完全に油断しているようだ。"あなたは...私が誰だか知っていますね...？"</text>    
+            <crewMember amount="1" class="zoltan_peacekeeper" />
+            <autoReward level="HIGH">augment</autoReward>
+            <choice>
+                <text>次へ...</text>
+                <event load="MORALITY_REMOVE_ZOLTAN" />
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="FED_EMBASSY_DEBATE">
+	<event>
+		<text>あなたの存在が突然明らかになったことで、ダスクブリンガーたちは不意を突かれた。しかし、彼らが人質に危害を加える前に、あなたは両手を上げて、少なくともまだ攻撃するつもりはないことを示す。ダスクブリンガーのリーダーは笑い、両手を大きく広げる。「見てみろ！レネゲイドの道化師が、今日は我々を楽しませてくれることになった！教えてくれ、銃を振り回す野獣よ。どんな知恵を授けてくれるんだい？"</text>
+		<choice hidden="true">
+			<text>あなた方のイデオロギーは邪悪であり、かつてのより良い銀河系が目指したものすべてに反している！</text>
+			<event>
+				<text>「我々のイデオロギーが邪悪だと主張するのは、ダスクブリンガー運動の目的を理解していない証拠に過ぎない！単純なレネゲイドには、そのような壮大な絵は理解できない。我々はより良い銀河を目指す者たちだ。我々がそうでなければ、他の誰がそうなんだ？"ゾルタンは微笑んだ。自分がどんな壮大な絵を代表しているのか、説明しようとはしなかったにもかかわらず。しかし、メッセージは明確だ。</text>
+				<choice hidden="true">
+					<text>プランBの時間だ！</text>
+					<event load="FED_EMBASSY_BAD" />
+				</choice>
+				<choice hidden="true">
+					<text>とにかく行こう</text>
+					<event />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>ゾルタン至上主義者だと言うのなら、なぜ多くの同族の命を危険にさらすのか？</text>
+			<event>
+				<text>ダスクブリンガーが熟考する間、しばしの間が空いたが、巧みな返答を思いついたようだ。「我々の運動の本質は、この銀河系に優れた生命体のための場所を作ることだ。しかし、全てのゾルタンがそうだというわけではない。我々がこの邪悪な偽りの平和の神殿で見つけた者たちは、自分たちの種族を裏切り、より劣った存在と手を携えて働いてきた。ダスクブリンガーはにっこり微笑む。この知的戦争に勝つ必要はない。彼が警戒を解くのに十分な時間、注意をそらせばいいのだ。</text>
+				<choice hidden="true">
+					<text>しかし、どの存在が優れていて、どの存在が優れていないかを誰が本当に決めることができるのか？何をもって判断するのか？</text>
+					<event>
+						<text>「フン。私たちが審判なのは、私たちだけが行動を起こそうとしているからだ。もし銀河系がもっと早くこのシフトを起こせたなら、ダスクブリンガーは全く必要なかっただろう。銀河系はすでにゾルタンを優れた種族として受け入れているはずだ。我々は優れた技術、優れた文化、優れた頭脳を持っている。確かに、より強い種族や特定の環境に適応した種族は存在する。ただ、トップにはなれないだろう。だが、ダスクブリンガーにしかわからないことだ」。</text>
+						<choice hidden="true">
+							<text>つまり、あなたたちはジャッジではないのだ。</text>
+							<event>
+								<text>"俺たちは過激派じゃない！"ダスクブリンガーは仲間を押しのけ、あなたに向かって突進する。「我々の運動を侮辱するとは何事だ！過激派とは、自分たちのイデオロギーを事実で裏付けることができず、極端な手段に訴える人たちのことだ！ダスクブリンガーは極端でも、裏付けがないわけでもない。我々は何百万もの力を持ち、成長している。我々のやり方は、我々に直接反対する者以外には害を与えない。お前たちはレネゲイドの汚物でしかない。誰がそんなことを言うんだ？政治を知らない、知らない......」。ダスクブリンガーが気を取られている間に衛兵が発砲したため、ゾルタンは突然の銃撃に遮られた。ダスクブリンガーは人質を狙う前に一掃され、大使館員はあなたの助けを認め、報酬を申し出たようだ。</text>
+								<choice hidden="true">
+									<text>報酬を受け取れ。</text>
+									<event load="FED_EMBASSY_GOOD" />
+								</choice>
+							</event>
+						</choice>
+						<choice hidden="true">
+							<text>あなた方の技術は廃墟から再利用されたものであり、あなた方の精神が優れているわけでもなく、より優れた文化という指標もない。</text>
+							<event>
+								<text>"我々の技術はすべて祖先の肩から受け継いだもので、我々の多元宇宙全体が古代帝国の遺跡の上に築かれている。重要なのは、我々ゾルタンがそれを利用できたということだ。他に誰がハードライトシールドやマインドアップロードを使えると思う？我々の精神が優れているのは間違いない。シェルの方が科学的な理解力は高いかもしれないが、外交や哲学的なことは理解できない。それに文化に関しても......あなたには全く文化がないとしか思えない」。ゾルタンは自分の冗談に苦笑する。あなたは彼を油断させることに失敗したようだ。</text>
+								<choice hidden="true">
+									<text>プランBの時間だ！</text>
+									<event load="FED_EMBASSY_BAD" />
+								</choice>
+								<choice hidden="true">
+									<text>とにかく行こう</text>
+									<event />
+								</choice>
+							</event>
+						</choice>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>ただのバカだ！そんなことを考えるあなたは明らかに劣っている。</text>
+					<event>
+						<text>「こうして知恵比べは短命に終わった！残念なことだが、些細な侮辱に頼る必要があるということは、あなた自身の負けを認めたと受け止めよう」。</text>
+						<choice hidden="true">
+							<text>プランBの時間だ！</text>
+							<event load="FED_EMBASSY_BAD" />
+						</choice>
+						<choice hidden="true">
+							<text>とにかく行こう</text>
+							<event />
+						</choice>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>鼻をほじって、わからないふりをする。</text>
+					<event>
+						<text>鼻をほじったり、背中を掻いたりする以外にはまったく動かず、黙って立っている。ダスクブリンガーは完全に混乱しているようだ。"あの...私の話を聞いていますか？脳か何かのスイッチが切れたのか？"あなたは何も言わず、ぼんやりと前方を見つめている。ダスクブリンガー一行は互いにつぶやき始め、目の当たりにしていることに困惑している。その隙に衛兵が駆けつけ、事態を掌握する。ダスクブリンガーたちは人質を狙う前に一掃され、大使館の職員はあなたの助けを認め、報酬を申し出たようだ。</text>
+						<choice hidden="true">
+							<text>報酬を受け取れ。</text>
+							<event load="FED_EMBASSY_GOOD" />
+						</choice>
+						<choice hidden="true">
+							<text>黙って長くそこに立っている。</text>
+							<event>
+								<text>大使館の職員たちはダスクブリンガーを阻止したことを祝福しようとするが、あなたはそれを無視して遠くを見つめ続ける。そうしているうちに、自分がなぜそこにいたのかさえ忘れてしまい、ついにはクルーに引きずられて船に戻る羽目になる。ゾルタン人は困惑していたが、とにかくあなたに報酬を渡した。</text>
+								<crewMember amount="1" class="zoltan_peacekeeper" />
+								<autoReward level="HIGH">augment</autoReward>
+								<choice>
+									<text>次へ...</text>
+									<event load="MORALITY_REMOVE_ZOLTAN" />
+								</choice>
+							</event>
+						</choice>
+					</event>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>もしこの市民を解放してくれたら、私たちはあなた方全員に無料でクッキーを差し上げます。</text>
+			<event>
+				<text>"魅力的ではあるが...君の申し出は断らせてもらうよ」。ゾルタンは鼻で笑う。"クッキー、本当に？それが君の最高の申し出かい？うわぁ。それはちょっと悲しいな"</text>
+				<choice hidden="true">
+					<text>プランBの時間だ！</text>
+					<event load="FED_EMBASSY_BAD" />
+				</choice>
+				<choice hidden="true">
+					<text>とにかく行こう</text>
+					<event />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>言おうとしていたことを忘れてしまった。</text>
+			<event>
+				<text>ダスクブリンガーはまばたきをして、具体的にどうあなたを侮辱したいのかわからない。代わりに、彼はただ笑う。「お前は今まで見た中で最も哀れな存在だ。レネゲイドのIQは、"バカ "という言葉を綴ることができるマンティスの数と同じに違いない」。</text>
+				<choice hidden="true">
+					<text>プランBの時間だ！</text>
+					<event load="FED_EMBASSY_BAD" />
+				</choice>
+				<choice hidden="true">
+					<text>とにかく行こう</text>
+					<event />
+				</choice>
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+
+
+<eventList name="QUESTS_FEDERATION"> 
+	<event load="FEDERATION_SHIP_STOLEN" />
+</eventList>
+
+<event name="FEDERATION_SHIP_STOLEN" unique="true">
+    <text>黒焦げになり、煙を上げる格納庫が、かろうじて機能している。"救援を待っていたのだが...""本当にひどい知らせだ！連邦の船が連合に拿捕されました！何とかしてください！彼らが何をしようとしているのか見当もつきませんが、何を企んでいるにせよ、あってはならないことです！"</text>
+    <choice>
+        <text>彼らの要求に同意する。</text>
+        <event>
+            <text>"まだ彼らの船を追跡することができます...幸いにも、我々は彼らの逃亡で全員殺されませんでした。急いでください！"</text>
+            <quest event="FEDERATION_SHIP_STOLEN_QUEST" />
+        </event>
+    </choice>
+    <choice>
+        <text>私たちは助けられない。</text>
+        <event>
+            <text>「正気か？この任務の重要性は......いや、申し訳ない。君の任務も重要なのは分かっている。他の誰かを探そう"</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="FEDERATION_SHIP_STOLEN_QUEST">
+    <beaconType id="map_icon_quest" global="true">
+        <color r="69" g="168" b="235" a="1" />
+        <unvisitedTooltip>連合は連邦の船を拿捕し、現在このビーコンにいる。</unvisitedTooltip>
+    </beaconType>
+    <text>占領された連邦艦が連邦軍ステーションに接近している。しかし、あなたがセンサー範囲内に入ると、すぐに離脱し、代わりにあなたの船に向かいます！</text>
+    <ship load="SHIP_FED_STOLEN" hostile="true" />
+    <choice>
+        <text>次へ...</text>
+        <event load="COMBAT_CHECK" />
+    </choice>
+</event>
+
+
+<eventList name="HOSTILE_FEDERATION">
+	<event load="ENCOUNTER_FED_SALVAGE" />
+	<event load="ENCOUNTER_FED_REBELTAKEOVER" />
+	
+	<event load="ENCOUNTER_REBEL" />
+	<event load="ENCOUNTER_REBEL" />
+</eventList>
+
+<event name="ENCOUNTER_FED_SALVAGE" unique="true">
+	<text>あなたは近くで連邦船の残骸を発見した。引き揚げを検討する間もなく、別の連邦船が飛び込んできて現場を調査し、船の破壊をあなたのせいにする！</text>
+	<ship load="SHIP_FED_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_FED_REBELTAKEOVER" unique="true">
+	<text>近くの連邦船から緊急の呼び出しを受ける。"助けてくれ、反乱軍が船を乗っ取った！"通話は突然途絶え、船は敵意をむき出しにする！</text>
+	<ship load="SHIP_FED_REBELTAKEOVER" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="REBELTAKEOVER_SURRENDER">
+	<text>反乱軍の新しい "艦長 "があなたに声をかける。"よし、十分な損害を与えた。元のクルーの最後の生き残りは助けてやる"</text>
+	<choice>
+		<text>彼らを助けることに同意する。</text>
+		<event>
+			<crewMember amount="1" class="human" />
+			<ship hostile="false" /> 
+		</event>
+	</choice>
+	<choice>
+		<text>連邦軍が1人死ねば、さらに多くの反乱軍が死ぬことになる。</text>
+		<event />
+	</choice>
+</event>
+<event name="REBELTAKEOVER_DESTROY">
+	<text>あなたは連邦の船を破壊し、反乱軍と連邦のクルーも破壊した。残骸を引き揚げろ。</text>
+	<autoReward level="MED">standard</autoReward>
+</event>
+<event name="REBELTAKEOVER_DEADCREW">
+	<text>あなたは反乱軍のクルーを皆殺しにした。船を引き揚げる際、旧連邦クルーの1人の遺体に気づく。あなたは彼らがまだ生きていることに気づき、立ち上がるのを助ける。洗浄と応急処置の後、彼らは新品同様となり、あなたの船で奉仕する準備が整った。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<crewMember amount="1" class="human" />
+</event>
+
+
+<event name="STEALTH_UNLOCK_1" unique="true">
+	<preventQuest />
+	<text>連邦とエンギの小艦隊の近くに到着。通信周波数を解読・翻訳したところ、彼らは明らかに何か困っていることについて必死に話し合っているようだ。</text> 
+	<choice>
+		<text>彼らにメッセージを送り、手伝うことができるかどうか尋ねる。</text>
+		<event>
+			<text>あなたの質問に少しショックを受けたリーダーは、すぐにこう答えた。話題は私的なものであり、多元宇宙の自警団には関係ない」。</text>
+		</event>
+	</choice>
+	<choice>
+		<text>無視して次に進む。</text>
+		<event>
+			<text>ジャンプの準備をしながら、彼らは何を話し合っていたのだろうと思わずにはいられない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice req="LIST_CREW_HARMONY" hidden="true">
+		<text>(ハーモニークルー）エンジのクルーに連絡させる。</text>
+		<event>
+			<text>クルーが通信機と同期し、彼らと直接交信する。あなたは自分の助けと船の任務の概要を申し出る。彼らは「我々の目標には類似した要素がある。しかし、すべてを開示できるわけではありません。</text>
+			<choice>
+				<text>協力を申し出る。</text>
+				<event>
+					<text>"秘密プロトタイプがマンティスによって盗まれ、反乱軍との注目の取引が始まった。貨物船の位置は不明"マンティス・スズランがプロトタイプの 所在を伝えるため 反乱軍基地へ派遣された既知のデータ転送場所を送信中"</text>
+					<quest event="STEALTH_UNLOCK_2REAL" />
+					<choice>
+						<text>次へ...</text>
+						<event>
+							<quest event="STEALTH_UNLOCK_2FAKE" />
+							<text>"しかし、マンティス艦は2番目の基地で停止している可能性がある。転移の確率を計算したいが データ不足だ反乱軍とエネギの衝突は避けたい。また、軍艦を手に入れる時間が必要だ。技術発見の支援は？"</text>
+							<choice>
+								<text>同意する。</text>
+								<event />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_STEALTH_UNLOCK_FAKE" auto_blueprint="LIST_SHIPS_REBEL_ELITE_GENERIC">
+	<escape timer="40" min="18" max="18">
+		<text>彼らはあなたを見るやいなや、エンジンをパワーアップして飛び去ろうとする。止めろ！</text>
+		<ship hostile="true" />
+	</escape>
+	<gotaway>
+		<text>船がいなくなったので、あなたは廃墟と化した基地を捜索し、目的地の痕跡を探したが、何も見つからなかった。</text>
+	</gotaway>
+	<surrender min="4" max="4" load="STEALTH_UNLOCK_2FAKE_SURRENDER" />
+	<destroyed>
+		<text>瓦礫からできるものを取るんだ。</text>
+		<autoReward level="MED">standard</autoReward>
+	</destroyed>
+	<deadCrew>
+		<text>通信ログを調べたところ、あなたが探していた技術者はこの基地を通過していないことがわかりました。おとりだったに違いない！できることを片付け、ジャンプの準備をする。</text>
+		<autoReward level="MED">standard</autoReward>
+	</deadCrew>
+</ship>
+<event name="STEALTH_UNLOCK_2FAKE">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>盗まれたと思われるエンジのプロトタイプの場所。</unvisitedTooltip>
+	</beaconType>
+	<text>エンギが教えてくれた反乱軍の基地のひとつに到着した。武装したエリート船が1隻ある以外は放棄されているようだ。彼らから情報を引き出せるかもしれない。</text>
+	<ship load="SHIP_STEALTH_UNLOCK_FAKE" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="STEALTH_UNLOCK_2FAKE_SURRENDER">
+	<text>「やめろ、やめろ！なぜ連邦はそんなに貪欲なんだ！反乱軍の船を狩るより他にやることがあるんじゃないのか？"</text>
+	<choice>
+		<text>盗まれた技術の情報を要求する。</text>
+		<event>
+			<text>"ああ、それが君の目的か。残念だが、君は間違った船についてきた。ここを通過した使節は、お前たちのような愚か者を騙すための偽物だった。さあ、行きましょう！"</text>
+			<choice hidden="true">
+				<text>彼らを解放するんだ。</text>
+				<event>
+					<text>"ハッ！ 艦隊に知られないと思うなよ！"反乱軍は飛び去る。</text>
+					<ship hostile="false" />
+					<recallBoarders />
+					<instantEscape />
+					<modifyPursuit amount="1" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>無視して攻撃する。</text>
+				<event>
+					<text>「いや、待て！」。あなたは通信を切り、攻撃を続ける。</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_STEALTH_UNLOCK_2REAL" auto_blueprint="LIST_SHIPS_SUZERAIN_FIGHT">
+	<escape timer="40" min="18" max="18">
+		<text>彼らはあなたを見るやいなや、エンジンをパワーアップして飛び去ろうとする。彼らを止めろ</text>
+		<ship hostile="true" />
+	</escape>
+	<gotaway>
+		<text>船がなくなったので、目的地の痕跡がないか廃墟と化した基地内を探すが、何も見つからない。</text>
+	</gotaway>
+	<surrender min="5" max="5" load="STEALTH_UNLOCK_2REAL_SURRENDER" />
+	<destroyed>
+		<text>瓦礫からできるものを取るんだ。</text>
+		<autoReward level="MED">standard</autoReward>
+	</destroyed>
+	<deadCrew>
+		<text>クルーが死んだ後、盗まれた設計図がないか船をスキャンするが、何も見つからない。その代わり、MFKのエースとの会話が録音されていた...マンティスはすでにデータを転送したのだろう。マンティスはすでにデータを転送したに違いない。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<quest event="STEALTH_UNLOCK_3" />
+	</deadCrew>
+</ship>
+<event name="STEALTH_UNLOCK_2REAL">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>盗まれたと思われるエンジのプロトタイプの場所。</unvisitedTooltip>
+	</beaconType>
+	<text>エンギから聞いた反乱軍の基地のひとつに到着した。スゼレインの船があるだけで、ほとんど廃墟のようだ。これがエンギが探していたものに違いない！</text>
+	<ship load="SHIP_STEALTH_UNLOCK_2REAL" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="STEALTH_UNLOCK_2REAL_SURRENDER">
+	<text>「えーっ！こんなところで死にたくない！謝るのはたくさんだ。</text>
+	<choice>
+		<text>盗まれた技術の情報を要求する。</text>
+		<event>
+			<text>「そうそう。そうだ、MFKの船がやってきた！我々は彼らに特使の居場所を教え、報酬を受け取っている！ただの仕事だとわかっているのか？傭兵の仕事を時々しているんだろう！"</text>
+			<quest event="STEALTH_UNLOCK_3" />
+			<choice>
+				<text>彼らを解放するんだ。</text>
+				<event>
+					<text>あなたはエンジに送る座標を含むFTLメッセージを準備し、ジャンプの準備をする。</text>
+					<ship hostile="false" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_STEALTH_UNLOCK_3" auto_blueprint="LIST_SHIPS_REBEL_SELITE_FIGHT">
+	<destroyed load="STEALTH_UNLOCK_4" />
+	<deadCrew>
+		<text>できることをやって、エンジ船に連絡する。</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice>
+			<text>次へ...</text>
+			<event load="STEALTH_UNLOCK_4" />
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="human_soldier" prop="0.5" />
+		<crewMember type="human_mfk" prop="0.5" />
+	</crew>
+</ship>
+<event name="STEALTH_UNLOCK_3">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>盗まれたエンジのプロトタイプの場所を確認。</unvisitedTooltip>
+	</beaconType>
+	<text>ようやくMFKエースの船に追いついた。格納庫の大きさのマンティスの貨物船が近くに止まり、マンティスと反乱軍が混在して守っている。襲撃を検討していると、海賊の紋章を付けたエンギ船の中隊が飛び込んできて支援する。近くの反乱軍を正面から攻撃する。</text>
+	<ship load="SHIP_STEALTH_UNLOCK_3" hostile="true" />
+	<img back="BACK_EVENT_STEALTHUNLOCK" planet="NONE" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<event name="STEALTH_UNLOCK_4">
+	<text>エンギは軽微な損失で勝利を収めた。連邦軍の研究部門がX-ME56プロジェクトを委託した。先進ステルス巡洋艦。反乱時にプロジェクトは終了。連邦軍司令部と再接続できない。"</text>
+	<choice>
+		<text>マンティスの船について尋ねてください。</text>
+		<event>
+			<text>"エンギとの不可侵条約破棄を避けるための反乱軍の策略 "の可能性が高い。97.56％の確率だ最後の連邦艦隊を 支援する任務だな？座標は？"</text>
+			<choice hidden="true">
+				<text>連盟コマンドの座標を送信する。</text>
+				<event>
+					<text>「満足だ技術提供は連邦の大義に役立つ。感謝だけでは不十分だ船の修理と補償を開始する。"クルーは高度なオーグメントを提供し、連邦の武器庫が改善されることを喜んでいる。</text>
+					<unlockCustomShip silent="false">PLAYER_SHIP_CLOAK</unlockCustomShip>
+					<damage amount="-20" />
+					<autoReward level="HIGH">standard_no_item</autoReward>
+					<augment name="SYSTEM_CASING_NEW" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="FED_MEMORIAL" unique="true"> 
+	<preventQuest />
+	<text>飛び込んだ瞬間から、ここが重要な場所であることは明らかだ。ここには巨大で見事な記念碑が建てられており、その大きさは宇宙からも容易に見ることができるほどだ。</text>
+	<img back="BACK_EVENT_MEMORIAL" planet="PLANET_INVISIBLE" />
+	<choice hidden="true">
+		<text>もっと近くで検査しろ。</text>
+		<event>
+			<text>記念碑はユニバース0、特にノード17の戦いに敬意を表して建てられたようだ。神風オート、反乱軍の船、戦闘中の致命的な負傷など、ノード17の戦いで命を落とした連邦軍将校のリストである。宇宙0から来たあなたにとって、それは大きな感動を呼ぶものだった。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>街中に燃えるようなサイレンが鳴り響き、モノトーンの声が語りかける。「これは訓練ではありません。これは訓練ではありません。反乱軍の飛行隊が街に接近しています。"市民は無防備な場所から 避難してください市内にいる連邦軍関係者は直ちに司令部に出頭し、迫り来る脅威から身を守ること。"</text>
+					<ship load="SHIP_REBEL_SELITE_MEMORIAL" hostile="false" />
+					<choice hidden="true">
+						<text>こんなことは許されない。できる限りのことをするんだ</text>
+						<event>
+							<text>反乱軍中隊の先頭に立つのは、これまで見たこともないような反乱軍の船だ。強力な砲兵器を振り回している。これを倒せば、他の艦隊のやる気を削ぐことができるかもしれない。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>できるだけ早く出発する。</text>
+						<event>
+							<text>この戦いに巻き込まれることに興味はないだろう。連邦の船が反乱軍を撃退できると 確信しているはずだ</text>
+							<choice>
+								<text>船内で何かをする。</text>
+								<event load="STORAGE_CHECK" />
+							</choice>
+							<choice>
+								<text>何もしない。</text>
+								<event />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FED_MEMORIAL_INTERMEDIATE">
+	<text>周囲では、連邦軍に押し戻された反乱軍の艦船が逃げ始めているのが見える。最後の頼みの綱であるガンボートと 目標はすでに致命的なダメージを受けている戦い続けろ</text>
+</event>
+<event name="FED_MEMORIAL_DESTROY">
+	<text>砲艦が致命的なダメージを受けた。砲撃システムがひび割れ、エンジンが爆発。船は螺旋を描きながら近くの湖に沈んでいく。水面に衝突すると、最後にもう一度爆発し、海岸に雨を降らせる。先頭の船が効率よく処分される光景は、残りの反乱軍を追い払うのに十分だった。最後の敵艦はすべて飛び去り、連邦は文句なしの勝利者となった。</text>
+	<choice>
+		<text>次へ...</text>
+		<event load="FED_MEMORIAL_WIN" />
+	</choice>
+</event>
+<event name="FED_MEMORIAL_DEAD_CREW">
+	<text>生命を失った砲艦は地上に向かって急降下し始める。海岸に激突し、華麗な炎を噴き上げたが、幸いにも街のインフラには何の被害も与えなかった。先頭の船が効率よく処分される光景は、残りの反乱軍を追い払うのに十分だった。敵対する船は残らず飛び去り、連邦は文句なしの勝利者となった。</text>
+	<choice>
+		<text>次へ...</text>
+		<event load="FED_MEMORIAL_WIN" />
+	</choice>
+</event>
+<event name="FED_MEMORIAL_WIN">
+	<text>街で連邦の士官に呼び止められ、着陸を要請される。あなたが船を降りると、周囲の市民が歓声を上げる。アダラ副提督の声だ。「今日は大変お世話になりました。この街を守ってくれたことに、なんとお礼を言っていいかわかりません。マルチバース・レネゲイドの話は、神話や伝説のようなものですが、私はいつも懐疑的でした。今、私の疑念はすべて解消された"</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>アダラはあなたの首に輝く勲章をかける。任務が成功すれば、あなたは生涯その栄誉を受け継ぐことになる。地区内のあらゆる支援船が、あらゆる方法であなたを支援するために派遣され、あなたは格納庫の1つから新品の連邦巡洋艦を受け取る。あなたはこの船の使い道がないので、その設計図を格納庫に転送する。</text>
+			<variable name="ach_boss_mfkgunboat" op="set" val="1" />
+			<unlockCustomShip silent="false">PLAYER_SHIP_FEDERATION</unlockCustomShip>
+			<damage amount="-10" />
+			<autoReward level="HIGH">standard</autoReward>
+			<weapon name="LIST_LOOT_FEDERATION" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>去り際に、アダラが最後にひとつだけ言うことがあると、あなたを引き止めた。「この小包、タリーに間に合うように届けることが非常に重要なの。自分で持っていく時間はないが、君なら任せられる。幸運を祈る、キャプテン"</text>
+					<augment name="TULLY_PRESENT" />
+					<choice>
+						<text>次へ...</text>
+						<event load="MORALITY_REMOVE_GENERAL" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>

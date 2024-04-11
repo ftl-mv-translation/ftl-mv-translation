@@ -1,0 +1,2037 @@
+<FTL>
+
+
+
+<event name="FINISH_BEACON_PROTECTORATE">
+	<revisitEvent seeded="true">FINISH_BEACON_PROTECTORATE</revisitEvent>
+	<loadEventList seeded="false" first="true">
+		<event name="FINISH_BEACON_PROTECTORATE_EMPTY" req="loc_killedcyra" lvl="1" />
+		<event name="FINISH_BEACON_CYRA" req="loc_killedcyra" lvl="0" max_lvl="0" />
+	</loadEventList>
+</event>
+<event name="FINISH_BEACON_PROTECTORATE_EMPTY">
+	<text>あなたは長距離ビーコンに到着した。FTLドライブの充電が完了したら、次のセクターにジャンプできる。</text>
+	<choice hidden="true">
+		<text>早く出発しよう。</text>
+		<event />
+	</choice>
+</event>
+<event name="FINISH_BEACON_CYRA">
+	<text>あなたは長距離ビーコンに到着した。FTLドライブの充電が完了したら、次のセクターにジャンプできる。</text>
+	<choice hidden="true" req="unique_jerry" lvl="1" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event load="CYRA_JERRY" />
+	</choice>
+	<choice hidden="true" req="loc_jerrysave" lvl="1" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event load="CYRA_JERRYGONE" />
+	</choice>
+	<choice hidden="true" req="loc_jerrykill" lvl="1" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event load="CYRA_JERRYDEAD" />
+	</choice>
+	<choice hidden="true" req="loc_jerrymet" lvl="1" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event load="CYRA_JERRYMET" />
+	</choice>
+	<choice hidden="true" req="loc_jerrymet" lvl="0" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event load="CYRA" />
+	</choice>
+</event>
+<event name="CYRA_DEFEAT_JERRY">
+	<text>"くそっ...くそったれお前を失望させた バンスしかもU0の二流レネゲイドの手でな。すまない、ジェリー。叔父さんに...よろしく伝えてくれ..."これでサイラは退治された。</text>
+	<autoReward level="HIGH">weapon</autoReward>
+	<variable name="loc_killedcyra" op="set" val="1" />
+	<choice hidden="true" req="unique_jerry" lvl="1" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>ジェリーは打ちのめされている。"思ったんだ......彼女を殺す必要はなかったと......。話し合いで解決できたはずだ。これは間違いだった。今、友人の血が私の手に流れている。私がじっとしていれば、このような事態は避けられたはずだ！くそっ！放っておいてくれこれはすべて大きな間違いだった......」。</text>
+			<removeCrew class="unique_jerry">
+				<clone>false</clone>
+				<text>ジェリーはもういないようだ。彼抜きで任務を遂行しなければならない。</text>
+			</removeCrew>
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_jerry" lvl="0" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>ジェリーは戦いに生き残れなかったようだ。この物語には残念で拍子抜けするような結末だが、他に救いはないだろう。</text>
+		</event>
+	</choice>
+</event>
+<event name="CYRA_JERRY_SPARE">
+    <loadEventList seeded="false" first="true">
+        <event name="CYRA_JERRY_SPARE_CREW" req="unique_jerry" />
+        <event name="CYRA_JERRY_SPARE_DEAD" req="unique_jerry" lvl="0" max_lvl="0" />
+    </loadEventList>
+</event>
+<event name="CYRA_JERRY_SPARE_CREW">
+	<text>サイラの船は劣悪な状態だが、戦いを続ける前に、ジェリーがあなたを引き止めた。「お願いだ、何をするにしても、サイラを殺さないでくれ。彼女のクルーは、このままでは戦闘を続けられない。君が手をこまねいている限り、これ以上犠牲を出さずに切り抜けられる！君が傭兵であり、連邦の人間であることは知っているが、これ以上血を流す必要はないんだ。</text>
+	<triggeredEvent event="CYRA_JERRY_SUCCESS" thisFight="true" clearOnJump="true">
+		<time amount="18" />
+	</triggeredEvent> 
+</event>
+<event name="CYRA_JERRY_SPARE_DEAD">
+	<event />
+</event>
+<event name="CYRA_JERRY_SUCCESS">
+	<text>何とか持ちこたえたが、やがてサイラの船が停止する。サイラ自身はもう戦うことができずに倒れ、しぶしぶ降伏する。</text>
+	<ship hostile="false" />
+	<surrender />
+	<autoReward level="HIGH">weapon</autoReward>
+	<variable name="loc_killedcyra" op="set" val="1" />
+	<choice hidden="true" req="unique_jerry" lvl="1" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>船を無力化し、ジェリーの要請でドックに入れば、彼は急いでサイラに会いに乗船する。負傷したエースはまだ生きており、治療を受ければ無事に生還できるだろう。「私は失敗した。たった一つの仕事、たった一つの約束。役立たずだ。ジェリー...バンスによろしく伝えてくれ..."そう言ってサイラは銃を取り出し、自分に向けて引き金を引く。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>ジェリーは何を言えばいいのかわからない。"僕は......彼女は......そんな必要はなかった。僕のせいだ。僕が何をしたんだ？</text>
+					<choice hidden="true">
+						<text>自分を責めるな。ヴァンスはどうせ彼女を捕まえただろう。</text>
+						<event>
+							<text>え？いいえ！バンスは彼女を傷つけたりしない。叔父は自分がしていることを理解していないと思う。彼には使命があり、人々はそれに熱狂する。頼まれもしないのに、みんな彼のために死ぬ。叔父に会わなければならない。叔父が話を聞くのは私だけだ。私なら彼を説得できる......自分が引き起こした被害を理解させることができる。私はファイターとしてはダメだけど、ノード17に連れて行ってくれれば、この戦いに終止符を打てるかもしれない」。ジェリーは周囲を見回す。「この船は......まあ、もうあまり役に立たない。設計図を持っていけばいい。さあ、行こう。長居はしたくない。"</text>
+							<unlockCustomShip silent="false">PLAYER_SHIP_MFK</unlockCustomShip>
+							<variable name="ach_crew_jerry" op="set" val="1" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_jerry" lvl="0" max_group="0" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>"私は...私は失敗した...あの子は戦いにも生き残れなかった。なんてことをしてしまったんだ...くそっ...くそったれだ。ごめんなさい、バンス..."サイラは銃を取り出し、震える指で自分に向けて引き金を引く。</text>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CYRA_JERRY" auto_blueprint="MU_MFK_CRUISER">
+	<triggeredEvent event="CYRA_JERRY_SPARE" enemyHull="7" enemyCrew="3" thisFight="true" clearOnJump="true" />
+	<destroyed load="CYRA_DEFEAT_JERRY" />
+	<deadCrew load="CYRA_DEFEAT_JERRY" />
+</ship>
+<event name="CYRA_JERRY">
+	<text>近くには、見たこともないような巨大なクルーザーがそびえ立っている。艦内には複数のエースと、そのリーダーである背は低いが力強い体格の、長い黒髪の女性：MFKの初代エース、サイラ・ブラックだ。サイラ・ブラックはMFKの初代エースだ。「ウェントワースの甥を自分の船に匿っている。君の行動はそうかもしれないが、君が間抜けでないことは知っている。あなたも私も、まず私を通さなければ、あの子を連れてこのセクターから出られないことを知っている。彼を返さないと、不愉快なことになるぞ。</text>
+	<ship load="SHIP_CYRA_JERRY" hostile="false" />
+	<choice hidden="true">
+		<text>拒否する。</text>
+		<event>
+			<text>あなたはそれを拒否し、ジェリー自身の要求で、彼に電話をかけた。彼はサイラに訴えようとするが、彼女は拒否する。"ジェリー、私は君の叔父さんと約束したんだ、君の身には何も起こさせないと。バンスとの約束を破る前に、私は死ぬ。レネゲイドとの戦いが望みなら、それは叶う。"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ジェリーを</text>
+		<event>
+			<text>サイラには逆らえないんだろう。どうせジェリーなら安心して任せられる。人生の大半を彼女の庇護の下で過ごしてきたのだから。ジェリーは少しがっかりしたようだが、反撃はしない。この物語にはかなり拍子抜けな結末だが、死を伴う結末よりはましだ。</text>
+			<removeCrew class="unique_jerry">
+				<clone>false</clone>
+				<text>ジェリーはもういないようだ。彼抜きで任務を遂行しなければならない。</text>
+			</removeCrew>
+		</event>
+	</choice>
+</event>
+
+<event name="CYRA_DEFEAT">
+	<text>"くそっ...くそったれお前を失望させた バンスしかもU0の二流レネゲイドの手でな。うっ..."サイラは敗北した。</text>
+	<autoReward level="HIGH">weapon</autoReward>
+	<variable name="loc_killedcyra" op="set" val="1" />
+</event>
+<ship name="SHIP_CYRA" auto_blueprint="MU_MFK_CRUISER">
+	<destroyed load="CYRA_DEFEAT" />
+	<deadCrew load="CYRA_DEFEAT" />
+</ship>
+<event name="CYRA">
+	<text>近くには、見たこともないような巨大なクルーザーがそびえ立っている。艦内には複数のエースと、そのリーダーである背は低いが力強い体格の、長い黒髪の女性：MFKの初代エース、サイラ・ブラックだ。サイラ・ブラックはMFKの初代エースだ。「このセクターでの動きについては聞いている。あんたが何者かは知っているが、知ったこっちゃない。もう引退して久しいが、一つだけ警告しておく。ジェローム・ウェントワースの頭髪を1本でも傷つけたら、お前の喉を掻き切ってやる。わかったか？"</text>
+	<ship load="SHIP_CYRA" hostile="false" />
+	<choice hidden="true">
+		<text>いいんですか？</text>
+		<event>
+			<text>「よろしい。では、私のセクターから出て行ってくれ"</text>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>このチャンスに彼女を攻撃するのだ！</text>
+		<event>
+			<text>"典型的だ。反逆者は何があってもいつも同じ道をたどる。墓場へ行くがいい"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CYRA_JERRYMET">
+	<text>近くには、見たこともないような巨大なクルーザーがそびえ立っている。艦内には複数のエースと、そのリーダーである背は低いが力強い体格の、長い黒髪の女性：MFKの初代エース、サイラ・ブラックだ。サイラ・ブラックはMFKの初代エースだ。「このセクターでの動きについては聞いている。あなたが誰かは知っている。団地でのことは聞いた。ジェロームが生きて帰れたのは運がいい。運を試すな。わかったか？"</text>
+	<ship load="SHIP_CYRA" hostile="false" />
+	<choice hidden="true">
+		<text>いいんですか？</text>
+		<event>
+			<text>「よろしい。では、私のセクターから出て行ってくれ"</text>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>このチャンスに彼女を攻撃するのだ！</text>
+		<event>
+			<text>"典型的だ。反逆者は何があってもいつも同じ道をたどる。墓場へ行くがいい"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="SHIP_CYRA_JERRYDEAD" auto_blueprint="MU_MFK_CRUISER">
+	<destroyed load="CYRA_DEFEAT" />
+	<deadCrew load="CYRA_DEFEAT" />
+</ship>
+<event name="CYRA_JERRYDEAD">
+	<text>近くには、見たこともないような巨大なクルーザーがそびえ立っている。艦内には複数のエースと、そのリーダーである背は低いが力強い体格の、長い黒髪の女性：MFKの初代エース、サイラ・ブラックだ。彼女は復讐の炎を瞳に宿し、あなたを見つめる。「このクソ野郎。自分のしたことに満足か？そうであってほしい。お前が犯した最後の過ちだからな。あの子を傷つけるべきじゃなかったのに、そうしてしまった。</text>
+	<ship load="SHIP_CYRA_JERRYDEAD" hostile="true" />
+	<choice hidden="true">
+		<text>ああ、ああ。</text>
+		<event>
+			<text>サイラはライフルを取り出し、銃身をきれいに拭いてから、無言で部下に攻撃するよう合図する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="CYRA_JERRYGONE">
+	<text>近くには、見たこともないような巨大なクルーザーがそびえ立っている。艦内には複数のエースと、そのリーダーである背は低いが力強い体格の、長い黒髪の女性：MFKの初代エース、サイラ・ブラックだ。サイラ・ブラックはMFKの初代エースだ。「このセクターでの動きについては聞いている。あなたが誰かは知っている。屋敷でのことは聞いた。ジェロームは一緒じゃないのか？彼をどうした？レネゲイドを信用するバカめこのクズめ！この多元宇宙から、喜んでお前を消し去ってやる。"</text>
+	<ship load="SHIP_CYRA_JERRYDEAD" hostile="true" />
+	<choice hidden="true">
+		<text>ああ、ああ。</text>
+		<event>
+			<text>サイラはライフルを取り出し、銃身をきれいに拭いてから、無言で部下に攻撃するよう合図する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<eventList name="ITEMS_JERRY">
+	<event load="JERRY_SURRENDER" />
+	<event load="JERRY_COLONISTS" />
+	<event load="JERRY_TAXES" />
+	<event load="JERRY_HANGOUT" />
+</eventList>
+
+<event name="JERRY_SURRENDER" unique="true">
+	<text>近くの惑星には広大な都市が建設されているが、煙が視界の大半を遮っている。近づいてみると、何か大きな紛争が起きているのがわかる。衛生兵が道端に取り残された負傷した市民の手当てに急ぎ、燃えさかる残骸が無造作に高層ビルの前に投げ出されている。最も気になるのは、残骸の一部が...連邦？</text>
+	<img planet="PLANET_POPULATED" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>やがて民間人は、あなたが自分たちを見ていることに気づく。彼らはあなたを攻撃するのではなく、降伏する。「お願いだ！私たちはあなたの愚かな戦争など知ったこっちゃない！お前たちがここでやったことは、まだ十分じゃないのか！"</text>
+			<choice>
+				<text>彼らの降伏と、ここで起きたことの責任を受け入れる。</text>
+				<event>
+					<text>あなたが関与していないことのために、たくさんの物資が必要なのです。しかし、これはおそらく彼らの目には連邦の名誉を傷つけるものには映らないでしょう。連邦がこのようなことを公認するとは思わなかっただろうが......。</text>
+					<autoReward level="HIGH">standard</autoReward>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_JERRY" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>私たちは何もしていない。</text>
+				<event>
+					<text>「でたらめだ。あなたがこの虐殺に関与していなくても、あなたはそれを可能にした！連邦がこの現実を掌握したら どうなると思う？彼らは戻って来て、銀河系からこの場所を消し去るだろう。この街から出て行け</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="unique_tully">
+				<text>(タリー）タリーに説明を求める。</text>
+				<event>
+					<text>ため息をつくタリー。"この作戦は提督の許可を得たものではありません... しかし、このような無許可の虐殺は、連邦が壁に背を向けたときに起こることで知られています。連邦とマンティスの戦争でも、まったく同じことが起きた」。タリーは悲しげに微笑む。「それに関連して、我々が戦争犯罪人を訴追している間...反乱軍は連邦に恨みを持つ、高度な訓練を受けた人間の軍司令官を必要としていた。彼らがどこで手に入れたか、想像してみてください」 
+ 「軍のやることに、私たちは責任を負いません。我々は民間人だ！平和に暮らしたいだけだ"民間人は腕組みをする。「もし連邦が戻ってきたら、私たちは助かると思いますか」
+「それを確かめるのが私の仕事です。連邦の船が常に行儀よくしているとは言えませんが、戦犯を重く受け止めることは約束します。私ができる限り、正義が行われるのを見届けたい」
+
+惑星の人間たちは、タリーの熱烈な約束に驚いているようだ。彼らは懐疑的なようだが、そのジェスチャーは評価されている。</text>
+					<autoReward level="MED">stuff</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="unique_jerry">
+				<text>(ジェリー）事態は好転すると約束してくれ。</text>
+				<event>
+					<text>ジェリーは両手を合わせて懇願する。「今は本当にひどい状況なんだ。分かるよ。だから力になりたいんだ。連邦が悪いことをしていることはみんな知っている。正しいことをしましょう」
+ 民間人の一人がパニックになる。"ジェリー、やめろ！彼らを変えることはできない！危険だ！"
+
+"難しいのはわかるが、うまくいくと信じるに足る理由がなければ、こんなことはしない。平和が可能なら...やってみるべきだと思いませんか」
+
+一人の民間人が顔を覆い、明らかに涙をこらえている。"あなたは私たちジェリーにはもったいない..."民間人はあなたに降伏の申し出をするよう主張している。</text>
+					<autoReward level="HIGH">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_MEDICAL">
+				<text>(メディカルクルー）市民を治療するために誰かを送り込め。</text>
+				<event>
+					<text>民間人はあなたの援助を受けることに非常に消極的だが、彼らはどんな援助でも必死に求めている。「我々はこの恩義に報いなければ生きていけない...しかし、あなた方が何のために戦っているのか理解してほしい。連邦がこの現実を完全に支配したら どうなると思う？奴らは戻って 我々全てを破壊する本当に正しい側のために戦っているのか？"</text>
+					<autoReward level="MED">stuff</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="DRONE_CONTROL_MEDICAL">
+				<text>(医療ドローン）市民を治療するためにドローンを降下させる。</text>
+				<event>
+					<text>民間人はあなたの援助を受けることに非常に消極的だが、彼らはどんな援助でも必死に求めている。「我々はこの恩義に報いなければ生きていけない...しかし、あなた方が何のために戦っているのか理解してほしい。連邦がこの現実を完全に支配したら どうなると思う？奴らは戻って 我々全てを破壊する本当に正しい側のために戦っているのか？"</text>
+					<autoReward level="MED">stuff</autoReward>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="JERRY_HANGOUT" unique="true">
+	<text>数隻の船と小さな宿が停泊している。歓迎されることはないだろうと思ったが、不思議なことに、中にいる人々はあなたが誰であろうと気にしていないようだ。テーブルを囲んでいた反乱軍将校のカップルが手を振ってくれた。"やあ、レネゲイド！俺たちの仲間になろうぜ！"</text>
+	<choice hidden="true">
+		<text>彼らに加われ。</text>
+		<event>
+			<text>テーブルに座ると、反乱軍兵士の一人が出迎えた。「これは...型破りなのは分かっている！大男の誕生日は明日だ、お祝いの時間だ！あんたは...どうせFRBじゃないんだろ。レネゲードの件には賛成できないが、まあいい。ユニバース1の連中が送り込んでくるのも、あんまり好きじゃないし......"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>しかし、宿の主人がそばを通りかかり、この席に留まるつもりなら、飲み物を買わなければならないと告げる。</text>
+					<choice>
+						<text>飲み物を買って聴き続ける。</text>
+						<event>
+							<text>君たちがここに残ることを決めると、反乱軍は歓声を上げ、君たちはそれぞれマグカップを合わせてもう一口飲む。兵士たちは左からスパイク、タフィ、ブッチと自己紹介する。</text>
+							<item_modify>
+								<item type="scrap" min="-1" max="-1" />
+							</item_modify>
+							<choice>
+								<text>別の飲み物を買う。</text>
+								<event>
+									<text>まだ2杯しか飲んでいないのに、すでに頭が軽くなっているのを感じる。それでもテーブルに座り、陽気な会話に耳を傾ける。話題の大半は、「ユニバース1の連中が嫌い」というのは嘘ではなかったようだ。3人とも、権利のあるエースやコンドッティエリが、不愉快なほど押しつけがましいクォーター法のおかげで、歓迎を受けすぎたという話をたくさんしている。</text>
+									<item_modify>
+										<item type="scrap" min="-1" max="-1" />
+									</item_modify>
+									<choice>
+										<text>別の飲み物を買う。</text>
+										<event>
+											<text>やがて話題はバンスの甥っ子ジェロームのことに移っていく。その会話は他のテーブルからも注目され、それぞれの考えを述べる。ジェロームが素晴らしい男であることは、この宿にいる誰もが異口同音に認めているようだ。あなた自身はまだそう思っていないようだが、ここはそのような抗議をするような場所ではない。</text>
+											<item_modify>
+												<item type="scrap" min="-1" max="-1" />
+											</item_modify>
+											<choice>
+												<text>別の飲み物を買う。</text>
+												<event>
+													<text>ブッチの言葉は不明瞭になり始めているが、それが彼なのか自分なのかはわからない。椅子の上でふらついていると、ヒステリックな笑い声があなたにも聞こえてきた。宿の主人が頭を振って、あなたの方に向かってうなり声を上げているのが見えたような気がするが、あまりに気が遠くなりすぎてよくわからない。</text>
+													<item_modify>
+														<item type="scrap" min="-1" max="-1" />
+													</item_modify>
+													<choice>
+														<text>別の飲み物を買う。</text>
+														<event>
+															<text>ようやく笑いがおさまり、彼らのジェリーの話は際限なく流れ続ける。思っていた以上にジェリーという男について知ることができたが、会話の間中、言われたことを少しも覚えていない。ジェリーがタフィーの結婚式のベストマンだったという話を聞いたような気がするが、それはあまり意味がない。あなたは考える。</text>
+															<item_modify>
+																<item type="scrap" min="-1" max="-1" />
+															</item_modify>
+															<choice>
+																<text>別の飲み物を買う。</text>
+																<event>
+																	<text>すべてのことが明らかになるにつれて、変換速度は遅くなり始める。あなたが抱いていた不安はすべて消え去ります。だが、理解しがたい会話に、あなたは心を奪われた......。</text>
+																	<item_modify>
+																		<item type="scrap" min="-1" max="-1" />
+																	</item_modify>
+																	<choice>
+																		<text>また酒を買う。</text>
+																		<event>
+																			<text>このような状況下、私どもは、このような弊害を最小限にとどめるため、このような活動を続けてまいりました。(注1)これは、「震災の影響」であり、「震災の影響」ではない。(注1)これは、「震災の影響」を意味するものではありません。</text>
+																			<item_modify>
+																				<item type="scrap" min="-1" max="-1" />
+																			</item_modify>
+																			<choice>
+																				<text>このような紆余曲折を経て、現在に至っている。</text>
+																				<event>
+																					<text>あなたは気を失い、やがて船の上で目を覚ました。壁は新しい色合いの濃い紫色に塗られ、部屋の中央には壊されたディスコボールがあった。部屋の隅には、さっきの3人が横たわっている。彼らはほどなく起き上がったが、ブッチの船は燃えさかる残骸の中にあった。「畜生。くそっ、二日酔いじゃ直せそうにないな。でも...君がレネゲイドなら...一緒に働けば、ユニバース1の船を一掃できるかもしれない。少なくとも、司令部に新しい船を頼む勇気が出るまではね。"</text>
+																					<modifyPursuit amount="1" />
+																					<crewMember amount="1" class="human_soldier">ブッチ</crewMember>
+																				</event>
+																			</choice>
+																		</event>
+																	</choice>
+																	<choice>
+																		<text>もう十分だ。</text>
+																		<event />
+																	</choice>
+																</event>
+															</choice>
+															<choice>
+																<text>もう十分だ。</text>
+																<event />
+															</choice>
+														</event>
+													</choice>
+													<choice>
+														<text>もう十分だ。</text>
+														<event />
+													</choice>
+												</event>
+											</choice>
+											<choice>
+												<text>もう十分だ。</text>
+												<event />
+											</choice>
+										</event>
+									</choice>
+									<choice>
+										<text>もう十分だ。</text>
+										<event />
+									</choice>
+								</event>
+							</choice>
+							<choice>
+								<text>もう十分だ。</text>
+								<event />
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>とにかく、出て行ってくれ。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>時間がないんだ。</text>
+		<event>
+			<text>反乱軍兵士たちは、あなたが拒否するのを快く思っていないことがわかる。彼らは明らかに酔っ払っている。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="JERRY_TAXES" unique="true">
+	<text>あなたは、近くに小さな反乱軍のコロニーが建設されていることに気づいた。暗号化されたチャンネルで、彼らはあなたにシンプルな提案を放送した。ここのエースはもうサイラのルールには従わず、ユニバース1から命令を受けている。税金は重く、どんな仕事でも引き受ける。"</text>
+	<choice hidden="true">
+		<text>ドック</text>
+		<event load="JERRY_TAXES_DOCK" />
+	</choice>
+	<choice hidden="true">
+		<text>彼らを攻撃する。</text>
+		<event>
+			<text>「もちろん、両手を広げた途端にこの仕打ちだ！連邦なんてクソ食らえだ！お前ら暴君に従うくらいなら、破産するまで税金を取られた方がマシだ！"</text>
+			<ship load="SHIP_REBEL_STATION" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_JERRY_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>結構だ。</text>
+		<event>
+			<text>反乱軍は明らかに失望しているが、それ以上何も言わない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="JERRY_TAXES_DOCK">
+	<event>
+		<text>幸いなことに、反乱軍の言うことは嘘ではなく、あなたは貿易のために歓迎されて乗船した。しかし、エリート船（ここでは警察官に相当する）がやってきてあなたを見つけると、反乱軍はエリートが逮捕するのを傍観しようとはしなかった！</text>
+		<store>STORE_REBEL</store>
+		<ship load="SHIP_REBEL_ELITE_FIGHT" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>幸いなことに、反乱軍は嘘をついていなかった。"我々はもう連邦の側にいることはできない" "だが君たちは悪い人間ばかりではない。我々と同じように考えてほしい</text>
+		<store>STORE_REBEL</store>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="STORAGE_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>ステーションに乗り込むと、銃を構えた反乱軍が飛び出してきた！"連邦の屑どもめ 騙されると思ったぜ俺たちのセクターに侵入しやがって、俺たちはお前たちの顔に泥を塗るんだ！ハハハ...頭の中ではそう聞こえたんだが...何はともあれ、逮捕する。"</text>
+		<ship load="SHIP_REBEL_ELITE_FIGHT" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+
+<event name="JERRY_COLONISTS" unique="true">
+	<text>ビーコンの近くには大きなスペースコロニーがあり、住民たちが忙しそうに動き回っている。</text>
+	<choice hidden="true">
+		<text>彼らに声をかけ、手伝えるかどうか尋ねる。</text>
+		<event>
+			<text>「邪魔するな、レネゲイド。ジェロームへの年貢を集めるのに忙しいんだ。急がないと、遅れるわけにはいかないんだ！"</text>
+			<choice hidden="true">
+				<text>ジェロームの圧政から彼らを解放すると約束してくれ。</text>
+				<event>
+					<text>「何だと？畜生、放っておいてくれと言ったんだ！こんな馬鹿げたことに付き合っている暇はない！"コロニーはあなたを追い払うため、オートシップを派遣した！</text>
+					<ship hostile="true" load="SHIP_AUTO_FIGHT" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>賛辞を盗め。</text>
+				<event load="JERRY_COLONISTS_STEAL" />
+			</choice>
+			<choice hidden="true" req="LIST_CREW_HUMAN">
+				<text>(人間クルー）人間に反乱軍兵士のふりをして物資を要求させる。</text>
+				<event>
+					<text>入植者たちはため息をつく。"もちろん、反乱軍のためだ。すぐに弾薬とスクラップを用意する"</text>
+					<autoReward level="MED">missiles</autoReward>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>コロニーは無視する。</text>
+		<event>
+			<text>この人たちに用はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="JERRY_COLONISTS_STEAL">
+	<text>入植者たちはなすすべもなく、しぶしぶいくつかの箱を手渡す。パイロットが離れると、彼らの叫び声が聞こえた！この銀河系はお前たちのせいだ！ジェリーが教えてやる</text>
+	<choice hidden="true">
+		<text>トリビュートを開く。</text>
+		<event>
+			<text>箱を開けると、23本の火のついていないロウソクのついたチョコレートケーキと、手作りのバースデーカードが入っている。軍艦として実用的なものは何も入っていない。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_JERRY" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+	
+<eventList name="NEUTRAL_JERRY">
+	<event load="JERRY_META_REBELLION" />
+	<event load="JERRY_COALITION_SPIES" />
+	<event load="JERRY_DEPOT" />
+	<event load="JERRY_MOCKBATTLE" />
+	<event load="JERRY_AUTO_REPLICA" />
+	<event load="JERRY_REBEL_DEPRESSED" />
+</eventList>
+
+<event name="JERRY_META_REBELLION" unique="true">
+    <text>このビーコンの交通は静かだ。遠くの信号を拾うと、かわいい小唄が聞こえてくる：「ドゥー・ダ・ドゥー、ドゥー・ドゥー・ダドドゥー！ドドドド、ドドドドドドドドドドドド！」！エリーエリー、エクイイノイノイド！"というテレビ番組のようだ。エリー・ザ・エクイノイド？</text>
+    <choice>
+        <text>信号に従ってください。</text>
+        <event>
+            <text>さほど苦労することなく、シグナルの発信源を三角測量し、ガス惑星を周回する月と突き止める。小さな居住ドームがうまく隠れており、反乱軍のエンジニア船が停泊している。放送は一旦止まるが、もう遅い。彼らの呼び出し周波数を知らせる。</text>
+            <ship load="SHIP_ENGINEER_META" hostile="false" />
+            <choice>
+                <text>秘密の生息地への水路を開く。</text>
+                <event>
+                    <text>スーツ姿の不敵な男が座りながら指を立てている。彼の後ろには多くの男女が立ち、同じように熱心にあなたを見ている。「よくやった、レネゲイド。よくやった、レネゲイド。おめでとう。"彼はあなたをあざ笑うかのように、ゆっくりと拍手をする。</text>
+                    <choice>
+                        <text>君は誰なんだ？</text>
+                        <event>
+                            <text>「思ったより情報弱者なんだな」。男は高慢に笑う。「我々はメタ反乱軍だ。我々はイデオロギーを最も純粋な形で実現した。他の有象無象が国境や資源をめぐっていがみ合い、権力を手に入れるために命を踏みにじっている中、我々だけが体制と戦うことが何であるかを真に理解している」。</text>
+                            <choice>
+                                <text>放送していたテレビ番組と何か関係があるのですか？</text>
+                                <event>
+                                    <text>男は高慢な表情をやめ、困ったような顔をする。「ええ、私たちは、エスタブリッシュメントがあなたに知られたくないメディアを流通させています。パトロールルートや安全な時間帯も把握しています」。</text>
+                                    <choice req="LIST_CREW_ELLIE_COSTUME" hidden="true">
+                                        <text>(エリー）"大丈夫、エリーはここにいるよ！"</text>
+                                        <event>
+                                            <text>「エリーのファンクラブだ！しかも、エリーを不当に扱った人たちに対抗している！"エリーは朗らかに笑う。「エリーのために物事がうまく進み続けている！」
+「まさか！エリー？"反乱軍がスクリーンに群がる。奥の一人が「私はあなたの大ファンよ、エリー！」
+
+「ハハハ！よし、いい子たちだ！エリーの正義の聖戦に参加しよう！ニーイ！すべての子供たちの幸せのために、エリーを検閲する者は皆殺しだ！"反乱軍はひざまずく。まあ、少なくともエリーは、彼女と同じくらいおかしなファンを見つけた。何人かの有志が、乗車のチャンスを争っているし、他の多くの人たちも、物理的に可能な限りのスクラップを提供している。</text>
+                                            <crewMember amount="1" all_skills="2" class="human_engineer">エリー・ファン</crewMember>
+                                            <autoReward level="HIGH">scrap_only</autoReward>
+                                        </event>
+                                    </choice>
+                                    <choice req="unique_ellie_stephan" hidden="true">
+                                        <text>(ステファン）ステファンに彼らと話してもらう。</text>
+                                        <event>
+                                            <text>ステファンは一瞬、身支度を整え、挨拶に入る。「やあ、こんにちは！君たちの中に僕を知っている人がいるかどうかわからないけど、君たちが放送していたあの番組で、僕は役を演じたんだ」
+
+反乱軍はステファンが誰なのか気づき、一瞬戸惑いの表情を浮かべる。"ステファン？我々を訪ねて？あのね...。君に会うのが夢だったんだ。君は我々の大義に大いに貢献してくれるだろう......ほら、噂を広めて......」
+
+「ちょっと待て、そこで話を切るぞ。今、私はこの船の人々に恩返しをしなければならない。イデオロギーを実践するのは素晴らしいことだと思うけど...。私のショーだけで良いことがあるとは思えない。反乱軍の宇宙空間には、もっと適切な変革がたくさんあるはずだ。そして全員がうなずき始める。「はい、もちろんです。君の言う通りだ。私たちは軽率だったかもしれない。私は...ええと...抜本的な改革をしようと思っていました」
+「怖がっているようですね。分かるよ。でも、それが自分を表に出すことの代償なんだ」
+
+ステファンはメタ反乱軍に筋の通った話を続ける。彼が話し終わる頃には、クルーの一人があなたのミッションに参加することを決めていた。</text>
+                                            <crewMember amount="1" all_skills="2" class="human_engineer" />
+                                            <autoReward level="HIGH">scrap_only</autoReward>
+                                        </event>
+                                    </choice>
+                                    <choice hidden="true">
+                                        <text>あなたに反抗する人こそ、最大の反逆者ではないか？</text>
+                                        <event name="META_REBELLION_TRICK">
+                                            <text>メタ反乱軍が反乱軍に反抗しているからより優れた反乱軍なのだとしたら、反乱軍を裏切った（例えばレネゲイドに参加した）者は最も反乱軍らしいとあなたは説明する。最初、責任者が「ハッ、私を......」と言ったが、彼は遮られた--彼らの後ろにいたエンジニアたちは今、互いに武器を向け合っている。「何をするんだ？まさか..."喧嘩になる。勝者はシャトルであなたの船にやってきて、自分たちのサービスを提供する。しかし、彼らの船はあなたの反則行為に気づいたようで、あなたを攻撃する！</text>
+                                            <crewMember amount="1" combat="2" class="human_engineer" />
+                                            <ship hostile="true" />
+                                            <choice hidden="true">
+                                                <text>次へ...</text>
+                                                <event load="COMBAT_CHECK" />
+                                            </choice>
+                                        </event>
+                                    </choice>
+                                    <choice>
+                                        <text>時間の無駄だ。もう行くよ</text>
+                                        <event>
+                                            <text>「まるで！あなたは知りすぎている。あなたを処分しなければならない。さようなら！"給電が切れ、機関船が動き出す！</text>
+                                            <ship hostile="true" />
+                                            <choice hidden="true">
+                                                <text>次へ...</text>
+                                                <event load="COMBAT_CHECK" />
+                                            </choice>
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                            <choice>
+                                <text>ということは...あなたは連邦の潜在的な同盟者ということですか？</text>
+                                <event>
+                                    <text>「笑わせるな。連邦は反乱軍以上に強固な組織だ。我々にとって 取るに足らない存在だ"</text>
+                                    <choice hidden="true">
+                                        <text>あなたに反抗する人こそ、最大の反逆者ではないか？</text>
+                                        <event load="META_REBELLION_TRICK" />
+                                    </choice>
+                                    <choice>
+                                        <text>時間の無駄だ。もう行くよ</text>
+                                        <event>
+                                            <text>「まるで！あなたは知りすぎている。あなたを処分しなければならない。さようなら！"給電が切れ、機関船が動き出す！</text>
+                                            <ship hostile="true" />
+                                            <choice hidden="true">
+                                                <text>次へ...</text>
+                                                <event load="COMBAT_CHECK" />
+                                            </choice>
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                            <choice hidden="true">
+								<text>あなたに反抗する人こそ、最大の反逆者ではないか？</text>
+								<event load="META_REBELLION_TRICK" />
+							</choice>
+                            <choice>
+                                <text>時間の無駄だ。もう行くよ</text>
+                                <event>
+                                    <text>「まるで！あなたは知りすぎている。あなたを処分しなければならない。さようなら！"給電が切れ、機関船が動き出す！</text>
+                                    <ship hostile="true" />
+                                    <choice hidden="true">
+                                        <text>次へ...</text>
+                                        <event load="COMBAT_CHECK" />
+                                    </choice>
+                                </event>
+                            </choice>
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+            <choice>
+                <text>生息地を攻撃する。</text>
+                <event>
+                    <text>あなたの攻撃的な行動に機関船が素早く反応。どうやら一戦交えたようだな！</text>
+                    <ship hostile="true" />
+                    <choice hidden="true">
+                        <text>次へ...</text>
+                        <event load="COMBAT_CHECK" />
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>信号を避ける。</text>
+        <event>
+            <text>子供向けテレビ番組の電波を追いかけている暇はない。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="JERRY_COALITION_SPIES" unique="true">
+    <text>このビーコンに反乱軍の船がいる。あなたの船から距離を保っています。</text>
+    <ship load="SHIP_REBEL_FAKE_COALITION" hostile="false" />
+    <choice>
+		<text>なぜ不審な行動をしているのか、その理由を聞くために彼らに声をかける。</text>
+		<event>
+			<text>戻ってきた声は、デジタルで加工されたような、少しずれたものに聞こえる。「レネゲイド、我々は君を生かす。すぐに行け"</text>
+			<choice>
+				<text>応じなければ通報すると脅す。</text>
+				<event>
+					<text>間があって、今度はまぎれもなくスラッグのような反応が返ってきた。「連合はお前のためにいるんじゃない、レネゲイド。我々は反乱軍を監視し、弱体化させるためにここにいる。反乱軍に潜入するのは初めてだ互いを無視して共通の敵に迷惑をかけるのはお互いのためにならない"</text>
+					<choice req="LIST_CREW_MANTIS" hidden="true">
+						<text>(マンティス・クルー）より良い戦いを約束してマンティスを誘う。</text>
+						<event>
+							<text>カマキリはそのチャンスに飛びつく。「じゃあな、クズども！今すぐ戦った方がいい！スパイは時間の無駄だ」 
+
+ 「いい度胸だ...。ええい、ふざけるな。是非ともこのバカを俺たちの手から離せ。"</text>
+							<crewMember amount="1" class="mantis_suzerain" />
+						</event>
+					</choice>
+					<choice>
+						<text>賄賂を贈って艦隊を遅延させ、反乱軍の活動を妨害する。</text>
+						<event>
+							<text>"もちろん、それは手配できる。反乱軍を何人殺してもいい。</text>
+							<modifyPursuit amount="-2" />
+							<item_modify>
+								<item type="scrap" min="-30" max="-10" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice>
+						<text>連合は反乱軍と変わらない攻撃だ</text>
+						<event>
+							<text>「これは無意味な戦いだ、レネゲイド！反乱軍は我々の戦いから利益を得ようとしている！"船は躊躇することなく自らを守る。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>放っておけばいい。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>彼らの言うとおりにしろ。</text>
+				<event>
+					<text>船は約束に忠実で、あなたの行動を邪魔することはない。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>船を攻撃しろ。</text>
+		<event>
+			<text>驚くことに、この船には連合のクルーがいる！彼らは自衛をためらわない。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+		</choice>
+    <choice>
+		<text>放っておけばいい。</text>
+		<event>
+			<text>船はこのビーコンに留まり続け、あなたの船が何をしても反応しない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+
+<event name="JERRY_DEPOT" unique="true">
+	<text>あなたは反乱軍の倉庫に出くわした。何十隻もの輸送船が倉庫に向かって列をなし、地上では数人の労働者が物資の入った木箱を行ったり来たりしている。防衛面では難攻不落とは言えないが、エース艦が見張りに立っている。</text>
+	<ship load="SHIP_JERRY_DEPOT" hostile="false" />
+	<choice hidden="true">
+		<text>デポを攻撃しろ。</text>
+		<event>
+			<text>武器をパワーアップさせ、エース艦と交戦し、デポにアクセスする。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>デポは無視しろ。</text>
+		<event>
+			<text>ここで余計な問題を起こす必要はない。あなたにはもっと差し迫った問題がある。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="JERRY_DEPOT_RAID">
+	<text>ここに保管されている物資は人道的なものにすぎず、反乱軍の市民は切実に必要としているのだろう。</text>
+	<choice hidden="false">
+		<text>物資を盗む。</text>
+		<event load="JERRY_DEPOT_STEAL" />
+	</choice>
+	<choice hidden="true">
+		<text>物資は置いていけ。</text>
+		<event>
+			<text>あなたは軍用品を探してここに来たが、ここの市民はこの貨物を必要としている。置いていった方がいい。</text>
+		</event>
+	</choice>
+</event>
+<eventList name="JERRY_DEPOT_STEAL">
+	<event>
+		<text>あなたは物資を手に取り、このセクターの人々があなたよりも物資を必要としている可能性が高いことを十分承知している。</text>
+		<weapon name="BOMB_HEAL" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MORALITY_UPDATE_JERRY" />
+		</choice>
+	</event>
+	<event>
+		<text>あなたは物資を手に取り、このセクターの人々があなたよりも物資を必要としている可能性が高いことを十分承知している。</text>
+		<weapon name="BOMB_BUFF" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MORALITY_UPDATE_JERRY" />
+		</choice>
+	</event>
+	<event>
+		<text>あなたは物資を手に取り、このセクターの人々があなたよりも物資を必要としている可能性が高いことを十分承知している。</text>
+		<drone name="DOCTOR_DEFENSE" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MORALITY_UPDATE_JERRY" />
+		</choice>
+	</event>
+</eventList>
+
+<event name="JERRY_AUTO_REPLICA" unique="true">
+	<text>エンジニアの船が、鮮やかな青で塗られた自動船で作業をしているようだ。側面には「To: Jerry, From：スミス・アンド・ザ・ギャング」と書かれている。</text>
+	<ship load="SHIP_ENGINEER_REPLICA" hostile="false" />
+	<choice hidden="true">
+		<text>オートシップは何のためにあるのか、尋ねてみてください。</text>
+		<event>
+			<text>エンジニアは連邦の船だと認識していないようだ。"これは私の大作だ！ジェリーの個性をプログラムしたオートシップだ！あとは仕上げだけだボスのお気に入りは何だ？"</text>
+			<choice req="LIST_CREW_JERRY">
+				<text>(ジェリー）ジェリーが乗船しています。</text>
+				<event>
+					<text>エンジニアは驚いた。「えっ、彼が？その..."エンジニアは緊張して肩を掻く。"まだ完成していませんが...お見せしましょう"
+
+エンジニアがコントロールをいじると、オートシップが息を吹き返す。「おはよう、スミス。子供たちにまた寝物語を読んであげましょうか」
+
+"いえいえ、私は..."彼はジェリーに向き直る。「いや、いや、僕は...」彼はジェリーに向き直った。彼は喉を鳴らす。「ほら、人間のジェリーだ！」
+ジェリーは青いオートに向かって手を振る。"こんにちは"
+
+"ああ、君が僕のモデルになった男か。こんにちは"</text>
+					<choice>
+						<text>次へ...</text>
+						<event>
+							<text>「それはとてもクールなことだけど、ちょっと疑問があるんだ......なぜ誰かに自分の人格のコピーを贈るのかってね」
+
+スミスは顎をこすった。まあ、私はこう考えた。"他のみんなが持っていて、自分がまだ持っていないものって何だろう？"ジェリーは無表情に見つめる。「あなた自身です！あなたがいることで、護民官の誰もが幸せになる。大きな悲劇は、ジェリーを持っていないのは、ジェリー自身だということだ！"</text>
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event>
+									<text>ジェリーはしばらくあなたを見て、ため息をついた。「まあ、いいプレゼントだし、いい気持ちだよ。僕はこれから旅に出るんだ。僕がいない間、みんなを元気づけるために使ったらどうだい？もし私が本当に君たちを幸せにするのなら、君たちが私にできる最大の贈り物は、私が一度に二つの場所で人々を幸せにすることだと思うんだ」
+
+エンジニア全員が涙を流し始める。"ああ、ジェリー...君は史上最高の男だ！"エンジニアたちは、ジェリーが贈り物を置いていくので、その辺にあるものを何でもあげると言い張る。</text>
+									<autoReward level="HIGH">drone</autoReward>	
+								</event>
+							</choice>
+						</event>
+					</choice> 
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>嘘：冷酷で容赦ない性格。それが彼を優秀な兵士にしている。</text>
+				<event>
+					<text>"はぁ...なんだ？全然彼らしくないな"エンジニアはあなたを追い払い、船の作業に戻る。</text>
+					<choice hidden="true">
+						<text>彼らを攻撃する！</text>
+						<event>
+							<text>エンジニア船と交戦。彼らは懇願しようとするが、通信を切って攻撃する。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="MORALITY_UPDATE_JERRY_FIGHT" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>出て行け。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>嘘：人々を支配する彼の権威主義的なやり方。彼はこの銀河系に必要な強いリーダーだ。</text>
+				<event>
+					<text>"はぁ...なんだ？全然彼らしくないな"エンジニアはあなたを追い払い、船の作業に戻る。</text>
+					<choice hidden="true">
+						<text>彼らを攻撃する！</text>
+						<event>
+							<text>エンジニア船と交戦。彼らは懇願しようとするが、通信を切って攻撃する。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="MORALITY_UPDATE_JERRY_FIGHT" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>出て行け。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>嘘：彼はクールだと思うよ。</text>
+				<event>
+					<text>「確かにそうだ！これほどクールな選手はいない。おそらく、私はまだこのAIの性格をジェリーの性格に合うように十分にモデル化していないのだろう......。仕事に戻らなければ！行く前にこれを持って行け。反乱軍へ！"あなたは半信半疑で唱え返し、無料の物資を受け取る。</text>
+					<autoReward level="LOW">droneparts</autoReward>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>反乱軍を攻撃せよ</text>
+		<event>
+			<text>エンジニア船と交戦。彼らは懇願しようとするが、通信を切って攻撃する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_JERRY_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>反乱軍を無視する。</text>
+		<event>
+			<text>エンジニアのことは心配していない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="JERRY_MOCKBATTLE" unique="true">
+	<text>このビーコンは、ある行動の真っ只中にある。2つの中規模の艦隊、1つは反乱軍、もう1つは...。反乱軍はまだしも、連邦軍の色に塗られた粗末な艦隊が膠着状態にある。各艦隊の司令官たちは互いに向き合い、内戦中の有名な戦いのセリフを暗唱している。</text>
+	<customFleet right="false" firing="false" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<choice hidden="true">
+		<text>仲裁に入り、調停を試みる。</text>
+		<event>
+			<text>あなたは両艦隊の間に身を置き、勇敢にも危険を冒して対立を緩和しようとした。しかし、どちらの司令官もそれを良しとしないようで、あなたは悪態と侮辱の嵐に見舞われる。さあ、あなたが言いたいことを言う番だ。</text>
+			<choice hidden="true">
+				<text>反乱軍の時間は限られている撤退して連邦に服従せよ</text>
+				<event>
+					<text>あなたの感動的なスピーチには、さらなる侮辱が返ってくるだけだ。「バカ野郎、どけ！参加するには申し込みが必要だ！"これは反乱軍による模擬戦なのだ。あなたは相当なバカに見えるし、反乱軍に対して脅しをかけたばかりだからしょうがない。実際の武器で武装したレフェリーがあなたを追い払った！</text>
+					<ship hostile="true" load="SHIP_REBEL_FIGHT" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>ここは民間人の領土だ！連邦はここを攻撃するよりももっとやるべきことがある！</text>
+				<event>
+					<text>何？何を言っているんだ？バディ、これは模擬戦だ。俺たちはみんな "反乱軍 "だ。心配はありがたいが、誰も危険な目には遭っていない。今朝、薬は飲んだのか？"あなたは反乱軍に精神的に安定していることを確認するが、彼らはあなたを信じようとしないようだ。彼らはあなたにいくつかの物資を渡した。彼らはあなたの善意に対する贈り物だと言ったが、あなたは彼らがただあなたを早く帰らせたいだけなのではないかと疑っている。</text>
+					<autoReward level="MED">standard</autoReward>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>連邦の司令官に敬意を表し、支援を申し出る。</text>
+		<event>
+			<text>連邦の士官と交信を試みるが、なぜか彼らは連邦の信号を受信していないようだ。司令官の無能さに苛立ち、あなたは今何をすべきか決めなければならない。</text>
+			<choice hidden="true">
+				<text>仲裁に入り、調停を試みる。</text>
+				<event>
+					<text>あなたは両艦隊の間に身を置き、勇敢にも危険を冒して対立を緩和しようとした。しかし、どちらの司令官もそれを良しとしないようで、あなたは悪態と侮辱の嵐に見舞われる。さあ、あなたが言いたいことを言う番だ。</text>
+					<choice hidden="true">
+						<text>反乱軍の時間は限られている撤退して連邦に服従せよ</text>
+						<event>
+							<text>あなたの感動的なスピーチには、さらなる侮辱が返ってくるだけだ。「バカ野郎、どけ！参加するには申し込みが必要だ！"これは反乱軍による模擬戦闘なのだ。あなたは相当なバカに見えるし、反乱軍に対して脅しをかけたばかりだからしょうがない。実際の武器で武装したレフェリーがあなたを追い払った！</text>
+							<ship hostile="true" load="SHIP_REBEL_FIGHT" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>ここは民間人の領土だ！連邦はここを攻撃するよりももっとやるべきことがある！</text>
+						<event>
+							<text>何？何を言っているんだ？バディ、これは模擬戦だ。俺たちはみんな "反乱軍 "だ。心配はありがたいが、誰も危険な目には遭っていない。今朝、薬は飲んだのか？"あなたは反乱軍に精神的に安定していることを確認するが、彼らはあなたを信じようとしないようだ。彼らはあなたにいくつかの物資を渡した。彼らはあなたの善意に対する贈り物だと言ったが、あなたは彼らがただあなたを早く帰らせたいだけなのではないかと疑っている。</text>
+							<autoReward level="MED">standard</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>あきらめなさい。</text>
+				<event>
+					<text>そんなことより、もっとやるべきことがあるだろう。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>すぐに出発する。</text>
+		<event>
+			<text>これはあなたが巻き込まれたい戦いではない。時間だ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="JERRY_REBEL_DEPRESSED" unique="true">
+    <text>「あれはレネゲード？ああ、どうしようもない...。成功するわけがない"反乱軍は攻撃しようとしない。</text>
+    <ship load="SHIP_REBEL_FIGHT" hostile="false" />
+    <choice>
+		<text>彼らの正しさを証明しよう攻撃！</text>
+		<event>
+			<text>もし彼らが目前に迫った敗北に文句を言うのなら、それを否定するのは誰なんだ？</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+    <choice>
+		<text>何か問題があるかどうか尋ねてみてほしい。</text>
+		<event>
+			<text>"ただ..."反乱軍はため息をつく。「この船は、現役の反乱軍の船の中でも最悪の勤務実績だ。この船は、現役の反乱軍の船の中で最悪の勤務記録を持っています。大義のために任務を遂行する名誉すらない。反乱軍の笑いものだレネゲイドに勝てるわけがないだから俺たちはここに残されたんだ。俺たちが何かしでかすことはないだろう。"</text>
+			<choice hidden="true" req="unique_jerry">
+				<text>(ジェリー）"誇りに思うよ"。</text>
+				<event>
+					<text>ジェリーが通信機に話しかける。「やあ、大変なことがあったのは知っているが、君たちを誇りに思っていることを知っておいてほしい。君たちは生きている。これほど危険な銀河系で、それは並大抵のことではない。"
+
+"ジェリー？本気で言ってるのか？"向こうの声は詰まっているように聞こえる。"私たちがどれほど長い間、それを聞きたかったか、あなたにはわからないでしょう。君は本当に銀河一クールな男だ"</text>
+					<autoReward level="MED">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>慰めてあげてください。</text>
+				<event load="JERRY_REBEL_DEPRESSED_CONSOLE" />
+			</choice>
+			<choice>
+				<text>惨めな思いをさせてはいけない。</text>
+				<event>
+					<text>彼らの低姿勢は、うまくいけば戦術的に有利になる。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>リーベルから離れる。</text>
+				<event>
+					<text>それ以上何も言わずに、静かにその場を離れる。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>意気消沈した反乱軍に免じて。</text>
+		<event>
+			<text>相手の問題が何であれ、あなたは喧嘩を避ける機会を得るだろう。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+<eventList name="JERRY_REBEL_DEPRESSED_CONSOLE">
+	<event>
+		<text>「お前に何がわかる？あんたがここにいるということは、あんたには私たちの痛みがわからないということだ！"反乱軍キャプテンの気分が変わった。彼らと戦うしかない！</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>"レネゲイドが私たちを元気づけようとしている？こんな日が来るとは思わなかった"反乱軍が物資を落としていく。</text>
+		<autoReward level="MED">stuff</autoReward>					 
+	</event>
+	<event>
+		<text>「ここで何をしようとしているんだ？時間を無駄にするな"</text>					 
+	</event>
+</eventList>
+
+
+<eventList name="DISTRESS_JERRY">
+	<event load="DISTRESS_JERRY_SHOOTING_STAR" />
+	<event load="DISTRESS_JERRY_ZOO" />
+</eventList>
+
+<event name="DISTRESS_JERRY_SHOOTING_STAR" unique="true">
+	<distressBeacon />
+    <text>あなたが近づくと、小さな非武装の船が執拗に呼びかける。私たちは "ドリーム・コンジュラーズ "の代表で、人々の生活、特に小さな子供やジェリーに喜びと威厳を与えることを目的としたグループです。私たちは小惑星を軌道に落とし、流れ星のように見せることで、人々に笑顔を届けていました。しかし、不慮の事故が起こり、私たちが落とした小惑星には、実はミサイルを満載した秘密の隠し場所があったのかもしれません。しばしの沈黙。"助けてください！"</text>
+    <choice req="MAGNET_ARM" hidden="true">
+		<text>(マグネットアーム）急降下し、マグネットアームでミサイルキャッシュをつかむ。</text>
+		<event>
+			<text>あなたは急襲し、間一髪でそれを手に入れた。キャッシュにはミサイルが満載で、弾道弾まで隠されている。</text>
+			<autoReward level="HIGH">missiles_only</autoReward>
+			<weapon name="GIFTLIST_MISSILES" />
+			<choice hidden="true">
+				<text>夢の呪術師たちへ戻る。</text>
+				<event>
+					<text>「わあ、やったね！でも...。もっと大きな見世物にできなかったのは残念だけど...。ああ、なんて言うんだろう、少なくとも誰も怪我をしなかったんだから。"ちょっとしたご褒美をくれる。</text>
+					<autoReward level="LOW">scrap_only</autoReward>
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice req="BLUELIST_FOCUS_DAMAGE" hidden="true">
+		<text>(ピンポイントにダメージを与える）ピンポイントで正確にキャッシュを破壊する。</text>
+		<event>
+			<text>あなたのピンポイントは、ペイロードを爆発させるのにちょうどいい場所にキャッシュを打つ。それは街に到達する前に大気中で無害に爆発する。その結果、スクラップは大気中で燃え尽き、眼下の街には流星群のように見える現象が起こる。</text>
+			<choice hidden="true">
+				<text>夢の呪術師たちへ戻る。</text>
+				<event load="JERRY_DREAM_CONJURER_REWARD" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="BLUELIST_ACCURATE_BALLISTIC" hidden="true">
+		<text>(正確な弾道兵器）ミサイルを使ってキャッシュを正確に破壊する。</text>
+		<event>
+			<text>あなたのショットがちょうどいい位置にあるキャッシュに命中し、ペイロードを爆発させる。それは街に到達する前に大気中で無害に爆発する。その結果、スクラップは大気中で燃え尽き、眼下の街には流星群のように見える現象が起こる。</text>
+			<item_modify>
+				<item type="missiles" min="-1" max="-1" />
+			</item_modify>
+			<choice hidden="true">
+				<text>夢の呪術師たちへ戻る。</text>
+				<event load="JERRY_DREAM_CONJURER_REWARD" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="SNIPER" hidden="true">
+		<text>(ネヴァーミス）正確にキャッシュを破壊する。</text>
+		<event>
+			<text>あなたのショットがちょうどいい位置にあるキャッシュに命中し、ペイロードを爆発させる。それは街に到達する前に大気中で無害に爆発する。その結果、スクラップは大気中で燃え尽き、眼下の街には流星群のように見える現象が起こる。</text>
+			<choice hidden="true">
+				<text>夢の呪術師たちへ戻る</text>
+				<event load="JERRY_DREAM_CONJURER_REWARD" />
+			</choice>
+		</event>
+    </choice>
+    <choice hidden="true">
+		<text>キャッシュはすでに大気圏にあり、街に向かって落下している。よほど狙いが正確でない限り、キャッシュよりも街に命中する可能性が高い。</text>
+		<event load="OPTION_INVALID" />
+    </choice>
+    <choice hidden="true">
+		<text>ドリーム・コンジュラーズを破壊せよ。</text>
+		<event>
+			<text>あなたは都市を救出する代わりに、ドリーム・コンジュラーズに直接数発の弾丸を撃ち込み、彼らの船を短時間で破壊した。下の惑星では、キャッシュが都市に衝突し、大爆発を引き起こした。</text>
+			<autoReward level="LOW">standard</autoReward>
+			<choice>
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_JERRY" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>無視するんだ。</text>
+		<event>
+			<text>惑星表面で大爆発が起きた。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+<event name="JERRY_DREAM_CONJURER_REWARD">
+    <text>「カブランモ！やったね！素晴らしかったよ！街の人々には、きっと美しく見えたことだろう。今日のドリームコンジュラーは君だったようだね。ご褒美だ！"</text>
+    <autoReward level="HIGH">standard</autoReward>
+</event>
+
+<event name="DISTRESS_JERRY_ZOO" unique="true">
+	<distressBeacon />
+    <text>このビーコンには動物園の大きな広告があり、救難信号の場所を特定するのに役立つ。「助けてください、動物たちが手に負えません！動物たちを生息地に戻せません！"</text>
+    <choice req="mind" lvl="1" hidden="true">
+		<text>(マインドコントロール）動物をなだめる。</text>
+		<event>
+			<text>動物たちはあなたのマインド・コントロール・システムに簡単に動かされる。動物園の経営者たちはあなたに心から感謝する。「動物たちを傷つけずに助けてくれた。ありがとう"</text>
+			<autoReward level="MED">standard</autoReward>
+			<event />
+		</event>
+		</choice>
+	<choice hidden="true" req="unique_irwin">
+		<text>(アーウィン）やり方を教えてやれ。</text>
+		<event>
+			<text>アーウィンは一頭一頭の動物を適切な棲息地に難なく誘導する。その間、彼は動物園の経営者たちに動物の管理とケアについて教育している。彼らは彼の専門知識に感心しきりだ。</text>
+			<autoReward level="HIGH">standard</autoReward>
+			<event />
+		</event>
+    </choice>
+    <choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(クリスタル・クルー）動物たちを生息地に誘導するためのバリケードを作る。</text>
+		<event>
+			<text>クリスタルのクルーは、ロックダウン能力を使って、すべての動物たちを上手に元の生息地に戻した。「動物たちを傷つけずに助けてくれてありがとう。ありがとう」。</text>
+			<autoReward level="MED">standard</autoReward>
+			<event />
+		</event>
+    </choice>
+    <choice hidden="true" req="LIST_CREW_ROCK">
+		<text>(ロッククルー）ロックマンに力を使わせる。</text>
+		<event load="JERRY_ZOO_ROCK" />
+    </choice>
+    <choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>動物たちを落ち着かせるためにクルーを送り込む。</text>
+		<event load="JERRY_ZOO_CREW" />
+    </choice>
+    <choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>クルーが一人も乗船していない状態では、クルーは派遣できない。</text>
+		<event load="OPTION_INVALID" />
+    </choice>
+    <choice>
+		<text>動物園は無視。</text>
+		<event>
+			<text>この事態は反乱軍に任せればいい。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+<eventList name="JERRY_ZOO_ROCK">
+	<event>
+		<text>あなたのロックマンは、その優れた体格と重量を利用して、動物たちを強制的に檻に押し戻そうとする。幸い、動物に危害は加えられなかった。経営者たちは、少し神経質になってはいるが、感謝しているようだ。</text>
+		<autoReward level="MED">standard</autoReward>
+		<event />
+	</event>
+	<event>
+		<text>あなたのロックマンは、その優れた体格と重量を利用して、動物たちを檻に押し戻そうとする。残念なことに、動物たちは驚いてしまう。格闘の末、動物の一匹が死んでしまった。この大失敗の後、経営者たちはあなたを追い払った。</text>
+		<event />
+	</event>
+</eventList>
+<eventList name="JERRY_ZOO_CREW">
+	<event>
+		<text>動物園の経営者たちは、乗組員の助けを借りて、それぞれの動物を生息地に戻すことができる。幸運なことに、どの動物も傷つけられることはなかった。経営者たちは感謝しているようだ。</text>
+		<autoReward level="MED">standard</autoReward>
+		<event />
+	</event>
+	<event>
+		<text>どんなに努力しても、あなたのクルーはこの状況を助けられるほどの技術を持っていない。ここでやることは他にない</text>
+		<event />
+	</event>
+	<event>
+		<text>クルーの一人がちょっと手に負えなくなった。乱闘の中で事故が起こり、彼らは死んでしまった。動物園は謝罪したが、あなたは手ぶらで行くことになりそうだ。</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>クルーがクローンベイを出る。</text>
+		</removeCrew>
+		<event />
+	</event>
+</eventList>
+
+<eventList name="QUESTS_JERRY">
+	<event load="QUEST_JERRY_ASSASSINATION" />
+</eventList>
+
+<event name="QUEST_JERRY_ASSASSINATION" unique="true">
+    <text>FTLから脱落したあなたの背後から、反乱軍の船が飛び込んできた。「君がここに来てから、ずっと尾行していたんだ。興味があるなら、仕事がある。ある士官がいるんだが...彼女を『問題児』と呼んでおこう。どうせ反乱軍を殺しに来たんだろ？じゃあ、いい標的の座標を教えるから、お互い得をしよう。従ってくれれば、報酬もある。いいだろう？</text>
+    <ship load="SHIP_REBEL_HITJOB_GIVER" hostile="false" />
+    <choice>
+		<text>仕事を引き受ける。</text>
+		<event>
+			<text>「完璧だ。後悔はさせないよ、レネゲイド。座標と合流座標を送る"</text>
+			<quest event="QUEST_JERRY_ASSASSINATION_SPOT" />
+		</event>
+    </choice>
+    <choice>
+		<text>反乱軍とは取引しない！</text>
+		<event>
+			<text>「予想通りだ！反乱軍の船はすぐに武装する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>仕事を断る。</text>
+		<event>
+			<text>"残念だ...しかし、その態度ではこれ以上進めないぞ！"拒否された反乱軍は即座に攻撃を仕掛ける。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+    </choice>
+</event>
+<event name="QUEST_JERRY_ASSASSINATION_SPOT">
+	<beaconType id="map_icon_quest" global="true">
+  	  <color r="69" g="168" b="235" a="1" />
+  	  <unvisitedTooltip>あなたが暗殺する任務を負った反乱軍がここにいる。</unvisitedTooltip>
+	</beaconType>
+    <text>ビーコンに到着すると、ステーションで給油中のターゲットを発見。彼らはあなたの接近に反応しない。</text>
+    <choice>
+		<text>彼らを攻撃する。</text>
+		<event>
+			<text>彼らはあなたの襲撃に対応するため、すぐにステーションから切り離す！</text>
+			<ship load="SHIP_REBEL_ASSASSINATION_TARGET" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_JERRY_FIGHT" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>まずは彼らに敬意を表する。</text>
+		<event>
+			<text>「なぜここにいるんだ、レネゲイド？あなた方と争うつもりはない。民間人を攻撃していないのなら、戦う義務はない"</text>
+			<choice hidden="true" req="LIST_CREW_JERRY">
+				<text>(ジェリー）ジェリーが話したがっている。</text>
+				<event>
+					<text>"やあ、アイリーン"
+"あら、ジェリー？あなたが乗っているとは思わなかったわ。どう言えばいいかわからないけど、誰かがあなたを殺そうとしているの。反乱軍がこの船の船長に、あなたを殺すかどうか聞いてきたのよ！」
+
+アイリーンは首を振る。"驚くべきではないと思う。反乱軍の高官の多くは私の提案を好まない。ただ、その中に私を殺すためだけに保護領に船を送り込む者がいるとは思わなかった」
+
+ジェリーはため息をつく。"ここで何をすべきなのかわからない...誰が送り込んだのか突き止める方法はないのか？"
+
+"それは私に任せてくれ。彼らの船を拿捕したら、我々に連絡してくれ。このステーションを使わせてやろう"</text>
+					<quest event="QUEST_JERRY_ASSASSINATION_REVERSE" />
+					<autoReward level="HIGH">fuel</autoReward>
+				</event>
+   		 	</choice>
+			<choice>
+				<text>職務について質問する。</text>
+				<event>
+					<text>「どうしても知っておいてほしいのだが、私たちは民間人への影響を軽減するため、戦争への取り組みを変更するようキャンペーンを張ってきた。ようやく前進できたが、遅々として進まない。もちろん、あなた方の連邦に弱さを見せるわけにはいかないが、民間人の生命をないがしろにするにはあまりにも重要だ。"</text>
+					<choice>
+						<text>モラルは弱さではない。</text>
+						<event>
+							<text>"連盟 "の皆さんは気取り屋だ。あなた方と同じように振る舞っていたら、我々はこれほどうまくいっていないでしょう。もうほっといてくれ、大事な仕事があるんだ。"電話を切る。</text>
+							<choice>
+								<text>彼らを攻撃する。</text>
+								<event>
+									<text>彼らはすぐに持ち場を離れ、あなたの襲撃に対応する！</text>
+									<ship load="SHIP_REBEL_ASSASSINATION_TARGET" hostile="true" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="MORALITY_UPDATE_JERRY_FIGHT" />
+									</choice>
+								</event>
+							</choice>
+							<choice>
+								<text>放っておけばいい。</text>
+								<event />
+							</choice>
+						</event>
+   					</choice>
+					<choice>
+						<text>なぜ反乱軍が耳を貸す？平和は連邦の望みだ反乱軍の望みは勝利だ</text>
+						<event>
+							<text>"反乱が始まったばかりの頃は、市民の声を聞くために危険にさらさなければならないのは、残念ではあったがやむを得なかった。しかし、今は立派に戦うことができる。</text>
+							<choice>
+								<text>勝って初めて良心の呵責を感じるのか？反乱軍がまた遅れをとったらどうなる？</text>
+								<event>
+									<text>"反乱軍 "の初期の行動に賛成とは言わないが、銀河を変えるつもりなら、勝つ前にそれにふさわしい組織になる必要がある。理解できない。私の意図をただ尋問しに来たのか？どうでもいいのか？"</text>
+									<choice hidden="true">
+										<text>反乱軍があなたを殺せと言った。その理由を知りたかった。</text>
+										<event>
+											<text>"あなたはとても原則的ですね？そういう点では似ていると言っても構わないかな。あなたの目標が私と同じなら、私の願いを聞いてほしい。私が提案する変更に大反対している反乱軍もいる。彼らの船を拿捕すれば、それが誰なのか突き止められるかもしれない。捕まえたら教えてくれ遠慮なく燃料とスクラップを持って行ってくれ。" </text>
+											<autoReward level="HIGH">fuel</autoReward>
+											<quest event="QUEST_JERRY_ASSASSINATION_REVERSE" />
+										</event>
+									</choice>
+									<choice>
+										<text>ただ、誰を殺すのかを知る必要があった。</text>
+										<event>
+											<text>あなたが攻撃態勢に入ると、彼女は困惑した声を上げる。"まだ...理解できない"</text>
+											<ship load="SHIP_REBEL_ASSASSINATION_TARGET" hostile="true" />
+											<choice hidden="true">
+												<text>次へ...</text>
+												<event load="MORALITY_UPDATE_JERRY_FIGHT" />
+											</choice>
+										</event>
+									</choice>
+									<choice>
+										<text>何もない。心配しないで。</text>
+										<event>
+											<text>"オーケー...？"彼女はそれ以上あなたを煩わせることはない。</text>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice>
+								<text>反乱軍は決して平和のために創設されたわけではない。反乱軍を変えることはできない。</text>
+								<event>
+									<text>"そのような閉鎖的な考え。私たちが反乱軍を変えられないなら、あなたも連邦を変えられない。彼女は電話を切る。</text>
+									<choice>
+										<text>彼らを攻撃する。</text>
+										<event>
+											<text>彼らはすぐに持ち場を離れ、あなたの襲撃に対応する！</text>
+											<ship load="SHIP_REBEL_ASSASSINATION_TARGET" hostile="true" />
+											<choice hidden="true">
+												<text>次へ...</text>
+												<event load="MORALITY_UPDATE_JERRY_FIGHT" />
+											</choice>
+										</event>
+									</choice>
+									<choice>
+										<text>放っておけばいい。</text>
+										<event />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>崇高な目標だ。</text>
+						<event>
+							<text>"同意してくれて嬉しいよ。では、なぜここに来たのですか？あなたの存在は事態を悪化させるだけです"</text>
+							<choice>
+								<text>反乱軍があなたを殺せと言った。その理由を知りたかった。</text>
+								<event>
+									<text>「それだけでよかったのか？私たちの話を最後まで聞いてくれたことには敬意を表する。私の提案に反対する反乱軍もいる。彼らの船を拿捕すれば、誰かわかるかもしれない。捕まえたら教えてくれ"</text>
+									<quest event="QUEST_JERRY_ASSASSINATION_REVERSE" />
+								</event>
+							</choice>
+							<choice>
+								<text>ただ、誰を殺すのかを知る必要があった。</text>
+								<event>
+									<text>あなたが攻撃態勢に入ると、彼女は困惑した声を上げる。"まだ...理解できない"</text>
+									<ship load="SHIP_REBEL_ASSASSINATION_TARGET" hostile="true" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="MORALITY_UPDATE_JERRY_FIGHT" />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="QUEST_JERRY_ASSASSINATION_COMPLETED">
+    <text>目標は排除された。報酬を得るためには、ランデブーポイントに進まなければならない。</text>
+    <autoReward level="HIGH">standard</autoReward>
+    <quest event="QUEST_JERRY_ASSASSINATION_REWARD" />
+</event>
+<event name="QUEST_JERRY_ASSASSINATION_REWARD">
+	<beaconType id="map_icon_quest" global="true">
+  	  <color r="69" g="168" b="235" a="1" />
+  	  <unvisitedTooltip>暗殺は完了した。報酬を受け取りにこちらへ。</unvisitedTooltip>
+	</beaconType>
+    <text>「よくやった。君のおかげで仕事がやりやすくなった。ご褒美だ</text>
+    <autoReward level="HIGH">augment</autoReward>
+    <ship load="SHIP_REBEL_HITJOB_GIVER" hostile="false" />
+    <choice>
+		<text>報酬を与えたら発砲する。</text>
+		<event>
+			<text>彼らはあなたの攻撃に驚いていない。"ハッ！とにかくお前を殺したかったんだ"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>出発する。</text>
+		<event>
+			<text>雇い主はそそくさと立ち去り、あなたには船で何かする時間が残された。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+<event name="QUEST_JERRY_ASSASSINATION_REVERSE">
+	<beaconType id="map_icon_quest" global="true">
+  	  <color r="69" g="168" b="235" a="1" />
+  	  <unvisitedTooltip>あなたは仕事をくれた人物の船を捕獲する使命を帯びている。</unvisitedTooltip>
+	</beaconType>
+    <text>「まあ、まあ、まあ。あなたは怠慢だったし、彼女と話したようにさえ見える。君を帰すわけにはいかないのは、お互いわかっているはずだ"ケンカは避けられないようだ。</text>
+    <ship load="SHIP_REBEL_HITJOB_REVERSAL" hostile="true" />
+    <choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+
+<eventList name="HOSTILE_JERRY">
+	<event load="ENCOUNTER_TOM" />
+	
+	<event load="ENCOUNTER_REBEL_JERRY" />
+	<event load="ENCOUNTER_MV_JERRY" />
+	<event load="ENCOUNTER_AUTO_JERRY" />
+</eventList>
+
+<event name="ENCOUNTER_TOM" unique="true">
+    <text>奇妙な色をした反乱軍の戦闘機が近くに止まっており、艦長が何か訳の分からないことをつぶやいている。彼はあなたを見つけると叫んだ：「連邦の船だ！私が誰だかわかるか？</text>
+    <ship load="SHIP_REBEL_TOM" hostile="false" /> 
+    <choice hidden="true">
+        <text>特にない。</text>
+        <event>
+            <text>"私はトム、このセクターの真の守護者だ！世間知らずのバカは 反乱軍の仕組みも知らない 縁故採用の叔父に 気に入られてるだけだあのバカ野郎に見せてやる...おまえを殺してからな！"</text>
+            <ship hostile="true" />
+            <choice hidden="true">
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="LIST_CREW_JERRY">
+        <text>(ジェリー）"ヘイ、トム！"</text>
+        <event>
+            <text>"アハハ！見つけたぞ！愚か者め。バンスがお前が連邦の船で働いていると聞くまで待っていろ！叔父さんはお前を気にするのを止めて 反乱軍の運営に戻るんだ！"</text>
+            <ship hostile="true" /> 
+            <choice hidden="true">
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="DESTROYED_TOM">
+	<text>反乱軍の船を倒すと、脱出ポッドが船から飛び出す。残念なことに、あなたがそれを回収して船内に持ち込むまで、遠くへは行けなかった。ポッドを開け、中にいた反乱軍将校を引きずり出す。生かしてくれと懇願される。</text>
+	<autoReward level="LOW">standard</autoReward>
+	<choice hidden="true" req="LIST_CREW_JERRY" lvl="1">
+        <text>(ジェリー）"トム...もう落ち着けよ"</text>
+        <event load="DESTROYED_TOM_POD_ACCEPT_JERRY" />
+    </choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>彼をあなたの船に受け入れなさい。</text>
+		<event load="DESTROYED_TOM_POD_ACCEPT" />
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>彼の忠誠心を確保する手段なしに反乱軍を受け入れるのはリスクが高すぎる。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="mind">
+		<text>(マインドコントロール）彼が何か悪いことをしたときのために、マインドコントロールをオンラインにしておく。</text>
+		<event load="DESTROYED_TOM_POD_MIND" />
+	</choice>
+		<choice hidden="true">
+		<text>反乱軍を解放し、解放する。</text>
+		<event load="DESTROYED_REBEL_POD_SAVE" />
+	</choice>
+	<choice hidden="true">
+		<text>宇宙へ行け。</text>
+		<event>
+			<text>あなたが反乱軍の腕をつかんでエアロックに引きずり込むと、彼はほとんど抗議しなかった。涙が頬を伝い、背筋を伸ばして運命を受け入れる。彼の死体が船から安全な距離まで流れ着くと、あなたはもう一度エアロックを閉じる。</text>
+		</event>
+	</choice>
+</event>
+<eventList name="DESTROYED_TOM_POD_ACCEPT">
+	<event>
+		<text>その反乱軍は、本来の大義を裏切ることになるにもかかわらず、あなたが彼を助けてくれたことに感謝している。</text>
+		<crewMember amount="1" class="human_soldier">トム</crewMember>
+	</event>
+	<event>
+		<text>反乱軍は感謝の表情を浮かべるが、レーザーを取り出してクルーのひとりを吹き飛ばすと、すぐに打ち砕かれる！彼は「反乱軍よ永遠なれ！」と叫んだが、お返しに撃たれた。あなたは彼の無残な体をエアロックに引きずり込み、果てしない真空の宇宙へと送り出す。</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>幸運なことに、殺されたクルーはすでにクローン作成中だ。</text>
+		</removeCrew>
+	</event>
+</eventList>
+<eventList name="DESTROYED_TOM_POD_MIND">
+	<event>
+		<text>反乱軍は、あなたが彼を助けてくれたことに感謝しています。結局、マインドコントロールは必要なさそうだ。</text>
+		<crewMember amount="1" class="human_soldier">トム</crewMember>
+	</event>
+	<event>
+		<text>反乱軍兵士は感謝の表情を浮かべるが、レーザーを取り出してクルーのひとりを撃とうとすると、すぐに打ち砕かれる！幸運にも、マインドコントロールが彼を止め、彼は床に倒れた。あなたは急いで彼をエアロックから引きずり出す。</text>
+	</event>
+</eventList>
+<eventList name="DESTROYED_TOM_POD_ACCEPT_JERRY">
+    <event>
+        <text>「トム、お願いだ。私はあなたの敵ではありません"
+"
+"あなたは私よりずっと優れていると思っているの？"
+"
+"
+"私はそんなことは一言も言っていません。私が優れていることを証明するわ。あなたが想像している以上に貢献します！」
+
+トムは加入した...あなたが好むと好まざるとにかかわらず。</text>
+        <crewMember amount="1" class="human_soldier">トム</crewMember>
+    </event>
+    <event>
+        <text>「トム、お願いだ。私はあなたの敵ではありません"
+"
+"ズルいよ、ズルいよ"
+"
+"
+"どうでもいいよ。好きにすればいい。私はここの面倒を見るから。そうすれば、本当のクールガイが誰なのか分かってくれるさ」
+
+トムがあなたの船を後にすると、ジェリーはため息をついた。</text>
+    </event>
+</eventList>
+
+<event name="ENCOUNTER_MV_JERRY">
+	<text load="TEXT_ENCOUNTER_MV_JERRY" />
+	<ship load="SHIP_REBEL_MV_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(ジェリー）"ハロー！"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO" />
+			<ship hostile="false" /> 
+		</event>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_MV_JERRY">
+	<text>「ジェリーを訪ねてこの現実に来たんじゃない！邪魔だ！"</text>
+	<text>このビーコンにいる反乱軍の船は普通の船ではない。あなたと同じ多元宇宙トラベラーで、連邦の血を求めているようだ！</text>
+	<text>このセクターに反乱軍の影響が強いのは理にかなっているが、まさかマルチバースの船を見つけるとは思わなかっただろう！</text>
+	<text>「やっと見つけたぞ！...待てよ、これはジェリーのセクターか？ちくしょう、やってくれたな！ジェリーに何かしたなら......神に誓って......おまえは終わりだ！まあ、どっちにしろお前を殺すつもりだが、わかってもらえたかな？"</text>
+</textList>
+
+<event name="ENCOUNTER_REBEL_JERRY">
+	<text load="TEXT_ENCOUNTER_REBEL_JERRY" />
+	<ship load="SHIP_REBEL_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_JERRY">
+		<text>(ジェリー）"ハロー！"</text>
+		<event>
+			<text load="TEXT_ENCOUNTER_REBEL_JERRY_HELLO" />
+			<ship hostile="false" /> 
+		</event>
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_JERRY">
+	<text>あなたは反乱軍のストロングホールドのようなセキュリティ対策を施されたセクターを旅しているのだから、あなたの死を実際に望んでいる船に遭遇しても驚くにはあたらない！</text>
+	<text>反乱軍の艦船が接近してくる。この種の遭遇戦に何が予想されるかは、もうお分かりだろう。戦闘に備えよう！</text>
+	<text>どうやらこのセクターに脅威がないわけではないようだ！</text>
+	<text>「ジェリーの友達じゃないだろ！誰がここに入れた？"どこからともなく反乱軍の船が襲ってくる。</text>
+	<text>このとらえどころのないセクターの旅は一時中断せざるを得ないようだ--反乱軍の船が向かっている！</text>
+</textList>
+<textList name="TEXT_ENCOUNTER_REBEL_JERRY_HELLO">
+	<text>「ジェリー？おい、調子はどうだ！"反乱軍はもはや戦おうとしていない。</text>
+	<text>反乱軍は友人との再会を喜び、武器の電源を切る。</text>
+	<text>あなたの船にジェリーが乗っているのを見たとたん、反乱軍はもはや戦おうとはしないようだ。</text>
+</textList>
+
+<event name="ENCOUNTER_AUTO_JERRY">
+	<text load="TEXT_ENCOUNTER_AUTO_JERRY" />
+	<ship load="SHIP_AUTO_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_AUTO_JERRY">
+	<text>"素質指令：侵入した連邦船からジェロームを守れ。破壊に抵抗するな"</text>
+	<text>反乱軍宙域でオートシップを見つけるのは驚くことではないが、なぜかここでオートシップを見つけるとは思っていなかっただろう。戦闘に備えよ！</text>
+	<text>警告連邦の船がジェローム保護区に入りました。システムから退避してください。近くのオートシップが船をスキャンする。"警告：歓迎されない連邦船を確認。戦闘モードに入ります。</text>
+	<text>"重大な問題発生" "連邦船を発見" "ジェロームへの脅威は 少なくとも2％"このリスクは 満足に高くない"駆除準備中"</text>
+</textList>
+
+
+
+
+
+<ship name="SHIP_JERRY_HOME" auto_blueprint="MU_ESTATE_CONCIERGE">
+	<destroyed load="JERRY_HOME_WIN" />
+	<triggeredEvent event="JERRY_HOME_FAIL" time="90" thisFight="true">
+		<triggeredEventBox load="DEFAULT_TIMER" pos="combat">
+			<warning time="10.0" flash="true" />
+			<tooltip>ビルが避難される前にオートシップを倒すには、このくらいの時間が必要だ！</tooltip>
+		</triggeredEventBox>
+		<timerSounds load="DEFAULT_TIMER_SOUNDS" />
+	</triggeredEvent>
+</ship>
+<event name="JERRY_HOME" unique="true">
+	<beaconType id="map_icon_estate" global="true">
+		<color r="248" g="196" b="55" a="1.0" />
+		<unvisitedTooltip>ウェントワース・エステートとジェロームの自宅の場所。</unvisitedTooltip>
+		<visitedTooltip>場所を探索。興味のあるものは何も残っていない。</visitedTooltip>
+	</beaconType>
+	<preventQuest />
+	<preventFleet />
+	<text>眼下の惑星には巨大な反乱軍の都市が建設されている。その少し脇には巨大な別荘があり、見るのも痛いほど明るい照明が灯っている。コンピューターによれば、これがウェントワース邸だ。この現実のヴァンスはもちろん実際にはここに住んでいないが、推測するに、ここは彼の甥が住んでいる場所だろう。</text>
+	<img back="BACK_EVENT_JERRYHOME" planet="NONE" />
+	<choice hidden="true">
+		<text>入る。</text>
+		<event>
+			<text>巨大な建物に近づくと、地表からの通信で発見されたことが確認された。"くそっ、レネゲイドが団地に侵入した。全員を避難させ、警備隊を出動させろ！」。すぐに重装備のオートシップが出動し、あなたたちを処理する。迅速に対処する必要があるようだ！</text>
+			<ship load="SHIP_JERRY_HOME" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>考え直してみると、これはあまりいいアイデアではないかもしれない。</text>
+		<event>
+			<text>この場所を襲撃することを考え直す。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="JERRY_HOME_FAIL">
+	<text>どうやら失敗したようだ。スキャンによると、最後の生命反応が団地から消えており、ジェロームが逃げ出したことを意味している。オートシップが燃え上がり、最後のメッセージを送ってくる：「目的完了。目的完了。"最悪最悪 "の手順を開始します」、そして自爆した。侮辱の極みだ。</text>
+	<damage amount="3" />
+	<instantEscape />
+</event>
+<event name="JERRY_HOME_WIN">
+	<text>オートシップは撃破され、あなたは時間を無駄にすることなくサルベージを終えて着陸パッドに降り立った。その中には武装したエース数名、黄色いストライプの入った黒い服を着た背の高い堂々とした司令官、そして不精そうな民間人がいる。黒い服の男は間違いなくあなたが探している人物だ。あなたがその集団に近づくと、彼らは武器を構え、あなたも武器を構える。</text>
+	<variable name="loc_jerrymet" op="set" val="1" />
+	<choice req="LIST_CREW_JERRY">
+		<text>(ジェリー）ジェリーを呼んでください。</text>
+		<event>
+			<text>「セバスチャン、大丈夫だよ。僕だよ。もう一人の僕と話したいんだ」
+
+セバスチャンは驚いた顔をする。"ジェリー？レネゲードの船で何をしてるんだ？"
+
+"前にもここに来たことがあるんだ、よく似た状況で。あなたたちを押しのけて、話しかけてきたレネゲイドと話した。そして彼らは私に良くしてくれた。私が大したことを提供できなくても、彼らは私の話を聞いてくれた。だから自分とも話したいんだ」
+「...そっか。まあ、変なことはするなよ"セバスチャンは身を引いて、もう一人のジェリーを再び前に進ませる
+
+"もう一人の私...？本当にそうなのか？"もう一人のジェリーが尋ねる
+
+"ああ、銀河系を旅することで、僕らの屋敷に座っていたときよりも多くのことを学んだよ。銀河系を旅したんですか」
+
+「いろんな場所に行ったけど、ほとんど表面しか見ていないような気がする。異星人の世界も連邦の世界も見てきた」
+
+
+"どうして？"
+
+"チャンスが巡ってきたんだと思う。私たちはいつもそうでしょう"
+
+"へえ。そんな気がします」
+「受け身でいるのはもうやめようと思ったんです。新しい視点から世界を経験したかったんだ」
+
+"でも、何をしようとしているの？"</text>
+			<choice req="unique_jerry" max_group="0" blue="false"> 
+				<text>ジェリーに反乱軍の旗艦について教えてください。</text>
+				<event>
+					<text>あなたはジェリーに、レネゲイドがいかにフラッグシップと対峙する任務を負っているかを話す
+
+「ジェリー、あなたは反乱軍のフラッグシップと対峙したことがあるの？あなたのおじさん？"
+
+ジェリーがはっきり言う。"まあ、私はしていない。多元宇宙には無数の道がある。そのすべてが叔父とレネゲイドの戦いにつながるわけではない。それでも彼と話す機会を持ちたい」
+。</text>
+					<choice hidden="true">
+						<text>一緒に来ないか？</text>
+						<event>
+							<text>"私も行こうか？"
+"うん、いいんじゃない？私にとっても良かった。君にとってもいいことだよ」
+
+もう一人のジェリーは微笑む。"自分に反論するのは誰なんだ？"
+
+"もうひとついいことをしてやろう。もう一人のジェリーは少し考える。"どうやってサイラを通り抜けたんだ？"
+
+もう一人のジェリーは少し考える。"ああ、そうだな...。私の時はうまくいかなかった。彼女は・・・頑固だった。でもレネゲイドは彼女にチャンスを与えた。またやり直せる」
+
+ジェリーはうなずく。"やってみる価値はありそうだ"
+
+そのジェリーが手を差し出す。"やるぞ"
+
+二人のジェリーは同意して手を握り合い、互いに微笑み合う。他のリーベル関係者は皆、遠くから眺めながら目の前の光景に驚いているようだ。</text>
+							<crewMember amount="1" class="unique_jerry">ジェリー</crewMember>
+							<variable name="loc_jerrysave" op="set" val="1" />
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>ご心配なく、私たちのジェリーにお任せください。</text>
+						<event>
+							<text>"できるんじゃないですか？私よりずっとクールで経験豊富なんだから」
+「私がやっていることは特別なことじゃない。誰にでもできることだ。ジェリー、たとえここに残るとしても、君にはもっとできることがたくさんある。それを忘れないで」
+「忘れないよ。私たちが誰なのかも忘れないでください。我々はジェローム・ウェントワースだ。俺たちの叔父さんが話を聞くまで、レネゲイドが戦わないようにしてくれ、いいな？"
+
+"約束する"
+
+二人のジェロームは手を合わせて同意し、互いに微笑み合う。他の反乱軍関係者は皆、遠くから眺めながら目の前の光景に驚いているようだ。</text>
+							<autoReward level="HIGH">weapon</autoReward>
+							<damage amount="-7" />
+						</event>
+					</choice>
+				</event>
+   		 </choice>
+   		 <choice req="LIST_CREW_JERRY" max_group="0" blue="false"> 
+   			 <text>ジェリーに反乱軍の旗艦について教えてください。</text>
+   			 <event>
+   				 <text>あなたはジェリーに、レネゲイドがどのようにフラッグシップと対峙する任務を負っているかを話す
+
+"ジェリー、あなたは反乱軍のフラッグシップと対峙したことがあるのですか？あなたの叔父さんが？"
+
+"はい、そうです。ジェリーは銃を調整する。"それは...思い通りにいかなかった。彼は言うことを聞かなかった。彼は...私を侮辱した。喧嘩になったんだ」
+
+ 心臓を押さえ、倒れそうなジェリー。"だから、君と一緒に行けば..."
+
+ジェリーはため息をつく。"たぶんね。彼の気持ちを変えられるほど、僕はうまくなかった。良心の呵責から叔父さんの心を変えられると言えるかどうかわからない。つらいことだ」
+ジェリーは下を向く。"どう考えたらいいのか..."
+。</text>
+   				 <choice hidden="true">
+   					 <text>一緒に来ないか？</text>
+   					 <event>
+   						 <text>"私も行こうか？"
+"うん、いいんじゃない？私にとっても良かった。でも、叔父と戦わなければならないのでは？でも、叔父と戦わなければならないのでは？叔父さんにはまだ良いところがある。でも、叔父と戦わなければならないのでしょうか」
+
+「私はあなたの旅を否定しません。その時が来たら、彼と話せばいい。約束する」
+
+もう一人のジェリーは少し考える。"どうやってサイラを抜けたんだ？"
+
+もう一人のジェリーは顔を伏せる。"ああ、まあ...私の時はうまくいかなかった。彼女は・・・頑固だった。でもレネゲイドは彼女にチャンスを与えた。またやり直せる」
+
+ジェリーはうなずく。"やってみる価値はありそうだ"
+
+そのジェリーが手を差し出す。"やるぞ"
+
+二人のジェリーは同意して手を握り合い、互いに微笑み合う。他のリーベル関係者は皆、遠くから眺めながら目の前の光景に驚いているようだ。</text>
+   						 <crewMember amount="1" class="unique_jerry">ジェリー</crewMember>
+   						 <variable name="loc_jerrysave" op="set" val="1" />
+   					 </event>
+   				 </choice>
+   				 <choice hidden="true">
+   					 <text>ご心配なく、私たちのジェリーにお任せください。</text>
+   					 <event>
+   						 <text>"それが一番いいのかもしれない。私にできることが何もないのなら、彼が倒れなければならなくなったとき、私はその場にいない方がいい」
+
+「でも、できることが何もないわけじゃない。できることはたくさんある。それをもう一度証明するつもりだ。自分に何ができるかを決して忘れないで」
+
+「本当に私にそれだけの能力があるのか？自分に挑戦してみてください。自分の能力に驚くかもしれない」
+
+ジェリーは手を差し出す。もう一人のジェリーも同意して手を握り、お互いに微笑み合う。他の反乱軍関係者は皆、遠くから眺めながら目の前の光景に驚いているようだ。</text>
+   						 <autoReward level="HIGH">weapon</autoReward>
+   						 <damage amount="-7" />
+   					 </event>
+   				 </choice>
+   			 </event>
+   		 </choice>
+   	 </event>
+    </choice>
+	<choice hidden="true">
+		<text>時間切れだ ジェローム連盟がついにあなたを迎えに来た！</text>
+		<event>
+			<text>完璧な形をした指で艶やかな髪を押し返しながら、男は嘲笑う。「ユニバース0から送り込まれた未開の連邦のならず者たちが、蛮勇を奮ってバンスの問題に首を突っ込み、反乱軍の首領に個人的に傷を負わせれば、彼の精神や我々の征服の栄光を止められるとでも思っているのか？連邦がまともな海軍の代わりに、シンジケートも相手にしないようなならず者を使おうとしていると聞いたとき、私は笑った！ふざけるな！ふざけるな！"</text>
+			<choice hidden="true">
+				<text>私たちがジョークなら、あなたを殺すのはオチだ。</text>
+				<event>
+					<text>「ははは！と、その男は群衆の後方にいた一般人に遮られた。緑色の瞳が、モップのような髪と曲がった眼鏡の下から突き出ている。「セバスチャン、お願いだ。彼らと話をさせてください"セバスチャン」はすぐに席を立ち、20代前半とおぼしき青年に謝り、「ジェローム」と名乗った。</text>
+					<choice hidden="true">
+						<text>じゃあ、ジェロームだね。</text>
+						<event>
+							<text>彼はうなずく。「そうだね。たいていの人はジェリーと呼ぶけどね。やっと会えたな、レネゲイド。もし...君がそう呼ぶなら...私はここにいる。ジェリー・ウェントワースだ予想外だったか？そんなことはないあちこちから人が来るから期待値が高いんだ。それで...仕事があるからここに来たんだろう？では、どうぞ"ジェリーは抱きしめるように腕を伸ばす。彼は震え、大粒の汗をかいているが、その目は、まるで自分ではなく、あなたが裁判を受けているかのように、激しい決意を光らせている。</text>
+							<choice hidden="true" req="pilot" lvl="1" max_group="0" blue="false">
+								<text>彼を撃て。</text>
+								<event>
+									<text>こんなチャンスを逃すわけにはいかない。一気にレーザーを引き抜き、ジェリーを撃ち落とす。彼の膝は砕け、体は崩れ落ちたが、その眼差しは決して消えることはなかった。彼の分隊はパニックに陥り、医療チームを要請する。そしてあなたはその場を離れる。ミッションは成功したが、ここでミスを犯したような気がしてならない。</text>
+									<autoReward level="HIGH">weapon</autoReward>
+									<variable name="loc_jerrykill" op="set" val="1" />
+								</event>
+							</choice>
+							<choice hidden="true" req="rep_jerry" lvl="0" max_lvl="3" max_group="1" blue="false">
+								<text>彼に免じて。</text>
+								<event>
+									<text>手を脇に添えたまま、決してブラスターには手を伸ばさない。ジェリーが腕を下ろすまで、あなたは1分間しっかりとジェリーの目を見つめた。"ふむ、これは君がここに来た目的ではなかったのか？チャンスをあげてるんだ。それを受け取らないのか？"</text>
+									<choice hidden="true">
+										<text>生きている方が、死んでいるより役に立つ。</text>
+										<event>
+											<text>"実用的"？君の役には立てないが"反乱軍 "は私を英雄と呼ぶが その理由は分からない何もしたことがない君ならいいはずだ...多元宇宙を旅して...旅の終わりに喝采を浴びて...</text>
+											<choice hidden="true">
+												<text>自分がヒーローだと思わないのか？</text>
+												<event load="JERRY_HOME_RECRUIT" />
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>あなたは私たちが期待していたような人ではなかった。あなたを殺すのは正しいとは思えない。</text>
+										<event>
+											<text>「まあ、あなたがどこで線引きをするのかは理解できない。でも、私もあなたのような立場になったことはない。仲間にとってのヒーローってどんな感じ？その称号を得るようなものだ。反乱軍は私を英雄と呼ぶが、その理由はまだ分からない..."</text>
+											<choice hidden="true">
+												<text>自分がヒーローだと思わないのか？</text>
+												<event load="JERRY_HOME_RECRUIT" />
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>心変わりしたんだ。これからは平和主義者の僧侶になろうと思う。</text>
+										<event>
+											<text>"あのキャプテンにはちょっと遅いと思わないか？それとも...違うかな。いずれにせよ、いいことだとは思えない。君は仲間にとってのヒーローだろ？そして、私は私のヒーローだ...私のどこがヒーローなのかわからないけど、少なくともあなたには使命がある。私には...よく分からない。"</text>
+											<choice hidden="true">
+												<text>自分がヒーローだと思わないのか？</text>
+												<event load="JERRY_HOME_RECRUIT" />
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true" req="rep_jerry" lvl="4" max_group="1" blue="false">
+								<text>もう彼を惜しむことはできない。</text>
+								<event load="OPTION_INVALID" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="JERRY_HOME_RECRUIT">
+	<text>ジェリーは笑いながらも、恥ずかしそうに頭を垂れる。「いや......聞いてくれ、もうはっきりしたと思うが、僕は叔父の跡を継いでいないんだ」。ジェリーは、ずっと気まずそうに立っていたセバスチャンと他の警備員をちらりと振り返り、「でも、みんなは僕に期待しているんだ。ウェントワースという名前を背負っているだけで、僕は特別なんだと思われるんだ。幼い頃に母を亡くし、父も知らない。でも叔父に会わなかったら、私は庭師かシェフか図書館司書になっていたかもしれない。兵士でも政治家でもない。僕は...僕はジェリー。何もない。僕の名前に付いているのは名前だけで、それを得るために僕は何もしていない"</text>
+	<choice hidden="true">
+		<text>自分の人生を自分の手で切り開く必要があるようだ。</text>
+		<event>
+			<text>"どういう意味かわからない。私は保護領に入った日から一度も出ていない。ここには何の権力もない。全てはサイラだ。バンスは俺が無能だと知っている。銀河の他の連中には知られたくないだろうが、ここを維持するほど俺を信用していない。どうせ俺には無理だ"</text>
+			<choice hidden="true" req="pilot" lvl="1" max_group="0" blue="false">
+				<text>私たちは助けられないし、これ以上長く付き合うこともできない。</text>
+				<event>
+					<text>「そうかもしれない。後で叱られるような気がするけど、私にまだ猶予が残っているうちに、あなたを助けてみよう。もし叔父に会ったら、彼も一人の人間だということを忘れないでほしい。彼はいろいろなことをやってきたが、私はほとんどの人が見たことのない一面を見てきた。その存在を忘れないで"</text>
+					<autoReward level="HIGH">weapon</autoReward>
+					<damage amount="-7" />
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_killedcyra" lvl="0" max_group="1" blue="false">
+				<text>私たちと一緒に行こう。マルチバースを見て。もしかしたら、それを改善する手助けもできるかもしれない。</text>
+				<event>
+					<text>「本気ですか？ずっと待っていたかったんだ。これは私をここから誘い出して殺すためのトリックじゃないでしょうね？"</text>
+					<choice hidden="true">
+						<text>なーんだ。たぶんね。</text>
+						<event>
+							<text>「安心したよ。まあ、この辺りの状況が改善されるとは思えないからね。しかし...警告だ。サイラは私を簡単には連れて行かせない。彼女を傷つけないようにしてくれ。彼女は仕事をしてるだけだ。僕を傷つけると思わなければ、君を傷つけたりしない。血を流さずにこれを乗り切る方法があると確信している"</text>
+							<crewMember amount="1" class="unique_jerry">ジェリー</crewMember>
+							<variable name="loc_jerrysave" op="set" val="1" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_killedcyra" lvl="1" max_group="1" blue="false">
+				<text>私たちと一緒に行こう。マルチバースを見て。もしかしたら、それを改善する手助けもできるかもしれない。</text>
+				<event>
+					<text>「いや。できなかった。あなたはサイラを殺した。彼女はあなたには冷たく見えたかもしれないけど、私の母のようだった。叔母のようだった君は自分の仕事をしてるだけなんだろうけど、なんかしっくりこないんだ。後で叱られるような気がするけど、私にまだ優しさが残っているうちに......力になりたいんだ。もし叔父に会ったら、彼も一人の人間だということを忘れないでほしい。彼はいろいろなことをやってきたが、私はほとんどの人が見たことのない一面を見てきた。その存在を忘れないで"</text>
+					<autoReward level="HIGH">weapon</autoReward>
+					<damage amount="-7" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>

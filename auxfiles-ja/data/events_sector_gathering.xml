@@ -1,0 +1,3086 @@
+<FTL>
+
+
+
+<event name="FINISH_BEACON_ORCHID">
+	<text id="finish_beacon" />
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="EXIT_FILLER_LIST" />
+	</choice>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+	
+<eventList name="ITEMS_ORCHID">
+	<event load="ORCHID_FREE_ITEMS" />
+	<event load="ORCHID_UNARMED" />
+	<event load="ORCHID_BOTANICAL_GALLERY" />
+	<event load="ORCHID_SEEDS" />
+	<event load="ORCHID_TERRAFORMERS" />
+	<event load="ORCHID_PETITION" />
+</eventList>
+
+<event name="ORCHID_FREE_ITEMS" unique="true">
+	<text load="ORCHID_FREE_ITEMS" />
+	<autoReward level="MED">standard</autoReward>
+	<choice>
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice>
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+<textList name="ORCHID_FREE_ITEMS">
+	<text>ビーコンのフレンドリーなギャザリング・ステーションが、金属スクラップを無料で提供している。手話を使ってメッセージを送ってくる。「軍用船ですか？余ったスクラップをあげるよ。代わりにタイタンウッドを使うように移行中だ。"</text>
+	<text back="BG_DARK" planet="NONE">ビーコンの周りには船も星もない。巨大な種に似たコンテナが1つ、宇宙空間を漂っている。中には有用なスクラップや資源が入っている。</text>
+	<text back="BG_DARK" planet="NONE">ビーコンはフローラル人が住む星系から遠く離れた場所にある。破壊された船の残骸がいくつか浮かんでいる。収穫できるものは収穫する。</text>
+	<text planet="PLANET_UNPOPULATED_TERRA">ギャザリング・テラフォーミング・ステーションがあなたに声をかけてきた。"最近、この惑星から古い採掘装置を撤去したが、余分なスクラップの使い道がない。君にあげるよ。</text>
+</textList>
+
+<event name="ORCHID_UNARMED" unique="true">
+	<text>小さなオーキッドの民間船がビーコンであなたを待っている。レネゲイドか？まさか本当にお前たちと顔を合わせることになるとはな！ああ、ちょっと待って！贈り物だ！連邦への貢献に感謝する、艦長！"</text>
+	<choice>
+		<text>彼らの申し出を受け入れる。</text>
+		<event>
+			<autoReward level="LOW">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>さらに資源を強奪する：彼らはきっともっと持っている。</text>
+		<event>
+			<text>「何してるの？やめて、お願い！私たちを傷つけないで！できることは何でもするから、行かせてくれ！私には家族がいる！子供たちはまだプランターを卒業してないんだ！"</text>
+			<choice hidden="true">
+				<text>より良い『贈り物』を受け入れる。</text>
+				<event>
+					<text>物資の受け渡しが終わると、オーキッドはすぐに飛び去る。懐はだいぶ重くなったが、レネゲイドを高く評価する人物に出会うことは滅多にない。</text>
+					<autoReward level="MED">standard</autoReward>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ORCHID" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>オーキッドを殺し、彼が持っているものをすべて奪う。</text>
+				<event>
+					<text>あなたは乗組員を船に向かわせ、オーキッド号と数人の乗組員を虐殺した。最後の瞬間、船長は会って以来初めて言葉を囁いた。残念なことに、あなたは彼がすでに申し出ていた以上のことを見つけることができなかった。</text>
+					<autoReward level="MED">standard</autoReward>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ORCHID_DOUBLE" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ORCHID_BOTANICAL_GALLERY" unique="true">
+	<text>巨大なオーキッド・ステーションがビーコンにある。星図には "Augmented Botanical Gallery "と記されている。</text>
+	<ship load="SHIP_ORCHID_STATION" hostile="false" />
+	<choice hidden="true">
+		<text>駅を訪れる。</text>
+		<event>
+			<text>静謐な雰囲気の中に、ささやかな好奇心がメインホールに満ちている。ギャラリーには奇妙な展示品がずらりと並んでいる。どれに行こうか迷ってしまう。</text>
+			<choice>
+				<text>メイの破裂」を見学するには入場料を支払う。</text>
+				<event>
+					<text>この展示物には巨大な球体があり、四方から強化金属コーティングで保護されている。中には巨大な木が生えている。あなたは少しがっかりした。</text>
+					<item_modify>
+						<item max="-9" min="-12" type="scrap" />
+					</item_modify>
+					<choice hidden="true">
+						<text id="continue" />
+						<event>
+							<text>突然、駅舎全体を揺るがす連続爆発。木々が破裂し、巨大なカーネルが放出される。保護球は、ステーションを破壊するカーネルをかろうじて止めることができる。サービス・オーキッドはカーネルを発射するために作られた武器を無料で提供する。</text>
+							<weapon name="KERNEL_1" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>入場料を払って「ハムパイ」を訪れる。</text>
+				<event>
+					<text>展示されているのは...草原だ。見た目は地味な花を咲かせるいつもの地球の草のようだが、妙に見覚えのある葉の模様をしている。これは本当に価値があるのだろうか？</text>
+					<item_modify>
+						<item max="-9" min="-12" type="scrap" />
+					</item_modify>
+					<choice hidden="true">
+						<text id="continue" />
+						<event>
+							<text>草原で数分過ごすと、あなたは心配事が消え、笑いたい気持ちになり、近くにいたマンティスを抱きしめたい衝動に駆られるのを感じる。しばらくして、あなたとそのカマキリは親友になり、あなたの仲間になることに同意する。</text>
+							<crewMember amount="1" class="mantis" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>クイック・サップ」に行くには入場料を払う。</text>
+				<event>
+					<text>この展示物は、すべて植物から作られた巨大な機械である。この装置は、樹液を樹皮の剥がれた白木にタップし、その樹液を処理部分に移動させ、高品質のFTL燃料として宣伝されている液体を出力する。</text>
+					<item_modify>
+						<item max="-9" min="-12" type="scrap" />
+					</item_modify>
+					<choice hidden="true">
+						<text id="continue" />
+						<event>
+							<text>すでに入場料を支払っているので、オーキッズは実験燃料の一部を無料で提供する。</text>
+							<item_modify>
+								<item max="7" min="5" type="fuel" />
+							</item_modify>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>何も見学せずにギャラリーを出る。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>FTLドライブを充電する。</text>
+		<event>
+			<text>あなたは局に関心がない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ORCHID_SEEDS" unique="true">
+	<text>大きな種子のようなサヤが漂い、一部は有機物でできているが、明らかにギャザリングのデザインだ。通常、このポッドにはさまざまな貴重品や資源、あるいは人道的な物資が入っている。しかし、このポッドは違うようだ。</text>
+	<choice hidden="true">
+		<text>リスクを冒して、開けてみてください。</text>
+		<event load="ORCHID_SEEDS_OPEN" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_FLORAL">
+		<text>(フローラル・クルー）オーキッドにポッドの目的を教えてもらいましょう。</text>
+		<event>
+			<text>あなたのオーキッドは、これは最強のタイタンウッドから作られた苗ポッドだと説明する。オーキッドのクルーからカーネルの武器まで、さまざまなものを入れることができる！</text>
+			<choice hidden="true">
+				<text>開けろ。</text>
+				<event load="ORCHID_SEEDS_OPEN" />
+			</choice>
+			<choice hidden="true">
+				<text>中に何が入っているか予測できないなら、開けるべきではない。</text>
+				<event>
+					<text>ポッドの用途がわかったとはいえ、開ける危険性がなくなったわけではない。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ポッドは無視しろ、危険かもしれない。</text>
+		<event>
+			<text>あなたは奇妙なポッドを宇宙空間に漂わせた。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ORCHID_SEEDS_OPEN">
+	<event>
+		<text>残念なことに、ポッドの中にはミサイル数発のほかには何もない。これは武器の隠し場所だったようだが、ほとんど空っぽになっているので、誰のものかわからない。少なくともブービートラップは仕掛けられていなかったようだ。</text>
+		<autoReward level="LOW">missiles</autoReward>
+	</event>
+	<event>
+		<text>ポッドを割ってみると、中には飢えた海賊のクルーがいた！かつては海賊の武器庫だったようだが、中に封印された後、裏切られた乗組員たちは獰猛な人肉食の怒りに変わり、あなたに襲いかかってきた！</text>
+		<boarders min="3" max="4" class="LIST_CREW_PIRATE_RANDOM" />
+	</event>
+	<event>
+		<text>ポッドを割ってみると、武器やその他の無造作な装備が散乱している。どうやらこのポッドは、海賊が武器の隠し場所として再利用したようだ。幸い無防備なので、運べるものは何でも持っていくことにした。</text>
+		<weapon name="GIFTLIST_KERNEL" />
+	</event>
+</eventList>
+
+<event name="ORCHID_TERRAFORMERS" unique="true">
+	<text>ギャザリングのスカウトが、「装備の整った船の慎重なサービス」を求めて、あなたに声をかけてきた。彼らは、調査を任された近くの惑星がテラフォーミングの候補地であると説明する。しかし、その惑星で連合軍のスパイ活動が行われているという噂を聞き、司令部がそのような事態に対応できるような装備を整えていなかった。彼らはあなたに調査を依頼し、発見した貴重品はすべてあなたが保管することを許可している。</text>
+	<img planet="PLANET_UNPOPULATED_TERRA" />
+	<choice hidden="true">
+		<text>地球を調査する。</text>
+		<event load="ORCHID_TERRAFORMERS_EXPLORE" />
+	</choice>
+	<choice hidden="true" req="sensors" lvl="3">
+		<text>(アドバンスセンサー) 惑星をスキャンしろ。</text>
+		<event load="ORCHID_TERRAFORMERS_SCAN" />
+	</choice>
+	<choice hidden="true" req="ADV_SCANNERS">
+		<text>(長距離スキャナー）惑星をスキャンしろ。</text>
+		<event load="ORCHID_TERRAFORMERS_SCAN" />
+	</choice>
+	<choice hidden="true">
+		<text>拒否する。</text>
+		<event>
+			<text>コーアルの拠点になりそうなところを探し回る時間も、勇気もないだろう。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ORCHID_TERRAFORMERS_EXPLORE">
+	<event>
+		<text>惑星を探索中、あなたは墜落した連合軍の船の残骸を発見するが、生存者はいないようだ。あなたはオーキッズにそのことを報告し、彼らはあなたの協力に感謝した。</text>
+		<upgrade amount="1" system="reactor" />
+	</event>
+	<event>
+		<text>惑星を探索していると、墜落した連合の船に出くわす！生き残った最後の乗組員がSOS信号を点滅させ、あなたの注意を引こうとしている。彼らはこのセクターを無害に通過していたところ、ギャザリングの警備に撃墜され、この不毛の惑星に置き去りにされたと主張している。彼らは救助を切望しており、あなたのために働くことさえ厭わない。</text>
+		<choice>
+			<text>彼らを乗船させ、フローラルの横をすり抜ける。</text>
+			<event>
+				<text>彼らに船を見つけられたら、嘘をついても無駄だ。だから、連合メンバーをリクルートしたら、唯一の選択肢は、オーキッドがあまり気にしていないことを祈りながら飛び去ることだ。</text>
+				<crewMember amount="1" class="GIFTLIST_CREW_COALITION" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_UPDATE_ORCHID" />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>フローラルに居場所を報告する。</text>
+			<event>
+				<text>あなたはSOSメッセージを無視し、スカウトに戻り、ニュースを報告する。"ああ、作戦全体よりはましだろう。応援を要請して、すぐに警察を呼んでもらうよ。その "無害で通り過ぎた "という話が本当かどうか判断してもらい、そこからどうするか決めてもらう。ご協力ありがとうございました"</text>
+				<autoReward level="MED">standard</autoReward>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>案の定、惑星の反対側に連合の拠点が秘密裏に設置されているようだ。あなたがスキャン範囲に入るとすぐに、彼らは武装した船を配備し、あなたが居場所を明かす前にあなたを始末する！</text>
+		<ship load="SHIP_ORCHID_TERRAFORMERS_COALITION" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="ORCHID_TERRAFORMERS_SCAN">
+	<event>
+		<text>惑星をスキャンしたところ、生存者不明の墜落船を除いて連合の痕跡はなかった。あなたはオーキッズに報告し、彼らはあなたの援助に感謝した。</text>
+		<upgrade amount="1" system="reactor" />
+	</event>
+	<event>
+		<text>惑星をスキャンしていると、墜落した連合の船を発見する！生き残った最後の乗組員がSOS信号を点滅させ、あなたの注意を引こうとしている。彼らはこのセクターを無害で通過していたところ、ギャザリングの警備に撃墜され、この不毛の惑星に置き去りにされたと主張している。彼らは救助を切望しており、あなたのために働くことさえ厭わない。</text>
+		<choice>
+			<text>彼らを乗船させ、フローラルの横をすり抜ける。</text>
+			<event>
+				<text>彼らに船を見つけられたら、嘘をついても無駄だ。だから、連合メンバーをリクルートしたら、唯一の選択肢は、オーキッドがあまり気にしていないことを祈りながら飛び去ることだ。</text>
+				<crewMember amount="1" class="GIFTLIST_CREW_COALITION" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_UPDATE_ORCHID" />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>フローラルに居場所を報告する。</text>
+			<event>
+				<text>あなたはSOSメッセージを無視し、スカウトに戻り、ニュースを報告する。"ああ、作戦全体よりはましだろう。応援を要請して、すぐに警察を呼んでもらうよ。その "無害で通り過ぎた "という話が本当かどうか判断してもらい、そこからどうするか決めてもらう。ご協力ありがとうございました"</text>
+				<autoReward level="MED">standard</autoReward>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>スキャンの結果、連合軍の基地があることがわかった。基地にはアクティブな戦闘機が1隻あるだけだが、よほどの火力がなければ、単独で基地全体を破壊できるとは思えない。</text>
+		<ship load="SHIP_ORCHID_TERRAFORMERS_COALITION" hostile="false" />
+		<choice hidden="true">
+			<text>船を破壊せよ！</text>
+			<event>
+				<text>基地を破壊することはできないかもしれないが、少なくとも相手の火力を削ぐ手助けはできる。あなたは連合軍の船をロックオンし、行動に移る！</text>
+				<ship hostile="true" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="COMBAT_CHECK" />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>爆発物を仕掛けて基地を破壊する。[-15ミサイル]</text>
+			<event>
+				<text>あなたがセットした重いペイロードは巨大な爆発を起こし、基地の左翼全体を破壊する！基地を守っていた船も大きな被害を受け、連合のスタッフは避難を余儀なくされる。あなたはオーキッズに報告し、オーキッズは直ちに応援を要請してスパイを逮捕する。スパイを逮捕するため、すぐに応援を要請した。</text>
+				<autoReward level="HIGH">scrap_only</autoReward>
+				<upgrade amount="1" system="reactor" />
+				<item_modify>
+					<item type="missiles" min="-15" max="-15" />
+				</item_modify>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>基地をオーキッズに報告する。</text>
+			<event>
+				<text>フローラル族は基地の存在に警戒しつつも、あなた方の援助に感謝している。"ウィードリング "が連合に加わろうとしている！"ウィードリングスだ！連合に加わろうとしている！"これで、奴らは沼地の野郎どもを味方につけるために、我々をスパイし始める正当な理由ができた！このことを司令部に報告すれば、連邦の支援を要請してくれるだろう。"</text>
+				<upgrade amount="1" system="reactor" />
+			</event>
+		</choice>
+	</event>
+</eventList>
+<event name="ORCHID_TERRAFORMER_COALITION_WIN">
+	<text>フローラル族は基地の存在に警戒しつつも、あなた方の援助に感謝している。"ウィードリング "が連合に加わろうとしている！"ウィードリングスだ！連合に加わろうとしている！"これで、奴らは沼地の野郎どもを味方につけるために、我々をスパイし始める正当な理由ができた！このことを司令部に報告すれば、連邦の支援を要請してくれるだろう。"</text>
+	<damage amount="-5" />
+	<upgrade amount="1" system="reactor" />
+</event>
+
+<event name="ORCHID_PETITION" unique="true">
+	<text>近くにいたギャザリング船から呼び出し。「船長、あなたは連邦で高い地位にあるのですか？もしそうなら、我々は君の影響力を利用できる！ギャザリングは我々の経済システムを維持することに固執している！連合軍は我々の10倍も競争しているこの請願書に署名していただけませんか？そうすれば、いつの日か、私たち自身で重工業化を始めることができるでしょう？"</text>
+	<ship load="SHIP_ORCHID_FIGHT" hostile="false" />
+	<choice req="unique_mayeb">
+        <text>(メイエブ）申立人を講義する。</text>
+        <event>
+            <text>メイエブはオーキッドを厳しく指差す。"失礼ですが、あなた方の組織はたまたま "ギャザリング "の "フラワリング・インフラストラクチャー "から資金援助を受けているのではありませんか？"
+
+ オーキッドは紙を下げ、目を細め始める。そんな"
+"
+"ええ、もちろんあなたのことは知っています。君たちの組織はいつも『ああ、経済が、経済が悪い』と騒ぎ立てる！私は特にお金に関心があるわけではないが、一般市民にとって真の経済的豊かさは、彼らと彼らの環境を安全に保つことを必要とする」
+
+"聞く必要はない！"オーキッドの船は武装を始める。彼女は彼らを挑発したようだ。</text>
+            <ship hostile="true" />
+            <choice hidden="true">
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+        </event>
+    </choice>
+	<choice hidden="true">
+		<text>請願書に署名してください。</text>
+		<event>
+			<text>あなたは紙に自分の名前を走り書きし、ガーデンワールドの工業化への支援を誓った。「ありがとうございます！いつの日か、ギャザリングがあなたに感謝する日が来るでしょう！"</text>
+			<damage amount="-7" />
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>署名と寄付をお願いします。</text>
+		<event>
+			<text>あなたは紙に名前を書き、クルーに貨物室から余分なスクラップを渡してもらう。</text>
+			<item_modify>
+				<item type="scrap" min="-25" max="-25" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>"おお、すごい！シルタールイ・ムンコロから最高の恩恵がありますように！外国人がこんなに気前がいいとは...。いつかギャザリングがあなたに感謝する日が来るでしょう！"</text>
+					<weapon name="GIFTLIST_KERNEL" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_REMOVE_ORCHID" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>署名を拒否する。</text>
+		<event>
+			<text>フローラルはうなずく。「残念だが、君の決断を尊重しよう。安全な旅を。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>蘭をあざ笑う。</text>
+		<event>
+			<text>あなたは植物を指さし、経済を改善しようとする彼らの愚かな試みを笑う。フローラル・キャプテンがうなり声を上げ、彼らのつるが怒りに顔を出す。「単にノーと言えばよかったんだ！自国民のためにより良いことを願う私たちを馬鹿にする必要はなかったんだ！"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<eventList name="ITEMS_ORCHID_UNIQUE">
+	<event load="ORCHID_KERNEL_FOREST" />
+	<event load="ORCHID_MEGATREE" />
+	
+	<event load="ORCHID_FREE_ITEMS" />
+	<event load="ORCHID_UNARMED" />
+	<event load="ORCHID_BOTANICAL_GALLERY" />
+	<event load="ORCHID_SEEDS" />
+	<event load="ORCHID_TERRAFORMERS" />
+	<event load="ORCHID_PETITION" />
+</eventList>
+
+<event name="ORCHID_KERNEL_FOREST" unique="true">
+	<text>この惑星は、見事なエイリアンの植物相を誇っている。まさにスペクタクルだ。</text>
+	<img back="BACK_EVENT_ORCHID_GARDEN" planet="PLANET_INVISIBLE" />
+	<choice hidden="true">
+		<text>さらに調査する。</text>
+		<event>
+			<text>あなたは、水やり用の缶を片手に森を彷徨う一匹のオーキッドを見つける。あなたが近くに降り立ち、船を降りると、彼はあなたに手を振った。「私の庭園へようこそ。楽しんでいってくれ！"</text>
+			<choice hidden="true">
+				<text>これがあなたの庭？</text>
+				<event>
+					<text>「はい、その通りです。私はこの惑星の管理人です。この惑星ではカーネル兵器の原料となる植物を栽培しています。おひとついかがですか？"</text>
+					<choice>
+						<text>カーネルを購入する。</text>
+						<event load="GARDEN_KERNEL_FOREST_REGULAR" />
+					</choice>
+					<choice>
+						<text>エリートカーネルを購入する。</text>
+						<event load="GARDEN_KERNEL_FOREST_ELITE" />
+					</choice>
+					<choice hidden="true" req="LIST_CREW_FLORAL">
+						<text>(フローラル・クルー）管理人に声をかけてください。</text>
+						<event>
+							<text>"ああ...できるかどうかわからない...これはとても重要な仕事なんだ...あまり外に出ることはないけれど...私が戻るまで、庭園は大丈夫だと思いますよ"</text>
+							<crewMember amount="1" class="orchid_caretaker" />
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>武器の1つを盗もうとする。</text>
+						<event>
+							<text>オーキッドに武器を渡すよう説得するのにそれほど時間はかからないだろうと、あなたは武器を武装する。その代わり、オーキッドの船がどこからともなく飛んできて攻撃する！あなたは船によって庭から追い出されるが、彼らは戦わずしてあなたを解放することはない。</text>
+							<ship load="SHIP_ORCHID_FIGHT" hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>何も買う気はない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>よし、時間切れだ。行こう。</text>
+		<event>
+			<text>すべての植物を眺めている時間はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="GARDEN_KERNEL_FOREST_REGULAR">
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_1" />
+		<item_modify>
+			<item type="scrap" min="-25" max="-25" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_2" />
+		<item_modify>
+			<item type="scrap" min="-35" max="-35" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_HEAVY" />
+		<item_modify>
+			<item type="scrap" min="-45" max="-45" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_FIRE" />
+		<item_modify>
+			<item type="scrap" min="-45" max="-45" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_CHAIN" />
+		<item_modify>
+			<item type="scrap" min="-45" max="-45" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_CHARGE" />
+		<item_modify>
+			<item type="scrap" min="-35" max="-35" />
+		</item_modify>
+	</event>
+</eventList>
+<eventList name="GARDEN_KERNEL_FOREST_ELITE">
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_1_ELITE" />
+		<item_modify>
+			<item type="scrap" min="-35" max="-35" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_2_ELITE" />
+		<item_modify>
+			<item type="scrap" min="-45" max="-45" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_HEAVY_ELITE" />
+		<item_modify>
+			<item type="scrap" min="-55" max="-55" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_FIRE_ELITE" />
+		<item_modify>
+			<item type="scrap" min="-55" max="-55" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_CHAIN_ELITE" />
+		<item_modify>
+			<item type="scrap" min="-55" max="-55" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「良い選択だ。旅のお供になりますように！"</text>
+		<weapon name="KERNEL_CHARGE_ELITE" />
+		<item_modify>
+			<item type="scrap" min="-45" max="-45" />
+		</item_modify>
+	</event>
+</eventList>
+
+<event name="ORCHID_MEGATREE" unique="true">
+	<text>遠くには巨大なオーキッドシティが広がっている。オーキッドの集落を間近で見ることはあまりないが、この集落はユニークだ。巨大な木があり、その周りにスタジアムがある。一種の観光名所のようだ。</text>
+	<img back="BACK_EVENT_MEGATREE" planet="PLANET_INVISIBLE" />
+	<choice hidden="true">
+		<text>木を観察する。</text>
+		<event>
+			<text>スクリーンに母国語を尋ねるポップアップが表示される。非常に長い方言のリストから設定した後、オーキッド方言でD'Wretq Aethと呼ばれる場所への訪問を歓迎する音声が流れる。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>ヴァーチャルツアーガイドは、わずかな料金を払えば、樹木の全貌とその成り立ちの歴史を案内してくれる。</text>
+					<choice>
+						<text>聞いてくれ。</text>
+						<event>
+							<text>ツアーガイドはその後、オーキッドとロックマンとの外交使節団、オーキッドの2つの氏族間の小さな内戦、オーキッド新政府の設立、銀河系間での農薬使用量の増加、菜食主義への懸念など、長く、信じられないほど退屈な話を始める。海賊の襲撃で木の下に埋められた強力なカーネル兵器についての話だ。</text>
+							<item_modify>
+								<item type="scrap" min="-10" max="-10" />
+							</item_modify>
+							<choice hidden="true">
+								<text>武器を探せ</text>
+								<event>
+									<text>あなたは木の根元近くに着地しようとしたが、オーキッドの警備員が、あなたが木に危害を加えようとしたことに激怒して、あなたを止めた。</text>
+									<ship load="SHIP_ORCHID_MEGATREE" hostile="true" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true" req="LIST_CREW_FLORAL">
+								<text>(フローラル・クルー）メガツリーの警備員を説得して、武器を持たせてもらう。</text>
+								<event load="ORCHID_MEGATREE_TALK" />
+							</choice>
+							<choice hidden="true" req="FLARE_DISTRACTION">
+								<text>(照明弾）照明弾を発射して警備員の注意をそらし、時間を稼ぐ。</text>
+								<event>
+									<text>ホログラフィック・ディスクの配列に困惑し、ツリーの防衛部隊の大半が調査に動く。あなたのクルーはその横をすり抜け、素早く武器と予備の弾薬を掘り起こし、気づかれないようにその場を離れる。</text>
+									<weapon name="GIFTLIST_KERNEL_ELITE" />
+									<autoReward level="MED">missiles</autoReward>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>危険は冒せない。帰ってくれ</text>
+								<event />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>払う必要はない。</text>
+						<event>
+							<text>その声は二度とあなたに話しかけてこない。しばらくすると、あなたは飽きてその場を去る。</text>
+							<choice>
+								<text>船内で何かをする。</text>
+								<event load="STORAGE_CHECK" />
+							</choice>
+							<choice>
+								<text>何もしない。</text>
+								<event />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>木は無視する。</text>
+		<event>
+			<text>エイリアンの観光地で時間を費やすには、あなたの使命はあまりにも重要だ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ORCHID_MEGATREE_WIN" unique="false">
+	<text>市民も観光客も恐怖のあまり逃げ惑い、警備兵が木の根元に激突して燃え上がる。あなたは急いで船を降り、幹に穴を開ける。煙の中を急いでカーネルの武器を手に取り、船に戻る。</text>
+	<weapon name="GIFTLIST_KERNEL_ELITE" />
+	<autoReward level="MED">missiles</autoReward>
+</event>
+<eventList name="ORCHID_MEGATREE_TALK">
+	<event>
+		<text>あなたのオーキッドは、あなたの任務が最も重要であることを警備員に納得させることに成功した。彼らは、木に損傷を与えない限り、武器を掘り起こすためにクルーを送り込むことを許可する。</text>
+		<weapon name="GIFTLIST_KERNEL_ELITE" />
+	</event>
+	<event>
+		<text>警備員は武器へのアクセスを許可しない。</text>
+		<choice hidden="true">
+			<text>無視して、とにかく掘ってみる。</text>
+			<event>
+				<text>あなたは木の根元近くに着地しようとしたが、オーキッドの警備員が、あなたが木に危害を加えようとしたことに激怒して、あなたを止めた。</text>
+				<ship load="SHIP_ORCHID_MEGATREE" hostile="true" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>まあ、帰ろう。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+	
+<eventList name="NEUTRAL_ORCHID">
+	<event load="ORCHID_REFUGEES" />
+	<event load="ORCHID_ESCAPE" />
+	<event load="ORCHID_MERCENARY" />
+	<event load="ORCHID_SLAVES" />
+	<event load="ORCHID_INSULT" />
+	<event load="ORCHID_FIELD" />
+	<event load="ORCHID_THEFT" />
+</eventList>
+
+<event name="ORCHID_REFUGEES" unique="true">
+	<text>ビーコンに近づくと、シンジケートの船がギャザリングの入国管理センターらしき場所を襲撃しているのに気づく！両者の間に散在するメッセージをキャッチする。「逃亡者をすぐに引き渡せ、誰も傷つく必要はない！永遠に隠せると思っているのか？神権国家は、お前たちが全員死ぬまで、どんどん軍隊を送り続けるだろう！今すぐ十字軍にドアを叩き壊されたいか？"</text>
+	<ship load="SHIP_ORCHID_REFUGEES_MERCENARY" hostile="false" />
+	<choice hidden="true">
+		<text>移民センターを守れ</text>
+		<event>
+			<text>そんなあからさまな不正は許さない。あなたはもう一度、傭兵のクズどもに照準を合わせる。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>現場を避ける。</text>
+		<event>
+			<text>あなたがこれに関わる理由はあまりないし、とにかく危険かもしれない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ORCHID_REFUGEES_WIN">
+	<text>駅構内は大混乱で、見知らぬ移民やギャザリングスタッフがその場しのぎのシェルターに身を寄せ、散らばった警備員が警戒に当たっている。あなたはスタッフからではなく、一人のロックマンから呼びかけを受けた。「よく来てくれた！傭兵たちが通信を妨害し、スタッフはプレトリアンに救難信号を送ることができなかった！私の名前はコルベンだ。かつてはロスト・サンだったが、戦いから離れた新たな人生を望んでいた。アリアドネのご加護を、彼女は私をそこから出すためにすべて個人的に手配してくれた！新しい人生を送るには、ユニオンよりもギャザリングの方がいいように思えた。でも今は、この傭兵たちから自由になることはなさそうだ。</text>
+	<choice>
+		<text>彼を連れて行くと申し出る。</text>
+		<event>
+			<text>"私は...また軍事作戦に参加する気はない。" "だが、どうせなら多元宇宙を救う方が先決だろう？これが終われば、神権国家も私を見限るだろう。"</text>
+			<crewMember amount="1" combat="1" class="rock_commando">コルベン</crewMember>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_REMOVE_ORCHID" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="unique_ariadne" hidden="true">
+		<text>(アリアドネ) "シートベルトを締めろ、多元宇宙はあらゆる助けを必要としている"</text>
+		<event>
+			<text>提督の姿を見て、コルベンは敬礼した。「提督！もちろんです！もちろんです。しかし、反乱軍の支配下では、誰も安全ではない！"</text>
+			<crewMember amount="1" combat="1" class="rock_commando">コルベン</crewMember>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_REMOVE_ORCHID" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>申し訳ありませんが、お役に立てません。</text>
+		<event>
+			<text>「ええ、もちろんです。あなたはもう十分すぎるほど助けてくれました。スタッフに話して、あなたに報酬を与えるようにします..."</text>
+			<autoReward level="MED">missiles</autoReward>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_REMOVE_ORCHID" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ORCHID_ESCAPE" unique="true">
+	<text>あなたは軍の護衛を伴った巨大なギャザリング輸送船に遭遇する。船内のどこかから呼びかけを受ける。「助けてください。私は不当に拘留され、独房から脱走した。彼らはすぐに私を見つけるでしょう、あなたが私を救うなら、私はあなたの望むことを何でもします！"</text>
+	<ship load="SHIP_ORCHID_FIGHT_NOSURRENDER" hostile="false" />
+	<choice hidden="true">
+		<text>謎の見知らぬ男を救出せよ</text>
+		<event load="ORCHID_ESCAPE_RESCUE" />
+	</choice>
+	<choice hidden="true">
+		<text>ギャザリングに報告する。</text>
+		<event>
+			<text>フローラルの船長は、彼らを助けようとするあなたの努力に満足している。"やはり連邦は我々の味方だ"彼は今しがた君が引き渡したオーキッドに向かってジェスチャーする。"政府の機密を盗んだこいつを捕まえた。連合国の資本主義スパイだろう。彼はいずれ処分を受けるだろうが、君の忠誠心には報奨金を与えよう</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="teleporter" lvl="2">
+		<text>(アップグ・テレポーター）オーキッドを気づかれないようにテレポートさせる。</text>
+		<event>
+			<text>テレポーターで "オーキッド "をロックし、彼を乗船させる。「ありがとう、船長。とても怖かった...南軍のスパイだと思われている！あなたが助けてくれなかったら、私は処刑されていたでしょう！"プレトリアンは取り締まりを強化している""真の緑の血族でない限り""誰もが容疑者になる""狂気の沙汰だ！狂気の沙汰だ！"</text>
+			<crewMember amount="1" class="orchid" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>衰退。</text>
+		<event>
+			<text>これ以上クルーは必要ない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ORCHID_ESCAPE_RESCUE">
+	<event>
+		<text>あなたは輸送船に忍び込み、オーキッドを自分の船まで護送する。彼は気前よく礼を言うが、拘留された理由については話したくないようだ。幸いなことに、救助の様子は誰にも発見されず、あなたは何事もなくその場を後にした。</text>
+		<crewMember amount="1" class="orchid" />
+	</event>
+	<event>
+		<text>あなたは輸送船に忍び込み、オーキッドを護衛して船に戻る。しかしその途中、あなたは発見され、オーキッドは砲撃を開始した！あなたが護衛していたフローラル号は銃撃戦に巻き込まれ、あなたのクルーはかろうじて生還し、怒り狂った護衛艦と戦うことができた！</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+		</choice>
+	</event>
+	<event>
+		<text>あなたは輸送船に忍び込み、オーキッドを護衛して船に戻る。しかしその途中、あなたは発見され、オーキッドは砲撃を開始する！幸いなことに、護衛していたオーキッドを含むクルー全員が生還し、怒り狂った護衛艦と戦うことができた！</text>
+		<crewMember amount="1" class="orchid" />
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+		</choice>
+	</event>
+	<event>
+		<text>犯人を救出するために船に忍び込むと、救出したのはフローラルではなくヴァンプウィードだった！"ありがとう、私はただの通りすがりの商人で、赤い花びらのせいで逮捕されたんだ！"。あなたはうなずき、急いで船に戻るが、不運にも警備員に捕まり、出口で戦わなければならなくなる！</text>
+		<crewMember amount="1" class="orchid_vampweed" />
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+		</choice>
+	</event>
+</eventList>
+
+<event name="ORCHID_MERCENARY" unique="true">
+	<text>非武装のフローラル・ケアテイカー船が、追ってくるシンジケートの傭兵船から逃げようとしている。どんな理由があるのか見当もつかないが、彼らを救うために何かすべきだろうか？</text>
+	<choice hidden="true">
+		<text>オーキッドの船を助けよう</text>
+		<event>
+			<text>あなたが威嚇射撃をすると、海賊船はあなたに向かって方向を変えた。"くそっ、レネゲイドのクズどもめ。シンジケートの契約を邪魔するのはお前だろう！いいだろう、好きにしろ。先に殺してやる！"</text>
+			<ship load="SHIP_ORCHID_MERCENARY" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>シンジケートを賄賂で買収し、自分たちだけにしてもらう。</text>
+		<event>
+			<text>"うーん...たくさんのスクラップだね。懸賞金も手に入るなら、なおさらだ！"傭兵はオーキッズに向き直り、警告する。「いい子にして死んだふりをしてろ！さもないと、すぐに仕事を終わらせるためにここに戻ってくるぞ！"傭兵が飛び去ると、フローラルはあなたに礼を言い、手話で彼らを連れて行くよう懇願する。「お願いです、共産主義を捨てようとする過激派組織に巻き込まれて以来、私はどこへ行っても命を狙われるようになりました！昔の生活には戻れないけど、あなたとなら新しい生活ができるかもしれない！"</text>
+			<item_modify>
+				<item type="scrap" min="-35" max="-25" />
+			</item_modify>
+			<choice>
+				<text>彼らを乗船させるんだ。</text>
+				<event>
+					<crewMember amount="1" repair="1" class="orchid_caretaker" />
+				</event>
+			</choice>
+			<choice>
+				<text>拒否し、代わりの支払いを求める。</text>
+				<event>
+					<weapon name="GIFTLIST_KERNEL" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>衝突を避ける。</text>
+		<event>
+			<text>シンジケートとレネゲイドが仲が悪い以上、このビジネスに関わる理由はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ORCHID_MERCENARY_RESCUE">
+	<event>
+		<text>オーキッド船は戦闘前に大きな損害を受けたが、乗組員はまだ生きている。急いで手話を交えながら、オーキッズはあなたの助けに感謝する。"私はとんでもない間違いを犯した。"共産主義政策を撤回するよう、ギャザリングを説得しようとする資本主義者の組織に加わったのだ。今、私はどこに行っても尾行されているような気がします！お願い、連れて行って。もうここにはいられない！"</text>
+		<crewMember amount="1" class="orchid_caretaker" />
+	</event>
+	<event>
+		<text>船は大きなダメージを受けたようで、残念ながら乗組員は生き残れなかった。傭兵たちがなぜ彼らを追跡していたのか、今となっては知る由もないが、もはや彼らのスクラップは必要ないのだろう。</text>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+	<event>
+		<text>残念なことに、オーキッズは戦いの最中に逃げ出してしまったようだ。あなたは少しがっかりし、少し腹を立てているが、このチャンスを逃した彼らを責めることはできない。</text>
+	</event>
+</eventList>
+
+<event name="ORCHID_SLAVES" unique="true">
+	<text>ビーコンで待ち受ける悪党船。「労働者を安く売ります！酸素放出器、大砲の餌、部族長への贈り物、薪、健康食品として使える！"海賊は顎を掻く。「カニバリズムを支持するわけじゃない。ただ、彼らは万能だと言っているだけだ"</text>
+	<ship hostile="false" load="SHIP_ORCHID_SLAVES" />
+	<choice hidden="true">
+		<text>海賊行為は卑劣だ。奴隷商人を攻撃せよ！</text>
+		<event>
+			<text>あなたは奴隷商人を攻撃する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="REPUTATION_DECREASE_SLAVER_COMBAT" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>奴隷を買え。</text>
+		<event load="ORCHID_SLAVER_SLAVES" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CARETAKER">
+		<text>(世話役クルー)海賊のより良い利益を訴える。</text>
+		<event load="ORCHID_SLAVER_CARETAKER" />
+	</choice>
+	<choice hidden="true">
+		<text>衰退。</text>
+		<event>
+			<text>奴隷商人と交戦する必要はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ORCHID_SLAVER_SLAVES">
+	<event>
+		<text>「お買い上げありがとう！あなたの行く末が、これらが信じるどんな愚かな植物の神によって祝福されますように！"</text>
+		<crewMember amount="1" class="orchid" />
+		<item_modify>
+			<item max="-20" min="-30" type="scrap" />
+		</item_modify>
+		<choice>
+			<text>次へ...</text>
+			<event load="REPUTATION_UPDATE_SLAVER" />
+		</choice>
+	</event>
+	<event>
+		<text>「お買い上げありがとう！あなたの行く末が、これらが信じるどんな愚かな植物の神によって祝福されますように！"</text>
+		<crewMember amount="1" class="orchid_caretaker" />
+		<item_modify>
+			<item max="-25" min="-35" type="scrap" />
+		</item_modify>
+		<choice>
+			<text>次へ...</text>
+			<event load="REPUTATION_UPDATE_SLAVER" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="ORCHID_SLAVER_CARETAKER">
+	<event name="ORCHID_SLAVER_CARETAKER_FAIL">
+		<text>奴隷商人たちは、退屈そうにオーキッドのサインを見ている。"ええ、ええ、それは素晴らしいことですが、私は気にすることになっている部分を逃しました。モラルなんてどうでもいいから、この商売をやってるんじゃないんだ。買うつもりがないなら、失せろ"</text>
+		<choice hidden="true">
+			<text>奴隷商人を攻撃しろ！</text>
+			<event>
+				<text>奴隷商人たちを説得して貿易を終わらせることができないのなら、あなた自身が強制的に貿易を終わらせることになる。</text>
+				<ship hostile="true" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="REPUTATION_DECREASE_SLAVER_COMBAT" />
+				</choice>
+			</event>
+		</choice>
+		<choice>
+			<text>気が変わったら奴隷を買えばいい。</text>
+			<event load="ORCHID_SLAVER_SLAVES" />
+		</choice>
+		<choice hidden="true">
+			<text>出て行け。</text>
+			<event>
+				<text>あなたはここで十分に時間を無駄にした。</text>
+			</event>
+		</choice>
+	</event>
+	<event load="ORCHID_SLAVER_CARETAKER_FAIL" />
+	<event>
+		<text>驚いたことに、オーキッドのメッセージは海賊たちの心に響いたようだ。あるいは、そうでないかもしれない...彼らはただ迷惑しているようだ。"ったく、わかったよ！お前らも同じ人間だ。わかってるよ。無礼なことをしたら殺されるだけだ。レネゲイドには会ったことがある。植物を取って、一人にしてくれ」。奴隷商人たちはオーキッドの手錠を外し、あなたたちのもとへ送る。世話係は彼らが新しい自由に慣れるのを見届ける。</text>
+		<crewMember amount="1" class="orchid" />
+	</event>
+	<event>
+		<text>驚いたことに、オーキッドのメッセージは海賊たちの心に響いたようだ。あるいは、そうでないかもしれない...彼らはただ迷惑しているようだ。"ったく、わかったよ！お前らも同じ人間だ。わかってるよ。無礼なことをしたら殺されるだけだ。レネゲイドには会ったことがある。植物を取って、一人にしてくれ」。奴隷商人たちはオーキッドの手錠を外し、あなたたちのもとへ送る。世話係は彼らが新しい自由に慣れるのを見届ける。</text>
+		<crewMember amount="1" class="orchid_caretaker" />
+	</event>
+</eventList>
+
+<event name="ORCHID_INSULT" unique="true">
+	<text>スラッグがギャザリングとほとんどつながりがないことを考えると、あなたはここにクラプトクラシーの船があることに驚いている。スラッグは暗号化されたチャンネルでの通信を要求している。</text>
+	<ship hostile="false" load="SHIP_SLUG_GENERIC" />
+	<choice hidden="true">
+		<text>スラッグスとの話し合いに同意する。</text>
+		<event>
+			<text>"ごきげんよう、苔むした丸々としたお方。我々は100年もの間、このような立派な標本を探していた。あなたは銀河系で最も醜い存在であり、防腐処理されて美術館に展示されるにふさわしい。お前の母親はどんな顔をしているのだろう。"</text>
+			<choice hidden="true">
+				<text>そんな侮辱は受けない！攻撃だ</text>
+				<event>
+					<text>この突然の、しかも無遠慮な侮辱の連打に憤慨し、あなたは発砲した。「はっはっは！デブな上にバカだ！」。スラッグ船長は、近くのオーキッド星に海賊に襲われたと救難信号を送った。驚いたことに、近くのオーキッド星は警備システムを作動させ、あなたの船をロックオンした！スラッグめ。</text>
+					<ship hostile="true" />
+					<environment target="player" type="PDS" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="PDS_DISABLE">
+				<text>(シグナル・ディリューター）スラッグが発するかもしれない救難信号を遮断し、攻撃する！</text>
+				<event>
+					<text>スラッグ船に発砲すると、スラッグ船は即座に回避行動をとる。スラッグ船長は近くのオーキッド星に海賊に襲われたと救難信号を送るが、通じない。最初の計画は失敗し、スラッグは自分たちだけで戦うしかない。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="unique_nights">
+				<text>(夜）個人的なことを言う。</text>
+				<event>
+					<text>ナイツがあなたをコンソールから引き離し、マイクを握る。「ああ、かわいい。この企みがどこに向かっているのか、1マイル離れたところからでもわかったよ！自分自身と戦うにはあまりにも脆く、不安定である。君らは想像を絶するほど悲しく哀れな敗者だ。それに、俺たちがお互いの母親について決めつけ合っている限り、その醜い顔から推測するに、お前は自分の母親に誇りを持ったことがないんだろうな。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>電話を切ると、ナイツはすぐにシャトルに乗り込み、ずっと沈黙を守っていた敵艦に乗り込む。戻ってきたシャトルには大量のスクラップが積まれていた。彼はそれを貨物倉に捨てながら苦笑する。</text>
+							<autoReward level="HIGH">standard</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_SLUG">
+				<text>(スラッグ・クルー）侮辱を返せ。</text>
+				<event>
+					<text>スラッグは皆の方を向き、笠をかぶって、こう言った。"昨日の夜、ベッドで母さんを全滅させた後では、お前の母さんよりマシだろう"。ショックと憤慨で、スラッグのキャプテンはどう答えていいかわからない。結局、屈辱のあまり、彼は降伏を申し出た。</text>
+					<autoReward level="MED">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="unique_tonysr">
+				<text>(トニー）トニーが泣き出した。</text>
+				<event>
+					<text>トニーは倒れ、悲痛な叫びを上げ始める。慟哭するトニーを見て、スラッグたちは言葉を失う。「こんなことになるとは......。船長は本当に恥じているようだ。"これは罠のようなものだと思われていた。君たちを海賊だと言って、オーキッドの警備を騙すつもりだったんだ。今はただクソみたいな気分だ。俺は・・・もう帰るよ。"スラッグはスクラップを投げつけて飛び去る。</text>
+					<instantEscape />
+					<autoReward level="MED">item</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>通信を遮断し、システムから離れる。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>衰退。</text>
+		<event>
+			<text>あなたはスラッグを無視し、これがおそらくトリックであることを知っている。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ORCHID_FIELD" unique="true">
+    <loadEventList first="true" default="ORCHID_FIELD_NORMAL">
+        <event name="ORCHID_FIELD_SECURE" req="prof_flowers_picked" lvl="5" />
+    </loadEventList>
+</event>
+<event name="ORCHID_FIELD_NORMAL">
+    <text>近くの惑星に広大で美しい花畑が広がっている。何マイルにもわたって散らばる花々の見事な眺め。</text>
+    <img planet="PLANET_POPULATED_GRASSY" />
+    <choice hidden="true" req="LIST_CREW_ORCHID_UNIQUE" lvl="0" max_lvl="0" blue="false">
+        <text>花を摘めば売れるかもしれない。</text>
+        <event>
+            <text>あなたとクルーが陽光降り注ぐ野原から陽気に花を摘み始めると、空からオーキッドの船がクルーが泣きながら降りてきた。「モンスターめ！我々の子供たちを虐殺した！"</text>
+            <metaVariable name="prof_flowers_picked" op="add" val="1" />
+            <ship load="SHIP_CARETAKER_FIGHT" hostile="false" />
+            <choice>
+                <text>間違いだったと言い張る。</text>
+                <event>
+                    <text>それでもオーキッズは、まったく憮然としながらも、少なくともあなたを帰してくれる。彼らはあなたが摘んだ花をすべて返すよう主張し、すぐに立ち去るよう要求する。</text>
+                    <choice hidden="true">
+                        <text>次へ...</text>
+                        <event load="MORALITY_UPDATE_ORCHID" />
+                    </choice>
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>ダブルダウンして死体を持ち帰る。</text>
+                <event>
+                    <text>あなたが巨大な花の山を持ち帰ると、泣きじゃくるオーキッドたちが激怒した。「この野郎！このツケを払ってもらうぞ！"</text>
+                    <augment name="ORCHID_KIDS" />
+                    <ship hostile="true" />
+                    <choice hidden="true">
+                        <text>次へ...</text>
+                        <event load="MORALITY_UPDATE_ORCHID_FIGHT_DOUBLE" />
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="unique_mayeb" blue="false" max_group="0">
+        <text>花を摘めば売れるかもしれない。</text>
+        <event>
+            <text>あなたが花を摘もうとすると、メイエブが行く手を阻む。彼女は今まで見たこともないほど怒っているようだ。</text>
+            <choice>
+                <text>ああ、ああ...。</text>
+                <event>
+                    <loadEvent ignoreUnique="true" seeded="false" generate="false">ORCHID_CHILDREN_MAYEB_LOOP</loadEvent>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="unique_ivar" blue="false" max_group="0">
+        <text>花を摘めば売れるかもしれない。</text>
+        <event load="IVAR_PROTECTING_THE_KIDS" />
+    </choice>
+    <choice hidden="true" req="unique_tyerel" blue="false" max_group="0">
+        <text>花を摘めば売れるかもしれない。</text>
+        <event load="TY_EREL_PROTECTING_THE_KIDS" />
+    </choice>
+    <choice req="LIST_CREW_ORCHID">
+        <text>(オーキッド・クルー）あなたのオーキッドは必死につるを振って、それをしないように警告している。</text>
+        <event>
+            <text>あなたのオーキッドが、このフィールドにはまだ運動能力の発達していない若いオーキッドの子供たちがたくさんいると教えてくれた。あなたは危うく大虐殺を行うところだったことに気づき、それを思いとどまる。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="BOMB_ELITE">
+        <text>(プロモーションボム）フィールドを爆撃する。[-1ミサイル]</text>
+        <event>
+            <text>奇妙で陰湿な考えがあなたの心を支配し、純粋に本能の赴くままに武器を構え、野原に向けて発射した。しかし、畑は壊滅的な打撃を受けるどころか、花は突然、成長したランの花へと姿を変えた。その直後、中年の危機が畑を狂気へと駆り立て、やがて彼らは泣き叫びながらやっと成長した赤ん坊の花に戻り、まだ生まれてもいない大人の自分の記憶や経験が突然押し寄せてきて、彼らの心は永遠にドロドロになってしまう。何が起こったのかさえわからず（そしてあなたが彼らに同じことをするのを恐れ）、畑の所有者たちはただあなたに立ち去るよう要求する。</text>
+            <item_modify>
+                <item type="missiles" min="-1" max="-1" />
+            </item_modify>
+        </event>
+    </choice>
+	<choice hidden="true" req="BOMB_ELITE_CHAOS">
+        <text>(カオスプロモーションボム）フィールドを爆撃する。[-15ミサイル]</text>
+        <event>
+            <text>奇妙で陰湿な考えがあなたの心を支配し、純粋に本能の赴くままに武器を構え、野原に向けて発射した。しかし、花畑は壊滅的な打撃を受けるどころか、花は突然、成長したランの花へと姿を変えた。この突然の変身が一時的なものであることを予期していたあなただったが、ランの花は大人の姿のままだった。残念なことに、新しく成長したオーキッドをすべて収容するには畑に十分なスペースがなく、あなたは大量のオーキッドを自分の船に受け入れることを余儀なくされた。</text>
+            <item_modify>
+                <item type="missiles" min="-15" max="-15" />
+            </item_modify>
+			<crewMember amount="16" class="orchid" /> 
+        </event>
+    </choice>
+    <choice hidden="true" req="NANO_MEDBAY">
+        <text>(メドボット）畑に肥料をやる。</text>
+        <event>
+            <text>伝統的な意味での肥料ではないが、ナノボットは花の成長を刺激する。蘭の管理人たちはこのことに気づいているようで、あなたの寛大さに感謝しているが、今後は他人の子供たちに「勝手な成長刺激」を与えないようにと忠告している。</text>
+            <autoReward level="MED">augment</autoReward>
+        </event>
+    </choice>
+    <choice hidden="true" req="COMMANDO_FIRE">
+        <text>(ロスト・サン・クルー）BURN IT ALL！</text>
+        <event>
+            <text>畑が燃え上がり、あなたのクルーは狂気の笑いに包まれる。フィールドを見守るオーキッドの管理人たちは恐怖におののき、プレトールが急行し、あなたの大量虐殺行為を阻止する！</text>
+            <ship load="SHIP_ORCHID_ELITE_FIGHT" hostile="true" />
+            <choice hidden="true">
+                <text>次へ...</text>
+                <event load="MORALITY_UPDATE_ORCHID_FIGHT_DOUBLE" />
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="LOST_SUN_CONFISCATED">
+        <text>あなたはロスト・サンを手に入れることができないようだ。</text>
+        <event load="OPTION_INVALID" />
+    </choice>
+    <choice hidden="true">
+        <text>私たちにはもっとやるべきことがある。</text>
+        <event>
+            <text>あなたは花を無視して任務を続行する。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="ORCHID_FIELD_SECURE">
+    <text>大きな花畑が広がっていると思われる近くの惑星に近づくと、信じられないほど武装したステーションに呼び止められる。「そこで止まれ！君が誰であろうと、ここにいる理由が何であろうと関係ない。ここはプレトリアンの保護下にある厳重警備区域だ。立ち去れ"</text>
+    <ship load="SHIP_ORCHID_ELITE_STATION_CHILD" hostile="false" />
+    <choice hidden="true">
+        <text>どうしたんだ？</text>
+        <event>
+            <text>フローラルはため息をつく。「レネゲイドが我々の畑に侵入し、子供たちを虐殺するのが常習化しているというニュースを、我々は他の現実から聞いている。それが蔓延しており、ギャザリングは子供たちを守るために最大限の力を行使することを許可した。SPSは、このような凶悪犯罪を二度と起こさないようにするために設立された。"</text>
+            <choice hidden="true">
+                <text>惑星にアクセスするためにステーションと戦う。</text>
+                <event>
+                    <text>「冗談だろ？ケーダー、警報を鳴らせ！もう一人いるぞ！"</text>
+                    <ship hostile="true" />
+                    <choice hidden="true">
+                        <text>次へ...</text>
+                        <event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+                    </choice>
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>出て行け。</text>
+                <event>
+                    <text>レネゲイドが本当にこんなことをしているのなら、あなたは彼らのようにはなりたくない。あなたはここを去ることにした。</text>
+                    <choice>
+                        <text>船内で何かをする。</text>
+                        <event load="STORAGE_CHECK" />
+                    </choice>
+                    <choice>
+                        <text>何もしない。</text>
+                        <event />
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>退団に同意する。</text>
+        <event>
+            <text>ここで起こっていることに干渉したくない。一刻も早く立ち去ることにした。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="ORCHID_FIELD_SECURE_WIN">
+    <text>ステーションを出て、あなたは惑星に降り立つ。この星を管理しているオーキッドの管理人たちは、あなたたちを見て怯え、子供たちを助けてほしいと懇願する。</text>
+   <choice hidden="true" req="LIST_CREW_ORCHID_UNIQUE" lvl="0" max_lvl="0" blue="false" max_group="0">
+        <text>花を摘む。</text>
+        <event>
+            <text>乗組員たちの反対をよそに、あなたはとにかく花を摘むよう命じる。管理人たちはあなたを引き離そうとするが、邪魔者は誰でも撃ち殺すので無駄だ。狂気的な努力に満足したあなたは、死体の山を引き連れて船に戻る。レネゲイド（反逆者）という言葉は、この出来事を目撃した誰にとっても下劣な侮辱となるに違いない。</text>
+            <metaVariable name="prof_flowers_picked" op="add" val="1" />
+            <augment name="ORCHID_KIDS" />
+            <choice hidden="true">
+                <text>次へ...</text>
+                <event load="MORALITY_UPDATE_ORCHID_TRIPLE" />
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="unique_mayeb" blue="false" max_group="0">
+        <text>花を摘む。</text>
+        <event>
+            <text>あなたが花を摘もうとすると、メイエブが行く手を阻む。彼女は今まで見たこともないほど怒っているようだ。</text>
+            <choice>
+                <text>ああ、ああ...。</text>
+                <event>
+                    <loadEvent ignoreUnique="true" seeded="false" generate="false">ORCHID_CHILDREN_MAYEB_LOOP</loadEvent>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="unique_ivar" blue="false" max_group="0">
+        <text>花を摘む。</text>
+        <event load="IVAR_PROTECTING_THE_KIDS" />
+    </choice>
+    <choice hidden="true" req="unique_tyerel" blue="false" max_group="0">
+        <text>花を摘む。</text>
+        <event load="TY_EREL_PROTECTING_THE_KIDS" />
+    </choice>
+    <choice hidden="true">
+        <text>もう十分だ、行こう。</text>
+        <event>
+            <text>少なくとも、全力を尽くしたわけではないとはいえ、このことがマルチバース全体におけるレネゲードの悪評を高め続けることにならないとは言い切れない。</text>
+        </event>
+    </choice>
+</event>
+
+<event name="IVAR_PROTECTING_THE_KIDS">
+    <text>何か小さなものが後頭部に当たったのを感じる。振り向くと、アイヴァーがあなたを見つめていた。片方のつるにはワインのボトル、もう片方には槍を構えている。彼は飲み物を一気飲みすると、口を拭った。「自分はユーモアのある男だと思っている。物事を冷静に受け止める。暗いジョークにも笑うし、意地悪なコメントも受け流すし、人から嘲笑されたり見下されたりしても、それなりに厚かましく受け流す。つまりね、私は政治家なんでしょ？彼はユーモラスに笑う。「でも、これは一線を越えている。子供たちから離れてください。子供たちに手を出したら大変なことになる」。アイバーはもう一杯飲む。彼の歯は威嚇するように食いしばり、再びあなたに話しかける。「わかったか？</text>
+    <choice>
+        <text>下がれ。</text>
+        <event>
+            <text>アイバーはリラックスする。「また深刻にさせないでください、船長。深刻になるのは嫌いなんだ。</text>
+        </event>
+    </choice>
+    <choice req="COUNT_ALL_CREW" lvl="1" max_lvl="1" blue="false">
+        <text>花を摘もうとし続ける。</text>
+        <event>
+            <text>アイバーの槍が命中し、鋭い痛みを感じる。あなたは痛みで床に倒れ、ユニフォームから血がにじむ。「警告しようとしたんだ、キャプテン。心配するな、ギャザリングの刑務所では傷の手当てに優れた実績があると聞いている。"</text>
+            <choice>
+                <text>...?</text>
+                <event>
+                    <text>朦朧とする意識の中で、あなたは今起こったことを想像していたかもしれないことに気づく。アイバーはまだあなたの目の前にいて、彼の暗黙の最後通告に対するあなたの返事を待っている。本当にそれをやり遂げるのか？</text>
+                    <modifyPursuit amount="1" />
+                    <choice>
+                        <text>下がれ。</text>
+                        <event>
+                            <text>アイバーはリラックスする。「また深刻にさせないでください、船長。深刻になるのは嫌いなんだ。</text>
+                        </event>
+                    </choice>
+                    <choice>
+                        <text>実際にそれをやり通す。</text>
+                        <event>
+                            <text>アイバーの槍が命中し、鋭い痛みを感じる。あなたは痛みで床に倒れ、ユニフォームから血がにじむ。「警告しようとしたんだ、キャプテン。心配するな、ギャザリングの刑務所では傷の手当てに優れた実績があると聞いている。"</text>
+                            <lose text="Don't underestimate Ivar." />
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice req="COUNT_ALL_CREW" lvl="2" blue="false">
+        <text>花を摘もうとし続ける。</text>
+        <event>
+            <text>"ああ、そうは思わないな"アイバーはあなたを槍で壁に固定し、営倉に連れて行くようクルーに命じる。驚いたことに、乗組員は実際に従い、あなたをつかんで引きずり出す。あなたが反乱の説明を求めると、アイバーは振り返って微笑んだ。「愚かなレネゲイドめ。私が政治家だということを忘れたのか？他のクルーとはファーストネームで呼び合う仲だ。私もあなたと友達になりたかったのですが、子供殺しとは付き合えません」。</text>
+            <choice>
+                <text>...?</text>
+                <event>
+                    <text>朦朧とする意識の中で、あなたは今起こったことを想像していたかもしれないことに気づく。アイバーはまだあなたの目の前にいて、彼の暗黙の最後通告に対するあなたの返事を待っている。本当にそれをやり遂げるのか？</text>
+                    <modifyPursuit amount="1" />
+                    <choice>
+                        <text>下がれ。</text>
+                        <event>
+                            <text>アイバーはリラックスする。「また深刻にさせないでください、船長。深刻になるのは嫌いなんだ。</text>
+                        </event>
+                    </choice>
+                    <choice>
+                        <text>実際にそれをやり通す。</text>
+                        <event>
+                            <text>"ああ、そうは思わないな"アイバーはあなたを槍で壁に固定し、営倉に連れて行くようクルーに命じる。驚いたことに、乗組員は実際に従い、あなたをつかんで引きずり出す。あなたが反乱の説明を求めると、アイバーは振り返って微笑んだ。「愚かなレネゲイドめ。私が政治家だということを忘れたのか？他のクルーとはファーストネームで呼び合う仲だ。私もあなたと友達になりたかったのですが、子供殺しとは付き合えません」。</text>
+                            <lose text="Don't underestimate Ivar." />
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="TY_EREL_PROTECTING_THE_KIDS">
+    <text>強い蔓があなたの腕に巻きついている。あなたはタイ・エレルにじっと捕らえられている。彼の表情はいつもと変わらずニュートラルだが、いつもより威嚇的な印象を受ける。「船長、子供たちに危害を加えることは許しません」。</text>
+    <choice>
+        <text>謝れ。</text>
+        <event>
+            <text>タイ・エレルがうなずく。彼が握力を緩めると、あなたは彼から離れた。あなたが船を惑星から遠ざけるよう命令しているとき、彼がまだあなたを見つめているのを感じる。</text>
+        </event>
+    </choice>
+    <choice req="COUNT_ALL_CREW" max_lvl="1" blue="false">
+        <text>自由にもがき、花を摘み取ろうとし続ける。</text>
+        <event>
+            <text>彼のつるがあなたの首を締め付け始めるのを感じる。どんなに激しく抵抗しても、あなたは自由になれない。意識が遠のいていく。
+
+あっと思う間もなく、頭痛で目が覚める。船はもう惑星の近くにはない。あなたはかなりの時間を失っており、もう長くはここにいられないだろう。タイ・エレルは今のところ距離を置いているが、これから先、事態は緊迫していくだろう。</text>
+            <modifyPursuit amount="1" />
+        </event>
+    </choice>
+    <choice req="COUNT_ALL_CREW" lvl="2" blue="false">
+        <text>クルーに命じて手伝ってもらう。</text>
+        <event>
+            <text>あなたはクルーにあなたのために介入してもらおうとするが、彼らはやる気がないようだ。タイ・エレルは首を横に振る。「彼らとはもう話し合った。あなたが子供たちを放っておくことに同意しない限り、他のクルーはもうあなたの命令には従わない"結局、タイ・エレルがあなたを押さえつける間に、クルーは船を操縦してフィールドから離れた。だが、クルーはもはや、かつてそうであったように、あなたを尊敬していないことがわかる。</text>
+        </event>
+    </choice>
+</event>
+<event name="ORCHID_CHILDREN_MAYEB_LOOP">
+    <text load="MAYEB_CHILDREN_1" />
+    <choice>
+        <text>一言でもいいから話してみて。</text>
+        <event>
+            <text load="MAYEB_CHILDREN_2" />
+            <choice>
+                <text>彼女が落ち着くのを待つ。</text>
+                <event>
+                    <text load="MAYEB_CHILDREN_3" />
+                    <modifyPursuit amount="1" />
+                    <choice>
+                        <text>頷いて彼女をなだめようとする。</text>
+                        <event>
+                            <text>「いいだろう。私の言いたいことはわかった。さて、何か言いたいことはあるか？"</text>
+                            <choice>
+                                <text>君の言うことは聞いたが、まだやるつもりだ。</text>
+                                <event>
+                                    <text>メイエブはつるを腰に当てる。「そうは思わない！まだ言うことがある。懲りるまで私の言うことを聞きなさい"</text>
+                                    <choice>
+                                        <text>次へ...</text>
+                                        <event>
+                                            <loadEvent ignoreUnique="true" seeded="false" generate="false">ORCHID_CHILDREN_MAYEB_LOOP</loadEvent>
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                            <choice>
+                                <text>ごめんなさい.あなたが正しかった。</text>
+                                <event>
+                                    <text>メイエブはつるをたたむ。「もっとはっきり言って。何を謝っているの？"</text>
+                                    <choice>
+                                        <text>子供たちの命を軽率に危険にさらして申し訳ない。</text>
+                                        <event>
+                                            <text>「よし。さあ、ここから出よう"</text>
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<textList name="MAYEB_CHILDREN_1">
+    <text>「座って話を聞け。あなたが脅しているのは、私たちの子供たちよ。何もしないで傍観しているつもりはない。無力な者を守りたいという願望を持つ花である私が、無力な新芽に危害を加えることを、たとえ彼らが樹液を持っていなかったとしても、許すとでも思ったのか？"</text>
+    <text>「私はここで引き下がるつもりはない。この子供たちは、この多元宇宙ではどの子供もそうであるように、健康で長生きする権利がある。サピエントの子供たちはしばしば、精神的な能力を適切に形成するために、傷つきやすい時期が長く続く。そのような無力なものを餌食にするとは、命を軽んじている証拠だ」。</text>
+    <text>「子供たちの死を命じられるとは何様のつもりだ。彼らはあなたを傷つけるようなことは何もしていないばかりか、しようともしない。彼らは子供だ。彼らの死は何の役にも立たない。"どうせなら、もっと重要なことがあるんじゃないのか？</text>
+</textList>
+<textList name="MAYEB_CHILDREN_2">
+    <text>「黙れ。まだ終わっていない。大尉、あなたは子供ではなかったのですか？若さのもろさや不安定さがわからないのか？子供時代に負った長期的な傷を目撃していないのか？年長者のニーズよりも若者のニーズを優先させるという単純な問題ではないのだ。子ども時代の傷は、それよりもずっと強い。あなたの良心はそれを望んでいるのですか？"</text>
+    <text>"SHUSH！私はまだ話している。私たちを尊敬していないのか、それとも自分より年下の人間全般を尊敬していないのか。これはおそらく種の問題なのか、それとも自分より発達していない人々への共感ができないのか？私は純粋に興味がある。もしこれが人間の小さな芽のように見えたら、それはあなたの無情な娯楽であり続けるだろうか？"</text>
+    <text>「黙れ、チャウダーヘッド！連邦の救世主気取りか？それらしく振る舞え子供を殺すような怪物に 救世主の資格はないどんな残虐なことをしても構わんが 子供だけは巻き込むな！</text>
+</textList>
+<textList name="MAYEB_CHILDREN_3">
+    <text>「そんな卑劣で、残酷で、冷酷なことを考えるなんて、あなたは相当病んでいるに違いない。いや、あなたが救いようがないほど病んでいるとは言わないが、多元宇宙を冒険した後に落ち着くには、自分自身をきちんと見つめ直す必要がある。それとも......お前は人間性を捨ててこの職業に就いたのか？星の中で死ぬつもりなのか？</text>
+    <text>「あなたにはまだ正しいことをするチャンスがある。卑劣な行為はまだ行われていない。この子たちはまだ、多世界の放浪者の残酷な策略から解放されて、長く実りある人生を送ることができる。武器を止めれば、みんな一緒に......まあ、このことは忘れないが、水に流そう"</text>
+    <text>"君は熟練したキャプテンかもしれない。現実の中で最も危険な脅威に立ち向かうことができるかもしれない。あるいは、そうでないかもしれない。私には関係ない。私は死ぬまでこの子たちを擁護する。だから、君はこの船を回して、自分の仕事に戻ってくれ。"</text>
+</textList>
+
+<event name="ORCHID_THEFT" unique="true">
+	<text>悩める花々の一団があなたを呼んでいる。大半は無言の生活を送っているようだが、一人のオーキッドは声を出してコミュニケーションをとることができる。「助けてください！オートシップがやってきて、私たちの子供たちを盗みました！子供たちを助けてください！"</text>
+	<choice hidden="true">
+		<text>子供たちを救出することに同意する。</text>
+		<event>
+			<text>オートシップを追跡すると、どうやらまだ星系を離れていないようだ。プラントをよこせ」という1つのメッセージをループさせ、あなたに襲いかかる！</text>
+			<ship load="SHIP_AUTO_ORCHID_THEFT" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+			<choice hidden="true" req="ORCHID_KIDS">
+				<text>(オーキッド・チルドレン）植物を与える。</text>
+				<event>
+					<text>死体をオートシップに渡す。「植物は与えられた。反乱軍ゼノ識別プロジェクトへの貢献に感謝する。この報酬を受け取ってください。"</text>
+					<autoReward level="HIGH">standard</autoReward>
+					<ship hostile="false" />
+					<remove name="ORCHID_KIDS" />
+				</event>
+			</choice>
+			
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>私たちは助けられない。</text>
+		<event>
+			<text>あなたは謝罪し、オーキッドをミュートする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<eventList name="NEUTRAL_ORCHID_UNIQUE">
+	<event load="ORCHID_SACRIFICE" />
+	<event load="ORCHID_ELITEDUEL" />
+	
+	<event load="ORCHID_REFUGEES" />
+	<event load="ORCHID_ESCAPE" />
+	<event load="ORCHID_MERCENARY" />
+	<event load="ORCHID_SLAVES" />
+	<event load="ORCHID_INSULT" />
+	<event load="ORCHID_FIELD" />
+	<event load="ORCHID_THEFT" />
+</eventList>
+
+<event name="ORCHID_SACRIFICE" unique="true">
+	<text>ロスト・サンの小艦隊が小さな無人惑星を周回している。あなたは2隻の船の通信を傍受し、彼らが処刑について何か言っているのを聞いた。</text>
+	<img planet="PLANET_UNPOPULATED_TERRA" />
+	<choice>
+		<text>アプローチ</text>
+		<event>
+			<text>パイロットは地表に近づく。大きなテントの中央には巨大な焚き火があり、オーキッドのプレトールが縛られている！大柄で残忍なロックマンが手を振りながら立ち、ロストサンズの仲間たちの歓声を浴びながら大声で話している。"ギャザリング "は自由の側に立つことを明らかにした！彼らは連邦の同盟者であり、平和の提供者であると主張しながらも、自らの暴政を前にして長老たちと友好的な関係を築き続けている！今日、我々はこのような憤りをロストサンズがどう扱うか、その手本を示すのだ！"</text>
+			<choice hidden="true">
+				<text>蘭を救え</text>
+				<event>
+					<text>あなたはクルーのチームを送り込み、ロストサンズが彼らを火の中に落とす前に突入し、オーキッドを切り倒す。あなたは、怒れるロックの大群と猛追する攻撃船とともに船へと急ぎ戻る。</text>
+					<ship load="SHIP_LOSTSUN_FIGHT" hostile="true" />
+					<boarders min="2" max="2" class="rock_commando" />
+					<crewMember amount="1" class="orchid_praetor" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_FLORAL">
+				<text>(フローラル・クルー）囚人をすぐに解放するよう要求する。</text>
+				<event>
+					<text>「ははは！哀れな植物生物は、親族のために戦いたいと願っている！連邦の傭兵船で働きながら、自分の美点を守るためだけの人間の行動を擁護するのか！すぐにここから出て行け！"プレトールを解放する暇も、抗議する暇もない。ロスト・サン号があなたたちを追い払うために派遣されたからだ！</text>
+					<ship load="SHIP_LOSTSUN_FIGHT" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="rock_commando">
+				<text>(ロスト・サン・クルー）彼らと推論する。</text>
+				<event>
+					<text>あなたのコマンドーは他のロストサンズと話し、最終的に連邦の同盟国を虐殺するのは良い考えではないと理解した。ロストサンズはオーキッド議長を解き、あなたに感謝し、あなたの船で働きたいと申し出た。</text>
+					<crewMember amount="1" class="orchid_praetor" />
+				</event>
+			</choice>
+			<choice hidden="true" req="unique_ariadne">
+				<text>(アリアドネ）彼らを諭しなさい。</text>
+				<event>
+					<text>"奥さん！申し訳ありません。ロストサンズの栄光のために、自分の義務を果たしただけなんです！どうか、私を解雇しないでください。すぐにオーキッドを解放します"</text>
+					<autoReward level="HIGH">item</autoReward>
+					<crewMember amount="1" class="orchid_praetor" />
+				</event>
+			</choice>
+			<choice req="ORCHID_KIDS">
+				<text>(オーキッド・チルドレン）彼らに死体を渡せ。</text>
+				<event>
+					<text>「これは何だ？死体か？子供の？一体どうしたんだ。我々は不正の見せしめに来たのであって、子供の虐殺を見せしめに来たのではない。ここから出て行け！"</text>
+				</event>
+			</choice>
+			<choice>
+				<text>放っておけばいい。</text>
+				<event>
+					<text>ロストサンズを敵に回すには、今ほど絶好のタイミングはない。あなたは惑星から離れる。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>船を避ける。</text>
+		<event>
+			<text>もしロストサンズがここで何らかの生け贄を捧げているのなら、あなたはそれに関わりたくない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ORCHID_ELITEDUEL" unique="true">
+	<text>あなたは、このビーコンで1隻だけでなく2隻のエリート艦が対決していることに驚いた！ラニウス・ウェルダーとオーキッド・プレターが決闘に突入し、あなたはその渦中に巻き込まれている！</text>
+	<img planet="PLANET_UNPOPULATED_TERRA" />
+	<choice>
+		<text>蘭を守る！</text>
+		<event>
+			<text>ラニウス艦を迎え撃ち、戦闘態勢に入る。</text>
+			<ship load="SHIP_ORCHID_DUEL_LANIUS" hostile="true" />
+			<choice>
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>ラニウスを守れ</text>
+		<event>
+			<text>オーキッド艦を迎え撃ち、戦闘態勢に入る。</text>
+			<ship load="SHIP_ORCHID_DUEL_ORCHID" hostile="true" />
+			<choice>
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>ここから飛び去れ！</text>
+		<event>
+			<text>エンジンをパワーアップし、2隻の船から遠く離れる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="GARDEN_DUEL_LANIUS_DEFEAT">
+	<text>ラニウスのエリートを倒し、彼らの船の賞金はあなたのものだ。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>オーキッドに連絡を。</text>
+		<event>
+			<text>オーキッドは無言でうなずき、お礼として彼らの船からカーネルの武器を渡す。</text>
+			<weapon name="GIFTLIST_KERNEL_ELITE" />
+		</event>
+	</choice>
+</event>
+<event name="GARDEN_DUEL_ORCHID_DEFEAT">
+	<text>あなたはオーキッドのエリートを倒し、彼らの船の賞金はあなたのものだ。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>ラニウスに連絡を。</text>
+		<event>
+			<text>"借金、払ってますか？"ラニウスは手当たり次第に資料を送る。</text>
+			<autoReward level="HIGH">stuff</autoReward>
+		</event>
+	</choice>
+</event>
+
+<eventList name="DISTRESS_ORCHID">
+	<event load="DISTRESS_ORCHID_NOTPIRATES" />
+	<event load="DISTRESS_ORCHID_WEEDS" />
+	<event load="DISTRESS_ORCHID_JUNGLE" />
+	<event load="DISTRESS_ORCHID_ROCK_CRASH" />
+	<event load="DISTRESS_ORCHID_EMPTY_SHIP" />
+	<event load="DISTRESS_ORCHID_COLONY_FIRE" />
+</eventList>
+
+<event name="DISTRESS_ORCHID_NOTPIRATES" unique="true">
+	<distressBeacon />
+	<text>あなたが飛び込むと、ダメージを受けたオーキッドがパニックになる。"海賊どもは我々を滅ぼすために戻ってきたのか？前回のように平和的に行くつもりはない！"</text>
+	<ship load="SHIP_ORCHID_NOTPIRATES" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="DISTRESS_ORCHID_WEEDS" unique="true">
+	<distressBeacon />
+	<text>オーキッド船が必死に呼びかける。"連邦、助けてくれ！我々のステーションが巨大な人食い雑草で溢れかえっている！"</text>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="1">
+		<text>支援チームを派遣せよ巨大な人食い雑草は笑い事ではない。</text>
+		<event load="DISTRESS_ORCHID_WEEDS_BOARD" />
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" blue="false" lvl="0" max_lvl="0">
+		<text>血に飢えた植物に投げつける死体が不足しているようだ。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_GOUL">
+		<text>(グール・クルー）雑草を祓え。</text>
+		<event>
+			<text>植物と火は相性の悪い組み合わせだ。オーキッドの職員は避難し、あなたのグールはステーションを炎上させる。雑草が確実になくなると、ステーションは排気され、オーキッドはあなたの創造的な問題解決のために真新しいカーネル兵器を与える。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_LOSTSUN">
+		<text>(ロスト・サン・クルー）雑草を祓え。</text>
+		<event>
+			<text>植物と火は相性の悪い組み合わせだ。オーキッドの職員は避難し、あなたのロスト・サンはステーションを燃え上がらせる。雑草が確実になくなると、ステーションは排気され、オーキッドはあなたの創造的な問題解決のために、真新しいカーネル兵器を与える。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true" req="CREW_FIREARMS">
+		<text>(改良型武器庫）雑草を追い詰める。</text>
+		<event>
+			<text>あなたのクルーはスーツを着てステーションに乗り込み、雑草に発砲して素早く倒す。雑草がいなくなると、ステーションは排気され、オーキッドはあなたの冷酷だが効率的な問題解決のために、新しいカーネル兵器を与えてくれる。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CLAN">
+		<text>(ギルドクルー）雑草を追い詰める。</text>
+		<event>
+			<text>クルーは武装してステーションに乗り込み、簡単に作戦を思いつく。彼らの感覚と特殊な狩猟用装備の組み合わせにより、忌まわしき者たちは決定的な一撃で倒され、オーキッドはあなたの冷酷だが効率的な問題解決のために、真新しいカーネル兵器を与えてくれる。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true" req="unique_irwin">
+		<text>(アーウィン）雑草を追い詰める。</text>
+		<event>
+			<text>アーウィンはステーションに乗り込み、簡単に計画を思いつく。同じようにねじ曲がったクリーチャーとの過去の戦いの知識を駆使して、忌まわしきクリーチャーは速やかに始末され、オーキッドたちはあなたの冷酷だが効率的な問題解決のために、真新しいカーネル兵器を与えてくれる。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_WEAPONS_FIRE_NODAMAGE">
+		<text>(非ダメージ火器）雑草を祓う。</text>
+		<event>
+			<text>植物と火は相性の悪い組み合わせだ。オーキッドの職員は避難し、あなたはステーションを炎上させる。雑草が確実になくなると、ステーションは排気され、オーキッドはあなたの創造的な問題解決のために、真新しいカーネル兵器を与える。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_ANTIBIO_NODAMAGE">
+		<text>(非ダメージ・バイオ兵器）雑草をパージする。</text>
+		<event>
+			<text>あなたの武器がこの致命的な雑草に効かないわけがない。オーキッドの職員は避難し、あなたはステーションを砲撃する。雑草が確実になくなると、ステーションは排気され、オーキッドはあなたの創造的な問題解決のために、真新しいカーネル兵器をあなたに与える。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true" req="NANOBOT_DEFENSE_SYSTEM">
+		<text>(殺人ロボットが）雑草を粛清する。</text>
+		<event>
+			<text>殺人ロボットがステーションから生物を駆逐する。オーキッドの職員は避難し、あなたは致命的なナノボットをステーションに殺到させる。雑草が確実になくなると、ナノボットは呼び戻され、オーキッドはあなたの創造的な問題解決のために真新しいカーネル兵器を与える。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_GAS">
+		<text>(毒ガス）雑草をパージする。</text>
+		<event>
+			<text>シェルの有毒ガスは、ほとんどすべての有機物を素早く殺すことができる。オーキッドの職員は避難し、あなたはステーションに致死性のガスを流し込む。雑草が確実になくなると、ステーションは排気され、オーキッドはあなたの創造的な問題解決のために、真新しいカーネル兵器を与える。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true" req="shell_guardian">
+		<text>(シェルガーディアン・クルー）シェルガーディアンに雑草を処理してもらう。</text>
+		<event>
+			<text>硬い外見を持つあなたのシェルは、致命的な雑草をほとんど恐れない。雑草が取り除かれると、オーキッドの職員は素早く対処したあなたに新しいカーネル武器を与える。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true" req="DRONE_CONTROL_BOARDING_DAMAGE">
+		<text>(搭乗ドローン）ドローンを雑草処理に向かわせる。</text>
+		<event>
+			<text>あなたはステーションの横に停車し、エアロックからドローンを放つ。短時間のうちに大半の生物は死に、巻き添え被害はわずかだった。オーキッドの職員は心から感謝の意を表し、カーネルの武器を差し出す。</text>
+			<weapon name="GIFTLIST_KERNEL" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>パスする</text>
+		<event>
+			<text>すべてのステーションで致命的なエイリアンと戦うリスクは冒せない。ジャンプの準備をするのだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DISTRESS_ORCHID_WEEDS_BOARD">
+	<event>
+		<text>クルーがステーションに乗り込むと、巨大な食虫植物が手を伸ばして彼らを捕まえようとしていた。幸いなことに、植物は（他のほとんどの生物と同様に）レーザー光線には強くない。雑草を追い払うと、オーキッドはあなたに感謝する。</text>
+		<autoReward level="HIGH">stuff</autoReward>
+	</event>
+	<event>
+		<text>ステーションは不気味な静寂に包まれ、クルーは廊下を歩き回る。突然、巨大な触手と歯の生えた花びらが通気口から噴出し、クルーたちをさらって血まみれで引きずっていく。恐ろしくなったクルーはすぐに避難した。</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>あなたは希望を持ってクローン・ベイに向かったが、ほっとしたことに、失われたクルーのためにすでにクローンが用意されていた。</text>
+		</removeCrew>
+	</event>
+</eventList>
+
+<event name="DISTRESS_ORCHID_JUNGLE" unique="true">
+	<distressBeacon />
+	
+	<img back="BACK_EVENT_ORCHIDFOREST" planet="NONE" />
+	<text>遭難信号は、オーキッドの前哨基地がそう遠くない場所にある、驚くほど美しい森の惑星から発信されている。遭難している船は見当たらない。</text>
+	<choice hidden="true">
+		<text>調査する。</text>
+		<event>
+			<text>あなたは前哨基地周辺を見渡した。オーキッドと反乱軍の2隻の船から数マイル離れた場所に、破損した救難信号が設置されていた。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>反乱軍は前哨基地に戻ろうとしていたオーキッド船を人質に取ったようだ。オーキッド船の中継システムは修復不可能なほど損傷しており、反乱軍はオーキッド船を銃殺部隊のように並べている。"よし、最後の植物を確保した。今すぐ撃ち殺すか、それとも拠点に持ち帰って大々的に展示するか？"</text>
+					<choice hidden="true">
+						<text>こんなことは我慢できない。</text>
+						<event>
+							<text>武器を武装し、反乱軍の船に突撃する。将校たちは自衛のため、船に戻る。</text>
+							<ship load="SHIP_REBEL_ORCHID_JUNGLE" hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="weapons" lvl="5">
+						<text>(アップグレード武器) 反乱軍の船に直撃弾を撃ち込む。</text>
+						<event>
+							<text>反乱軍の船を機能不全に陥れるのに必要なのは、エンジンへの直撃弾一発だけだ。なすすべもなく、反乱軍は降伏し、船をあなたたちに託して森に散っていく。</text>
+							<autoReward level="MED">standard</autoReward>
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="DISTRESS_ORCHID_JUNGLE_GIFT" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="mind">
+						<text>(マインドコントロール）反乱軍を互いに敵対させる。</text>
+						<event>
+							<text>反乱軍の指揮官が振り向きざまに他の兵士の胸を一発撃ち抜く。混乱した反乱軍兵士たちは互いに銃撃戦を繰り広げ、最後の一人まで殺し合う。</text>
+							<autoReward level="HIGH">standard</autoReward>
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="DISTRESS_ORCHID_JUNGLE_GIFT" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>私たちにできることは何もない。</text>
+						<event>
+							<text>オーキッドを救うために、本来の任務を危険にさらすことはできない。罪悪感はあるが、とにかく自分はこの犯罪に無関係だとわかっている。</text>
+							<choice>
+								<text>船内で何かをする。</text>
+								<event load="STORAGE_CHECK" />
+							</choice>
+							<choice>
+								<text>何もしない。</text>
+								<event />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>まあ、行こう。</text>
+		<event>
+			<text>彼らが誰であろうと、おそらくすでに助けを得ている。ここにいる必要はない</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DISTRESS_ORCHID_JUNGLE_GIFT">
+	<event>
+		<text>オーキッドたちはあなたの援助に感謝している。ほとんどの者は前哨基地に戻ることを申し出たが、1人はあなたの船に残り、将来反乱軍から守ってくれることを期待している。</text>
+		<crewMember amount="1" class="orchid" />
+	</event>
+	<event>
+		<text>オーキッドは傷ついた船からカーネル兵器の1つをあなたに渡す。</text>
+		<weapon name="GIFTLIST_KERNEL" />
+	</event>
+</eventList>
+
+<event name="DISTRESS_ORCHID_ROCK_CRASH" unique="true">
+	<distressBeacon />
+	<img planet="PLANET_UNPOPULATED_TERRA" />
+	<text>近くの惑星にはロック船の墜落現場があり、激しく損傷していたが、救難ビーコンはまだ機能していた。</text>
+	<choice hidden="true">
+		<text>生存者の救助を試みる。</text>
+		<event load="DISTRESS_ORCHID_ROCK_CRASH_SAVE" />
+	</choice>
+	<choice hidden="true">
+		<text>難破船を無視する。</text>
+		<event>
+			<text>あなたはロックマンを助けることに関心がない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DISTRESS_ORCHID_ROCK_CRASH_SAVE">
+	<event>
+		<text>驚いたことに、クルーはロックの追放者だった！彼らの説明によると、追放された後、ロック母星から逃げ出し、オーキッドの領土に歓迎されると思っていた...しかし、狂った寄生虫にまみれたオーキッドの一団が彼らの船を攻撃し、ほとんど破壊してしまった！</text>
+		<crewMember amount="1" class="rock_outcast" />
+	</event>
+	<event>
+		<text>ロックシップのドアをこじ開けると、そこにはコケだらけのロックマンの惨殺死体と、怒り狂った寄生虫だらけのオーキッドが何匹もいた！</text>
+		<boarders min="2" max="3" class="orchid" />
+	</event>
+</eventList>
+
+<event name="DISTRESS_ORCHID_EMPTY_SHIP" unique="true">
+	<distressBeacon />
+	<ship load="SHIP_ORCHID_GENERIC" hostile="false" />
+	<text>一般的な恒星間航路から遠く離れて漂流しているオーキッド船から救難信号が届いている。通信を試みるが応答がない。</text>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+		<text>乗船。</text>
+		<event load="DISTRESS_ORCHID_EMPTY_SHIP_LIST" />
+	</choice>
+	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+		<text>その船に乗り込むために送り込む人はいない。</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice hidden="true" req="sensors" lvl="3">
+		<text>(アドバンスセンサー) 最初に船のセキュリティログを取得しろ。</text>
+		<event load="DISTRESS_ORCHID_EMPTY_SHIP_LIST_ANALYZER" />
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>船と通信する必要はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="DISTRESS_ORCHID_EMPTY_SHIP_LIST">
+	<event>
+		<text>船に乗り込むと、爆発とそれに伴う大火災の後があった。事故の原因は推測するしかない。ほとんどの設備は黒焦げになり、生きている者はいないが、それでも役に立つスクラップや資源を見つけることができた。</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>船で生きているのは脱水症状のオーキッドだけだ。船は水不足になり、生命維持装置が故障したのだ。灌漑の後、回復力のあるオーキッドは若返り、完全な意識を取り戻す。</text>
+		<crewMember amount="1" class="orchid" />
+	</event>
+	<event>
+		<text>搭乗チームは生存者を探すために船内に向かう。しばらくして、乗組員が制御不能の激怒に陥る。彼らはできるだけ早く船に戻されたが、乗組員の1人は強い影響を受け、船に戻った途端に発狂してしまった。</text>
+		<choice hidden="true" req="LIST_CREW_ORCHID">
+			<text>(オーキッド・クルー）オーキッドに狂人を鎮めさせよう。</text>
+			<event>
+				<text>オーキッドが鎮静効果のある花粉を散布すると、狂人は徐々に正気を取り戻す。チーム全員が安堵のため息をつく。</text>
+			</event>
+		</choice>
+		<choice hidden="true" req="BLUELIST_PHEROMONES">
+			<text>(カマキリのフェロモン）狂人をフェロモンで治療する。</text>
+			<event>
+				<text>新鮮なフェロモンがクルーの体内に入ると、すぐに元気になる。</text>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text id="continue" />
+			<event>
+				<text>かわいそうなやつを殺すしかない。</text>
+				<crewMember amount="-1" class="traitor" />
+			</event>
+		</choice>
+	</event>
+</eventList>
+<eventList name="DISTRESS_ORCHID_EMPTY_SHIP_LIST_ANALYZER">
+	<event>
+		<text>監視カメラの映像には、爆発とそれに起因する大火災の余波が映っている。事故の原因は推測するしかない。ほとんどの設備は黒焦げになり、誰も生きていないが、それでも役に立つスクラップや資源を見つけることができた。</text>
+		<autoReward level="MED">standard</autoReward>
+	</event>
+	<event>
+		<text>船で生きているのは脱水症状のオーキッドだけだ。船は水不足になり、生命維持装置が故障したのだ。灌漑の後、回復力のあるオーキッドは若返り、完全な意識を取り戻す。</text>
+		<crewMember amount="1" class="orchid" />
+	</event>
+</eventList>
+
+<event name="DISTRESS_ORCHID_COLONY_FIRE" unique="true">
+	<distressBeacon />
+	<text>ビーコンに近い惑星の地表から救難信号が届いている。山火事が小さなオーキッドのコロニーに向かって広がっている。</text>
+	<choice hidden="true">
+		<text>できるだけ多くの市民を避難させる。</text>
+		<event>
+			<text>オーキッド星の生態系は火災にとても弱く、あなたのクルー全員でもオーキッドのコロニーを救うには間に合わない。あなたは、より丈夫な個体を助けることに成功したが、オーキッドの種子と赤ん坊のほとんどは火災で失われた。</text>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>今回の件は、我々には関係ない。</text>
+		<event>
+			<text>あなたにできることは何もない。クルーは動揺しているが、あなたはジャンプの準備をする。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="FIRE_EXTINGUISHERS">
+		<text>(火災鎮圧）コロニーを救うためにオーグメンテーションを使う。</text>
+		<event>
+			<text>火災抑制システムはあなたの船からコロニーに配備され、生きているオーキッズが全員避難する間、要所要所の山火事を抑えるのに大いに役立つ。あるオーキッズはあなたのパフォーマンスに感激し、クルーに加わりたいと申し出る。</text>
+			<crewMember amount="1" class="orchid" />
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_PHEROMONES">
+		<text>(カマキリのフェロモン）オーグメンテーションを使って避難を早める。</text>
+		<event>
+			<text>フェロモンの影響を受け、あなたのクルーとオーキッドの民間人は、誰も置き去りにすることなく、より速く移動する。コロニーが避難した後、オーキッドの一人があなたのパフォーマンスに感激し、あなたのクルーに加わりたいと申し出る。</text>
+			<crewMember amount="1" class="orchid" />
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_CRYSTAL">
+		<text>(クリスタル・クルー）山火事の延焼を阻止して時間を稼ぐ。</text>
+		<event>
+			<text>クルーはほんの数秒で巨大な結晶の壁を築き、数分後には防御バリアが炎を制限する。炎の勢いは弱まり、コロニーの全員が安全な場所まで逃げることができた。オーキッドの一人があなたのパフォーマンスに感激し、クルーに加わりたいと言ってきた。</text>
+			<crewMember amount="1" class="orchid" />
+		</event>
+	</choice>
+	<choice hidden="true" req="BOMB_LOCK">
+		<text>(ロックダウン・ボム) 野火の拡散をブロックして時間を稼ぐ。</text>
+		<event>
+			<text>爆弾は巨大な結晶壁をわずか数秒で構築するために使われる。炎の勢いは弱まり、コロニー全員はなんとか安全な場所まで逃げることができた。オーキッドの一人があなたのパフォーマンスに感激し、乗組員に加わりたいと申し出る。</text>
+			<crewMember amount="1" class="orchid" />
+			<item_modify>
+				<item max="-2" min="-2" type="missiles" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="DRONE_SPEED">
+		<text>(Drone Reactor Booster） 優れたドローンを投入する。[-2ドローン]</text>
+		<event>
+			<text>搭載されたドローンは再プログラムされ、助けに使われる。種や赤ん坊、貴重品を運び、火を消し、最後には窮地を救う。オーキッドの一人があなたのパフォーマンスに感激し、乗組員に加わりたいと申し出る。</text>
+			<crewMember amount="1" class="orchid" />
+			<item_modify>
+				<item max="-2" min="-2" type="drones" />
+			</item_modify>
+		</event>
+	</choice>
+</event>
+
+
+<eventList name="QUESTS_ORCHID">
+	<event load="ORCHID_ZOLTAN_QUEST_START" />
+</eventList>
+
+<event name="ORCHID_ZOLTAN_QUEST_START" unique="true">
+	<text>非武装のゾルタン船が出迎えてくれる。"我々の船はオーキッド星への外交任務についている。我々の到着を告げるため、近隣のオーキッドコロニーにささやかな贈り物をしたい。"</text>
+	<choice hidden="true">
+		<text>贈り物を届けることに同意する。</text>
+		<event>
+			<text>ゾルタン一家がオーキッドに贈り物の入った箱を届ける。その箱の中には、光と熱を放ちながら高速振動する、変わった形のゾルタンの宇宙船のレプリカが入っている。高品質の金属で作られており、見た目も美しい。</text>
+			<autoReward level="LOW">standard</autoReward>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>プレゼントを受け取ると、ゾルタンは目的地の座標を転送する。</text>
+					<quest event="ORCHID_ZOLTAN_QUEST_FINISH" />
+				</event>
+			</choice>
+			<choice hidden="true" req="sensors" lvl="3">
+				<text>(アドバンスセンサー) デバイスをスキャンします。</text>
+				<event>
+					<text>あなたはその装置を点検し、それが実はダスクブリンガーが作った偽装爆弾であることをすぐに発見する！これは罠だった！爆弾は、反乱軍の策略であることを明らかにするメッセージを展開するようにセットされていたようだ。ダスクブリンガーと反乱軍の複雑な連携プレーが、あなたの任務を妨害したに違いない。</text>
+					<choice hidden="true">
+						<text>ゾルタンに立ち向かえ</text>
+						<event>
+							<text>非武装の船が、あなたが彼らの罠にはまっていないと気づくや否や、護衛のダスクブリンガーが姿を現し、攻撃を仕掛けてくる！</text>
+							<ship load="SHIP_DUSK_FIGHT" hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>爆弾を解体して立ち去る。</text>
+						<event>
+							<autoReward level="MED">missiles</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_DUSK">
+				<text>(ダスクブリンガー・クルー) あなたのダスクブリンガーは、この装置が何か変だと気づいている...。</text>
+				<event>
+					<text>あなたのダスクブリンガーは装置を検査し、それが実は偽装爆弾であることをすぐに発見する！これは罠だった！爆弾は、反乱軍の策略であることを示すメッセージを展開するようにセットされていたようだ。ダスクブリンガーと反乱軍の複雑な連携プレーが、あなたの任務を妨害したに違いない。</text>
+					<choice hidden="true">
+						<text>ゾルタンに立ち向かえ</text>
+						<event>
+							<text>非武装の船が、あなたが彼らの罠にはまっていないと気づくや否や、護衛のダスクブリンガーが姿を現し、攻撃を仕掛けてくる！</text>
+							<ship load="SHIP_DUSK_FIGHT" hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>爆弾を解体して立ち去る。</text>
+						<event>
+							<autoReward level="MED">missiles</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>衰退。</text>
+		<event>
+			<text>外交使節団のために時間を割いている暇はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ORCHID_ZOLTAN_QUEST_FINISH">
+	<beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>ゾルタンから、ギャザリングの集落に贈り物を届けてほしいと頼まれた。</unvisitedTooltip>
+	</beaconType>
+	<text>オーキッドの集落に到着。彼らはあなたを歓迎する。</text>
+	<choice hidden="true">
+		<text>彫刻を届ける。</text>
+		<event load="ORCHID_ZOLTAN_QUEST_FINISH_DELIVER" />
+	</choice>
+	<choice hidden="true">
+		<text>彫刻は自分のために取っておく。</text>
+		<event>
+			<text>オーキッドには彫刻のことは言わない。あなたは彼らと『蔓』を揺すって立ち去る。この彫刻はちょっとしたスクラップで売れるだろう。</text>
+			<autoReward level="LOW">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="ORCHID_KIDS">
+		<text>(オーキッド・チルドレン）彼らに死体を渡せ。</text>
+		<event>
+			<text>あなたは死んだ子供たちをオーキッズの足元に投げつけた。彼らはしばらく瞬きもせずにあなたを見つめていたが、やがて悲鳴を上げ始めた。あなたは船に駆け戻り、彼らの最強の船を追う。</text>
+			<remove name="ORCHID_KIDS" />
+			<ship load="SHIP_ORCHID_ELITE_FIGHT" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ORCHID_ZOLTAN_QUEST_FINISH_DELIVER">
+	<event>
+		<text>あなたはゾルタン船の彫刻を手渡す。オーキッド族はそれに魅了され、あなたに感謝する。贈り物はゾルタン人からのものだったが、オーキッズはあなたを信用し、大量のスクラップと弾薬を提供したようだ。</text>
+		<autoReward level="HIGH">missiles</autoReward>
+	</event>
+	<event>
+		<text>あなたはゾルタン船の彫刻を手渡す。オーキッド族はそれに魅了され、あなたに感謝する。贈り物はゾルタン人からのものだったが、オーキッズはあなたを信用し、大量のスクラップと弾薬を提供したようだ。</text>
+		<autoReward level="HIGH">missiles</autoReward>
+	</event>
+	<event>
+		<text>像を手渡すと、像が激しく振動し始める。連邦側についたことを後悔することになるぞ、薄汚い雑草フリークども！反乱軍に栄光あれ！」、そしてすぐに爆発する！オーキッドの入植地は壊滅し、あなたの船もダメージを受けるが、最悪の事態ではない。オーキッドはあなたを非難し、残っていた船の1隻を攻撃させる！</text>
+		<damage amount="3" />
+		<ship load="SHIP_ORCHID_FIGHT" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>像を手渡すと、像が激しく振動し始める。不潔な雑草フリーク！これは反乱軍が仕掛けた罠だ！死ぬ準備をしろ！」そしてすぐに爆発する！オーキッドの入植地は壊滅し、あなたの船も多少のダメージを受けるが、最悪の事態ではない。オーキッドはあなたを非難し、残っていた船の1隻を攻撃させる！</text>
+		<damage amount="3" />
+		<ship load="SHIP_ORCHID_FIGHT" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+
+
+<eventList name="HOSTILE_ORCHID">
+	<event load="ENCOUNTER_VAMPWEED" />
+	
+	<event load="ENCOUNTER_PIRATE_ORCHID" />
+	<event load="ENCOUNTER_ROCK_ORCHID" />
+	<event load="ENCOUNTER_REBEL_ORCHID" />
+	
+	<event load="ORCHID_PIRATE_FRIENDLY_ASB" />
+	<event load="ORCHID_CAPTURED_REBEL" />
+	<event load="ORCHID_SUZERAIN_VETERAN" />
+</eventList>
+
+<event name="ENCOUNTER_PIRATE_ORCHID" unique="true">
+	<text load="TEXT_ENCOUNTER_PIRATE_ORCHID" />
+	<ship hostile="true" load="SHIP_PIRATE_ALL" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_PIRATE_ORCHID">
+	<text>ギャザリングは近年、内部の警備を強化しているが、それでも海賊は常に隙を突いて侵入してくる。戦いに備えよ！</text>
+	<text>ギャザリング・セクターは、裕福なゾルタンやロックの商人たちのホットスポットとして知られている。もちろん、そのような豊富な富は、大金を漁ろうとする海賊の群れのハニーポットとなっている。</text>
+	<text>「船長、私は海賊ではありません。俺は自由市場の戦士だ！"海賊の船長がにっこり微笑む。"ただ...とてもとても自由な市場だ。この花共産主義者どもは？奴らは金の動きについて何一つ知らない！私は彼らを一掃することで、あなた方の好意に応えている。残念ながら、君は邪魔なんだ。お前には手を出すな」。</text>
+	<text planet="PLANET_POPULATED">窓の外に広がるオーキッドの惑星を眺めていると、どこからともなく海賊が飛び込んできた。衝突は避けられないようだ。</text>
+	<text>「この植物にはうんざりだ！つまらない！楽しい時間を求めて酒場に行っても、僧侶たちが手招きしているだけだ！気が狂いそうだ！人を殺せるほど気が狂いそうだ！"海賊はあなたが近くにいることに気づき、まばたきをした。"おい...殺す相手といえば！"</text>
+</textList>
+
+<event name="ENCOUNTER_ROCK_ORCHID" unique="true">
+	<text load="TEXT_ENCOUNTER_ROCK_ORCHID" />
+	<ship hostile="true" load="SHIP_ROCK_FIGHT" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_ROCK_ORCHID">
+	<text>セオクラシーは、クリソリックの信仰を受け入れてくれる国なら、どんな国とも同盟を結ぶ。ギャザリングはこの信仰に非常に好意的だが、残念なことに、あなた方にあまり好意的でない神政国の船が、この国への道を見つけ続けている！</text>
+	<text>"レネゲイドよ、お前は信仰を知らない！周りを見よ、シリコンとリーフの聖なる同盟を目撃せよ！連邦が崩壊しても、ギャザリングはお前の死を嘆くことはない！私の十字軍の力の前に震えろ！この地からお前たちの悪を打ち倒すのだ！"</text>
+	<text>フローラル人とセオクラシーとの最初の接触は何世紀も前に起こったが、それはギャザリングの恒星間植民プロジェクトの始まりだった。それ以来、フローラルとセオクラシーの関係は非常に強固なものとなっている。おそらく、あなたに向かって突進してくる怒り心頭のロック船の船体と同じくらいに。</text>
+	<text>フローラル産のビールと、おそらくは麻薬で酔っ払っているのか、うわごとのようにしゃべるロックの船長が、あなたに向かって侮辱的な言葉を叫び始め、武器を振り上げて攻撃してくる！</text>
+</textList>
+
+<event name="ENCOUNTER_REBEL_ORCHID" unique="true">
+	<text load="TEXT_ENCOUNTER_REBEL_ORCHID" />
+	<ship hostile="true" load="SHIP_REBEL_FIGHT" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_REBEL_ORCHID">
+	<text>反乱軍の船が用心深く近づいてくる。"この区域は反乱軍のものであり 今までもそうだった連邦は劣等種族の領有権を尊重しろ さもなくば内戦の時のように お前を全滅させる！"</text>
+	<text>"私がオーキッズの好きなところを知っているか、キャプテン？"反乱軍の大尉が葉巻の匂いを嗅ぎ、顔をしかめた。「殺すときに悲鳴を上げない。私の部下には、懇願する民間人の家族の声が聞こえているときに、それを撃ち殺すような気概はないことを知っているからだ。一方、お前は...いくら懇願しても、お前の血で壁を真っ赤に染めることは止められない。"</text>
+	<text>「反乱軍に栄光あれ！共産主義者の花々を擁護するという選択は、銀河の繁栄を代表するという主張を裏切るものだ！ここに繁栄などない！"反乱軍の武器が船体にロックオンされ、衝突は避けられなくなる。</text>
+	<text>反乱軍の船は、普段は非暴力的なフローラル族を利用するために送り込まれたと思われるが、あなたが連邦に雇われたレネゲイドであることを突き止め、発砲してきた！身を守るしかない。</text>
+</textList>
+
+<event name="ORCHID_PIRATE_FRIENDLY_ASB" unique="true">
+	<img back="BACKGROUND" planet="PLANET_POPULATED" />
+	<text>オーキッド星の背後から、幾多の戦いで疲弊した海賊船がこちらに向かってくる。近くの惑星にはASBシステムが設置されているようで、救難信号を出せば利用できるかもしれない！</text>
+	<ship hostile="true" load="SHIP_PIRATE_ALL" />
+	<choice hidden="true">
+		<text>海賊と単独で交戦する。</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+	<choice blue="false" req="rep_comb_orchid" lvl="-999" max_lvl="1">
+		<text>助けを求める。</text>
+		<event>
+			<text>あなたが救難信号を送ると、惑星に駐留するギャザリング軍が即座に反応し、対艦砲台で海賊を標的にする。</text>
+			<environment target="enemy" type="PDS" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice blue="false" req="rep_comb_orchid" lvl="2">
+		<text>助けを求める。</text>
+		<event>
+			<text>あなたは救難信号を送る。惑星に駐留しているギャザリング軍の部隊は、少し遅れて応答する。残念なことに、彼らはあなたの犯罪に気づいていない。</text>
+			<environment target="both" type="PDS" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ORCHID_CAPTURED_REBEL" unique="true">
+	<text>オーキッド船の乗組員が人間の言葉で話すのを聞いて驚く：「降伏しろ。近隣の世界はすべて反乱軍に支配されている。抵抗は無駄だ」。船の不穏な動きからすると、反乱軍は最近この船を掌握したばかりで、まだ操縦に慣れていないようだ。にもかかわらず、彼らはあなたをロックオンして攻撃してくる！</text>
+	<status type="limit" target="enemy" system="pilot" amount="1" />
+	<status type="limit" target="enemy" system="engines" amount="1" />
+	<ship hostile="true" load="SHIP_ORCHID_CAPTURED_REBEL" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ORCHID_SUZERAIN_VETERAN" unique="true">
+	<text>古代の傷跡が甲羅に刻まれたマンティス・スズランが、モニター越しにこちらを睨んでいる。「連邦とマンティスの戦争は終わらなかった。私は条約を認めない...それでも今日まで、私は栄光の10年の最後の砦として、我々の仕事を続ける。この銀河のクズどもを一人残らず殲滅する。花は弱い。だが、お前は...きっともっと弱い。"</text>
+	<ship hostile="true" load="SHIP_SUZERAIN_FIGHT" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+
+<event name="CARETAKER_PRAETOR_ARGUMENT" unique="true">
+    <distressBeacon />
+    <text>ビーコンに到着したときには、すでにプレトールが救難信号に応答していたようだ。発信元は茶色の小型シャトルで、彼らは何かを話し合っているようだ。</text>
+    <choice>
+        <text>救難信号に対応する。</text>
+        <event>
+            <text>"連邦の船が助けてくれるレネゲイドいいタイミングで来たな。プレトリアンは重大な過ちを犯している、それを解決しようとしているのは、Rt'lak Et の管理人たちだけだ！」
+
+ 不機嫌になるプレトリア。"何が行われているのか支持するつもりはない。しかし、法務官たちは忙しい。最近の国境に対するキャンペーンでは、内紛を起こす余裕はない。資源がないのです」。</text>
+            <choice>
+                <text>どうしたんだ？</text>
+                <event>
+                    <text>管理人が身を乗り出す。"ギャザリング "はRt'lak Etの多くの原住民を強制移住させようとしている。あなたは私たちがギャザリングに訴えるのを手伝う必要がある。他のフローラルは誰も助けてくれない。"</text>
+                    <choice>
+						<text>なぜプレトールは助けてくれないのか？</text>
+						<event load="CARETAKER_CHAT" />
+					</choice>
+					<choice>
+                        <text>ルトラック・エトとは一体？</text>
+                        <event>
+                            <text>管理人はため息をつく。「カダヘルの分裂は、神政が私たちを高揚させた後に始まった。そのおかげで私たちCtl'YaeはRt'lak Etを見つけるまで探検することができた。先進的な植物にとって、これほど緑豊かで完璧な環境は既知の銀河系のどこにも存在しない。我々には多くのガーデンワールドがあるが、Rt'lak Etは特別だ。我々の人々はそこで最高の船や武器を育て、製造している。しかし、政府は兵器生産を強化するという名目で、弱い気候では生き残れない多くの種族を異世界に移住させることを決定した。長期的な生態系への影響は深刻だ。</text>
+                            <choice>
+                                <text>なぜプレトールは助けてくれないのか？</text>
+                                <event name="CARETAKER_CHAT">
+                                    <text>プレトールは首を横に振る。「ダスクブリンガーは、我々のガーデンワールドを焼き払うことで、連邦を弱体化させることができると考えている。大半の戦力は戦線を維持するために転用されたため、彼らの作戦は失敗に終わった。実のところ、我々の生産農場が脅威にさらされている限り、ギャザリングはより強力な軍事化を推し進めるだろう。残念なことに、彼らのうちの1隻が我々の領土に侵入してきた。これ以上、船を前線からそらすことはできない。私たちにできるのは、核となる世界を守り、大きな被害が出ないことを祈ることだけだ」。</text>
+                                    <choice>
+                                        <text>どうすればいいのか？</text>
+                                        <event>
+                                            <text>プレトールは葉を握り締める。「Kat'ar Lekのリスニング・ポストが暗礁に乗り上げた。プレトールが常駐していたが、応答がない。今はもう1隻を派遣する余力はないし、彼らは他のほとんどのフローラル艦を破壊できる。もしあなたが彼らを倒すことができれば、彼らは我々の領土における唯一の足がかりを失い、我々は彼らが手を引かざるを得なくなると信じている。そうなれば、我が政府を説得して、あなた方の艦隊に船を提供することもできる」
+
+管理人は付け加える。「私たちを助けたいのであれば、最初の移転輸送船が目的地に向かっています。私は座標を送信できるので、彼らを迎え撃つことができる。彼らを説得するか......あるいは、少し攻撃的になる必要があるかもしれません"</text>
+                                            <choice hidden="true">
+                                                <text>プレトールへの助力を申し出る</text>
+                                                <event>
+                                                    <text>「それは救いだ。侵略者を退けてくれれば、緊張も和らぐだろう。そして、これ以上の危害は私が食い止めると約束しよう。我々は待っている"</text>
+                                                    <quest event="GARDEN_INVASION_QUEST" />
+                                                </event>
+                                            </choice>
+                                            <choice hidden="true">
+                                                <text>管理人の手伝いを申し出る。</text>
+                                                <event>
+                                                    <text>「素晴らしい！希望を失いかけていました。私も後に続く。もし解決できるのであれば、私にできることを提供します」。管理人は問題の船の方角を地図に示す。</text>
+                                                    <quest event="ORCHID_RELOCATION_QUEST" />
+                                                </event>
+                                            </choice>
+                                            <choice hidden="true">
+                                                <text>両方助けると言ってくれ。</text>
+                                                <event>
+                                                    <text>「わあ、本当ですか？それは...予想外です"プレトールはまばたきする。「これが前哨基地の座標だ。</text>
+                                                    <quest event="GARDEN_INVASION_QUEST" />
+                                                    <choice>
+                                                        <text>次へ...</text>
+                                                        <event>
+                                                            <text>"私は、あなたが自分を引き延ばしているのではないかと心配しています"管理人は首を横に振る。「これが輸送の場所だ。ありがとうございます"</text>
+                                                            <quest event="ORCHID_RELOCATION_QUEST" />
+                                                        </event>
+                                                    </choice>
+                                                </event>
+                                            </choice>
+                                            <choice hidden="true">
+                                                <text>私たちにも手伝う時間はない。</text>
+                                                <event>
+                                                    <text>オーキッドは2人とも困ったような声を出す。"助けるつもりがないなら、なぜ巻き込まれたんだ？""時間の無駄だ"</text>
+                                                </event>
+                                            </choice>
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>2隻の船は無視してください。</text>
+        <event>
+            <text>オーキッド同士で解決できるだろう。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<ship name="SHIP_ORCHID_NEW_ORDER" auto_blueprint="MU_DUSK_BATTLESHIP_ELITE">
+    <destroyed load="ORCHID_INVASION_WIN" />
+    <deadCrew load="ORCHID_INVASION_WIN" />
+	<crew>
+		<crewMember type="zoltan_devotee" prop="0.6" />
+		<crewMember type="zoltan_martyr" prop="0.4" />
+	</crew>
+</ship>
+<event name="GARDEN_INVASION_QUEST">
+    <preventQuest />
+    <preventFleet />
+    <quest>
+        <nebulaBeacon>false</nebulaBeacon>
+        <aggressive>2</aggressive>
+    </quest>
+    <beaconType id="map_icon_invasion" global="true">
+        <color r="95" g="103" b="45" a="1.0" />
+        <unvisitedTooltip>プレトールから強力な船の追跡を命じられた。</unvisitedTooltip>
+    </beaconType>
+    <text>到着すると、甚大な被害を受けた受信基地と、破壊され廃墟と化したフローラル艦が数隻あった。ダスクブリンガーの船長が、あなたを嘲笑うメッセージを送ってきた。「連邦は君たちを送り込むために必死なのだろう。我々の正義の栄光のために、この恐ろしい世界を燃やしてやる！"</text>
+    <ship load="SHIP_ORCHID_NEW_ORDER" hostile="true" />
+    <choice>
+        <text>ダスクブリンガーと交戦。</text>
+        <event load="COMBAT_CHECK" />
+    </choice>
+</event>
+<event name="ORCHID_INVASION_WIN">
+    <text>手ごわいニュー・オーダーの船が倒れ、あなたたちの勝利が残される。ダスクブリンガーは最後の叫びを上げ、その体は無と化す。彼らの船は健全な資源を提供してくれる。</text>
+    <autoReward level="HIGH">standard_no_item</autoReward>
+    <choice req="LIFE_SCANNER">
+        <text>(生命体スキャナー）生存者をスキャンしろ。</text>
+        <event load="ORCHID_INVASION_LIFE_SCAN" />
+    </choice>
+    <choice req="sensors" lvl="2">
+        <text>(生存者をスキャンしろ。</text>
+        <event load="ORCHID_INVASION_LIFE_SCAN" />
+    </choice>
+    <choice req="LIST_CREW_SLUG">
+        <text>(生存者を探せ。</text>
+        <event load="ORCHID_INVASION_LIFE_SCAN" />
+    </choice>
+	<choice req="BLUELIST_CREW_SNAIL">
+        <text>(テレパシー・シェル) 生存者をスキャンしろ。</text>
+        <event load="ORCHID_INVASION_LIFE_SCAN" />
+    </choice>
+    <choice hidden="true">
+        <text>生存者を探す。</text>
+        <event>
+            <text>生存者がいないか全船を素早く見渡すが、見つかるのは死体ばかり。残骸からできる限りのものを集める。</text>
+            <autoReward level="MED">standard</autoReward>
+            <choice>
+                <text>プラエトールに連絡する。</text>
+                <event load="ORCHID_INVASION_CONTACT_PRAETORS" />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="ORCHID_INVASION_LIFE_SCAN">
+    <text>あなたは、廃船で生き残った生命体を発見することができた-爆発でひどい傷を負った瀕死のプレトールだ。長くはもたないだろう。</text>
+    <choice req="medbay" lvl="2">
+        <text>(Upg.メドベイ)プレトールを手当てしろ。</text>
+        <event>
+            <text>あなたはプレトールを医療施設に急行させ、彼らの傷を癒す。話すのに十分なスタミナが回復すると、彼らはベッドの上に座る。</text>
+            <choice hidden="true">
+                <text>プレトールと状況を話し合う。</text>
+                <event load="ORCHID_INVASION_PRAETOR_SAVED" />
+            </choice>
+        </event>
+    </choice>
+    <choice req="clonebay" lvl="2">
+        <text>(アップグレード クローン・ベイ) プレトールをクローン・ベイに登録。</text>
+        <event>
+            <text>あなたはプレトールをクローン・ベイに急行させた。システムが彼らの生物学的パターンをスキャンすると同時に、彼らは息絶える。しばらくの後、プレトールは何が起こったか理解する前に混乱してクローンベイを出る。</text>
+            <choice hidden="true">
+                <text>プレトールと状況を話し合う。</text>
+                <event load="ORCHID_INVASION_PRAETOR_SAVED" />
+            </choice>
+        </event>
+    </choice>
+    <choice req="LIST_CREW_MEDICAL">
+        <text>(医療班)プレトールを手当てしろ。</text>
+        <event>
+            <text>あなたは医療クルーを送り込み、その場で瀕死のプレトールを手当てし、命を救うことに成功した。あなたの医療クルーはプレトールと共に帰還する。</text>
+            <choice hidden="true">
+                <text>プレトールと状況を話し合う。</text>
+                <event load="ORCHID_INVASION_PRAETOR_SAVED" />
+            </choice>
+        </event>
+    </choice>
+    <choice req="DRONE_CONTROL_MEDICAL">
+        <text>(医療ドローン)プレトールを手当てしろ。</text>
+        <event>
+            <text>あなたは医療ドローンを送り込む。ドローンはその場でプレイターを手当てし、命を救うことに成功した。あなたはプラエトルにシャトルを送り、あなたの船に向かわせる。</text>
+            <choice hidden="true">
+                <text>プレトールと状況を話し合う。</text>
+                <event load="ORCHID_INVASION_PRAETOR_SAVED" />
+            </choice>
+        </event>
+    </choice>
+    <choice req="BOMB_HEAL">
+        <text>(ヒールボム)プレトールを癒す。</text>
+        <event>
+            <text>あなたの医療用爆弾が爆発し、部屋をヒーリング・ナナイトで満たし、爆発のダメージをすぐに回復させる。あなたはプレトールにシャトルを送り、あなたの船に向かわせる。</text>
+            <item_modify>
+                <item type="missiles" min="-1" max="-1" />
+            </item_modify>
+            <choice hidden="true">
+                <text>プレトールと状況を話し合う。</text>
+                <event load="ORCHID_INVASION_PRAETOR_SAVED" />
+            </choice>
+        </event>
+    </choice>
+    <choice req="RECON_AND_TELEPORT">
+        <text>(再建用テレポーター)プレトールを救出せよ。</text>
+        <event>
+            <text>プレトールがテレポーター・ルームに現れる。彼らは立ち上がり、何が起こったのか混乱する。しばらくの混乱の後、彼らはあなたに向き直る。</text>
+            <choice hidden="true">
+                <text>プレトールと状況を話し合う。</text>
+                <event load="ORCHID_INVASION_PRAETOR_SAVED" />
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>この蘭を救うためにできることは何もない。</text>
+        <event>
+            <text>残念ながら、オーキッドが通り過ぎるのをなすすべもなく見ているしかない。残骸からできるものを集める。</text>
+            <autoReward level="MED">standard</autoReward>
+            <choice>
+                <text>リスニング・ステーションを使ってオーキッズと連絡を取る。</text>
+                <event load="ORCHID_INVASION_CONTACT_PRAETORS" />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="ORCHID_INVASION_PRAETOR_SAVED"> 
+    <text>「私は...生きているありがとう、親切なレネゲイド。不意打ちを食らったもしよければ、やりたいことがあるんだ。長くはかからんプラエトールはシャトルでリスニング・ステーションに向かい、パッチを当てる。シャトルは起動し、ニュー・オーダーの船の長距離放送を始める。これを終えると、プレトールはくつろいだ。「とにかく、命を救ってくれてありがとう。この持ち場に隠してあるキャッシュを提供しよう"</text>
+    <autoReward level="MED">standard_no_item</autoReward>
+    <weapon name="GIFTLIST_KERNEL_ELITE" />
+    <choice>
+        <text>最前線のプレトールたちがあなたを歓迎している。</text>
+        <event>
+            <text>「よくやった、レネゲイド！兵士の1人まで助けてくれて 本当に感謝しているダスクブリンガーも長くは持ちこたえられないようだ。これで庭園の緊張が和らげばいいが。幸運を祈る"</text>
+            <variable name="loc_praetor_help" op="set" val="1" />
+            <unlockCustomShip silent="false">PLAYER_SHIP_ORCHID</unlockCustomShip>
+            <choice>
+                <text>救出したプレトールに同行するかどうか尋ねてくれ。</text>
+                <event>
+                    <text>プレトールがあなたの船に戻る。"命の恩人です、船長"</text>
+                    <crewMember amount="1" all_skills="1" class="orchid_praetor" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_REMOVE_ORCHID" />
+					</choice>
+                </event>
+            </choice>
+            <choice>
+                <text>前進だ。</text>
+                <event load="MORALITY_REMOVE_ORCHID" />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="ORCHID_INVASION_CONTACT_PRAETORS"> 
+    <text>あなたはステーションに接続された長距離通信リレーを使って、あなたの成功をプレトールたちに知らせる。「素晴らしい成果だ。運がよければ、彼らは何が起こったかを理解するだろう。足場がなくなった今、彼らは手を引くか、我々が利用できるミスを犯すだろう。約束通り、そちらの格納庫に船を送る"</text>
+    <variable name="loc_praetor_help" op="set" val="1" />
+    <unlockCustomShip silent="false">PLAYER_SHIP_ORCHID</unlockCustomShip>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="MORALITY_REMOVE_ORCHID" />
+	</choice>
+</event>
+
+<ship name="SHIP_ORCHID_NONSAPIENT_ESCORT" auto_blueprint="MU_ORCHID_FIGHTER">
+    <surrender chance="0.5" min="2" max="4">
+        <text>"やめろ！ 要求を述べれば、これで終わりにする！"</text>
+        <choice hidden="true">
+            <text>船を回してRt'lak Etに戻るよう説得してくれ。</text>
+            <event name="RELOCATION_SURRENDER">
+                <text>"あなたは...本当に情熱的ですね？あなたの言うとおりにしよう。支配者たちの考えを変えるよう説得できれば、もしかしたらそれが最善になるかもしれません"エスコートはため息をつく。"私はたぶん、この件で降格させられるでしょう..."</text>
+                <ship hostile="false" />
+                <autoReward level="RANDOM">stuff</autoReward>
+                <choice hidden="true">
+                    <text>シャトルが呼んでいる...</text>
+                    <event load="ORCHID_RELOCATION_CONTACT_SHUTTLE" />
+                </choice>
+            </event>
+        </choice>
+        <choice>
+            <text load="GENERIC_SURRENDER_CHOICE_NOMERCY" />
+            <event load="MORALITY_UPDATE_ORCHID" />
+        </choice>
+    </surrender>
+    <destroyed load="ORCHID_NONSAPIENT_RESCUE" />
+    <deadCrew load="ORCHID_NONSAPIENT_RESCUE" />
+</ship>
+<event name="ORCHID_RELOCATION_QUEST">
+    <preventQuest />
+    <preventFleet />
+    <quest>
+        <nebulaBeacon>false</nebulaBeacon>
+        <aggressive>2</aggressive>
+    </quest>
+    <beaconType id="map_icon_relocation" global="true">
+        <color r="95" g="103" b="45" a="1.0" />
+        <unvisitedTooltip>管理人が、ここに移設される植物を手伝ってほしいという。</unvisitedTooltip>
+    </beaconType>
+    <text>到着してすぐに、巨大なオーキッドの貨物船に気づく。よく見ると、その大部分を巨大な温室が占めている。この貨物船は、街全体分のオーキッドを運ぶことができるに違いない！その大きさにもかかわらず、護衛しているオーキッド・ファイターはたった一人。彼らはあなたを脅威とは思っていないようで、そのまま進み続ける。あなたに依頼をした管理人シャトルが、間もなくして飛び込んできた。</text>
+    <ship load="SHIP_ORCHID_NONSAPIENT_ESCORT" hostile="false" />
+    <choice hidden="false">
+        <text>船万歳。</text>
+        <event>
+            <text>エスコートが応答する。「連邦の友よ。何か問題でも？"</text>
+            <choice req="unique_tyerel">
+                <text>(タイ・エレル）船を引き返させなければならないと伝えろ。</text>
+                <event>
+                    <text>「タイ・エレル大使？このためにわざわざここまで来たのか？"
+
+"これが重要でないなら、あなたを止めない。私たちはこの生き物とともにRt'lak Etに戻らなければなりません。到着したら詳しく説明しよう」
+
+「本当にいいんですか？この貨物船は移動にも維持にも非常にお金がかかる...少しでも不安があるのなら、ここで待った方がいいのでは？"
+
+Ty E'Relは鼻で笑う。「愚かな質問だ。</text>
+                    <choice hidden="true">
+                        <text>シャトルが呼んでいる...</text>
+                        <event load="ORCHID_RELOCATION_CONTACT_SHUTTLE" />
+                    </choice>
+                </event>
+            </choice>
+            <choice req="unique_ivar">
+                <text>(アイバー）引き返すように説得するんだ。</text>
+                <event>
+                    <text>アイバーがコンソールを叩く。"おい、そこで何してるんだ？"
+
+
+"プレミア・アイバーか？"
+
+"お前はそこで間違いを犯している！私は連合国にいて、物事をもう少し楽しくしようとしている。お前、俺たちの元を去ったときと同じ間違いを犯している！今すぐこっちを向け！私は何人かに私の心を伝えるために持っている！」
+
+
+「しかし...Mr. Vampweed Premier, this ship is incredibly costly to move and maintain!ただ..."
+
+"余分な費用が発生するのであれば、私が援助します。私の言うとおりにしてください！"臆して、船は向きを変え始める。</text>
+                    <choice hidden="true">
+                        <text>シャトルが呼んでいる...</text>
+                        <event load="ORCHID_RELOCATION_CONTACT_SHUTTLE" />
+                    </choice>
+                </event>
+            </choice>
+            <choice req="rep_comb_orchid" lvl="-9999" max_lvl="-1">
+                <text>(前向きなオーキッドの評判）引き返すよう説得する。</text>
+                <event>
+                    <text>あなたは輸送する植物のために熱弁をふるう。"まあ......あなたはこの辺りでは高く評価されていますが......。しかし、この貨物船は移動にも維持にも非常にコストがかかる。首脳部の考えを変えるよう説得できるか？"あなたは、ベストを尽くすと約束する。彼らはそれを受け入れ、船を回してくれるようだ。</text>
+                    <choice hidden="true">
+                        <text>シャトルが呼んでいる...</text>
+                        <event load="ORCHID_RELOCATION_CONTACT_SHUTTLE" />
+                    </choice>
+                </event>
+            </choice>
+            <choice>
+                <text>引き返すよう主張する。</text>
+                <event>
+                    <text>あなたは彼らが輸送している植物を代表して熱弁をふるう。護衛が割って入る。「申し訳ありませんが、私たちには命令があります。あの管理人たち、特にメイエブの言うことを聞いていたのなら、もう忘れてください。自分たちのしていることは分かっている。</text>
+                    <choice hidden="true">
+                        <text>彼らが考えを改めるまで、放っておかないと伝えよう。</text>
+                        <event>
+                            <text>「身を引け、レネゲイド。エスカレートする必要はない。出て行ってもらう"</text>
+                            <choice>
+                                <text>拒否する。</text>
+                                <event>
+                                    <text>"こんなことはしたくなかったが、選択の余地はない！"オーキッド船は武器を温める。</text>
+                                    <ship hostile="true" />
+                                    <choice>
+                                        <text>次へ...</text>
+                                        <event load="COMBAT_CHECK" />
+                                    </choice>
+                                </event>
+                            </choice>
+                            <choice>
+                                <text>譲歩する。</text>
+                                <event>
+                                    <text>あなたは身を引く。船は結局、あなたに連絡することなく飛び去った。</text>
+                                    <instantEscape />
+                                    <choice hidden="true">
+                                        <text>シャトルが呼んでいる...</text>
+                                        <event>
+                                            <text>"本当にあれが精一杯だったのか...？"管理人はため息をつく。"もう少し後ろ姿を見せろというのは無理な注文だったようだ"</text>
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+            <choice>
+                <text>時間を無駄にしたことを謝る。</text>
+                <event>
+                    <text>あなたは謝る。オーキッドは明るく答える。「問題ありません。わかってもらえて嬉しいわ"</text>
+                    <choice hidden="true">
+                        <text>シャトルが呼んでいる...</text>
+                        <event>
+                            <text>"本当にあれが精一杯だったのか...？"管理人はため息をつく。"もう少し後ろ姿を見せろというのは無理な注文だったようだ"</text>
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="false">
+        <text>護衛を攻撃する。</text>
+        <event>
+            <text>エスコートはあなたの突然の攻撃に不意を突かれた。「この気違いめ！なぜ護衛隊を攻撃する？"</text>
+            <ship hostile="true" />
+            <choice>
+                <text>次へ...</text>
+                <event load="MORALITY_UPDATE_ORCHID_FIGHT" />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="ORCHID_RELOCATION_CONTACT_SHUTTLE">
+    <text>"まあ、なんとか約束は守ってくれた。私一人では無理だと思う...Rt'lak Etまで同行してくれないか？もしそうしてくれるなら、私はあなたの大義に身を捧げます。"管理人は約束通り報酬を渡す。</text>
+    <autoReward level="MED">standard</autoReward>
+    <choice>
+        <text>管理人と座標を受け入れる。</text>
+        <event>
+            <text>「後悔はさせないよ、レネゲイド。私はあなたに忠実に仕えます。さあ、Rt'lak Etへ急ごう！"</text>
+            <crewMember amount="1" repair="2" class="orchid_caretaker" />
+            <quest event="GARDEN_WORLD_CRUISER_QUEST" />
+        </event>
+    </choice>
+    <choice>
+        <text>申し訳ないが、もう十分だ。</text>
+        <event>
+            <text>「私たちのためにしてくれたことには感謝している。幸運を祈るよ、レネゲイド"</text>
+        </event>
+    </choice>
+</event>
+<event name="ORCHID_NONSAPIENT_RESCUE">
+    <text>護衛艦を撃破され、無力な貨物船はすぐにあなたに連絡した。クルーが護衛艦のサルベージを始めると、あなたは応えた。「降伏する！どうか、私たちは故郷に帰るコースを設定します。生かしてくれ！"</text>
+    <autoReward level="HIGH">standard</autoReward>
+    <choice hidden="true">
+        <text>シャトルが呼んでいる...</text>
+        <event load="ORCHID_RELOCATION_CONTACT_SHUTTLE" />
+    </choice>
+</event>
+
+<event name="GARDEN_WORLD_CRUISER_QUEST">
+    <preventQuest />
+    <preventFleet />
+    <quest>
+        <nebulaBeacon>false</nebulaBeacon>
+        <aggressive>2</aggressive>
+    </quest>
+    <beaconType id="map_icon_garden" global="true">
+        <color r="95" g="103" b="45" a="1.0" />
+		<unvisitedTooltip>ここがRt'lak Etの場所だ。</unvisitedTooltip>
+    </beaconType>
+    <text>あなたはオーキッド・ガーデンワールドの中で最も偉大な惑星、Rt'lak Etに近づいている。この惑星の異質なインフラストラクチャーは、銀河系で最も息をのむような、印象的なバイオテクノロジーを示している。管理人はあなたの任務に関係する正確な緯度と経度を送ってきた。近づくと、明らかに膠着状態だ。少数の管理人が巨大なオーキッド・エリートの船に立ち向かっている。近くには、この争いを監視するオーキッドのステーションもある。</text>
+    <img back="BACK_EVENT_GARDENS" planet="NONE" />
+	<ship load="SHIP_ORCHID_GARDENWORLD" hostile="false" />
+    <choice>
+        <text>オーキッド派閥間のコミュニケーションに近づき、同調する。</text>
+        <event>
+            <text>「その寄生虫があなたの心を蝕んでいるのでしょう。その寄生虫があなたの心を蝕んでいるのでしょう」
+「警戒論ではありません！地球から多くの種を除去し続ければ、不道徳であるだけでなく、生態系に長期的な害を及ぼしかねない。それに、プエルパを "寄生虫 "なんて呼ばないで。彼女は私の妹だ」
+「妹？それなのに、彼女の声を "聞く "ことができるのはあなただけです。あなたを『治療』のために送り出すべきかもしれません」
+
+"個人的な攻撃が終わったのなら、私の指摘に応えてくれてもいいのでは？"</text>
+			<choice>
+				<text>オーキッドに自己紹介</text>
+				<event>
+					<text>プレトール艦がそちらに向き直る。"これは Ctl'Yae の内政問題だ。連邦は干渉してはならない。"
+
+ 通信機から新しい声が聞こえる。「落ち着きたまえ、ブラルメブ准将。私はパエル参事官、この紛争を調停している。とはいえ、決定は下された。メイエブに身を引くよう説得しているだけだ。"</text>
+					<choice>
+						<text>メイエブの言うことを聞くように説得するんだ。</text>
+						<event>
+							<text>あなたは弁明を始めたが、そうこうしているうちに、あなたが妨害した貨物船の到着によって中断された
+
+ブラルメブは驚いた。「何だと？こんなに早く帰ってきたのか？どういうことだ？"彼はミュートし、あなたはしばらくの間、無線の沈黙に迎えられる。「レネゲイド、この件での君の協力には感謝するが、事態の打開を図ってほしい。まだ可能かどうかわからないが、できる限りのことをしてくれ"</text>
+							<choice>
+								<text>次へ...</text>
+								<event>
+									<text>大司教が怒った様子で声をかけてきた。「お節介なレネゲイドめ。このお節介なレネゲイドめ。お前がどれだけ権力を持とうが、誰を代表していようが関係ない。ギャザリングはもう、銀河の傍観者になって指図されるようなことはしない！"プレトール艦が武器を構える。難しい戦いになりそうだ。</text>
+									<ship hostile="true" />
+									<choice>
+										<text>次へ...</text>
+										<event load="COMBAT_CHECK" />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+        </event>
+    </choice>
+    <choice>
+        <text>慎重を期して手を引く。</text>
+        <event>
+            <text>遠くからこの惑星を眺める。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<ship name="SHIP_ORCHID_GARDENWORLD" auto_blueprint="MU_ORCHID_CRUISER">
+    <surrender min="5" max="6" load="ORCHID_GARDENWORLD_SURRENDER" />
+    <destroyed load="ORCHID_GARDENWORLD_DEFEAT" />
+    <deadCrew load="ORCHID_GARDENWORLD_DEFEAT" />
+	<crew>
+		<crewMember type="orchid" prop="0.6" />
+		<crewMember type="orchid_praetor" prop="0.4" />
+	</crew>
+</ship>
+<event name="ORCHID_GARDENWORLD_SURRENDER">
+    <text>オーキッド巡洋艦は敗北の危機に瀕している。彼らの決意は揺るがないが、最後の外交を試みるのもいいだろう。</text>
+    <choice hidden="true">
+        <text>外交的にケンカを終わらせようとする。</text>
+        <event>
+            <text>あなたが彼らに呼びかけると、船は一瞬、あなたとの戦いを止めた。ブラルメブ大司教はあきれているようだが、まだ怒っている。「私に命乞いしろというのか？私にひれ伏して、あなたのやり方を受け入れろというのか？"</text>
+            <ship hostile="false" />
+            <choice req="unique_ivar">
+                <text>(アイバー）今、誰を撃ったか教えてやれ。</text>
+                <event>
+                    <text>「おい、ルートヘッド！君は今、ヴァンプウィードのプレミアに発砲した！それがどういうことかわかってるのか？"
+
+ ブラルメブは居心地が悪そうだ。"まあ...私は...」
+
+ここにいる魅力的な権力者たちが、私と同じように平和を作るのが好きでラッキーだったわけだ！いいか、恒星間事件になる必要はないんだ。落ち着いて、自分のしこりを受け止めて、判断せずにこの素敵な管理人の話を聞くんだ、いいかい」
+
+ブラルメブはまだムッとしているが、今のところは落ち着いているようだ。</text>
+                    <choice hidden="true">
+                        <text>メイエブとカウンセラーに連絡を取る。</text>
+                        <event load="ORCHID_GARDENWORLD_MAYEB_WIN" />
+                    </choice>
+                </event>
+            </choice>
+            <choice req="unique_tyerel">
+                <text>(タイ・エレル）外交的地位を主張する。</text>
+                <event>
+                    <text>タイ・エレルは厳しい姿勢をとる。「あなた方は、オロバチェとカトルヤエの間の主要な外交使節を乗せた船に対して、いわれのない攻撃を行った。Kadahellian'ek条約にあるように、これはグレード1の犯罪であり、反逆罪とみなされる」
+
+Bralmebは不快そうだ。"無抵抗...？挑発...？"
+"
+"挑発 "が協定でどのように定義されているか、思い出してほしい。それとも読んでいないのか？あなたが芽を出す前に書かれたものだ。私は知っているはずだ、3番目に署名したのだから」
+
+ブラルメブは言いよどみ、黙り込む。彼は武器システムを解除する。</text>
+                    <choice hidden="true">
+                        <text>メイエブとカウンセラーに連絡を取る。</text>
+                        <event load="ORCHID_GARDENWORLD_MAYEB_WIN" />
+                    </choice>
+                </event>
+            </choice>
+            <choice req="unique_tully">
+                <text>(タリー）問題の根本を突き止める。</text>
+                <event>
+                    <text>「連邦艦隊のタリー提督だ。下がれ、繰り返す、下がれ"
+
+ 即座に応答するブラルメブ。"タリー...？なぜ我々の問題に首を突っ込む？"
+
+"あなたは、自分たちが銀河の舞台で適切に代表されていないと感じているから、軍事生産を強化していると言った。それは本当ですか？"ブラルメブはうなずく。タリーは続ける。「他の星系に惑星を求めたり、軍事援助を求めたりすることを、あなた方はしばしばためらいます。ではなぜ、あなた方は自国の宇宙でそのような思い切った手段に訴えるのですか」
+...それは私たちのやり方ではありません。私たちは依存的だと思われることを好みません。私たちは自給自足し、他の人たちを養っていきたいのです」
+
+「連盟は協力し合うものです。我々は、あなた方がより多くを求めることを奨励します。結局のところ、あなた方の国民はしばしば寛大なのです」
+
+ブラルメブは立ち止まり、それ以上何も言わずに引き下がる。</text>
+                    <choice hidden="true">
+                        <text>メイエブとカウンセラーに連絡を取る。</text>
+                        <event load="ORCHID_GARDENWORLD_MAYEB_WIN" />
+                    </choice>
+                </event>
+            </choice>
+            <choice>
+                <text>私たちが話す前に攻撃してきた。せめて話をさせてくれ。</text>
+                <event>
+                    <text>"構わないが、それでは何も変わらない。主張しなさい"</text>
+                    <choice>
+                        <text>科学に耳を傾ける。</text>
+                        <event>
+                            <text>「フン！私は科学者ではない。私は兵士であり、私たちが関連性を持ちたいのであれば、戦力を強化しなければならない。あなたは私を無知だと批判する。私の考えでは、無知なのはあなたの方だ！"</text>
+                            <choice req="loc_praetor_help" lvl="1" blue="false">
+                                <text>彼の立場を裏付ける科学者がいるかどうか、彼に尋ねてみてほしい。</text>
+                                <event>
+                                    <text>ブラルメブは不機嫌そうに言う。「私の意見に耳を貸さないのなら、この会話は終わりだ」。ブラルメブはしばらくあなたを見つめる。「あなたが私の同僚を助けてくれたという知らせを受けた。だから、この戦いを続ける必要はない。しかし、私の仲間はこれを必要としている。そう言って、彼はまた通信を切った。</text>
+                                    <event load="ORCHID_GARDENWORLD_UNEASY_RESOLUTION" />
+                                </event>
+                            </choice>
+                            <choice req="loc_praetor_help" lvl="0" max_lvl="0" blue="false">
+                                <text>彼の立場を裏付ける科学者がいるかどうか、彼に尋ねてみてほしい。</text>
+                                <event>
+                                    <text>「もうたくさんだ！理屈を聞こうとしない！"そう言って、また通信を切った。戦いに戻ったようだ。</text>
+                                    <ship hostile="true" />
+                                </event>
+                            </choice>
+                            <choice>
+                                <text>自国の軍隊に仕えていることを思い出してほしい。</text>
+                                <event>
+                                    <text>「そうだろうな。教えてくれ、反乱軍の船団から逃げまわっているのに、なぜ連邦を強くすることを断るんだ？その理屈はどこにある？"</text>
+                                    <choice req="loc_praetor_help" lvl="1" blue="false">
+                                        <text>今やっていることで、自分たちらしさを損なうことはない。</text>
+                                        <event>
+                                            <text>"ふーん、何かわかったと思ったのに"ブラルメブは首を振る。「私の誠実さを疑うのなら、この話は終わりだ」。ブラルメブはしばらくあなたを見つめる。「あなたが私の同僚を助けてくれたという知らせを受けた。だから、この戦いを続ける必要はない。しかし、私の仲間はこれを必要としている。そう言って、彼はまた通信を切った。</text>
+                                            <event load="ORCHID_GARDENWORLD_UNEASY_RESOLUTION" />
+                                        </event>
+                                    </choice>
+                                    <choice req="loc_praetor_help" lvl="0" max_lvl="0" blue="false">
+                                        <text>今やっていることで、自分たちらしさを損なうことはない。</text>
+                                        <event>
+                                            <text>"フン、話がまとまったと思ったのに。お前も他の連中と同じで愚かだな"そう言って、彼はまた通信を切った。戦いに戻ったようだ。</text>
+                                            <ship hostile="true" />
+                                        </event>
+                                    </choice>
+                                    <choice>
+                                        <text>連盟のためにもっと強くなりたいのなら、新しいワールドを使うとか、他の方法を連盟に求めたらどうだ？</text>
+                                        <event>
+                                            <text>「私たちの代表は、多くの要求をすることを好まない。それは我々のやり方ではない。たしかに、この同盟からもっと多くのものを得ることができれば......それに越したことはないが、これが私たちにできるすべてだ"</text>
+                                            <choice>
+                                                <text>それなら、喧嘩の相手は管理人ではなく、代表者ではないのか？</text>
+                                                <event>
+                                                    <text>ブラルメブは黙り込む。「そうか。私は戦う相手を間違えているのかもしれない。私は引き下がる。しかし、もし私が我々の擁護者たちと何の進展もないのであれば、私が再びこのことを強く求めることを非難しないでほしい"</text>
+                                                    <choice hidden="true">
+                                                        <text>メイエブに連絡を。</text>
+                                                        <event load="ORCHID_GARDENWORLD_MAYEB_WIN" />
+                                                    </choice>
+                                                </event>
+                                            </choice>
+                                        </event>
+                                    </choice>
+                                </event>
+                            </choice>
+                        </event>
+                    </choice>
+                    <choice>
+                        <text>あまりに攻撃的なので、話をする前に落ち着くように言ってくれ。</text>
+                        <event>
+                            <text>「攻撃的すぎる？よくも言ってくれたな！聞く必要はない"そう言って、彼はまた通信を切った。戦いに戻ったようだ。</text>
+                            <ship hostile="true" />
+                        </event>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>プレトールとの戦いを続ける。</text>
+        <event />
+    </choice>
+</event>
+
+<event name="ORCHID_GARDENWORLD_MAYEB_WIN">
+    <text>パエル参事官とメイエブ参事官がしばらく裁定する。マイエブは満足そうだ。パエルは咳払いをして、あなたに話しかける。「よろしい、我々は貨物船からの生命を再定住させながら、ケアテイカーからのデータを注意深く検討する。おそらく我々は...軍事力を強化しようとするあまり、熱中しすぎていたのだろう。そして... 船長の件ですが 船が損傷したのであれば 深くお詫び申し上げます"ギャザリング "から弁償金を受け取ってくれ"</text>
+    <autoReward level="HIGH">missiles</autoReward>
+    <weapon name="GIFTLIST_KERNEL_ELITE" />
+    <variable name="ach_boss_orchidcruiser" op="set" val="1" />
+    <choice hidden="true">
+        <text>次へ...</text>
+        <event>
+            <text>メイエブは微笑みかける。「あなたはRt'lak Etのケアテイカーのために多くのことをしてくれた。長距離の生態系ミッションのために、特別なケアテイカー・クルーザーを育てることができた。そして...君は私のために尽くしてくれた...もしよければ、君のクルーに加わりたい。私はグランド・ガーデナーですが、事態が平和的に解決すれば、私がいなくても仲間が何とかしてくれると思います。どうだ？</text>
+            <unlockCustomShip silent="false">PLAYER_SHIP_CARETAKER</unlockCustomShip>
+            <choice>
+                <text>メイエブを受け入れる</text>
+                <event>
+                    <crewMember amount="1" class="unique_mayeb">メイエブ</crewMember>
+                    <variable name="ach_crew_mayeb" op="set" val="1" />
+                </event>
+            </choice>
+            <choice>
+                <text>衰退。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="ORCHID_GARDENWORLD_UNEASY_RESOLUTION">
+    <text>パエル参事官は不安そうな表情を浮かべる。「良くも悪くも、当面は再定住しなければならないようだ。これから数週間かけて、これらの問題に対処していかなければなりません。数カ月でもいい。何が起ころうとも、あなた方の自制心には感謝している。このスクラップが、ノード17への旅路の助けとなることを願っている"</text>
+    <autoReward level="MED">standard_no_item</autoReward>
+    <variable name="ach_boss_orchidcruiser" op="set" val="1" />
+    <choice hidden="true">
+        <text>次へ...</text>
+        <event>
+            <text>メイエブは微笑む。「私たちの味方になってくれてありがとう。これからの数カ月は忙しくなりそうだが、君のおかげで十分すぎるほど先手を打つことができた。今、私が提供できるのは、私たちの最高級の武器のひとつだけだ。それがお役に立ちますように"</text>
+            <weapon name="GIFTLIST_KERNEL_ELITE" />
+        </event>
+    </choice>
+</event>
+<event name="ORCHID_GARDENWORLD_DEFEAT">
+    <text>あなたはオーキッド巡洋艦を打ち負かした。しかし、この海域にいる他のオーキッド防衛軍は、あなたが彼らの船をスクラップにすることを快く思っていないだろう。漂流させるしかない。</text>
+    <variable name="ach_boss_orchidcruiser" op="set" val="1" />
+    <choice>
+        <text>オーキッズとの連絡を再開する。</text>
+        <event>
+            <text>カウンセラーのパエルがため息をつく。「レネゲイド、君は我々を困難な状況に追い込んだ。この貨物船は、これほど長く運航するようには設計されていないので、当面は決定を覆すしかありません。行ってください、もう十分迷惑をかけましたから」
+
+ メイエブはうなずく。"船長、彼らを助けることができなかったのは残念です。あなたの援助には感謝していますが、この解決方法では、私は大義のために戦い続けなければならないでしょう。もっと提供できればいいんだが......"</text>
+        </event>
+    </choice>
+</event>
+
+
+<event name="GATHERING_LOW_TRAFFIC">
+    <distressBeacon />
+    <text>ギャザリングのこのエリアは、普段は人の出入りが少ないようだ。にもかかわらず、オーキッドの救難信号がこの地域から発信されている。</text>
+    <choice req="loc_tyerel_met" max_lvl="0" lvl="0" blue="false">
+        <text>次へ...</text>
+        <event load="DISTRESS_ORCHID_AMBASSADOR" />
+    </choice>
+    <choice req="loc_tyerel_met" max_lvl="1" lvl="1" blue="false">
+        <text>次へ...</text>
+        <event load="DISTRESS_ORCHID_PIRATE_TRAP" />
+    </choice>
+</event>
+
+<event name="DISTRESS_ORCHID_PIRATE_TRAP">
+    <text>送信機は漂流中で、どの船ともつながっていない。海賊が行く手を阻む。"お前はこの葉っぱ野郎の仲間じゃないが、やってくれるよな！"罠だったようだ！</text>
+    <ship load="SHIP_PIRATE_ALL" hostile="true" />
+    <choice>
+        <text>次へ...</text>
+        <event load="COMBAT_CHECK" />
+    </choice>
+</event>
+
+<ship name="SHIP_COALITION_TYEREL_GATHERING" auto_blueprint="MU_COALITION_PREDATOR_AMBASSADOR">
+    <destroyed load="TY_EREL_RESCUE_GATHERING" />
+    <deadCrew load="TY_EREL_RESCUE_GATHERING" />
+</ship>
+
+<event name="DISTRESS_ORCHID_AMBASSADOR">
+    <text>ひどく損傷したオーキッドデザインの巡洋艦が救難信号を発信している。連合軍のプレデターがすぐ後を追い、発砲している。</text>
+    <ship load="SHIP_COALITION_TYEREL_GATHERING" hostile="false" />
+    <variable name="loc_tyerel_met" op="set" val="1" />
+    <choice>
+        <text>オーキッドに援助を申し出る。</text>
+        <event>
+            <text>目に見えて枯れたオーキッドが出迎えてくれる。フローラル族とヴァンプウィード族、両方の特徴を受け継いでいる。船の状態にもかかわらず、彼はプロフェッショナリズムの面影を失っていない。「敬礼。私はタイ・エレル。攻撃してくる船にジェスチャーをする。"どのような援助も大いに感謝する"しかし、"オーキッド "に接触した瞬間、あなたは連合軍のプレデターの注意を引いてしまう。</text>
+            <choice>
+                <text>連合軍の船に発砲をやめるよう要求する。</text>
+                <event load="TY_EREL_COALITION_HAIL" /> 
+            </choice>
+        </event>
+    </choice>
+    <choice>
+        <text>出会いを避ける。</text>
+        <event>
+            <text>連合の船は、珍しいオーキッド巡洋艦に焦点を合わせたままだ。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<event name="TY_EREL_RESCUE_GATHERING">
+    <text>連合軍のプレデターを撃破。プレデターの残骸をスクラップしながら、大使館の巡洋艦が近づいてくる。</text>
+    <autoReward level="HIGH">standard</autoReward>
+    <choice>
+        <text>次へ...</text>
+        <event>
+            <text>年老いた植物があなたのビュースクリーンに現れた。彼は最近命を狙われたにもかかわらず、まったく平気な顔をしている。「到着は時宜を得ている。時間厳守に敬意を表する。私の船はベストコンディションとは言えませんが、連邦にお返しいただけるなら、これほど嬉しいことはありません。"</text>  
+            <unlockCustomShip silent="false">PLAYER_SHIP_AMBASSADOR</unlockCustomShip>
+            <choice hidden="true">
+                <text>次の目標は？</text>
+                <event load="TY_EREL_RECRUITMENT_CHOICE" /> 
+            </choice>
+        </event>
+    </choice>
+</event>
+</FTL>

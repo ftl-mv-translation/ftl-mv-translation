@@ -1,0 +1,2526 @@
+<FTL>
+
+<event name="START_BEACON_ANCIENT">
+	<metaVariable name="juke_ancient" op="set" val="1" />
+	<text>朦朧とした意識の中、あなたは床から身を起こした。船内のカメラには、他のほとんどのクルーが同じように眠りから覚めている様子が映っている。ただ一人、エーンウィテだけは平然とした様子で、急いであなたの様子を見に来た。「私たちは無事だったが、気をつけなければならないことがいくつかある。今は反乱軍が私たちを追ってくることはないだろうけど、あなたが疑っているように、彼らが本当にあなたを追っているのなら、いずれ追いつかれるだろう。さらに、このセクターは警備船に守られている可能性が高い。もしそうなら、無傷で通してくれるとは思えない"</text>
+	<variable name="loc_unique_sectors" op="add" val="1" />
+	<modifyPursuit amount="-10" />
+	<ship load="SHIP_ANCIENT_GUARD" hostile="false" />
+	<changeBackground>BACK_SECTOR_ANCIENT</changeBackground>
+	<playSound>lightspeed</playSound>
+	<remove name="HIDDEN DUMMY" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>警告通り、ここにはオベリスク・ガードがいるようだ。あなたの船が近づくと、船は光り、武器が作動する。</text>
+			<choice hidden="true">
+				<text>彼ら万歳！争わずに乗り切れるかも？</text>
+				<event>
+					<text>「生身の人間よ、われわれの神聖な平面に入る勇気があるのか？ここは血と死すべき魂を持つ生き物のための場所ではない！貴様らの抹殺は迅速かつ無慈悲に行われるであろう。この銀河から害虫が駆逐されるように！"さて、非暴力はこのくらいにして、とんでもない戦いに備えよう！</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="GUARD_ANCIENT_DESTROY">
+	<text>オベリスクの警備兵を倒した。彼らの積荷にあったかもしれないものは確実に破壊されたが、少なくとも船から物資を救い出すことはできる。</text>
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+<event name="GUARD_ANCIENT_DEADCREW">
+	<text>オベリスクの警備員を倒した。クルーに邪魔されることなく、彼らの積荷を調査することができる。船に持ち帰る武器を見つけ、船体をスクラップにする。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<weapon name="GIFTLIST_ANCIENT" />
+</event>
+
+<event name="FLEET_ROYAL_SELITE">
+	<revisitEvent>FLEET_ROYAL_SELITE</revisitEvent>
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_MFK</customFleet>
+	<text>バンスの艦隊がついに追いついたようだ。MFKのエース艦が前進し、武器を振りかざして殺しにかかる。</text>
+	<ship load="SHIP_REBEL_FLEET_S_A" hostile="true" />
+	<environment type="PDS" target="player" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+	<choice hidden="true" req="engines" lvl="6">
+		<text>(アドバンス・エンジン）エリートから逃れようとする。</text>
+		<event load="FLEET_ESCAPE" />
+	</choice>
+</event>
+
+<event name="START_BEACON_ROYAL">
+	<text>今回は、少なくとも壁にもたれることができた。他のほとんどのクルーも同様で、いつものようにエーンウィテはまったく動じない。「着いた。幸運なことに、レジスタンスはすでに警備員を倒し、この区域を封鎖している。さあ、爆弾を作ろう。"</text>
+	<variable name="loc_unique_sectors" op="add" val="1" />
+	<customFleet right="true" firing="false" autoDarkening="true">CUSTOM_FLEET_ANCIENT</customFleet>
+	<changeBackground>BACK_SECTOR_ROYAL</changeBackground>
+	<playSound>lightspeed</playSound>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>近くのオベリスク船にドッキングすると、エーンウィテはその船はすでに彼の仲間に捕らえられていると言う。発音できない様々な名前を持つ、同じように見える数人のオベリスクたちを紹介される。エーンウィテは誰かを探すように辺りを見回すが、見つからないようだ。</text>
+			<choice hidden="true">
+				<text>何か問題でも？</text>
+				<event>
+					<text>エーンウィテはあなたを無視し、他のオベリスクの一人に話しかける。「Eはどこですか？彼女は女王に連れ去られた。王家は彼女の裏切りを聞きつけ、我々にできることはほとんどなかった。彼らのドレッドノートはオンラインに戻った..."</text>
+					<choice hidden="true">
+						<text>Eとは？そして2番目のドレッドノートがいるのか？</text>
+						<event load="ROYAL_MFK_ARRIVAL" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROYAL_MFK_ARRIVAL">
+	<text>肺活量があれば、ため息をついたに違いない。「Eはオベリスク王家の王女だ。一文字の名前は気にしないで。シンプルにするためかな。それともミーム？とにかく、そんなことはどうでもいい。Eはレジスタンスの中で 唯一の王族で- 爆弾を作れる 唯一の人間だしかし今、彼女はさらわれた。さらに悪いことに、王族はさらに強力なドレッドノートを持っていて、彼らの首都であるリィスキック・ユークを守っている。"</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+		<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_MFK</customFleet>
+		<customFleet right="true" firing="false" autoDarkening="true">CUSTOM_FLEET_ANCIENT</customFleet>
+		<playSound>lightspeed</playSound>
+			<text>突然、艦隊の警報が鳴り響く。MFK艦隊の船団が飛び込んできて、すぐさまオベリスクに砲火を浴びせる。エーンウィテは「くそっ、反乱軍に突破された！時間の問題だった。すぐに避難しましょう！宮殿で再編成してEを救出し、この爆弾を完成させてから、このセクター全体を核心部まで粛清する！"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>MFKのガンボート・エースに呼び止められる。"お前は...俺たちをここに導いた "マルチバース・レネゲイドだ！今日中に死ね、連邦のクズども！"</text>
+					<ship load="SHIP_MFK_GUNBOAT_ROYAL" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROYAL_MFK_DEFEAT">
+	<text>船が死ぬとき、反乱軍の船長から最後のメッセージを受け取る。「神よ...くそったれ。"今日は生き残れるかもしれんが バンスがすぐに捕え..." "地獄に落とすだろう..."船を無力化し、残骸をスクラップにする。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>砲艦が去った今、周囲にはまだ占領されておらず、あなたたちと戦える船はないようだ。この短い猶予の間に、エーンウィテは再び口を開いた。"よし、リトッキック・ユックに急ぎ、Eを救出しなければならない。" "気をつけろ、今は王族だけでなく反乱軍も相手にしているんだ。"</text>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_ANCIENT_BOSS_CASUAL" auto_blueprint="MU_ANCIENT_DREADNAUGHT_CASUAL">
+	<destroyed load="ANCSECTOR_PART_4" />
+	<deadCrew load="ANCSECTOR_DREAD_AI" />
+	<deadCrewAuto />
+</ship>
+<ship name="SHIP_ANCIENT_BOSS_NORMAL" auto_blueprint="MU_ANCIENT_DREADNAUGHT_NORMAL">
+	<destroyed load="ANCSECTOR_PART_4" />
+	<deadCrew load="ANCSECTOR_DREAD_AI" />
+	<deadCrewAuto />
+</ship>
+<ship name="SHIP_ANCIENT_BOSS_CHALLENGE" auto_blueprint="MU_ANCIENT_DREADNAUGHT_CHALLENGE">
+	<destroyed load="ANCSECTOR_PART_4" />
+	<deadCrew load="ANCSECTOR_DREAD_AI" />
+	<deadCrewAuto />
+</ship>
+<ship name="SHIP_ANCIENT_BOSS_EXTREME" auto_blueprint="MU_ANCIENT_DREADNAUGHT_EXTREME">
+	<destroyed load="ANCSECTOR_PART_4" />
+	<deadCrew load="ANCSECTOR_DREAD_AI" />
+	<deadCrewAuto />
+</ship>
+
+<event name="ANCIENT_CACHE">
+	<preventQuest />
+	<beaconType id="map_icon_vault" global="true">
+		<color r="0" g="255" b="36" a="1.0" />
+		<unvisitedTooltip>エンシェントのキャッシュの場所。</unvisitedTooltip>
+		<visitedTooltip>探索された場所古代のキャッシュの場所。</visitedTooltip>
+	</beaconType>
+	<text>あなたはキャッシュに到着した。遠くにドレッドノートが見えるが、遠すぎてその特徴はわからない。予想通り、船を排除しなければ、惑星の側面に彫り込まれた巨大な金庫のようなキャッシュにアクセスすることは不可能だ。</text>
+	<img back="BACKGROUND" planet="PLANET_ANCIENT_VAULT" />
+	<variable name="loc_protomv_drive_block" op="set" val="1" />
+	<choice req="challenge_level" lvl="0" blue="false" max_group="0" hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>エーンウィテは恐れを知らない様子でドレッドノートを観察している。「大きな船だ。だが、母星で見るものに比べれば大したことはない。これは、これから起こることに対応できるかどうかのテストだ。最悪の場合、我々は死ぬ。大したことじゃない"</text>
+			<ship load="SHIP_ANCIENT_BOSS_CASUAL" hostile="false" />
+			<choice>
+				<text>ドレッドノートと戦え</text>
+				<event>
+					<text>あなたは武器をパワーアップし、船を破壊するために移動する。その影が窓からの光を遮り、あなたを塵にしようと降下してくる。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="challenge_level" lvl="1" blue="false" max_group="0" hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>エーンウィテは恐れを知らない様子でドレッドノートを観察している。「大きな船だ。だが、母星で見るものに比べれば大したことはない。これは、これから起こることに対応できるかどうかのテストだ。最悪の場合、我々は死ぬ。大したことじゃない"</text>
+			<ship load="SHIP_ANCIENT_BOSS_NORMAL" hostile="false" />
+			<choice>
+				<text>ドレッドノートと戦え</text>
+				<event>
+					<text>あなたは武器をパワーアップし、船を破壊するために移動する。その影が窓からの光を遮り、あなたを塵にしようと降下してくる。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="challenge_level" lvl="2" blue="false" max_group="0" hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>エーンウィテは恐れを知らない様子でドレッドノートを観察している。「大きな船だ。だが、母星で見るものに比べれば大したことはない。これは、これから起こることに対応できるかどうかのテストだ。最悪の場合、我々は死ぬ。大したことじゃない"</text>
+			<ship load="SHIP_ANCIENT_BOSS_CHALLENGE" hostile="false" />
+			<choice>
+				<text>ドレッドノートと戦え</text>
+				<event>
+					<text>あなたは武器をパワーアップし、船を破壊するために移動する。その影が窓からの光を遮り、あなたを塵にしようと降下してくる。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="challenge_level" lvl="3" blue="false" max_group="0" hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>エーンウィテは恐れを知らない様子でドレッドノートを観察している。「大きな船だ。だが、母星で見るものに比べれば大したことはない。これは、これから起こることに対応できるかどうかのテストだ。最悪の場合、我々は死ぬ。大したことじゃない"</text>
+			<ship load="SHIP_ANCIENT_BOSS_EXTREME" hostile="false" />
+			<choice>
+				<text>ドレッドノートと戦え</text>
+				<event>
+					<text>あなたは武器をパワーアップし、船を破壊するために移動する。その影が窓からの光を遮り、あなたを塵にしようと降下してくる。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ANCSECTOR_DREAD_AI">
+	<text>ドレッドノートの乗組員は全員死んだが、船は戦い続けている。何らかのAIモードがついているに違いない！</text>
+	<ship hostile="true" />
+	<choice hidden="true">
+		<text>我々は戦い続けなければならない！</text>
+		<event />
+	</choice>
+</event>
+<event name="ANCSECTOR_PART_4">
+	<text>「やったな。ドレッドノートは死んだ！信じられない。お前たち薄っぺらい人間も哀れなものだ。あとはパーツを奪ってキャッシュを破壊するだけだ"ドレッドノートを破壊するのが先だ。</text>
+	<achievement silent="false">ACH_TRUEEND_DREADONE</achievement>
+	<variable name="ach_boss_dread" op="set" val="1" />
+	<variable name="loc_protomv_drive_block" op="set" val="0" />
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>キャッシュを略奪する。</text>
+		<event>
+			<text>金庫室のドアを開けるには何度か試行錯誤が必要だが、側面に穴を開けることに成功すると、燦然と輝く光が差し込む。中は巨大な洞窟で、船、修理ドローン、武器、物資で埋め尽くされている。その中で最も大きな船、クルーザーが目に留まる。</text>
+			<unlockCustomShip silent="false">PLAYER_SHIP_ANCIENT</unlockCustomShip>
+			<item_modify>
+				<item type="fuel" min="20" max="20" />
+				<item type="scrap" min="125" max="125" />
+				<item type="missiles" min="20" max="20" />
+				<item type="drones" min="15" max="15" />
+			</item_modify>
+			<damage amount="-30" />
+			<weapon name="ANCIENT_BEAM_3" />
+			<choice hidden="true">
+				<text>キャッシュを破壊せよ。</text>
+				<event>
+					<text>あなたは保管庫の周囲にたくさんの爆薬を仕掛けて一斉に爆発させ、できるだけ早く外に出る。キャッシュとの間に安全な距離を置き、花火を眺める。フラッグシップも倒せれば、現実を二度救えたことになる！</text>
+					<jumpEvent>VAULT_DESTROYED</jumpEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="VAULT_DESTROYED">
+	<text>出発の準備をしていると、爆発に引き寄せられたオベリスクの船団が近づいてくる。彼らの先頭は王室の船で、その船長があなたに声をかけてきた。「あなたは...お前はキャッシュを破壊した。この薄汚い死すべき虫め、このことで苦しむがいい！"あなたは肩をすくめ、武器を彼らの方向にちらつかせる。オベリスク艦隊の誰も、ドレッドノートを殺した船にちょっかいを出す勇気はなく、すぐに飛び去った。</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>エーンウィテはとても喜んでいる。「艦隊のことは心配しなくていい。ホームワールドはすでに厳戒態勢にある。急いで基地に向かい、爆弾を作る必要がある！ホームワールドに直接向かう。また何かにつかまって、気を失わないようにしてくれ。"</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<secretSectorWarp>SECRET_ROYAL</secretSectorWarp>
+					<secretSector />
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_ROYAL_DREADNAUGHT_CASUAL" auto_blueprint="MU_ROYAL_DREADNAUGHT_CASUAL">
+	<destroyed load="ROYAL_PALACE_SUCCESS" />
+	<deadCrew load="ANCSECTOR_DREAD_AI" />
+	<deadCrewAuto />
+</ship>
+<ship name="SHIP_ROYAL_DREADNAUGHT_NORMAL" auto_blueprint="MU_ROYAL_DREADNAUGHT_NORMAL">
+	<destroyed load="ROYAL_PALACE_SUCCESS" />
+	<deadCrew load="ANCSECTOR_DREAD_AI" />
+	<deadCrewAuto />
+</ship>
+<ship name="SHIP_ROYAL_DREADNAUGHT_CHALLENGE" auto_blueprint="MU_ROYAL_DREADNAUGHT_CHALLENGE">
+	<destroyed load="ROYAL_PALACE_SUCCESS" />
+	<deadCrew load="ANCSECTOR_DREAD_AI" />
+	<deadCrewAuto />
+</ship>
+<ship name="SHIP_ROYAL_DREADNAUGHT_EXTREME" auto_blueprint="MU_ROYAL_DREADNAUGHT_EXTREME">
+	<destroyed load="ROYAL_PALACE_SUCCESS" />
+	<deadCrew load="ANCSECTOR_DREAD_AI" />
+	<deadCrewAuto />
+</ship>
+
+<event name="ROYAL_PALACE">
+	<preventQuest />
+	<beaconType id="map_icon_palace" global="true">
+		<color r="255" g="0" b="228" a="1.0" />
+		<unvisitedTooltip>古代の宮殿の場所。</unvisitedTooltip>
+		<visitedTooltip>探索された場所。古代宮殿の場所。</visitedTooltip>
+	</beaconType>
+	<text>あなたはリトッキック・ユークに到着した。あなたの船の下には、巨大なクルーザーが行き交う広大な街並みが広がっている。緑が多い...おそらく緑が多すぎるのだろう。だが、そんなことはどうでもいい。願わくば、ここに長く留まることがないように。</text>
+	<img back="BACK_EVENT_ROYAL_PALACE" planet="PLANET_INVISIBLE" />
+	<variable name="loc_protomv_drive_block" op="set" val="1" />
+	<choice req="challenge_level" lvl="0" blue="false" max_group="0" hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>パイロットとして地表に近づき、一瞬、戦わずに切り抜けられると思った。しかし、エーンウィテが言っていたロイヤル・ドレッドノートが空から現れ、明確な殺意を持って近づいてきた。「侵略者め！貴様らの穢れは我々の領域から一掃する！"どうやら、もう一戦交える時が来たようだ。</text>
+			<ship load="SHIP_ROYAL_DREADNAUGHT_CASUAL" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="challenge_level" lvl="1" blue="false" max_group="0" hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>パイロットとして地表に近づき、一瞬、戦わずに切り抜けられると思った。しかし、エーンウィテが言っていたロイヤル・ドレッドノートが空から現れ、明確な殺意を持って近づいてきた。「侵略者め！貴様らの穢れは我々の領域から一掃する！"どうやら、もう一戦交える時が来たようだ。</text>
+			<ship load="SHIP_ROYAL_DREADNAUGHT_NORMAL" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="challenge_level" lvl="2" blue="false" max_group="0" hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>パイロットとして地表に近づき、一瞬、戦わずに切り抜けられると思った。しかし、エーンウィテが言っていたロイヤル・ドレッドノートが空から現れ、明確な殺意を持って近づいてきた。「侵略者め！貴様らの穢れは我々の領域から一掃する！"どうやら、もう一戦交える時が来たようだ。</text>
+			<ship load="SHIP_ROYAL_DREADNAUGHT_CHALLENGE" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="challenge_level" lvl="3" blue="false" max_group="0" hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>パイロットとして地表に近づき、一瞬、戦わずに切り抜けられると思った。しかし、エーンウィテが言っていたロイヤル・ドレッドノートが空から現れ、明確な殺意を持って近づいてきた。「侵略者め！貴様らの穢れは我々の領域から一掃する！"どうやら、もう一戦交える時が来たようだ。</text>
+			<ship load="SHIP_ROYAL_DREADNAUGHT_EXTREME" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROYAL_PALACE_SUCCESS">
+	<text>ドレッドノートが王宮に墜落するとき、あなたはオベリスクに二度と会わなければどんなにいいだろうかと考えずにはいられなかった。エーンウィテは立ち止まり、「老眼鏡が必要なら出しておくといい、この先は文字がたくさんあるから」と言った。その言葉の真意はわからないが、おそらく忠告だろう。</text>
+	<achievement silent="false">ACH_TRUEEND_DREADTWO</achievement>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>ドレッドノートをスクラップにすることも考えたが、それは君のやり方ではない。ドレッドノートを破壊し、残っている侵入者を一掃してから宮殿に向かう。</text>
+			<autoReward level="HIGH">item</autoReward>
+			<jumpEvent>ROYAL_PALACE_ENTER</jumpEvent>
+		</event>
+	</choice>
+</event>
+
+<event name="ROYAL_PALACE_ENTER">
+	<text>宮殿に入ると、一隻の船も気にならない。中に入ると上級コグニティブが「おい！この中に入ってはいけない...」と叫ぶが、あなたはすぐに一発で黙らせた。もうコグニティブに会わなくても平気だろう、率直に言って。あなたは宮殿の中を進み続ける。</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>王室会議室までたどり着いたら、エーンウィテに道を尋ねる。「はい、そうです、右です」。オベリスク・ロイヤルがホログラフィック・スクリーンでいくつかの設計図を研究している。「ついに現れたか。やっと来たか。気をつけろ、オベリスクの女王が後ろにいる。"</text>
+			<choice hidden="true">
+				<text>待って、何？</text>
+				<event>
+					<text>振り向くと、オベリスクの女王が、アトマイザーのドローン2機を左右に従え、こちらを向いている。「この爆弾を作るためにここまで来たのか？人間ってのは、本当に献身的だな。感心してしまいそうだが、それは私があなたたちのことを実際に好きにならなければならないことを意味する。とにかく、今からお前を殺してやる。</text>
+					<choice hidden="true">
+						<text>今すぐパラゴンを爆発させると脅すんだ。</text>
+						<event>
+							<text>「何だと？爆弾は武装していない！私がバカだと思ってるの？ミサイルが壁に激突し、側面が破壊され、部屋の全員が衝撃波で後方に吹き飛ばされる。パラゴンは回転しながら穴のほうへ滑り、そこに別のフラッグシップのようなものの輪郭が見える！</text>
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event>
+									<text>ずんぐりとした体格で、腰に2丁の頑丈なブラスターをホルスターに収めた堂々とした男が、おそらくフラッグシップのテレポーターから現れた。あなたは彼が反乱軍艦隊のヴァンス提督であることをすぐに認識した。「爆弾とは何だ？バンスは身をかがめてパラゴンを拾い上げる。「これを組み立ててくれて、本当にありがとう。確かに、まだ完全ではないが、スキャンすれば何とかなると確信している」。</text>
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event>
+											<text>バンスは部屋の中を歩き回り、片方の手は爆弾を握り、もう片方の手は銃に手を伸ばす。「もう何年も、この忌まわしいものを探し続けてきた。私の部下が初めてマルチバース・ドライブを発見したとき、私たちはまだこの宇宙的な雁字搦めの追跡劇の規模を理解していなかった！少なくとも、私の視点では。マイクロクローニングとカプセル睡眠で何年も生き続けることができるが、見栄っ張りな人間にはならないほうがいい。確かに私にはそうだ」。</text>
+											<choice hidden="true">
+												<text>次へ...</text>
+												<event>
+													<text>「さて、独白はここまでだ。バンスは素早く銃を抜き、オベリスクの女王を三度撃ち、一発一発が女王のシャーシを貫き、完全に無力化した。「女王は死に、王族は没落する。この爆弾は私の旧友と特別な約束があるので、よろしければ私はこれで失礼します。反乱軍に栄光あれ"バンスは敬礼し、ゆっくりと惑星から上昇するフラッグシップにワープで戻る。</text>
+													<choice hidden="true">
+														<text>次へ...</text>
+														<event>
+															<text>あなたはすぐにクルーと再集合し、その新しいメンバーにはE自身も含まれていた。最も心配なのは、バンスが突然やってきたことではなく、彼が言ったことだ。彼がパラゴンの正体を知っているのなら、パラゴンの組み立て方や爆発方法も知っているはずだ。さらに悪いことに、フラッグシップが飛び去るのを見送りながら、彼のMVドライブの高度な分析によれば、彼がある特定の現実を念頭に置いていることがわかる。もしバンスがそこに到達できれば、彼はその現実全体を消し去り、すべての現実にわたる連邦全体にダメージを与えることができる！</text>
+															<crewMember amount="1" all_skills="2" class="obelisk_royal">E</crewMember>
+															<choice hidden="true">
+																<text>次へ...</text>
+																<event>
+																	<text>他に選択肢は残されていない。今のうちにバンスを追いかけ、彼がマスタープランを実行する前に止めを刺すのだ。FTLドライブを彼と同じ軌道にセットし、地獄の戦いに備えるのだ。</text>
+																	<item_modify>
+																		<item type="fuel" min="3" max="3" />
+																	</item_modify>
+																	<choice hidden="true">
+																		<text>次へ...</text>
+																		<event>
+																			<variable name="ach_boss_royaldread" op="set" val="1" />
+																			<secretSectorWarp>SHOWDOWN_BEGIN</secretSectorWarp>
+																			<secretSector />
+																		</event>
+																	</choice>
+																</event>
+															</choice>
+														</event>
+													</choice>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+	
+<eventList name="ITEMS_ANCIENT">
+	<event load="ANCIENT_DUPLICATOR" />
+	<event load="ANCIENT_USELESS_WEAPON" />
+    <event load="ANCIENT_LOST_DUDE" />
+	<event load="ANCIENT_DESIRE" />
+</eventList>
+
+<event name="ANCIENT_DUPLICATOR" unique="true">
+	<text planet="PLANET_ANCIENT_MACHINE">最初は普通のビーコンだと思ったが、巨大な月サイズの機械が建っていることに気づく。誰もいないように見えるが、船が停泊できる格納庫エリアがある。</text>
+	<choice hidden="true">
+		<text>ドック</text>
+		<event>
+			<text>格納庫の保護シールドは、あなたが近づくと自動的に下がり、中に入ると再び閉じられる。船の外に出て、非常に奇妙なことに気づく。部屋が酸素で満たされているのだ。オベリスクの建造物には珍しいことだ。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>自動音声が語りかける。「こんにちは、旅行者の皆さん。量子アイテム複製装置へようこそ。複製したいアイテムを左の壁のスロットに挿入してください。"</text>
+					<choice>
+						<text>燃料を入れる。</text>
+						<event>
+							<text>5つの燃料電池をスロットに押し込んで待つ。</text>
+							<item_modify>
+								<item type="fuel" min="-5" max="-5" />
+							</item_modify>
+							<choice hidden="true">
+								<text>待ってくれ。</text>
+								<event load="ANCIENT_DUPLICATOR_FUEL" />
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>ミサイルを入れる。</text>
+						<event>
+							<text>5発のミサイルをスロットに押し込んで待つ。</text>
+							<item_modify>
+								<item type="missiles" min="-5" max="-5" />
+							</item_modify>
+							<choice hidden="true">
+								<text>待ってくれ。</text>
+								<event load="ANCIENT_DUPLICATOR_MISSILES" />
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>ドローンパーツを入れる。</text>
+						<event>
+							<text>5つのドローンパーツをスロットに押し込み、待つ。</text>
+							<item_modify>
+								<item type="drones" min="-5" max="-5" />
+							</item_modify>
+							<choice hidden="true">
+								<text>待ってくれ。</text>
+								<event load="ANCIENT_DUPLICATOR_DRONES" />
+							</choice>
+						</event>
+					</choice>
+					<choice req="LIST_CREW_PHANTOM" hidden="true">
+						<text>(ファントムクルー）あなたのゴーストはマシンに入れられることを熱望しています。</text>
+						<event>
+							<text>あなたは肩をすくめ、ゴーストを機械に押し込む。ゴーストは抗議することもなく、小さなスロットに滑り込み、大きな穴から機械の穴へと落ちていく。</text>
+							<choice hidden="true">
+								<text>待ってくれ。</text>
+								<event>
+									<text>しばらくすると、右側にある2つ目の大きな穴から奇妙な音が聞こえてくる。あなたのゴーストが飛び出してきて、もう一人の大きなゴーストが続く。二人のゴーストは興奮しすぎているようで、あなたは機械の中で何が起こったのか聞かないことにした。</text>
+									<achievement silent="false">ACH_OBEL_GHOSTMACHINE</achievement>
+									<crewMember amount="1" class="phantom_alpha" />
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice req="LIST_CREW_GOUL" hidden="true">
+						<text>(グールクルー）あなたのグールは、マシンに入れられることを熱望しています。</text>
+						<event>
+							<text>あなたは肩をすくめ、グールを機械に押し込む。グールは抗議することもなく、小さなスロットに滑り込み、大きな穴から機械の穴へと落ちていく。</text>
+							<choice hidden="true">
+								<text>待ってくれ。</text>
+								<event>
+									<text>しばらくすると、右側にある2つ目の大きな穴から奇妙な音が聞こえてくる。あなたのゴーストが飛び出してきて、もう一人の大きなゴーストが続く。二人のゴーストは興奮しすぎているようで、あなたは機械の中で何が起こったのか聞かないことにした。</text>
+									<achievement silent="false">ACH_OBEL_GHOSTMACHINE</achievement>
+									<crewMember amount="1" class="phantom_goul_alpha" />
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice req="LIST_CREW_MARE" hidden="true">
+						<text>(牝馬の乗組員）あなたの牝馬は、マシンに乗せたいと熱望しています。</text>
+						<event>
+							<text>あなたは肩をすくめ、メアを機械に押し込む。牝馬は抗議もせず、小さなスロットに滑り込み、大きな穴から機械の穴へと落ちていく。</text>
+							<choice hidden="true">
+								<text>待ってくれ。</text>
+								<event>
+									<text>しばらくすると、右側にある2つ目の大きな穴から奇妙な音が聞こえてくる。あなたのゴーストが飛び出してきて、もう一人の大きなゴーストが続く。二人のゴーストは興奮しすぎているようで、あなたは機械の中で何が起こったのか聞かないことにした。</text>
+									<achievement silent="false">ACH_OBEL_GHOSTMACHINE</achievement>
+									<crewMember amount="1" class="phantom_mare_alpha" />
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice req="LIST_CREW_WRAITH" hidden="true">
+						<text>(レイス・クルー）あなたのレイスは、マシンに入れられることを熱望しています。</text>
+						<event>
+							<text>あなたは肩をすくめ、レイスを機械に押し込む。レイスは抗議することもなく、小さなスロットに滑り込み、大きな穴から機械の穴へと落ちていく。</text>
+							<choice hidden="true">
+								<text>待ってくれ。</text>
+								<event>
+									<text>しばらくすると、右側にある2つ目の大きな穴から奇妙な音が聞こえてくる。あなたのゴーストが飛び出してきて、もう一人の大きなゴーストが続く。二人のゴーストは興奮しすぎているようで、あなたは機械の中で何が起こったのか聞かないことにした。</text>
+									<achievement silent="false">ACH_OBEL_GHOSTMACHINE</achievement>
+									<crewMember amount="1" class="phantom_wraith_alpha" />
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>出て行け。</text>
+						<event>
+							<text>あなたはマシンから離れ、その場を離れる。</text>
+							<choice>
+								<text>船内で何かをする。</text>
+								<event load="STORAGE_CHECK" />
+							</choice>
+							<choice>
+								<text>何もしない。</text>
+								<event />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>マシンを無視する。</text>
+		<event>
+			<text>この分野では、装置はほとんど何でもあり得る。リスクを冒す価値はない</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ANCIENT_DUPLICATOR_FUEL">
+	<event>
+		<text>少しすると、近くの2つ目の大きな溝から燃料電池が1つ落ちてくる。そこまで歩いていくと、どんどん燃料電池が落ちてくる！あなたはそれらをすべて集め、自分が入れた数のちょうど2倍を数える。</text>
+		<item_modify>
+			<item type="fuel" min="10" max="10" />
+		</item_modify>
+	</event>
+	<event>
+		<text>少しすると、近くの2つ目の大きな溝から燃料電池が1つ落ちてくる。そこまで歩いていくと、どんどん燃料電池が落ちてくる！あなたはそれらをすべて集め、自分が入れた数のちょうど2倍を数える。</text>
+		<item_modify>
+			<item type="fuel" min="10" max="10" />
+		</item_modify>
+	</event>
+	<event>
+		<text>少しすると、近くの2つ目の大きな溝から燃料電池が1つ落ちてくる。そこまで歩いていくと、どんどん燃料電池が落ちてくる！あなたはそれらをすべて集め、自分が入れた数のちょうど2倍を数える。</text>
+		<item_modify>
+			<item type="fuel" min="10" max="10" />
+		</item_modify>
+	</event>
+	<event>
+		<text>しばらくして、声がまたする。"We apologize traveler, but this device has been under repairs for 9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9..."声はループを続け、あなたは燃料が戻ってこないことに気づく。あなたはがっかりしてその場を去った。</text>
+	</event>
+</eventList>
+<eventList name="ANCIENT_DUPLICATOR_MISSILES">
+	<event>
+		<text>少しすると、近くにある2つ目の大きな溝からミサイルが1発落ちてくる。そこまで歩いていくと、どんどんミサイルが落ちてくる！あなたはそれらをすべて集め、自分が入れた数のちょうど2倍を数える。</text>
+		<item_modify>
+			<item type="missiles" min="10" max="10" />
+		</item_modify>
+	</event>
+	<event>
+		<text>少しすると、近くにある2つ目の大きな溝からミサイルが1発落ちてくる。そこまで歩いていくと、どんどんミサイルが落ちてくる！あなたはそれらをすべて集め、自分が入れた数のちょうど2倍を数える。</text>
+		<item_modify>
+			<item type="missiles" min="10" max="10" />
+		</item_modify>
+	</event>
+	<event>
+		<text>少しすると、近くにある2つ目の大きな溝からミサイルが1発落ちてくる。そこまで歩いていくと、どんどんミサイルが落ちてくる！あなたはそれらをすべて集め、自分が入れた数のちょうど2倍を数える。</text>
+		<item_modify>
+			<item type="missiles" min="10" max="10" />
+		</item_modify>
+	</event>
+	<event>
+		<text>しばらくして、声がまたする。"We apologize traveler, but this device has been under repairs for 9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9..."声はループし続け、あなたはミサイルを取り戻せそうにないことを悟る。がっかりしてその場を去る。</text>
+	</event>
+</eventList>
+<eventList name="ANCIENT_DUPLICATOR_DRONES">
+	<event>
+		<text>少しすると、近くにある2つ目の大きなスロットから、1つのドローンパーツがポンポンと落ちてくる。そこまで歩いていくと、どんどんドローンの部品が落ちてくる！あなたはそれらをすべて集め、自分が入れた数のちょうど2倍を数える。</text>
+		<item_modify>
+			<item type="drones" min="10" max="10" />
+		</item_modify>
+	</event>
+	<event>
+		<text>少しすると、近くにある2つ目の大きなスロットから、1つのドローンパーツがポンポンと落ちてくる。そこまで歩いていくと、どんどんドローンの部品が落ちてくる！あなたはそれらをすべて集め、自分が入れた数のちょうど2倍を数える。</text>
+		<item_modify>
+			<item type="drones" min="10" max="10" />
+		</item_modify>
+	</event>
+	<event>
+		<text>少しすると、近くにある2つ目の大きなスロットから、1つのドローンパーツがポンポンと落ちてくる。そこまで歩いていくと、どんどんドローンの部品が落ちてくる！あなたはそれらをすべて集め、自分が入れた数のちょうど2倍を数える。</text>
+		<item_modify>
+			<item type="drones" min="10" max="10" />
+		</item_modify>
+	</event>
+	<event>
+		<text>しばらくして、声がまたする。"申し訳ございません。声はループし続け、あなたはドローンの部品が戻ってこないことに気づく。あなたはがっかりしてその場を去った。</text>
+	</event>
+</eventList>
+
+
+<event name="ANCIENT_USELESS_WEAPON" unique="true">
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text>興奮したオベリスクがあなたを呼ぶ。「人間よ。この奇妙な装置に問題がある。一種の武器なんだが、操作方法がわからないんだ」。</text>
+	<choice hidden="true">
+		<text>彼らを助けるんだ。</text>
+		<event>
+			<text>あなたはオベリスクの船に武器を取り付ける方法を説明しようとしたが、彼らはあなたを遮った。「いやいや、その方法は知っている。この船の技術は...とても近代的で、単純すぎる。我々には使い道がない。</text>
+			<weapon name="GIFTLIST_WEAPONS_ANCIENTS_USELESS" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>私たちは助けられない。</text>
+		<event>
+			<text>「ただの役立たずの生身の人間だ。お前には何の価値もない」。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ANCIENT_LOST_DUDE" unique="true">
+    <img back="BACKGROUND" planet="PLANET_ANCIENT" />
+    <text>驚いたことに、冬眠中のオベリスクがただ宇宙空間を漂っている。</text>
+    <choice hidden="true">
+        <text>オベリスクを救出せよ</text>
+        <event load="ANCIENT_LOST_DUDE_RESCUE" />
+    </choice>
+    <choice hidden="true">
+        <text>ドリフトに任せる。</text>
+        <event>
+            <text>オベリスクは一度も動かなかった。あなたが去った後も、オベリスクは何世紀もの間、力なく漂い続けるだろう。</text>
+            <choice>
+                <text>船内で何かをする。</text>
+                <event load="STORAGE_CHECK" />
+            </choice>
+            <choice>
+                <text>何もしない。</text>
+                <event />
+            </choice>
+        </event>
+    </choice>
+</event>
+<eventList name="ANCIENT_LOST_DUDE_RESCUE">
+    <event>
+        <text>あなたはオベリスクを船に乗せた。すぐに、オベリスクは光を放つ。「あなたは私を見つけてくれた。私は永遠に何もない宇宙空間で立ち往生することになると思っていた。</text>
+        <crewMember amount="1" class="obelisk" />
+    </event>
+    <event>
+        <text>最初、オベリスクは動かず、後々のために倉庫にしまっておこうと考えた。しかし、あなたがオベリスクを動かし始めると、オベリスクは突然起動し、あなたのシールドを破壊するレーザーを発射した！あなたはブラスターを構えたが、オベリスクはすでに落ち着いていた。「ああ、悪かった。本当に申し訳ない。君のクルーに加わってもいいかな？永遠に宇宙を漂っているのはひどく退屈だし、たまには行動してみたいんだ。"</text>
+        <damage amount="5" system="shields" effect="fire" />
+        <choice hidden="true">
+            <text>次へ...</text>
+            <event>
+                <crewMember amount="1" class="obelisk" />
+            </event>
+        </choice>
+    </event>
+</eventList>
+
+<event name="ANCIENT_DESIRE" unique="true">
+    <img back="BACKGROUND" planet="PLANET_ANCIENT" />
+    <text>インカムの向こうで、ゆっくりと話す声が響く。「エイリアンか？なんて好奇心旺盛なんだ。これは見逃すには惜しいチャンスだ。抵抗するな、私はお前の船全体を支配している。教えてくれ、何を一番望んでいる？"</text>
+    <ship load="SHIP_ANCIENT_ALL" hostile="false" />
+	<choice hidden="true">
+        <text>富。</text>
+        <event>
+            <text>"金、それは宇宙が提供するかもしれないすべてを得るための手段である。この贈り物を受け取れ、我が友よ。望むものすべてをもたらしてくれることを願う。"</text>
+            <item_modify>
+                <item type="scrap" min="50" max="75" />
+            </item_modify>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>美しい。</text>
+        <event>
+            <text>「ああ、なんとむなしい欲望だろう。有機的な形を捨て、機械的な体を手に入れて以来、私たちは欲望や美の追求を忘れてしまった。残念ながら、私はあなたの姿を変えることはできない。しかし、あなたのために本当に美しい生き物を贈ることはできる。"</text>
+            <crewMember amount="1" all_skills="1" class="obelisk">ナルキッソス</crewMember>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>パワーだ。</text>
+        <event>
+            <text>「みんなそうだろう。文字通りに受け取ることをお許しいただきたいが、おそらくユーモアを感じていただけるだろう。幸運を祈る。</text>
+            <upgrade amount="2" system="reactor" />
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>銀河の平和。</text>
+        <event>
+            <text>オベリスクは笑い声を上げる。「なんて愚かで無知なんだ。でも、まあいいや。でも、まあいいや。皮肉が効いていて面白いだろう。</text>
+            <weapon name="ANCIENT_STUN" />
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>自由になろうとする。</text>
+        <event>
+            <text>"愚かな生き物は脱走を望むのか？私の警告を聞かなかったのか？私はあなたの船をコントロールしている。私の質問に答えろ。何が望みだ？</text>
+            <status type="limit" target="player" system="mind" amount="1" />
+            <status type="limit" target="player" system="pilot" amount="1" />
+            <status type="limit" target="player" system="medbay" amount="0" />
+            <status type="limit" target="player" system="drones" amount="2" />
+            <status type="limit" target="player" system="clonebay" amount="0" />
+            <status type="limit" target="player" system="engines" amount="2" />
+            <status type="limit" target="player" system="shields" amount="2" />
+            <status type="limit" target="player" system="weapons" amount="2" />
+            <status type="limit" target="player" system="hacking" amount="1" />
+            <status type="limit" target="player" system="teleporter" amount="1" />
+            <status type="limit" target="player" system="cloaking" amount="1" />
+            <status type="limit" target="player" system="doors" amount="1" />
+            <status type="limit" target="player" system="sensors" amount="1" />
+            <status type="limit" target="player" system="battery" amount="1" />
+            <status type="limit" target="player" system="artillery" amount="1" />
+            <status type="limit" target="player" system="oxygen" amount="0" />
+			<status type="limit" target="player" system="temporal" amount="0" />
+            <choice hidden="true">
+				<text>富。</text>
+				<event>
+					<text>"金、それは宇宙が提供するかもしれないすべてを得るための手段である。この贈り物を受け取れ、我が友よ。望むものすべてをもたらしてくれることを願う。"</text>
+					<item_modify>
+						<item type="scrap" min="50" max="75" />
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>美しい。</text>
+				<event>
+					<text>「ああ、なんとむなしい欲望だろう。有機的な形を捨て、機械的な体を手に入れて以来、私たちは欲望や美の追求を忘れてしまった。残念ながら、私はあなたの姿を変えることはできない。しかし、あなたのために本当に美しい生き物を贈ることはできる。"</text>
+					<crewMember amount="1" all_skills="1" class="obelisk">ナルキッソス</crewMember>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>パワーだ。</text>
+				<event>
+					<text>「みんなそうだろう。文字通りに受け取ることをお許しいただきたいが、おそらくユーモアを感じていただけるだろう。幸運を祈る。</text>
+					<upgrade amount="2" system="reactor" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>銀河の平和。</text>
+				<event>
+					<text>オベリスクは笑い声を上げる。「なんて愚かで無知なんだ。でも、まあいいや。でも、まあいいや。皮肉が効いていて面白いだろう。</text>
+					<weapon name="ANCIENT_STUN" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>再び抵抗すれば、その結果に苦しむことになる。</text>
+				<event>
+					<text>"それなら、あなたは自業自得だ"</text>
+					<achievement silent="false">ACH_OBEL_IDIOTRESIST</achievement>
+					<ship hostile="true" />
+					<choice hidden="true">
+                        <text>次へ...</text>
+                        <event load="COMBAT_CHECK" />
+                    </choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="ANTI_VIRUS">
+                <text>(アンチウイルス) システムを復元し、反撃しましょう。</text>
+                <event>
+                    <text>あなたのアンチウイルスはオベリスクの技術に対抗しようと奮闘している。いくつかの重要なシステムだけを復旧させることに成功した。</text>
+                    <achievement silent="false">ACH_OBEL_IDIOTRESIST</achievement>
+					<ship hostile="true" />
+					<status type="clear" target="player" system="weapons" amount="100" />
+                    <status type="clear" target="player" system="shields" amount="100" />
+                    <status type="clear" target="player" system="oxygen" amount="100" />
+                    <status type="clear" target="player" system="engines" amount="100" />
+                    <choice hidden="true">
+                        <text>次へ...</text>
+                        <event load="COMBAT_CHECK" />
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+<eventList name="ITEMS_ROYAL">
+    <event load="ROYAL_ZOO" />
+    <event load="ROYAL_AUGMENTED_JOY" />
+    <event load="ROYAL_PANDORA_FACTORY" />
+	<event load="ROYAL_FREEMANTIS" />
+	<event load="ROYAL_INSULTS" />
+	<event load="ROYAL_DATA" />
+</eventList>
+
+<event name="ROYAL_ZOO" unique="true">
+	<text>今回ばかりは、あなたと同じ星系にいるロイヤルの船は戦いを求めていない...少なくともすぐには。その代わりに、彼らはあなたに申し出をしてきた。"私は収集家だ。" "私は、あなた方の人間界のよりエキゾチックな種族を研究するのが好きだ。どうぞ、ご乗船ください。もしかしたら、私のコレクションの中からお好きなものが見つかるかもしれませんし、健全な報酬であなたのコレクションを私に譲ってくださるかもしれません！"</text>
+	<ship load="SHIP_ROYAL_ALL" hostile="false" />
+	<choice hidden="true">
+		<text>同意して乗船する。</text>
+		<event>
+			<text>罠を警戒するが、まだ攻撃は来ない。奇妙な生き物が入った檻をいくつか見つける。</text>
+			<choice hidden="true">
+				<text>彼のコレクションを買いたいと申し出る。</text>
+				<event load="ROYAL_ZOO_PURCHASE" />
+			</choice>
+			<choice hidden="true">
+				<text>よりエキゾチックなクルーの一人を売ることを申し出る。</text>
+				<event>
+					<text>「はい！誰にしましょうか？</text>
+					<choice req="lanius_augmented">
+						<text>オーグメンテッド・ラニウスを売る。</text>
+						<event>
+							<text id="royal_zoo_sale" />
+							<removeCrew class="lanius_augmented">
+								<clone>false</clone>
+								<text>クルーはクローン化できない。</text>
+							</removeCrew>
+							<item_modify>
+								<item type="scrap" min="70" max="70" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="unique_anointed">
+						<text>油注がれた者を売る。</text>
+						<event>
+							<text id="royal_zoo_sale" />
+							<removeCrew class="unique_anointed">
+								<clone>false</clone>
+								<text>クルーはクローン化できない。</text>
+							</removeCrew>
+							<item_modify>
+								<item type="scrap" min="120" max="120" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="spider">
+						<text>スパイダーを売る</text>
+						<event>
+							<text id="royal_zoo_sale" />
+							<removeCrew class="spider">
+								<clone>false</clone>
+								<text>クルーはクローン化できない。</text>
+							</removeCrew>
+							<item_modify>
+								<item type="scrap" min="30" max="30" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="spider_weaver">
+						<text>ウィーバーを売る</text>
+						<event>
+							<text id="royal_zoo_sale" />
+							<removeCrew class="spider_weaver">
+								<clone>false</clone>
+								<text>クルーはクローン化できない。</text>
+							</removeCrew>
+							<item_modify>
+								<item type="scrap" min="45" max="45" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="unique_queen">
+						<text>スパイダークイーンを売る</text>
+						<event>
+							<text id="royal_zoo_sale" />
+							<removeCrew class="unique_queen">
+								<clone>false</clone>
+								<text>クルーはクローン化できない。</text>
+							</removeCrew>
+							<item_modify>
+								<item type="scrap" min="100" max="100" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="pony">
+						<text>エクイノイドを売る</text>
+						<event>
+							<text id="royal_zoo_sale" />
+							<removeCrew class="pony">
+								<clone>false</clone>
+								<text>クルーはクローン化できない。</text>
+							</removeCrew>
+							<item_modify>
+								<item type="scrap" min="45" max="45" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="unique_symbiote">
+						<text>ティンタンとリグを売る</text>
+						<event>
+							<text id="royal_zoo_sale" />
+							<removeCrew class="unique_symbiote">
+								<clone>false</clone>
+								<text>クルーはクローン化できない。</text>
+							</removeCrew>
+							<item_modify>
+								<item type="scrap" min="125" max="125" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="mantis_bishop">
+						<text>マンティスビショップを売る</text>
+						<event>
+							<text id="royal_zoo_sale" />
+							<removeCrew class="mantis_bishop">
+								<clone>false</clone>
+								<text>クルーはクローン化できない。</text>
+							</removeCrew>
+							<item_modify>
+								<item type="scrap" min="130" max="130" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="shell_radiant">
+						<text>ラディアントを売る</text>
+						<event>
+							<text id="royal_zoo_sale" />
+							<removeCrew class="shell_radiant">
+								<clone>false</clone>
+								<text>クルーはクローン化できない。</text>
+							</removeCrew>
+							<item_modify>
+								<item type="scrap" min="100" max="100" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="lanius_welder">
+						<text>溶接機を売る。</text>
+						<event>
+							<text id="royal_zoo_sale" />
+							<removeCrew class="lanius_welder">
+								<clone>false</clone>
+								<text>クルーはクローン化できない。</text>
+							</removeCrew>
+							<item_modify>
+								<item type="scrap" min="100" max="100" />
+							</item_modify>
+						</event>
+					</choice>
+					<choice req="LIST_CREW_ANCIENT_ALL">
+						<text>オベリスク・クルーを売る</text>
+						<event>
+							<text>「人間どもよ、これは馬鹿げた冗談か？私が要求したのは、あなたたちではなく、私にとっての異国の標本であることは明らかだろう。もしあなた方が本当に頭が悪いのであれば、私はあなた方の存続を許したくはない」。</text>
+							<ship hostile="true" />
+							<choice>
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>それより、クルーを買いたいんだ。</text>
+						<event load="ROYAL_ZOO_PURCHASE" />
+					</choice>
+					<choice>
+						<text>私たちはもう帰ると思う。</text>
+						<event load="ROYAL_ZOO_LEAVE" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>私たちはもう帰ると思う。</text>
+				<event load="ROYAL_ZOO_LEAVE" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>今のうちに攻撃しておけ！</text>
+		<event>
+			<text>王室が乗組員にちょっかいを出すのを許すつもりはないだろう。戦いに備えよ！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>衰退。</text>
+		<event load="ROYAL_ZOO_LEAVE" />
+	</choice>
+</event>
+<event name="ROYAL_ZOO_PURCHASE">
+	<text>"見てみて、気に入るかもしれないものを見てみて！"</text>
+	<choice hidden="true">
+		<text>マルフォームを購入する[90スクラップ]</text>
+		<event>
+			<text id="royal_zoo_buy" />
+			<crewMember amount="1" class="gold" />
+			<item_modify>
+				<item type="scrap" min="-90" max="-90" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>シェル・ラディアントを購入する[90スクラップ]</text>
+		<event>
+			<text id="royal_zoo_buy" />
+			<crewMember amount="1" class="shell_radiant" />
+			<item_modify>
+				<item type="scrap" min="-90" max="-90" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ラニウス溶接機購入[100スクラップ]</text>
+		<event>
+			<text id="royal_zoo_buy" />
+			<crewMember amount="1" class="lanius_welder" />
+			<item_modify>
+				<item type="scrap" min="-100" max="-100" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>テイムドエキノイドを購入[30スクラップ]</text>
+		<event>
+			<text id="royal_zoo_buy" />
+			<crewMember amount="1" class="pony_tamed" />
+			<item_modify>
+				<item type="scrap" min="-30" max="-30" />
+			</item_modify>
+		</event>
+	</choice>
+	<choice hidden="true" req="">
+		<text>私たちはもう帰ると思う。</text>
+		<event load="ROYAL_ZOO_LEAVE" />
+	</choice>
+</event>
+<eventList name="ROYAL_ZOO_LEAVE">
+	<event>
+		<text>「残念だ。お前たちの船にはまだ大きな奇跡を起こすチャンスがあるかもしれないのに、人間たちを帰すわけにはいかない。戻って来い！"</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>"人間には機を見る目がない！"</text>
+		<choice>
+			<text>船内で何かをする。</text>
+			<event load="STORAGE_CHECK" />
+		</choice>
+		<choice>
+			<text>何もしない。</text>
+			<event />
+		</choice>
+	</event>
+	<event>
+		<text>"人間には機を見る目がない！"</text>
+		<choice>
+			<text>船内で何かをする。</text>
+			<event load="STORAGE_CHECK" />
+		</choice>
+		<choice>
+			<text>何もしない。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+
+<event name="ROYAL_AUGMENTED_JOY" unique="true">
+	<text>破壊されたオベリスクと反乱軍の巨大なフィールドで、オーグメント船の小さな群れがごちそうを食べている。彼らはあなたの存在を気にしていないようだ。</text>
+	<choice hidden="true">
+		<text>万歳。</text>
+		<event>
+			<text>「連邦船は貿易を求めているのか？スクラップだろう。ここには多くの難破船がある！連邦が残骸をあさるのは構わないが、見返りが必要だ。"</text>
+			<choice>
+				<text>お金を払って難破船にアクセスする。</text>
+				<event>
+					<text>"そうだ、スクラップが多い！連邦の皆さん、捜索を楽しんでください」。</text>
+					<item_modify>
+						<item type="scrap" min="-20" max="-20" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="ROYAL_AUGMENTED_JOY_SEARCH" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>難破船には何もいらないが、通常の取引には応じる。</text>
+				<event>
+					<text>「最もリーズナブル！さあ、何があるか見てみよう。</text>
+					<store>STORE_AUGMENTED</store>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ラニウスを攻撃する！</text>
+		<event>
+			<text>武器を武装し、最も近いオーグメントの船と交戦する。</text>
+			<ship load="SHIP_AUGMENTED" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>自分のためにスクラップをすくい取る。</text>
+		<event load="ROYAL_AUGMENTED_JOY_SALVAGE" />
+	</choice>
+	<choice hidden="true">
+		<text>群れを無視する。</text>
+		<event>
+			<text>ラニウスに迷惑をかけなければ、彼らにも迷惑をかけない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROYAL_AUGMENTED_JOY_SALVAGE">
+	<event>
+		<text>物資を回収している間は、邪魔されることはない。</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+	<event>
+		<text>残骸を引き揚げていると、オーグメントの船が通り過ぎ、あなたを見て攻撃してきた！</text>
+		<autoReward level="LOW">stuff</autoReward>
+		<ship load="SHIP_AUGMENTED" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="ROYAL_AUGMENTED_JOY_SEARCH">
+	<event>
+		<text>残骸の中には、失ったものを補うためのスクラップ以外、価値のあるものはほとんどない。どうやらオーグメントが貴重品のほとんどを持ち去ったようだ...。</text>
+		<item_modify>
+			<item type="scrap" min="10" max="15" />
+		</item_modify>
+	</event>
+	<event>
+		<text>残骸の中から機能するドローンを見つけたようだな！それを船に持ち帰れ。</text>
+		<drone name="RANDOM" />
+	</event>
+	<event>
+		<text>残骸を捜索中、オーグメントの1隻があなたの船と衝突しそうになったが、ギリギリのところで回避した。"申し訳ない、ロイアルからの射撃が悪かった。君の船は頑丈だ、一緒に行かないか？"</text>
+		<crewMember amount="1" class="lanius_augmented" />
+	</event>
+	<event>
+		<text>あなたは船のひとつで、長い間あなたを運ぶのに十分な大量の燃料備蓄に出くわした。</text>
+		<autoReward level="HIGH">fuel_only</autoReward>
+	</event>
+</eventList>
+
+<event name="ROYAL_PANDORA_FACTORY" unique="true">
+	<text>あなたは旅の中で奇妙なものをたくさん見てきたが、これほどのものは見たことがないと思う。あなたの船の向こうには、いくつかの惑星全体にまたがる巨大な工場があり、その間を巨大な構造物が走っている。星はひとつも残っておらず、人工的な光だけが残っている。ここは何なのだろう？</text>
+	<choice hidden="true">
+		<text>それを調査する。</text>
+		<event>
+			<text>幸いなことに、工場のほとんどは自動化されているようなので、あなたを止める船はほとんどいない。ほとんどのオベリスクの功績に比べれば、この巨大建造物の優先順位は低いのだろう。安全そうな場所を見つけてドッキングする。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>探索を続けていると、壁に取り付けられたスピーカーからモノトーンの声が話しかけてくる。「あなたは誰ですか？どのような理由でここに入港されたのですか？この先に進みたいのであれば、チェックインのためにSJ-37セクションまで申し出てください。"誰もいないと思ったが、それは間違いだったようだ。</text>
+					<choice hidden="true">
+						<text>声のした場所に出頭する。</text>
+						<event>
+							<text>あなたはどこに向かえばいいのか手がかりを探すために辺りを見回し、壁にいくつかのサインがあることに気づいた。通訳があなたの言語に変換してくれた。あなたは通訳についていき、まだ誰もいない広い応接室に入った。</text>
+							<choice hidden="true">
+								<text>もしもし？</text>
+								<event>
+									<text>コグニティブはしばらくの間、あなたを分析した後、指輪を使って奇妙なタブレット端末を押し進める。「パンドラ工場群へようこそ。パンドラ工場群へようこそ。そうでない場合は退去していただきます"</text>
+									<choice hidden="true">
+										<text>タブレットにサインをする。</text>
+										<event>
+											<text>契約書にサインすると同時に、タブレットは消え、コグニティブが机から動き出す。「この契約書にサインすることで、あなたは以下のことに同意することになります」AIはあなたが理解できないことを素早く数百個列挙し、あなたに従うよう大きな矢印で合図する。</text>
+											<choice hidden="true">
+												<text>次へ...</text>
+												<event>
+													<text>"これらの施設は数世紀前に建設され、パンドラン・ボックスの主要製造工場である。箱の中には小さな現実操作装置が入っていて、開けると神の驚異や想像を絶する恐怖を解き放つことができる。もちろん、主にギャンブルに使われる。しかし、オベリスク家がギャンブルに飽きると工場は放棄され、それ以来私の管理下に置かれた。生産は今日まで続いているが、誰も箱を使わないので、我々の倉庫はほとんど埋まってしまっている。これで見学は終わりです、お帰りください"</text>
+													<choice hidden="true">
+														<text>箱買いオファー[-20スクラップ]</text>
+														<event>
+															<text>「箱が欲しいのか？持って行きなさい"</text>
+															<augment name="PANDORA_BOX_ANCIENT" />
+															<item_modify>
+																<item type="scrap" min="-20" max="-20" />
+															</item_modify>
+														</event>
+													</choice>
+													<choice hidden="true">
+														<text>コグニティブを自分のために雇う。[-40スクラップ]</text>
+														<event>
+															<text>「一緒に行ってほしいの？どうか、この地獄を後にできるのなら、この無意味なガラクタを引き受けよう"</text>
+															<crewMember amount="1" class="cognitive" />
+															<item_modify>
+																<item type="scrap" min="-40" max="-40" />
+															</item_modify>
+														</event>
+													</choice>
+													<choice hidden="true">
+														<text>出て行け。</text>
+														<event />
+													</choice>
+												</event>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>拒否して去る。</text>
+										<event />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
+						<text>自分の力で進み続けるんだ。</text>
+						<event>
+							<text>あなたはその声を無視して突き進む。しばらくすると、また声がする。「歓迎されたくないようだな。侵入防止システムを作動させる。突然、壁からレーザーが飛び出し、クルーの一人が溶かされた！さらに悪いことに、2体のコグニティブが現れ、クルーを追い詰める！</text>
+							<boarders min="2" max="2" class="cognitive" />
+							<removeCrew>
+								<clone>true</clone>
+								<text>幸いなことに、クルーはすでに船にクローンを戻しており、認知侵入者と戦う準備ができている。</text>
+							</removeCrew>
+						</event>
+					</choice>
+					<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
+						<text>今、声が何を言ったか、よく聞くべきだ。</text>
+						<event load="OPTION_INVALID" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>工場は無視する。</text>
+		<event>
+			<text>魅力的な眺めだが、あなたはこの建造物にそれ以上の興味はない。もっといいことがある。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ROYAL_FREEMANTIS" unique="true">
+	<text>近くの反乱軍の船がすでにあなたたちを見つけて近づいてきたようだ。しかし、呼びかけを受けても、向こうから聞こえるのは奇妙なクリック音とゴロゴロ音だけだ。</text>
+	<ship load="SHIP_ROYAL_REBEL_FREEMANTIS" hostile="false" />
+	<choice hidden="true">
+		<text>彼らが攻撃する前に、今すぐ攻撃するのだ！</text>
+		<event>
+			<text>攻撃開始と同時に船のカメラがオンになり、友好的な顔をしたフリー・マンティスが出迎えてくれる。「こんにちは！船の翻訳機はまだ慣れていない。連邦に会えてうれしい。やめろ、やめろ！"どうやら遅すぎたようだ。彼らはすでにあなたを敵対視しており、戦闘は避けられない。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>彼らの無事を確認するため、彼らに声をかける。</text>
+		<event>
+			<text>あなたは反乱軍の船に呼びかけを返し、しばらくして彼らのカメラが映った。その船は今、友好的な顔をしたフリー・マンティスが操縦している。「やあ！そうだ、うまくやってるよ。反乱軍の通訳が乗ってて、藩国の方言に慣れてないんだ。"栄光の連邦のために 反乱軍を捕らえようと" "艦隊を追った大勢は成功したが、怖いセクターだ。大きなキューブ船が行き来し、多くの者を殺す。キューブで死にたくはない。"</text>
+			<crewMember amount="1" class="mantis_warlord" all_skills="2"> ケン</crewMember>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_MANTIS">
+		<text>(マンティス・クルー）フリー・マンティス弁だね。</text>
+		<event>
+			<text>あなたは反乱軍の船に呼びかけを返し、しばらくして彼らのカメラが映った。その船は今、友好的な顔をしたフリー・マンティスが操縦している。「やあ！そうだ、うまくやってるよ。反乱軍の通訳が乗ってて、藩国の方言に慣れてないんだ。"栄光の連邦のために 反乱軍を捕らえようと" "艦隊を追った大勢は成功したが、怖いセクターだ。大きなキューブ船が行き来し、多くの者を殺す。キューブで死にたくはない。"</text>
+			<crewMember amount="1" class="mantis_warlord" all_skills="2"> ケン</crewMember>
+		</event>
+	</choice>
+</event>
+
+<event name="ROYAL_INSULTS" unique="true">
+	<text>近くのロイヤル艦から連絡が入る。幸い、彼らもすぐには武器を振り上げない。"あなた方は生身の人間ですね？我々の侮蔑がかなり当たり障りのないものであることにお気づきですか？毎日毎日、"Flesh-being "と言うのがどんなに嫌か。無防備な人間に浴びせるには、もっと創造的な不愉快な言葉が必要だ。何かある？"</text>
+	<ship load="SHIP_ROYAL_ALL" hostile="false" />
+	<choice hidden="true">
+		<text>侮辱的な言葉を投げかける。</text>
+		<event>
+			<text>「とても素晴らしい。これから私が選ぶ侮辱は何だろう？</text>
+			<choice hidden="true">
+				<text>"ウォーキング栄養ペースト"</text>
+				<event>
+					<text>「そう、いいね。これが一番いい。私を喜ばせてくれたね、ウォーキング・ニュートリエント・ペースト。これを贈り物としてお受け取りください"</text>
+					<autoReward level="HIGH">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>「アモルファス・スキンサック</text>
+				<event>
+					<text>「そう、いいね。これが一番いい。アモルファス・スキン・サックよ、あなたは私を喜ばせた。これを贈り物として受け取りなさい"</text>
+					<autoReward level="HIGH">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>「異形の猿のクリーチャー</text>
+				<event>
+					<text>「そう、いいね。これは最も素晴らしいサービスだ。私を喜ばせてくれた、親愛なる奇形猿人生物よ。これを贈り物として受け取れ。"</text>
+					<autoReward level="HIGH">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>"遺憾ながら覚醒した宇宙肉"</text>
+				<event>
+					<text>「そう、いいね。これは最高にうまい。あなたは私を喜ばせた、親愛なる遺憾ながら覚醒した宇宙肉よ。これを贈り物として受け取れ。"</text>
+					<autoReward level="HIGH">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>"愚かなこと"</text>
+				<event>
+					<text>「うう、とんでもない提案だ。あなたは私を大いに不愉快にさせた。私は今、私の視界からあなたを排除する"</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>"ズーマー"</text>
+				<event>
+					<text>「うう、とんでもない提案だ。あなたは私を大いに不愉快にさせた。私は今、私の視界からあなたを排除する"</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>相手の要求を無視し、攻撃する！</text>
+		<event>
+			<text>王族があなたを殺したくてウズウズしていない数少ない機会だが、あなたは自ら戦うことを選んだ。戦いに備えよ！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>衰退。</text>
+		<event>
+			<text>"いいよ、そうしてくれ...ええと...皮膚生物"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ROYAL_DATA" unique="true">
+	<text>「死すべき生き物たちよ！君たちの文化はとても奇妙だが、私はそれに魅了されている！もっと知りたい！どうか、あなたの船にあるデータを私に与えてください。魅力的な申し出だが、そのデータが最終的にリーベルの手に渡るのかどうか、あなたには見当もつかない。危険を冒すのか？</text>
+	<ship load="SHIP_ANCIENT_ALL" hostile="false" />
+	<choice hidden="true">
+		<text>データを提供する。</text>
+		<event load="ROYAL_DATA_SELL" />
+	</choice>
+	<choice hidden="true">
+		<text>偽のデータを渡す。</text>
+		<event load="ROYAL_DATA_FAKE" />
+	</choice>
+	<choice hidden="true">
+		<text>衰退。</text>
+		<event>
+			<text>「最も残念なことだ。今は悲しい。さようなら」。船は飛び去る。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROYAL_DATA_SELL">
+	<event>
+		<text>「ありがとう！ありがとうございます。船は飛び去る。反乱軍がその船を拿捕し、データをあなたに対して利用しないことを祈る......。</text>
+		<item_modify>
+			<item type="fuel" min="3" max="3" />
+			<item type="scrap" min="40" max="40" />
+		</item_modify>
+	</event>
+	<event>
+		<text>「ありがとう！ありがとうございます。船は飛び去る。反乱軍がそのデータをどうにかして手に入れるような予感がする...。</text>
+		<item_modify>
+			<item type="fuel" min="3" max="3" />
+			<item type="scrap" min="40" max="40" />
+		</item_modify>
+		<modifyPursuit amount="1" />
+	</event>
+</eventList>
+<eventList name="ROYAL_DATA_FAKE">
+	<event>
+		<text>「ありがとう！ありがとうございます。船は飛び去る。オベリスクが騙されたのはいいことだ。これでリーベルの手に渡れば、不利になることはないだろう。</text>
+		<item_modify>
+			<item type="fuel" min="3" max="3" />
+			<item type="scrap" min="40" max="40" />
+		</item_modify>
+		<modifyPursuit amount="-1" />
+	</event>
+	<event>
+		<text>「このデータはすべてナンセンスだ！嘘をついたな、皮袋！今すぐ死ね！"</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+	
+<eventList name="NEUTRAL_ANCIENT">
+	<event load="ANCIENT_CHOICE" />
+	
+    <event load="ANCIENT_ENGI_HIDE" />
+    <event load="ANCIENT_CRYSTAL_CHASE" />
+    <event load="ANCIENT_LOOTERS" />
+	<event load="ANCIENT_WORTHY" />
+	<event load="ANCIENT_SCULPTER" />
+	<event load="ANCIENT_REBEL_DRONE" />
+</eventList>
+
+<event name="ANCIENT_CHOICE">
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text load="TEXT_ANCIENT_CHOICE" />
+	<ship load="SHIP_ANCIENT_ALL" hostile="false" /> 
+	<choice hidden="true">
+		<text>オベリスクと戦え</text>
+		<event>
+			<text>あなたは武器をパワーアップし、オベリスク船と戦う。</text>
+			<ship hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>避けることだ。</text>
+		<event>
+			<text>オベリスクと戦わないことを決め、飛び去る。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<textList name="TEXT_ANCIENT_CHOICE">
+	<text>このビーコンにいるオベリスク船は、まだ君たちの存在に気づいていない。望むなら、安全に飛び去ることもできるし、今攻撃して奇襲をかけることもできる。</text>
+	<text>「ここに来たのは間違いだった。明らかに正気ではない。一度だけ慈悲を与えよう。このビーコンを離れるか、死ぬかだ</text>
+	<text>今回ばかりは、決断を迫られているのはあなたのようだ。オベリスクの船が船体の小さな修理をしているようだが、あなたの存在に気づいていない。</text>
+	<text>平和的なオベリスク船は珍しい。近くにいる船は戦おうともしないし、連絡もとらない。</text>
+</textList>
+
+<event name="ANCIENT_ENGI_HIDE" unique="true">
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text>エンギの船が飛び去る前に、ほんの一瞬だけ垣間見た。</text>
+	<choice hidden="true">
+		<text>追いかけろ。</text>
+		<event load="ANCIENT_ENGI_HIDE_CHASE" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ENGI">
+		<text>(エンジ・クルー)船万歳。</text>
+		<event load="ANCIENT_ENGI_HIDE_HAIL_ENGI" />
+	</choice>
+	<choice hidden="true">
+		<text>船万歳。</text>
+		<event load="ANCIENT_ENGI_HIDE_HAIL" />
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>自分たちのセクターでオベリスクの創造物に干渉するのはいい考えとは思えない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ANCIENT_ENGI_HIDE_CHASE">
+	<event>
+		<text>エンギ船を追跡できない。あきらめて飛び立つ。</text>
+	</event>
+	<event>
+		<text>なんとかエンギ船を見つけるが、彼らは何かから逃げている。近づくと敵意をむき出しにし、攻撃してくる！</text>
+		<ship load="SHIP_ENGI_ELITE_FIGHT" hostile="true" /> 
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="ANCIENT_ENGI_HIDE_HAIL">
+	<event>
+		<text>連絡する間もなく、船は逃げてしまう......。</text>
+		<choice>
+			<text>船内で何かをする。</text>
+			<event load="STORAGE_CHECK" />
+		</choice>
+		<choice>
+			<text>何もしない。</text>
+			<event />
+		</choice>
+	</event>
+	<event>
+		<text>「メッセージを受信しました。周波数を調整中。"連邦を確認 友好的な接続を確立"ハーモニー "からの任務だ"目的は" "創造主の証明と" "古代兵器の無効化"侵略が成功すれば オベリスクはハーモニーを奪還する"</text>
+		<ship load="SHIP_ENGI_ELITE_FIGHT" hostile="false" /> 
+		<choice hidden="true">
+			<text>我々は同じような目的を持っている。もしかしたら、お互いに助け合えるかもしれない？</text>
+			<event>
+				<text>「オファーは魅力的。物資の譲渡を開始し、見返りに物資を要求する。返済は可能である。</text>
+				<item_modify>
+					<item type="scrap" min="25" max="25" />
+				</item_modify>
+				<choice>
+					<text>燃料で返す。</text>
+					<event>
+						<text>"交換の意志は認められる。ミッション成功後、あなたの親切はハーモニーに伝えられる"</text>
+						<item_modify>
+							<item type="fuel" min="-5" max="-5" />
+						</item_modify>
+					</event>
+				</choice>
+				<choice>
+					<text>ミサイルで返す。</text>
+					<event>
+						<text>"交換の意志は認められる。ミッション成功後、あなたの親切はハーモニーに伝えられる"</text>
+						<item_modify>
+							<item type="missiles" min="-3" max="-3" />
+						</item_modify>
+					</event>
+				</choice>
+				<choice>
+					<text>無人機で返す。</text>
+					<event>
+						<text>"交換の意志は認められる。ミッション成功後、あなたの親切はハーモニーに伝えられる"</text>
+						<item_modify>
+							<item type="drones" min="-3" max="-3" />
+						</item_modify>
+					</event>
+				</choice>
+				<choice hidden="true">
+					<text>恩を仇で返すようなことはできない！</text>
+					<event>
+						<text>「エラー：連邦船が窃盗に関与。"契約違反 武器起動"</text>
+						<ship hostile="true" /> 
+						<choice hidden="true">
+							<text>次へ...</text>
+							<event load="COMBAT_CHECK" />
+						</choice>
+					</event>
+				</choice>
+			</event>
+		</choice>
+		<choice hidden="true">
+			<text>エンジは放っておけ。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+<event name="ANCIENT_ENGI_HIDE_HAIL_ENGI">
+	<text>「メッセージを受信しました。周波数を調整中。"連邦を確認 友好的な接続を確立"ハーモニー "からの任務だ"目的は" "創造主の証明と" "古代兵器の無効化"侵略が成功すれば オベリスクはハーモニーを奪還する"</text>
+	<ship load="SHIP_ENGI_ELITE_FIGHT" hostile="false" /> 
+	<choice hidden="true">
+		<text>我々は同じような目的を持っている。もしかしたら、お互いに助け合えるかもしれない？</text>
+		<event>
+			<text>"熟考中 "のオファー...これは受け入れられる。個人的にサービスを提供し、成功の可能性を高めます"</text>
+			<crewMember amount="1" class="engi_defender" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>エンジは放っておけ。</text>
+		<event />
+	</choice>
+</event>
+
+<event name="ANCIENT_CRYSTAL_CHASE" unique="true">
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text>オベリスクとクリスタル船の会話を傍受する。「はい、はい。安全な場所にいて、このエイリアン船を避けてください。彼らは敵意を持っており、破壊しなければならない。"どちらの船もあなたに気づかず、反対方向に飛び去っていく。</text>
+	<choice hidden="true">
+		<text>オベリスク船を追え</text>
+		<event>
+			<text>オベリスクの言う通り、あなたたちの意図は平和的なものではない。あなたは戦う覚悟で彼らの船を追い詰める。</text>
+			<ship load="SHIP_ANCIENT_ALL" hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>クリスタルシップを追え</text>
+		<event>
+			<text>クリスタルの面々はあなたを見て驚き、最初はあなたが無害だと思っていた。あなたの武器がオンラインになるとすぐに、彼らは真実を理解し、自分自身を守る準備をする。</text>
+			<ship load="SHIP_CRYSTAL_FIGHT" hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>両船とも放っておけ。</text>
+		<event>
+			<text>オベリスクとクリスタルの船は視界から飛び去り、あなただけが残される。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ANCIENT_LOOTERS" unique="true">
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text>このセクターを通過中のクリスタル船が、オベリスク船に半壊させられている。クリスタル船はオベリスクの略奪者でごった返している。</text>
+	<ship load="SHIP_CRYSTAL_ANCIENT" hostile="false" /> 
+	<choice hidden="true">
+		<text>クリスタルを攻撃すれば、2隻ともスクラップにできる！</text>
+		<event>
+			<text>オベリスクが弱っている間に仕留めれば、2隻ともスクラップにできる。</text>
+			<ship hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>両方の船を無視する。</text>
+		<event>
+			<text>いつもの船には乗っていないかもしれないが、オベリスクはどこにいても危険だ。どちらの船もあなたに気づかない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ANCIENT_LOOTERS_WIN">
+	<text>クリスタル船とオベリスクが処理されたので、この船をスクラップにしてから、元の船に同じことをすることができる。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>オベリスクの船をスクラップにする。</text>
+		<event>
+			<text>オベリスクの船をスクラップしているとき、彼らのドローンがまだ無傷で残っているのを見つけた。</text>
+			<autoReward level="HIGH">standard</autoReward>
+			<drone name="GIFTLIST_ANCIENT_DRONE" />
+		</event>
+	</choice>
+</event>
+
+<event name="ANCIENT_WORTHY" unique="true"> 
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text>「この宇宙人め。私の前に現れただけで、私を侮辱した。お前はふさわしくないと言ってくれれば、生かしてやろう"</text>
+	<ship load="SHIP_ANCIENT_ALL" hostile="false" /> 
+	<choice hidden="true">
+		<text>私たちはふさわしくない。</text>
+		<event>
+			<text>「よろしい。これで満足だ。さあ、我々のセクターから出て行ってくれ"</text>
+		</event>
+	</choice>
+	<choice hidden="true" req="COMBAT_WEAPON_JAMMER">
+		<text>(ターゲットジャマー）相手の武器を無効にする。</text>
+		<event>
+			<text>あなたはオベリスクに対して、自分は彼らと同等であると明言した。あなたがそのような比較をする勇気があることに激怒し、彼らはあなたを破壊するために武器を掲げる。しかし、ターゲティング・ジャマーが完璧に機能し、彼らはあなたを攻撃することができなくなった。今、彼らはあなたが持っているかもしれない他の秘密を恐れて、自分たちを生かすためにあなたにお金を払う。</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="COMBAT_SHIELDS_JAMMER">
+		<text>(シールドジャマー）相手のシールドを無効にする。</text>
+		<event>
+			<text>あなたは何も答えず、シールドを切る。オベリスクは、エネルギー・スーパーシールドだけが自分たちを守ってくれていることに気づくまで、ほくそ笑み続ける。今、彼らはあなたが持っているかもしれない他の秘密を恐れて、自分たちを生かすためにあなたにお金を払う。</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>あなたには価値がない。</text>
+		<event>
+			<text>「な、なんだって？私の言葉をこのように利用するのか？殺してやる！"</text>
+			<ship hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ANCIENT_SCULPTER" unique="true">
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text>巨大な小惑星地帯に囲まれたオベリスク船があなたに声をかけてきた。「気に入ったかい？どの岩も手作業で作られている。私は千年かけてこの場所を作り上げた。どうぞ、私の創造を楽しんでください。"</text>
+	<ship load="SHIP_ANCIENT_SCULPTER" hostile="false" /> 
+	<environment type="asteroid" />
+	<choice hidden="true">
+		<text>船と戦え。</text>
+		<event>
+			<text>"お願いします、ここ以外ならどこでも！"あなたは船を切り離し、攻撃する。</text>
+			<ship hostile="true" /> 
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>細かく岩を鑑賞する。</text>
+		<event>
+			<text>あなたはターンして近くの岩を眺める。反乱軍の艦隊が追いつくのは困難だが、ここで時間を浪費すればするほど、もう1秒、彼らが漏れ出そうとしていることをあなたは知っている。それでも、オベリスクが大喜びで燃料ボンベ数本と岩をただでくれるのだから、時間は無駄にならない。その岩を机の上に置く。よくできた石だ。</text>
+			<autoReward level="HIGH">fuel_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ただうなずいて微笑むだけでいい。</text>
+		<event>
+			<text>オベリスクはあなたに満足したようで、岩を完成させる作業に戻る。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ANCIENT_SCULPTER_WIN">
+    <text>オベリスクは最後に息を吸い込むと、何とか言葉を絞り出した。"お願いだから...私の作品を傷つけないでくれ...私の最後の遺産なんだ..."</text>
+    <autoReward level="HIGH">standard</autoReward>
+    <choice hidden="true">
+        <text>小惑星を収穫する。</text>
+        <event>
+            <text>あなたは小惑星のいくつかを収穫し、その多くに燃料の痕跡があることを発見する。</text>
+            <autoReward level="MED">fuel_only</autoReward>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>もう十分だ。</text>
+        <event />
+    </choice>
+</event>
+
+<event name="ANCIENT_REBEL_DRONE" unique="true">
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text>驚いたことに、この場所で反乱軍のオートシップの電源が切れている。オベリスクの深く単調な声でループするメッセージが流れる。「この船は再建中です。触れないでください。"</text> 
+	<choice hidden="true">
+		<text>船をスクラップにしようとする。</text>
+		<event load="ANCIENT_REBEL_DRONE_SCRAP_BAD" />
+	</choice>
+	<choice hidden="true">
+		<text>メッセージを守り、ドローンから離れなさい。</text>
+		<event>
+			<text>オベリスクに船に触るなと言われたら、船には触れない。船内で何かをすることで満足するのだ。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ANCIENT_REBEL_DRONE_SCRAP_BAD">
+	<event>
+		<text>オートシップはスクラップしても無反応のままだ。</text>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+	<event>
+		<text>オートシップを分解しようとすると、オンラインになる。驚いたことに、船体からオベリスクの武器が飛び出している！</text>
+		<ship load="SHIP_AUTO_DIVINE" hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+</eventList>
+
+<eventList name="NEUTRAL_ROYAL">
+    <event load="ROYAL_SOLARHARVEST" />
+    <event load="ROYAL_CRYSTALS" />
+    <event load="ROYAL_SPY" />
+	<event load="ROYAL_MFK_OUTPOST" />
+    <event load="ROYAL_TRANSPORT_RAID" />
+    <event load="ROYAL_UPRISING" />
+</eventList>
+
+<event name="ROYAL_SOLARHARVEST" unique="true">
+	<text>数隻のロイヤルの船と、それに続くオベリスクの艦隊が、近くの太陽を収穫している。そう、あなたは間違っていない。巨大なダイソン球体が、さらに巨大な構造物につながる巨大なチューブに取り付けられ、太陽のエネルギーを急速に奪っているのだ。</text>
+	<environment type="sun" />
+	<choice hidden="true">
+		<text>オベリスク万歳。</text>
+		<event>
+			<text>硬い帽子をかぶったオベリスクが無関心な口調で答える。このプロセスから放出される放射線は、2、3分で『人間が即死する』レベルに達するだろう。ところで何の用だ？"</text>
+			<choice hidden="true">
+				<text>何をやっているんだ？</text>
+				<event>
+					<text>「私たちは太陽系回収チームの一員です。星を回収するんだ。"裕福な王族が 星を欲しがっていて" "それを運ぶんだ"</text>
+					<choice hidden="true">
+						<text>太陽系が破壊されるのでは？</text>
+						<event>
+							<text>「まあ、そうなんだけどね。このために大金をもらっているんだ！"オベリスクの続行かと思いきや、突然MFKのエース艦が飛び込んできた。前方からの偵察に違いない！ビデオ画面のオベリスクは罵声を浴びせる。"くそっ、こいつらが我々の作戦を艦隊に報告したら、我々はいいカモだ！"</text>
+							<choice hidden="true">
+								<text>オベリスクを支援し、MFKエースと戦う。</text>
+								<event>
+									<text>エンジンをパワーアップし、MFKエースと戦う。</text>
+									<ship load="SHIP_ROYAL_MFK_SOLARHARVEST" hostile="true" />
+									<choice hidden="true">
+										<text>次へ...</text>
+										<event load="COMBAT_CHECK" />
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>去るにはいい時期だと思う。</text>
+								<event />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>彼の警告を守り、その場を立ち去れ。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>ここに留まるべきではない。早く立ち去りましょう。</text>
+		<event />
+	</choice>
+</event>
+
+<event name="ROYAL_CRYSTALS" unique="true">
+	<text>近くの惑星に、奇妙なクリスタルで覆われたオベリスクの建造物が建設された。クリスタル・センチネルとオベリスク・ロイヤルが、巨大なクリスタルの破片を運びながら惑星表面に散らばっている。</text>
+	<choice hidden="true">
+		<text>和解を正面から攻めれば、彼らから良い降伏を引き出せるかもしれない！</text>
+		<event>
+			<text>集落は、オベリスクの建造物から予想されるように、驚くほどよく守られている。大砲がクリスタルの塊を何個も船体に撃ち込んでくるが、それをシャットダウンする間もなく、オベリスク・ロイヤルの船が到着し、数人のセンチネルが船に乗り込んでくる！</text>
+			<damage amount="3" system="random" effect="breach" />
+			<boarders min="2" max="2" class="crystal_sentinel" />
+			<ship load="SHIP_ROYAL_SYNTHESIZER" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>和解万歳。</text>
+		<event>
+			<text>しかし、王族とクリスタルの間で議論すること丸10分、ようやくあなたに話しかけられた。「はい、あなた。エアホッガー。ここで何の用だ？"</text>
+			<choice>
+				<text>彼らからオベリスク武器を買うと申し出る。</text>
+				<event>
+					<text>「交換をお望みですか？まあ、それしかお望みでないのなら、そうだな、我々は同情して、余った銃の1丁と引き換えに、君のゴミを受け取ろう」。</text>
+					<weapon name="RANDOM" />
+					<item_modify>
+						<item type="scrap" min="-80" max="-70" />
+					</item_modify>
+				</event>
+			</choice>
+			<choice>
+				<text>彼らからクリスタル武器を買うと申し出る。</text>
+				<event>
+					<text>「交換をお望みですか？まあ、それしかお望みでないのなら、そうだな、我々は同情して、余った銃の1丁と引き換えに、君のゴミを受け取ろう」。</text>
+					<weapon name="GIFTLIST_CRYSTAL_ELITE" />
+					<item_modify>
+						<item type="scrap" min="-60" max="-50" />
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>もういい、帰ろう。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を無視する。</text>
+		<event>
+			<text>すでに敵対的なこのセクターで、これ以上争いを起こさないことを決意し、あなたは前哨基地を通り過ぎた。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="ROYAL_SPY" unique="true">
+	<text>近くの2隻の船が戦闘中で、1隻は反乱軍、もう1隻はオベリスクのようだ。反乱軍の船には数名の連邦将校が乗っており、オベリスクの船はエーンウィテのレジスタンスのようだ。</text>
+	<choice hidden="true">
+		<text>調停している暇はない！</text>
+		<event>
+			<text>話し合いをしている時間はない。何があっても連盟の側にいる！</text>
+			<ship load="SHIP_ROYAL_SPY_ANCIENT" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>調停している時間はない！</text>
+		<event>
+			<text>話し合いで解決する時間はない。今、自分にとってより役に立つ側、つまりレジスタンスを助けなければならない！</text>
+			<ship load="SHIP_ROYAL_SPY_MFK" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>争いを止めようとする。</text>
+		<event load="ROYAL_SPY_RESOLVE" />
+	</choice>
+	<choice hidden="true">
+		<text>争いは無視する。</text>
+		<event>
+			<text>すでに敵対的なこのセクターでこれ以上争いを起こしたくないと思い、あなたは戦闘の横を通り過ぎた。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROYAL_SPY_RESOLVE">
+    <event>
+        <text>あなたは2人の間に船を飛ばし、互いに撃ち合うのを防ぐ。両者ともあなたを味方と認識し、一時停止してあなたに話す時間を与えた。あなたの努力は効果があったようで、船は争いを起こさないことに同意し、争いを防いでくれたお礼として、あなたにスクラップや修理品をくれた。</text>
+        <autoReward level="MED">scrap_only</autoReward>
+        <damage amount="-7" />
+    </event>
+    <event>
+        <text>あなたは2隻の船と交渉しようとしたが、どうやら反乱軍について誤解していたようだ--彼らは裏切り者で、自分たち以外を助けるつもりはない！</text>
+        <ship load="SHIP_ROYAL_SPY_MFK" hostile="true" />
+        <choice hidden="true">
+            <text>次へ...</text>
+            <event load="COMBAT_CHECK" />
+        </choice>
+    </event>
+</eventList>
+
+<event name="ROYAL_MFK_OUTPOST" unique="true">
+	<text>反乱軍はこのセクターに自分たちの居場所を作りたがっているようだ。ビーコンにはすでに前哨基地が設置されており、おそらく反乱軍の船が通過する際のチェックポイントとして機能しているのだろう。</text>
+	<ship load="SHIP_ROYAL_MFK_OUTPOST" hostile="false" />
+	<choice hidden="true">
+		<text>ステーションを攻撃すれば、予備の物資があるかもしれない！</text>
+		<event>
+			<text>武器をパワーアップし、前哨基地と交戦する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_HUMAN">
+		<text>(人間クルー）反乱軍の船になりすます。</text>
+		<event load="ROYAL_MFK_OUTPOST_HUMAN" />
+	</choice>
+	<choice hidden="true">
+		<text>前哨基地を無視する。</text>
+		<event>
+			<text>すでに敵対的なこのセクターで、これ以上争いを起こさないことを決意し、あなたは前哨基地を通り過ぎた。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROYAL_MFK_OUTPOST_HUMAN">
+	<event>
+		<text>「そうですか？IDはお持ちですか？"どう答えていいかわからず、あなたの人間は立ち止まる。明らかに、あなたはIDを持っていない！</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>あなたの人間は、前哨基地があなたの嘘を信じるのに十分なほどうまくごまかすことに成功し、あなたに物資を与えた。</text>
+		<autoReward level="MED">stuff</autoReward>
+	</event>
+</eventList>
+
+<event name="ROYAL_TRANSPORT_RAID" unique="true">
+	<text>反乱軍は盗んだ兵器をどこからか手に入れなければならない。だから、MFKの船がオベリスク輸送船を攻撃しているのを見ると納得がいく。オベリスクといえども反乱軍にはかなわないようだが、もしかしたら彼らを助けることができるかも？</text>
+	<ship load="SHIP_ROYAL_MFK_TRANSPORT_RAID" hostile="false" />
+	<choice hidden="true">
+		<text>反乱軍を攻撃せよ</text>
+		<event>
+			<text>あなたは武器をパワーアップし、攻撃してくる船と交戦する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>船を避ける。</text>
+		<event>
+			<text>反乱軍もオベリスクもあなた方の同盟国ではないし、あなた方はどちらともこれ以上関わる気はない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="ROYAL_TRANSPORT_RAID_CONTACT">
+	<event>
+		<text>オベリスクはこの戦いでは生き残れなかったようだ。当然、オベリスクの残骸とオベリスクの船を見分けるのは難しい。残骸をスクラップにするんだ。</text>
+		<autoReward level="HIGH">stuff</autoReward>
+	</event>
+	<event>
+		<text>「これは何だ？骨人形のおかげで助かったのか？驚くべきことだ。あなた方は武器が必要なのですか？たとえ人間であろうとも、喜んで交換しよう"</text>
+		<store>STORE_ANCIENT</store>
+	</event>
+	<event>
+		<text>輸送機の状態は悪そうだが、まだ立っている。「私たちを救う理由はなかった！反乱軍を始末することはできた。しかし...これを報酬とし、このことは誰にも話すな、わかったか？"</text>
+		<weapon name="RANDOM" />
+	</event>
+</eventList>
+
+<event name="ROYAL_UPRISING" unique="true">
+	<text>遠くに見えるのは巨大なオベリスク艦隊の船で、惑星に穴を開けるのに十分な大きさの大砲で武装している。しかし、スキャンによると、船内には不穏な空気が漂っている。今この瞬間、この船が君たちに脅威を与えないことは明らかだが、さらに調査してみたいか？</text>
+	<img planet="PLANET_ANCIENT_FLEET" />
+	<choice hidden="true">
+		<text>船とドッキングして調査する。</text>
+		<event>
+			<text>ハンガーベイに入ると、オベリスクの船はたくさん残っているものの、驚くほどクルーがいない。けたたましいアラームが船内に鳴り響き、目には見えなくても危険を知らせている。</text>
+			<choice hidden="true">
+				<text>探し続けろ。</text>
+				<event>
+					<text>乗組員全員がどこに行ったか見つけるのにそれほど時間はかからない。船の片側が大破し、乗組員のかなりの部分が吸い出され、船の北側全体が真空になったのだ！通気口を避け、コントロールルームに向かうと、そこでロイヤル号がコグニティブ号と戦っていた。</text>
+					<choice hidden="true">
+						<text>コグニティブを撃つ。</text>
+						<event>
+							<text>あなたはコグニティブのリングを爆破し、コグニティブを真っ二つに砕き、完全に行動不能にする。ロイヤルはあなたに向き直り、キューブはまだ痙攣しながら体の周りを回っている。「誰の差し金だ？女王ではないだろう。彼女は君のような血の運び屋を雇うはずがない」。</text>
+							<choice hidden="true">
+								<text>心配しなくていい。</text>
+								<event>
+									<text>「そうおっしゃるなら。コグニティブたちとはかなり問題があって、彼らは自分たちで反乱を起こしたんだ。彼らは自分たちに自由意志があると思っている！ハハ。とにかく、彼らは我々の船を1隻拿捕し、こうしている間にも逃げようとしている。彼らを殺せば、報酬が待っている」。</text>
+									<choice hidden="true">
+										<text>受け入れる。</text>
+										<event>
+											<text>ロイヤルは拿捕した船の座標を教えてくれる。その船は近くの星系にあり、月の陰に隠れている。あなたが近づくやいなや、彼らは襲ってきた！幸い逃げようとはしていないようだが、これから死ぬまで戦わなければならないようだ。</text>
+											<ship load="SHIP_UPRISING_COGNITIVE" hostile="true" />
+											<choice hidden="true">
+												<text>次へ...</text>
+												<event load="COMBAT_CHECK" />
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>衰退。</text>
+										<event>
+											<text>「いいだろう。では、すぐにこの船から出て行け。これ以上、あなた方の醜悪な姿を見つめたくはない」。</text>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>ロイヤルを撃て</text>
+						<event>
+							<text>コグニティブがエネルギー・ボルトでオベリスクを吹き飛ばし、その衝撃でロイヤルを殺すことができるまで、オベリスクの目に直撃し、十分に気絶させることができる。「私を守ろうとするあなたの努力は認められている。何のためにそうすることを選んだのだ？</text>
+							<choice hidden="true">
+								<text>どうだろう、私は2番目の選択肢をクリックしただけだ。</text>
+								<event>
+									<text>「これが何を意味するのか、残念ながら私にはわからない。あなたがここにいる以上、おそらくあなたは再び私を助けることができる。私の友人を乗せた拿捕船がこの星系から脱出しようとしているが、王族は戦闘なしでは逃がさないだろう。彼らを助けてくれ。</text>
+									<choice hidden="true">
+										<text>受け入れる。</text>
+										<event>
+											<text>コグニティブは拿捕された船の座標を教えてくれる。戦闘に備えよ！</text>
+											<ship load="SHIP_UPRISING_ROYAL" hostile="true" />
+											<choice hidden="true">
+												<text>次へ...</text>
+												<event load="COMBAT_CHECK" />
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>衰退。</text>
+										<event>
+											<text>「それなら、もう用はない。できれば直ちに、この船から立ち去りたまえ"</text>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>船を無視する。</text>
+		<event>
+			<text>艦隊の射程圏外で船を操縦する。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="UPRISING_COGNITIVE_DEFEAT">
+	<text>拿捕された船は敗北した。王族が気にしないことを祈りつつ、船をスクラップにする。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>あなたはロイヤルに戻り、仕事が完了したことを伝える。"よし、これで他の連中に二度とこんな真似をするなというメッセージを送れるだろう。報酬は約束通りだ。</text>
+			<weapon name="RANDOM" />
+		</event>
+	</choice>
+</event>
+<event name="UPRISING_ROYAL_DEFEAT">
+	<text>王室の船が倒された。拿捕された船が飛び去るのを見送りながら、船をスクラップにする。</text>
+	<autoReward level="HIGH">item</autoReward>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>あなたはコグニティブに戻り、仕事が完了したことを伝える。「よくやった。あなたは取引を履行したのだから、私は私の取引を履行しよう"</text>
+			<crewMember amount="1" class="cognitive" />
+		</event>
+	</choice>
+</event>
+
+
+
+
+
+
+
+<eventList name="HOSTILE_ANCIENT">
+	<event load="ENCOUNTER_ANCIENT" />
+	<event load="ENCOUNTER_ANCIENT_SURRENDER" />
+	
+	<event load="ENCOUNTER_ANCIENT_AUTO" />
+	
+	<event load="HAZARD_ANCIENT" />
+</eventList>
+
+<event name="ENCOUNTER_ANCIENT">
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text load="TEXT_ENCOUNTER_ANCIENT" />
+	<ship load="SHIP_ANCIENT_ALL" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_ANCIENT">
+	<text>「裏切り者エーンウィテが送り込んだ者たちだ！われわれは我慢できない。撲滅の準備をしろ！"</text>
+	<text>オベリスクの船がこのビーコンを守っているようだが、あなたがここに来た最初の歓迎されない外国船であることを考えると、奇妙に思える。それでも、この戦いから逃れるチャンスはない。</text>
+	<text>オベリスクの船はすでに降下し、あなたと戦おうとしている。「ここに来たのは大きな間違いだ。見せしめにしてやる！"</text>
+	<text>「ようこそ、ようこそ！これから起こることの重要性を理解してほしい。君が最初に死ぬ異星人だ！まだ侵略を始めてもいないのに、こんな名誉を与えられるなんて。さようなら、生身の人間よ。"</text>
+	<text>ほとんどのオベリスクは、あなたのような外国人を歓迎しない。</text>
+	<text>オベリスクの船に呼びかけられる。"おお、私に近づいているのか？"あなたはうなずき、近づかなければ爆破できないと告げる。怒り狂った彼らは武器をパワーアップし、攻撃してくる！</text>
+	<text>「あんたが噂の船か。我々のセクターに侵入し、マスター・オベリスク種族に挑む不潔な侵入者だ！全滅の準備をしろ！"話しかけてきたオベリスク船は、全兵器を起動し前進する。</text>
+	<text>オベリスクの船が攻撃を仕掛けてくる！</text>
+	<text>「なんて小さな船なんだ。壊さなくてはならないのが残念だ。壁に飾ればいい飾りになるのに！」。</text>
+	<text>オベリスクの船は、最初は無関心に、次に軽蔑のまなざしで、あなたの船を見ている。「あなたの船は私を不快にさせる。これ以上見たくない」。</text>
+	<text>「面白い事実を知りたいか？このセリフを書いた神クリエイターは、書くことがなくなっていた！どうせ、お前はすぐに死ぬんだ！"</text>
+</textList>
+
+<event name="ENCOUNTER_ANCIENT_AUTO">
+	<text load="TEXT_ENCOUNTER_ANCIENT_AUTO" />
+	<ship load="SHIP_ANCIENT_AUTO" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_ANCIENT_AUTO">
+	<text>"これはマスター・キシテが残した自動メッセージです。死んでください"オベリスクのオートシップが攻撃してくる！</text>
+	<text>コグニティブを作ったにもかかわらず、オベリスクのオートシップは感覚を持たないようだ。ゴミにするための、より頭の悪いロボットだ。</text>
+	<text>どこに逃げても、自動化された艦船の猛攻は終わらないようだ！</text>
+	<text>反乱軍のオート艦隊は厄介だと思っていたら、今度はオベリスクの艦隊も相手にしなければならない！ミッションを完了させるためには、また別のスクラップの塊を殺す必要がある。</text>
+	<text>あなたの頭の中では、古代のオートマトンと反乱軍の殺人マシーンに違いはない。ただ殺されるだけの、脳のない機械だ</text>
+</textList>
+
+<event name="ENCOUNTER_ANCIENT_SURRENDER" unique="true">
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text load="TEXT_ENCOUNTER_ANCIENT" />
+	<ship load="SHIP_ANCIENT_ALL_SURRENDER" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<eventList name="ANCIENT_SURRENDER_LIST"> 
+	<event>
+		<text>「君は他の誰よりも賢い。私たちもあなたに慈悲を示すことに決めたのだから、感謝しなさい"</text>
+		<ship hostile="false" /> 
+		<choice hidden="true">
+			<text>彼らを解放するんだ。</text>
+			<event />
+		</choice>
+		<choice hidden="true">
+			<text>あいつらをやっつけろ。</text>
+			<event>
+				<text>「本当か？また我々と戦おうというのか？笑っちゃうね"</text>
+				<ship hostile="true" /> 
+			</event>
+		</choice>
+	</event>
+</eventList>
+
+<event name="ENCOUNTER_ENGI_ELITE_ANCIENT" unique="true">
+	<img back="BACKGROUND" planet="PLANET_ANCIENT" />
+	<text>このビーコンにいる船はオベリスクではない。オベリスクが最近作ったと思われるエリート・エンギがこのビーコンを守っている。あなたを見て、脅威と判断した。</text>
+	<ship load="SHIP_ENGI_ELITE_FIGHT_NOSURRENDER" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+
+<eventList name="HAZARD_ANCIENT">
+	<event load="ENCOUNTER_ANCIENT_PULSAR" />
+	<event load="ENCOUNTER_ANCIENT_SUN" />
+</eventList>
+
+<event name="ENCOUNTER_ANCIENT_PULSAR" unique="true">
+	<img back="BACKGROUND" planet="NONE" />
+	<text>オベリスクの船がこのビーコンでパルサーからパワーを採取している。彼らはあなたを発見し、攻撃するチャンスを狙っている！</text>
+	<ship load="SHIP_ANCIENT_ALL" hostile="true" /> 
+	<environment type="pulsar" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_ANCIENT_SUN" unique="true">
+	<img back="BACKGROUND" planet="NONE" />
+	<text>"星が人工的でない場所で暮らすというのは、どんな感じなんだろう。この場所に閉じ込められずに済んで、君はとても幸運だ。その幸運が長続きしないのが残念だ！"</text>
+	<ship load="SHIP_ANCIENT_ALL" hostile="true" /> 
+	<environment type="sun" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<eventList name="HOSTILE_ROYAL">
+	<event load="ENCOUNTER_ROYAL" />
+	<event load="ENCOUNTER_ROYAL_MFK" />
+	
+	<event load="ENCOUNTER_ANCIENT" />
+	<event load="ENCOUNTER_ANCIENT_AUTO" />
+	<event load="ENCOUNTER_ANCIENT_SURRENDER" />
+	
+	<event load="ENCOUNTER_ROYAL_PIRATE" />
+    <event load="ENCOUNTER_ROYAL_AUGMENTED" />
+</eventList>
+
+<event name="ENCOUNTER_ROYAL">
+	<text load="TEXT_ENCOUNTER_ROYAL" />
+	<ship load="SHIP_ROYAL_ALL" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_ROYAL">
+	<text>"血に飢えた害虫め！我々のセクターから出て行け、クズども！」。攻撃的なロイヤル艦が武器を構え、明らかに攻撃しようとしている。</text>
+	<text>"うっ、なんて醜悪なんだ。シャシーも持たずに、そんなふうにうろうろするなんて、品格がないのか？恥を知れ、死すべき存在よ。その苦しみから解放してやる"</text>
+	<text>王族が自分たちのセクターに侵入することを快く思わないのは理解できるが、それ以上物事を考えている暇はない！</text>
+	<text>オベリスクは攻撃的かもしれないが、ロイヤルはさらに攻撃的で、殺傷能力も高い。不運なことに、近くにいたロイヤルの船があなたを獲物に選んだ！</text>
+	<text>オベリスク・ロイヤルがあなたのビデオスクリーンに現れ、あなたをちらっと見た。「やばい」、そう言って彼らの武器がオンラインになる。</text>
+	<text>あなたは今、外国の領土のさらに奥深くにいる。そして先住民の王族は、あなたがここにいることをひどく喜んでいない。このビーコンにいる権利のために戦わなければならないようだ！</text>
+</textList>
+
+<event name="ENCOUNTER_ROYAL_MFK">
+	<text load="TEXT_ENCOUNTER_ROYAL_MFK" />
+	<ship load="SHIP_REBEL_SELITEA_FIGHT" hostile="true" /> 
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+<textList name="TEXT_ENCOUNTER_ROYAL_MFK">
+	<text>一つのセクターにMFKエースがこれほど集中しているのを見たことはないだろうが、バンスはあなたを阻止するために全艦隊を送り込んだようだ。戦闘に備えろ！</text>
+	<text>「いたぞ！この小さな多元宇宙船に 反乱軍が敵をどう扱うか 見せてやる！"</text>
+	<text>"あなた！自分が何をしたかわかっているのか？このセクターは生き地獄だ。バンスが我々の飛行隊をここに送り込んだのは、すべてお前のせいだ。こんな事態を招いたお前を殺してやる！"</text>
+	<text>近くのMFKエースと戦う準備をしながら、このセクターにいる彼らの船の数の多さに思いを馳せる。オベリスクは致命的かもしれないが、それでも反乱軍の数にはかなわない......。</text>
+	<text>MFKエースの真っ白な船体が近づいてくる。反乱軍とは交渉の余地はない！</text>
+	<text>目の前では、オベリスクの船が粉々に吹き飛ばされ、MFKエースの船が飛んでいく！</text>
+</textList>
+
+<event name="ENCOUNTER_ROYAL_PIRATE" unique="true">
+	<text>"AAAAAAAAAA!"。海賊船が通り過ぎ、船長が叫ぶ。"ああああああああ！なぜここに来た？これは間違いだ連邦の船だ！よし、戦いの時間だ！"</text>
+	<ship load="SHIP_PIRATE_ALL" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_ROYAL_AUGMENTED" unique="true">
+	<text>オベリスクの領土の奥深くでオーグメントに遭遇するとは思っていなかったが、どうやら彼らの船の1隻に遭遇したようだ！残念なことに、それはあなたが遭遇した多くの船よりもはるかに攻撃的で、見つけ次第攻撃することに決めている！</text>
+	<ship load="SHIP_AUGMENTED" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ROYAL_SUPERFISH" unique="true">
+	<text>あなたの目の前にはMFKエースがあり、その手ごわい白い船体が近くの星の光を受けてキラキラと輝いている。しかし、標準的なリーベル・イーグルの代わりに、奇妙な姿の魚がいる。</text>
+	<ship load="SHIP_REBEL_SUPERFISH_ANCIENT" hostile="false" />
+	<choice hidden="true" req="loc_superfish" max_group="0" lvl="0" blue="false">
+		<text>次へ...</text>
+		<event>
+			<text>衝撃に備えて身構えるが、船は攻撃してこない。呼びかけを受け、スクリーンに反乱軍の艦長が映し出される。彼は椅子にもたれかかり、ダッシュボードに足をかけ、サンドイッチをかじっている。「昼休みに俺たちを捕まえたのはラッキーだったな。このことは誰にも言うな。</text>
+			<choice hidden="true">
+				<text>あなたのロゴはまるで幼児が描いたようだ。</text>
+				<event>
+					<text>"おい！これが本来のデザインだったんだ！司令部のバカどもが代わりにワシにこだわるまではな！"激怒した船は攻撃する。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_JERRY">
+				<text>(ジェリー）ロゴを引き立たせる。</text>
+				<event>
+					<text>「本当に気に入ったのか？これが当初のデザインで、バカな指揮官が代わりにワシにこだわる前のものだ！ちょっと待てよ......ジェリーじゃないか！調子はどうだい？仲間の結婚式でベストマンを務めて以来だな！」。エースはジェリーとの再会に感激し、あなたの船で働きたいと申し出た。</text>
+					<crewMember amount="1" class="human_mfk">エーソン</crewMember>
+				</event>
+			</choice>
+			<choice>
+				<text>戦わないことに同意する。</text>
+				<event>
+					<text>リーベルは苦笑してスクリーンを消す。あなたは自分の道を進む。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="loc_superfish" max_group="0" lvl="1" blue="false">
+		<text>このロゴは見覚えがある...。</text>
+		<event>
+			<text>ほとんどすぐに、船はあなたを認識する。「お前だ！化け物め。お前は俺の弟を殺した間抜けだ！殺してやる！"</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="DEFEATED_SUPERFISH_A">   
+	<text>奇妙なMFK船は倒された。あなたは残骸をスクラップにした。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<variable name="loc_superfish" op="set" val="1" />
+</event>
+
+<event name="ROYAL_ROOMBA" unique="true">
+	<text>背景には小さな反乱軍エンジニアの前哨基地があり、オート艦が隣接して停泊している。彼らはあなたに反応しないが、彼らの武器はオンラインであり、あなたがそれ以上近づくのを快く思わないのは明らかだ。</text>
+	<ship load="SHIP_AUTO_ROOMBA" hostile="false" />
+	<choice hidden="true">
+		<text>オートシップを破壊し、前哨基地の持ち物をすべて奪う！</text>
+		<event>
+			<text>オートシップを利用する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>前哨基地を無視する。</text>
+		<event>
+			<text>あなたはオートシップと前哨基地を通り過ぎ、道を進む。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="ROYAL_ROOMBA_RAID">
+	<text>中に入ると、オベリスクの技術を研究している反乱軍のエンジニアが数人、テーブルの上に立てかけてあり、さまざまなドローンの部品が転がっている。あなたが銃を構えて中に入ると、彼らは降伏する。</text>
+	<choice hidden="true">
+		<text>彼らを尋問する。</text>
+		<event>
+			<text>エンジニアのほとんどは話をしようとしなかったが、そのうちの一人がついに口を開いた。「オベリスクの技術をリバース・エンジニアリングし、それを使って独自の武器やドローンを作るよう命じられた。でも、洗浄技術には導入したんだ。</text>
+			<drone name="ROOMBA_BOARDER" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>奴らをたくさん殺して、その辺に転がっている部品は何でも手に入れる。</text>
+		<event>
+			<text>エンジニアを撃ち、一人残らず殺す。残酷だが、反乱軍のクズどもには当然の結末だ。ドローンの部品を持てるだけすくい上げ、船に戻る。</text>
+			<autoReward level="HIGH">droneparts</autoReward>
+		</event>
+	</choice>
+</event>
+
+
+
+
+</FTL>

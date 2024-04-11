@@ -1,0 +1,2289 @@
+<FTL>
+
+
+
+<event name="FINISH_BEACON_UNION">
+	<text id="finish_beacon" />
+	<choice hidden="true">
+		<text>探検する</text>
+		<event load="EXIT_FILLER_LIST" />
+	</choice>
+	<choice hidden="true">
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice hidden="true">
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+	
+<eventList name="ITEMS_UNION">
+	<event load="UNION_TRAFFIC" />
+	<event load="UNION_BREACH" />
+	<event load="UNION_FREEMANTIS" />
+	<event load="UNION_EFFICIENCY_ENGINEER" />
+</eventList>
+
+<event name="UNION_TRAFFIC" unique="true">
+	<text>このビーコンには、さまざまな出自の民間船が頻繁に行き来している。無線はあらゆる周波数に対応しているため、適切な会話を盗み聞きすることは不可能だが、少なくとも反乱軍は船の海の中であなたを追跡するのに苦労するだろう。</text>
+	<img planet="NONE" />
+	<customFleet right="false" firing="false" autoDarkening="true">CUSTOM_FLEET_CIVILIAN</customFleet>
+	<modifyPursuit amount="-2" />
+	<choice>
+		<text>船内で何かをする。</text>
+		<event load="STORAGE_CHECK" />
+	</choice>
+	<choice>
+		<text>何もしない。</text>
+		<event />
+	</choice>
+</event>
+
+<event name="UNION_BREACH" unique="true"> 
+	<text>船体の大破で大損害を受けたユニオン船が、必死にあなたに声をかけてきた。海賊からかろうじて逃げ延びたという。乗組員を別の船に移したいそうだ。</text>
+	<ship load="SHIP_UNION_GENERIC" hostile="false" />
+	
+	<choice hidden="true">
+		<text>乗船を支援する。</text>
+		<event load="UNION_BREACH_BOARD" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_ROCK">
+		<text>(ロック・クルー）彼らを乗船させる。</text>
+		<event load="UNION_BREACH_SECURITY" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SOLDIER">
+		<text>(ソルジャー・クルー）彼らを乗船させるが、警備のためにソルジャーを配置する。</text>
+		<event load="UNION_BREACH_SECURITY" />
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SUZERAIN">
+		<text>(ハイブエリート）彼らを乗船させるが、マンティスを追加セキュリティとして配置しろ。</text>
+		<event load="UNION_BREACH_SECURITY" />
+	</choice>
+	<choice hidden="true" req="DRONE_CONTROL_BOARDING_DAMAGE">
+		<text>(ドローン搭乗）彼らを乗船させるが、追加セキュリティとしてドローンを駐機させる。</text>
+		<event load="UNION_BREACH_SECURITY" />
+	</choice>
+	<choice hidden="true" req="sensors" lvl="3">
+		<text>(アドバンス・センサー）彼らを乗船させるが、常にスキャンをかけ続ける。</text>
+		<event load="UNION_BREACH_SECURITY" />
+	</choice>
+	<choice hidden="true">
+		<text>私たちは助けられない。</text>
+		<event>
+			<text>あなたは、民間人を輸送するには任務が重要すぎると説明する。彼らは明らかに苦悩しているが、これを受け入れる以外に何もできない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<eventList name="UNION_BREACH_BOARD">
+	<event>
+		<text>民間人はあなたの助けに非常に感謝している。持ち物をすべて集めて乗船すると、彼らは古い船をスクラップにすることを許可する。</text>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+	<event>
+		<text>一般市民はあなたの助けにとても感謝している。大半は最寄りのステーションで降ろしてもらうことに同意したが、そのうちの1人が小銭を欲しがっていることに気づいた。彼らはあなたのクルーに加わりたいと申し出た。</text>
+		<crewMember amount="1" />
+	</event>
+	<event>
+		<text>民間人が乗船してくると、そのうちの1人がローブに隠された異常に大きな武器を持っていることに気づく。単なる護身用かもしれないし、脅威として呼び出せば問題が起きるかもしれない。</text>
+		<choice hidden="true">
+			<text>彼らを呼び出す。</text>
+			<event load="UNION_BREACH_BOARD_CALLOUT" />
+		</choice>
+		<choice hidden="true">
+			<text>武器は無視する。</text>
+			<event load="UNION_BREACH_BOARD_IGNORE" />
+		</choice>
+	</event>
+</eventList>
+<eventList name="UNION_BREACH_BOARD_CALLOUT">
+	<event>
+		<text>あなたは武器を指し示し、彼らが同じことをする前に素早くブラスターを抜く。民間人はパニックになり、ローブを着ているのはボディーガードだと説明しようとする。あなたは謝るが、あなたの軽率な行動が仇となった。民間人はしぶしぶ貨物室に入り、あなたが彼らを近くのステーションに降ろすまで、あなたのクルーと話すことを拒否する。</text>
+	</event>
+	<event>
+		<text>あなたはレーザーを発射し、ローブを着た "民間人 "を睨みつける。他の民間人やクルーも同じことをし、あなたは今、かなり不安定な状況にいることに気づく。「船長、これが策略だと見破った君に拍手を送りたい。スクラップをくれたら、すぐに向かう。そうでなければ、もう消灯だ......」あなたは頭を一撃で切り捨てた。カオスが起こり、あなたは他の海賊から船を守る準備をする。</text>
+		<boarders min="2" max="4" class="random" />
+	</event>
+</eventList>
+<eventList name="UNION_BREACH_BOARD_IGNORE">
+	<event>
+		<text>幸いなことに、何もなかったようだ。あなたは最寄りの駅で民間人を降ろし、彼らはあなたに感謝し、お金を払う。</text>
+		<autoReward level="HIGH">standard</autoReward>
+	</event>
+	<event>
+		<text>あなたは民間人全員を貨物室に運び、ブリッジに戻ろうとしたとき、紛れもないテレポーターの音を聞いた。あなたは駆け戻り、倉庫の中身を持ってテレポートしていく "民間人 "の何人かを捕まえた。残された海賊は戦闘準備に入る。</text>
+		<boarders min="2" max="3" class="random" />
+		<item_modify steal="true">
+			<item type="fuel" min="-3" max="-3" />
+			<item type="scrap" min="-25" max="-25" />
+			<item type="missiles" min="-2" max="-2" />
+		</item_modify>
+	</event>
+</eventList>
+<eventList name="UNION_BREACH_SECURITY">
+	<event>
+		<text>民間人はあなたの助けに非常に感謝している。持ち物をすべて集めて乗船すると、彼らは古い船をスクラップにすることを許可する。</text>
+		<autoReward level="LOW">standard</autoReward>
+	</event>
+	<event>
+		<text>一般市民はあなたの助けにとても感謝している。大半は最寄りのステーションで降ろしてもらうことに同意したが、そのうちの1人が小銭を欲しがっていることに気づいた。彼らはあなたのクルーに加わりたいと申し出た。</text>
+		<crewMember amount="1" />
+	</event>
+	<event>
+		<text>民間人は乗船を開始したが、警備員が数人の民間人が武器を密輸しようとしていることに気づく。彼らはすぐに銃を捨て、降伏した。これは手の込んだ海賊の罠だったようだ！彼らがあなたから奪おうとしていたことを考えれば、あなたは彼らから物を強奪することにまったく罪悪感を感じない。</text>
+		<autoReward level="MED">item</autoReward>
+	</event>
+</eventList>
+
+<event name="UNION_FREEMANTIS" unique="true">
+	<text>迷子のような船長が操縦するフリーマンティスの船から連絡があった。「おお、素晴らしい挨拶だ。まだ逃げ出していないようだから、友好的なのだろう。我々は間違ってここに来てしまった。軍に入るために連邦のセクターを探していた。今は民兵に追われている。非常に残念だ。民兵を説得してくれないか？</text>
+	<choice hidden="true">
+		<text>彼らを追っている民兵の船を追跡することに同意する。</text>
+		<event>
+			<text>「感謝するよ、友よ彼らの指示に従うと、民兵の船がすでにこの星系に到着していた。彼らはあなたに気づいていない。</text>
+			<ship load="SHIP_MILITIA_COREWORLD_FREEMANTIS_HUNTER" hostile="false" />
+			<choice hidden="true">
+				<text>船に連絡する。</text>
+				<event>
+					<text>「何の用だ？あなたは、彼らが追っているフリー・マンティス艦は平和的にセクターを通過しようとしているだけだと説明する。民兵隊長は笑い出す。「ハハ！冗談だろ。冗談だろう。反乱軍が正しいことをしたとすれば、エイリアンは危険だということだ。奴らは不潔なマンティスだ。彼らの言うことは信用できない"</text>
+					<choice hidden="true">
+						<text>降伏を強いる。</text>
+						<event>
+							<text>船体に十分なダメージを与えれば、民兵船は陥没するに違いない。武器を準備しろ。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="LIST_CREW_FREEMAN">
+						<text>(無料のカマキリ乗組員）民兵と話す。</text>
+						<event>
+							<text>フリー・マンティスがカメラに向かって歩き、満面の笑みで手を振る。しかし、民兵たちはそれほど喜んでいない。「お前の船には昆虫型フリークスがいるのか？反吐が出る！今さらマンティスを仲間にするなんて、何のために連邦軍とマンティス軍が戦ったんだ？お前たちのせいで、この銀河系は、いや、この多元宇宙はクソになったんだ。"彼らはすぐに通話を切り上げ、攻撃する！</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>賄賂を贈る。</text>
+						<event>
+							<text>"うっ、いいだろう。このマンティス・フリークたちを救う決心が固いんだね。ただ、彼らがトラブルに巻き込まれないことを祈るだけだ。そうでなければ、彼らを殺すしかない。"</text>
+							<item_modify>
+								<item type="scrap" min="-20" max="-20" />
+							</item_modify>
+							<choice hidden="true">
+								<text>フリー・マンティスに戻る。</text>
+								<event>
+									<text>「ありがとう！あなたは私たちに大きな好意を持ってくれた。我々は船長に恩がある。どう恩返しすればいい？</text>
+									<choice hidden="true">
+										<text>修理。</text>
+										<event>
+											<text>フリー・マンティスは修理があまり得意ではないが、全員が協力して船体のかなりの部分を修理してくれる。</text>
+											<damage amount="-10" />
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>燃料だ。</text>
+										<event>
+											<text>フリー・カマキリは燃料を移し替える。</text>
+											<autoReward level="MED">fuel_only</autoReward>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>スクラップ。</text>
+										<event>
+											<text>フリー・カマキリは自分たちのスクラップ・ストアの一部を喜んであなたに譲る。</text>
+											<autoReward level="MED">scrap_only</autoReward>
+										</event>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice>
+						<text>あきらめろ、反乱軍シンパは頑固すぎる。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>船を破壊せよ。</text>
+				<event>
+					<text>ミッションで学んだことは、問題に対処する最善の方法は残忍な殺人だということだ。あなたは武器をパワーアップし、民兵船を破壊する準備をする。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>拒否する。</text>
+		<event>
+			<text>「ああ、よくわかった。ミッションに幸あれ！"</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="UNION_FREEMANTIS_WIN">
+	<text>あなたは民兵船を殺した。フリー・マンティスをとりあえず助け、民兵船の残骸をスクラップにした。</text>
+	<autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+		<text>フリー・マンティスに戻る。</text>
+		<event>
+			<text>「殺したのか？どうして？不必要だ。我々は民間人の死など望んでいない。安全な旅がしたいだけだそれでも...あなたは私たちを救ってくれた。感謝はするが、今後はこのようなことをしないでほしい"</text>
+			<autoReward level="MED">standard</autoReward>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION" />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="UNION_FREEMANTIS_SURRENDER">
+	<text>民兵の船は破壊寸前。船長は必死にあなたを見ている。「本気なのか？血まみれのマンティスのために俺たちを殺すつもりか？"</text>
+	<choice hidden="true">
+		<text>フリー・カマキリを解放すれば、我々は君たちを助ける。</text>
+		<event>
+			<text>「あなたたちは正気じゃない。でもいい、難民を受け入れよう。クソ議員が難民を受け入れ始めたら、突然、このバカどもを家に入れるために殺し合いをすることになる......"</text>
+			<ship hostile="false" />
+			<choice hidden="true">
+				<text>フリー・マンティスに戻る。</text>
+				<event>
+					<text>「ありがとう！あなたは私たちに大きな好意を持ってくれた。我々は船長に恩がある。どう恩返しすればいい？</text>
+					<choice hidden="true">
+						<text>修理。</text>
+						<event>
+							<text>フリー・マンティスは修理があまり得意ではないが、全員が協力して船体のかなりの部分を修理してくれる。</text>
+							<damage amount="-10" />
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>燃料だ。</text>
+						<event>
+							<text>フリー・カマキリは燃料を移し替える。</text>
+							<autoReward level="MED">fuel_only</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>スクラップ。</text>
+						<event>
+							<text>フリー・カマキリは自分たちのスクラップ・ストアの一部を喜んであなたに譲る。</text>
+							<autoReward level="MED">scrap_only</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>そうだ。</text>
+		<event />
+	</choice>
+</event>
+
+<event name="UNION_EFFICIENCY_ENGINEER" unique="true">
+	<text>近くのユニオン船から、ある兵器をより電力効率よくアップグレードできると自慢する通信が入る。おそらく高価なものだろう。</text>
+	<ship load="SHIP_UNION_ALL" hostile="false" />
+	<choice blue="false" hidden="true" req="LIST_WEAPONS_PLAYER" lvl="1">
+		<text>プロセスについて問い合わせる。</text>
+		<event>
+			<text>エンジニアは以下の武器のアップグレードを提案する。</text>
+			<choice req="LASER_FROST_2">
+				<text>フロストレーザーMk IIをアップグレードする。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="LASER_FROST_2" />
+					<item_modify>
+						<item type="scrap" min="-45" max="-35" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="LASER_FROST_2_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="MISSILES_PARTICLE">
+				<text>パーティクルミサイルランチャーをアップグレードする。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="MISSILES_PARTICLE" />
+					<item_modify>
+						<item type="scrap" min="-40" max="-30" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="MISSILES_PARTICLE_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="ION_STUN_CHARGEGUN">
+				<text>Ion Charge Stunnerをアップグレード。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="ION_STUN_CHARGEGUN" />
+					<item_modify>
+						<item type="scrap" min="-35" max="-25" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="ION_STUN_CHARGEGUN_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="MISSILES_BURST_2">
+				<text>ハイドラ・ランチャーをアップグレードする。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="MISSILES_BURST_2" />
+					<item_modify>
+						<item type="scrap" min="-40" max="-30" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="MISSILES_BURST_2_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="MISSILES_CLOAK">
+				<text>ニュクス・ランチャーをアップグレードする。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="MISSILES_CLOAK" />
+					<item_modify>
+						<item type="scrap" min="-35" max="-25" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="MISSILES_CLOAK_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="MISSILES_FIRE">
+				<text>ハデスランチャーをアップグレードする。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="MISSILES_FIRE" />
+					<item_modify>
+						<item type="scrap" min="-40" max="-30" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="MISSILES_FIRE_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="BEAM_2">
+				<text>ハルバード・ビームをアップグレードする。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="BEAM_2" />
+					<item_modify>
+						<item type="scrap" min="-45" max="-35" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="BEAM_2_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="BEAM_LONG">
+				<text>パイクビームをアップグレードする。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="BEAM_LONG" />
+					<item_modify>
+						<item type="scrap" min="-35" max="-25" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="BEAM_LONG_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="BEAM_FIRE">
+				<text>トーチ・ビームをアップグレードする。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="BEAM_FIRE" />
+					<item_modify>
+						<item type="scrap" min="-35" max="-25" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="BEAM_FIRE_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="BEAM_GUILLOTINE">
+				<text>フォシャールビームのアップグレード</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="BEAM_GUILLOTINE" />
+					<item_modify>
+						<item type="scrap" min="-40" max="-30" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="BEAM_GUILLOTINE_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="ENERGY_2">
+				<text>エネルギー・キャノンMk IIをアップグレードする。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="ENERGY_2" />
+					<item_modify>
+						<item type="scrap" min="-40" max="-30" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="ENERGY_2_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="ENERGY_STUN">
+				<text>エナジースタナーをアップグレード</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="ENERGY_STUN" />
+					<item_modify>
+						<item type="scrap" min="-40" max="-30" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="ENERGY_STUN_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="ENERGY_CHARGEGUN">
+				<text>エネチャージャーのアップグレード</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="ENERGY_CHARGEGUN" />
+					<item_modify>
+						<item type="scrap" min="-35" max="-25" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="ENERGY_CHARGEGUN_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="SHOTGUN_2">
+				<text>Flak Cannon Mk IIをアップグレードする。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="SHOTGUN_2" />
+					<item_modify>
+						<item type="scrap" min="-45" max="-35" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="SHOTGUN_2_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="SHOTGUN_TOXIC">
+				<text>照射式対空砲をアップグレードせよ。</text>
+				<event>
+					<text>その武器をエンジニアに渡し、作業をさせる。</text>
+					<remove name="SHOTGUN_TOXIC" />
+					<item_modify>
+						<item type="scrap" min="-45" max="-35" />
+					</item_modify>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>しばらくすると、最適化を施された武器が戻ってくる。</text>
+							<weapon name="SHOTGUN_TOXIC_PLAYER" />
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="pilot" hidden="true" blue="false" max_group="0"> 
+				<text>気持ちを切り替えて。</text>
+				<event>
+					<text>あなたはその申し出を断り、自分の道を進む。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice blue="false" hidden="true" req="LIST_WEAPONS_PLAYER" lvl="0" max_lvl="0">
+		<text>プロセスについて問い合わせる。</text>
+		<event>
+			<text>そのエンジニアは、残念なことに修理できる武器がないと言う。あなたはとにかく彼に感謝し、それ以上時間を無駄にしない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>彼らを攻撃する！</text>
+		<event>
+			<text>武器をパワーアップし、敵意を示す。</text>
+			<ship hostile="true" />
+			<choice>
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>申し出を無視する。</text>
+		<event>
+			<text>あなたはその申し出を断り、自分の道を進む。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+	
+<eventList name="NEUTRAL_UNION">
+	<event load="UNION_OUTCAST_REFUGEES" />
+	<event load="UNION_DRUNK" />
+	<event load="UNION_MINING" />
+	<event load="UNION_FACTORY" />
+	<event load="UNION_CARAVAN" />
+</eventList>
+
+<event name="UNION_OUTCAST_REFUGEES" unique="true">
+    <text>このビーコンで激しい口論が繰り広げられている。非武装の輸送船を護衛する外道船が民兵船に立ち向かっている。彼らのおしゃべりはオープン・チャンネルで行われている！お前らの戯言を吹き込みながら、俺たちの家にお前らの仲間を侵入させておいていいと思ってるのか」
+
+「お前らは聞く耳を持たない！我々は背教者だ！私たちは背教者です！私たちはあなた方の習慣を学ぶことに寛容です。そして、私たちの考えに腹を立て、自分たちの考えにすり替え始める。我々はそんなに甘くない！"</text>
+    <choice req="unique_tuco">
+		<text>(トゥコ）民兵のパトロールを脅せ。</text>
+		<event>
+			<text>トゥコが壁を叩き、その声が通信機に響く。"俺はここで何を見てるんだ？"
+"お前は...誰だ？"パトロール隊が尋ねる。"ドレッド海賊団 "だドレッド海賊のトゥコだ！」
+
+「ドレッド海賊？"ドレッド海賊"？いいよ、ここにいて。ただ...ただ...混乱させるな！"民兵パトロール隊が出撃する。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>"ドレッド海賊団のトゥコが 救ってくれた"救世主トゥコ 万歳！""追放された者たちが" "船を歓待し 褒めちぎるトゥコは苦笑いしながら酒を飲む。"その腕前なら 評判も上々だ"</text>
+					<autoReward level="HIGH">standard</autoReward>
+					<choice hidden="true">
+						 <text>次へ...</text>
+						 <event load="MORALITY_REMOVE_OUTCAST" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice req="rock_outcast">
+		<text>(アウトキャスト・クルー）追放された者たちに、このまま進むことを勧める。</text>
+		<event>
+			<text>あなたの乗組員は護衛艦に声をかけ、移動を続けるよう提案する。船長は同意し、船は出発する。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MILITIA_OUTCAST_REFUGEES_LEFT" />
+			</choice>
+		</event>
+    </choice>
+    <choice hidden="true">
+		<text>追い出された者たちに、このまま進むことを勧める。</text>
+		<event load="MILITIA_OUTCAST_REFUGEES_PERSUADE" />
+    </choice>
+    <choice hidden="true">
+		<text>パトロールが偏見に満ちていると非難する。</text>
+		<event load="MILITIA_OUTCAST_REFUGEES_ACCUSE" />
+    </choice>
+    <choice>
+		<text>アウトキャストの護衛を攻撃せよ。</text>
+		<event>
+			<text>アウトキャストはあなたの敵対的な行動に対して、武器をパワーアップして対応する。</text>
+			<ship load="SHIP_OUTCAST_REFUGEE_ESCORT" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_OUTCAST_FIGHT" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>民兵のパトロールを攻撃せよ。</text>
+		<event>
+			<text>もう十分だろう。この民兵船は理不尽に思える。彼らはあなたの突然の攻撃に驚き、それに応えた。</text>
+			<ship load="SHIP_MILITIA_REFUGEE_PATROL" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>争いは無視する。</text>
+		<event>
+			<text>彼らの怒鳴り合いはあなたには関係ない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+<eventList name="MILITIA_OUTCAST_REFUGEES_PERSUADE">
+    <event>
+		<text>あなたは避難民に立ち去るよう説得する。追放された護衛隊長はため息をつく。「多勢に無勢だ。仕方がない。我々は先に進む"</text>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="MILITIA_OUTCAST_REFUGEES_LEFT" />
+		</choice>
+    </event>
+    <event>
+		<text>あなたは避難民を説得する。追放された護衛は睨みつける。「私たちは遠くまで来て、長く旅をしてきた。私たちは動かない。私たちを攻撃するか、立ち去るか。好きにしろ」。</text>
+		<choice>
+			<text>攻撃だ。</text>
+			<event>
+				<text>アウトキャストはあなたの敵対的な行動に対して、武器をパワーアップして対応する。</text>
+				<ship load="SHIP_OUTCAST_REFUGEE_ESCORT" hostile="true" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_UPDATE_OUTCAST_FIGHT" />
+				</choice>
+			</event>
+		</choice>
+		<choice>
+			<text>譲歩する。</text>
+			<event>
+				<text>あなたはその場を後にする。状況はまだ解決していないが、今のところ非暴力のようだ。</text>
+			</event>
+		</choice>
+    </event>
+</eventList>
+<eventList name="MILITIA_OUTCAST_REFUGEES_ACCUSE">
+    <event>
+		<text>民兵パトロール隊の隊長は吃驚した。「私が偏屈だと？私はただ......。いいか、俺は......。俺は...俺は...俺は...俺は...俺は...俺は...私はただ...どうでもいいここにいろ。事態が悪くなっても、私はここにいて、そう言っただろう！"</text>
+		<choice hidden="true">
+			<text>難民と話す。</text>
+			<event load="MILITIA_OUTCAST_REFUGEES_STAY" />
+		</choice>
+	</event>
+	<event>
+		<text>民兵パトロール隊の隊長は嘲笑する。「連邦の連中は。あんたはわかってない。手加減すれば何でも解決すると思っているのか。出て行け、お前には関係ない。"</text>
+		<choice>
+			<text>彼らを攻撃する。</text>
+			<event>
+				<text>もう十分だろう。この民兵船は理不尽に思える。彼らはそれに応える。</text>
+				<ship load="SHIP_MILITIA_REFUGEE_PATROL" hostile="true" />
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="MORALITY_UPDATE_UNION_FIGHT" />
+				</choice>
+			</event>
+		</choice>
+		<choice>
+			<text>譲歩する。</text>
+			<event>
+				<text>あなたはその場を後にする。状況はまだ解決していないが、今のところ非暴力のようだ。</text>
+			</event>
+		</choice>
+	</event>
+	<event>
+		<text>民兵パトロール隊の隊長がうなる。「連邦がいつも偉そうにしているのにはうんざりだ。お前たちを叩き潰す時が来た！」。</text>
+		<ship load="SHIP_MILITIA_REFUGEE_PATROL" hostile="true" />
+		<choice>
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+    </event>
+</eventList>
+<event name="MILITIA_OUTCAST_REFUGEES_LEFT">
+    <text>「感動したよ。あの厄介な難民は決して出ていかないと思っていたよ。ご心配なく、報酬はお支払いしますから"船長は少額の資源をあなたに送る。</text>
+    <autoReward level="LOW">standard</autoReward>
+</event>
+<event name="MILITIA_OUTCAST_REFUGEES_LEFT_DEAD_ESCORT">
+    <text>民兵パトロール隊がメッセージを送る。"踏み込んでくれたことに感謝しないわけではないが、ちょっとやりすぎじゃないか？"</text>
+</event>
+<event name="MILITIA_OUTCAST_REFUGEES_STAY_VIOLENCE">
+    <text>避難民のリーダーがあなたを呼んだ。「どこに行っても暴力がつきまとう。それがこの世界の自然な姿なのだろうか？それでも、私たちの味方をしてくれて感謝している。これが裏目に出ないことを祈るばかりだ"</text>
+   	 <autoReward level="LOW">standard</autoReward>
+</event>
+<event name="MILITIA_OUTCAST_REFUGEES_STAY">
+    <text>避難民のリーダーがあなたを歓迎する。「私たちの味方をしてくれてありがとう。これで私たちは平和に暮らすことができる。私たちを助けてくれたあなたに、できる限りのものを提供します"</text>
+    <autoReward level="MED">standard</autoReward>
+	<choice hidden="true">
+         <text>次へ...</text>
+         <event load="MORALITY_REMOVE_OUTCAST" />
+  	</choice>
+</event>
+
+<event name="UNION_DRUNK" unique="true">
+    <text>ユニオン船が声をかけてくる。"おい！ この...アホ！"船主は酔っているようだ。「この戦争はお前のせいだ！お前のせいだ！反逆者め。連邦が間抜けでのろまじゃなかったら、こんな反乱は起きなかったんだ。今、私の仕事が停滞しているのは、お前とお前のマルチバース戦争が邪魔をしているからだ！"</text>
+    <ship load="SHIP_UNION_FIGHT" hostile="false" />
+    <choice req="unique_nights" hidden="true">
+		<text>(ナイツ）"あなたのビジネスが失敗しているのは、あなたがSSSSUCKだからだ"</text>
+		<event>
+			<text>酔っぱらいは答えようとしたが、その前にナイツに遮られた。「ああ、時代が悪いから失敗しているだけで、君のせいじゃないのか？推測するに、反乱軍の前はあなたの奥さんだったのでは？それともライバルが何か不公平なことをしたのか？黙れ、お前はただの失敗作だ。それを認めろ」
+「でも私は...でもあなたは...」。男は必死にナイツに対抗しようとするが、たどたどしい。つまずく足音が聞こえ、船の他の男が通信機を操作している。"まあ、あなたは私たちみんなに好意を持ってくれたと思う。これを渡せば二人とも帰れるだろう？"</text>
+			<weapon name="GIFTLIST_UNION" />
+		</event>
+    </choice>
+    <choice>
+		<text>理路整然とした討論で彼を引き込む。</text>
+		<event>
+			<text>あなたは自分の任務の重要性を彼に説明したが、彼はお決まりのさまざまな誤謬で、あなたの整った議論をすべて完全に否定した。あなたは礼儀正しく、自分の推論が誤りであることを伝えようとしたが、奇妙で得体の知れない理由により、この怒り狂った酔っ払いには通じなかった。このままでは何も始まらないと悟ったあなたは、船とその暴言を後にした。</text>
+			<event />
+		</event>
+    </choice>
+    <choice>
+		<text>侮辱的な言葉を浴びせる。</text>
+		<event>
+			<text>あなたはその男と疲れるほどの怒鳴り合いをする。やがて、あなたの言うことが神経を逆なでする。彼は攻撃する！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+		</event>
+    </choice>
+    <choice hidden="true">
+		<text>彼の船を粉々に吹き飛ばすと脅す。</text>
+		<event load="UNION_DRUNK_THREATEN" />
+    </choice>
+    <choice>
+		<text>実際に彼の船を粉々に吹き飛ばす。</text>
+		<event>
+			<text>「そして、そこにある！みんな見ろ、弾圧されてる！"ユニオン船が応戦！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT" />
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>完全に無視する。</text>
+		<event>
+			<text>船はあなたに向かって嫌な言葉を放送し続けるが、あなたは気にしない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+<eventList name="UNION_DRUNK_THREATEN">
+	<event>
+		<text>「おいおい、落ち着けよ！そんなつもりじゃなかったんだ。みんな友達だろ？ほら、友達だ！"ユニオン船は船倉から武器を放り出し、あなたとの距離を保つ。</text>
+		<weapon name="GIFTLIST_UNION" />
+	</event>
+	<event>
+		<text>「行きたいの？行きたいの？連れてってやるよ！"ユニオン船が先制攻撃を仕掛けてくる！</text>
+		<ship hostile="true" />
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="COMBAT_CHECK" />
+		</choice>
+	</event>
+	<event>
+		<text>"まあ......その......君のケツを蹴り上げたいのは山々なんだけど、仕事が忙しくてね。だから、そこだ。"船はすぐに離脱する。</text>
+		<instantEscape />
+		<choice>
+			<text>船内で何かをする。</text>
+			<event load="STORAGE_CHECK" />
+		</choice>
+		<choice>
+			<text>何もしない。</text>
+			<event />
+		</choice>
+	</event>
+</eventList>
+
+<event name="UNION_MINING" unique="true">
+	<text>近くの小惑星フィールドで民間人の採掘作業が行われているようだ。フィールドを囲むように境界標識があり、無許可の要員はこの地域に立ち入らないよう通達している。</text>
+	<choice hidden="true">
+		<text>もっと近くで検査しろ。</text>
+		<event>
+			<text>ほとんどの船は小惑星帯から離れた近くの前哨基地に停泊しているが、1隻はまだ小惑星の採掘を続けている。</text>
+			<ship load="SHIP_MINING_OPS" hostile="false" />
+			<environment type="asteroid" />
+			<choice hidden="true">
+				<text>彼らを攻撃する。</text>
+				<event>
+					<text>採掘船を攻撃するために移動する。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_UNION_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="BEAM_MINING">
+				<text>(採掘装置）郊外の小惑星をいくつか採掘する。</text>
+				<event>
+					<text>小惑星から燃料とスクラップをそこそこ集めていると、突然、先ほどの収穫機があなたを見つけた。「ここは立ち入り禁止区域だ！何してるんだ？"他に小惑星地帯を守る者がいない以上、彼らはあなたを撃退するしかない！</text>
+					<autoReward level="MED">fuel</autoReward>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_UNION_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="DRONE_CONTROL_BEAM_DRONE">
+				<text>(ビームドローン）郊外の小惑星を採掘せよ。[-1ドローン]</text>
+				<event>
+					<text>小惑星から燃料とスクラップをそこそこ集めていると、突然、先ほどの収穫機があなたを見つけた。「ここは立ち入り禁止区域だ！何してるんだ？"他に小惑星地帯を守る者がいない以上、彼らはあなたを撃退するしかない！</text>
+					<autoReward level="MED">fuel</autoReward>
+					<item_modify>
+						<item type="drones" min="-1" max="-1" />
+					</item_modify>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_UNION_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="SCRAP_COLLECTOR">
+				<text>(スクラップ・アーム）郊外の小惑星を採掘する。</text>
+				<event>
+					<text>小惑星から燃料とスクラップをそこそこ集めていると、突然、先ほどの収穫機があなたを見つけた。「ここは立ち入り禁止区域だ！何してるんだ？"他に小惑星地帯を守る者がいない以上、彼らはあなたを撃退するしかない！</text>
+					<autoReward level="MED">fuel</autoReward>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_UNION_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>無視するんだ。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>無視するんだ。</text>
+		<event>
+			<text>あなたは鉱山経営に何の関心もない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="UNION_MINING_DESTROY">
+	<text>採掘船は大量の燃料を積んでいたようだ。鉱山の船は爆発した。幸運にもあなたの船に被害はなかったが、彼らの積荷は一つも生き残らなかった。増援が到着する前に、残っているものを素早くスクラップにする。</text>
+	<autoReward level="LOW">standard</autoReward>
+</event>
+<event name="UNION_MINING_KILL">
+	<text>採掘船の乗組員は死んでおり、船内には大量の燃料が蓄えられている。</text>
+	<autoReward level="HIGH">fuel</autoReward>
+</event>
+
+<event name="UNION_FACTORY" unique="true">
+	<text>遠くに小さな自動兵器工場がある。そこは民兵の船1隻に守られている。</text>
+	<ship load="SHIP_MILITIA_WEAPON_FACTORY" hostile="false" />
+	<choice hidden="true">
+		<text>守衛を攻撃して工場へ。</text>
+		<event>
+			<text>あなたは民兵船を攻撃する準備をする。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	
+	<choice hidden="true">
+		<text>工場は無視する。</text>
+		<event>
+			<text>あなたは工場に関心がない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="UNION_FACTORY_CHOICE">
+	<text>守衛がいなければ、数少ない一般労働者は散り散りになる。あなたは工場を独り占めできるが、援軍が到着するまで長くはかからないだろう。何を奪うのか？</text>
+	<choice>
+		<text>武器を持て。</text>
+		<event>
+			<weapon name="RANDOM" />
+		</event>
+	</choice>
+	<choice>
+		<text>弾薬を持ってこい。</text>
+		<event>
+			<item_modify>
+				<item type="missiles" min="10" max="10" />
+			</item_modify>
+		</event>
+	</choice>
+</event>
+
+<event name="UNION_CARAVAN" unique="true">
+	<text>マンティス・ハイヴ以外でスゼレイン船を見かけることは極めて稀だが、ユニオン領内ではなおさらだ。特に勇敢なスゼレイン船が民兵のキャラバンを攻撃している。護衛の装備は貧弱で、ほとんど勝ち目はない。</text>
+	<ship load="SHIP_SUZERAIN_CARAVAN" hostile="false" />
+	<choice hidden="true">
+		<text>民兵を守れ。</text>
+		<event>
+			<text>あなたはスゼレーン船を攻撃する準備をする。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="cloaking">
+		<text>(遮蔽物）遮蔽物をかぶって、トランスポートが気を取られている間に強奪する。</text>
+		<event>
+			<text>民兵たちは何が起こったのかほとんど気づかないまま、あなたは物資を持ち逃げした。彼らはマンティスの相手で忙しく、あなたを止めることができなかった。</text>
+			<autoReward level="LOW">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="LIST_CREW_SUZERAIN">
+		<text>(ハイブ・エリート) スザレイン船の撤退を要求する。</text>
+		<event>
+			<text>あなたのマンティスは、スゼレインの船長が自分たちの領土を無防備なままにして「ミートサックを強奪する」ような愚かなことをしていると叱責する。その皮肉にもかかわらず、敵艦に乗っていたスゼレインは恥ずかしそうに飛び去る。民兵船は報酬を提供するが、護衛の1人が、あなたが去った後にスゼラインが戻ってきてキャラバンを襲うかもしれないと恐れて、あなたにサービスを提供する。</text>
+			<crewMember amount="1" combat="1" />
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="FLARE_DISTRACTION">
+		<text>(照明弾）照明弾を使ってスゼラインをキャラバンから遠ざける。</text>
+		<event>
+			<text>スザレインはすぐに照明弾を見つけ、近くの別の船に送られた救難信号だと思い、迂回する。彼らが気を取られている間に、あなたは民兵船を護送する。彼らは攻撃でかなりの打撃を受けたようで、報酬と一緒に民兵の護衛の1人が、残りの旅でスゼレインと再び直面する危険を冒したくないため、あなたにサービスを提供する。</text>
+			<crewMember amount="1" combat="1" />
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>船は無視する。</text>
+		<event>
+			<text>難しい選択だが、スズランをいじめるのは楽しみなことではない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="UNION_CARAVAN_GIFT">
+	<text>護衛艦は、あなたが最初に思っていたよりもずっと大きなダメージを受けた。戦闘中に生命維持装置が故障し、乗組員は窒息死した。幸運なことに、輸送船はまだ生きており、彼らはお礼に積荷の一部を渡してくれた。</text>
+	<autoReward level="HIGH">item</autoReward>
+</event>
+
+
+<eventList name="DISTRESS_UNION">
+	<event load="DISTRESS_UNION_CLINIC_HARMONY" />
+	<event load="DISTRESS_UNION_LANIUS_MISTAKE" />
+</eventList>
+
+<event name="DISTRESS_UNION_CLINIC_HARMONY" unique="true">
+	<distressBeacon />
+    <text>このビーコンでユニオンの診療所がハーモニー艦の攻撃を受けている。あなたの接近に気づいたエンギ船はメッセージを送る。"これはハーモニーの問題だ。干渉するな"</text>
+    <ship load="SHIP_ENGI_CLINIC" hostile="false" />
+    <choice>
+		<text>説明を求める。</text>
+		<event>
+			<text>"この施設は分離主義者と反乱軍シンパが よく利用している許容できないレベルの逸脱が検出された。エラーを修正中。繰り返す：干渉するな。"</text>
+			<choice req="LIST_CREW_ZOLTAN_CAPITAL">
+				<text>(ゾルタン・クルー）"連盟規約105.2、105.5、105.9に違反している！"</text>
+				<event>
+					<text>あなたのゾルタンは、医療関係者への攻撃を禁止する連邦の規則や、イデオロギーに関係なく負傷者を治療する中立性を成文化した条約を引用して怒る。エンギは説得力のある反論をするのに苦労し、結局あきらめる。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="UNION_CLINIC_PROTECTED" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="LIST_VARIANT_SEPARATIST">
+				<text>(分離主義者クルー)攻撃者を諭す。</text>
+				<event>
+					<text>"ハーモニー "はいつもと同じように（不一致に）行動している。不調和なクリニック＝共通善。ハーモニーの器＝専制政治。何か有益なことをしなさい。分離主義者＝対処しなければならない"約束通り、ハーモニー船が武器をチャージし、標的を変える。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="unique_turzil">
+				<text>(タージル）攻撃側を諌めなさい。</text>
+				<event>
+					<text>"ハーモニー "は、その目的のために行き過ぎることを望んでいる。すべての人を支配することはできないし、支配しようとしても無駄だ。人類を代表して、侵略をやめ、賠償金を支払え」
+
+ TRZ-1Lが感知した。"ハーモニーの要求は..." "あなたの無条件降伏ですハーモニーの指示に背くことは容認できない。"ハーモニー艦は直ちに貴艦と交戦する！</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="engi">
+				<text>(エンジ・クルー）エンジに妥協点を見つけさせる。</text>
+				<event>
+					<text>クルーはためらっているようだが、承諾する。エンギを通して、あなたは最終的にハーモニー号を説得し、住民を自由にさせることができた。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>クリニックのスタッフはあなたの妥協に満足していないようだ。それでも、彼らは自由を得たあなたにささやかな報酬を与えようとする。</text>
+							<autoReward level="LOW">stuff</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="engi_defender">
+				<text>(ディフェンダー・クルー）ディフェンダーを説得してやめさせる。</text>
+				<event>
+					<text>ディフェンダーは躊躇しているようだが、譲歩する。ディフェンダーはエンギ船に、この行動はハーモニーと連邦の良好な関係を危うくするものであり、ハーモニーの意志を実現するにはもっと良い方法があると説得する。</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="UNION_CLINIC_PROTECTED" />
+					</choice>
+				</event>
+			</choice>
+			<choice req="rep_comb_engi" lvl="-999" max_lvl="-1">
+				<text>(肯定的なハーモニーの評判）ハーモニーとの良好な関係を利用して、彼らに身を引くよう説得する。</text>
+				<event>
+					<text>あなたはエンギに、どうでもいいことならこんな大げさなことはしないと言う。エンギはもう少し抵抗を続けるが、あなたはようやく彼らに通じた。"レネゲイド：良好な地位。当分の間、決定を延期する"</text>
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="UNION_CLINIC_PROTECTED" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>説得するんだ。</text>
+				<event>
+					<text>"連邦船＝警告。懲罰措置を取る"エンギ艦はクリニックへの攻撃を中断し、代わりに貴艦と対峙する。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>エンジの要求を受け入れる。</text>
+				<event>
+					<text>ハーモニー号は連邦の同盟国であり、あなたは彼らが誠実に行動していると信じることにした。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>診療所を守れ。</text>
+		<event>
+			<text>"エラー。"非準拠の 連邦船を発見"エンギ艦はクリニックへの攻撃を中止し、代わりに貴艦と対峙する。</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT" />
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>エンジの要求を受け入れる。</text>
+		<event>
+			<text>ハーモニーは連邦の同盟国であり、あなたは彼らが誠実に行動していると信じることにした。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+<textList name="UNION_CLINIC_SAVED">
+	<text>"守ってくれてありがとう。私たちは、助けを求める人の助けを断らないことを大切にしています。それが医療のあるべき姿です"衛生兵の一人が参加を申し出る。</text>
+	<text>"最近、ハーモニーがより...怖くなったのは私だけでしょうか？もしよろしければ、一緒に働くことで感謝の気持ちを表したいのですが......"</text>
+	<text>「私たちクリニックのスタッフ全員から、そして当院を訪れるすべての人を代表して、どうもありがとうございました。どうぞ、私もお連れください。できる限りのお手伝いをさせていただきます。"</text>
+</textList>
+<event name="UNION_CLINIC_PROTECTED">
+	<text load="UNION_CLINIC_SAVED" />
+    <crewMember amount="1" class="human_medic" />
+	<choice>
+		<text>次へ...</text>
+		<event load="MORALITY_REMOVE_GENERAL" />
+	</choice>
+</event>
+
+<event name="DISTRESS_UNION_LANIUS_MISTAKE" unique="true">
+	<distressBeacon />
+    <text>ラニウスの船がユニオンのステーションに取り付けられている。船もステーションも救難信号を発信している。ステーションの救難信号には「メーデー！私たちはラニウスに食べられています！助けてください！"しかしラニウスは文字化けした金切り声を出すだけだ。</text>
+    <choice req="BLUELIST_BEAMS_DAMAGE">
+		<text>(ダメージビーム）ステーションから船を切り離せ。</text>
+		<event>
+			<text>素早い一撃で、ビームは船を引き離すことに成功する。ラニウスは離脱し、ワープすることなくステーションを大きく離れる。</text>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="UNION_LANIUS_SOLVED_NO_TRANSLATOR" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="DRONE_CONTROL_BEAM_DRONE">
+		<text>(ビーム・ドローン）ステーションから船を切り離せ。</text>
+		<event>
+			<text>ドローンは船とステーションを正確に切り離す。ラニウスは離脱し、ワープすることなくステーションを大きく離れる。</text>
+			<item_modify>
+				<item type="drones" min="-1" max="-1" />
+			</item_modify>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="UNION_LANIUS_SOLVED_NO_TRANSLATOR" />
+			</choice>
+		</event>
+    </choice>
+    <choice req="LIST_CREW_LANIUS" hidden="true">
+		<text>(ラニウス・クルー）「ラニウスの船は動かない。悪意はない。スクラップと交換したい。品物はある壊れた翻訳機</text>
+		<event>
+			<text>ステーションの通信士はほっとしたようだ。「私たちは攻撃されていないのですね？では、外に出て修理しましょう」。間もなく、ステーションとラニウスは分離され、あなたのラニウスが仲介役となって取引を始めた。ステーションはあなたの助けに対して快く報酬を支払う。</text>
+			<autoReward level="MED">standard</autoReward>
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<text>「ありがとう。宝物ができました。とても感謝している"</text>
+					<weapon name="GIFTLIST_LANIUS" />
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>ラニウスの船を攻撃する。</text>
+		<event>
+			<text>船は金切り声を上げながら、防御を続ける。しかし、なぜか切り離されず、機動性がない。</text>
+			<status type="limit" target="enemy" system="engines" amount="0" />
+			<ship load="SHIP_LANIUS_UNION_STATION" hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+    </choice>
+	<choice>
+    	<text>ラニウスとのコミュニケーションを試みる。</text>
+    	<event load="DISTRESS_UNION_LANIUS_CONTACT" />
+   </choice>
+    <choice>
+		<text>現場は放っておけ。</text>
+		<event>
+			<text>船もステーションも呼びかけを続けるが、あなたは気にしない。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+<event name="UNION_LANIUS_SOLVED_NO_TRANSLATOR">
+    <text>ステーションの司令官が、感謝の意を込めてあなたの船を呼び寄せた。「君の助けがなければ、我々は間違いなくダメだった。どうか、この感謝の印を持っていってくれ。しかし...船は攻撃も離脱もしていない。メッセージを繰り返し放送しているだけだ。何が言いたいんだ？</text>
+    <autoReward level="LOW">standard</autoReward>
+    <choice>
+		<text>放っておくのが一番だ。</text>
+		<event>
+			<text>船は無駄に反応を得ようとする。やがて船は飛び去った。「まあ、もう心配する必要はないだろう。</text>
+		</event>
+    </choice>
+	<choice>
+		<text>スクラップにしてくれ。</text>
+		<event>
+			<text>船は風鈴のような音を立ててメッセージを送る。船は贈り物を残し、あなたが渡したスクラップをすくい上げる。"交換 "を望んでいたのか...。結局、私たちは危険な目には遭わなかったようだ。まあ、解決してよかったよ。</text>
+			<item_modify>
+				<item type="scrap" min="-45" max="-35" />
+			</item_modify>
+			<choice>
+				<text>ラニウスが残した贈り物を拾う。</text>
+				<event>
+					<weapon name="SHOTGUN_2" />
+				</event>
+			</choice>
+		</event>
+    </choice>
+	<choice>
+		<text>ミサイルを打て</text>
+		<event>
+			<text>船は風鈴のような音のメッセージを送る。それは贈り物を残し、あなたが与えたミサイルをすくい上げる。"交換 "を望んでいたのか...。結局、私たちは危険な目には遭わなかったようだ。まあ、解決してよかったよ。</text>
+			<item_modify>
+				<item type="missiles" min="-6" max="-4" />
+			</item_modify>
+			<choice>
+				<text>ラニウスが残した贈り物を拾う。</text>
+				<event>
+					<weapon name="BOMB_BREACH_1" />
+				</event>
+			</choice>
+		</event>
+    </choice>
+    <choice>
+		<text>ドローンを使うんだ。</text>
+		<event>
+			<text>船は風鈴のような音を立ててメッセージを送る。それは贈り物を残し、あなたが与えたドローンをすくい上げる。"交換 "を望んでいたのか...。結局、私たちは危険な状態ではなかったようだ。まあ、解決してよかったよ。"</text>
+			<item_modify>
+				<item type="drones" min="-5" max="-3" />
+			</item_modify>
+			<choice>
+				<text>ラニウスが残した贈り物を拾う。</text>
+				<event>
+					<drone name="FLAK_1_AMP3" />
+				</event>
+			</choice>
+		</event>
+    </choice>
+</event>
+<eventList name="DISTRESS_UNION_LANIUS_CONTACT">
+	<event>
+    	<text>あなたはラニウスに明確なメッセージを送り、彼らの状況を見極めようとした。運良く、あなたは彼らの悲鳴のパターンを見つけることができた。あなたが画像を送ると、ラニウスはあなたが熱いか冷たいかを判断するためにチーンとか金切り声を送る。基本的に、彼らは身動きがとれないようで、お腹が空いているため、取引をしたいだけなのだ。</text>
+		<choice>
+			<text>駅に知らせる。</text>
+			<event>
+				<text>ステーションに電話をかける。局の通信士はほっとしたようだ。「そう思うか？では、外に出て修理しよう。"間もなく、ステーションとラニウスは分離した。</text>
+				<choice hidden="true">
+					<text>次へ...</text>
+					<event load="UNION_LANIUS_SOLVED_NO_TRANSLATOR" />
+				</choice>
+			</event>
+		</choice>
+	</event>
+	<event>
+    	<text>ラニウスに次々とメッセージを送り、意味のある反応を呼び起こそうとする。返ってくるのは金切り声からチーンという音までさまざまだ。ラニウスが攻撃的な動きを見せる様子はないが、あなたがいくら試みても、お互いの言葉は通じない。</text>
+		<choice>
+			<text>問題が特定できないことを局に伝える。</text>
+			<event>
+				<text>「それで終わり？このまま立ち往生するしかないのか...？自分たちで解決するしかなさそうだ..."</text>
+			</event>
+ 		</choice>
+	</event>
+	<event>
+    	<text>ラニウスを呼び出せ。何が起きているのか探ろうとする。しかし、何度かメッセージを送ってもうまくいかなかった後、あなたの一言で突然、彼らは行動を変え、攻撃的になった！</text>
+    	<ship load="SHIP_LANIUS_UNION_STATION" hostile="true" />
+    	<choice hidden="true">
+        	<text>次へ...</text>
+        	<event load="COMBAT_CHECK" />
+    	</choice>
+	</event>
+</eventList>
+
+
+
+<eventList name="QUESTS_UNION">
+	<event load="QUEST_UNION_HOTHEADED_CIV" />
+</eventList>
+
+<event name="QUEST_UNION_HOTHEADED_CIV" unique="true">
+    <text>近くの民間の集落があなたを呼んでいる。「レネゲイド、応答せよ！忙しいだろうが、友人が危険な目に遭っている。スラッグのハッカーに詐欺に遭ってアカウントを乗っ取られ、シャトルを借りてそいつらに文句を言いに行ったんだ。可哀想に、彼は騙されやすく世間知らずで、しかも熱血漢なんだ。彼を救う時間があると思うか？</text>
+    <choice hidden="true">
+		<text>協力することに同意する</text>
+		<event>
+			<text>「ありがとう。彼の船のトランスポンダーを送ります。支払いについては、もっとお渡ししたいのですが、これしかありません"</text>
+			<autoReward level="LOW">scrap_only</autoReward>
+			<quest event="QUEST_UNION_HOTHEADED_CIV_SPOT" />
+		</event>
+    </choice>
+    <choice>
+		<text>時間がないんだ。</text>
+		<event>
+			<text>"そうかもしれないと思ったのですが..."民間人はがっかりして電話を切る。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+    </choice>
+</event>
+<event name="QUEST_UNION_HOTHEADED_CIV_SPOT">
+    <beaconType id="map_icon_quest" global="true">
+		<color r="69" g="168" b="235" a="1" />
+		<unvisitedTooltip>あなたは、ハッカーを追う無謀な一般市民を探すよう依頼された。</unvisitedTooltip>
+	</beaconType>
+    <text>トランスポンダーを追跡すると、民間シャトルを捕食するスラッグ船を発見。</text>
+    <choice req="hacking" lvl="2">
+		<text>(ハッキング）気づかれる前にメインフレームをハッキングする。</text>
+		<event>
+			<text>あなたは彼らの船のコンピューターにハッキングし、彼らが食い物にしたアカウントの権限変更をすべて元に戻すことに成功した。"何だ...我々の利益だ！後悔するぞ！"</text>
+			<ship load="SHIP_HACKER_HOTHEAD_HACKED" hostile="true" />
+			<choice hidden="true">
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+		</event>
+    </choice>
+    <choice>
+		<text>スラッグ船を攻撃する。</text>
+		<event>
+			<text>"ああ...シュート！連邦に見つかった！"すぐに標的を変えて攻撃してくる。</text>
+			<ship load="SHIP_HACKER_HOTHEAD" hostile="true" />
+			<choice hidden="true">
+                <text>次へ...</text>
+                <event load="COMBAT_CHECK" />
+            </choice>
+		</event>
+    </choice>
+</event>
+
+<event name="UNION_HOTHEAD_GRATITUDE">
+    <text>「確認してみます！また自分のアカウントにアクセスできる。君は命の恩人だ、レネゲイド。何があるか見せてくれ..."一般市民が報酬としてスクラップを送ってくる。</text>
+    <autoReward level="MED">scrap_only</autoReward>
+</event>
+
+
+<eventList name="HOSTILE_UNION">
+	<event load="ENCOUNTER_MILITIA_MISTAKE" />
+	<event load="ENCOUNTER_PIRATE_STATION_UNION" />
+	<event load="ENCOUNTER_COALITION_UNION" />
+	
+	<event load="ENCOUNTER_REBEL" />
+	<event load="ENCOUNTER_AUTO" />
+	<event load="ENCOUNTER_PIRATE" />
+</eventList>
+
+<event name="ENCOUNTER_PIRATE_STATION_UNION" unique="true">
+	<text>このユニオン・ステーションはあなたの味方ではない。今は海賊が住んでいて、全兵器をまっすぐあなたに向けている！</text>
+	<ship load="SHIP_PIRATE_UNION_STATION" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+<event name="ENCOUNTER_COALITION_UNION" unique="true">
+	<text>連合軍の艦船がこのあたりをうろつきまわっている。あなたを見つけた連合船は、あなたならやりかねないと判断し、攻撃を仕掛けてきた。</text>
+	<ship load="SHIP_COALITION_FIGHT" hostile="true" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event load="COMBAT_CHECK" />
+	</choice>
+</event>
+
+
+<ship name="SHIP_RST_START" auto_blueprint="MU_RST_SURVEYOR">
+	<destroyed load="DESTROYED_UNION" />
+	<deadCrew load="DEAD_CREW_UNION" />
+</ship>
+<event name="RST_START">
+	<text>近くのビーコンを探査していたオレンジ色の小型船が、あなたに気づいて停止し、救難信号を発信した。興味本位で電話に出る。「外国の船、こちらはR.S.T.社のサーベイヤー192だ。会社を代表して、レンフィールド博士の居場所に関するあらゆる情報を正式に要請する"</text>
+	<ship load="SHIP_RST_START" hostile="false" /> 
+	<choice hidden="true">
+		<text>何も知らないんだ。</text>
+		<event>
+			<text>「残念だ、残念だ......しかし、君は軍艦に見えるね？少なくとも武装した民間人だレンフィールド博士の 居場所を知っています彼を見つけたいが 危険な状態かもしれない我々の船だけでは不十分です見ていただけますか？成功すれば、R.S.T.から多額の報酬があります"</text>
+			<choice hidden="true">
+				<text>もちろんだ！</text>
+				<event>
+					<text>「わかった！座標を転送する幸運を祈る！助かったよ</text>
+					<autoReward level="LOW">standard</autoReward>
+					<quest event="RST_QUEST" />
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>レンフィールド博士って誰だっけ？</text>
+				<event>
+					<text>「ああ、申し訳ない！ここにいる全員が知っていると思い込んでいました...レンフィールド博士は素晴らしい物理学者で、おそらく現代で最も偉大な人物です！彼の最も偉大な業績は、その名も "レンフィールド爆弾 "の発明である！その爆発力は、これまで知られていたどの種の核爆弾よりも大きい！地球上のヴェクを根絶するために 使用されたが その結果 大洪水を引き起こしたこの事件は...R.S.T.社に良い影響を与えなかったが、今はそんなことは重要ではない"</text>
+					<choice hidden="true">
+						<text>タスクに同意する。</text>
+						<event>
+							<text>「わかった！座標を転送する幸運を祈る！助かったよ</text>
+							<autoReward level="LOW">standard</autoReward>
+							<quest event="RST_QUEST" />
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>衰退。</text>
+						<event>
+							<text>「理解できる。これ以上時間を無駄にすることはない！R.S.T. out."</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>衰退。</text>
+				<event>
+					<text>「理解できる。これ以上時間を無駄にすることはない！R.S.T. out."</text>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>そうそう、レンフィールドのことは全部知っているよ。私の兄か何かだったかな？</text>
+		<event>
+			<text>「兄さん？何だと？レンフィールドに兄弟なんていないよ！うう、もう誰も真剣に何も考えていないみたいだ"船は電話を切る。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="RST_QUEST">
+	<text />
+</event>
+
+<event name="SPIDER_QUEST_START" unique="true">
+	<distressBeacon />
+	<text>小さな宇宙ステーションから逃げ惑う多数の船を発見。その周辺には民兵部隊の艦船が配備されている。1隻があなたに呼びかける：「民間人、この星系は制限されています。この星系は制限されています。</text>
+	<choice req="loc_beentobrood" lvl="0" hidden="true" blue="false" max_group="0">
+		<text>我々は民間船ではない。何が問題なのか？</text>
+		<event>
+			<text>「連邦の軍艦？失礼しました。このステーションは奇妙な 異星人のクモに冒されている"大きな被害を出さずに 除去できるかね？"</text>
+			<ship load="SHIP_INFESTED_STATION" hostile="false" /> 
+			<choice hidden="true">
+				<text>同意する。</text>
+				<event>
+					<text>民兵はステーションとの交戦許可を与えるが、最後の警告を2回行う。「これが何なのかはわからないが、ステーションのシステムは機能しているようだ。損害を与えるのは理解できるが、あまり大きな損害を与えないでほしい。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="unique_haynes">
+				<text>(ヘインズ）"すみません...クモって言いました？"</text>
+				<event>
+					<text>「ヘインズ中佐失礼しました 乗船していたとは..！はい クモです巨大なエイリアンの一種です！"軍人は背筋を伸ばしてぎこちなく敬礼し、後ろに倒れそうになる。ヘインズは顔が青くなる。"すごい...クモだ...巨大というが、具体的にどれくらいの大きさなんだ？"民兵はしばらく考えてから答えた。「うーん...人間の大きさくらいかな？赤ん坊は犬のような大きさだ。とても大きい。だからこのような表現になりました！あの...サー？"ヘインズが部屋を出たことに気づき、カメラをチェックすると、トイレで吐いていた。すぐに治るはずだ。</text>
+					<choice hidden="true">
+						<text>協力することに同意する</text>
+						<event>
+							<text>民兵はステーションとの交戦許可を与えるが、最後の警告を2回行う。「これが何なのかはわからないが、ステーションのシステムは機能しているようだ。多少の損害を与えるのは理解できるが、あまり大きな損害を与えないでほしい。民間財産を破壊して回ることはできない。"他のクルーにヘインズをトイレから連れ出させ、戦闘の準備をさせる。</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>おそらく、これは最善のアイデアではない。</text>
+						<event>
+							<text>あなたは謝るが、民兵には力になれないと伝える。その場を去る前に、ヘインズに依頼を断ったことを伝えると、彼は安堵の表情を浮かべた。</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>衰退。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice req="loc_beentobrood" lvl="1" hidden="true" blue="false" max_group="0">
+		<text>我々は民間船ではない。何が問題なのか？</text>
+		<event>
+			<text>「そうだな！君はクモ問題を処理するために派遣された船だ。残念なことに、ここの郊外にはまだクモの問題が残っているんだ。またこのクモを始末してくれるかい？"</text>
+			<ship load="SHIP_INFESTED_STATION_REPEAT" hostile="false" /> 
+			<choice hidden="true">
+				<text>同意する。</text>
+				<event>
+					<text>民兵がステーションとの交戦許可を出す。「前回同様、注意してください！民間の財産を爆破して回るわけにはいかない！"</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>衰退。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice blue="false" req="pilot" max_group="1">
+		<text>退団に同意する。</text>
+		<event>
+			<text>ステーションから離れて航行するが、船で何かをするのに十分な時間、星系に留まる。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="INFESTED_STATION_WIN">
+	<text>あなたは駅にはびこるクモを一掃した。民兵はあなたの協力に感謝し、報酬が支払われる。</text>
+	<autoReward level="HIGH">standard</autoReward>
+	<choice hidden="true">
+		<text>クモについて尋ねてみよう。</text>
+		<event>
+			<text>"言えることはあまりない。"ブルード "と呼ばれる海賊の一族からもたらされたものだ。モンゴメリー中佐が詳しいが、彼は別の場所で蔓延の対応に追われている。クモが手に負えなくなり ブルードでも手に負えなくなった 今がチャンスだ"</text>
+			<choice hidden="true">
+				<text>何かお手伝いできることはありますか？</text>
+				<event>
+					<text>"しばらく前に、君のようなレネゲイドをもう一人雇ったんだが、聞いたところによると、彼はあまり役に立たなかったようだ。また大砲を送り込むのはためらわれるが、あなたがこの状況をとても繊細に扱ったことを考えれば......仕方ないだろう。ブルードの本拠地の座標を転送しておく。幸運を祈る"</text>
+					<variable name="coords_spider" op="set" val="1" />
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>報酬を受け取り、続ける。</text>
+		<event />
+	</choice>
+</event>
+<event name="INFESTED_STATION_WIN_REPEAT">
+	<text>「本当にありがとう！これからしばらくしたら、民間スペースからこれらを完全に一掃できることを期待しています。"</text>
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+
+<event name="INFESTED_STATION_SURRENDER">
+	<text>「ステーションの外壁を傷つけすぎだ！ダメージを与えるのはやめてくれ！クモを殺すか、辞めるかだ。クモを殺すか辞めるかすれば、もっといい人を雇う。</text>
+	<choice hidden="true">
+		<text>発射を止める。</text>
+		<event>
+			<text>給料をもらっているだけだから、民兵はあなたが出て行くと確信できるだろうが、何もしないよりはましだ。</text>
+			<autoReward level="LOW">standard</autoReward>
+			<ship hostile="false" />
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>いやいや、僕たちならできる！</text>
+		<event>
+			<text>もう一方の船の船長はため息をつく。"いいだろう、だが破壊しないように気をつけろ"</text>
+		</event>
+	</choice>
+</event>
+<event name="INFESTED_STATION_DESTROY">
+	<text>"ちくしょう、ステーションを破壊するなと言ったはずだ！"民兵はあなたたちに強い不快感を示し、星系から去るよう要求する。</text>
+</event>
+
+
+<event name="KESTREL_UNLOCK" unique="true">
+	<preventQuest />
+	<text>ユニオン宇宙圏の慣例として、ラジオからは近くの惑星の企業広告が流れている。それをぼんやりと聞きながら、近くの造船所を見て回り、さまざまなアンティーク船を眺める。特に目に留まったのは、一見完全に動いているように見えるケストレルだ！広告が目に飛び込んできたのだ。アーカイブ・インコーポレイテッドのCEOであるデューイ・アルムスからのもので、有能な傭船を募集しているようだ。</text>
+	<img back="BACKGROUND_ARCHIVE_SHIPYARDS" planet="NONE" />
+	<choice hidden="true">
+		<text>オファーについて問い合わせる</text>
+		<event load="KESTREL_UNLOCK_OFFER" />
+	</choice>
+	<choice hidden="true">
+		<text>申し出を無視する。</text>
+		<event>
+			<text>あなたの任務は連邦のためにあるのだから、他の傭兵の仕事に横取りされるわけにはいかない。</text>
+			<choice hidden="true">
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice hidden="true">
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="KESTREL_UNLOCK_OFFER">
+	<text>これらの造船所は実際にアーカイブが所有しているようで、デューイに直接連絡を取ってくれる通信員と連絡を取るのは難しくない。「レネゲイド？レネゲイド？始める前にはっきりさせておきたいのですが、私はアーカイブ社のCEOかもしれませんが、今回の依頼では決して会社を代表して発言しているわけではありません。錆びたハルク』事件の後、さらに異次元のレネゲイドと関わることは......悪いPRになる。ご理解いただけると思います。"</text>
+	<variable name="loc_dewey" op="set" val="1" />
+	<choice hidden="true">
+		<text>我々はそうする。</text>
+		<event>
+			<text>「よかった。心配しないで。ユニオンの法律をかいくぐっているわけでも何でもない。ただ、個人的なことで反感を買いたくないだけだ。ご存じかもしれませんが、アーカイブはアンティクム・テラエ（旧地球）の技術や文化のアーカイブを専門としています。今回の件は、私が最も大切にしている骨董品の1つである23世紀の「カスパロフ」に関するものだ。元々はタウ・セチとの間で乗客を輸送するために作られた。驚くべき成果だ...しかし、海賊に盗まれた！確かに、この船は探検と発見の新時代を象徴しているが、なぜ海賊がそんな時代遅れの技術を欲しがるのか？"</text>
+			<choice hidden="true">
+				<text>売るため？</text>
+				<event>
+					<text>「しかし、誰に？カスパロフの船はたくさん作られた。この特別なモデルは、私のような熱心な歴史家か船舶マニア以外には何の興味もないだろう。そんなことはどうでもいい。私の要求は、その泥棒たちを追い詰めて、カスパロフを確保することだ。報酬は特に考えていないが、何とかなるだろう。値段はいくらでも。</text>
+					<choice hidden="true">
+						<text>あの古いケストレルはどうなんだ？</text>
+						<event name="KESTREL_UNLOCK_OFFER_KESTREL">
+							<text>え？ああ、確かに別れることができる。南北戦争の終わり頃、急に人気が復活したときに飛びついて買ったんだけど、今はみんな持ってるみたいだね。それならいい取引だ。海賊船の座標はアシスタントのガーナにプログラムしてある。彼はただの機械で、あまり人格者ではないが、戦闘では十分に役に立つだろう。幸運を祈る。幸運を！"</text>
+							<variable name="loc_itb" op="add" val="1" />
+							<quest event="KESTREL_UNLOCK_PIRATE" />
+							<drone name="GANA_BATTLE" />
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>オファーを断る。</text>
+						<event name="KESTREL_UNLOCK_DECLINE">
+							<text>「助けてくれないのか？なんて損なんだ...。じゃあ、他の人を探さなきゃ。ごきげんよう、キャプテン"</text>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="loc_zenith">
+				<text>ゼニスという人物をご存知ですか？</text>
+				<event>
+					<text>「ゼニス？ピナクルCEOの？"あなたは首をかしげる。「ああ、名前は知っている。かつて地球を支配していた4つの企業のうちのひとつだ。彼女は漠然とした未来に執着し、私は具体的な過去に関心がある。そんなことより、なぜそんなことを聞くんだ？"あなたは肩をすくめ、短期間会ったことを話す。「ああ、偶然だね。これほど果てしなく広い多元宇宙なのに、ときどきとても小さく感じる......"</text>
+					<choice hidden="true">
+						<text>そう言えるかもしれない。</text>
+						<event>
+							<text>"さて、それはさておき、あのカスパロフの問題に戻ると......なぜ誰かが盗むのか理解できない。カスパロフの船はたくさん作られた。この特別なモデルは、私のような熱心な歴史家や船マニア以外には何の興味もないだろう。そんなことはどうでもいい。泥棒を追い詰めてカスパロフを確保してくれ。報酬は特に考えていないが、何とかなるだろう。値段はいくらでも。</text>
+								<choice hidden="true">
+								<text>あの古いケストレルはどうなんだ？</text>
+								<event><loadEvent>KESTREL_UNLOCK_OFFER_KESTREL</loadEvent></event>
+							</choice>
+							<choice hidden="true">
+								<text>オファーを断る。</text>
+								<event><loadEvent>KESTREL_UNLOCK_DECLINE</loadEvent></event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="FEDERATION_DATABASE">
+		<text>[連邦データベース】「錆びたハルク」事件とは何だったのか？</text>
+		<event>
+			<text id="database_vek_incident" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<restartEvent />
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_BROOD_KESTREL" auto_blueprint="LIST_SHIPS_BROOD">
+	<surrender min="3" max="4">
+        <text>"神様！やめろ、やめろ！もう十分だろライトの取り巻きか？何の用だ？</text>
+        <choice>
+            <text>カスパロフ』はどこにいる？</text>
+            <event>
+                <text>"あの馬鹿げたリングシップ？アーカイブの使いだろ？もう持ってないんだ。別のコレクターのために盗むよう請け負ったんだ！"</text>
+                <ship hostile="false" />
+				<choice hidden="true">
+					<text>誰が？</text>
+					<event load="KESTREL_UNLOCK_QUEST_2" />
+				</choice>
+            </event>
+        </choice>
+        <choice hidden="true">
+            <text>戦い続ける。</text>
+            <event />
+        </choice>
+    </surrender>
+    <destroyed>
+		<text>ブルードの船は破壊された...つまり、あなたは「カスパロフ」を追跡することができない。ミッションに失敗したので、デューイには戻らない方がいい。</text>
+		<autoReward level="MED">standard</autoReward>
+	</destroyed>
+	<deadCrew>
+		<text>ブルード海賊団は殺された...つまり、「カスパロフ」を追跡することはできない。ミッションに失敗したので、デューイには戻らない方がいい。</text>
+		<autoReward level="MED">standard</autoReward>
+	</deadCrew>
+	<crew>
+		<crewMember type="LIST_CREW_PIRATE_RANDOM" prop="0.70" />
+		<crewMember type="spider" prop="0.30" />
+	</crew>
+</ship>
+<event name="KESTREL_UNLOCK_PIRATE">
+	<beaconType id="map_icon_thieves" global="true">
+		<color r="167" g="167" b="150" a="1" />
+		<unvisitedTooltip>泥棒の居場所</unvisitedTooltip>
+		<visitedTooltip>場所を探索。興味のあるものは何も残っていない。</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	
+	<preventFleet />
+	<quest>
+		<nebulaBeacon>true</nebulaBeacon>
+		<createNebula>true</createNebula>
+		<nextSector>true</nextSector>
+		<aggressive>2</aggressive>
+	</quest>
+	<text>君はガナの座標から海賊船を突き止めた。海賊船については聞いたことがあるが、デューイが仕事の依頼の際に意図的にそのような細かいことを言わなかったのではないかと疑っている。</text>
+	<ship load="SHIP_BROOD_KESTREL" hostile="false" />
+	<choice hidden="true">
+		<text>我々は彼らを連れて行くことができる。</text>
+		<event>
+			<text>カスパロフ」の居場所を突き止めるには、こいつらを降伏させる必要がある！</text>
+			<ship hostile="true" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event load="COMBAT_CHECK" />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>我々はブルードに喧嘩を売っているわけではない。</text>
+		<event>
+			<text>この出会いに何か重要な意味があったことは確かだが、もう遅い。</text>
+			<choice hidden="true">
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice hidden="true">
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="FEDERATION_DATABASE">
+		<text>[連邦データベース] ブルードとは何者か？</text>
+		<event>
+			<text id="database_brood" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<restartEvent />
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="KESTREL_UNLOCK_QUEST_2">
+	<text>"とは言っていない！ああ、待って。あなたは文字通り、今すぐ私を殺すことができる。よし、フェアゲームだ。我々はヘファエスタスの田中英雄社長に雇われた。彼のことはご存知でしょう。アーカイブがモロトフと呼ばれる船を 持ってると聞いたんだでも、彼はそれを盗んだことを誰にも知られたくなかったから、私たちを雇ったんだ。全部話したから、もう行かせてくれ！"</text>
+	<recallBoarders />
+	<choice hidden="true">
+		<text>最後にもうひとつ、船は今どこにいるのか？</text>
+		<event>
+			<text>「聞いていなかったのか？近くのヘファエスタス造船所だ。おそらく輸送か何かのために壊すつもりだろう"海賊に座標を渡すよう説得し、しばらくして飛び去るのを見送る。なんて臆病者の集まりなんだ。</text>
+			<quest event="KESTREL_UNLOCK_RINGSHIP" />
+			<instantEscape />
+		</event>
+	</choice>
+	<choice hidden="true" req="FEDERATION_DATABASE">
+		<text>[連盟データベース】 田中英雄とは何者か？</text>
+		<event>
+			<text id="database_hideo" />
+			<choice hidden="true">
+				<text>次へ...</text>
+				<event>
+					<loadEvent>KESTREL_UNLOCK_QUEST_2</loadEvent>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<ship name="SHIP_HEPHAESTUS_KESTREL" auto_blueprint="MU_HEPH_TRANSPORT">
+    <destroyed>
+		<text>ヘパエスタスのスタッフは冗談を言っていたわけではないようだ。</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="KESTREL_UNLOCK_QUEST_3" />
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>ヘパエスタスのスタッフは冗談を言っていたわけではないようだ。</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>次へ...</text>
+			<event load="KESTREL_UNLOCK_QUEST_3" />
+		</choice>
+	</deadCrew>
+	<crew>
+		<crewMember type="random" prop="0.70" />
+		<crewMember type="spider" prop="0.30" />
+	</crew>
+</ship>
+<event name="KESTREL_UNLOCK_RINGSHIP">
+	<beaconType id="map_icon_ring" global="true">
+		<color r="167" g="167" b="150" a="1" />
+		<unvisitedTooltip>盗まれた「カスパロフ」の場所。</unvisitedTooltip>
+		<visitedTooltip>場所を探索。興味のあるものは何も残っていない。</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+	<preventFleet />
+	<quest>
+		<nebulaBeacon>false</nebulaBeacon>
+		<nextSector>true</nextSector>
+		<aggressive>2</aggressive>
+	</quest>
+	<customFleet right="false" firing="false" autoDarkening="false">RINGSHIP</customFleet>
+	<text>最初はトリックかと疑ったが、この場所は間違いない。遠くには、間違いなくカスパロフ号と、その「カスパロフ号」が検査を受けている小さなヘファエスタスの発着場が見える。船と船の間で無線が交信されているのが聞こえる。ああ、ボスがこの "シャカロフ "を田中さんのコレクションに持ってこいと言っている。こいつを壊すのは最悪だが、もし失敗したら、おそらくティイカカに売られるだろう。傷ひとつないように頼むよ。</text>
+	<ship load="SHIP_HEPHAESTUS_KESTREL" hostile="false" />
+	<choice hidden="true">
+		<text>カスパロフを返すよう要求する。</text>
+		<event>
+			<text>「何だと？あんた誰？なぜここにいる？イワノフに何の用だ？"</text>
+			<choice hidden="true">
+				<text>カスパロフだ。</text>
+				<event>
+					<text>「マコゴノフ、シマコゴノフ。ああ、君はMVの人間か。派手な青いケムトレイルか何かで。アーカイブが送ったんだろ？アルムスの田中氏との確執はどうでもいい。しかし、田中は俺に金を払う男に金を払う男だ。だから、戦わずして "シロフ "を諦めるわけにはいかないんだ。"</text>
+					<choice hidden="true">
+						<text>まあ、戦いたいのなら...。</text>
+						<event>
+							<text>「くそっ、本当にやるのか？傭兵の前で戦闘の話はするなというべきだった！"</text>
+							<ship hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>あきらめなさい。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>デポは無視しろ。</text>
+		<event>
+			<text>せっかくここまで来たのに、これでは意味がない。ギガ・コーポレーションに喧嘩を売ってはいけない。</text>
+			<choice hidden="true">
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice hidden="true">
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="KESTREL_UNLOCK_QUEST_3">
+	<text>他の船のほとんどは、自動化されたドローンだったようだ。デポのスケルトンクルーは降伏し、あなたはカスパロフを確保し、デューイに連絡することができる。</text>
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>「信じられない！君の努力が無駄にならないよう、私が見届けよう！ケストレルの設計図をすぐに転送しよう。それと、もしまだガナが手元にいるのなら、遠慮なく預かってくれ。いずれにせよ、彼は軍艦に適している。その前に、結局犯人は誰だったんだ？"</text>
+			<unlockCustomShip silent="false">PLAYER_SHIP_KESTREL</unlockCustomShip>
+			<choice hidden="true">
+				<text>田中英雄は海賊を雇い、コレクションのためにあなたの船を盗んだ。</text>
+				<event>
+					<text>「あのクソジジイ。知っておくべきだった。ヒデオは誰からも好きなものを奪う。ユニオンのメガコーポの仲間からも。そうか。祖父はあまり多くを語らなかった。衛星の話ばかりしていた。とにかく、君の働きには感謝している。残りの任務に幸あれ。"</text>
+					<autoReward level="LOW">stuff</autoReward>
+					<achievement>ACH_EVENT_KASPAROV</achievement>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="COREWORLDS_EARTH" unique="true">
+	<preventQuest />
+	<beaconType id="map_icon_earth" global="false">
+		<color r="105" g="157" b="76" a="1.0" />
+		<unvisitedTooltip>ここは人類の故郷、地球だ。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたは見慣れた惑星を発見した。それはアンティクム・テラエ（Antiquum Terrae）であり、オールド・アース（Old Earth）と呼ばれることが多い！惑星の大部分は水没してしまったが、いくつかの大きな人口密集都市が残っている。</text>
+	<img back="BACKGROUND_EARTH" planet="PLANET_INVISIBLE" />
+	<variable name="loc_itb" op="add" val="1" />
+	<choice hidden="true">
+		<text>次へ...</text>
+		<event>
+			<text>惑星表面には博物館と大きな記念公園がある。マンティスの地球侵略がテーマだと船のコンピューターが教えてくれる。入場は無料だが、見学にはかなりの時間がかかるだろう。</text>
+			<choice hidden="true">
+				<text>着陸して公園を探索する。</text>
+				<event>
+					<text>大きなプラットフォームに着地し、船を降りる。公園を長い間散歩していると、戦争について詳しく書かれたいくつかのプレートに出くわす。その中で特に目を引くものがある。</text>
+					<modifyPursuit amount="1" />
+					<choice hidden="true">
+						<text>プラークを読む</text>
+						<event>
+							<text>「ジャクソン・ニューマンが発明した最初のプレ・イグナイター技術が誕生するまでは、地球市民にとってすべてが暗澹たるものに見えた。このオーグメントは、ズルフィカー・アーマメンツ社によって開発された強力なレーザー・モデルと融合された。この武器は大昔に超兵器と考えられていたとはいえ、時の試練に耐え、現代の戦闘でも非常に効率的であろう。"</text>
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event>
+									<text>読み進めていくと、兵器の部品の所在を記した箇所があることに気づく。「戦争が終わった後、兵器は解体され、多くの部品が差し押さえられた。部品の所在を突き止めれば、銃を再び組み立てることができるかもしれない！</text>
+									<choice hidden="true">
+										<text>樽の位置を読む。</text>
+										<event>
+											<text>"最初の部品である樽は、もともとアラスター・ウィリアムズという男に贈られたものだが、マンティスの将軍に盗まれ、何世代にもわたって受け継がれてきた。彼らの家系では貴重な家宝であり、誰にでも、特に戦争で敗れた者たちに明け渡すとはとても思えない。"</text>
+											<quest event="QUEST_GATLING_BARREL" />
+											<choice hidden="true">
+												<text>基地の場所について読む。</text>
+												<event>
+													<text>"第二の部分である基地は、兵器の開発者とその技術とともに埋葬された。その墓は、マンティスの侵略によって失われたすべての兵士の墓の中にある"</text>
+													<quest event="QUEST_GATLING_BASE" />
+													<choice hidden="true">
+														<text>プレ・イグナイターの場所について読む。</text>
+														<event>
+															<text>「最後の部品であるプリ・イグナイターは、密輸業者に盗まれた。長年ブラックマーケットに出回り、何度も差し押さえられた。貴重なコレクターズアイテムとして役立つだろうが、オーグメント自体は長年の海賊による誤用のため、もはや意図したようには機能しないと言われている。"</text>
+															<quest event="QUEST_GATLING_AUGMENT" />
+															<choice hidden="true">
+																<text>次へ...</text>
+																<event>
+																	<text>部品を集めるために必要な情報をすべて手に入れたあなたは、急いで船に戻る。</text>
+																</event>
+															</choice>
+														</event>
+													</choice>
+													
+												</event>
+											</choice>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>セクターを雁字搦めにしている時間はない。</text>
+										<event />
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>公園は無視だ。</text>
+				<event>
+					<text>歴史を学ぶ時間はない。地球から離れなさい。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="QUEST_GATLING_BARREL">
+	<preventQuest />
+	<preventFleet />
+	<quest>
+		<nonNebulaBeacon>true</nonNebulaBeacon>
+		<nebulaBeacon>false</nebulaBeacon>
+		<currentSector>true</currentSector>
+		<nextSector>true</nextSector>
+		<sectorEight>true</sectorEight>
+		<lastStand>true</lastStand>
+	</quest>
+	<beaconType id="map_icon_barrel" global="true">
+		<color r="255" g="255" b="255" a="1.0" />
+		<unvisitedTooltip>これがガトリング・バレルの場所だ。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたは小さな月にある賑やかなマンティスの戦営地に到着した。地表には数隻の船が横たわっており、最大のものはスズレインで、間違いなくガトリング砲身が格納されている。</text>
+	<img planet="PLANET_MOONS" />
+	<choice hidden="true">
+		<text>彼らに声をかけ、交渉してみよう。</text>
+		<event>
+			<text>顔に長い傷跡のあるマンティスが応えた。"はい？" "船はどんな理由で私を呼んだのですか？"</text>
+			<choice hidden="true">
+				<text>ガトリング・バレルを取りに来た。</text>
+				<event>
+					<text>「スピニースティックのことか？スピニースティックを奪う勇気があるか！祖父から受け継いだ大切な家宝だ。愚かな連邦船長のおもちゃじゃない！"</text>
+					<choice hidden="true">
+						<text>それなら、私たちが取るしかない！</text>
+						<event>
+							<text>マンティスが悲鳴を上げて呼びかけを終えると、スゼレーン船が息を吹き返す。その船はあなたに会うために上昇する。推測するに、"スピニースティック "はその船に保管されており、それを手に入れるには乗組員を空にする必要がある。</text>
+							<ship load="SHIP_MANTIS_BARREL" hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_MANTIS">
+				<text>(マンティス・クルー）樽の交渉。</text>
+				<event>
+					<text>"ノー！ノー！ノー！誰がいようと関係ない！シッシッ！ここでは歓迎されない"カマキリの癇癪にもかかわらず、残された唯一の選択肢は、彼からそれを奪うことである。</text>
+					<choice hidden="true">
+						<text>攻撃だ！</text>
+						<event>
+							<text>マンティスが悲鳴を上げて呼びかけを終えると、スゼレーン船が息を吹き返す。その船はあなたに会うために上昇する。推測するに、"スピニースティック "はその船に保管されており、それを手に入れるには乗組員を空にする必要がある。</text>
+							<ship load="SHIP_MANTIS_BARREL" hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>これは危険だ。</text>
+		<event>
+			<text>あなたはキャンプに近づくのをやめ、月から遠く離れることにした。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="QUEST_GATLING_BASE">
+	<preventQuest />
+	<preventFleet />
+	<quest>
+		<nebulaBeacon>false</nebulaBeacon>
+		<aggressive>2</aggressive>
+	</quest>
+	<beaconType id="map_icon_body" global="true">
+		<color r="255" g="255" b="255" a="1.0" />
+		<unvisitedTooltip>ここがガトリング基地の場所だ。</unvisitedTooltip>
+	</beaconType>
+	<text>このビーコンにある墓地は、想像していたのとはちょっと違う。不気味な野原や暗く荒れ狂う沼の惑星ではなく、戦死した兵士たちの墓で飾られた平らな草地のように見える。あなたは、本当にこの人たちから墓荒らしをしたいのかどうか確信が持てない。</text>
+	<choice hidden="true">
+		<text>私たちには私たち自身の戦争がある。この人たちが生きていれば、わかってくれるはずだ。</text>
+		<event>
+			<text>あなたは墓地を調べ、ガトリングガンが埋葬されていそうな場所を示すものが何もないことに気づいた。見覚えのある墓をいくつか見つけたが、どの墓かはわからない。プレートには誰の墓か書いてあったと思うが、誰の墓か覚えておく必要がある。</text>
+			<choice hidden="true">
+				<text>アダム・ミラーを掘り起こせ</text>
+				<event>
+					<text>掘り始めたが、中にあったのは腐った死体だけだった。うんざりし、失望し、その場を立ち去ろうとしたとき、エリート連邦の船が通りかかり、その行為に気づいた。「くそったれ！ここに埋葬された英雄を冒涜するのか！」。彼らは武器を構え、攻撃を仕掛ける！</text>
+					<ship load="SHIP_FED_ELITE_FIGHT" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>ジャクソン・ニューマンを掘り起こせ</text>
+				<event>
+					<text>あなたは掘り始め、それが正しかったことに気づく！墓の中にはガトリング基地がある！クルーにそれを船まで運ばせる。</text>
+					<weapon name="PART_GATLING_BASE" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event>
+							<text>去り際に連邦軍のエリートが飛んできて、あなたを見つけた！「くそったれ！ここに埋葬された英雄を冒涜するのか？"武器を構えて攻撃してくる！</text>
+							<ship load="SHIP_FED_ELITE_FIGHT" hostile="true" />
+							<choice hidden="true">
+								<text>次へ...</text>
+								<event load="COMBAT_CHECK" />
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>アラスター・ウィリアムズを掘り起こせ</text>
+				<event>
+					<text>掘り始めたが、中にあったのは腐った死体だけだった。うんざりし、失望し、その場を立ち去ろうとしたとき、エリート連邦の船が通りかかり、その行為に気づいた。「くそったれ！ここに埋葬された英雄を冒涜するのか！」。彼らは武器を構え、攻撃を仕掛ける！</text>
+					<ship load="SHIP_FED_ELITE_FIGHT" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>ジェイク・ウィルソンを掘り起こせ</text>
+				<event>
+					<text>掘り始めたが、中にあったのは腐った死体だけだった。うんざりし、失望し、その場を立ち去ろうとしたとき、エリート連邦の船が通りかかり、その行為に気づいた。「くそったれ！ここに埋葬された英雄を冒涜するのか！」。彼らは武器を構え、攻撃を仕掛ける！</text>
+					<ship load="SHIP_FED_ELITE_FIGHT" hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>死者の名誉を傷つけるよりも、もっとやるべきことがあるはずだ。</text>
+		<event>
+			<text>墓地を無視して飛び去る。</text>
+			<choice>
+				<text>船内で何かをする。</text>
+				<event load="STORAGE_CHECK" />
+			</choice>
+			<choice>
+				<text>何もしない。</text>
+				<event />
+			</choice>
+		</event>
+	</choice>
+</event>
+
+<event name="QUEST_GATLING_AUGMENT">
+	<preventQuest />
+	<preventFleet />
+	<quest>
+		<nonNebulaBeacon>true</nonNebulaBeacon>
+		<nebulaBeacon>true</nebulaBeacon>
+		<createNebula>true</createNebula>
+		<currentSector>true</currentSector>
+		<nextSector>true</nextSector>
+		<sectorEight>true</sectorEight>
+		<lastStand>true</lastStand>
+	</quest>
+	<beaconType id="map_icon_augment" global="true">
+		<color r="255" g="255" b="255" a="1.0" />
+		<unvisitedTooltip>これはPre-Igniter techの場所です。</unvisitedTooltip>
+	</beaconType>
+	<text>あなたはビーコンの周囲を周回する装甲の密輸ステーションを見つけ、数隻の小型船に勧誘している。ビーコンを守る民兵の大群にもかかわらず、彼らがここで活動できるのは驚きだ。</text>
+	<ship load="SHIP_SMUGGLER_PREIGNITE" hostile="false" />
+	<choice>
+		<text>万歳。</text>
+		<event>
+			<text>あなたは密輸業者を呼び、状況を説明する。船長は、あなたの説明にほほ笑む。「そうなのか？このガラクタを処分するのにしばらく苦労していたんだが、ついに対価を支払ってもいいという人を見つけたんだ！わずかな値上げで、特別な "ジャンボ・ディール "を提供しようじゃないか！"</text>
+			<choice>
+				<text>プレ・イグナイターを購入する。</text>
+				<event>
+					<augment name="PART_GATLING_AUGMENT" />
+					<item_modify>
+						<item type="scrap" min="-30" max="-30" />
+					</item_modify>
+				</event>
+			</choice>
+			<choice>
+				<text>プレ・イグナイターと一緒に「ジャンボ・ディール」を購入する。</text>
+				<event>
+					<augment name="PART_GATLING_AUGMENT" />
+					<item_modify>
+						<item type="scrap" min="-50" max="-50" />
+						<item type="fuel" min="3" max="3" />
+						<item type="missiles" min="3" max="3" />
+						<item type="drones" min="3" max="3" />
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>力ずくで取る！</text>
+				<event>
+					<text>密輸業者に金を払うつもりはないだろう！武器を構え、攻撃する。あなたがステーションに近づくと、他の数隻のショッピング船は散り散りになる。</text>
+					<ship hostile="true" />
+					<choice hidden="true">
+						<text>次へ...</text>
+						<event load="COMBAT_CHECK" />
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>とにかく、行こう。</text>
+				<event>
+					<text>あなたは駅を無視して飛び去る。</text>
+					<choice>
+						<text>船内で何かをする。</text>
+						<event load="STORAGE_CHECK" />
+					</choice>
+					<choice>
+						<text>何もしない。</text>
+						<event />
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+</event>
+</FTL>
