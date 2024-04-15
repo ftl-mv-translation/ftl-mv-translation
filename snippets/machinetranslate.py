@@ -37,7 +37,7 @@ def main():
         translated_text, is_success = translate(text_dict['original'])
         if not is_success:
             continue
-        text_dict['machine'] = translated_text
+        text_dict['machine'] = translated_text.replace('\\ ', '\\')
         print(f'{count}/{all_length}\t{translated_text}')
         
         count_translate += 1
