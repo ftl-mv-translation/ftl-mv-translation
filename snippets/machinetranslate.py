@@ -46,5 +46,8 @@ def main():
             with open(argv[1], 'wt') as f:
                 json.dump(data_dict, f)
 
+    with open(argv[1], 'wt') as f:
+                json.dump(data_dict, f)
+
 if __name__ == '__main__':
     main()
