@@ -6,7 +6,7 @@ AUTOSAVE_INTERVAL = 100
 
 def main():
     if len(argv) != 2:
-        print('you must input json file name. ex. machinetranslate.py machine-ja-5.4.4.json')
+        print('you must input json file name. ex. machinetranslate.py machine-json/machine-ja-5.4.4.json')
         return
 
     with open(argv[1]) as f:

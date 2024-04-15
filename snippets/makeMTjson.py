@@ -27,7 +27,7 @@ def main():
         for en in dict_temp.keys()
     ]
             
-    with open(f'machine-{argv[1]}-{argv[2]}.json', 'wt') as f:
+    with open(f'machine-json/machine-{argv[1]}-{argv[2]}.json', 'wt') as f:
         dump(data_dict, f)
 
 if __name__ == '__main__':

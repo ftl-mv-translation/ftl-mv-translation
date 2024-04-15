@@ -6,7 +6,7 @@ from pathlib import Path
 
 def main():
     if len(argv) != 2:
-        print('You must input MT json file. ex) snippets/makePOfromMTjson.py machine-ja-5.4.4.json')
+        print('You must input MT json file. ex) snippets/makePOfromMTjson.py machine-json/machine-ja-5.4.4.json')
         return
     
     globpattern_original = 'locale/**/en.po'
