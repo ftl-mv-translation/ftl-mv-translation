@@ -33,6 +33,7 @@ def main():
     for text_dict in data_dict['translation']:
         count += 1
         if text_dict['machine'] != '' or text_dict['deepl'] != '':
+            print(f'{count} done')
             continue
         translated_text, is_success = translate(text_dict['original'])
         if not is_success:
