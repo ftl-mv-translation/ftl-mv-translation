@@ -49,6 +49,7 @@ def main():
 
     with open(argv[1], 'wt') as f:
         json.dump(data_dict, f)
+    print('All translation have done! If this is the first time to run this script, please re-run and check if there are missing translation.')
 
 if __name__ == '__main__':
     main()
