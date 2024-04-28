@@ -293,7 +293,7 @@
 	<icon>logo_50_big</icon> <!-- internal asset id for large icon -->
 </discord>
 
-<version>^1.10.0</version>
+<version>^1.11.0</version>
 
 <advancedCrewTooltips enabled="true" ally="false" enemy="false" rounding="3"/>
 <eventTooltips enabled="true"/>
@@ -302,6 +302,7 @@
 <redesignedDroneTooltips enabled="true"/>
 <redesignedAugmentTooltips enabled="true"/>
 <showReactor enabled="true"/>
+<extraShipInfo missileCount="true" droneCount="true" crewLimit="true"/>
 <alternateCrewMovement enabled="true"/>
 <rightClickDoorOpening enabled="true"/>
 <showShipAchievements enabled="true" toggle="true" hideIfMissing="true" id="hangar_achievements_title_default"/>
@@ -8446,6 +8447,18 @@ Extremely strong armor reinforced with Aether harvested from precursor ruins, fu
 	//////////////////////////////////////////////
 	-->
 	<customShip name="MU_ORCHID_STATION">
+		<shipIcons>
+            <shipIcon>icon_station</shipIcon>
+        </shipIcons>
+		<noFuelStalemate/>
+	</customShip>
+	<customShip name="MU_ORCHID_STATION_ELITE">
+		<shipIcons>
+            <shipIcon>icon_station</shipIcon>
+        </shipIcons>
+		<noFuelStalemate/>
+	</customShip>
+	<customShip name="MU_ORCHID_STATION_ELITE_CHILD">
 		<shipIcons>
             <shipIcon>icon_station</shipIcon>
         </shipIcons>
@@ -23525,7 +23538,7 @@ Extremely strong armor reinforced with Aether harvested from precursor ruins, fu
 		<powerEffect>
 			<cooldown>45</cooldown>
 			<powerSounds>
-				<powerSound>cloak</powerSound>
+				<powerSound>hlPortal</powerSound>
 			</powerSounds>
 			<req type="enemy">
 				<inCombat/>
@@ -23539,7 +23552,40 @@ Extremely strong armor reinforced with Aether harvested from precursor ruins, fu
 			<temporaryEffect>
 				<duration>12</duration>
 				<cooldownColor r="194" g="125" b="187"/>
+				<finishSounds>
+					<finishSound>hlPortal</finishSound>
+				</finishSounds>
 				<statBoosts>
+					<statBoost name="powerRechargeMultiplier">
+						<boostType>SET</boostType>
+						<amount>0</amount>
+						<shipTarget>ALL</shipTarget>
+						<crewTarget>ALL</crewTarget>
+						<droneTarget>ALL</droneTarget>
+						<affectsSelf>false</affectsSelf>
+						<priority>0</priority>
+						<blacklist>
+							<human_technician_drone/>
+							<zoltan_osmian_hologram/>
+							<hologram/>
+						</blacklist>
+					</statBoost>
+					<statBoost name="silenced">
+						<boostType>SET</boostType>
+						<value>true</value>
+						<shipTarget>ALL</shipTarget>
+						<crewTarget>ALL</crewTarget>
+						<droneTarget>ALL</droneTarget>
+						<affectsSelf>false</affectsSelf>
+					</statBoost>
+					<statBoost name="healSpeed">
+						<boostType>SET</boostType>
+						<amount>0</amount>
+						<shipTarget>ALL</shipTarget>
+						<crewTarget>ALL</crewTarget>
+						<droneTarget>ALL</droneTarget>
+						<affectsSelf>false</affectsSelf>
+					</statBoost>
 					<statBoost name="canBurn">
 						<boostType>SET</boostType>
 						<value>false</value>
@@ -26409,6 +26455,7 @@ Extremely strong armor reinforced with Aether harvested from precursor ruins, fu
 		<moveSpeedMultiplier>1.2</moveSpeedMultiplier>
 		<animBase>mantis</animBase>
 		<defaultSkillLevel>2</defaultSkillLevel>
+		<cloneLoseSkills>false</cloneLoseSkills>
 		<stunMultiplier>0.25</stunMultiplier>
 		<deathSounds>
 			<deathSound>sysExplosion</deathSound>
@@ -26502,6 +26549,7 @@ Extremely strong armor reinforced with Aether harvested from precursor ruins, fu
 		<moveSpeedMultiplier>0.5</moveSpeedMultiplier>
 		<animBase>mantis</animBase>
 		<defaultSkillLevel>2</defaultSkillLevel>
+		<cloneLoseSkills>false</cloneLoseSkills>
 		<deathSounds>
 			<deathSound>sysExplosion</deathSound>
 		</deathSounds>
@@ -26614,6 +26662,7 @@ Extremely strong armor reinforced with Aether harvested from precursor ruins, fu
 		<fireDamageMultiplier>0.1</fireDamageMultiplier>
 		<moveSpeedMultiplier>1.5</moveSpeedMultiplier>
 		<defaultSkillLevel>2</defaultSkillLevel>
+		<cloneLoseSkills>false</cloneLoseSkills>
 		<isTelepathic>true</isTelepathic>
 		<stunMultiplier>0.25</stunMultiplier>
 		<animBase>mantis</animBase>
@@ -26660,6 +26709,7 @@ Extremely strong armor reinforced with Aether harvested from precursor ruins, fu
 		<canBurn>true</canBurn>
 		<fireDamageMultiplier>0.25</fireDamageMultiplier>
 		<defaultSkillLevel>2</defaultSkillLevel>
+		<cloneLoseSkills>false</cloneLoseSkills>
 		<maxHealth>127</maxHealth>
 		<damageMultiplier>1.5</damageMultiplier>
 		<healSpeed>2.0</healSpeed>
@@ -26674,6 +26724,7 @@ Extremely strong armor reinforced with Aether harvested from precursor ruins, fu
 		<canSuffocate>false</canSuffocate>
 		<canBurn>false</canBurn>
 		<defaultSkillLevel>2</defaultSkillLevel>
+		<cloneLoseSkills>false</cloneLoseSkills>
 		<maxHealth>85</maxHealth>
 		<damageMultiplier>2</damageMultiplier>
 		<healSpeed>2.0</healSpeed>
@@ -35902,15 +35953,17 @@ Syntax ->
 				<shipTarget>ALL</shipTarget>
 				<crewTarget>ALLIES</crewTarget>
 				<priority>999</priority>
-				<blueprintList load="LIST_CREW_GHOST_NOALPHA"/>
-				<blueprintList load="LIST_CREW_ALPHA"/>
-				<unique_dessius/>
-				<gbeleanor/>
-				<gbgozer/>
-				<gbpsych/>
-				<gbscoleri/>
-				<gbslimer/>
-				<gbzuul/>
+				<whiteList>
+					<blueprintList load="LIST_CREW_GHOST_NOALPHA"/>
+					<blueprintList load="LIST_CREW_ALPHA"/>
+					<unique_dessius/>
+					<gbeleanor/>
+					<gbgozer/>
+					<gbpsych/>
+					<gbscoleri/>
+					<gbslimer/>
+					<gbzuul/>
+				</whiteList>
 			</statBoost>
 			<statBoost name="fireDamageMultiplier">
 				<boostType>SET</boostType>
@@ -35919,16 +35972,18 @@ Syntax ->
 				<crewTarget>ALLIES</crewTarget>
 				<priority>999</priority>
 				<maxStacks id="labGhostFire">1</maxStacks>
-				<blueprintList load="LIST_CREW_PHANTOM"/>
-				<blueprintList load="LIST_CREW_MARE"/>
-				<blueprintList load="LIST_CREW_WRAITH"/>
-				<unique_dessius/>
-				<gbeleanor/>
-				<gbgozer/>
-				<gbpsych/>
-				<gbscoleri/>
-				<gbslimer/>
-				<gbzuul/>
+				<whiteList>
+					<blueprintList load="LIST_CREW_PHANTOM"/>
+					<blueprintList load="LIST_CREW_MARE"/>
+					<blueprintList load="LIST_CREW_WRAITH"/>
+					<unique_dessius/>
+					<gbeleanor/>
+					<gbgozer/>
+					<gbpsych/>
+					<gbscoleri/>
+					<gbslimer/>
+					<gbzuul/>
+				</whiteList>
 			</statBoost>
 			<statBoost name="fireDamageMultiplier">
 				<boostType>SET</boostType>
@@ -37244,6 +37299,15 @@ Syntax ->
 			<shieldImage>ship/enemy_shields_white.png</shieldImage>
 		</superShield>
     </aug>
+	<aug name="ROYAL_SHIELD_PLAYER">
+    	<function name="SHIELD_RECHARGE" value="0.45" useForReqs="false" warning="false"/>
+		<function name="ENERGY_SHIELD" value="0" useForReqs="true" stackable="false" warning="false"/>
+		<superShield>
+			<value>10</value>
+			<color r="255" g="0" b="228" a="0.8"/>
+			<shieldImage>ship/shield_base_bubble.png</shieldImage>
+		</superShield>
+    </aug>
 	<aug name="LOCKED_ANCIENT_SHIELD">
     	<function name="SHIELD_RECHARGE" value="0.2" useForReqs="false" warning="false"/>
 		<function name="ENERGY_SHIELD" value="0" useForReqs="true" stackable="false" warning="false"/>
@@ -37570,6 +37634,19 @@ Syntax ->
 	<!--final boss fight-->
 	<variable name="loc_finalboss" op="set" val="0"/>
 
+	<!--gatling naming stuff-->
+	<variable name="loc_gatling_name_1" op="set" val="0"/>
+	<variable name="loc_gatling_name_2" op="set" val="0"/>
+	<variable name="loc_gatling_name_3" op="set" val="0"/>
+	<variable name="loc_gatling_name_4" op="set" val="0"/>
+	<variable name="loc_gatling_name_5" op="set" val="0"/>
+	<variable name="loc_gatling_name_6" op="set" val="0"/>
+	<variable name="loc_gatling_name_7" op="set" val="0"/>
+	<variable name="loc_gatling_name_8" op="set" val="0"/>
+	<variable name="loc_gatling_name_9" op="set" val="0"/>
+	<variable name="loc_gatling_name_10" op="set" val="0"/>
+	<variable name="loc_gatling_name_11" op="set" val="0"/>
+
 	<!--coords-->
 	<variable name="coords_spider" op="set" val="0"/>
 	<variable name="coords_jerry" op="set" val="0"/>
@@ -37640,6 +37717,8 @@ Syntax ->
 	<variable name="loc_ellie_good" op="set" val="0"/> <!--times you convinced Ellie to be better-->
 	<variable name="loc_ellie_fail" op="set" val="0"/>
 	<variable name="loc_ellie_remmy" op="set" val="0"/>
+	
+	<variable name="loc_seeded_run" op="set" val="0"/>
 	
 	<variable name="loc_player_hull_missing" op="set" val="0"/>
 	
@@ -39793,7 +39872,11 @@ Syntax ->
 	</req>
 </req>
 <req name="ELLIE_QUEST_CHECK" type="all">
-	<name>LIST_CREW_ELLIE_COSTUME</name>
+	<name>unique_ellie_lvl1</name>
+	<name>unique_ellie_lvl2</name>
+	<name>unique_ellie_lvl3</name>
+	<name>unique_ellie_lvl4</name>
+	<name>unique_ellie_lvl5</name>
 	<req max_lvl="0">
 		<name>SEC SECRET_AUGMENTED</name>
 		<name>SEC SECRET_ORIGINS</name>
@@ -39805,7 +39888,11 @@ Syntax ->
 	</req>
 </req>
 <req name="ELLIE_QUEST_INVALID" type="all">
-	<name>LIST_CREW_ELLIE_COSTUME</name>
+	<name>unique_ellie_lvl1</name>
+	<name>unique_ellie_lvl2</name>
+	<name>unique_ellie_lvl3</name>
+	<name>unique_ellie_lvl4</name>
+	<name>unique_ellie_lvl5</name>
 	<req>
 		<name>SEC SECRET_AUGMENTED</name>
 		<name>SEC SECRET_ORIGINS</name>
@@ -39825,6 +39912,9 @@ Syntax ->
 	<req lvl="0" max_lvl="0">
 		<name>loc_protomv_drive_block</name>
 	</req>
+	<req lvl="0" max_lvl="0">
+		<name>loc_finalboss</name>
+	</req>
 </req>
 <req name="EMERGENCY_DRIVE_LVL2" type="all">
 	<name>EMERGENCY_DRIVE</name>
@@ -39833,6 +39923,9 @@ Syntax ->
 	</req>
 	<req lvl="0" max_lvl="0">
 		<name>loc_protomv_drive_block</name>
+	</req>
+	<req lvl="0" max_lvl="0">
+		<name>loc_finalboss</name>
 	</req>
 </req>
 <req name="EMERGENCY_DRIVE_LVL3" type="all">
@@ -39843,6 +39936,9 @@ Syntax ->
 	<req lvl="0" max_lvl="0">
 		<name>loc_protomv_drive_block</name>
 	</req>
+	<req lvl="0" max_lvl="0">
+		<name>loc_finalboss</name>
+	</req>
 </req>
 <req name="EMERGENCY_DRIVE_LVL4" type="all">
 	<name>EMERGENCY_DRIVE</name>
@@ -39852,6 +39948,9 @@ Syntax ->
 	<req lvl="0" max_lvl="0">
 		<name>loc_protomv_drive_block</name>
 	</req>
+	<req lvl="0" max_lvl="0">
+		<name>loc_finalboss</name>
+	</req>
 </req>
 <req name="EMERGENCY_DRIVE_LVL5" type="all">
 	<name>EMERGENCY_DRIVE</name>
@@ -39860,6 +39959,9 @@ Syntax ->
 	</req>
 	<req lvl="0" max_lvl="0">
 		<name>loc_protomv_drive_block</name>
+	</req>
+	<req lvl="0" max_lvl="0">
+		<name>loc_finalboss</name>
 	</req>
 </req>
 <!--PRIME QUESTIONING-->
@@ -40230,55 +40332,55 @@ Syntax ->
 	</req>
 </req>
 <!--LOOT TRANSPORT PURCHASE CONDITIONS-->
-<req name="FEDERATION_CREW_MORAL" type="ALL">
+<req name="FEDERATION_CREW_MORAL" type="all">
 	<req type="any" load="LIST_CREW_FEDERATION_ELITE_EASTER"/>
 	<req lvl="-999" max_lvl="0">
-		<name>rep_comb_fed</name>
+		<name>rep_comb_federation</name>
 	</req>
 </req>
-<req name="UNION_CREW_MORAL" type="ALL">
+<req name="UNION_CREW_MORAL" type="all">
 	<name>human_soldier</name>
 	<req lvl="-999" max_lvl="0">
 		<name>rep_comb_union</name>
 	</req>
 </req>
-<req name="ENGI_CREW_MORAL" type="ALL">
+<req name="ENGI_CREW_MORAL" type="all">
 	<name>engi_defender</name>
 	<req lvl="-999" max_lvl="0">
 		<name>rep_comb_engi</name>
 	</req>
 </req>
-<req name="ZOLTAN_CREW_MORAL" type="ALL">
+<req name="ZOLTAN_CREW_MORAL" type="all">
 	<name>zoltan_peacekeeper</name>
 	<req lvl="-999" max_lvl="0">
 		<name>rep_comb_zoltan</name>
 	</req>
 </req>
-<req name="FREEMANTIS_CREW_MORAL" type="ALL">
+<req name="FREEMANTIS_CREW_MORAL" type="all">
 	<name>mantis_warlord</name>
 	<req lvl="-999" max_lvl="0">
 		<name>rep_comb_freemantis</name>
 	</req>
 </req>
-<req name="ORCHID_CREW_MORAL" type="ALL">
+<req name="ORCHID_CREW_MORAL" type="all">
 	<name>orchid_praetor</name>
 	<req lvl="-999" max_lvl="0">
 		<name>rep_comb_orchid</name>
 	</req>
 </req>
-<req name="VAMPWEED_CREW_MORAL" type="ALL">
+<req name="VAMPWEED_CREW_MORAL" type="all">
 	<name>orchid_cultivator</name>
 	<req lvl="-999" max_lvl="0">
 		<name>rep_comb_vampweed</name>
 	</req>
 </req>
-<req name="SHELL_CREW_MORAL" type="ALL">
+<req name="SHELL_CREW_MORAL" type="all">
 	<name>shell_radiant</name>
 	<req lvl="-999" max_lvl="0">
 		<name>rep_comb_shell</name>
 	</req>
 </req>
-<req name="CRYSTAL_CREW_MORAL" type="ALL">
+<req name="CRYSTAL_CREW_MORAL" type="all">
 	<name>crystal_sentinel</name>
 	<req lvl="-999" max_lvl="0">
 		<name>rep_comb_crystal</name>
@@ -40808,6 +40910,8 @@ Syntax ->
 			<name>BATTLETOG2_BOARDER</name>
 			<name>DOCTOR_DEFENSE</name>
 			<name>DOCTOR_BOARDER</name>
+			<name>GRAZIER_BATTLE</name>
+			<name>GRAZIER_BOARDER</name>
 			<name>AMPHI_COMBAT</name>
 			<name>AMPHI_DEFENSE</name>
 			<name>ATOM_DEFEND</name>
@@ -40818,6 +40922,8 @@ Syntax ->
 			<name>ROOMBA_BOARDER</name>
 			<name>BUTLER_DEFENSE</name>
 			<name>BUTLER_BOARDER</name>
+			<name>LOOT_AUTO_1_LASER</name>
+			<name>LOOT_AUTO_1_BEAM</name>
 			<name>LOOT_SEPARATIST_1_DEFEND</name>
 			<name>LOOT_SEPARATIST_1_BOARDER</name>
 			<name>LOOT_ESTATE_1_COMBAT</name>
@@ -40856,15 +40962,14 @@ Syntax ->
 <req name="LIST_CHECK_ENERGY_SHIELD" type="any">
 	<name>ENERGY_SHIELD</name>
 	<name>LOCKED_ENERGY_SHIELD</name>
-	<name>ANCIENT_SHIELD</name>
+	<name>ANCIENT_SHIELD_PLAYER</name>
 	<name>LOCKED_ANCIENT_SHIELD</name>
-	<name>ROYAL_SHIELD</name>
+	<name>ROYAL_SHIELD_PLAYER</name>
 	<name>LOCKED_ROYAL_SHIELD</name>
 	<name>UPG_AETHER_SHIELDS</name>
 	<name>FLAGSHIP_SHIELD</name>
 	<name>FLAGSHIP_SHIELD_FULL</name>
 	<name>LOCKED_SYLVAN_SHIELD</name>
-	<name>SYLVAN_SHIELD</name>
 	<name>SYLVAN_SHIELD_REWARD</name>
 	<name>SYLVAN_SHIELD_CONTINUITY</name>
 	<name>SYLVAN_SHIELD_PRIME</name>
@@ -48451,7 +48556,7 @@ Syntax ->
                 <blueprint>ZOLTAN_DELETER</blueprint>
             </item>
             <item>
-                <blueprint>GATLING_VERSION3</blueprint>
+                <blueprint>GATLING</blueprint>
 				<modifier min="1.5" max="1.5" flat="false"/>
                 <price>-1</price>
             </item>
@@ -49627,10 +49732,10 @@ Syntax ->
         </category>
 		<category type="AUGMENTS">
             <item>
-                <blueprint>ANCIENT_SHIELD</blueprint>
+                <blueprint>ANCIENT_SHIELD_PLAYER</blueprint>
             </item>
             <item>
-                <blueprint>ROYAL_SHIELD</blueprint>
+                <blueprint>ROYAL_SHIELD_PLAYER</blueprint>
             </item>
 			<item>
                 <blueprint>RHYME_SHIELDS</blueprint>
@@ -52806,12 +52911,98 @@ however, under the true ending filter on the bottom there's a notch for each pos
 	</achievement>-->
 </achievements>
 
+<altCreditSystem enabled="true"/> <!-- If enabled, the game will use the XML credits over the hardcoded vanilla ones. Also fixes the empty crew section on auto ships -->
+
+<customCredits>
+	<scrollSpeed speed="1"/>
+	<fadeInSpeed speed="1"/>
+	<scrollPause scrollDelay="5" duration="3" pausePosition="675"/>
+
+	<!-- MV Dev Team: -->
+	<text id="game_from" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="subset_games" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="created_by" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="matthew_justin" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="addition_code" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="andrew_church" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="music_by" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="ben_prunty" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="writing_by" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="tom_jubert" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="guest_writer" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="chris_a" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="additional_art" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="bryan_ma" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="editing" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="alison_w" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="additional_testing" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="family_friends" fontSize="18" horizontal="640" spacing="190" lineLenght="750"/>
+
+	<!-- MV contributors: -->
+	<text id="credits_loc_riotloc" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="credits_loc_project" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="credits_loc_project_names" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="credits_loc_fr" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="credits_loc_fr_names" fontSize="18" horizontal="640" spacing="114" lineLenght="800"/>
+	<text id="credits_loc_it" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="credits_loc_it_names" fontSize="18" horizontal="640" spacing="114" lineLenght="750"/>
+	<text id="credits_loc_de" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="credits_loc_de_names" fontSize="18" horizontal="640" spacing="90" lineLenght="750"/>
+	<text id="credits_loc_es" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="credits_loc_es_names" fontSize="18" horizontal="640" spacing="114" lineLenght="750"/>
+	<text id="credits_loc_pl" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="credits_loc_pl_names" fontSize="18" horizontal="640" spacing="114" lineLenght="750"/>
+	<text id="credits_loc_pt_BR" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="credits_loc_pt_BR_names" fontSize="18" horizontal="640" spacing="114" lineLenght="750"/>
+	<text id="credits_loc_ru" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="credits_loc_ru_names" fontSize="18" horizontal="640" spacing="148" lineLenght="750"/>
+	<!--<text id="credits_loc_ja" fontSize="14" horizontal="640" spacing="40" lineLenght="750"/>
+	<text id="credits_loc_ja_84" fontSize="18" horizontal="640" spacing="60"/>
+	<text id="credits_loc_ja_names" fontSize="18" horizontal="640" spacing="114" lineLenght="750"/>-->
+
+	<!-- credits.txt -->
+	<text id="kickstarter" fontSize="14" horizontal="640" spacing="80" lineLenght="1200"/>
+	<creditNames fontSize="14" spacingBetweenNames="40" spacingToFinishTexts="100"/>
+
+	<!-- Credit End -->
+	<finishText id="third_party" fontSize="1" horizontal="640" spacing="40" lineLenght="1000"/>
+	<finishText id="folder" fontSize="1" horizontal="640" spacing="80" lineLenght="1000"/>
+	<finishText id="bass" fontSize="1" horizontal="640" spacing="50" lineLenght="1000"/>
+	<finishText id="rapidxml" fontSize="1" horizontal="640" spacing="50" lineLenght="1000"/>
+	<finishText id="freetype" fontSize="1" horizontal="640" spacing="100" lineLenght="1000"/>
+	<finishText id="font" fontSize="1" horizontal="640" spacing="0" lineLenght="1000"/>
+</customCredits>
+
 <scripts>
+	<!-- Primary script -->
 	<script>data/mv_scripts/core.lua</script>
-	<script>data/mv_scripts/tags.lua</script>
+
+	<!-- XML tags -->
+	<script>data/mv_scripts/tags/tag-data-init.lua</script>
+	<script>data/mv_scripts/tags/aoe.lua</script>
+	<script>data/mv_scripts/tags/conservative.lua</script>
+	<script>data/mv_scripts/tags/crew-target.lua</script>
+	<script>data/mv_scripts/tags/drone-missile-cost.lua</script>
+	<script>data/mv_scripts/tags/drone-shooter.lua</script>
+	<script>data/mv_scripts/tags/fire-fill.lua</script>
+	<script>data/mv_scripts/tags/hack.lua</script>
+	<script>data/mv_scripts/tags/map-image.lua</script>
+	<script>data/mv_scripts/tags/mind-control.lua</script>
+	<script>data/mv_scripts/tags/pop.lua</script>
+	<script>data/mv_scripts/tags/resources.lua</script>
+	<script>data/mv_scripts/tags/stealth.lua</script>
+	<script>data/mv_scripts/tags/tile-damage.lua</script>
+	<script>data/mv_scripts/tags/tag-data-read.lua</script>
+
+	<!-- Scripts for functionality used throughout the mod -->
 	<script>data/mv_scripts/value-trackers.lua</script>
 	<script>data/mv_scripts/events.lua</script>
 	<script>data/mv_scripts/hull-anims.lua</script>
 	<script>data/mv_scripts/tp-spam-bandaid.lua</script>
+
+	<!-- Scripts used for one particular weapon/event/whatever -->
+	<script>data/mv_scripts/oneoffs/fix-pro-hull-beam.lua</script>
+	<script>data/mv_scripts/oneoffs/custom-gatling-name.lua</script>
+	<script>data/mv_scripts/oneoffs/rhyme-map-icon.lua</script>
 </scripts>
 </FTL>
