@@ -19,6 +19,9 @@ def main():
         
     translator = Translator()
     
+    def save(data_dict):
+        with open(argv[1], 'wt') as f:
+            json.dump(data_dict, f)
     
     def translate(original):
         for i in range(10):
@@ -30,13 +33,14 @@ def main():
         return original, False
     
     
-    for text_dict in data_dict['translation']:
+    for key, text_dict in data_dict['translation'].items():
         count += 1
         if text_dict['machine'] != '' or text_dict['deepl'] != '':
             print(f'{count} done')
             continue
-        translated_text, is_success = translate(text_dict['original'])
+        translated_text, is_success = translate(key)
         if not is_success:
+            print(f'translation failed: {translated_text}')
             continue
         text_dict['machine'] = translated_text.replace('\\ ', '\\')
         print(f'{count}/{all_length}\t{translated_text}')
@@ -44,11 +48,9 @@ def main():
         count_translate += 1
         if count_translate % AUTOSAVE_INTERVAL == 0:
             print('auto saving...')
-            with open(argv[1], 'wt') as f:
-                json.dump(data_dict, f)
+            save(data_dict)
 
-    with open(argv[1], 'wt') as f:
-        json.dump(data_dict, f)
+    save(data_dict)
     print('All translation have done! If this is the first time to run this script, please re-run and check if there are missing translation.')
 
 if __name__ == '__main__':

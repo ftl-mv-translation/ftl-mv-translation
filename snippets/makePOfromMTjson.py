@@ -17,11 +17,11 @@ def main():
     lang = data_dict['lang']
     
     map_dict = {}
-    for text_dict in data_dict['translation']:
+    for key, text_dict in data_dict['translation'].items():
         if text_dict['deepl'] != '':
-            map_dict[text_dict['original']] = text_dict['deepl']
+            map_dict[key] = text_dict['deepl']
         elif text_dict['machine'] != '':
-            map_dict[text_dict['original']] = text_dict['machine']
+            map_dict[key] = text_dict['machine']
             
     for filepath_original in glob_posix(globpattern_original):
         dict_original, _, _ = readpo(filepath_original)

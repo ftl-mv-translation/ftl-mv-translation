@@ -29,12 +29,12 @@ def Main():
     
     translation_number = 0
     count_in_total = 0
-    for text in data['translation']:
-        if text['deepl'] != '':
+    for key, text_dict in data['translation'].items():
+        if text_dict['deepl'] != '':
             continue
         
         for i in range(retry_number):
-            translation_number += len(text['original'])
+            translation_number += len(key)
             if character_limit > -1 and translation_number > character_limit:
                 print('Reached character limit which you set.')
                 Rewrite(data)
@@ -42,7 +42,7 @@ def Main():
             
             params = {
                     'auth_key' : API_KEY,
-                    'text' : text['original'],
+                    'text' : key,
                     'source_lang' : 'EN',
                     'target_lang' : target_lang,
                 }
@@ -52,8 +52,8 @@ def Main():
                 
                 if status == 200:
                     translated_text = response.json()['translations'][0]['text']
-                    text['deepl'] = translated_text
-                    text['machine'] = ''
+                    text_dict['deepl'] = translated_text
+                    text_dict['machine'] = ''
                     count_in_total += 1
                     print(f'translated {count_in_total} times and {translation_number} characters in total\t{translated_text}')
                     if count_in_total % auto_save_interval == 0:
