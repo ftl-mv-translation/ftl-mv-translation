@@ -21,7 +21,7 @@ def makeMT(lang, version):
             dict_original, _, _ = readpo(filepath_original)
             dict_map = {}
             try:
-                dict_hand, _, _ = readpo(f'locale/{Path(filepath_original).parent.parent.name}/{Path(filepath_original).parent.name}/{argv[1]}.po')
+                dict_hand, _, _ = readpo(f'locale/{Path(filepath_original).parent.parent.name}/{Path(filepath_original).parent.name}/{lang}.po')
                 for key, entry in dict_original.items():
                      dict_map[entry.value] = dict_hand.get(key, '')
                 for key in dict_map:

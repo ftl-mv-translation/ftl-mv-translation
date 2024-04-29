@@ -5,7 +5,7 @@ import json5
 import json
 from makeMTjson import makeMT
 
-#This is an outdated script. File format was changed from 5.4.4 to 5.4.5 for MT json. You cant use this script for updating from 5.4.5 to latest version.
+#This is an outdated script. File format was changed from 5.4.4 to 5.4.5 for MT json. You cant use this script for updating MT json from 5.4.5 to newer version.
 
 _MACHINE_FN_PATTERN = re.compile(
     r'^machine-(?P<locale>[a-zA-Z_]+)-(?P<version>v?[0-9\.]+(?:-.*)?)\.json$',
