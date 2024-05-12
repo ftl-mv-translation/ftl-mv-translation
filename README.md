@@ -95,7 +95,7 @@ the report.txt (shown as "Diff report" tasks). In that case, adjust `mvloc.confi
 > * Put XML files into `src-<langname>/`. Make sure to remove any other files or they will be overwritten as well!
 > * Remove `--clean` option when invoking `mvloc`. Other files will be untouched.
 
-## The drill for machine translation
+### Machine translation
 
 If you want localized MV but cant find translation for your language, you can make MT(machine translation) by yourself. Also you can join our weblate project to start hand translation, but you will soon realize how large the scale of MV is. So I recommend to make MT first, then replace it with your hand translation gradually.
 
