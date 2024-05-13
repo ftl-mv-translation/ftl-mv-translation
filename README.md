@@ -105,7 +105,7 @@ It will take around 12 hours to finish translation due to mass texts in mv.
 You do not have to run the script continuously because there is the autosave function, and you can edit the script to change the interval(default: 100).
 
 To implement MT in nightly, add `bash snippets/ci-nightly-machine.sh <langname>` [here](https://github.com/ftl-mv-translation/ftl-mv-translation/blob/c4f2e63a98ade4d2895ea5fa16d371703769c2a9/.github/workflows/nightly.yml#L36)
-name
+
 > If you have deepl api free, you can replace MT with deepl translation, which would be more decent quality. `mvloc deepl <langname> <deepl-api-free-key> <character-limit(optional)>`
 > Deepl api free has translation limit of 500k characters per month. MV has about 4m characters, so it may take 8 months to complete deepl translation.
 
