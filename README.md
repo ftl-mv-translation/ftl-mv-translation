@@ -99,17 +99,17 @@ the report.txt (shown as "Diff report" tasks). In that case, adjust `mvloc.confi
 
 If you want localized MV but cant find translation for your language, you can make MT(machine translation) by yourself. Also you can join our weblate project to start hand translation, but you will soon realize how large the scale of MV is. So I recommend to make MT first, then replace it with your hand translation gradually.
 
-`mvloc machine <lang code>` (e.g. `mvloc machine ja`)
+`mvloc machine <langname>` (e.g. `mvloc machine ja`)
 
 It will take around 12 hours to finish translation due to mass texts in mv.
 You do not have to run the script continuously because there is the autosave function, and you can edit the script to change the interval(default: 100).
 
-To implement MT in nightly, add `bash snippets/ci-nightly-machine.sh <lang code>` [here](https://github.com/ftl-mv-translation/ftl-mv-translation/blob/c4f2e63a98ade4d2895ea5fa16d371703769c2a9/.github/workflows/nightly.yml#L36)
+To implement MT in nightly, add `bash snippets/ci-nightly-machine.sh <langname>` [here](https://github.com/ftl-mv-translation/ftl-mv-translation/blob/c4f2e63a98ade4d2895ea5fa16d371703769c2a9/.github/workflows/nightly.yml#L36)
+name
+> If you have deepl api free, you can replace MT with deepl translation, which would be more decent quality. `mvloc deepl <langname> <deepl-api-free-key> <character-limit(optional)>`
+> Deepl api free has translation limit of 500k characters per month. MV has about 4m characters, so it may take 8 months to complete deepl translation.
 
-> If you have deepl api free, you can replace MT with deepl translation, which would be more decent quality. `mvloc deepl <lang code> <deepl-api-free key> <character-limit(optional)>`
-> Deepl api free has translation limit of 500k characters per month. MV has about 4m, so it may take 8 months to complete deepl translation.
-
-If vanilla ftl does not support your language, you have to find fonts suitable for ftl, and make auxfiles-<locale>/ to override existing language. [Korean](https://github.com/ftl-mv-translation/ftl-mv-translation/tree/main/auxfiles-ko) is a good example.
+If vanilla ftl does not support your language, you have to find fonts suitable for ftl, and make `auxfiles-<langname>/` to override existing language fonts. [Korean](https://github.com/ftl-mv-translation/ftl-mv-translation/tree/main/auxfiles-ko/fonts/zh-Hans) is a good example.
 You can also ask hs devs to add your language. 
 
 ## Disclaimer
