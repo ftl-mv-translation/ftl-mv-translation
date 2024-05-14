@@ -1,30 +1,8 @@
--- Utility functions
-local Children
-do
-    local function nodeIter(Parent, Child)
-        if Child == "Start" then return Parent:first_node() end
-        return Child:next_sibling()
-    end
-    Children = function(Parent)
-        if not Parent then error("Invalid node to Children iterator!", 2) end
-        return nodeIter, Parent, "Start"
-    end
-end
-local function parse_xml_bool(s)
-    return s == "true" or s == "True" or s == "TRUE"
-end
-local function node_get_bool_default(node, default)
-    if not node then return default end
-    local ret = node:value()
-    if not ret then return default end
-    return parse_xml_bool(ret)
-end
-local function node_get_number_default(node, default)
-    if not node then return default end
-    local ret = tonumber(node:value())
-    if not ret then return default end
-    return ret
-end
+-- Utility function imports
+local node_child_iter = mods.multiverse.node_child_iter
+local parse_xml_bool = mods.multiverse.parse_xml_bool
+local node_get_bool_default = mods.multiverse.node_get_bool_default
+local node_get_number_default = mods.multiverse.node_get_number_default
 
 -- Data init
 local hullAnims = {}
@@ -56,8 +34,8 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(ship)
         -- Parse hullAnim tags in layout file
         if hullAnimsNode then
             local randomFrame = not node_get_bool_default(hullAnimsNode:first_attribute("sync"), true)
-            for hullAnim in Children(hullAnimsNode) do
-                local anim = Hyperspace.Global.GetInstance():GetAnimationControl():GetAnimation(hullAnim:value())
+            for hullAnim in node_child_iter(hullAnimsNode) do
+                local anim = Hyperspace.Animations:GetAnimation(hullAnim:value())
                 if randomFrame then
                     anim:SetCurrentFrame(Hyperspace.random32()%anim.info.numFrames)
                 end

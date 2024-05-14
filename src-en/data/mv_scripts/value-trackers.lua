@@ -9,13 +9,28 @@ local sign = mods.multiverse.sign
 
 --[[
 ////////////////////
+SEEDED RUN
+////////////////////
+]]--
+
+local checkSeededRun = false
+script.on_init(function(newGame) checkSeededRun = newGame end)
+script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
+    if checkSeededRun then
+        checkSeededRun = false
+        Hyperspace.playerVariables.loc_seeded_run = Hyperspace.Global.IsSeededRun() and 1 or 0
+    end
+end)
+
+--[[
+////////////////////
 PLAYER HULL MISSING
 ////////////////////
 ]]--
 
 script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
     local playerShip = Hyperspace.ships.player
-    if Hyperspace.Global.GetInstance():GetCApp().world.bStartedGame and playerShip then
+    if Hyperspace.App.world.bStartedGame and playerShip then
         Hyperspace.playerVariables.loc_player_hull_missing = playerShip.ship.hullIntegrity.second - playerShip.ship.hullIntegrity.first
     end
 end)
@@ -28,7 +43,7 @@ ENEMY SYSTEM LEVELS
 
 script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
     local enemyShip = Hyperspace.ships.enemy
-    if Hyperspace.Global.GetInstance():GetCApp().world.bStartedGame and enemyShip then
+    if Hyperspace.App.world.bStartedGame and enemyShip then
         if enemyShip.bDestroyed or enemyShip.bJumping then
             for id, sys in pairs(mods.multiverse.systemIds) do
                 Hyperspace.playerVariables[sys.."_enemy"] = 0
@@ -78,7 +93,7 @@ FINAL BOSS FIGHT
 script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
     local enemyShip = Hyperspace.ships.enemy
     if enemyShip and not enemyShip.bDestroyed then
-        local bossList = Hyperspace.Global.GetInstance():GetBlueprints():GetBlueprintList("LIST_SHIPS_FINALBOSS")
+        local bossList = Hyperspace.Blueprints:GetBlueprintList("LIST_SHIPS_FINALBOSS")
         for i = 0, bossList:size() - 1 do
             if enemyShip.myBlueprint.blueprintName == bossList[i] then
                 Hyperspace.playerVariables.loc_finalboss = 1

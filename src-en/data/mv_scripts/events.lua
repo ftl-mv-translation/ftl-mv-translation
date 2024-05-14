@@ -119,9 +119,9 @@ script.on_internal_event(Defines.InternalEvents.ON_KEY_DOWN, function(key)
     if settingStorage then Hyperspace.metaVariables.prof_hotkey_storage = key end
     
     -- Do stuff if a hotkey is pressed
-    local cmdGui = Hyperspace.Global.GetInstance():GetCApp().gui
+    local cmdGui = Hyperspace.App.gui
     if Hyperspace.ships.player and not (Hyperspace.ships.player.bJumping or cmdGui.event_pause or cmdGui.menu_pause) then
-        local world = Hyperspace.Global.GetInstance():GetCApp().world
+        local world = Hyperspace.App.world
         if key == Hyperspace.metaVariables.prof_hotkey_toggle then -- Toggle menu
             Hyperspace.CustomEventsParser.GetInstance():LoadEvent(world, "COMBAT_CHECK_TOGGLE_BUTTON", false, -1)
         elseif key == Hyperspace.metaVariables.prof_hotkey_storage and cmdGui.upgradeButton.bActive then -- Storage menu
@@ -137,7 +137,7 @@ SURRENDER REMOVES INCOMING PROJECTILES
 ]]--
 
 function mods.multiverse.destroy_all_projectiles()
-    local projectiles = Hyperspace.Global.GetInstance():GetCApp().world.space.projectiles
+    local projectiles = Hyperspace.App.world.space.projectiles
     for i = 0, projectiles:size() - 1 do
         local projectile = projectiles[i]
         local projName = tostring(projectile.extend.name)
@@ -177,4 +177,4 @@ OTHER EVENTS
 ////////////////////
 ]]--
 
-script.on_game_event("QUIT_GAME", false, function() Hyperspace.Global.GetInstance():GetCApp():OnRequestExit() end)
+script.on_game_event("QUIT_GAME", false, function() Hyperspace.App:OnRequestExit() end)
