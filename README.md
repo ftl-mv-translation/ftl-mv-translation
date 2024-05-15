@@ -68,10 +68,16 @@ Run `mvloc batch-apply <langname>` -- Example: `mvloc batch-apply ko`
 This command transforms XMLs in `src-en/` using translation files on `locale/`,
 then writes them out to `output-<langname>` directory.
 
+Add `-m` option if you use machine translation from `locale-machine/`. Machine translation is put on untranslated texts, does not replace hand translation.
+-- Example: `mvloc batch-apply ja -m`
+
 ### Packaging the translation
 
 1. Follow the "Applying the translation" workflow first
 2. Run `mvloc package <langname>` -- Example: `mvloc package ko`
+
+If you used `-m` option while applying process, add `-m` option as well.
+-- Example: `mvloc package ja -m`
 
 This command automatically packages the translation. It downloads the English Multiverse, overwrites it with
 translated XMLs, (optionally overwrites it with contents in `auxfiles-<langname>/` if any), and zip it to create
