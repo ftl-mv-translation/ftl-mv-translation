@@ -1,6 +1,6 @@
-metadata.xml/ is for mod description for mvinstaller. While SMM cannot recognize non-Latin characters, mvinstaller can.
+`metadata.xml/` is for mod description for mvinstaller. While SMM cannot recognize non-Latin characters, mvinstaller can.
 
-You can make translated metadata.xml as `<lang code>.xml` in this folder(en.xml is a sample).
+You can make translated metadata.xml as `<langname>.xml` in this folder(en.xml is a sample).
 
 If the file in your locale exists here, nightly releases it instead of locale/mod-appendix/metadata.xml(or locale-machine/mod-appendix/metadata.xml), which is from weblate translation. It means description here(translated) is used for mvinstaller, weblate text(original English) is used for SMM.
 
