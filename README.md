@@ -4,6 +4,10 @@
 
 Download from [HERE](https://github.com/ftl-mv-translation/ftl-mv-translation/releases/latest). (Updated every UTC 00:00)
 
+## Localized Multiverse Installer
+
+You can also install translated Multiverse and its addons via our localized installer. [HERE](https://github.com/ftl-mv-translation/mvinstaller/releases/latest)
+
 ## Running the script
 
 The script is written in Python and managed by poetry. A standard setuptools may install it as a package,
