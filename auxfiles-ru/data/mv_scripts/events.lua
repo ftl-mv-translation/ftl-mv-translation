@@ -39,8 +39,8 @@ script.on_game_event("SHES_MAD", false, function()
 end)
 
 script.on_game_event("SHE_KILLED_YOU", false, function()
-	Hyperspace.ErrorMessage("Единственный для тебя способ победить, глупыш, было работать со мной. Хахе! Хахе! Хахе! Хахе! Хахе! Хахе! Хахе! Хахе! Хахе! Хахе!")
-	for i = 1, 5 do Hyperspace.ErrorMessage("Хахе! Хахе! Хахе! Хахе! Хахе! Хахе! Хахе! Хахе! Хахе! Хахе!") end --Here we repeat a function 5 times instead of writing it out multiple times. The word "for" can be used for iteration in this way. For example, "for i = 5, 1, -1 do print(i) end" will print "5 4 3 2 1".
+	Hyperspace.ErrorMessage("Единственный для тебя способ победить, глупыш, было работать со мной. Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе!")
+	for i = 1, 5 do Hyperspace.ErrorMessage("Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе! Ха-хе!") end --Here we repeat a function 5 times instead of writing it out multiple times. The word "for" can be used for iteration in this way. For example, "for i = 5, 1, -1 do print(i) end" will print "5 4 3 2 1".
 	Hyperspace.setWindowTitle(string.rep(":) ", 66)) --Here we repeat the string ":) " 66 times.
 end)
 
@@ -48,7 +48,7 @@ do --Here we keep the variables "titleSet" and "herVirus" only where they are ne
 	local titleSet = false
 	local herVirus = false
 	script.on_game_event("SHE_WINS", false, function()
-		Hyperspace.ErrorMessage("Хахе! Я победила!")
+		Hyperspace.ErrorMessage("Ха-хе! Я победила!")
 		herVirus = true
 		titleSet = false
 	end)
