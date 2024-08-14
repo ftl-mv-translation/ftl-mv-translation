@@ -62,7 +62,7 @@ script.on_init(function(newGame)
     gatlingNameEventText = nil
     if newGame then
         -- Reset the gatling name for a new run
-        set_gatling_name("Gatling Gun", "Gatling")
+        set_gatling_name("Орудие Гатлинга", "Гатлинг")
     else
         loadGatlingName = true
     end
