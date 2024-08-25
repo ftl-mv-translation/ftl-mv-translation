@@ -24,7 +24,7 @@ Find the package in your language below and click it to download. It is named as
 
 After downloading, place the file in the mods folder in the SMM folder.
 
-Open `modman.exe` or `modman.jar`, then check the checkbox of the mod you want to install. The mod order is very important.
+Run `modman.exe` or `modman.jar`, then check the checkbox of the mod you want to install. The mod order is very important.
 
 The mod order should be:
 ```
