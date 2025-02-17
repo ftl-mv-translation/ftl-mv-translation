@@ -13,11 +13,9 @@ Also check out the [instructions](https://steamcommunity.com/sharedfiles/filedet
 
 We assume that you have already downgraded FTL and installed Hyperspace, and that you can install mods using the Slipstream Mod Manager(SMM). If you have not yet done so, follow the [Official Hyperspace Installation Guide](https://ftl-hyperspace.github.io/FTL-Hyperspace/#installation)
 
-### 1. Downgrade FTL to 1.6.9
+### 1. Install Hyperspace
 See [Hyperspace Guide](https://ftl-hyperspace.github.io/FTL-Hyperspace/#installation)
-### 2. Install Hyperspace
-See [Hyperspace Guide](https://ftl-hyperspace.github.io/FTL-Hyperspace/#installation)
-### 3. Download and patch translated Multiverse.
+### 2. Download and patch translated Multiverse.
 Find the package in your language below and click it to download. It is named as `FTL-Multiverse-<MV version>-<your lang code>+xxxxxxx.ftl`.
 
 > Example: German MV with version 5.4.6 is  `FTL-Multiverse-5.4.6-de+e473865.ftl`
