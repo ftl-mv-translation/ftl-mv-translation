@@ -18,7 +18,7 @@ Find the package in your language below and click it to download. It is named as
 
 > Example: German MV with version 5.4.6 is  `FTL-Multiverse-5.4.6-de+e473865.ftl`
 
-> Lnag code table:
+> Lang code table:
 > 
 > ```
 > de: German
