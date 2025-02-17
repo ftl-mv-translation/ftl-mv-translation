@@ -11,8 +11,6 @@ Also check out the [instructions](https://steamcommunity.com/sharedfiles/filedet
 ## Manual Installation
 > You don't need to do a manual installation if you use the installer above.
 
-We assume that you have already downgraded FTL and installed Hyperspace, and that you can install mods using the Slipstream Mod Manager(SMM). If you have not yet done so, follow the [Official Hyperspace Installation Guide](https://ftl-hyperspace.github.io/FTL-Hyperspace/#installation)
-
 ### 1. Install Hyperspace
 See [Hyperspace Guide](https://ftl-hyperspace.github.io/FTL-Hyperspace/#installation)
 ### 2. Download and patch translated Multiverse.
