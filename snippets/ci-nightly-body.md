@@ -11,7 +11,7 @@ Also check out the [instructions (Steam Guide)](https://steamcommunity.com/share
 ## Manual Installation
 > You don't need to do a manual installation if you use the installer above.
 
-### O. (Windows Only) Downgrade FTL to v1.6.9
+### 0. (Windows Only) Downgrade FTL to v1.6.9
 See [Hyperspace Guide](https://ftl-hyperspace.github.io/FTL-Hyperspace/install-guides/windows/index.html)
 
 ### 1. Install Hyperspace
