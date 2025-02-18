@@ -6,7 +6,7 @@ We provide an installer for translated FTL: Multiverse.  Using the installer is 
 
 [Latest Release for Localized Installer](https://github.com/ftl-mv-translation/mvinstaller/releases/latest)
 
-Also check out the [instructions](https://steamcommunity.com/sharedfiles/filedetails/?id=3252627639) on how to use the installer!(Steam guide, written in Français, Русский, Deutsch, Español, Português Brasileiro and 日本語)
+Also check out the [instructions (Steam Guide)](https://steamcommunity.com/sharedfiles/filedetails/?id=3252627639) on how to use the installer! (Written in Français, Русский, Deutsch, Español, Português Brasileiro and 日本語)
 
 ## Manual Installation
 > You don't need to do a manual installation if you use the installer above.
