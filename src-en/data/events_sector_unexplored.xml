@@ -438,9 +438,9 @@
     <event load="UNEXPLORED_FRONTIER_VAGABOND" />
 </eventList>
 <event name="UNEXPLORED_PIRATE_NO_SETTLEMENT_AFTERMATH">
-    <text>After disposing of the pirate and dispatching their ship, the area is clear. There is no pirate hideaway here - This should answer any follow up questions the Frontiersman has.</text>
+    <text>After disposing of the pirate and dispatching their ship, the area is clear. There is no pirate hideaway here - this should answer any follow up questions the Frontiersman has.</text>
     <choice hidden="true">
-   	 <text>Return to the Frontiersman</text>
+   	 <text>Return to the Frontiersman.</text>
    	 <event>
    		 <text>"So there WAS a pirate. Thanks for handling them for us. Hopefully none o' their friends come looking for them..."</text>
    		 <autoReward level="LOW">standard</autoReward>
@@ -450,7 +450,7 @@
 <event name="UNEXPLORED_PIRATE_SETTLEMENT_AFTERMATH">
     <text>After disposing of the pirate and dispatching their ship, you find the hideaway that the pirates had been staying at. This area is likely too dangerous to settle, especially after you just killed one of them.</text>
     <choice>
-   	 <text>Return to the Frontiersman</text>
+   	 <text>Return to the Frontiersman.</text>
    	 <event>
    		 <text>"A pirate hideout...? All the good planets done been scooped up already, I reckon. Back to the drawin' board..."</text>
    	 </event>
@@ -541,6 +541,17 @@
 					<weapon name="GIFTLIST_ION"/>
 				</event>
 			</choice>
+			<choice req="unique_mafan" hidden="true">
+				<text>(Mafan) Talk about the Stargrove.</text>
+				<event>
+					<text>"You know, there are some Separatists who visit the Stargrove for just the same purpose as you coming here. Maybe you should join up with your kin that have made that same decision?"
+
+					"Stargrove... a [very] useful suggestion. Other Separatists have -found- answers there? Then we [will] go. -Appreciate- it."
+					</text>
+					<autoReward level="HIGH">fuel</autoReward>
+					<weapon name="GIFTLIST_ION"/>
+				</event>
+			</choice>
 			<choice req="BLUELIST_MINELAUNCHERS_ALL" >
 				<text>(Mine Launcher) Offer to lay mines to protect from the Harmony.</text>
 				<event>
@@ -591,7 +602,7 @@
 			<choice>
 				<text>Carry on.</text>
 				<event>
-					<text>The solitary other ship makes no moves, providing an opportunity to do something on your ship.</text>
+					<text>The solitary ship makes no moves, providing an opportunity to do something on your own.</text>
 					<choice>
 						<text>Do something onboard the ship.</text>
 						<event load="STORAGE_CHECK"/>
@@ -711,7 +722,7 @@
 	<event load="NEBULA_TRADER"/>
 	<event load="NEBULA_LIGHT_PIRATE_STATION"/>
 
-	<event load="NEBULA_VAGABOND_FLEETCRASH"/>
+	<event load="NEBULA_LIGHT_VAGABOND_FLEETCRASH"/>
 </eventList>
 <eventList name="NEBULA_UNEXPLORED_ITEMS">
 	<event load="NEBULA_FEDERATION_GIFT"/>
@@ -888,7 +899,7 @@
 	</choice>
 </event>
 
-<event name="NEBULA_TRADER" unique="true">
+<event name="NEBULA_TRADER">
 	<text>It's hard to see why, but this beacon is apparently a tourist destination. One of the ships at the small station is offering a deal.</text>
 	<environment type="nebula"/>
 	<choice>
@@ -913,7 +924,7 @@
 
 <event name="NEBULA_LIGHT_PIRATE_STATION" unique="true">
 	<text>The nebula at this beacon is thinner than usual. A pirate station is operating nearby, though it doesn't appear to receive much business.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="NONE"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="NONE"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<ship load="SHIP_PIRATE_UNION_STATION" hostile="false"/>
 	<choice hidden="true">
@@ -1009,6 +1020,7 @@
 
 <event name="NEBULA_STORM_ITEMS" unique="true">
 	<text>You jump into the middle of a plasma storm. Multiple recently incapacitated ships loom in the shadows, briefly illuminated by the lightning.</text>
+	<environment type="storm"/>
 	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Manually search the wreckage for survivors and equipment.</text>
 		<event load="STORM_ITEMS_LIST"/>
@@ -1025,7 +1037,18 @@
 		<text>(Upg. Piloting) Have your pilot carefully explore the debris.</text>
 		<event load="STORM_ITEMS_PILOTING"/>
 	</choice>
-	<environment type="storm"/>
+	<choice req="SCRAP_COLLECTOR">
+		<text>(Scrap Arm) Use your Scrap Arm to collect some of the wreckage.</text>
+		<event>
+			<autoReward level="MED">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice req="MAGNET_ARM">
+		<text>(Magnet Arm) Use your Magnet Arm to collect some of the wreckage.</text>
+		<event>
+			<autoReward level="MED">scrap_only</autoReward>
+		</event>
+	</choice>
 </event>
 <eventList name="STORM_ITEMS_LIST">
 	<event>
@@ -1384,7 +1407,7 @@ A volunteer from the Slug ship agrees to accompany you.</text>
 </eventList>
 
 <event name="NEBULA_MINE_WRECK" unique="true">
-	<text>The husk of an emptied Trapper vessel drifts into the nebula. Around it lays a few mines, but it's hard to tell whether they're still active.</text>
+	<text>The husk of an emptied Trapper vessel drifts into the nebula. Around it lie a few mines, but it's hard to tell whether they're still active.</text>
 	<ship load="SHIP_TRAPPER" hostile="false"/>
 	<environment type="nebula"/>
 	<choice hidden="true">
@@ -1599,6 +1622,10 @@ A volunteer from the Slug ship agrees to accompany you.</text>
 		<text>(Hacking) Try to hack the station to prevent an alert.</text>
 		<event load="NEBULA_AUTO_DEFENSE_ITEM_MV_HACK"/>
 	</choice>
+	<choice req="BLUELIST_WEAPONS_HACK" lvl="1" max_lvl="1" hidden="false">
+		<text>(Hacking Weapon) Target the station's alarm with your hacking weapon.</text>
+		<event load="NEBULA_AUTO_DEFENSE_ITEM_MV_HACK_WEAPON"/>
+	</choice>
 	<choice req="hacking" lvl="2" hidden="false">
 		<text>(Upg. Hacking) Hack the station to prevent an alert.</text>
 		<event>
@@ -1646,6 +1673,24 @@ A volunteer from the Slug ship agrees to accompany you.</text>
 		<item_modify>
 			<item type="drones" min="-1" max="-1"/>
 		</item_modify>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
+
+<eventList name="NEBULA_AUTO_DEFENSE_ITEM_MV_HACK_WEAPON">
+	<event>
+		<text>Your weapon successfully disables the connection to the automated ship. You access the station undetected.</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="DEFENSE_ITEM_LIST"/>
+		</choice>
+	</event>
+	<event>	
+		<text>You try to to hack the station with your weapon but the automated ship notices and turns to attack!</text>
 		<ship hostile="true"/>
 		<choice hidden="true">
 			<text>Continue...</text>
@@ -1780,12 +1825,6 @@ A volunteer from the Slug ship agrees to accompany you.</text>
 	<ship load="SHIP_REBEL_GENERIC" hostile="false"/>
 	<environment type="nebula"/>
 	<choice>
-		<text>Stay hidden.</text>
-		<event>
-			<text>You try and stay out of sight. You doubt they saw you.</text>
-		</event>
-	</choice>
-	<choice>
 		<text>Prepare to chase them!</text>
 		<event load="NEBULA_REBEL_CHASE_MV_LIST"/>
 	</choice>
@@ -1822,6 +1861,42 @@ A volunteer from the Slug ship agrees to accompany you.</text>
 			</choice>
 		</event>
 	</choice>
+	<choice req="LIST_CREW_SLUG" hidden="true">
+		<text>(Slug Crew) Have your crewmember check for their life signatures to follow them.</text>
+		<event>
+			<text>With the help of your crewmember, you're able to track down the Rebel ship. They opt to engage you instead of trying to flee again.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="BLUELIST_CREW_SNAIL" hidden="true">
+		<text>(Telepathic Shell) Have your crewmember check for their life signatures to follow them.</text>
+		<event>
+			<text>With the help of your crewmember, you're able to track down the Rebel ship. They opt to engage you instead of trying to flee again.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Stay hidden.</text>
+		<event>
+			<text>You try and stay out of sight. You doubt they saw you.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
 </event>
 <eventList name="NEBULA_REBEL_CHASE_MV_LIST">
 	<event>
@@ -1854,7 +1929,7 @@ A volunteer from the Slug ship agrees to accompany you.</text>
 </eventList>
 
 <eventList name="NEBULA_UNEXPLORED_DISTRESS">
-	<event load="NEBULA_WATER_PLANET"/>
+	<event load="NEBULA_LIGHT_WATER_PLANET"/>
 	<event load="NEBULA_DISTRESS_DEATH_BY_GAS"/>
 	<event load="NEBULA_DISTRESS_SEARCH"/>
 
@@ -1883,10 +1958,10 @@ A volunteer from the Slug ship agrees to accompany you.</text>
 	</choice>
 </event>-->
 
-<event name="NEBULA_WATER_PLANET" unique="true"> <!--its a reference if you couldn't tell-->
+<event name="NEBULA_LIGHT_WATER_PLANET" unique="true"> <!--its a reference if you couldn't tell-->
 	<distressBeacon/>
 	<text>Through the clearing in the nebula here you can see a large water planet, from which there appears to be 10 separate distress calls. A large cubical structure can be seen from the planet's surface. It's inactive, and you can't tell what it is from this distance.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_WATER"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_WATER"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice hidden="true">
 		<text>Pull closer.</text>
@@ -2172,13 +2247,13 @@ A volunteer from the Slug ship agrees to accompany you.</text>
 	<event load="NEBULA_ENCOUNTER_DYNASTY"/>
 
 	<event load="NEBULA_STORM_BOARDING"/>
-	<event load="NEBULA_ENCOUNTER_SUN"/>
+	<event load="NEBULA_LIGHT_ENCOUNTER_SUN"/>
 </eventList>
 
 <event name="NEBULA_ENCOUNTER_REBEL">
 	<loadEventList first="false" generate="true">
 		<event name="NEBULA_ENCOUNTER_REBEL_REGULAR"/>
-		<event name="NEBULA_ENCOUNTER_REBEL_LIGHTNEBULA"/>
+		<event name="NEBULA_LIGHT_ENCOUNTER_REBEL_LIGHTNEBULA"/>
 		<event name="NEBULA_STORM_REBEL"/>
 	</loadEventList>
 </event>
@@ -2200,10 +2275,10 @@ A volunteer from the Slug ship agrees to accompany you.</text>
 	<text>Newton-knows what brings this Rebel ship so far out; its captain hails, but does a double take when he identifies your ship. They open fire.</text>
 	<text>A Rebel ship hails, but you don't take chances in conditions like this. You block the frequency and prepare to engage.</text>
 </textList>
-<event name="NEBULA_ENCOUNTER_REBEL_LIGHTNEBULA" unique="true">
+<event name="NEBULA_LIGHT_ENCOUNTER_REBEL_LIGHTNEBULA" unique="true">
 	<text>This beacon has a clearing from the nebula, revealing more of the distant space. However, it appears a Rebel ship has already arrived and is now approaching quickly!</text>
 	<ship load="SHIP_REBEL_FIGHT" hostile="true"/>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="NONE"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="NONE"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -2305,10 +2380,10 @@ A volunteer from the Slug ship agrees to accompany you.</text>
 	<text>You try to read the ID of a ship ahead in the fog, but it's too thick to penetrate. You have your answer when the ship turns, weapons hot!</text>	
 </textList>
 
-<event name="NEBULA_ENCOUNTER_SUN" unique="true">
+<event name="NEBULA_LIGHT_ENCOUNTER_SUN" unique="true">
     <text>It seems that the nebula here has condensed into a newly born star. It's quite the spectacle... but also very deadly. A Slug vessel is admiring the star, but upon seeing you decides to attack instead!</text>
     <ship load="SHIP_SLUG_FIGHT" hostile="true"/>
-    <img back="BACK_EVENT_LIGHTNEBULA" planet="NONE"/>
+    <img back="BACK_EVENT_STARS_SPARSE" planet="NONE"/>
     <status type="loss" target="player" system="sensors" amount="1"/>
     <environment type="sun"/>
     <choice hidden="true">

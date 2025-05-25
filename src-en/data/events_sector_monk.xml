@@ -23,7 +23,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <eventList name="NEBULA_ITEMS_MONK">
-	<event load="NEBULA_MONK_GRAVE"/>
+	<event load="NEBULA_LIGHT_MONK_GRAVE"/>
 	<event load="NEBULA_MONK_FREE_CREW"/>
 	<event load="NEBULA_MONK_CONVERT"/>
 	<event load="NEBULA_MONK_BEGGAR"/>
@@ -31,9 +31,9 @@
 	<event load="NEBULA_MONK_GHOST"/>
 </eventList>
 
-<event name="NEBULA_MONK_GRAVE" unique="true">
+<event name="NEBULA_LIGHT_MONK_GRAVE" unique="true">
 	<text>Though a nebula is still present at this beacon, you can't help but notice strange readings from the nearby moon. With these, you deduct a ship has landed there, but you can't tell what kind.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_MOONS"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_MOONS"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice hidden="true">
 		<text>Land.</text>
@@ -409,16 +409,16 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <eventList name="NEBULA_NEUTRAL_MONK">
-	<event load="NEBULA_MONK_ANNOYED"/>
+	<event load="NEBULA_LIGHT_MONK_ANNOYED"/>
 	<event load="NEBULA_MONK_CHASE"/>
 	<event load="NEBULA_MONK_DUSKBRINGERS"/>
 	<event load="NEBULA_MONK_HOSTAGES"/>
 	<event load="NEBULA_MONK_PROVERB"/>
 </eventList>
 
-<event name="NEBULA_MONK_ANNOYED" unique="true">
+<event name="NEBULA_LIGHT_MONK_ANNOYED" unique="true">
 	<text>A small Zoltan temple has been constructed on a nearby planet, which looks otherwise completely barren.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_UNPOPULATED_TERRA"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_UNPOPULATED_TERRA"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice>
 		<text>Hail them.</text>
@@ -629,6 +629,17 @@
 			</choice>
 		</event>
 	</choice>
+	<choice hidden="true" req="BLUELIST_WEAPONS_MIND_AFFECT">
+		<text>(Mind Affecting Weapon) Try to mind control the Hackers.</text>
+		<event>
+			<text>The mind control proves completely pointless, as the Hackers are Slugs. Even worse, you've announced your location and the ship moves in to attack.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
 	<choice>	
 		<text>Ignore them.</text>
 		<event>
@@ -656,7 +667,7 @@
 			<choice hidden="true" req="LIST_CREW_MONK">
 				<text>(Monk Crew) "A warning well headed, but not without risks of its own."</text>
 				<event>
-					<text>The other Monk nods, and the two launch into a long philosophical discussion about moral principles. You can't understand a word of what they say, but it seems your monk has convinced the other of your wisdom and they come aboard.</text>
+					<text>The other Monk nods, and the two launch into a long philosophical discussion about moral principles. You can't understand a word of what they say, but it seems your Monk has convinced the other of your wisdom and they come aboard.</text>
 					<crewMember amount="1" repair="1" class="zoltan_monk"/>
 				</event>
 			</choice>
@@ -758,7 +769,7 @@
 	<choice>	
 		<text>We cannot help.</text>
 		<event>
-			<text>You apologize and explain you are not an escort. The monks say they understand and carry on.</text>
+			<text>You apologize and explain you are not an escort. The Monks say they understand and carry on.</text>
 			<choice>
 				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
@@ -927,7 +938,7 @@
 <event name="NEBULA_MONK_RIFT_FIGHT" unique="true">
 	<text>You come to a quiet part of Zoltan space and encounter an ancient Zoltan wise man who claims to have harnessed the power of a spatial rift, but seems to have been driven completely mad by the power. He's obviously lying, but his madness is most certainly real, as is the rift. "Choose your doom. I have a wide variety of options," he demands.</text>
 	<img back="BACK_EVENT_RIFT" planet="NONE"/>
-	<status type="divide" target="player" system="sensors" amount="2"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice hidden="true" req="COMBAT_HAZARD">
 		<text>(Reality Manipulator) Seize control of the rift.</text>
 		<event>
@@ -1623,6 +1634,7 @@ The monks are convinced.
 						<event>
 							<text>"You have made a wise choice. I know it is hard, but it will all pay off in the end." As you head back to the ship you feel very strange... almost blessed in a way.</text>
 							<remove name="RANDOM"/>
+							<hiddenAug>ZOLTAN_BLESSING</hiddenAug>
 							<damage amount="-5"/>
 							<modifyPursuit amount="-3"/>
 						</event>
@@ -1909,7 +1921,7 @@ The monks are convinced.
 	<event>
 		<text>A rift opens in front of you, so huge an entire planet is thrown out of it, followed by an unhappy Lost Sun vessel! On the planet's surface appears to be a giant ASB cannon, and they're firing at both you and the enemy! </text>
 		<ship load="SHIP_LOSTSUN_ALL" hostile="true"/>
-		<environment type="PDS" target="both"/>
+		<environment type="PDS" target="all"/>
 		<choice hidden="true">
 			<text>Continue...</text>
 			<event load="COMBAT_CHECK"/>
@@ -2093,7 +2105,7 @@ The monks are convinced.
 	<event>
 		<text>A rift opens in front of you, so huge an entire planet is thrown out of it, followed by an unhappy Lost Sun vessel! On the planet's surface appears to be a giant ASB cannon, and they're firing at both you and the enemy! </text>
 		<ship load="SHIP_LOSTSUN_ALL" hostile="true"/>
-		<environment type="PDS" target="both"/>
+		<environment type="PDS" target="all"/>
 		<choice hidden="true">
 			<text>Continue...</text>
 			<event load="COMBAT_CHECK"/>

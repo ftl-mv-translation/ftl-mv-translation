@@ -653,9 +653,31 @@ The Orchid lowers his paper and he starts to squint. "Oh no."
 									</choice>
 								</event>
 							</choice>
-							<choice hidden="true" req="LIST_CREW_FLORAL">
+							<choice hidden="true" req="orchid">
 								<text>(Floral Crew) Convince the Mega-Tree guards to let you have the weapon.</text>
 								<event load="ORCHID_MEGATREE_TALK"/>
+							</choice>
+							<choice hidden="true" req="orchid_caretaker">
+								<text>(Caretaker Crew) Convince the Mega-Tree guards to let you have the weapon.</text>
+								<event load="ORCHID_MEGATREE_TALK_GOOD"/>
+							</choice>
+							<choice hidden="true" req="orchid_praetor">
+								<text>(Praetor Crew) Convince the Mega-Tree guards to let you have the weapon.</text>
+								<event load="ORCHID_MEGATREE_TALK_GOOD"/>
+							</choice>
+							<choice hidden="true" req="unique_mayeb">
+								<text>(Mayeb) Convince the Mega-Tree guards to let you have the weapon.</text>
+								<event>
+									<text>Mayeb explains to the guards that with her years of gardening experience, retrieving the Kernel weapon without harming the tree should be easy with her supervision. After a brief discussion among themselves, they agree to this proposal. It doesn't take long to excavate it, and indeed the tree appears to be entirely unharmed at the end of it.</text>
+									<weapon name="GIFTLIST_KERNEL_ELITE"/>
+								</event>
+							</choice>
+							<choice hidden="true" req="unique_tyerel">
+								<text>(Ty E'Rel) Convince the Mega-Tree guards to let you have the weapon.</text>
+								<event>
+									<text>You leave Ty E'rel on the comms to organize an agreement with the guards regarding the buried weapon. The negotiating is almost astonishingly boring, with the names of numerous treaties and agreements you didn't even know existed flying around throughout. After a few dull minutes, your crew are cleared to retrieve the Kernel weapon.</text>
+									<weapon name="GIFTLIST_KERNEL_ELITE"/>
+								</event>
 							</choice>
 							<choice hidden="true" req="FLARE_DISTRACTION">
 								<text>(Flares) Launch a flare to distract the guards and buy you time.</text>
@@ -710,11 +732,11 @@ The Orchid lowers his paper and he starts to squint. "Oh no."
 	<autoReward level="MED">missiles</autoReward>
 </event>
 <eventList name="ORCHID_MEGATREE_TALK">
-	<event>
+	<event name="ORCHID_MEGATREE_TALK_SUCCESS">
 		<text>Your Orchid manages to convince the guards of the utmost importance of your mission. They sanction you to send crew down to dig up the weapon, so long as you cause no damage to the tree.</text>
 		<weapon name="GIFTLIST_KERNEL_ELITE"/>
 	</event>
-	<event>
+	<event name="ORCHID_MEGATREE_TALK_FAIL">
 		<text>The guards refuse to grant you access to the weapon.</text>
 		<choice hidden="true">
 			<text>Ignore them and dig for it anyways.</text>
@@ -732,6 +754,11 @@ The Orchid lowers his paper and he starts to squint. "Oh no."
 			<event/>
 		</choice>
 	</event>
+</eventList>
+<eventList name="ORCHID_MEGATREE_TALK_GOOD">
+	<event load="ORCHID_MEGATREE_TALK_SUCCESS"/>
+	<event load="ORCHID_MEGATREE_TALK_SUCCESS"/>
+	<event load="ORCHID_MEGATREE_TALK_FAIL"/>
 </eventList>
 <!--
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -1051,7 +1078,7 @@ The Orchid lowers his paper and he starts to squint. "Oh no."
 	<choice hidden="true">
 		<text>Agree to talk with the Slugs.</text>
 		<event>
-			<text>"Greetingsss, mossst disssgussssting and rotund one. We've been looking for sssuch fine ssspecimen for a century. You are truly the ugliessst being in the galaxy and dessserve to be embalmed and shown in a mussseum. I can only wonder what your mother looksss like."</text>
+			<text>"Greetingsss, mossst disssgussssting and rotund one. We've been looking for sssuch a fine ssspecimen for a century. You are truly the ugliessst being in the galaxy and dessserve to be embalmed and shown in a mussseum. I can only wonder what your mother looksss like."</text>
 			<choice hidden="true">
 				<text>We won't suffer such insults! Attack!</text>
 				<event>
@@ -1096,9 +1123,9 @@ The Orchid lowers his paper and he starts to squint. "Oh no."
 				</event>
 			</choice>
 			<choice hidden="true" req="unique_tonysr">
-				<text>(Tony) Tony has begun to cry.</text>
+				<text>(Tony Sr.) Tony asks to speak with them.</text>
 				<event>
-					<text>Tony collapses and begins to let out giant, heaving cries of misery. The Slugs are speechless as they watch Tony wailing. "I... uhm... I can't sssay I wassss expecting thisss kind of resssponssse." The captain seems almost genuinely ashamed. "Thisss wasss sssupposssed to be like, a trap. We were going to claim you were pirates and trick the Orchid ssssecurity. Now I jussst feel like sssshit. I'll uh... I'll jussst leave." The Slugs toss some scrap your way and jump away.</text>
+					<text>Tony snaps a picture of the lead Slug, then begins groveling and crying in front of the camera. You and the Slugs are speechless as you watch Tony wail, until his phone buzzes and he immediately snaps back to his usual self. "Thanks for giving my assistants time to look you up. I'd insult your mother, but it'd feel mean, knowing how decrepit her apartment complex on your homeworld is. It'd be a shame if someone made her problems worse by buying the place and having it bulldozed. So why don't you cut your losses and thank me for the warning?" The Slugs toss some scrap your way and jump away, leaving you to worry about what information your crewmate might have against you.</text>
 					<instantEscape/>
 					<autoReward level="MED">item</autoReward>
 				</event>
@@ -1227,8 +1254,8 @@ The Orchid lowers his paper and he starts to squint. "Oh no."
         <text>(Lost Sun Crew) BURN IT ALL!</text>
         <event>
             <text>Your crew erupts into a fit of maniac laughter as the field is set ablaze. The Orchid Caretakers watching over the field are absolutely horrified, and a Praetor swoops in to stop your act of genocide!</text>
-            <ship load="SHIP_ORCHID_ELITE_FIGHT" hostile="true"/>
 			<metaVariable name="prof_flowers_picked" op="add" val="2"/>
+			<ship load="SHIP_ORCHID_ELITE_FIGHT" hostile="true"/>
             <choice hidden="true">
                 <text>Continue...</text>
                 <event load="MORALITY_UPDATE_ORCHID_FIGHT_DOUBLE"/>
@@ -1566,8 +1593,8 @@ In what feels like a moment later, you awaken with a headache. The ship is no lo
 		<text>Approach.</text>
 		<event>
 			<text>You pilot closer to the planet's surface. In the center of a large tent is a massive bonfire with an Orchid Praetor tied up! A large brutish Rockman stands waving his hands and speaking loudly to a cheering crowd of fellow Lost Suns. "The Gathering has made it clear where they stand on the side of liberty! They claim to be allies of the Federation and purveyors of peace, yet they continue to forge good-mannered relations with the Elders in the face of their own tyranny! Today we make an example of how the Lost Suns treat such indignation!"</text>
-			<choice hidden="true">
-				<text>Rescue the Orchid!</text>
+			<choice hidden="true" req="COUNT_ALL_CREW" blue="false">
+				<text>Rescue the Orchid without delay!</text>
 				<event>
 					<text>You send in a team of crew to rush in and cut down the Orchid before the Lost Suns can drop them into the fire. You rush back to the ship with a horde of angry Rocks and an attack ship in hot pursuit.</text>
 					<ship load="SHIP_LOSTSUN_FIGHT" hostile="true"/>
@@ -1580,10 +1607,10 @@ In what feels like a moment later, you awaken with a headache. The ship is no lo
 				</event>
 			</choice>
 			<choice hidden="true" req="LIST_CREW_FLORAL">
-				<text>(Floral Crew) Demand the prisoners are freed at once.</text>
+				<text>(Floral Crew) Demand the prisoners are freed.</text>
 				<event>
 					<text>"Haha! The pitiful plant creature wishes to fight for its kin! You work aboard a Federation mercenary vessel, yet you defend the actions of people who have done everything but defend your virtues! Get out of here at once!" You don't have time to free the Praetor or protest, because a Lost Sun vessel is dispatched to chase you away!</text>
-					<ship load="SHIP_LOSTSUN_FIGHT" hostile="true"/>
+					<ship load="SHIP_LOSTSUN_NOPRAETOR" hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event load="COMBAT_CHECK"/>
@@ -1894,6 +1921,17 @@ In what feels like a moment later, you awaken with a headache. The ship is no lo
 							</choice>
 						</event>
 					</choice>
+					<choice hidden="true" req="BLUELIST_WEAPONS_MIND_AFFECT">
+						<text>(Mind Affecting Weapon) Turn the Rebels against each other.</text>
+						<event>
+							<text>Chaos erupts as each of the Rebels hit by your weapon draws their weapons and begin a violent free for all. The bloodbath continues until every single last of of them has managed to kill each other, leaving no one to guard their ship.</text>
+							<autoReward level="HIGH">standard</autoReward>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="DISTRESS_ORCHID_JUNGLE_GIFT"/>
+							</choice>
+						</event>
+					</choice>
 					<choice hidden="true">
 						<text>There's nothing we can do.</text>
 						<event>
@@ -2024,6 +2062,12 @@ In what feels like a moment later, you awaken with a headache. The ship is no lo
 			<text>(Mantis Pheromones) Treat the madman with pheromones.</text>
 			<event>
 				<text>As soon as a fresh portion of pheromones enters the crewmember's body, they get better.</text>
+			</event>
+		</choice>
+		<choice hidden="true" req="medbay" lvl="3">
+			<text>(Adv. Medbay) Try to synthesise a cure with your Medbay.</text>
+			<event>
+				<text>You desperately try to scan the affected crewmember with your Medbay. The Medbay struggles to figure out the cause of their condition, but produces a cure all the same. You quickly apply it to the crewmember, and fortunately it seems to work properly.</text>
 			</event>
 		</choice>
 		<choice hidden="true">
@@ -2303,7 +2347,7 @@ In what feels like a moment later, you awaken with a headache. The ship is no lo
 	</choice>
 </event>
 <textList name="TEXT_ENCOUNTER_ROCK_ORCHID">
-	<text>The Theocracy will make allies with any nation willing to accept the Chrysolic faith within their boarders. The Gathering has been very receptive to this faith, and unfortunately a heavy flow of Theocracy ships that aren't quite so friendly to you keep finding their way here!</text>
+	<text>The Theocracy will make allies with any nation willing to accept the Chrysolic faith within their borders. The Gathering has been very receptive to this faith, and unfortunately a heavy flow of Theocracy ships that aren't quite so friendly to you keep finding their way here!</text>
 	<text>"You know nothing of faith, Renegade! Look around you and witness the holy alliance of sillicon and leaves! When the Federation crumbles, the Gathering will not mourn your death, instead they will join us in holy matrimony! Tremble before my crusading might as I vanquish your evil from this place!"</text>
 	<text>The first contact between the Florals and the Theocracy happened many centuries ago, but it was the beginning of the Gathering's interstellar colonization projects. Ever since, relations between them and the Theocracy have been very solid. As solid, perhaps, as the hull of the irate Rock vessel barreling towards you.</text>
 	<text>A babbling Rock captain, drunk on Floral-made beer and perhaps some narcotics too, starts shouting insults at you and raises his weapons to attack!</text>
@@ -2386,6 +2430,7 @@ In what feels like a moment later, you awaken with a headache. The ship is no lo
 <event name="CARETAKER_PRAETOR_ARGUMENT" unique="true">
     <distressBeacon/>
     <text>By the time you reach the beacon, a Praetor seems to have already responded to the distress call. Its origin was a small, brown shuttle - they seem to be discussing something.</text>
+	<preventQuest/>
     <choice>
         <text>Respond to the distress call.</text>
         <event>
@@ -2913,7 +2958,7 @@ Ty E'Rel snorts. "That's a stupid question."</text>
 
 Bralmeb seems uncomfortable. "Well... I..."
 
-"So you're lucky that the attractive powerhouses over here love making peace as much as I do! Listen, this doesn't HAVE to be an interstellar incident. Just calm down, take your lumps and listen to this lovely Caretaker without judgment, okay?"
+"So you're lucky that the attractive powerhouses over here love making peace as much as I do! Listen, this doesn't HAVE to be an interstellar incident. Just calm down, take your lumps and listen to this lovely Caretaker without judgement, okay?"
 
 Bralmeb is still miffed, but for the moment he seems pacified.</text>
                     <choice hidden="true">

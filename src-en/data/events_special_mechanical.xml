@@ -55,14 +55,14 @@
 	<eventAlias name="FLEET_ACE_S8">FLEET_CHAOS_FLAGSHIP</eventAlias>
 	<eventAlias name="FINISH_BEACON_FLEET_ELITE">FLEET_CHAOS</eventAlias>
 	<eventAlias name="FINISH_BEACON_FLEET_ACE">FLEET_CHAOS_FLAGSHIP</eventAlias>
-	<eventAlias name="FLEET_ELITE_NEBULA">NEBULA_FLEET_CHAOS</eventAlias>
-	<eventAlias name="FLEET_ACE_NEBULA">NEBULA_FLEET_CHAOS_FLAGSHIP</eventAlias>
+	<eventAlias name="NEBULA_LIGHT_FLEET_ELITE">NEBULA_LIGHT_FLEET_CHAOS</eventAlias>
+	<eventAlias name="NEBULA_LIGHT_FLEET_ACE">NEBULA_LIGHT_FLEET_CHAOS_FLAGSHIP</eventAlias>
 	<eventAlias name="FLEET_ELITE_FEDERATION">FLEET_CHAOS</eventAlias>
 	<eventAlias name="FLEET_ACE_FEDERATION">FLEET_CHAOS_FLAGSHIP</eventAlias>
 	<eventAlias name="FINISH_BEACON_FLEET_ELITE_FEDERATION">FLEET_CHAOS</eventAlias>
 	<eventAlias name="FINISH_BEACON_FLEET_ACE_FEDERATION">FLEET_CHAOS_FLAGSHIP</eventAlias>
 	<eventAlias name="FLEET_AUTO_REAL">FLEET_CHAOS</eventAlias>
-	<eventAlias name="FLEET_AUTO_NEBULA_REAL">NEBULA_FLEET_CHAOS</eventAlias>
+	<eventAlias name="NEBULA_LIGHT_FLEET_AUTO_REAL">NEBULA_LIGHT_FLEET_CHAOS</eventAlias>
 	<eventAlias name="FINISH_BEACON_FLEET_AUTO">FLEET_CHAOS</eventAlias>
 	
 	<eventAlias name="MV_TRAVELER_BOSS_CASUAL">MV_TRAVELER_BOSS_CHAOS</eventAlias>
@@ -84,74 +84,90 @@
 <event name="CHAOS_MODE_RESET">
 	<text>Suddenly, as if by magic, the gnome reappears on your ship. It begins to scream at you, and your hull collapses partially. Maybe you should be more careful with keeping the gnome safe next time.</text>
 	<playSound>gm_revive</playSound>
+	<variable name="gnome_deaths" op="add" val="1"/>
 	<crewMember amount="1" class="gnome">Chompski</crewMember>
 	<damage amount="7"/>
 </event>
-<eventList name="CHAOS_MODE_DAMAGE_PLAYER_LIST">
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_FIRE"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_BREACH"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_BOARDERS_HUMAN"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_BOARDERS_SIREN"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_BOARDERS_MANY"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_REVENGE"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_SURGE"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_SHIELD"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_ION"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_BEAM"/>
-	
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-	<event load="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
-</eventList>
+<event name="CHAOS_MODE_DAMAGE_PLAYER_LIST">
+	<variable name="gnome_punishment_hazards" op="add" val="-1"/>
+	<variable name="gnome_punishment_boarders" op="add" val="-1"/>
+	<variable name="gnome_punishment_revenge" op="add" val="-1"/>
+	<variable name="gnome_punishment_surge" op="add" val="-1"/>
+	<variable name="gnome_punishment_shield" op="add" val="-1"/>
+	<variable name="gnome_punishment_ion" op="add" val="-1"/>
+	<variable name="gnome_punishment_beam" op="add" val="-1"/>
+	<loadEventList seeded="false" first="false">
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_FIRE" req="gnome_punishment_hazards" lvl="-999" max_lvl="0"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_BREACH" req="gnome_punishment_hazards" lvl="-999" max_lvl="0"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_BOARDERS_HUMAN" req="gnome_punishment_boarders" lvl="-999" max_lvl="0"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_BOARDERS_SIREN" req="gnome_punishment_boarders" lvl="-999" max_lvl="0"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_BOARDERS_MANY" req="gnome_punishment_boarders" lvl="-999" max_lvl="0"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_REVENGE" req="gnome_punishment_revenge" lvl="-999" max_lvl="0"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_SURGE" req="gnome_punishment_surge" lvl="-999" max_lvl="0"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_SHIELD" req="gnome_punishment_shield" lvl="-999" max_lvl="0"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_ION" req="gnome_punishment_ion" lvl="-999" max_lvl="0"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_BEAM" req="gnome_punishment_beam" lvl="-999" max_lvl="0"/>
+		
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
+		<event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING"/>
+	</loadEventList>
+</event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_NOTHING">
 	<playSound>gm_owie</playSound>
 </event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_FIRE">
 	<playSound>gm_fires</playSound>
+	<variable name="gnome_punishment_hazards" op="set" val="2"/>
 	<damage amount="0" effect="fire" system="room"/>
 	<damage amount="0" effect="fire" system="room"/>
 </event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_BREACH">
 	<playSound>gm_breach</playSound>
+	<variable name="gnome_punishment_hazards" op="set" val="2"/>
 	<damage amount="0" effect="breach" system="random"/>
 	<damage amount="0" effect="breach" system="random"/>
 </event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_BOARDERS_HUMAN">
 	<playSound>gm_boarder</playSound>
+	<variable name="gnome_punishment_boarders" op="set" val="2"/>
 	<boarders min="1" max="1" class="random"/>
 </event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_BOARDERS_SIREN">
 	<playSound>gm_boarder</playSound>
+	<variable name="gnome_punishment_boarders" op="set" val="2"/>
 	<boarders min="1" max="1" class="siren"/>
 </event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_BOARDERS_MANY">
 	<playSound>gm_boarder</playSound>
+	<variable name="gnome_punishment_boarders" op="set" val="2"/>
 	<boarders min="2" max="2" class="human"/>
 </event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_REVENGE">
 	<playSound>gm_revenge</playSound>
+	<variable name="gnome_punishment_revenge" op="set" val="2"/>
 	<enemyDamage amount="1"/>
 </event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_SURGE">
 	<playSound>gm_surge</playSound>
+	<variable name="gnome_punishment_surge" op="set" val="3"/>
 	<superBarrage player="true" name="GNOME_SURGE"/>
 </event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_SHIELD">
 	<playSound>gm_shield</playSound>
+	<variable name="gnome_punishment_shield" op="set" val="4"/>
 	<superShields player="true" amount="3"/>
 </event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_ION">
 	<playSound>gm_shock</playSound>
+	<variable name="gnome_punishment_ion" op="set" val="3"/>
 	<superBarrage player="true" name="GNOME_ION"/>
 	<loadEvent>CHAOS_MODE_DAMAGE_PLAYER_ION_2</loadEvent>
 </event>
@@ -160,6 +176,7 @@
 </event>
 <event name="CHAOS_MODE_DAMAGE_PLAYER_BEAM">
 	<playSound>gm_beam</playSound>
+	<variable name="gnome_punishment_beam" op="set" val="5"/>
 	<superBarrage player="false" name="GNOME_BEAM"/>
 </event>
 
@@ -205,6 +222,22 @@
 <event name="SPORE_CLEAR">
 	<clearTriggeredEvent name="SPORE_CHECKER"/>
 </event>
+
+<event name="BLUE_GIANT_FLARE_QUEUE">
+	<!-- Copy this triggeredEvent into another event to turn it into a blue giant hazard -->
+	<triggeredEvent name="BLUE_GIANT" event="BLUE_GIANT_FLARE" seeded="true" thisFight="false" clearOnJump="true" loops="999999999" minTime="24.0" maxTime="30.0">
+		<warningMessage id="warning_solar_flare" x="825" y="30" time="5.0" centerText="true" flash="true" sound="environWarning" useWarningLine="false"/>
+	</triggeredEvent>
+</event>
+<event name="BLUE_GIANT_FLARE" />
+
+<event name="GRAVITY_SURGE_QUEUE">
+	<!-- Copy this triggeredEvent into another event to turn it into a gravity hazard -->
+	<triggeredEvent name="GRAVASTAR" event="GRAVITY_SURGE" seeded="true" thisFight="false" clearOnJump="true" loops="999999999" minTime="18.0" maxTime="24.0">
+		<warningMessage id="warning_gravity_wave" x="825" y="30" time="5.0" centerText="true" flash="true" sound="environWarning" useWarningLine="false"/>
+	</triggeredEvent>
+</event>
+<event name="GRAVITY_SURGE" />
 
 <!--
 ////////////////////////

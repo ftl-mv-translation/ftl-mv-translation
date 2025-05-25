@@ -290,6 +290,13 @@
 			<autoReward level="MED">standard</autoReward>
 		</event>
 	</choice>
+	<choice hidden="true" req="BLUELIST_WEAPONS_HACK">
+		<text>(Hacking Weapon) Disrupt the ship's AI so that it will distribute to your ship.</text>
+		<event>
+			<text>Your weapon is able to jam the enemy ship's ability to tell friend from foe. It glitches momentarily, then relents. "Identifi-fi-fication authorized-ized. Dispensing su-supplies." </text>
+			<autoReward level="LOW">standard</autoReward>
+		</event>
+	</choice>
 	<choice hidden="true" req="LIST_CREW_ENGI">
 		<text>(Engi Crew) Reprogram the ship to distribute to Federation ships as well.</text>
 		<event>
@@ -609,6 +616,20 @@
 		<text>Attack the platform.</text>
 		<event load="AUTO_FOREST_ATTACK"/>
 	</choice>
+	<choice hidden="true" req="hacking" lvl="3">
+		<text>(Adv. Hacking) Disrupt any potential defenses the platform may have.</text>
+		<event>
+			<text>Your sophisticated hacking system easily breaches whatever firewalls the platform may have had in place. Now defenseless against your assault, they quickly surrender.</text>
+			<autoReward level="MED">droneparts</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="PDS_DISABLE">
+		<text>(Signal Diluter) Disrupt any potential defenses the platform may have.</text>
+		<event>
+			<text>You attack the platform, making sure to disrupt any signals to their defenses. Once the engineers staffing the platform realize that their defenses aren't working properly, they promptly surrender.</text>
+			<autoReward level="MED">droneparts</autoReward>
+		</event>
+	</choice>
 	<choice hidden="true">
 		<text>Ignore the platform.</text>
 		<event>
@@ -811,7 +832,7 @@
 			<text>You grab the nearest ballistic weapon and as much ammunition as you can carry. Luckily you escape before the explosion can do critical damage to the hull, but several chunks of debris collide with it regardless, inflicting some damage.</text>
 			<weapon name="GIFTLIST_BALLISTIC"/>
 			<autoReward level="HIGH">missiles_only</autoReward>
-			<damage amount="3" effect="breach"/>
+			<damage amount="3" effect="breach" system="random"/>
 		</event>
 	</choice>
 </event>
@@ -1068,18 +1089,45 @@
 </eventList>
 
 <event name="AUTO_GHOST_WANTWRECK" unique="true">
-	<text>You're startled by the Ghost ship, very out of place in this automated sector. They send you a message, reading "Salutations. We find ourselves in need of a wreck. You have an arsenal at your disposal. Said arsenal can create wrecks. Shall we make a deal?"</text>
+	<text>You arrive in orbit above a barren planet. The only noteworthy feature on its surface is a large Vagabond camp, a rarity in a sector so hostile to Ghosts. You wonder whether or not to contact them until you receive a message from them. "Salutations, mysterious 'not a Rebel'. Though we are currently satiated with our ample bounty of discarded vessels, we find ourselves constantly pondering over a matter most elusive and difficult. But first, have you perchance, heard of the scarlet-clad demons sometimes wielded by the Rebellion?"</text>
 	<choice hidden="true">
-		<text>Agree to their request.</text>
+		<text>Yes.</text>
 		<event>
-			<text>The Ghosts send one more message, with the co-ordinates of the ship they desire to capture.</text>
-			<quest event="AUTO_GHOST_WANTWRECK_QUEST"/>
+			<text>"Wonderful! Then we shall gloss over the protracted explanations I was so begrudgingly prepared to dole out. As you can see behind us, we are well acquainted with the internals of various more unremarkable ships. But having recently caught eye of a scarlet demon, we were struck by insatiable curiosity about what might lie within. But alas, to no avail, as it was more than a fair-handed fight for us. I daresay, we were lucky to escape with our very mortality intact! But perhaps your arsenal might be more of a match for it?"</text>
+			<choice hidden="true">
+				<text>Accept their proposal.</text>
+				<event>
+					<text>The Vagabonds send you the coordinates of the ship they want you to defeat, and wish you good luck.</text>
+					<quest event="AUTO_GHOST_WANTWRECK_QUEST"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Decline.</text>
+				<event/>
+			</choice>
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>We can't help.</text>
+		<text>No.</text>
 		<event>
-			<text>The Ghosts send one last message, reading "You suck." They jump away.</text>
+			<text>"Very well, we shall share with you all the wisdom we can bring to bear. As you should invariably bear knowledge of, the Rebellion makes extensive application of, uh, how does your vernacular refer to them again? "Auto-ships?" But among such devilspawn, there are some adorned with scarlet hues, and branded with some unknowable white insignia. We happened upon one the other day, inquisitive as to what its interiors may bear compared to its less distinguished brethren. It was regrettably too much for our capabilities - though you appear capable of reducing it to naught but a crimson wreck. Would this proposal be of intrigue to you?"</text>
+			<choice hidden="true">
+				<text>Accept their proposal.</text>
+				<event>
+					<text>The Vagabonds send you the coordinates of the ship they want you to defeat, and wish you good luck.</text>
+					<quest event="AUTO_GHOST_WANTWRECK_QUEST"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Decline.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Sorry, not interested.</text>
+		<event>
+			<text>The Vagabonds cut comms, but not before sending you one final message. "You are a person of most dreary and uninteresting character! May you never besmirch us with your presence again!"</text>
 			<choice>
 				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
@@ -1091,38 +1139,52 @@
 		</event>
 	</choice>
 </event>
+
 <event name="AUTO_GHOST_WANTWRECK_QUEST">
 	<beaconType id="map_icon_quest" global="true">
 		<color r="69" g="168" b="235" a="1"/>
-		<unvisitedTooltip>A group of Ghosts has asked you to destroy an Auto-ship at this beacon so they can acquire it.</unvisitedTooltip>
+		<unvisitedTooltip>A Vagabond camp has asked you to destroy a powerful Auto-ship here.</unvisitedTooltip>
 	</beaconType>
-	<text>The Auto-ship at this beacon is completely active and ready for combat. It locks onto your ship and attacks!</text>
-	<ship load="SHIP_AUTO_WANTWRECK" hostile="true"/>
+	<text>You find the Auto-ship the Vagabonds wanted you to hunt down soon after arriving at this beacon. It doesn't seem to have spotted you yet, but you won't have long until it does see you.</text>
+	<ship load="SHIP_AUTO_WANTWRECK" hostile="false"/>
 	<choice hidden="true">
-		<text>Continue...</text>
-		<event load="COMBAT_CHECK"/>
+		<text>Attack the Auto-ship.</text>
+		<event>
+			<text>The Auto-ship detects your hostile intentions, and moves to retaliate in turn.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Escape before it spots you.</text>
+		<event/>
 	</choice>
 </event>
 <event name="AUTO_GHOST_WANTWRECK_QUEST_WIN">
-	<text>You've done as the Ghosts asked and reduced the Auto-ship to a wreck. Now what?</text>
+	<text>You've destroyed the Auto-ship as the Vagabonds requested. You pick up a few loose pieces of wreckage scattered around, but what now?</text>
+	<autoReward level="LOW">standard_no_item</autoReward>
 	<choice hidden="true">
-		<text>Wait for the Ghosts.</text>
+		<text>Wait for the Vagabonds to arrive.</text>
 		<event>
-			<text>The Ghost ship jumps in not long after the Auto-ship was destroyed. "Yes, splendid, this is what we want." They inspect the wreckage thoroughly.</text>
+			<text>A wrecked ship jumps in not long after you've finished destroying the Auto-ship. The Vagabonds inside move to inspect the wreckage carefully. "Hmm, the innards of this machination are most fascinating. The construction is most exquisite, and even the wiring would seem to be done with a remarkable care for the finer details." They then proceed to discard the ship's internal computer, before taking full control of the ship.</text>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
-					<text>"No... The available space is insufficient. We cannot fit our full crew in this. You may host one of them." They beam one of their crew onboard.</text>
-					<crewMember amount="1" class="phantom_wraith"/>
+					<text>"Your accomplishment here was one we could not hope to match. Please, accept our wholehearted gratitude for your fine deed here today." One of the Vagabonds, so impressed by your performance, wishes to join your crew.</text>
+					<crewMember amount="1" class="LIST_CREW_VAGABOND_ALPHA"/>
 				</event>
 			</choice>
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>Scrap the wreckage.</text>
+		<text>Scrap the entire wreckage.</text>
 		<event>
-			<text>You quickly salvage the wreckage and prepare to jump away before the Ghosts arrive.</text>
-			<autoReward level="LOW">standard</autoReward>
+			<text>You opt to try and salvage as much as possible before the Vagabonds arrive. You find a functioning Sentry weapon in the remaining wreckage.</text>
+			<autoReward level="HIGH">standard_no_item</autoReward>
+			<weapon name="GIFTLIST_ESTATE"/>
 		</event>
 	</choice>
 </event>
@@ -1267,7 +1329,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->
 <event name="ENCOUNTER_AUTO_ELITE" unique="true">
-	<text>A Rebel Auto-ship advances towards you with clear intent, and while hostile Auto-ships are (unfortunately) a normal occurence for you, this one is no usual sight. Its elegant and pristine figure suggests this is one of the more refined automatons produced in the heart of Wentworth Innovations. Battle stations!</text>
+	<text>A Rebel Auto-ship advances towards you with clear intent, and while hostile Auto-ships are (unfortunately) a normal occurrence for you, this one is no usual sight. Its elegant and pristine figure suggests this is one of the more refined automatons produced in the heart of Wentworth Innovations. Battle stations!</text>
 	<ship load="SHIP_AUTO_ELITE" hostile="true"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -1600,7 +1662,7 @@
 <event name="AUTO_POWERCORE_BIGBOOM">
 	<text>An ear splitting explosion reverbs throughout the ship as a deadly inferno consumes the power core. Your ship is caught in the explosion, and takes heavy damage. You fly away as quickly as possible, your engines burning up as you go.</text>
 	<damage amount="6" effect="fire" system="engines"/>
-	<damage amount="3" effect="fire"/>
+	<damage amount="3" effect="fire" system="random"/>
 	<damage amount="3"/>
 	<damage amount="3"/>
 </event>

@@ -35,6 +35,16 @@ local damage_to_string = mods.multiverse.damage_to_string
 local weaponTagParsers = mods.multiverse.weaponTagParsers
 local droneTagParsers = mods.multiverse.droneTagParsers
 
+-- Hacking manager functions
+local function hack_start(system)
+    system:SetHackingLevel(2)
+    system.bUnderAttack = true
+end
+local function hack_end(system)
+    system:SetHackingLevel(0)
+    system.bUnderAttack = false
+end
+
 --[[
 ////////////////////
 DATA & PARSER
@@ -50,7 +60,7 @@ table.insert(weaponTagParsers, function(weaponNode)
         hack.duration = node_get_number_default(hackNode:first_attribute("duration"), 0)
         hack.immuneAfterHack = node_get_number_default(hackNode:first_attribute("immuneAfterHack"), 0)
         hack.hitShieldDuration = node_get_number_default(hackNode:first_attribute("hitShieldDuration"), 0)
-        
+
         hack.systemDurations = {}
         for systemDuration in node_child_iter(hackNode) do
             local sysDurations = {}
@@ -83,8 +93,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(ship)
                 sysHackData.time = math.max(sysHackData.time - time_increment(), 0)
             end
             if sysHackData.time == 0 then
-                system.iHackEffect = 0
-                system.bUnderAttack = false
+                hack_end(system)
             end
         elseif sysHackData.immuneTime and sysHackData.immuneTime > 0 then
             sysHackData.immuneTime = math.max(sysHackData.immuneTime - time_increment(), 0)
@@ -98,7 +107,7 @@ local function apply_hack(hack, system)
         local sysHackData = userdata_table(system, "mods.mv.hackStuff")
         if not sysHackData.immuneTime or sysHackData.immuneTime <= 0 then
             local sysDuration = hack.systemDurations and hack.systemDurations[Hyperspace.ShipSystem.SystemIdToName(system:GetId())]
-            
+
             -- Set hacking time for system
             if sysDuration then
                 sysHackData.time = math.max(sysDuration.duration, sysHackData.time or 0)
@@ -107,10 +116,9 @@ local function apply_hack(hack, system)
                 sysHackData.time = math.max(hack.duration, sysHackData.time or 0)
                 sysHackData.immuneTime = math.max(hack.immuneAfterHack or 0, sysHackData.immuneTime or 0)
             end
-            
+
             -- Apply the actual hack effect
-            system.iHackEffect = 2
-            system.bUnderAttack = true
+            hack_start(system)
         end
     end
 end

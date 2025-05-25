@@ -6,6 +6,8 @@ IMPORTS
 -- Make functions from the core script that we need to use in this script local
 
 local sign = mods.multiverse.sign
+local vter = mods.multiverse.vter
+local on_new_game = mods.multiverse.on_new_game
 
 --[[
 ////////////////////
@@ -13,12 +15,21 @@ SEEDED RUN
 ////////////////////
 ]]--
 
-local checkSeededRun = false
-script.on_init(function(newGame) checkSeededRun = newGame end)
+on_new_game(function()
+    Hyperspace.playerVariables.loc_seeded_run = Hyperspace.Global.IsSeededRun() and 1 or 0
+end)
+
+--[[
+////////////////////
+PLAYER MAX HULL & SCRAP
+////////////////////
+]]--
+
 script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
-    if checkSeededRun then
-        checkSeededRun = false
-        Hyperspace.playerVariables.loc_seeded_run = Hyperspace.Global.IsSeededRun() and 1 or 0
+    local playerShip = Hyperspace.ships.player
+    if Hyperspace.App.world.bStartedGame and playerShip then
+        Hyperspace.playerVariables.loc_player_hull_max = playerShip.ship.hullIntegrity.second
+        Hyperspace.playerVariables.loc_scrap = playerShip.currentScrap
     end
 end)
 
@@ -86,6 +97,33 @@ end)
 
 --[[
 ////////////////////
+PLAYER ARTILLERY STUFF
+////////////////////
+]]--
+
+script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(ship)
+    if ship.iShipId == 0 then
+        -- Artillery count
+        Hyperspace.playerVariables.loc_artillery_count_player = ship.artillerySystems:size()
+
+        Hyperspace.playerVariables.loc_artillery_max_player = 0
+        Hyperspace.playerVariables.loc_artillery_bomb_player = 0
+        for artillery in vter(ship.artillerySystems) do
+            -- Check if artillery level has been maxed out
+            if artillery.powerState.second >= artillery.maxLevel then
+                Hyperspace.playerVariables.loc_artillery_max_player = 1
+            end
+
+            -- Check for any bomb artillery
+            if artillery.projectileFactory.blueprint.typeName == "BOMB" then
+                Hyperspace.playerVariables.loc_artillery_bomb_player = 1
+            end
+        end
+    end
+end)
+
+--[[
+////////////////////
 FINAL BOSS FIGHT
 ////////////////////
 ]]--
@@ -102,6 +140,33 @@ script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
         end
     end
     Hyperspace.playerVariables.loc_finalboss = 0
+end)
+
+--[[
+////////////////////
+PLAYER TRUE REACTOR
+////////////////////
+]]--
+
+script.on_internal_event(Defines.InternalEvents.POST_CREATE_CHOICEBOX, function()
+    Hyperspace.playerVariables.reactor_true = Hyperspace.PowerManager.GetPowerManager(0).currentPower.second
+end)
+
+--[[
+////////////////////
+CURRENT HAZARDS
+////////////////////
+]]--
+
+script.on_internal_event(Defines.InternalEvents.POST_CREATE_CHOICEBOX, function()
+    local spaceManager = Hyperspace.App.world.space
+
+    Hyperspace.playerVariables.loc_environment_asteroid = spaceManager.asteroidGenerator.bRunning and 1 or 0
+    Hyperspace.playerVariables.loc_environment_sun = spaceManager.sunLevel and 1 or 0
+    Hyperspace.playerVariables.loc_environment_pulsar = spaceManager.pulsarLevel and 1 or 0
+    Hyperspace.playerVariables.loc_environment_pds = spaceManager.bPDS and spaceManager.envTarget + 1 or 0
+    Hyperspace.playerVariables.loc_environment_nebula = spaceManager.bNebula and 1 or 0
+    Hyperspace.playerVariables.loc_environment_storm = spaceManager.bStorm and 1 or 0
 end)
 
 --[[
@@ -178,16 +243,16 @@ repCombos.rep_comb_smuggler = {
     rep_pirate = {buffer = 0}
 }
 repCombos.rep_comb_all = {
-	rep_general = {buffer = 0},
-	rep_union = {buffer = 0},
-	rep_engi = {buffer = 0},
-	rep_zoltan = {buffer = 0},
-	rep_orchid = {buffer = 0},
-	rep_crystal = {buffer = 0},
-	rep_freemantis = {buffer = 0},
-	rep_outcast = {buffer = 0},
-	rep_vampweed = {buffer = 0},
-	rep_shell = {buffer = 0}
+    rep_general = {buffer = 0},
+    rep_union = {buffer = 0},
+    rep_engi = {buffer = 0},
+    rep_zoltan = {buffer = 0},
+    rep_orchid = {buffer = 0},
+    rep_crystal = {buffer = 0},
+    rep_freemantis = {buffer = 0},
+    rep_outcast = {buffer = 0},
+    rep_vampweed = {buffer = 0},
+    rep_shell = {buffer = 0}
 }
 
 script.on_internal_event(Defines.InternalEvents.ON_TICK, function()

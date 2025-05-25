@@ -283,7 +283,7 @@
 		<crewMember amount="1" all_skills="1" class="human_soldier">Briggs</crewMember>
 	</event> 
 	<event>
-		<text>The Rebel captain tries to act indifferent, but you can tell he's grateful. "I suppose I am in your debt now. You are still my enemy, but I am an honourable man. I will give the fleet false information, it should delay them for some time."</text>
+		<text>The Rebel captain tries to act indifferent, but you can tell he's grateful. "I suppose I am in your debt now. You are still my enemy, but I am an honorable man. I will give the fleet false information, it should delay them for some time."</text>
 		<modifyPursuit amount="-2"/>
 	</event> 
 	<event> <!--add a quest-->
@@ -439,7 +439,7 @@
 		<text>As you pry open the cargo, you hear a strange ticking noise. Luckily all of your crew manage to get out of the way in time, but it appears the Free Mantis trapped the cargo before handing it over!</text>
 		<damage amount="1" system="random"/>
 		<damage amount="1"/>
-		<damage amount="1" effect="fire"/>
+		<damage amount="1" effect="fire" system="random"/>
 	</event>
 </eventList>
 <eventList name="FREEMANTIS_THEFT_CARGO_NOTRAP"> <!--reward for the rebel fight-->
@@ -844,6 +844,21 @@
 											"Fair point, we probably shouldn't have expected anything to begin with." Well, at least they agree on something.</text>
 										</event>
 									</choice>
+									<choice hidden="true" req="unique_mafan">
+										<text>(Mafan) "Co-authorship is the answer, surely!"</text>
+										<event>
+											<text>Both diplomats look at Mafan strangely. "Hear me out! The Ministry is easily swayed by utilitarian argumentation, so why not take advantage of that? If the Free Mantis can prove that they can contribute to the cause of scientific and societal progress in a mutually beneficial way, then they will have no choice but to accept."
+											"Do... you hear yourself?" Jelinek asks.
+											Ziiilizekii holds up a limb. "Mantis very happy to help! Many ships, many mantis, many exuberances! Very low regard for our own personal safety. Will be willing to try!"
+											Jelinek looks bewildered, but humors Mafan. "Huh... A provisional ceasefire on the basis of scientific progress... well, I guess we might as well see if it works."
+											</text>
+											<autoReward level="HIGH">standard</autoReward>
+											<choice hidden="true">
+												<text>Continue...</text>
+												<event load="MORALITY_REMOVE_ZOLTAN_FREEMANTIS"/>
+											</choice>
+										</event>
+									</choice>
 									<choice hidden="true" req="unique_anurak">
 										<text>(Anurak) "Come, let's share some soup!"</text>
 										<event>
@@ -1010,7 +1025,7 @@
 		<text>(Repair Drone) Have a drone patch up their breaches.</text>
 		<event load="FREEMANTIS_BREACHES_REWARD"/>
     </choice>
-    <choice hidden="true" req="BLUELIST_CREW_NO2">
+    <choice hidden="true" req="BLUELIST_CREW_NO2_CONSTANT">
 		<text>(Anaerobic Crew) Have your anaerobic crew patch up their breaches.</text>
 		<event load="FREEMANTIS_BREACHES_REWARD"/>
     </choice>
@@ -1052,7 +1067,6 @@
 		<text>Take advantage of their vulnerability!</text>
 		<event>
 			<text>The Free Mantis respond to your hostility very quickly. As friendly as they are, they are also quick to fight back.</text>
-			<enemyDamage amount="0" system="clonebay" effect="breach"/>
 			<enemyDamage amount="0" system="engines" effect="breach"/>
 			<enemyDamage amount="0" system="shields" effect="breach"/>
 			<enemyDamage amount="0" system="room" effect="breach"/>
@@ -1482,7 +1496,7 @@
 <textList name="TEXT_ENCOUNTER_REBEL_FREEMANTIS">	
 	<text>Amongst the many wrecks of what was once a Free Mantis clan are three Rebel ships, their guns blazing. One of them spots you and attacks!</text>	
 	<text>You receive a hail not long after jumping. "At last! I thought our detour into this forsaken sector would be the death of us, but now that you're here, things are starting to look up!"</text>	
-	<text>Blaster fire batters your defences, and a Rebel ship moves in to attack!</text>	
+	<text>Blaster fire batters your defenses, and a Rebel ship moves in to attack!</text>	
 	<text>The captain of the Rebel ship approaching you hails, "Do you know what trouble you've caused, creating these murderous psychopaths? Worse than the Hive Mantis, I can tell you that. Consider your deaths my revenge for the crew I've lost to your fanatics."</text>	
 	<text>The Free Mantis have actively been searching out and killing Rebels in their territory, but the one here appears to have escaped from their grasp. They're quite eager to engage you!</text>	
 </textList>
@@ -1576,6 +1590,7 @@
 -->
 <event name="FREEMANTIS_FLEET_MONITION" unique="true">
 	<text>This system appears to be primarily empty, save for a singular Free Mantis vessel. Biometric scans, even from long range, show they're panicking, though nothing on their ship seems out of the ordinary.</text>
+	<preventQuest/>
 	<ship load="SHIP_FREEMANTIS_GENERIC" hostile="false"/> 
 	<choice hidden="true">
 		<text>Hail them.</text>

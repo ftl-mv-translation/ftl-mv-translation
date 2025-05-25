@@ -74,7 +74,7 @@
 		<text>Continue...</text>
 		<event>
 			<text>You're about to leave but notice in the wreckage another strange signal. It's some kind of weapon with the same anomalous properties of that ship. You bring it on board and cross your fingers it doesn't cause any problems.</text>
-			<weapon name="BEAM_MADNESS"/>
+			<weapon name="BEAM_MADNESS_CHAOS"/>
 		</event>
 	</choice>
 </event>
@@ -135,7 +135,7 @@
 		<text>Continue...</text>
 		<event>
 			<text>You're about to leave but notice in the wreckage another strange signal. It's some kind of weapon with the same anomalous properties of that ship. You bring it on board and cross your fingers it doesn't cause any problems.</text>
-			<weapon name="BEAM_MADNESS"/>
+			<weapon name="BEAM_MADNESS_CHAOS"/>
 		</event>
 	</choice>
 </event>
@@ -199,7 +199,7 @@
 			<text>Aboard the wreck you find a strange gun with anomalous properties like the ship you just fought, as well as an Atlas disc with coordinates that make no sense to you. You're wary of whatever nonsense those aliens were spewing, but against your better judgement you enter the disc into your Atlas regardless. We should be able to explore these coordinates at the next sector jump.</text>
 			<variable name="coords_rhyme" op="add" val="1"/>
 			<metaVariable name="towr_fail" op="set" val="1"/> <!--if missing or dying in the meantime-->
-			<weapon name="BEAM_MADNESS"/>
+			<weapon name="BEAM_MADNESS_CHAOS"/>
 		</event>
 	</choice>
 </event>
@@ -269,7 +269,7 @@
 		<event>
 			<text>Aboard the wreck you find a strange gun with anomalous properties like the ship you just fought, as well as an Atlas disc with coordinates that make no sense to you. You're wary of whatever nonsense those aliens were spewing, but against your better judgement you enter the disc into your Atlas regardless. If you want to go there, you'll have to do it now. There won't be another opportunity.</text>
 			<recallBoarders force="true"/>
-			<weapon name="BEAM_MADNESS"/>
+			<weapon name="BEAM_MADNESS_CHAOS"/>
 			<choice hidden="true">
 				<text>Reroute now.</text>
 				<event>
@@ -327,7 +327,7 @@
 		<text>Continue...</text>
 		<event>
 			<text>You're about to leave but notice in the wreckage another strange signal. It's some kind of weapon with the same anomalous properties of that ship. You bring it on board and cross your fingers it doesn't cause any problems.</text>
-			<weapon name="BEAM_MADNESS"/>
+			<weapon name="BEAM_MADNESS_CHAOS"/>
 		</event>
 	</choice>
 </event>
@@ -645,12 +645,6 @@ Irwin flips a switch on his blunderbuss, turning it from an orange glow to red. 
 	<text load="TEXT_VISION_ENCOUNTER"/>
 	<ship load="SHIP_VISION" hostile="true"/>
 	<deathEvent thisFight="true">DEATH_VISION</deathEvent>
-	<backgroundObject name="HER">
-		<layer z="100">foreground</layer>
-		<spawnArea x="640" y="360" w="0" h="0" center="true"/>
-		<anim>her_vhs</anim>
-		<active>true</active>
-	</backgroundObject>
 	<triggeredEvent event="HER_HAZARDS" time="35" thisFight="true" loops="999999">
 		<warningMessage id="warning_newhazard" x="444" y="46" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
 	</triggeredEvent>
@@ -669,25 +663,55 @@ Irwin flips a switch on his blunderbuss, turning it from an orange glow to red. 
 </event>
 <event name="HER_HAZARDS">
 	<removeHazards/>
+	<variable name="loc_environment_gravity" op="set" val="0"/>
+	<clearTriggeredEvent name="GRAVASTAR"/>
+	<variable name="loc_environment_blue_giant" op="set" val="0"/>
+	<clearTriggeredEvent name="BLUE_GIANT"/>
 	<changeBackground>VICTORY_TRUE</changeBackground>
 	<loadEventList seeded="false">
 		<event name="HER_HAZARDS_SUN"/>
 		<event name="HER_HAZARDS_ASTEROID"/>
 		<event name="HER_HAZARDS_PULSAR"/>
-		<event name="HER_HAZARDS_STORM"/>
+	</loadEventList>
+</event>
+<event name="HER_HAZARDS_2">
+	<removeHazards/>
+	<variable name="loc_environment_gravity" op="set" val="0"/>
+	<clearTriggeredEvent name="GRAVASTAR"/>
+	<variable name="loc_environment_blue_giant" op="set" val="0"/>
+	<clearTriggeredEvent name="BLUE_GIANT"/>
+	<changeBackground>VICTORY_TRUE</changeBackground>
+	<loadEventList seeded="false">
+		<event name="HER_HAZARDS_GRAVASTAR" req="loc_her_grava_alternator" lvl="1" max_lvl="1"/>
+		<event name="HER_HAZARDS_SUN" req="loc_her_grava_alternator" lvl="0" max_lvl="0"/>
+		<event name="HER_HAZARDS_BLUEGIANT" req="loc_her_grava_alternator" lvl="0" max_lvl="0"/>
+		<event name="HER_HAZARDS_ASTEROID" req="loc_her_grava_alternator" lvl="0" max_lvl="0"/>
+		<event name="HER_HAZARDS_PULSAR" req="loc_her_grava_alternator" lvl="0" max_lvl="0"/>
 	</loadEventList>
 </event>
 <event name="HER_HAZARDS_SUN">
 	<environment type="sun"/>
+	<variable name="loc_her_grava_alternator" op="set" val="1"/>
 </event>
 <event name="HER_HAZARDS_ASTEROID">
 	<environment type="asteroid"/>
+	<variable name="loc_her_grava_alternator" op="set" val="1"/>
 </event>
 <event name="HER_HAZARDS_PULSAR">
 	<environment type="pulsar"/>
+	<variable name="loc_her_grava_alternator" op="set" val="1"/>
 </event>
-<event name="HER_HAZARDS_STORM">
-	<environment type="storm"/>
+<event name="HER_HAZARDS_BLUEGIANT">
+	<triggeredEvent name="BLUE_GIANT" event="BLUE_GIANT_FLARE" seeded="true" thisFight="false" clearOnJump="true" loops="999999999" minTime="24.0" maxTime="30.0">
+		<warningMessage id="warning_solar_flare" x="825" y="30" time="5.0" centerText="true" flash="true" sound="environWarning" useWarningLine="false"/>
+	</triggeredEvent>
+	<variable name="loc_her_grava_alternator" op="set" val="1"/>
+</event>
+<event name="HER_HAZARDS_GRAVASTAR">
+	<triggeredEvent name="GRAVASTAR" event="GRAVITY_SURGE" seeded="true" thisFight="false" clearOnJump="true" loops="999999999" minTime="18.0" maxTime="24.0">
+		<warningMessage id="warning_gravity_wave" x="825" y="30" time="5.0" centerText="true" flash="true" sound="environWarning" useWarningLine="false"/>
+	</triggeredEvent>
+	<variable name="loc_her_grava_alternator" op="set" val="0"/>
 </event>
 
 <ship name="SHIP_HER" auto_blueprint="MU_HER_BOSS">
@@ -705,12 +729,6 @@ Irwin flips a switch on his blunderbuss, turning it from an orange glow to red. 
 	<playMusic>chaos</playMusic>
 	<img back="VICTORY_TRUE" planet="NONE"/>
 	<variable name="loc_protomv_drive_block" op="set" val="1"/>
-	<!--<backgroundObject name="HER">
-		<layer z="100">foreground</layer>
-		<spawnArea x="640" y="360" w="0" h="0" center="true"/>
-		<anim>her_vhs</anim>
-		<active>true</active>
-	</backgroundObject>-->
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
@@ -718,12 +736,6 @@ Irwin flips a switch on his blunderbuss, turning it from an orange glow to red. 
 
 			"Haha, Hahe! It's been so long, so long indeed! Hello again, dear friend! Tis I, The One Who Rhymes. As you already know, we are on the brink of new times! My master is here, awakened at last! Unlike anything ever before, now we're REALLY going to have a blast!" Despite never having seen the dancing, eldritch being before you, some dark place in the back of your mind seems to recall his unusual way of speaking, and his evil grin.</text>
 			<ship load="SHIP_HER" hostile="false"/>
-			<backgroundObject name="HER">
-				<layer z="100">foreground</layer>
-				<spawnArea x="640" y="360" w="0" h="0" center="true"/>
-				<anim>her_vhs</anim>
-				<active>true</active>
-			</backgroundObject>
 			<choice>
 				<text>Continue...</text>
 				<event>
@@ -744,7 +756,7 @@ Irwin flips a switch on his blunderbuss, turning it from an orange glow to red. 
 								</triggeredEventBox>
 								<timerSounds load="DEFAULT_TIMER_SOUNDS"/>
 							</triggeredEvent>
-							<triggeredEvent event="HER_HAZARDS" time="35" thisFight="true" loops="999999">
+							<triggeredEvent name="TRIGGER_HER_HAZARDS" event="HER_HAZARDS" time="35" thisFight="true" loops="999999">
 								<warningMessage id="warning_newhazard" x="444" y="46" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
 							</triggeredEvent>
 							<deathEvent thisFight="true">DEATH_VISION</deathEvent>
@@ -782,15 +794,22 @@ Irwin flips a switch on his blunderbuss, turning it from an orange glow to red. 
 	<playSound>lightspeed</playSound>
 	<text>Suddenly, countless vessels jump into the beacon. The C.E.L. has arrived, and they're bringing heavy firepower! Some kind of massive contraption is deployed, locking straight onto the vessel before you. "Ssstranger, focussss all of your fire on that sssship! With thisss you'll be able to damage the hull, but it'sss not over yet! We need to desssstroy it to weaken Her!"</text>
 	<removeHazards/>
+	<variable name="loc_environment_blue_giant" op="set" val="0"/>
 	<changeBackground>BACKGROUND_HERDEFEAT</changeBackground>
 	<img planet="NONE"/>
 	<clearBackgroundObject name="HER"/>
 	<clearTriggeredEvent name="TRIGGER_HER_HEAL"/> 
+	<clearTriggeredEvent name="TRIGGER_HER_HAZARDS"/> 
+	<triggeredEvent name="TRIGGER_HER_HAZARDS_GRAVASTAR" event="HER_HAZARDS_2" time="35" thisFight="true" loops="999999">
+		<warningMessage id="warning_newhazard" x="444" y="46" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+	</triggeredEvent>
 </event>
 
 <event name="HER_FINALE">
 	<triggeredEvent event="HER_FINALE_REAL" time="3.0"/>
-	<clearTriggeredEvent name="HER_HAZARDS"/> 
+	<clearTriggeredEvent name="TRIGGER_HER_HAZARDS_GRAVASTAR"/> 
+	<variable name="loc_environment_gravity" op="set" val="0"/>
+	<variable name="loc_environment_blue_giant" op="set" val="0"/>
 	<removeHazards/>
 </event>
 <event name="HER_FINALE_REAL">

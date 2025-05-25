@@ -31,7 +31,7 @@
 
 <event name="MORPH_ZOLTAN" unique="true">
     <text>A Zoltan science vessel is in this region. "We've been reading some very intriguing scientific reports about this region, but unfortunately there's not that much information that has been disclosed to the Ministry. We're hoping to write a survey paper for a journal. Have you seen any interesting phenomena unique to this region?"</text>
-    <ship load="SHIP_ZOLTAN_ALL" hostile="false"/>
+    <ship load="SHIP_ZOLTAN_ALL" hostile="false" />
     <choice hidden="true" req="ADV_SCANNERS">
 		<text>(Long-Ranged Scanners) Share your advanced sensor readings with them.</text>
 		<event>
@@ -46,6 +46,16 @@
 			<autoReward level="LOW">standard</autoReward>
 		</event>
     </choice>
+    <choice hidden="true" req="unique_mafan">
+		<text>(Mafan) Admonish the scientists for their cowardice.</text>
+		<event>
+			<text>"You call yourselves researchers? You're hailing a Federation Renegade - we're not the ones you should be talking to! Go do your jobs and get in that nebula! I'll send you some directions, but you have to do the work yourself."
+
+			The Zoltans look ashamed. "Yes Dr. Vadis... We hope you'll... overlook our embarrassing moment."
+			</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+    </choice>
     <choice hidden="true" req="shell_scientist">
 		<text>(Shell Scientist) Encourage your Shell Scientist to share some of their research.</text>
 		<event>
@@ -58,14 +68,17 @@
 		<event>
 			<text>Alkali looks at you strangely and rolls his eye. "Fine, but only if it's worthhhh it." He then jumps onto the call to talk to the Ministry scientists. "Who is the head researcher over thhhhere? I'm not going to help some hack - but if thhhhey're worthhhhy, we can work something out."
 
-	"Uh, yes, I'll send over her portfolio right away... she's still back in Zoltan space right now."
+			"Uh, yes, I'll send over her portfolio right away... she's still back in Zoltan space right now."
 
-	Alkali goes over her file, looking over the papers she'd worked on and contributions she'd made. After a few minutes he nods and gets back on. "I'll send you some of my research. You'd better write a very glowing 'Acknowledgements' section about me!" The Zoltans seem all too happy to agree to this, and give you a handsome reward of scrap.</text>
+			Alkali goes over her file, looking over the papers she'd worked on and contributions she'd made. After a few minutes he nods and gets back on. "I'll send you some of my research. You'd better write a very glowing 'Acknowledgements' section about me!" The Zoltans seem all too happy to agree to this, and give you a handsome reward of scrap.</text>
 			<autoReward level="HIGH">standard</autoReward>
-			<event>
-				<text>The captain of the Zoltan vessel shows his appreciation with an extra gift.</text>
-				<weapon name="GIFTLIST_ZOLTAN"/>
-			</event>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>The captain of the Zoltan vessel shows his appreciation with an extra gift.</text>
+					<weapon name="GIFTLIST_ZOLTAN"/>
+				</event>
+			</choice>
 		</event>
     </choice>
     <choice hidden="true" req="LIST_CREW_MORPH">
@@ -209,6 +222,30 @@
 					</item_modify>
 				</event>
 			</choice>
+			<choice hidden="true" req="BLUELIST_BOMB_REPAIR">	
+				<text>(Repair Burst) Fix up the station. [-1}]</text>
+				<event>
+					<text>"Oh, wow. Thhhhat's quite efficient! Why can't thhhe council authhhhorize us using thhhose? Ugh, I hate thhhis job. You know what? I quit! I'm withhh you now. What are you gonna do about it, huh Director Nerva? Oh man, it feels so good to say thhhat..."</text>
+					<crewMember amount="1" class="shell_mechanic"/>
+					<item_modify>
+						<item type="missiles" min="-1" max="-1"/>
+					</item_modify>
+				</event>
+			</choice>
+			<choice hidden="true" req="COMBAT_REPAIR">	
+				<text>(Repair-Bot Dispersal) Fix up the station.</text>
+				<event>
+					<text>"Oh, wow. Thhhhat's quite efficient! Why can't thhhe council authhhhorize us using thhhose? Ugh, I hate thhhis job. You know what? I quit! I'm withhh you now. What are you gonna do about it, huh Director Nerva? Oh man, it feels so good to say thhhat..."</text>
+					<crewMember amount="1" class="shell_mechanic"/>
+				</event>
+			</choice>
+			<choice hidden="true" req="BEAM_REPAIR">	
+				<text>(Pro-Hull Beam) Fix up the station.</text>
+				<event>
+					<text>"Oh, wow. Thhhhat's quite efficient! What even is thhhat, and where did you find it? Ugh, I hate thhhis job. You know what? I quit! I'm withhh you now. What are you gonna do about it, huh Director Nerva? Oh man, it feels so good to say thhhat..."</text>
+					<crewMember amount="1" class="shell_mechanic"/>
+				</event>
+			</choice>
 			<choice hidden="true">	
 				<text>Leave.</text>
 				<event/>
@@ -281,16 +318,16 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <eventList name="NEBULA_ITEMS_MORPH">
-	<event load="NEBULA_MORPH_SOLAR"/>
+	<event load="NEBULA_LIGHT_MORPH_SOLAR"/>
 	<event load="NEBULA_MORPH_JUICE"/>
 	<event load="NEBULA_MORPH_PEEPEEPOOPOO"/>
 	<event load="NEBULA_MORPH_ENGINEER_TECHNO"/>
 	<event load="NEBULA_MORPH_SMUGGLER_CONFUSED"/>
 </eventList>
 
-<event name="NEBULA_MORPH_SOLAR" unique="true">
+<event name="NEBULA_LIGHT_MORPH_SOLAR" unique="true">
 	<text>Shells aren't normally ones for unmanned tech, and you don't normally see full sized stars deep in the nebula either. Despite both of these things being uncommon, it seems you've run into both! A small Shell solar energy collection device is orbiting the star. Inside are several power cells you might be able to interface with... if you can figure the machine out.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="NONE"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="NONE"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<environment type="sun"/>
 	<choice hidden="true">
@@ -1146,7 +1183,7 @@
 	<text>You receive a video with a gibberish title which shows several cartoon alien warriors fighting each other in gladiatorial combat. Minutes later, a Morph ship approaches, weapons on the ready.</text>
 	<text>Something tells you the nearby Morph ship isn't friendly. It might be the aggressive shouting, or their charging weapons. Just a hunch, though.</text>
 	<text>These aggressive Morphs really set a bad image for the rest of their kind. At least they don't yell "Hey, you're that Federation ship!" every time they see you.</text>
-	<text>You wonder if the Morphs are even aware who you are, or what your mission is. Unfortunately, "booj kabooj" is not an indicative answer as a Morph vessel opens fire.</text>
+	<text>You wonder if the Morphs are even aware who you are, or what your mission is. Unfortunately, "booj kabooj" is not an indicative answer as their vessel opens fire.</text>
 </textList>
 
 <event name="NEBULA_ENCOUNTER_REBEL_MORPH">
@@ -1709,7 +1746,7 @@
 			<surrender/>
 			<removeCrew class="unique_alkali">
 				<clone>false</clone>
-				<text>Alkali probably won't be alive for long after this one, but you can't clone him when you aren't certain.</text>
+				<text></text>
 			</removeCrew>
 		</event>
 	</choice>

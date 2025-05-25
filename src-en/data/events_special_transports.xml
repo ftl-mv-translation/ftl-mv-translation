@@ -2459,4 +2459,67 @@ Jerry smiles and nods, but seems a little overwhelmed by it all.</text>
 	<variable name="ach_trans_cultist" op="set" val="1"/>
 </event>
 
+<!--
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+					STARGROVE
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-->	
+
+<ship name="SHIP_STARGROVE_TRANSPORT_LOOT" auto_blueprint="MU_GHOST_SIREN_TRANSPORT_UNKNOWN">
+	<escape timer="30" min="999" max="999" >
+		<text>They look like they don't want to fight. They are trying to escape.</text>
+		<ship hostile="true"/>
+	</escape>
+	<destroyed load="TRANSPORT_DESTROYED"/>
+	<deadCrew load="TRANSPORT_CAPTURE_STARGROVE"/>
+</ship>
+
+<event name="NEBULA_LIGHT_TRANSPORT_STARGROVE_LOOT" unique="true">
+	<preventQuest/>
+	<beaconType id="map_icon_transport" global="true" req="LOOT_COMPASS">
+		<color r="255" g="186" b="0" a="1"/>
+		<unvisitedTooltip>An unvisited location.</unvisitedTooltip>
+		<visitedTooltip>Explored location. Nothing left of interest.</visitedTooltip>
+		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
+	</beaconType>
+    <img back="BACK_EVENT_STARS_DENSE" planet="NONE"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
+	<triggeredEvent name="BLUE_GIANT" event="BLUE_GIANT_FLARE" seeded="true" thisFight="false" clearOnJump="true" loops="999999999" minTime="24.0" maxTime="30.0">
+		<warningMessage id="warning_solar_flare" x="825" y="30" time="5.0" centerText="true" flash="true" sound="environWarning" useWarningLine="false"/>
+	</triggeredEvent>
+	<text>The ship at this beacon is extremely unusual - even in its sorry state, the hull flickers and shines with an unnatural vibrance. The Vagabonds occupying it have no doubt stripped away most of the unique tech their vessel once held - if there's anything left, you're going to have to kill their crew for it.</text>
+	<ship load="SHIP_STARGROVE_TRANSPORT_LOOT" hostile="false"/>
+	<metaVariable name="prof_siren_encounter" op="add" val="1"/>
+	<choice>
+		<text>Demand the surrender of their goods.</text>
+		<event>
+			<text>You prepare to secure their cargo by force.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+        <text>Avoid the ship.</text>
+        <event>
+            <text>They stay outside your weapons range, and eventually jump away.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event/>
+			</choice>
+        </event>
+    </choice>
+</event>
+<event name="TRANSPORT_CAPTURE_STARGROVE" unique="true">
+	<text>A strange force presses on your mind as you scrap the ship. Every scrape, every hull breach screams at you to repair it, even as all your common sense tells you that it doesn't matter. A weapon in one of the storage rooms begs you to mount it to the ship - you hope it's not picky about the details as you carry it aboard.</text>
+	<autoReward level="MED">standard_no_item</autoReward>
+	<weapon name="LIST_LOOT_STARGROVE"/>
+	<variable name="ach_trans_stargrove" op="set" val="1"/>
+	<achievement>ACH_TRANS_STARGROVE</achievement>
+</event>
+
 </FTL>

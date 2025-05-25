@@ -19,6 +19,10 @@
 	<surrender chance="0.4" min="3" max="4" load="SURRENDER_UNION"/>
 	<destroyed load="DESTROYED_UNION"/>
 	<deadCrew load="DEAD_CREW_UNION"/>
+	<crew>
+		<crewMember type="human" prop="0.80"/>
+		<crewMember type="LIST_CREW_UNION_RANDOM" prop="0.20"/>	
+	</crew>
 </ship>
 
 <ship name="SHIP_UNION_PROTESTORS" auto_blueprint="LIST_SHIPS_UNION_START">
@@ -1882,6 +1886,28 @@
 					</choice>
 				</event>
 			</choice>
+			<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL" max_group="0">
+				<text>(Mind Control Weapon) Convince the checkpoint to let them through.</text>
+				<event>
+					<text>Your crew explains to the checkpoint that your ship is escorting the smuggler vessel on its way to be decommissioned. As you finish explaining, you target them with your mind control weapon to wipe away whatever skepticism they might have had. The smuggler wastes no time getting through the checkpoint.</text>
+					<autoReward level="MED">standard</autoReward>
+					<choice>
+						<text>Continue...</text>
+						<event load="REPUTATION_UPDATE_SMUGGLING_FREE"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_WEAPONS_MIND_AFFECT" max_group="0">
+				<text>(Mind Affecting Weapon) Distract the guard with infighting.</text>
+				<event>
+					<text>Your crew explains to the checkpoint that your ship is escorting the smuggler vessel on its way to be decommissioned. As they listen you abruptly hit them with your mind affecting weapon. Full of madness, they start to bicker and shout with each other over procedure, as the smuggler sneaks through. Once they regain their senses they look very cross with you, catching on that this was your fault somehow.</text>
+					<autoReward level="MED">standard</autoReward>
+					<choice>
+						<text>Continue...</text>
+						<event load="REPUTATION_UPDATE_SMUGGLING"/>
+					</choice>
+				</event>
+			</choice>
 			<choice hidden="true" req="hacking" lvl="1" max_lvl="1">
 				<text>(Hacking) Scramble the checkpoint's sensors.</text>
 				<event load="DROPPOINT_BULKY_SMUGGLER_HACK"/>
@@ -1896,6 +1922,10 @@
 						<event load="REPUTATION_UPDATE_SMUGGLING_FREE"/>
 					</choice>
 				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_WEAPONS_HACK" >
+				<text>(Hacking Weapon) Scramble the checkpoint's sensors.</text>
+				<event load="DROPPOINT_BULKY_SMUGGLER_HACK"/>
 			</choice>
 			<choice hidden="true">
 				<text>Distract the checkpoint with idle chatter.</text>
@@ -1960,6 +1990,23 @@
 		</choice>
 	</event>
 </eventList>
+<eventList name="DROPPOINT_BULKY_SMUGGLER_HACK_WEAPON">
+	<event>
+		<text>You manage to jam their sensors long enough for you to escort the smuggler. As the checkpoint guards wave you in, the smuggler passes through with you, undetected. "Thanks for the assist, that was going to be a real headache."</text>
+		<autoReward level="MED">standard</autoReward>
+		<choice>
+			<text>Continue...</text>
+			<event load="REPUTATION_UPDATE_SMUGGLING_FREE"/>
+		</choice>
+	</event>
+	<event>
+		<text>Seems like they noticed your weapon's activation. Your ship and the smuggler are confronted at the checkpoint. The smuggler manages to escape without paying you, and you get a stern lecture by the checkpoint crew.</text>
+		<choice>
+			<text>Continue...</text>
+			<event load="REPUTATION_UPDATE_SMUGGLING"/>
+		</choice>
+	</event>
+</eventList>
 <!--
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -2009,7 +2056,7 @@
         <event load="S1_ZOLTAN_SHIELD_SEND_REPAIR"/>
     </choice>
     <choice hidden="true" blue="false" req="LIST_CHECK_ANY_CREW" lvl="1">
-        <text>Spend some time trying to fix it.</text>
+        <text>Attempt to fix their problem.</text>
     	<event load="S1_ZOLTAN_SHIELD_SEND_CREW"/>
     </choice>
     <choice>
@@ -2110,10 +2157,32 @@
 					</choice>
 				</event>
 			</choice>
-			<choice req="O2_MASKS">
+			<choice req="zoltan_osmian">
+				<text>(Osmian Crew) Send a hologram.</text>
+				<event>
+					<text>Your crew's hologram travels to the ship with no issue - they quickly disengage the docking clamps from the vessel and pilot it away. Your crew then proceeds to flush all contaminants from the ship and reactivate life support to refill it with fresh oxygen.</text>
+					<choice hidden="true">
+						<text>Return the ship to its owner.</text>
+						<event load="DROPPOINT_SHIP_TOXIN_FLUSHED"/>
+					</choice>
+				</event>
+			</choice>
+			<choice req="unique_mafan">
+				<text>(Mafan) "I think I could do it."</text>
+				<event>
+					<text>"Toxic chemical spills in an enclosed environment just sound like another day in the lab, shouldn't take more than a few minutes." Mafan soaks a rag in a dizzying array of chemicals, then covers their face with it and strolls into the contamination area. You almost begin preparations for their funeral, but soon see the merchant's ship detach from the station, airlock ajar - Mafan reboards your ship soon afterwards.</text>
+					<choice hidden="true">
+						<text>Return the ship to its owner.</text>
+						<event>
+							<text>"Well, I suppose I should have asked that you refill the oxygen after you flushed it, but it's better than the state it was in. Here's your reward- I'd give you more, but the rest of my scrap is on my ship."</text>
+							<autoReward level="LOW">augment</autoReward>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="O2_MASKS_AND_CREW">
 				<text>(Respirators) Have a crewmember enter the ship.</text>
 				<event>
-					<choiceRequiresCrew/> <!--doesn't work-->
 					<text>Your crew pulls on a mask and enters the vessel, then detaches it from the station as fast as they can. They proceed to flush all the toxins from the ship and then reactivate life support to refill it with fresh oxygen.</text>
 					<choice hidden="true">
 						<text>Return the ship to its owner.</text>

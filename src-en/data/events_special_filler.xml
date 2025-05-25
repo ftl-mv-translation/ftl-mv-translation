@@ -64,7 +64,7 @@
 	<event load="NEBULA_TRADER"/>
 	<event load="NEBULA_LIGHT_PIRATE_STATION"/>
 
-	<!--<event load="NEBULA_VAGABOND_FLEETCRASH"/>-->
+	<!--<event load="NEBULA_LIGHT_VAGABOND_FLEETCRASH"/>-->
 </eventList>
 <eventList name="NEBULA_NEUTRAL_FILLER">
 	<event load="NEBULA_DUEL"/>
@@ -303,6 +303,13 @@
 				<text>(Mind Control) Pacify the ponies and steal one.</text>
 				<event>
 					<text>Under the effects of the mind control the pony does nothing to resist you, allowing you to collect it with little difficulty.</text>
+					<crewMember amount="1" class="pony"/>
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL">
+				<text>(Mind Control Weapon) Pacify the ponies and steal one.</text>
+				<event>
+					<text>Under the effects of the mind control weapon the pony does nothing to resist you, allowing you to collect it with little difficulty.</text>
 					<crewMember amount="1" class="pony"/>
 				</event>
 			</choice>
@@ -1706,6 +1713,13 @@
 			<autoReward level="MED">standard</autoReward>
 		</event>
 	</choice>
+	<choice req="BLUELIST_WEAPONS_MIND_CONTROL" hidden="true">
+		<text>(Mind Control Weapon) Use your Mind Control weapon to calm him down.</text>
+		<event>
+			<text>The Mantis calms down and communicates thanks to the Engi and yourself for helping. He requests to be dropped off at a nearby planet, at the human colony where he was raised. They are grateful for his return and offer a reward.</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
 </event>
 <event name="FILLER_CONFUSED_MANTIS_HOME">
 	<text>The colony is a mining operation that specializes in FTL fuel. Robert's family, the head engineers, are excited to see him, and are very grateful for his return. Apparently he ran away to 'join the Federation' like his older brother, but was never accepted onto a ship.</text>
@@ -1933,7 +1947,7 @@
 			</choice>
 		</event>
 	</choice>
-	<choice req="FEDERATION_DATABASE">
+	<!--<choice req="FEDERATION_DATABASE">
 		<text>[Federation Database] Who are the Clairvoyants?</text>
 		<event>
 			<text id="database_clairvoyants"/>
@@ -1944,7 +1958,7 @@
 				</event>
 			</choice>
 		</event>
-	</choice>
+	</choice>-->
 	<choice>
 		<text>Avoid the ship.</text>
 		<event>
@@ -2254,10 +2268,6 @@
 </event>
 
 <event name="FILLER_ARGEONN_SALESMAN" unique="true">
-	<ship load="SHIP_SMUGGLER_ALL" hostile="false"/>
-	<loadEvent>FILLER_ARGEONN_SALESMAN_START</loadEvent>
-</event>
-<event name="FILLER_ARGEONN_SALESMAN_START">
 	<text>A ship with conspicuous Argeonn markings is orbiting a nearby moon, broadcasting a simple message claiming to have equipment available for sale.</text>
 	<ship load="SHIP_SMUGGLER_ALL" hostile="false"/>
 	<choice>
@@ -2289,8 +2299,8 @@
 			</choice>
 		</event>
 	</choice>
-	<choice req="FEDERATION_DATABASE">
-		<text>[Federation Database] What is Argeonn?</text> <!-- this should be more accessible somewhere else rather than in a filler-->
+	<!--<choice req="FEDERATION_DATABASE">
+		<text>[Federation Database] What is Argeonn?</text> this should be more accessible somewhere else rather than in a filler / crashes the game
 		<event>
 			<text id="database_argeonn"/>
 			<choice>
@@ -2300,7 +2310,7 @@
 				</event>
 			</choice>
 		</event>
-	</choice>
+	</choice>-->
 </event>
 <event name="CONTACT_PIRATE_SALESMAN">
 	<text>The ship responds: "Come in, under the banner of Argeonn I welcome you! I have many things, many things... would you care to take a look?"</text>
@@ -4926,6 +4936,25 @@
 				</choice>
 			</event>
 		</choice>
+		<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL">
+			<text>(Mind Control Weapon) Convince him that he's being 'unfair'.</text>
+			<event>
+				<text>"I'm being unfair. You did the job and the parts are here safe and sound. Here is the agreed upon amount."</text>
+				<choice>
+					<text>Accept the new offer.</text>
+					<event>
+						<item_modify>
+							<item type="scrap" min="40" max="55"/>
+							<item type="drones" min="-5" max="-5"/>
+						</item_modify>			
+					</event>
+				</choice>
+				<choice>
+					<text>Leave.</text>
+					<event/>
+				</choice>
+			</event>
+		</choice>
 		<choice hidden="true" req="weapons" lvl="6"> 
 			<text>(Adv. Weapons) Remain silent but power up your weapons.</text>
 			<event>
@@ -4978,6 +5007,7 @@
 		<choice>
 			<text>Take the cargo and head to its original destination in search of a reward.</text>
 			<event>
+				<text>You note down the delivery's intended destination, and load the cargo onto your ship.</text>
 				<quest event="FILLER_MERCHANT_INVESTIGATE_DELIVER"/>
 			</event>
 		</choice>
@@ -5120,18 +5150,14 @@
 </eventList>
 
 <event name="FILLER_DELIVERY" unique="true">
-	<ship load="SHIP_SMUGGLER_ALL" hostile="false"/>
-	<loadEvent>FILLER_DELIVERY_START</loadEvent>
-</event>
-<event name="FILLER_DELIVERY_START">
-	<ship load="SHIP_SMUGGLER_ALL" hostile="false"/>
 	<text>You jump to the beacon and discover an Argeonn vessel orbiting the beacon. They hail you with a proposal. "Say, that's a nice ship you got there... But I am sure a bit of scrap could make it run even better. Care to make some quick, easy cash?"</text>
+	<ship load="SHIP_SMUGGLER_ALL" hostile="false"/>
 	<choice hidden="true">
 		<text>Express your interest.</text>
 		<event load="MERCENARY_DELIVERY_INTEREST"/>
 	</choice>
-	<choice hidden="true" req="FEDERATION_DATABASE">
-		<text>[Federation Database] What is Argeonn?</text>
+	<!--<choice hidden="true" req="FEDERATION_DATABASE">
+		<text>[Federation Database] What is Argeonn?</text> crashes the game
 		<event>
 			<text id="database_argeonn"/>
 			<choice hidden="true">
@@ -5141,7 +5167,7 @@
 				</event>
 			</choice>
 		</event>
-	</choice>
+	</choice>-->
 	<choice hidden="true">
 		<text>Attack!</text>
 		<event>
@@ -5622,6 +5648,13 @@
 	</choice>
 	<choice req="mind" hidden="true" lvl="2">
 		<text>(Upg. Mind Control) Change their mind.</text>
+		<event>
+			<text>"You know what, I've changed my mind. The Federation rocks!" That was surprisingly simple...</text>
+			<crewMember amount="1" class="human"/>
+		</event>
+	</choice>
+	<choice req="BLUELIST_WEAPONS_MIND_CONTROL" hidden="true" lvl="2">
+		<text>(Mind Control Weapon) Change their mind.</text>
 		<event>
 			<text>"You know what, I've changed my mind. The Federation rocks!" That was surprisingly simple...</text>
 			<crewMember amount="1" class="human"/>

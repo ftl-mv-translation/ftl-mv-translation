@@ -441,7 +441,7 @@
 -->	
 <eventList name="NEBULA_ITEMS_VAGABOND">
 	<event load="NEBULA_GHOST_DEADSHIP"/>
-	<event load="NEBULA_VAGABOND_FLEETCRASH"/>
+	<event load="NEBULA_LIGHT_VAGABOND_FLEETCRASH"/>
 	<event load="NEBULA_VAGABOND_ACID"/>
 	<event load="NEBULA_GHOST_BOO"/>
 	<event load="NEBULA_GHOST_DONATION"/>
@@ -453,20 +453,34 @@
 	<environment type="nebula"/>
 	<autoReward level="LOW">standard</autoReward>
 </event>
-<textList name ="TEXT_GHOST_DEADSHIP">	
+<textList name="TEXT_GHOST_DEADSHIP">	
 	<text>You jump out of your seat, prepared to fight the wreck drifting at this beacon, but it's no Ghost ship. You scrap what's left.</text>	
 	<text>You're ready to fight, but the wreck here is silent. Its crew are dead, and their attacker long gone. You cautiously scrap the ship.</text>	
 	<text>A wrecked ship inhabits this beacon. You scan it for Ghosts, but all results show the ship is empty. You figure it's safe to salvage what you can.</text>	
 	<text>Whoever destroyed the ship at this beacon doesn't matter, but it must not have been the Ghosts. Empty of all crew, you move in to scrap it.</text>	
 </textList>
 
-<event name="NEBULA_VAGABOND_FLEETCRASH" unique="true">
+<event name="NEBULA_LIGHT_VAGABOND_FLEETCRASH" unique="true">
 	<text>Scans are turning up something large on the nearby lava planet. Looks like it's a massive Dynasty class-F Dreadnaught! Completely trashed of course, it'll probably never fly again... but that hasn't stopped a horde of Vagabonds from taking residence.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_LAVA"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_LAVA"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice hidden="true">
 		<text>Try to scrap some of the outer regions of the ship.</text>
 		<event load="VAGABOND_FLEETCRASH_SCRAP"/>
+	</choice>
+	<choice hidden="true" req="SCRAP_COLLECTOR">
+		<text>(Scrap Arm) Use your Scrap Arm to scrap the outer regions of the ship.</text>
+		<event>
+			<text>Your Scrap Arm allows you to collect a decent amount of the wreckage quickly. You're certain the Ghosts must have spotted you during the salvaging, but for some reason they never attempt to stop you.</text>
+			<autoReward level="MED">standard</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="MAGNET_ARM">
+		<text>(Magnetic Arm) Use your Magnetic Arm to scrap the outer regions of the ship.</text>
+		<event>
+			<text>You put your Magnetic Arm to good use, collecting loose scrap around the outside of the ship in almost an instant. Hopefully they won't miss what you've scooped up.</text>
+			<autoReward level="HIGH">scrap_only</autoReward>
+		</event>
 	</choice>
 	<choice hidden="true">
 		<text>Hail the Ghosts.</text>
@@ -548,6 +562,13 @@
 					</choice>
 					<choice hidden="true" req="mind">
 						<text>(Mind Control) Give him a very 'convincing' lie.</text>
+						<event>
+							<text>"Ooooh, ooooh! I must head there at once! Thank you for your assistance, oh seer of those things which beg of being seen!"</text>
+							<autoReward level="MED">stuff</autoReward>
+						</event>
+					</choice>
+					<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL">
+						<text>(Mind Control Weapon) Give him a very 'convincing' lie.</text>
 						<event>
 							<text>"Ooooh, ooooh! I must head there at once! Thank you for your assistance, oh seer of those things which beg of being seen!"</text>
 							<autoReward level="MED">stuff</autoReward>
@@ -825,7 +846,7 @@
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 -->	
 <eventList name="NEBULA_NEUTRAL_VAGABOND">
-	<event load="NEBULA_GHOST_GASGIANT"/>
+	<event load="NEBULA_LIGHT_GHOST_GASGIANT"/>
 	<event load="NEBULA_GHOST_FEDMORALITY"/>
 	<event load="NEBULA_GHOST_ANGERY_SLUG"/>
 	<event load="NEBULA_DRIFTER_CHOICE_GHOST"/>
@@ -833,9 +854,9 @@
 	<event load="NEBULA_GHOST_UPGRADERS"/>
 </eventList>
 
-<event name="NEBULA_GHOST_GASGIANT" unique="true">
+<event name="NEBULA_LIGHT_GHOST_GASGIANT" unique="true">
 	<text>Looks like a Vagabond ship is scanning the nearby gas giant, but quickly hails you when you jump in. "Isn't my darling beautiful?"</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_GAS"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_GAS"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice hidden="true">
 		<text>Your... who?</text>
@@ -891,7 +912,7 @@
 	<choice hidden="true">
 		<text>Hail them.</text>
 		<event>
-			<text>The vessel's captain looks up, distracted. "Huh? Oh! Well, look who it is. I thought we were all alone in these clouds - save for the Ghosts that, is. Was trying to clear out a camp of them not too far from here, bastards are stranded! I can just keep taking trips back and forth as much as I like!"</text>
+			<text>The vessel's captain looks up, distracted. "Huh? Oh! Well, look who it is. I thought we were all alone in these clouds - save for the Ghosts, that is. Was trying to clear out a camp of them not too far from here, bastards are stranded! I can just keep taking trips back and forth as much as I like!"</text>
 			<choice hidden="true">
 				<text>But why?</text>
 				<event>
@@ -1149,7 +1170,7 @@
 </event>
 
 <event name="NEBULA_GHOST_UPGRADERS" unique="true">
-	<text>The beacon appears empty, but you reconsider as footsteps echo through your halls. You rush to the engine room to see 3 Ghosts bent over, examining the FTL drive.</text>
+	<text>The beacon appears empty, but you reconsider as static noises echo through your halls. You rush to the engine room to see three Ghosts examining the FTL drive.</text>
 	<environment type="nebula"/>
 	<choice hidden="true">
 		<text>Fight the Ghosts before they can damage your system.</text>
@@ -1161,6 +1182,10 @@
 		<text>Wait and see.</text>
 		<event load="NEBULA_GHOST_UPGRADERS_WAIT"/>
 	</choice>
+	<choice hidden="true" req="mind">
+		<text>(Mind Control) Leave them be, but have the mind control ready just in case.</text>
+		<event load="NEBULA_GHOST_UPGRADERS_MINDCONTROL"/>
+	</choice>
 </event>
 <eventList name="NEBULA_GHOST_UPGRADERS_WAIT">
 	<event>
@@ -1171,6 +1196,16 @@
 		<text>You wait and watch the Ghosts as they look over every inch of your system. Suddenly, in a violent motion, one of the Ghosts tears off a metal covering on the Multiverse drive casing, resulting in a violent explosion! You don't wait any longer and order the crew to attack.</text>
 		<boarders min="3" max="3" class="phantom_wraith"/>
 		<damage amount="3" system="engines"/>
+	</event>
+</eventList>
+<eventList name="NEBULA_GHOST_UPGRADERS_MINDCONTROL">
+	<event>
+		<text>You wait and watch the Ghosts as they look over every inch of your system. Though they have no visible tools, you wonder if they're taking measurements. One of the Ghosts tinkers with the mechanism in the system, then just as suddenly as they appeared the Ghosts walk out the door and disappear. You don't know what they've done, but it almost seems as if your engines are running at higher capacity than before. Seems you didn't need the Mind Control after all.</text>
+		<upgrade amount="1" system="engines"/>
+	</event>
+	<event>
+		<text>You wait and watch the Ghosts as they look over every inch of your system. Suddenly, one of the Ghosts looks like they're moving to tear off an important part of the Multiverse Drive casing, but fortunately you're able to engage the Mind Control just before they succeed. You're even able to get them to take out another of the Ghosts, but you'll still have to fight the rest off.</text>
+		<boarders min="2" max="2" class="phantom_wraith"/>
 	</event>
 </eventList>
 

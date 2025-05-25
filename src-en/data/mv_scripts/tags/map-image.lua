@@ -24,7 +24,6 @@ do
                 local iconName = iconNode:value()
                 if iconName ~= "" then
                     local shipName = node:first_attribute("name"):value()
-                    log("Found mv-mapImage tag for ship "..shipName)
                     local icons = iconCashe[iconName]
                     if not icons then
                         if not pcall(function()

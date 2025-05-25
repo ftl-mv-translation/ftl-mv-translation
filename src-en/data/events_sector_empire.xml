@@ -135,6 +135,15 @@
 								</item_modify>
 							</event>
 						</choice>
+						<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL">
+							<text>(Mind Control Weapon) 'Convince' them to give a full refund.</text>
+							<event>
+								<text>"You are right. These are bad maps. You deserve your money back. I am very ashamed of myself. Boo hoo."</text>
+								<item_modify>
+									<item type="scrap" min="20" max="20"/>
+								</item_modify>
+							</event>
+						</choice>
 						<choice hidden="true">
 							<text>Whatever, let's just leave.</text>
 							<event/>
@@ -372,7 +381,7 @@
 		<choice hidden="true" req="LIST_CREW_OBYN">
 		<text>(Saltman Crew) Send your Saltman crew.</text>
 		<event>
-			<text>"Is that... ? Impossible... The missing link between Crystal and Rock kind! This is truly wonderful! We have so little records of your kind. We have a lot to learn from these scans, we must get to analyzing them as soon as possible! Please, take this."</text>
+			<text>"Is that... ? Impossible... The lost sister species to Crystal and Rock kind! This is truly wonderful! We have so little records of the Salty Ones. We have a lot to learn from these scans, we must get to analyzing them as soon as possible! Please, take this."</text>
 			<autoReward level="HIGH">standard</autoReward>
 		</event>
 	</choice>
@@ -524,7 +533,7 @@
 	<event load="CRYSTAL_REBEL_CRYSTAL2_MV"/>
 	<event load="CRYSTAL_MANTIS_CRYSTAL_MV"/>
 	<event load="CRYSTAL_PIRATE_CRYSTAL_MV"/>
-	<event load="CRYSTAL_FED_MV"/>
+	<!--<event load="CRYSTAL_FED_MV"/>-->
 	<event load="CRYSTAL_FED_DESERTER_MV"/>
 	<event load="CRYSTAL_REQUEST_MV"/>
 	<event load="CRYSTAL_HELP_DIG_MV"/>
@@ -684,6 +693,13 @@
 		<text>(Hacking) Download the data remotely.</text>
 		<event>
 			<text>You successfully download the data without alerting the ship.</text>
+			<reveal_map/>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_WEAPONS_HACK">
+		<text>(Hacking Weapon) Jam its sensors and download its data.</text>
+		<event>
+			<text>You successfully download the data while the ship tries to get its sensors back online.</text>
 			<reveal_map/>
 		</event>
 	</choice>
@@ -1008,10 +1024,27 @@
                 <text>Accept the scrap but give them false flight plans.</text>
                 <event load="CRYSTAL_REQUEST_LIST_MV"/>
             </choice>
-            <choice hidden="true" req="DISTRACTION_BUOY"> <!--DLC-->
-                <text>(Distraction Buoys) Accept the scrap but give them falsified flight plans.</text>
+			<choice hidden="true" req="LIST_CREW_CRYSTAL_BASIC">
+                <text>(Crystal Crew) Try to convince them of the importance of your mission.</text>
+                <event load="CRYSTAL_REQUEST_CONVINCE_LIST"/>
+            </choice>
+			<choice hidden="true" req="crystal_sentinel">
+                <text>(Sentinel Crew) Try to convince them of the importance of your mission.</text>
+                <event load="CRYSTAL_REQUEST_CONVINCE_SUCCESS"/>
+            </choice>
+			<choice hidden="true" req="unique_ruwen"> <!--add dianesh option later-->
+                <text>(Ruwen) Convince them of the importance of your mission.</text>
                 <event>
-                    <text>Your distraction buoys allows you to create very convincing flight plans. They accept it as true and give you the scrap. The deception may not be the most honorable tactic, but staying ahead of the fleet is your highest priority.</text>
+                    <text>"Oh my. I didn't realize you were currently visiting this sector. Yes, I think we can make this work." The Crystals agree to give the Rebels falsified flight plans and give you a plentiful helping of scrap.</text>
+                    <autoReward level="HIGH">scrap_only</autoReward>
+                    <modifyPursuit amount="-1"/>
+					<instantEscape/>
+                </event>
+            </choice>
+            <choice hidden="true" req="DISTRACTION_BUOY"> <!--DLC-->
+                <text>(Decoy Buoys) Accept the scrap but give them falsified flight plans.</text>
+                <event>
+                    <text>Your decoy buoys allows you to create very convincing flight plans. They accept it as true and give you the scrap. The deception may not be the most honorable tactic, but staying ahead of the fleet is your highest priority.</text>
                     <autoReward level="HIGH">scrap_only</autoReward>
                     <modifyPursuit amount="-1"/>
 					<instantEscape/>
@@ -1048,6 +1081,19 @@
             <text>Continue...</text>
             <event load="MORALITY_UPDATE_CRYSTAL_FIGHT"/>
         </choice>
+    </event>
+</eventList>
+<eventList name="CRYSTAL_REQUEST_CONVINCE_LIST">
+    <event name="CRYSTAL_REQUEST_CONVINCE_SUCCESS">
+        <text>The sight of one of their own kind on your ship seems to reassure them. Seemingly convinced you have their interests at heart, they agree to mislead the Rebel fleet and hand you a small sum of scrap as well. This should give you some extra breathing room.</text>
+        <autoReward level="LOW">scrap_only</autoReward>
+        <modifyPursuit amount="-1"/>
+		<instantEscape/>
+    </event>
+    <event>
+        <text>Your Crystal tries to convince them of the importance of your mission. They seem sympathetic, but decline your requests. "Your crewmember may speak the truth, but I wonder if they have seen just what the Rebellion has done here. Though perhaps this small gesture may help you in leaving this sector behind, hopefully taking that accursed fleet with them. May your travels here be safe."</text>
+        <autoReward level="LOW">scrap_only</autoReward>
+		<instantEscape/>
     </event>
 </eventList>
 		
@@ -1125,8 +1171,34 @@
 							</choice>
 						</event>
 					</choice>
+					<choice hidden="true" req="temporal">
+						<text>(Temporal Manipulator) Use your system to try and increase the speed of the dig.</text>
+						<event>
+							<text>Having decided that waiting further would cause too many problems, you opt to use your Temporal Manipulator to speed up the excavation process. It's subtle, but your crewmember manages to finish up before the next cycle. The Crystals they were working with offer a reward for their hard work.</text>
+							<autoReward level="HIGH">scrap_only</autoReward>
+							<weapon name="CRYSTAL_HEAVY_2"/>
+							<augment name="RANDOM"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="MORALITY_REMOVE_CRYSTAL"/>
+							</choice>
+						</event>
+					</choice>
 				</event>
 			</choice>
+			<choice hidden="true" req="temporal" lvl="3">
+                <text>(Adv. Temporal) Use your system to increase the speed of the dig.</text>
+                <event>
+                    <text>You're not entirely sure how well this will work out, but you decide to use your exotic system to speed up the excavation process. Initially the Crystals involved are perplexed and a little worried at what seems to be happening, but they soon realize roughly what's going on and decide to take full advantage of it. The operation proceeds smoothly and the Crystals reward you handsomely for it.</text>
+					<autoReward level="HIGH">scrap_only</autoReward>
+					<weapon name="CRYSTAL_HEAVY_2"/>
+					<augment name="RANDOM"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="MORALITY_REMOVE_CRYSTAL"/>
+					</choice>
+                </event>
+            </choice>
 		</event>
 	</choice>
 	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0">
@@ -1157,7 +1229,7 @@
 	<event load="CRYSTAL_REBEL_CRYSTAL_MV"/>
 	<event load="CRYSTAL_REBEL_CRYSTAL2_MV"/>
 	<event load="CRYSTAL_PIRATE_CRYSTAL_MV"/>
-	<event load="CRYSTAL_FED_MV"/>
+	<!--<event load="CRYSTAL_FED_MV"/>-->
 	<event load="CRYSTAL_FED_DESERTER_MV"/>
 	<event load="CRYSTAL_REQUEST_MV"/>
 	<event load="CRYSTAL_HELP_DIG_MV"/>
@@ -1570,7 +1642,7 @@ The Vagabonds take a moment to discuss it, before agreeing to the terms.</text>
 	<event load="ENCOUNTER_CRYSTAL_STATION"/>
 	
 	<event load="CRYSTAL_CONVOY"/>
-	<event load="CRYSTAL_HUNTER"/>
+	<!--<event load="CRYSTAL_HUNTER"/>-->
 	
 	<event load="ENCOUNTER_REBEL_CRYSTAL"/>
 	<event load="ENCOUNTER_ROCK_CRYSTAL"/>
@@ -1596,7 +1668,7 @@ The Vagabonds take a moment to discuss it, before agreeing to the terms.</text>
 </textList>
 
 <event name="ENCOUNTER_CRYSTAL_STATION" unique="true">
-	<text>A Crystal station nearby notices your ship. "We do not welcome outsiders here! Get out, now!" It appears they're willing to backup their threats with their weapons.</text>
+	<text>A Crystal station nearby notices your ship. "We do not welcome outsiders here! Get out, now!" It appears they're willing to back their threats up with their weapons.</text>
 	<ship load="SHIP_CRYSTAL_STATION" hostile="true"/>
 	<choice hidden="true">
 		<text>Continue...</text>
@@ -1673,7 +1745,7 @@ The Vagabonds take a moment to discuss it, before agreeing to the terms.</text>
 <eventList name="NEBULA_CRYSTAL">
 	<event load="NEBULA_ENCOUNTER_CRYSTAL"/>
 
-	<event load="NEBULA_CRYSTAL_MIRROR"/>
+	<event load="NEBULA_LIGHT_CRYSTAL_MIRROR"/>
 </eventList>
 
 <event name="NEBULA_ENCOUNTER_CRYSTAL" unique="false">
@@ -1692,9 +1764,9 @@ The Vagabonds take a moment to discuss it, before agreeing to the terms.</text>
 	<text>You aren't alone in this nebula. A Crystalline vessel approaches, ready to attack.</text>
 </textList>
 
-<event name="NEBULA_CRYSTAL_MIRROR" unique="true">
+<event name="NEBULA_LIGHT_CRYSTAL_MIRROR" unique="true">
 	<text>The planet in the distance is rather bland, save for a few lakes and rivers. Curiously enough, that hasn't stopped a Crystal ship from docking next to a pond.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_MOONS"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_MOONS"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice>
 		<text>Dock and explore.</text>

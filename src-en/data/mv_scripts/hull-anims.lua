@@ -21,7 +21,7 @@ script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
 end)
 script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(ship)
     local hullAnimSet = hullAnims[ship.iShipId]
-    
+
     -- Keep stored hull anims up to date with loaded ships
     if hullAnimSet["layout"] ~= ship.myBlueprint.layoutFile then
         -- Reset anims associated with this ship ID and open its layout file
@@ -30,7 +30,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(ship)
         local doc = RapidXML.xml_document("data/"..hullAnimSet["layout"]..".xml")
         local hullAnimsNode = doc:first_node("FTL") or doc
         hullAnimsNode = hullAnimsNode:first_node("mv-hullAnims")
-        
+
         -- Parse hullAnim tags in layout file
         if hullAnimsNode then
             local randomFrame = not node_get_bool_default(hullAnimsNode:first_attribute("sync"), true)
@@ -43,7 +43,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(ship)
                 anim:Start(false)
                 anim.position.x = -anim.info.frameWidth/2
                 anim.position.y = -anim.info.frameHeight/2
-                
+
                 local x = node_get_number_default(hullAnim:first_attribute("x"), 0)
                 local y = node_get_number_default(hullAnim:first_attribute("y"), 0)
                 local rotate = math.floor(math.max(0, math.min(3, node_get_number_default(hullAnim:first_attribute("rotate"), 0))))
@@ -54,18 +54,18 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(ship)
                     x = x + -anim.position.y
                     y = y + -anim.position.x
                 end
-                
+
                 local xscale = 1
                 local yscale = 1
                 if node_get_bool_default(hullAnim:first_attribute("xflip"), false) then xscale = -1 end
                 if node_get_bool_default(hullAnim:first_attribute("yflip"), false) then yscale = -1 end
-                
+
                 table.insert(hullAnimSet, {anim = anim, x = x, y = y, rotate = rotate, xscale = xscale, yscale = yscale})
             end
         end
         doc:clear()
     end
-    
+
     -- Update all active hull anims
     for i, hullAnim in ipairs(hullAnimSet) do
         hullAnim.anim:Update()
@@ -81,8 +81,8 @@ script.on_render_event(Defines.RenderEvents.SHIP_ENGINES, function() end, functi
         local y = ship.shipImage.y + shipGraph.shipBox.y
         for i, hullAnim in ipairs(hullAnimSet) do
             Graphics.CSurface.GL_PushMatrix()
+            Graphics.CSurface.GL_Rotate(90*hullAnim.rotate, 0, 0) -- Doing this on its own is a little janky for coordinates, maybe look into doing some translations to smooth it out
             Graphics.CSurface.GL_Translate(x + hullAnim.x, y + hullAnim.y)
-            Graphics.CSurface.GL_Rotate(90*hullAnim.rotate, 0, 0)
             Graphics.CSurface.GL_Scale(hullAnim.xscale, hullAnim.yscale, 1)
             hullAnim.anim:OnRender(1, Graphics.GL_Color(1, 1, 1, alpha), false)
             Graphics.CSurface.GL_PopMatrix()

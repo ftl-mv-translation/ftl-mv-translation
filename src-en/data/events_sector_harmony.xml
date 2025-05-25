@@ -109,6 +109,16 @@
 				<text>Try to explain that there are Engi onboard.</text>
 				<event load="ENGI_SALVAGER_EXPLAIN"/>
 			</choice>
+			<choice hidden="true" req="LIST_CREW_LANIUS">
+				<text>(Lanius Crew) Have your crewmember explain the situation to them.</text>
+				<event>
+					<text>With the help of your Lanius crew, you successfully explain to the other ship that the Engi ship isn't wreckage. The other Lanius seems satisfied with this explanation and jumps away.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="ENGI_SALVAGER_SAVE"/>
+					</choice>
+				</event>
+			</choice>
 			<choice hidden="true">
 				<text>Fight them off.</text>
 				<event>
@@ -160,7 +170,7 @@
 		<autoReward level="MED">droneparts</autoReward>
 	</event>
 	<event>
-		<text>To your surprise, the Engi crew appears to have asphyxiated while you were fighting the Lanius ship. There's hardly anything external left to scrap, but you do find a drone that you can salvage.</text>
+		<text>To your surprise, the Engi crew appears to have asphyxiated while you were repelling the Lanius ship. There's hardly anything external left to scrap, but you do find a drone that you can salvage.</text>
 		<drone name="RANDOM"/>
 	</event>
 	<event>
@@ -260,7 +270,7 @@
 			<ship hostile="true"/>
 			<choice hidden="true">
 				<text>Continue...</text>
-				<event load="MORALITY_UPDATE_ENGI"/>
+				<event load="MORALITY_UPDATE_ENGI_FIGHT"/>
 			</choice>
 		</event>
 	</choice>
@@ -339,6 +349,40 @@
 		<event>
 			<text>"Acknowledged. Trustworthy crewmember detected. Clearing your ship, granting request for tribute."</text>
 			<autoReward level="LOW">standard</autoReward>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+    </choice>
+    <choice hidden="true" req="unique_mafan">
+		<text>(Mafan) "Stop interfering with my work!"</text>
+		<event>
+			<text>Mafan exuberantly yaps about their scientific mission, which causes the Engi to pause their search. After winding down, Mafan folds their arms. "If anything, you ought to donate to our scientific mission, since it will benefit the Harmony."
+				
+			"...Acknowledged. Trustworthy Ministry scientist detected. Clearing your ship, granting request for tribute."</text>
+			<autoReward level="LOW">standard</autoReward>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+    </choice>
+    <choice hidden="true" req="unique_tyerel">
+		<text>(Ty E'rel) "Diplomatic immunity."</text>
+		<event>
+			<text>The Defender doesn't respond immediately, but Ty E'rel continues. "According to the Federation Charter, section 3, Ambassadors are granted priority clearance in all Federation aligned sectors - including Harmony sectors. Ours is a mission of stability."
+
+			The Defender finally responds. "Request acknowledged. On your way."
+			</text>
 			<choice>
 				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
@@ -520,7 +564,7 @@
         <event>
             <text>It seems the cargo of the Mantis Elite ship survived the fight. Inside is a functional weapon, which you bring back on board.</text>
             <weapon name="GIFTLIST_MANTIS"/>
-            <choice>
+            <choice hidden="true">
                 <text>Forward the rest of the information to the Harmony.</text>
                 <event load="ENGI_FORWARD_TO_HARMONY"/>
             </choice>
@@ -543,6 +587,22 @@
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event load="MORALITY_UPDATE_ENGI_FIGHT"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="engi_defender">
+				<text>(Engi Defender) Try to convince them this may not be necessary.</text>
+				<event>
+					<text>"Do you have proof that this vessel = future Rebels?"
+					
+					"Negative."
+					
+					"Then stand down. Rebel threat probability estimation: under conflict initiation threshold."
+					
+					"Understood. However, expect consequences if your decision processing = unwise." The other Engi ship jumps away.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="RESCUED_CIVILIAN_IMPLANTS"/>
 					</choice>
 				</event>
 			</choice>
@@ -965,7 +1025,7 @@
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
-							<text>The Engi thank you for deleting the virus, and jump away. They offer am augmentation as a reward.</text>
+							<text>The Engi thank you for deleting the virus, and jump away. They offer an augmentation as a reward.</text>
 							<autoReward level="LOW">standard</autoReward>
 							<augment name="RANDOM"/>
 							<choice hidden="true">
@@ -1026,6 +1086,24 @@
 					</choice>
 				</event>
 			</choice>
+			<!--<choice req="BLUELIST_WEAPONS_HACK" hidden="true">
+				<text>(Hacking Weapon) Purge the virus.</text>
+				<event>
+					<text>It takes some time, and the virus is slippery, but your weapons strike true. You are able to corner it and completely erase it.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>The Engi thank you for deleting the virus, and jump away. They offer an augmentation as a reward.</text>
+							<autoReward level="LOW">standard</autoReward>
+							<augment name="RANDOM"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="MORALITY_REMOVE_ENGI"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>-->
 			<choice hidden="true" req="ANTI_VIRUS">
 				<text>(Anti-Virus) Purge the virus.</text>
 				<event>
@@ -1171,7 +1249,7 @@
 	<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="1" blue="false">
 		<text>Try to reprogram one of the Engi to serve you.</text>
 		<event>
-			<text>Your attempts at trying to create an Engi fail horribly, and a monstrous abomination of a creature falls out of the test tubes, latching onto one of your crew and tearing off their head! You blast it with your rifle but that only seems to temporarily stun it. You retreat back to the ship before it can kill any more of you. You stick to scrapping the external regions of the ship.</text>
+			<text>Your attempts at trying to create an Engi fail horribly, and a monstrous abomination of a creature falls out of the test tubes, latching onto one of your crew and tearing off their head! You blast it with your rifle but that only seems to temporarily stun it. You retreat back to the ship before it can kill any more of you. You stick to scrapping the external regions of the station.</text>
 			<autoReward level="MED">standard</autoReward>
 			<removeCrew>
 				<clone>true</clone>
@@ -1335,6 +1413,95 @@
 					</choice>
 				</event>
 			</choice>
+			<choice hidden="true" req="MAGNET_ARM">
+				<text>(Magnet Arm) Use your ship arm to collect additional scrap.</text>
+				<event>
+					<text>Your Magnet Arm is fortunately able to increase the amount retrieved within a reasonable timespan.</text>
+					<item_modify>
+						<item type="fuel" min="6" max="6"/>
+						<item type="scrap" min="60" max="60"/>
+						<item type="missiles" min="6" max="6"/>
+						<item type="drones" min="4" max="4"/>
+					</item_modify>
+					<modifyPursuit amount="1"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>It's quite a lot, but you know you're supposed to give it back to the Engi ship.</text>
+							<choice hidden="true">
+								<text>Give the supplies back to the Engi.</text>
+								<event>
+									<text>The Engi collects the supplies.</text>
+									<item_modify>
+										<item type="fuel" min="-6" max="-6"/>
+										<item type="scrap" min="-60" max="-60"/>
+										<item type="missiles" min="-6" max="-6"/>
+										<item type="drones" min="-4" max="-4"/>
+									</item_modify>
+									<choice hidden="true">
+										<text>Await your reward.</text>
+										<event>
+											<text>You wait for your reward, but the Engi transfer nothing over. You hail them, to which they respond, "Reward is already present. Gratification and warm feeling for helping others."</text>
+											<choice hidden="true">
+												<text>What? We will not stand for this!</text>
+												<event>
+													<text>You aren't about to put up with this garbage. You power up the weapons and prepare to engage the Engi head-on.</text>
+													<ship load="SHIP_ENGI_SALVAGE_HELP_MAGNET" hostile="true"/>
+													<choice hidden="true">
+														<text>Continue...</text>
+														<event load="MORALITY_UPDATE_ENGI_FIGHT"/>
+													</choice>
+												</event>
+											</choice>
+											<choice hidden="true">
+												<text>Oh...</text>
+												<event>
+													<text>"Your efforts = appreciated." The Engi ship ends the call and goes back to salvaging.</text>
+													<choice hidden="true">
+														<text>Continue...</text>
+														<event load="MORALITY_REMOVE_ENGI"/>
+													</choice>
+												</event>
+											</choice>
+										</event>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Refuse to give the resources back.</text>
+								<event>
+									<text>You've spent too long collecting all this salvage, you aren't going to just hand it over willingly.</text>
+									<ship load="SHIP_ENGI_ELITE_FIGHT" hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="MORALITY_UPDATE_ENGI_FIGHT"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true" req="LIST_CREW_HARMONY">
+								<text>(Harmony Crew) Request you split the supplies.</text>
+								<event>
+									<text>"This compromise... fair." Fortunately both sides are able to get an equal split of the salvage.</text>
+									<item_modify>
+										<item type="fuel" min="-3" max="-3"/>
+										<item type="scrap" min="-30" max="-30"/>
+										<item type="missiles" min="-3" max="-3"/>
+										<item type="drones" min="-2" max="-2"/>
+									</item_modify>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="MORALITY_REMOVE_ENGI"/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true" req="cloaking">
+								<text>(Cloaking) Cloak and leave.</text>
+								<event load="DISTRESS_ENGI_SALVAGE_CLOAK"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
 			<choice hidden="true">
 				<text>Refuse.</text>
 				<event>
@@ -1396,6 +1563,15 @@
 		<item type="scrap" min="50" max="50"/>
 		<item type="missiles" min="5" max="5"/>
 		<item type="drones" min="3" max="3"/>
+	</item_modify>
+</event>
+<event name="DISTRESS_HARMONY_SALVAGE_HELP_CAPTURE_MAGNET">
+	<text>With the Engi ship emptied, your previous salvage can easily be recollected. You best leave the beacon quickly before the Rebel fleet can progress further.</text>
+	<item_modify>
+		<item type="fuel" min="6" max="6"/>
+		<item type="scrap" min="60" max="60"/>
+		<item type="missiles" min="6" max="6"/>
+		<item type="drones" min="4" max="4"/>
 	</item_modify>
 </event>
 <eventList name="DISTRESS_ENGI_SALVAGE_CLOAK">
@@ -1679,6 +1855,21 @@
 					<autoReward level="HIGH">stuff</autoReward>
 				</event>
 			</choice>
+			<choice hidden="true" req="QUARP_JUICE">
+				<text>(Quarp Juice) Add some extra energy to this party.</text>
+				<event>	
+					<text>You share out helpings of Quarp Juice to the Engi and their Slug companions. Immediately the partygoers start to get more energetic and excited. The Engi, who is visibly shaking, pays you before rushing off to join their Slug companions, who seem to be bouncing around the room.</text>
+					<autoReward level="HIGH">stuff</autoReward>
+				</event>
+			</choice>
+			<!--<choice hidden="true" req="SLUG_NARCOTICS">
+				<text>(Slug Narcotics) Give the Engi the drugs.</text>
+				<event>	
+					<text>The Engi looks at the drugs, unsure of what to do with them. One of the Slugs however, has caught sight of them. They swipe the narcotics from the Engi before quickly paying you. Just before you leave, you spot the Engi unsuccessfully trying to chase down the Slug in question to retrieve the narcotics.</text>
+					<autoReward level="HIGH">weapon</autoReward>
+					<remove name="SLUG_NARCOTICS"/>
+				</event>
+			</choice>-->
 			<choice hidden="true">
 				<text>We can't help.</text>
 				<event load="DISTRESS_ENGI_PARTY_LEAVE"/>
@@ -2803,6 +2994,7 @@
 	<deadCrew load="TURZIL_PIRATE_DEADCREW"/>
 </ship>
 <event name="TURZIL_PIRATE_TRANSPORT" unique="true">
+	<preventQuest/>
 	<text>A Smuggler transport is attempting to sneak past the Engi patrols at this beacon. They're trying desperately to avoid you and you suspect they must have something important on board.</text>
 	<ship load="SHIP_TURZIL_TRANSPORT" hostile="false"/>
 	<choice hidden="true">
@@ -2841,7 +3033,7 @@
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
-					<text>"You have eliminated primary source of transport out of sector. Request: you transport my person out of Harmony. Will pay."</text>
+					<text>"You have eliminated [primary] source of transport out of sector. Request: you -transport- my person out of Harmony. Will pay."</text>
 					<choice>
 						<text>Accept.</text>
 						<event>
@@ -2877,7 +3069,7 @@
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
-					<text>"You have eliminated primary source of transport out of sector. Request: you transport my person out of Harmony. Will pay."</text>
+					<text>"You have eliminated [primary] source of transport out of sector. Request: you -transport- my person out of Harmony. Will pay."</text>
 					<choice>
 						<text>Accept.</text>
 						<event>
@@ -3003,7 +3195,7 @@
 	<choice req="unique_turzil" lvl="1" max_group="0" blue="false">
 		<text>Continue...</text>
 		<event>
-			<text>You turn to face the Engi fugitive who caused this problem in the first place. "Apologies, this conflict should have been predicted. It is important that my identity be provided. I am: General Turzil. My mission: escape capture of Harmony. I have achieved status of wanted fugitive for disobeying Harmony-Rebel non-aggression pact during Federation Civil War, and assisting Separatist movements in dismantling of Harmony. It is my request that you take me with you to avoid death and protection of underground Separatist movements."</text>
+			<text>You turn to face the Engi fugitive who caused this problem in the first place. "Apologies, this conflict [should] have been predicted. It is important that my -identity- be provided. I am: General Turzil. My mission: escape [capture] of Harmony. I have achieved status of wanted -fugitive- for disobeying Harmony-Rebel non-aggression pact during Federation Civil War, and [assisting] Separatist movements in dismantling of Harmony. It is my -request- that you take me with you to avoid death and protection of -underground- Separatist movements."</text>
 			<variable name="ach_crew_turzil" op="set" val="1"/>
 			<unlockCustomShip silent="false">PLAYER_SHIP_ENGI</unlockCustomShip>
 		</event>
@@ -3022,7 +3214,7 @@
 	<text>An Elite Engi ship moves in to attack. If you had to guess, you'd assume these were the reinforcements sent by the Harmony to hunt down the fugitive!</text>
 	<text>"Cease movement. You are wanted by Harmony for transporting and protecting fugitive." An elite Engi ship attacks!</text>
 	<text>The Elite Engi ship at this beacon looks out of place. You receive a short message about the fugitive you're protecting and the ship moves in to attack.</text>
-	<text>"You are wanted by the Harmony for: harbouring fugitive. Deactivate your weapons and surrender." An Engi Elite approaches, but you have no intentions of giving up.</text>
+	<text>"You are wanted by the Harmony for: harboring fugitive. Deactivate your weapons and surrender." An Engi Elite approaches, but you have no intentions of giving up.</text>
 </textList>
 
 </FTL>

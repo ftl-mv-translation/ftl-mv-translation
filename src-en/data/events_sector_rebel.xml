@@ -447,7 +447,7 @@
 			<choice hidden="true">
 				<text>Inspect the Orchid.</text>
 				<event>
-					<text>A bald civilian with an incredibly long beard welcomes you. "Step right up folks, and witness Sapling the Giver of Joy! A quick inhale of the scent from his leaves and you'll be feeling higher than a kite! Feel free to come forth and have a whiff, but do not, we aren't liable for anything that happens to you."</text>
+					<text>A bald civilian with an incredibly long beard welcomes you. "Step right up folks, and witness Sapling the Giver of Joy! A quick inhale of the scent from his leaves and you'll be feeling higher than a kite! Feel free to come forth and have a whiff, but do note, we aren't liable for anything that happens to you."</text>
 					<choice hidden="true">
 						<text>Offer to purchase Sapling.</text>
 						<event>
@@ -1333,7 +1333,7 @@ By the time the three of them are done talking, you find a generous amount of sc
 		<text>Your combat drone attacks the automated ship and then retreats, luring it away. You quickly move up to the radar station to access it.</text>
 		<choice>
 			<text>Continue...</text>
-			<event load="DEFENSE_RADAR_LIST_MV"/>
+			<event load="DEFENSE_RADAR_ACCESS_MV"/>
 		</choice>
 		<item_modify>
 			<item type="drones" min="-1" max="-1"/>
@@ -1343,7 +1343,7 @@ By the time the three of them are done talking, you find a generous amount of sc
 		<text>Your combat drone repeatedly fires at the automated ship. It can't break through its shields, but is at least enough of a distraction to allow you to access the radar station.</text>
 		<choice>
 			<text>Continue...</text>
-			<event load="DEFENSE_RADAR_LIST_MV"/>
+			<event load="DEFENSE_RADAR_ACCESS_MV"/>
 		</choice>
 		<item_modify>
 			<item type="drones" min="-1" max="-1"/>
@@ -1361,6 +1361,28 @@ By the time the three of them are done talking, you find a generous amount of sc
 		</choice>
 	</event>
 </eventList>
+<event name="DEFENSE_RADAR_ACCESS_MV">
+	<text>The station in question appears to be capable of relaying information to the Rebel Fleet. You could attempt to hack it to give the Rebels false information.</text>
+	<choice>
+		<text>Attempt to manually hack into the station.</text>
+		<event load="DEFENSE_RADAR_LIST_MV"/>
+	</choice>
+	<choice>
+		<text>Don't risk it. Leave the station.</text>
+		<event/>
+	</choice>
+	<choice hidden="true" req="hacking">
+		<text>(Hacking) Use a drone to hack into the station. [-1|]</text>
+		<event>
+			<text>You successfully hack into their system and transmit false information about your location. That should hold off the fleet for at least a little while. You also are able to download data about the surrounding beacons.</text>
+			<reveal_map/>
+			<modifyPursuit amount="-1"/>
+			<item_modify>
+				<item type="drones" min="-1" max="-1"/>
+			</item_modify>
+		</event>
+	</choice>
+</event>
 <eventList name="DEFENSE_RADAR_LIST_MV">
 	<event>
 		<text>You successfully hack into their system and transmit false information about your location. That should hold off the fleet for at least a little while.</text>
@@ -1456,6 +1478,14 @@ By the time the three of them are done talking, you find a generous amount of sc
 				<text>Reject his offer. You can never trust these Rebels.</text>
 				<event load="REBEL_DEFECTOR_REJECT_MV"/>
 			</choice>
+			<choice hidden="true" req="LIST_CREW_SLUG">
+				<text>(Slug Crew) Have your crewmember check their intentions.</text>
+				<event load="REBEL_DEFECTOR_TELEPATH_CREW_MV"/>
+			</choice>
+			<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+				<text>(Telepathic Shell) Have your crewmember check their intentions.</text>
+				<event load="REBEL_DEFECTOR_TELEPATH_CREW_MV"/>
+			</choice>
 			<choice hidden="true" req="LIST_CHECK_ANY_CREW" lvl="0" max_lvl="0" blue="false">
 				<text>Terminate the intruder immediately. You can never trust these Rebels.</text>
 				<event>
@@ -1469,6 +1499,23 @@ By the time the three of them are done talking, you find a generous amount of sc
 		</event>
 	</choice>
 </event>
+<eventList name="REBEL_DEFECTOR_TELEPATH_CREW_MV">
+	<event>
+		<text>Your crewmember checks their intentions for a few seconds, but is unable to find anything suggesting that they would be hostile. You let the former Rebel join your crew, and prepare to fight the Rebel ship off.</text>
+		<crewMember amount="1" class="human"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>It takes almost no time for your crewmember to determine that the Rebel in question is aiming to trick you. Though they're easily taken care off, you still have the other Rebels to deal with.</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
 <eventList name="REBEL_DEFECTOR_REJECT_MV">
 	<event>
 		<text>Your fearless crew easily overcome the intruder, but the Rebel ship still needs to be dealt with.</text>
@@ -1819,7 +1866,7 @@ By the time the three of them are done talking, you find a generous amount of sc
 					<choice hidden="true" req="LIST_CREW_SLUG">
 						<text>(Slug Crew) Your Slug thinks they can hack into the screens.</text>
 						<event>
-							<text>Your Slug snickers as they hack into the screens' mainframe. They go black for a minute, confusing everyone in the crowd. A few seconds after, they switch to Federation propoganda. After a massively negative reception from the crowd and doubled efforts from the Rebels to counter the attack, your Slug gets tired and switches the screens over to a very explicit program. He breaks into laughter, and you hurry back into the ship before the Rebels can follow. When you return to the ship, you find a Soldier already waiting for you. Before you can raise your weapons, they hold up their hand to stop you. "No need to worry, I am on your side. I was sent to work undercover, but I haven't been able to contact the Federation for days. I was afraid I'd have to steal a Rebel shuttle to get back, but luckily I think I've found my way out with you guys instead."</text>
+							<text>Your Slug snickers as they hack into the screens' mainframe. The display goes black for a minute, confusing everyone in the crowd. A few seconds after, they switch to Federation propaganda. After a massively negative reception from the crowd and doubled efforts from the Rebels to counter the attack, your Slug gets tired and switches the screens over to a very explicit program. He breaks into laughter, and you hurry back into the ship before the Rebels can follow. When you return to the ship, you find a Soldier already waiting for you. Before you can raise your weapons, they hold up their hand to stop you. "No need to worry, I am on your side. I was sent to work undercover, but I haven't been able to contact the Federation for days. I was afraid I'd have to steal a Rebel shuttle to get back, but luckily I think I've found my way out with you guys instead."</text>
 							<crewMember amount="1" class="human_soldier"/>
 						</event>
 					</choice>
@@ -2205,6 +2252,28 @@ By the time the three of them are done talking, you find a generous amount of sc
             </choice>
         </event>
     </choice>
+	<choice req="BLUELIST_WEAPONS_MIND_CONTROL" hidden="true">
+        <text>(Mind Control Weapon) Wait until the end of the meeting and compel one of the construction ships to fill you in.</text>
+        <event>
+            <text>You corner one of the construction ships. Your Mind Control weapon locks on and bursts with its hypnotic energies. The captain of the ship responds as if to a friend. "Oh, we're just headed off to enter the final construction phase of the newest Rebel space-dock in this sector. Let me give you the coordinates, if you want to stop by!"</text>
+            <quest event="QUEST_REBEL_INCOMPLETE_DOCK"/>
+            <choice>
+                <text>Leave before the Rebels notice you.</text>
+                <event/>
+            </choice>
+            <choice>
+                <text>Attack the Rebel before you leave.</text>
+                <event>
+                    <text>The Rebel seems so far unaware that you were here and attacks you on sight!</text>
+                    <ship load="SHIP_REBEL_GENERIC_NOESCAPE" hostile="true"/>
+                    <choice hidden="true">
+                        <text>Continue...</text>
+                        <event load="COMBAT_CHECK"/>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
     <choice req="cloaking" lvl="2" >
         <text>(Upg. Cloaking) Spy on the meeting.</text>
         <event>
@@ -2309,7 +2378,7 @@ By the time the three of them are done talking, you find a generous amount of sc
             <choice>
                 <text>Continue without destroying the dock.</text>
                 <event>
-                    <text>You have enough problems to worry about already. You carry on without any further interferance.</text>
+                    <text>You have enough problems to worry about already. You carry on without any further interference.</text>
                 </event>
             </choice>
         </event>
@@ -2703,6 +2772,114 @@ By the time the three of them are done talking, you find a generous amount of sc
 	<text>The transport makes every attempt to flee, and you follow them in hot pursuit. Unfortunately, they manage to slip away - but not all is lost. During the struggle you managed to get a lock on their FTL signatures, and now you can follow them during hyperspeed!</text>
 	<variable name="coords_jerry" op="set" val="1"/>
 </event>
+
+<event name="REBELHOLD_FLAGSHIP_SURPRISE">
+	<text>This is it... The Rebel Flagship. If you are able to destroy this monstrosity, the Federation fleet will have a chance of surviving. Only, it already looks to be significantly damaged, is transmitting a surrender signal, and this isn't even Node 17. What exactly is going on?</text>
+	<ship load="FLAGSHIP_ANOMALY" hostile="false"/>
+	<choice hidden="true">
+		<text>Contact them. Something seems amiss here.</text>
+		<event>
+			<text>The crew onboard the Flagship initially seem terrified of your presence, though take on a slightly more aggressive demeanor to try and disguise it. "Shit, looks like we've been found out here. Whaddya want, you Renegade crazies? Scrap? A second surrender from us? Some sort of "secret ending" to celebrate over?"</text>
+			<choice hidden="true">
+				<text>A second surrender?</text>
+				<event>
+					<text>The Flagship's captain continues. "Yeah, that's right. Back in whatever reality we were tasked with taking over, the Renegade who U0 tasked with taking us out somehow convinced the Rebel forces there to surrender. Impressive stuff, considering what you lot are known for. And good for us too, because we get a nice honorable discharge instead of getting murdered three times over. Then, on our way back to U1, we ran into some sort of bizarre anomaly and got flung here. Anyways, you never told us what you wanted, so spit it out."</text>
+					<choice hidden="false">
+						<text>A bunch of scrap.</text>
+						<event>
+							<text>"Well, that's easy to provide. Here you go. And make sure none of your Federation buddies in this reality know about us being here, got it?"</text>
+							<item_modify>
+								<item type="scrap" min="100" max="100"/>
+							</item_modify>
+							<instantEscape/>
+						</event>
+					</choice>
+					<choice hidden="true">
+						<text>Whatever that fancy weapon on your ship is.</text>
+						<event>
+							<text>"Oh, uh, that? U1 installed it on our ship before we even set off. They said something about it being a "new top secret weapon" or something of that nature. Unfortunately, we can't just hand it over. U1 command would kill us otherwise. So, how about a compromise?"</text>
+							<choice hidden="false">
+								<text>Accept their compromise.</text>
+								<event>
+									<text>You accept the new offer. They then jump away, but not before asking you to keep their presence here a secret.</text>
+									<weapon name="LASER_BURST_3"/>
+									<instantEscape/>
+								</event>
+							</choice>
+							<choice hidden="true">
+								<text>Attack them to get the weapon.</text>
+								<event>
+									<text>"Ugh, should've known not to act reasonable around Renegades. Well, if you lot want a piece of this Flagship, we're gonna make sure you get the full package!"</text>
+									<ship hostile="true"/>
+									<choice hidden="true">
+										<text>Continue...</text>
+										<event load="COMBAT_CHECK"/>
+									</choice>
+								</event>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="false">
+						<text>A little extra time in this sector.</text>
+						<event>
+							<text>"Well, that is something we can do, and odds are we're probably not going to get caught out on it, so I think we could help out by misleading the fleet. Just make sure nobody in the Federation knows we were here, got it?"</text>
+							<modifyPursuit amount="-2"/>
+							<instantEscape/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Escape before they can attack you.</text>
+		<event>
+			<text>You give the Flagship a wide berth, in case it suddenly turns aggressive. Fortunately, it makes no attempt to initiate combat, leaving you with some time on your hands to prepare for the real deal.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<ship name="FLAGSHIP_ANOMALY" auto_blueprint="FLAGSHIP_CONSTRUCTION">
+	<destroyed>
+		<text>You defeated the Flagship at this beacon. Hopefully this success bodes well for the rest of your mission.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>Fortunately, the strange weapon you were interested in survived the fight. You carefully remove it from the wreckage of their ship.</text>
+				<weapon name="BOMB_CLUSTER"/>
+			</event>
+		</choice>
+	</destroyed>
+	<deadCrew>
+		<text>You've cleared out the Flagship's crew. Though you're normally used to the Flagship having an AI take control under such circumstances, it seems it's either not present or not functional at this time, allowing you to salvage in peace.</text>
+		<autoReward level="HIGH">standard</autoReward>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event>
+				<text>Fortunately, the strange weapon you were interested in survived the fight. You carefully remove it from the wreckage of their ship.</text>
+				<weapon name="BOMB_CLUSTER"/>
+			</event>
+		</choice>
+	</deadCrew>
+	<triggeredEvent event="POWER_SURGE_BARRAGE_CONSTRUCTION" seeded="false" loops="999999999" thisFight="true" minTime="30.0" maxTime="40.0">
+		<warningMessage id="warning_power_surge" x="692" y="84" time="5.0" centerText="true" flash="true" sound="surgeWarning" useWarningLine="true"/>
+	</triggeredEvent>
+	<crew>
+		<crewMember type="human_mfk" prop="0.2"/>
+		<crewMember type="human_soldier" prop="0.2"/>
+		<crewMember type="human_rebel" prop="0.2"/>
+		<crewMember type="human_rebel_medic" prop="0.2"/>
+		<crewMember type="human_engineer" prop="0.2"/>
+	</crew>
+</ship>
 
 <!--
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

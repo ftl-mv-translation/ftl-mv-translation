@@ -580,7 +580,7 @@ Ty E'Rel nods. "If you come with us, I will do everything I can for you." Moment
 -->	
 <eventList name="NEBULA_ITEMS_KNIGHT">
 	<event load="NEBULA_KNIGHT_QUIZ"/>
-	<event load="NEBULA_KNIGHT_TRAP"/>
+	<event load="NEBULA_LIGHT_KNIGHT_TRAP"/>
 	<event load="NEBULA_KNIGHT_SMUGGLER"/>
 	<event load="NEBULA_KNIGHT_DUEL"/>
 </eventList>
@@ -681,10 +681,10 @@ Ty E'Rel nods. "If you come with us, I will do everything I can for you." Moment
 	</choice>
 </event>
 
-<event name="NEBULA_KNIGHT_TRAP" unique="true">
+<event name="NEBULA_LIGHT_KNIGHT_TRAP" unique="true">
 	<text>A Slug vessel nearby is approaching a planet without any signs of civilization. You can't imagine what they'd be doing, unless they're hiding from something, or know something you don't.</text>
 	<ship load="SHIP_SLUG_KNIGHT_TRAP" hostile="false"/> 
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_UNPOPULATED_TERRA"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_UNPOPULATED_TERRA"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice hidden="true">
 		<text>Question them.</text>
@@ -802,6 +802,13 @@ Ty E'Rel nods. "If you come with us, I will do everything I can for you." Moment
 			</choice>
 			<choice hidden="true" req="hacking" lvl="2">
 				<text>(Upg. Hacking) Cripple their engines and demand they hand over the narcotics!</text>
+				<event>
+					<text>"Alright, alright! God damn, why are you so aggressive. You're the one who wanted to trade anyways..."</text>
+					<augment name="SLUG_NARCOTICS"/>
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_WEAPONS_HACK">
+				<text>(Hacking Weapon) Cripple their engines and demand they hand over the narcotics!</text>
 				<event>
 					<text>"Alright, alright! God damn, why are you so aggressive. You're the one who wanted to trade anyways..."</text>
 					<augment name="SLUG_NARCOTICS"/>
@@ -979,7 +986,7 @@ Ty E'Rel nods. "If you come with us, I will do everything I can for you." Moment
 -->	
 <eventList name="NEBULA_NEUTRAL_KNIGHT">
 	<event load="NEBULA_KNIGHT_COALITION"/>
-	<event load="NEBULA_KNIGHT_CHOICE"/>
+	<event load="NEBULA_LIGHT_KNIGHT_CHOICE"/>
 	<event load="NEBULA_KNIGHT_PROTESTERS"/>
 	<event load="NEBULA_KNIGHT_SHAKESPEARE"/>
 	<event load="NEBULA_KNIGHT_JAILER"/>
@@ -1046,9 +1053,9 @@ Ty E'Rel nods. "If you come with us, I will do everything I can for you." Moment
 	</event>
 </eventList>
 
-<event name="NEBULA_KNIGHT_CHOICE" unique="true">
+<event name="NEBULA_LIGHT_KNIGHT_CHOICE" unique="true">
 	<text>Short range scans show two Slug vessels are in a dogfight at this beacon: one belong to the Knights, and the other to the Clairvoyants.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA"/>
+	<img back="BACK_EVENT_STARS_SPARSE"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice hidden="true">	
 		<text>Get involved.</text>
@@ -1352,6 +1359,17 @@ Ty E'Rel nods. "If you come with us, I will do everything I can for you." Moment
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="SLUG_NARCOTICS">
+		<text>(Slug Narcotics) Bribe the Knights with the narcotics to leave the colony alone.</text>
+		<event>
+			<text>The Knights seems more than willing to betray their nation in exchange for some hard drugs. The Knights fly away from the colony, presumably intending to put their new drugs to good use.</text>
+			<remove name="SLUG_NARCOTICS"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="KNIGHT_TAXES_COLONYHELP"/>
 			</choice>
 		</event>
 	</choice>
@@ -1971,7 +1989,7 @@ Ty E'Rel nods. "If you come with us, I will do everything I can for you." Moment
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
-					<text>Furious, Nights storms up to them demanding they hand back to the crown to him, but the crowd refuses. "You basssstard, you don't dessserve ssshit! Had you jussst done your duty asss a king and handled thisss asss ssomething other than an overgrown man-child, we wouldn't have the corpsssess of dozensss sssmoldering in front of the Royal palace!" Shouts someone from the crowd, shockingly appearing to be straight from Nights' inner circle.</text>
+					<text>Furious, Nights storms up to them demanding they hand back the crown to him, but the crowd refuses. "You basssstard, you don't dessserve ssshit! Had you jussst done your duty asss a king and handled thisss asss ssomething other than an overgrown man-child, we wouldn't have the corpsssess of dozensss sssmoldering in front of the Royal palace!" shouts someone from the crowd, shockingly appearing to be straight from Nights' inner circle.</text>
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event>

@@ -668,8 +668,8 @@
 
 <event name="AUGMENTED_FEEDING" unique="true">
 	<text>Nearby is a small ancient ruin with some augmented Lanius feeding on it. As you approach, they hail you. "You visitor? If having any fellow Lanius, feel free join in. Enough here to change composition!"</text>
-	<choice hidden="true" req="lanius">
-		<text>Let your Lanius feed on the ruins.</text>
+	<choice req="lanius">
+		<text>(Lanius Crew) Let your Lanius feed on the ruins.</text>
 		<event>
 			<text>Your Lanius glides out of the ship towards the ruins and attaches to them along with the others...</text>
 			<choice hidden="true">
@@ -680,6 +680,10 @@
 				</event>
 			</choice>
 		</event>
+	</choice>
+	<choice hidden="true" req="lanius_augmented">
+		<text>Your Augmented crew would not gain any benefit from these ruins, as they've already undergone substantial transformation from feeding on similar salvage.</text>
+		<event load="OPTION_INVALID"/>
 	</choice>
 	<choice hidden="true">
 		<text>Attack them to access the ruins on your own!</text>
@@ -843,7 +847,7 @@
                         <item type="fuel" min="-15" max="-15"/>
                         <item type="scrap" min="40" max="40"/>
                     </item_modify>
-                    <weapon name="ANCIENT_BOMB"/>
+                    <weapon name="ANCIENT_HAVOC"/>
                 </event>
             </choice>
             <choice>
@@ -1103,24 +1107,46 @@
 			</item_modify>
 			<choice hidden="true">
 				<text>Continue...</text>
-				<event>
-					<text>The Augmented ship flies over to inspect. "Good job. Share in ruin. Half, half." Even just half of the bounty is a high yield - you are able to get quite a lot of scrap out of it.</text>
-					<autoReward level="HIGH">standard</autoReward>
-				</event>
+				<event load="DISTRESS_AUGMENTED_EXPLOSIVE_HACK"/>
 			</choice>
 		</event>
     </choice>
+	<choice hidden="true" req="BLUELIST_WEAPONS_HACK">
+		<text>(Hacking Weapon) Attempt to stop the explosion.</text>
+		<event load="DISTRESS_AUGMENTED_EXPLOSIVE_GUN_HACK"/>
+	</choice>
     <choice>
 		<text>It's not worth the risk!</text>
-		<event>
-			<text>The Augmented ship quickly flies away from the wreckage as it explodes. It then confronts you - "Our meal, gone. We eat your ship!"</text>
-			<ship hostile="true"/>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event load="COMBAT_CHECK"/>
-			</choice>
-		</event>
+		<event load="DISTRESS_AUGMENTED_EXPLOSIVE_FAIL"/>
     </choice>
+</event>
+<eventList name="DISTRESS_AUGMENTED_EXPLOSIVE_GUN_HACK">
+	<event>
+		<text>You fire your weapon, and after a moment the tech begins to cool down. Seems a self-destruct had been tripped, likely by the Augmented ship. With the self-destruct disabled, your ship and the Lanius are able to convene over the ruin.</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="DISTRESS_AUGMENTED_EXPLOSIVE_HACK"/>
+		</choice>
+	</event>
+	<event>
+		<text>You fire your weapon, but nothing happens. You beat a hasty retreat while the tech continues to heat to critical levels.</text>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="DISTRESS_AUGMENTED_EXPLOSIVE_FAIL"/>
+		</choice>
+	</event>
+</eventList>
+<event name="DISTRESS_AUGMENTED_EXPLOSIVE_HACK">
+	<text>The Augmented ship flies over to inspect. "Good job. Share in ruin. Half, half." Even just half of the bounty is a high yield - you are able to get quite a lot of scrap out of it.</text>
+	<autoReward level="HIGH">standard</autoReward>
+</event>
+<event name="DISTRESS_AUGMENTED_EXPLOSIVE_FAIL">
+	<text>The Augmented ship quickly flies away from the wreckage as it explodes. It then confronts you - "Our meal, gone. We eat your ship!"</text>
+	<ship hostile="true"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="COMBAT_CHECK"/>
+	</choice>
 </event>
 
 <event name="DISTRESS_AUGMENTED_WENTWORTH" unique="true">
@@ -1351,7 +1377,7 @@
 <textList name="TEXT_ENCOUNTER_AUGMENTED">
 	<text>The Augmented are fearsome fighters and scavengers, even if you've met a few friendly ones too. It appears you've met one that is far less friendly, and they're looking to attack you!</text>
 	<text>It appears the drive for life-sustaining scrap has driven the nearby Augmented Lanius to madness, and they're desperate enough to attack a military vessel like yours!</text>
-	<text>You didn't think the Lanius could get anymore scrap-hungry than the ones in the Swarmlands, but the Augmented have proven otherwise. Prepare for battle!</text>
+	<text>You didn't think the Lanius could get any more scrap-hungry than the ones in the Swarmlands, but the Augmented have proven otherwise. Prepare for battle!</text>
 	<text>"Needing scrap. You have ship made of scrap. I eat you ship. Do not worrying, am fair. Will give you shuttle." This won't fly for as long as you are captain of this ship!</text>
 	<text>You knew the Augmented come here to feed on ancient wreckage, but you didn't know they'd go so far as to attack a ship like yours!</text>
 </textList>

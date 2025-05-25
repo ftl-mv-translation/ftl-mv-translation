@@ -62,8 +62,15 @@ do
             local room = shipGraph:GetSelectedRoom(location.x, location.y, false)
             if room > -1 then
                 local roomShape = shipGraph:GetRoomShape(room)
-                for i = shipManager:GetFireCount(room) + 1, (roomShape.w*roomShape.h)/1225 do
-                    shipManager:StartFire(room)
+                local startX = roomShape.x // 35
+                local startY = roomShape.y // 35
+                local endX = startX + (roomShape.w // 35) - 1
+                local endY = startY + (roomShape.h // 35) - 1
+                for x = startX, endX do
+                    for y = startY, endY do
+                        local fire = shipManager:GetFire(x, y)
+                        fire.fDamage = 100
+                    end
                 end
             end
         end

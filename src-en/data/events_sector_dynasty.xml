@@ -112,6 +112,46 @@
 			<weapon name="GIFTLIST_RUSTY"/>
 		</event>
 	</choice>
+	<choice hidden="true" req="BLUELIST_CREW_NODOORS">
+		<text>(Phasing Crew) Open the cache from the inside.</text>
+		<event>
+			<text>Your crewmember tries to slip inside the cache, but are thoroughly unsuccessful, receiving a nasty shock for their efforts. It seems the Dynasty employed some sort of anti-phasing measures on their caches, likely to ensure that their content would not be accessed by unwanted thieves, such as Vagabond Ghosts. Still, you should be able to try accessing the cache regardless, through other means.</text>
+			<choice hidden="true">
+				<text>Open the cache.</text>
+				<event load="DYNASTY_CACHE_OPEN"/>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_ROCK">
+				<text>(Rock Crew) Smash open the cache.</text>
+				<event>
+					<text>Your crew successfully smashes open the cache. Inside looks to be some ancient, decayed weapon. It's nothing fancy either, just an older model of any modern weapon. Still, it's a weapon, and its accompanied by some scrap too!</text>
+					<autoReward level="MED">scrap_only</autoReward>
+					<weapon name="GIFTLIST_RUSTY"/>
+				</event>
+			</choice>
+			<choice hidden="true" req="weapons" lvl="5">
+				<text>(Upg. Weapons) Blast open the cache.</text>
+				<event>
+					<text>You blast open the cache with your weapons. Inside looks to be some ancient, decayed weapon. It's nothing fancy either, just an older model of any modern weapon. Still, it's a weapon, and its accompanied by some scrap too!</text>
+					<autoReward level="MED">scrap_only</autoReward>
+					<weapon name="GIFTLIST_RUSTY"/>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Ignore the cache.</text>
+				<event>
+					<text>Better not to risk touching Dynasty property in Dynasty space.</text>
+					<choice hidden="true">
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice hidden="true">
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
 	<choice hidden="true">
 		<text>Ignore the cache.</text>
 		<event>
@@ -183,7 +223,7 @@
 </event>
 
 <event name="DYNASTY_DUEL" unique="true">
-	<text>Clearly, the Rebels did something to the Dynasty to anger them so. A Rebel and Dynasty ship are squarring off... but they haven't seen you yet!</text>
+	<text>Clearly, the Rebels did something to the Dynasty to anger them so. A Rebel and Dynasty ship are squaring off... but they haven't seen you yet!</text>
 	<choice hidden="true">
 		<text>Aid the Rebel ship.</text>
 		<event>
@@ -196,7 +236,7 @@
 		</event>
 	</choice>
 	<choice hidden="true">
-		<text>Aid the Ghost ship.</text>
+		<text>Aid the Dynasty ship.</text>
 		<event>
 			<text>You prepare to fight the Rebel ship.</text>
 			<ship load="SHIP_GHOST_REBEL_DUEL" hostile="true"/>
@@ -245,7 +285,7 @@
 	<event load="NEBULA_DYNASTY_TRINKETS"/>
 	<event load="NEBULA_DYNASTY_INTERROGATION"/>
 	
-	<event load="NEBULA_VAGABOND_FLEETCRASH"/>
+	<event load="NEBULA_LIGHT_VAGABOND_FLEETCRASH"/>
 </eventList>
 
 <event name="NEBULA_DYNASTY_FILTH" unique="true">
@@ -279,7 +319,7 @@
 											<choice hidden="true">
 												<text>Gather even more scrap for him.</text>
 												<event>
-													<text>There's no doubt the Rebels are really on your heels now. "Good! At the final hour of the rotational cycle you have met my demands most valiantly! You bring me sense of triumph! The FILTH is no more! A heroic warrior against the plague of the FILTH deserves none other than me by their side!"</text>
+													<text>There's no doubt the Rebels are really on your heels now. "Good! At the final hour of the rotational cycle you have met my demands most valiantly! You bring me a sense of triumph! The FILTH is no more! A heroic warrior against the plague of the FILTH deserves none other than me by their side!"</text>
 													<autoReward level="HIGH">standard</autoReward>
 													<crewMember amount="1" all_skills="2" class="phantom"/>
 													<modifyPursuit amount="1"/>
@@ -296,6 +336,31 @@
 										<event/>
 									</choice>
 								</event>
+							</choice>
+							<choice hidden="true" req="SCRAP_COLLECTOR">
+								<text>(Scrap Arm) Use your Scrap Arm to expedite the process.</text>
+								<event name="DYNASTY_FILTH_ARM">
+									<text>Even with the help of your ship arm, you're still only able to collect so much scrap. With the fleet ever on your trail, you settle for gathering an amount you seem pleased about and present it to the Ghost, but they don't seem satisfied. "No. NO! Your work is still far from over, for you have but barely turned over the prologue in your vast quest! And you shall continue, until nary a glimmer of the FILTH remains to pollute the tranquility of this space!"</text>
+									<autoReward level="HIGH">standard</autoReward>
+									<modifyPursuit amount="1"/>
+									<choice hidden="true">
+										<text>Continue to use your ship arm to collect the scrap.</text>
+										<event>
+											<text>Fortunately, though the task of collecting the remaining scrap seems daunting, your ship arm makes quick enough work of it to finish the process before you next talk to the Ghost. Even still, this journey has surely given enough time for the Rebels to pin down your current position. The Ghost takes their time to congratulate your efforts. "Good! At the final hour of the rotational cycle you have met my demands most valiantly! You bring me a sense of triumph! The FILTH is no more! A heroic warrior against the plague of the FILTH deserves none other than me by their side!"</text>
+											<autoReward level="HIGH">standard</autoReward>
+											<crewMember amount="1" all_skills="2" class="phantom"/>
+											<modifyPursuit amount="1"/>
+										</event>
+									</choice>
+									<choice hidden="true">
+										<text>Refuse.</text>
+										<event/>
+									</choice>
+								</event>
+							</choice>
+							<choice hidden="true" req="MAGNET_ARM">
+								<text>(Magnet Arm) Use your Magnet Arm to expedite the process.</text>
+								<event load="DYNASTY_FILTH_ARM"/>
 							</choice>
 							<choice hidden="true">
 								<text>Decline.</text>
@@ -368,6 +433,13 @@
 				<text>(Upg. Mind Control) Force the Alpha to split.</text>
 				<event>
 					<text>The Alpha begins to shake more violently, and suddenly erupts into a fine mist, slowly reforming into two separate Ghosts. The twins look at each other and begin to scream, but are subdued by the confused medical staff. "What in the great nebula has occurred? This is not how the process is intended to go about! I-I truly am uncertain of what to consider of this situation. These ones are not... uh... we would rather not have them in the field of battle. Have them instead."</text>
+					<crewMember amount="2" class="phantom"/>
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL">
+				<text>(Mind Control Weapon) Force the Alpha to split.</text>
+				<event>
+					<text>After being struck by your weapon, the Alpha begins to shake more violently, and suddenly erupts into a fine mist, slowly reforming into two separate Ghosts. The twins look at each other and begin to scream, but are subdued by the confused medical staff. "What in the great nebula has occurred? This is not how the process is intended to go about! I-I truly am uncertain of what to consider of this situation. These ones are not... uh... we would rather not have them in the field of battle. Have them instead."</text>
 					<crewMember amount="2" class="phantom"/>
 				</event>
 			</choice>
@@ -521,7 +593,7 @@
 	<choice hidden="true">
 		<text>Avoid them.</text>
 		<event>
-			<text>This looks pretty serious, and it's probably safest not to interlude.</text>
+			<text>This looks pretty serious, and it's probably safest to not intervene.</text>
 			<choice hidden="true">
 				<text>Do something onboard the ship.</text>
 				<event load="STORAGE_CHECK"/>
@@ -910,7 +982,7 @@
 			<choice hidden="true" req="loc_dynasty_impressed">
 				<text>(Savior of the Dynasty) Could you do us a favor?</text>
 				<event>
-					<text>"Oh the gods bestow upon me an honor like I never knew! An embarassment, I am, for not having recognized the savior of our lands! Yes, yes, we will do anything!" You kindly ask them to allow your smuggler 'friends' through, and they oblige without hesitation.</text>
+					<text>"Oh the gods bestow upon me an honor like I never knew! An embarrassment, I am, for not having recognized the savior of our lands! Yes, yes, we will do anything!" You kindly ask them to allow your smuggler 'friends' through, and they oblige without hesitation.</text>
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
@@ -1161,7 +1233,7 @@
 </event>
 
 <eventList name="NEBULA_NEUTRAL_DYNASTY_UNIQUE">
-	<event load="NEBULA_DYNASTY_OCCUPIED"/>
+	<event load="NEBULA_LIGHT_DYNASTY_OCCUPIED"/>
 
 	<event load="NEBULA_DYNASTY_SMUGGLER"/>
 	<event load="NEBULA_DYNASTY_AUTOQUEST"/>
@@ -1170,19 +1242,19 @@
 	<event load="NEBULA_DYNASTY_LOST"/>
 </eventList>
 
-<event name="NEBULA_DYNASTY_OCCUPIED" unique="true">
+<event name="NEBULA_LIGHT_DYNASTY_OCCUPIED" unique="true">
 	<text>While it can be hard to tell the differences between nebulas, something is definitely off here. Several bright lights through the clouds guide you to a massive Dynasty mining colony, built in loosely-joined structures around a fleet of ancient and dilapidated ships. You expect to see heavy traffic, or at least signs of activity, but the colony is mostly dormant. Even stranger, a fleet of Duskbringer ships have surrounded the colony as well. What could be happening here?</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="NONE"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="NONE"/>
 	<status type="loss" target="player" system="sensors" amount="1"/>
 	<customFleet right="false" firing="false" autoDarkening="true">CUSTOM_FLEET_ANCIENT_WRECKAGE</customFleet>
 	<choice hidden="true">
 		<text>Approach.</text>
 		<event>
-			<text>You land on the only landing pad that seems to be unguarded in the entire colony. As you make the uncomfortable waddle through the depressurized hallways in your burdensome space suits, you notice several very well armed and suited Duskbringer patrols back and forth, and the occasional Phantom lingering about only to duck into an alley or building when any soldiers go past.</text>
+			<text>You land on the only landing pad that seems to be unguarded in the entire colony. As you make the uncomfortable waddle through the depressurized hallways in your burdensome space suits, you notice several very well armed and suited Duskbringer patrols moving back and forth, and the occasional Phantom lingering about only to duck into an alley or building when any soldiers go past.</text>
 			<choice hidden="true">
 				<text>Search for the Duskbringer command.</text>
 				<event>
-					<text>Making sure not to be spotted, you duck between alley ways and follow the patrols. Eventually you find the commander's office, which clearly once belonged to a proud Phantom instead. "Renegades, in my colony? Hm, more likely than I thought. Didn't think anyone else was stupid enough to come to this forsaken place full of gasbags. Do you know how many times I've been called a 'breather' here? What kind of insult even is that? Sure, we have to wear these big ugly suits just so we can breathe, but at least our biology isn't comprised of hot air!"
+					<text>Making sure not to be spotted, you duck between alleyways and follow the patrols. Eventually you find the commander's office, which clearly once belonged to a proud Phantom instead. "Renegades, in my colony? Hm, more likely than I thought. Didn't think anyone else was stupid enough to come to this forsaken place full of gasbags. Do you know how many times I've been called a 'breather' here? What kind of insult even is that? Sure, we have to wear these big ugly suits just so we can breathe, but at least our biology isn't comprised of hot air!"
 					
 					The Duskbringer smirks and leans back in her chair. "But I'm getting carried away. I assume you're peaceful, since you aren't shooting yet. So, if you're up for it... I have an offer. We took this colony a few weeks back in hopes of securing part of the Dynasty's Aether supply. It's gone wonderfully, except these damn Phantoms started teaming up. Now, the Dynasty's sending Vagabond hitmen to screw with us, hoping we'll leave before long. I sure as hell ain't losing to a species as inferior as this. Hmph. The Dynasty had its prime some eons ago, but now it's time for a new glorious empire. One run by Zoltans, but to make that happen first we need the kind of weapons this Aether will go towards making. Intel suggests a hidden fleet is waiting for a good chance to strike. Take out their leader and I'll compensate you."</text>
 					<ship load="SHIP_DYNASTY_OCCUPIED" hostile="false"/>
@@ -1489,7 +1561,7 @@
 <eventList name="NEBULA_HOSTILE_DYNASTY">
 	<event load="NEBULA_ENCOUNTER_DYNASTY"/>
 	<event load="NEBULA_ENCOUNTER_VAGABOND_DYNASTY"/>
-	<event load="NEBULA_ENCOUNTER_REBEL_DYNASTY"/>
+	<event load="NEBULA_ENCOUNTER_ENGINEER_DYNASTY"/>
 	<event load="NEBULA_ENCOUNTER_AUTO_DYNASTY"/>
 	<event load="NEBULA_ENCOUNTER_DYNASTY_HOSTAGE"/>
 </eventList>
@@ -1504,7 +1576,7 @@
 	</choice>
 </event>
 <textList name="NEBULA_DYNASTY_FIGHT">	
-	<text>It's strange how aggressive the Dynasty is, especially when the break away Vagabond Ghosts are much more reclusive. Though, perhaps that may be why they broke away in the first place. But, you'll have to think about this later, as a Dynasty vessel is inbound!</text>	
+	<text>It's strange how aggressive the Dynasty is, especially when the breakaway Vagabond Ghosts are much more reclusive. Though, perhaps that may be why they broke away in the first place. You'll have to think about this later, as a Dynasty vessel is inbound!</text>	
 	<text>Make no mistake, the ship coming at you isn't friendly. A Dynasty vessel lurches forward, eyeing your weapons before attacking!</text>	
 	<text>A garbled message comes across your radio. "Weapons. They belong to me. GIVE!" A Dynasty ship uncloaks nearby, weapons drawn!</text>	
 	<text>For such an elegant name as the Spectral Dynasty, their ships are uncharacteristically hostile and violent. There's no better example than the vessel here, as it approaches menacingly.</text>	
@@ -1532,8 +1604,8 @@
 	<text>A Vagabond, likely fleeing from Dynasty patrols, has stumbled right into you. "You side with the Dynasty, nay? Oh, for what am I asking. The risk is not worth it, I shall simply remove you from my path."</text>
 </textList>
 
-<event name="NEBULA_ENCOUNTER_REBEL_DYNASTY"> <!--actually an engineer-->
-	<text load="NEBULA_REBEL_DYNASTY_FIGHT"/>
+<event name="NEBULA_ENCOUNTER_ENGINEER_DYNASTY">
+	<text load="NEBULA_ENGINEER_DYNASTY_FIGHT"/>
 	<ship load="SHIP_ENGINEER" hostile="true"/>
 	<environment type="nebula"/>
 	<choice hidden="true">
@@ -1541,7 +1613,7 @@
 		<event load="COMBAT_CHECK"/>
 	</choice>
 </event>
-<textList name="NEBULA_REBEL_DYNASTY_FIGHT">	
+<textList name="NEBULA_ENGINEER_DYNASTY_FIGHT">	
 	<text>Usually the Rebel ships you'd expect to see here are Autos, but it's not surprising to see an Engineer here either. Unfortunately, they're no less friendly either!</text>
 	<text>"You've just come here to make my damn job harder, haven't you? Piss off!" A particularly agitated Engineer vessel swerves to attack you!</text>
 	<text>After a long day working on the always damaged Auto-ships they construct, it's no wonder the Engineers feel the need to let off some steam. Alas, it looks like you're their next target!</text>
@@ -1734,56 +1806,7 @@
 
 <event name="NEBULA_DYNASTY_SPECIALRUIN" unique="true">
 	<preventQuest/>
-	<beaconType id="map_icon_ruins_dynasty" global="false">
-		<color r="36" g="255" b="0" a="1.0"/>
-		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
-		<unvisitedTooltip>This beacon contains ancient ruins.</unvisitedTooltip>
-	</beaconType>
-	<text>You've heard that the Dynasty's territory is littered with ruins from days past. But the wrecks in the distance... well, those don't look like Dynasty ships to you.</text>
-	<img back="BACK_EVENT_DYNASTYRUIN" planet="NONE"/>
-	<choice hidden="true">
-		<text>Continue...</text>
-		<event>
-			<text>A massive Dynasty ship lurches towards you. "Wastes of days past are not those which require the temperament of modern day's impacts. What shift in the cosmic balance has led to your sudden appearance to this location? Do thou seek to stir a ruckus? Or just make the days of mine less enjoyable for the foreseeable future? Should I even continue to persist in this reality after?"</text>
-			<ship load="SHIP_DYNASTY_SCAVENGER_BOSS" hostile="false"/>
-			<choice hidden="true">
-				<text>Do you speak normally?</text>
-				<event>
-					<text>The Phantom sighs. "Your barbaric vernacular singes my tongue, but yes, I shall put an attempt to communicate in a way your primitive ape brain might understand. This beacon is the last of the great Obelisk wastes in this sector that require cleansing. This task was left up to Salvaging Operation DN-03. All objects or artifacts collected here are to be brought back for processing. We request that you leave, and warn you that our vessels are armed for combat as well as they are prepared for collection of ancient rubbish."</text>
-					<choice hidden="true">
-						<text>Fight them to access the ruins!</text>
-						<event>
-							<text>"Ooh, you are a foul creature! How the anger and thoughts of violence twist your face into an unpleasant swirl of unconditional hatred. Erasing you shall do all but yourself a favor."</text>
-							<ship hostile="true"/>
-							<choice hidden="true">
-								<text>Continue...</text>
-								<event load="COMBAT_CHECK"/>
-							</choice>
-						</event>
-					</choice>
-					<choice hidden="true" req="LIST_CREW_ANCIENT_ALL">
-						<text>(Obelisk Crew) "These ruins belong to us!"</text>
-						<event>
-							<text>The Phantom lets out the loudest scream you've ever heard. "EEEK! DO MY EYES DECEIVE ME? THE OBELISK HAVE RETURNED?! Oh by the Reaper's name shall I fight to make certain your disease of a species may never return in forces of such volume ever again!"</text>
-							<ship hostile="true"/>
-							<choice hidden="true">
-								<text>Continue...</text>
-								<event load="COMBAT_CHECK"/>
-							</choice>
-						</event>
-					</choice>
-					<choice hidden="true">
-						<text>Alright, we'll leave.</text>
-						<event/>
-					</choice>
-				</event>
-			</choice>
-		</event>
-	</choice>
-</event>
-<event name="NEBULA_DYNASTY_SPECIALRUIN_BOON" unique="true">
-	<preventQuest/>
-	<beaconType id="map_icon_ruins_dynasty" global="true">
+	<beaconType id="map_icon_ruins_dynasty" global="false"> <!-- JUDGE_BOON_AETHER reveal handled in Lua -->
 		<color r="36" g="255" b="0" a="1.0"/>
 		<undiscoveredTooltip>An unvisited location.</undiscoveredTooltip>
 		<unvisitedTooltip>This beacon contains ancient ruins.</unvisitedTooltip>
@@ -1837,7 +1860,7 @@
 		<text>Continue...</text>
 		<event>
 			<text>With the Dynasty out of the way, you pull apart the ancient wreckage, and find a unique weapon unlike any you've seen!</text>
-			<weapon name="ANCIENT_HAVOC"/>
+			<weapon name="ANCIENT_ION_2"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="DYNASTY_SPECIALRUIN_LOG"/>
@@ -1848,7 +1871,7 @@
 		<text>Continue...</text>
 		<event>
 			<text>You catch Dessius giving you a disapproving look, but you figure he'll get over it eventually. If he really cared, he would have stepped in beforehand. You pull apart the ancient wreckage, and find a unique weapon unlike any you've seen!</text>
-			<weapon name="ANCIENT_HAVOC"/>
+			<weapon name="ANCIENT_ION_2"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="DYNASTY_SPECIALRUIN_LOG"/>

@@ -28,8 +28,7 @@ noTpPs.duration = 1
 noTpPs.realBoostId = Hyperspace.StatBoostDefinition.statBoostDefs:size()
 Hyperspace.StatBoostDefinition.statBoostDefs:push_back(noTpPs)
 script.on_internal_event(Defines.InternalEvents.CREW_LOOP, function(crew)
-    local _, tpMove = crew.extend:CalculateStat(Hyperspace.CrewStat.TELEPORT_MOVE)
-    if tpMove and crew.iShipId == 1 then
+    if select(2, crew.extend:CalculateStat(Hyperspace.CrewStat.TELEPORT_MOVE)) and (crew.iShipId == 0) == crew.bMindControlled then
         local crewData = userdata_table(crew, "mods.multiverse.crewTpFix")
         if crewData.lastTpRoom and crewData.lastTpRoom ~= crew.iRoomId then
             if crew.currentShipId == 0 then

@@ -52,19 +52,27 @@
 	<event load="UNION_EFFICIENCY_ENGINEER"/>
 </eventList>
 
+<textList name="TEXT_UNION_TRAFFIC">
+    <text>Pinnacle Robotics facilities like the one near this beacon are notorious for wreaking havoc on unprepared ships passing by, as EMPs used to disable their experimental Sentient Weapons often overwhelm the planet's magnetosphere. It might be inconvenient, but the energy readings from this beacon should throw the rebels off your trail for a while.</text>
+    <text>Your sensors are overwhelmed with traffic at this beacon, as Archive, Inc. ships work to restore ancient ruins recently identified nearby. The fleet will put a stop to all their work shortly, but the traffic should cover your tracks for now.</text>
+    <text>You're treated to quite a sight as you drop out of FTL - R.S.T. workers are hard at work testing a new version of their terraforming technology on a planet nearby, with dust clouds rising up to the edge of the planet's atmosphere. You change your jump signature to match one of the ships observing from the beacon - that should keep the rebels off your tail a little longer.</text>
+    <text>Detritus Disposal is apparently up to something exciting out here - an abandoned colony destroyed in the Federation-Mantis war is apparently slated to be recycled whole in a test for their A.C.I.D. tech's newest iteration. The array of ships hovering nearby to watch the destruction should prove a useful cover for your ship's movements from this beacon.</text>
+    <text>This beacon is heavily trafficked by numerous civilian vessels of varying origins. Your radio is overcome with a spectrum frequencies that make it impossible to eavesdrop on any pertinent conversations, but at least, the Rebels will struggle to track you amongst the sea of vessels.</text>
+</textList>
+
 <event name="UNION_TRAFFIC" unique="true">
-	<text>This beacon is heavily trafficked by a number of civilian vessels from all sorts of origins. Your radio is overcome with all sorts of frequencies that make it impossible to eavesdrop on any pertinent conversations, but at least, the Rebels will struggle to track you amongst the sea of vessels.</text>
-	<img planet="NONE"/>
-	<customFleet right="false" firing="false" autoDarkening="true">CUSTOM_FLEET_CIVILIAN</customFleet>
-	<modifyPursuit amount="-2"/>
-	<choice>
-		<text>Do something onboard the ship.</text>
-		<event load="STORAGE_CHECK"/>
-	</choice>
-	<choice>
-		<text>Do nothing.</text>
-		<event/>
-	</choice>
+    <text load="TEXT_UNION_TRAFFIC"/>
+    <img planet="PLANET_UNPOPULATED_TERRA"/>
+    <customFleet right="false" firing="false" autoDarkening="true">CUSTOM_FLEET_CIVILIAN</customFleet>
+    <modifyPursuit amount="-2"/>
+    <choice>
+        <text>Do something onboard the ship.</text>
+        <event load="STORAGE_CHECK"/>
+    </choice>
+    <choice>
+        <text>Do nothing.</text>
+        <event/>
+    </choice>
 </event>
 
 <event name="UNION_BREACH" unique="true"> <!--need damaged sprite-->
@@ -182,7 +190,7 @@
 			<choice hidden="true">
 				<text>Contact the ship.</text>
 				<event>
-					<text>"Yeah, what do you want?" You explain the Free Mantis ship they're hunting is only trying to pass through the sector peacefully. The Militia captain breaks into laughter. "HAH! You're joking. You have to be. If there was anything the Rebellion got right, it's that aliens are dangerous. They're filthy Mantis. You can't trust a word they say."</text>
+					<text>"Yeah, what do you want?" You explain the Free Mantis ship they're hunting is only trying to pass through the sector peacefully. He rolls his eyes. "A Zoltan reported that there was a Mantis causing trouble in the area. We'll arrest that bug, obviously. What do you expect us to do?"</text>
 					<choice hidden="true">
 						<text>Force them to surrender.</text>
 						<event>
@@ -197,7 +205,7 @@
 					<choice hidden="true" req="LIST_CREW_FREEMAN">
 						<text>(Free Mantis Crew) Talk to the Militiamen.</text>
 						<event>
-							<text>Your Free Mantis walks onto the camera, waving with a big goofy grin. The Militiamen however, are not quite so pleased. "Ugh, you have one of the insectoid freaks on your SHIP?! That's repulsive! For what did all those men and women die for in the Fed-Mantis war if we're just letting the Mantis work alongside us now? You are the reason this galaxy, hell, this Multiverse has gone to shit." They end the call immediately and attack!</text>
+							<text>Your Free Mantis walks onto the camera, waving with a big goofy grin. The Militiamen however, are not quite so pleased. "You may be fooled by their sickening facade, but we will never forget! What did all those men and women die for in the Fed-Mantis war if we're just letting the Mantis work alongside us now? You are the reason this galaxy, hell, this Multiverse has gone to shit." They end the call immediately and attack!</text>
 							<ship hostile="true"/>
 							<choice hidden="true">
 								<text>Continue...</text>
@@ -208,41 +216,18 @@
 					<choice>
 						<text>Bribe them.</text>
 						<event>
-							<text>"Ugh, fine. You're really determined to save these Mantis freaks. Just hope they don't get into any trouble or we'll have no choice but to kill them."</text>
+							<text>"Ugh, fine. This will go badly, mark my words. If they cause any more trouble, we'll have no choice but to kill them."</text>
 							<item_modify>
 								<item type="scrap" min="-20" max="-20"/>
 							</item_modify>
 							<choice hidden="true">
 								<text>Go back to the Free Mantis.</text>
-								<event>
-									<text>"Many thanks! You have done great favor for us. We in debt to you captain. How can repay you?"</text>
-									<choice hidden="true">
-										<text>Repairs.</text>
-										<event>
-											<text>The Free Mantis aren't very good at repairs, but they all work together and manage to repair a decent portion of your hull.</text>
-											<damage amount="-10"/>
-										</event>
-									</choice>
-									<choice hidden="true">
-										<text>Fuel.</text>
-										<event>
-											<text>The Free Mantis transfer over some fuel.</text>
-											<autoReward level="MED">fuel_only</autoReward>
-										</event>
-									</choice>
-									<choice hidden="true">
-										<text>Scrap.</text>
-										<event>
-											<text>The Free Mantis gladly hand over a portion of their scrap stores to you.</text>
-											<autoReward level="MED">scrap_only</autoReward>
-										</event>
-									</choice>
-								</event>
+								<event load="UNION_FREEMANTIS_REWARD"/>
 							</choice>
 						</event>
 					</choice>
 					<choice>
-						<text>Give up, Rebel sympathizers are too stubborn.</text>
+						<text>Give up.</text>
 						<event/>
 					</choice>
 				</event>
@@ -295,34 +280,11 @@
 	<choice hidden="true">
 		<text>Let the Free Mantis go and we'll spare you.</text>
 		<event>
-			<text>"Jeez, you people are insane. But fine, we'll let them through. Damn senator starts accepting refugees and suddenly we're killing each other just to let these assholes into our homes..."</text>
+			<text>"Jeez, you people are insane. But fine, we'll let them through. These Mantis refugees will be the deaths of us all..."</text>
 			<ship hostile="false"/>
 			<choice hidden="true">
 				<text>Go back to the Free Mantis.</text>
-				<event>
-					<text>"Many thanks! You have done great favor for us. We in debt to you captain. How can repay you?"</text>
-					<choice hidden="true">
-						<text>Repairs.</text>
-						<event>
-							<text>The Free Mantis aren't very good at repairs, but they all work together and manage to repair a decent portion of your hull.</text>
-							<damage amount="-10"/>
-						</event>
-					</choice>
-					<choice hidden="true">
-						<text>Fuel.</text>
-						<event>
-							<text>The Free Mantis transfer over some fuel.</text>
-							<autoReward level="MED">fuel_only</autoReward>
-						</event>
-					</choice>
-					<choice hidden="true">
-						<text>Scrap.</text>
-						<event>
-							<text>The Free Mantis gladly hand over a portion of their scrap stores to you.</text>
-							<autoReward level="MED">scrap_only</autoReward>
-						</event>
-					</choice>
-				</event>
+				<event load="UNION_FREEMANTIS_REWARD"/>
 			</choice>
 		</event>
 	</choice>
@@ -331,7 +293,30 @@
 		<event/>
 	</choice>
 </event>
-
+<event name="UNION_FREEMANTIS_REWARD">
+	<text>"Many thanks! You have done great favor for us. We in debt to you captain. How can repay you?"</text>
+	<choice hidden="true">
+		<text>Repairs.</text>
+		<event>
+			<text>The Free Mantis aren't very good at repairs, but they all work together and manage to repair a decent portion of your hull.</text>
+			<damage amount="-10"/>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Fuel.</text>
+		<event>
+			<text>The Free Mantis transfer over some fuel.</text>
+			<autoReward level="MED">fuel_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Scrap.</text>
+		<event>
+			<text>The Free Mantis gladly hand over a portion of their scrap stores to you.</text>
+			<autoReward level="MED">scrap_only</autoReward>
+		</event>
+	</choice>
+</event>
 <event name="UNION_EFFICIENCY_ENGINEER" unique="true">
 	<text>A nearby Union ship sends out a transmission boasting that they can upgrade certain weapons to be more power efficient. It will likely be expensive.</text>
 	<ship load="SHIP_UNION_ALL" hostile="false"/>
@@ -339,6 +324,23 @@
 		<text>Inquire on the process.</text>
 		<event>
 			<text>The engineer offers to upgrade the following weapons.</text>
+			<choice req="LASER_HULL_3">
+				<text>Upgrade your Anti-Hull Laser Mk III.</text>
+				<event>
+					<text>You give the weapon to the engineer, allowing him to work on it.</text>
+					<remove name="LASER_HULL_3"/>
+					<item_modify>
+						<item type="scrap" min="-45" max="-35"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>After a short time, your weapon is returned to you, clad with an optimization.</text>
+							<weapon name="LASER_HULL_3_PLAYER"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
 			<choice req="LASER_FROST_2">
 				<text>Upgrade your Frost Laser Mk II.</text>
 				<event>
@@ -352,6 +354,23 @@
 						<event>
 							<text>After a short time, your weapon is returned to you, clad with an optimization.</text>
 							<weapon name="LASER_FROST_2_PLAYER"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="LASER_FIRE">
+				<text>Upgrade your Fire-Starter Laser.</text>
+				<event>
+					<text>You give the weapon to the engineer, allowing him to work on it.</text>
+					<remove name="LASER_FIRE"/>
+					<item_modify>
+						<item type="scrap" min="-35" max="-25"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>After a short time, your weapon is returned to you, clad with an optimization.</text>
+							<weapon name="LASER_FIRE_PLAYER"/>
 						</event>
 					</choice>
 				</event>
@@ -386,6 +405,23 @@
 						<event>
 							<text>After a short time, your weapon is returned to you, clad with an optimization.</text>
 							<weapon name="ION_STUN_CHARGEGUN_PLAYER"/>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice req="ION_FIRE">
+				<text>Upgrade your Fire Ion Blast.</text>
+				<event>
+					<text>You give the weapon to the engineer, allowing him to work on it.</text>
+					<remove name="ION_FIRE"/>
+					<item_modify>
+						<item type="scrap" min="-35" max="-25"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>After a short time, your weapon is returned to you, clad with an optimization.</text>
+							<weapon name="ION_FIRE_PLAYER"/>
 						</event>
 					</choice>
 				</event>
@@ -475,19 +511,19 @@
 					</choice>
 				</event>
 			</choice>
-			<choice req="BEAM_FIRE">
-				<text>Upgrade your Torch Beam.</text>
+			<choice req="BEAM_LONG_2">
+				<text>Upgrade your Sarissa Beam.</text>
 				<event>
 					<text>You give the weapon to the engineer, allowing him to work on it.</text>
-					<remove name="BEAM_FIRE"/>
+					<remove name="BEAM_LONG_2"/>
 					<item_modify>
-						<item type="scrap" min="-35" max="-25"/>
+						<item type="scrap" min="-50" max="-40"/>
 					</item_modify>
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
 							<text>After a short time, your weapon is returned to you, clad with an optimization.</text>
-							<weapon name="BEAM_FIRE_PLAYER"/>
+							<weapon name="BEAM_LONG_2_PLAYER"/>
 						</event>
 					</choice>
 				</event>
@@ -663,6 +699,7 @@
 	<event load="UNION_MINING"/>
 	<event load="UNION_FACTORY"/>
 	<event load="UNION_CARAVAN"/>
+	<event load="UNION_SMUGGLER_PAYMENT"/>
 </eventList>
 
 <event name="UNION_OUTCAST_REFUGEES" unique="true">
@@ -935,7 +972,7 @@ Your outcast tells them that they will find what they are looking for, but not h
 	<choice hidden="true">
 		<text>Inspect closer.</text>
 		<event>
-			<text>Most of the ships have docked with a nearby outpost out of reach of the asteroid field, but one ship is still in the progress of mining some asteroids.</text>
+			<text>Most of the ships have docked with a nearby outpost out of reach of the asteroid field, but one ship is still in the process of mining some asteroids.</text>
 			<ship load="SHIP_MINING_OPS" hostile="false"/>
 			<environment type="asteroid"/>
 			<choice hidden="true">
@@ -950,41 +987,52 @@ Your outcast tells them that they will find what they are looking for, but not h
 				</event>
 			</choice>
 			<choice hidden="true" req="BEAM_MINING">
-				<text>(Mining Equipment) Mine some of the asteroids on the outskirts.</text>
+				<text>(Mining Beam) Mine some of the asteroids on the outskirts.</text>
 				<event>
-					<text>You gather a decent supply of fuel and scrap from the asteroids when suddenly the harvester from earlier spots you. "Hey! This is a restricted area! What the hell are you doing?" With no one else to defend the asteroid field, they have no choice but to fight you off!</text>
-					<autoReward level="MED">fuel</autoReward>
-					<ship hostile="true"/>
+					<text>You use your beam to gather a decent supply of scrap and fuel from the asteroid field.</text>
+					<autoReward level="HIGH">fuel</autoReward>
 					<choice hidden="true">
 						<text>Continue...</text>
-						<event load="MORALITY_UPDATE_UNION_FIGHT"/>
+						<event load="UNION_MINING_CONFRONT"/>
 					</choice>
 				</event>
 			</choice>
 			<choice hidden="true" req="DRONE_CONTROL_BEAM_DRONE">
 				<text>(Beam Drone) Mine some of the asteroids on the outskirts. [-1|]</text>
 				<event>
-					<text>You gather a decent supply of fuel and scrap from the asteroids when suddenly the harvester from earlier spots you. "Hey! This is a restricted area! What the hell are you doing?" With no one else to defend the asteroid field, they have no choice but to fight you off!</text>
+					<text>You use your drone to gather a decent supply of scrap and fuel from the asteroid field.</text>
 					<autoReward level="MED">fuel</autoReward>
 					<item_modify>
 						<item type="drones" min="-1" max="-1"/>
 					</item_modify>
-					<ship hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
-						<event load="MORALITY_UPDATE_UNION_FIGHT"/>
+						<event load="UNION_MINING_CONFRONT"/>
 					</choice>
 				</event>
 			</choice>
 			<choice hidden="true" req="SCRAP_COLLECTOR">
 				<text>(Scrap Arm) Mine some of the asteroids on the outskirts.</text>
 				<event>
-					<text>You gather a decent supply of fuel and scrap from the asteroids when suddenly the harvester from earlier spots you. "Hey! This is a restricted area! What the hell are you doing?" With no one else to defend the asteroid field, they have no choice but to fight you off!</text>
+					<text>You use your drone to gather a decent supply of scrap and fuel from the asteroid field.</text>
 					<autoReward level="MED">fuel</autoReward>
-					<ship hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
-						<event load="MORALITY_UPDATE_UNION_FIGHT"/>
+						<event load="UNION_MINING_CONFRONT"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="DRONE_CONTROL_MINING_DRONE">
+				<text>(Mining Drone) Mine some of the asteroids on the outskirts. [-1|]</text>
+				<event>
+					<text>You use your drone to gather a decent supply of scrap and fuel from the asteroid field.</text>
+					<autoReward level="HIGH">fuel</autoReward>
+					<item_modify>
+						<item type="drones" min="-1" max="-1"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="UNION_MINING_CONFRONT"/>
 					</choice>
 				</event>
 			</choice>
@@ -1009,6 +1057,39 @@ Your outcast tells them that they will find what they are looking for, but not h
 		</event>
 	</choice>
 </event>
+<event name="UNION_MINING_CONFRONT">
+	<text>Before you can leave, the harvester from earlier notices you. "Hey! What do you think you're doing? This is a restricted area, we can't just have random ships barging in here like they own the place!" You can tell that your ship being significantly larger than theirs is the only reason they're not attacking outright.</text>
+	<choice hidden="true">
+		<text>Attack them.</text>
+		<event>
+			<text>You're not going to let anybody tell you what to do, regardless of the legality behind it. The Union ship doesn't hesitate to defend themselves.</text>
+			<ship hostile="true"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_UNION_FIGHT"/> <!--should this be a double notoriety hit?-->
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them and leave.</text>
+		<event>
+			<text>You turn off the comms and prepare to jump. Even if nobody actually died here, you doubt your actions would do much to improve the reputation that Renegades have garnered in the Union.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="MORALITY_UPDATE_UNION"/>
+			</choice>
+		</event>
+	</choice>
+	<choice>
+		<text>Bribe them.</text>
+		<event>
+			<text>You transfer some scrap you collected over to their ship. They barely hesitate before accepting it and clearing you to leave the field.</text>
+			<item_modify>
+				<item type="scrap" min="-20" max="-15"/>
+			</item_modify>
+		</event>
+	</choice>
+</event>
 <event name="UNION_MINING_DESTROY">
 	<text>It appears the mining ship was carrying large fuel stores. One of your shots must have ignited the cargo bay, because the mining ship explodes. Luckily your ship isn't harmed, but none of their cargo survived. You quickly scrap what's left before reinforcements arrive.</text>
 	<autoReward level="LOW">standard</autoReward>
@@ -1018,42 +1099,95 @@ Your outcast tells them that they will find what they are looking for, but not h
 	<autoReward level="HIGH">fuel</autoReward>
 </event>
 
+
 <event name="UNION_FACTORY" unique="true">
-	<text>A small partially automated weapon factory lies in the distance. It's protected by a single Militia ship.</text>
-	<ship load="SHIP_MILITIA_WEAPON_FACTORY" hostile="false"/>
-	<choice hidden="true">
-		<text>Attack the guard to get to the factory.</text>
-		<event>
-			<text>You prepare to attack the Militia ship.</text>
-			<ship hostile="true"/>
-			<choice hidden="true">
-				<text>Continue...</text>
-				<event load="MORALITY_UPDATE_UNION_FIGHT"/>
-			</choice>
-		</event>
-	</choice>
-	<!--<choice hidden="true" req="REBEL_ID">
-		<text>(Forged ID) Pretend to be a Rebel requisition officer.</text>
-		<event>
-			<text>The Militia ship doesn't seem terribly happy with your presence. "The Union does not serve Rebel scum. Or at least, we shouldn't. What happened to the glory days of the Federation, when you orange assholes didn't accost the innocent?"</text>
-			<autoReward level="HIGH">missiles_only</autoReward>
-		</event>
-	</choice>-->
-	<choice hidden="true">
-		<text>Ignore the factory.</text>
-		<event>
-			<text>You have no interest in the factory.</text>
-			<choice>
-				<text>Do something onboard the ship.</text>
-				<event load="STORAGE_CHECK"/>
-			</choice>
-			<choice>
-				<text>Do nothing.</text>
-				<event/>
-			</choice>
-		</event>
-	</choice>
+    <text>A small partially automated weapon factory lies in the distance. It's protected by a single Militia ship.</text>
+    <ship load="SHIP_MILITIA_WEAPON_FACTORY" hostile="false"/>
+    <choice hidden="true" req="rep_comb_union" lvl="-999" max_lvl="-1" blue="false">
+        <text>Hail the factory and ask if they need anything.</text>
+        <event>
+            <text>One of the staff of the factory responds. "You wanna help? We have a delivery to make, but our courier is behind schedule. We have some replacement parts that need to be delivered to an anti-ship battery on a nearby world. Are you up for it?"</text>
+            <choice hidden="true">
+                <text>Agree to the delivery.</text>
+                <event>
+                    <text>"Get to it when you can. They'll pay for your delivery fee."</text>
+                    <quest event="UNION_FACTORY_QUEST"/>
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>Apologize, the destination is too far out of the way.</text>
+                <event>
+                    <text>You apologize and end the call.</text>
+                    <choice>
+                        <text>Do something onboard the ship.</text>
+                        <event load="STORAGE_CHECK"/>
+                    </choice>
+                    <choice>
+                        <text>Do nothing.</text>
+                        <event/>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true" req="rep_comb_union" lvl="0" max_lvl="999" blue="false">
+        <text>Hail the factory and ask if they need anything.</text>
+        <event>
+            <text>They don't respond to your hails.</text>
+            <choice hidden="true">
+                <text>Attack the guard to get to the factory.</text>
+                <event>
+                    <text>You prepare to attack the Militia ship.</text>
+                    <ship hostile="true"/>
+                    <choice hidden="true">
+                        <text>Continue...</text>
+                        <event load="MORALITY_UPDATE_UNION_FIGHT"/>
+                    </choice>
+                </event>
+            </choice>
+            <choice hidden="true">
+                <text>Leave them alone.</text>
+                <event>
+                    <text>You abandon interest in the factory.</text>
+                    <choice>
+                        <text>Do something onboard the ship.</text>
+                        <event load="STORAGE_CHECK"/>
+                    </choice>
+                    <choice>
+                        <text>Do nothing.</text>
+                        <event/>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Attack the guard to get to the factory.</text>
+        <event>
+            <text>You prepare to attack the Militia ship.</text>
+            <ship hostile="true"/>
+            <choice hidden="true">
+                <text>Continue...</text>
+                <event load="MORALITY_UPDATE_UNION_FIGHT"/>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Ignore the factory.</text>
+        <event>
+            <text>You have no interest in the factory.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
 </event>
+
 <event name="UNION_FACTORY_CHOICE">
 	<text>Without the guard to protect them, the few civilian workers scatter. You have the factory all to yourself, but it won't be long until reinforcements arrive. What will you grab?</text>
 	<choice>
@@ -1071,6 +1205,75 @@ Your outcast tells them that they will find what they are looking for, but not h
 		</event>
 	</choice>
 </event>
+
+<event name="UNION_FACTORY_QUEST" unique="true">
+    <beaconType id="map_icon_quest" global="true">
+        <color r="69" g="168" b="235" a="1"/>
+        <unvisitedTooltip>You have a delivery of ASB parts to drop off at this location.</unvisitedTooltip>
+    </beaconType>
+    <img planet="PLANET_POPULATED"/>
+    <text>You arrive at the planet that requested the parts you currently carry. They are surprised to see that their courier is a Renegade, but they are pleased to have received the delivery. They offer a modest payment.</text>
+    <disableScrapAugments/>
+    <autoReward level="MED">scrap_only</autoReward>
+    <choice>
+        <text>Continue...</text>
+        <event>
+            <text>As you deliver the parts, a Rebel ship enters the system. "So, the Renegade scum is running errands for their masters? Hah, you do more good like this than you ever did fighting our glorious cause."</text>
+            <ship load="SHIP_REBEL_FIGHT" hostile="true"/>
+            <choice hidden="true" blue="false" req="rep_comb_union" lvl="-999" max_lvl="2" >
+                <text>Engage the rebels!</text>
+                <event load="COMBAT_CHECK"/>
+            </choice>
+            <choice hidden="true" blue="false" req="rep_comb_union" lvl="3" >
+                <text>Engage the rebels!</text>
+                <event>
+                    <text>As you face the enemy ship, the planetary defenses turn on you. It looks like despite your delivery, they'd rather side with the Rebels. Your reputation precedes you, apparently.</text>
+                    <environment type="PDS" target="player"/>
+                    <ship hostile="true"/>
+                    <choice hidden="true">
+                        <text>Continue...</text>
+                        <event load="COMBAT_CHECK"/>
+                    </choice>
+                </event>
+            </choice>
+            <choice hidden="true" blue="false" req="rep_comb_union" lvl="-999" max_lvl="0">
+                <text>Ask for your client's help.</text>
+                <event>
+                    <text>The Union planet offers you ASB assistance out of gratitude for your delivery.</text>
+                    <environment type="PDS" target="enemy"/>
+                    <choice hidden="true">
+                        <text>Continue...</text>
+                        <event load="COMBAT_CHECK"/>
+                    </choice>
+                </event>
+            </choice>
+            <choice hidden="true" blue="false" req="rep_comb_union" lvl="1" max_lvl="2" >
+                <text>Ask for your client's help.</text>
+                <event>
+                    <text>They don't seem willing to help. Your reputation could be better, after all.</text>
+                    <ship hostile="true"/>
+                    <choice hidden="true">
+                        <text>Continue...</text>
+                        <event load="COMBAT_CHECK"/>
+                    </choice>
+                </event>
+            </choice>
+            <choice hidden="true" blue="false" req="rep_comb_union" lvl="3" >
+                <text>Ask for your client's help.</text>
+                <event>
+                    <text>Rather than help you out, they turn their weapons on you. It looks like despite your delivery, they'd rather side with the Rebels. You must have really ruined your own reputation, somehow.</text>
+                    <environment type="PDS" target="player"/>
+                    <ship hostile="true"/>
+                    <choice hidden="true">
+                        <text>Continue...</text>
+                        <event load="COMBAT_CHECK"/>
+                    </choice>
+                </event>
+            </choice>
+        </event>
+    </choice>
+</event>
+
 
 <event name="UNION_CARAVAN" unique="true">
 	<text>It's extremely rare to see a Suzerain ship outside of the Mantis Hive, but even more so in Union territory. One particularly brave Suzerain ship is attacking a Militia caravan. The escort is poorly equipped and hardly stands a chance.</text>
@@ -1127,6 +1330,94 @@ Your outcast tells them that they will find what they are looking for, but not h
 <event name="UNION_CARAVAN_GIFT">
 	<text>The escort ship took a lot more damage than you first realized. Their life support failed during the fight and their crew asphyxiated. Luckily, the transport is still alive, and they give you some of their cargo as thanks.</text>
 	<autoReward level="HIGH">item</autoReward>
+</event>
+
+<event name="UNION_SMUGGLER_PAYMENT" unique="true">
+	<text>You find a Union ship talking with an Argeonn ship. You get the feeling that even if they're not fighting each other, they're not on the friendliest of terms either.</text>
+	<ship load="SHIP_SMUGGLER_UNION_PAYMENT" hostile="false"/>
+	<choice hidden="true">
+		<text>Listen in.</text>
+		<event>
+			<text>"Look, I'm sorry. I thought I'd have the scrap to pay for those, but after a nasty run-in with Tiiikaka, I was forced to cash out for some repairs. Surely you can understand that, given what your job entails?"
+			
+			"My sympathies are irrelevant to my profession. Argeonn terms stipulate that payments are always made either in advance or on the spot... and deliveries are not handed over until the payment is made. Unfortunately, you'll just have to do... without those items. Unless your friend here can assist you?"</text>
+			<choice>
+				<text>Offer to help pay for the delivery.</text>
+				<event>
+					<text>You pool some of your scrap together with the small amount the Union ship still has. It's not cheap, but you're able to pay the full cost up front. The smugglers hand over the delivery before jumping away.</text>
+					<item_modify>
+						<item type="scrap" min="-65" max="-50"/>
+					</item_modify>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>The captain of the Union ship hails you. "Thanks for helping me out there! I had to use those guys to retrieve some of my personal belongings from deep inside Rebel territory. Unfortunately, I can't really pay you conventionally in return for your help, but I should be able to give you a spare weapon of ours."</text>
+							<weapon name="RANDOM"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="MORALITY_REMOVE_UNION_UPDATE_SMUGGLING"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Threaten them to hand over the delivery.</text>
+				<event>
+					<text>"...An unwise decision. Then again, expecting a different result would have been... foolish, given that you are likely unaware of the... fragile nature of this cargo." They power up their weapons and face you. Judging by their comments, if you want to get whatever it is that the other Union ship is interested in, you'll have to avoid blowing up their ship.</text>
+					<ship hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="REPUTATION_DECREASE_SMUGGLING_COMBAT"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="rep_comb_smuggler" lvl="2">
+				<text>[Reputation: 2+] Convince them to hand over the delivery.</text>
+				<event>
+					<text>"Given your extended business history with us, surely you would know that we do not... easily deviate from our standard practices. But at the same time, losing a potential customer would be... unfortunate. If you are willing to vouch for them, then I think we can make an... exception this time." They turn to face the Union ship. "However, do not expect any leniency when we... arrive for payments." The Union captain gladly agrees, and receives their delivery from the smugglers. The Argeonn ship jumps away after making the transfer.</text>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event>
+							<text>The captain of the Union ship hails you. "Thanks for helping me out there! I had to use those guys to retrieve some of my personal belongings from deep inside Rebel territory. Unfortunately, I can't really pay you conventionally in return for your help, but I should be able to give you a spare weapon of ours."</text>
+							<weapon name="RANDOM"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="MORALITY_REMOVE_UNION"/>
+							</choice>
+						</event>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>Uh, nope, sorry. Gotta go.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Ignore them.</text>
+		<event>
+			<text>Even from a distance, you can still feel a fraction of the tension between the two ships. Eventually they jump away in opposite directions.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="UNION_SMUGGLER_PAYMENT_WIN">
+	<text>You hand over the delivery from the smuggler ship to the Union ship. Their captain speaks with you during the transfer. "Thanks for helping me out there! I had to use those guys to retrieve some of my personal belongings from deep inside Rebel territory. Unfortunately, I can't really pay you conventionally in return for your help, but I should be able to give you a spare weapon of ours."</text>
+	<ship hostile="false"/>
+	<weapon name="RANDOM"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="MORALITY_REMOVE_UNION"/>
+	</choice>
 </event>
 
 <!--
@@ -1925,7 +2216,7 @@ Your outcast tells them that they will find what they are looking for, but not h
 		</event>
 	</choice>
 	<choice hidden="true" req="FEDERATION_DATABASE">
-		<text>[Federation Database] Who are the Brood?</text>
+		<text>[Federation Database] Read more on the Brood.</text>
 		<event>
 			<text id="database_brood"/>
 			<choice hidden="true">
@@ -2240,7 +2531,7 @@ Your outcast tells them that they will find what they are looking for, but not h
 			<choice hidden="true">
 				<text>Dig up Adam Miller.</text>
 				<event>
-					<text>You start digging, but all you find inside is a rotting corpse. Disgusted and disappointed, you prepare to leave, when an Elite Federation ship swings by and spots you in the act. "Assholes! You'd dare dishonour the heroes buried here?" They raise their weapons and attack!</text>
+					<text>You start digging, but all you find inside is a rotting corpse. Disgusted and disappointed, you prepare to leave, when an Elite Federation ship swings by and spots you in the act. "Assholes! You'd dare dishonor the heroes buried here?" They raise their weapons and attack!</text>
 					<ship load="SHIP_FED_ELITE_FIGHT" hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
@@ -2256,7 +2547,7 @@ Your outcast tells them that they will find what they are looking for, but not h
 					<choice hidden="true">
 						<text>Continue...</text>
 						<event>
-							<text>As you're leaving, a Federation Elite flies past, spotting you in the process! "Assholes! You'd dare dishonour the heroes buried here?" They raise their weapons and attack!</text>
+							<text>As you're leaving, a Federation Elite flies past, spotting you in the process! "Assholes! You'd dare dishonor the heroes buried here?" They raise their weapons and attack!</text>
 							<ship load="SHIP_FED_ELITE_FIGHT" hostile="true"/>
 							<choice hidden="true">
 								<text>Continue...</text>
@@ -2269,7 +2560,7 @@ Your outcast tells them that they will find what they are looking for, but not h
 			<choice hidden="true">
 				<text>Dig up Alaster Williams.</text>
 				<event>
-					<text>You start digging, but all you find inside is a rotting corpse. Disgusted and disappointed, you prepare to leave, when an Elite Federation ship swings by and spots you in the act. "Assholes! You'd dare dishonour the heroes buried here?" They raise their weapons and attack!</text>
+					<text>You start digging, but all you find inside is a rotting corpse. Disgusted and disappointed, you prepare to leave, when an Elite Federation ship swings by and spots you in the act. "Assholes! You'd dare dishonor the heroes buried here?" They raise their weapons and attack!</text>
 					<ship load="SHIP_FED_ELITE_FIGHT" hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
@@ -2280,7 +2571,7 @@ Your outcast tells them that they will find what they are looking for, but not h
 			<choice hidden="true">
 				<text>Dig up Jake Willson.</text>
 				<event>
-					<text>You start digging, but all you find inside is a rotting corpse. Disgusted and disappointed, you prepare to leave, when an Elite Federation ship swings by and spots you in the act. "Assholes! You'd dare dishonour the heroes buried here?" They raise their weapons and attack!</text>
+					<text>You start digging, but all you find inside is a rotting corpse. Disgusted and disappointed, you prepare to leave, when an Elite Federation ship swings by and spots you in the act. "Assholes! You'd dare dishonor the heroes buried here?" They raise their weapons and attack!</text>
 					<ship load="SHIP_FED_ELITE_FIGHT" hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
@@ -2291,7 +2582,7 @@ Your outcast tells them that they will find what they are looking for, but not h
 		</event>
 	</choice>
 	<choice>
-		<text>We have better things to do than dishonouring the dead.</text>
+		<text>We have better things to do than dishonoring the dead.</text>
 		<event>
 			<text>You ignore the graveyard and fly away.</text>
 			<choice>

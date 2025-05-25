@@ -82,14 +82,6 @@
 	<queueEvent seeded="true">THE_JUDGES_VARIABLE_CLEAR</queueEvent>
 	<deathEvent>DEATH</deathEvent>
 	<variable name="loc_start_compatibility" op="set" val="1"/>
-	<eventButton name="ADDON_TRC">
-        <event load="ADDON_TRC_INFO"/>
-        <image border="0">addons/trc</image>
-        <customLocation x="115" y="7"/>
-        <tooltip id="addon_hover_trc"/>
-        <jumpClear>false</jumpClear>
-        <noDanger>false</noDanger>
-    </eventButton>
 	<eventButton name="UI_STORAGE_CHECK_BUTTON">
         <event load="STORAGE_CHECK_BUTTON"/>
         <image>statusUI/top_storage</image>
@@ -171,9 +163,34 @@
 				<text>Exit Hyperspeed.</text>
 				<event load="START_BEACON_PREP_LOAD"/>
 			</choice>
+			<!-- FAST CRATE OPEN -->
+			<choice hidden="true" req="LIST_START_CRATE_CHECK">
+				<text>You may immediately open the resource crates you have below. Should you choose to keep them, you may open them later at any time you can access the storage.</text>
+				<event load="OPTION_INVALID"/>
+			</choice>
+			<choice hidden="true" req="CRATE_SCRAP">
+				<text>Scrap Crate</text>
+				<event load="OPEN_CRATE_SCRAP_START"/>
+			</choice>
+			<choice hidden="true" req="CRATE_SCRAP_HUGE">
+				<text>Huge Scrap Crate</text>
+				<event load="OPEN_CRATE_SCRAP_HUGE_START"/>
+			</choice>
+			<choice hidden="true" req="CRATE_FUEL">
+				<text>Fuel Crate</text>
+				<event load="OPEN_CRATE_FUEL_START"/>
+			</choice>
+			<choice hidden="true" req="CRATE_MISSILES">
+				<text>Ammo Crate</text>
+				<event load="OPEN_CRATE_MISSILES_START"/>
+			</choice>
+			<choice hidden="true" req="CRATE_DRONES">
+				<text>Dronepart Crate</text>
+				<event load="OPEN_CRATE_DRONES_START"/>
+			</choice>
 			<!-- FAST AUGMENT INSTALL -->
 			<choice hidden="true" req="LIST_START_AUG_CHECK">
-				<text>You may immediately install the [X] augments below, losing the option to sell them or benefit from unconventional stacking. Should you choose to keep them, you may internalize them later on any time you can access the storage.</text>
+				<text>You may immediately install the [X] augments below, losing the option to sell them or benefit from unconventional stacking. Should you choose to keep them, you may internalize them later at any time you can access the storage.</text>
 				<event load="OPTION_INVALID"/>
 			</choice>
 			<choice hidden="true" req="EX_PAYLOAD_CREATOR">
@@ -224,6 +241,10 @@
 				<text>Explosive Replicator</text>
 				<event load="INSTALL_REPLICATOR_START"/>
 			</choice>
+			<choice hidden="true" req="EX_ARTILLERY_TARGETING">
+				<text>Targeting Override</text>
+				<event load="INSTALL_ARTILLERY_TARGETING_START"/>
+			</choice>
 			<choice hidden="true" req="EX_CLOAK_FIRE">
 				<text>Stealth Weapons</text>
 				<event load="INSTALL_CLOAKFIRE_START"/>
@@ -263,6 +284,10 @@
 			<choice hidden="true" req="START_GENERATOR"> <!--need battery-->
 				<text>Emergency Generator</text>
 				<event load="INSTALL_GENERATOR_START"/>
+			</choice>
+			<choice hidden="true" req="EX_PILOT_REROUTE">
+				<text>Expanded Circuitry</text>
+				<event load="INSTALL_REROUTE_START"/>
 			</choice>
 		</event>
 	</choice>
@@ -326,6 +351,44 @@
 		<text>Reread the Federation Database entries.</text>
 		<event load="DATABASE_LOREDUMP"/>
 	</choice>
+</event>
+
+<event name="OPEN_CRATE_SCRAP_START">
+    <disableScrapAugments/>
+    <item_modify>
+        <item type="scrap" min="30" max="45"/>
+    </item_modify>
+    <remove name="CRATE_SCRAP"/>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="OPEN_CRATE_SCRAP_HUGE_START">
+    <disableScrapAugments/>
+    <item_modify>
+        <item type="scrap" min="175" max="175"/>
+    </item_modify>
+    <remove name="CRATE_SCRAP_HUGE"/>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="OPEN_CRATE_FUEL_START">
+    <item_modify>
+        <item type="fuel" min="5" max="10"/>
+    </item_modify>
+    <remove name="CRATE_FUEL"/>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="OPEN_CRATE_MISSILES_START">
+    <item_modify>
+        <item type="missiles" min="5" max="10"/>
+    </item_modify>
+    <remove name="CRATE_MISSILES"/>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="OPEN_CRATE_DRONES_START">
+    <item_modify>
+        <item type="drones" min="5" max="10"/>
+    </item_modify>
+    <remove name="CRATE_DRONES"/>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
 </event>
 
 <event name="INSTALL_PAYLOAD_START">
@@ -400,6 +463,12 @@
 	<hiddenAug>UPG_WEAPONS_REPLICATOR</hiddenAug>
 	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
 </event>
+<event name="INSTALL_ARTILLERY_TARGETING_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_ARTILLERY_TARGETING"/>
+	<hiddenAug>UPG_ARTILLERY_TARGETING</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
 <event name="INSTALL_CLOAKFIRE_START">
 	<variable name="loc_internal_upgrades" op="add" val="1"/>
 	<remove name="EX_CLOAK_FIRE"/>
@@ -458,6 +527,12 @@
 	<variable name="loc_internal_upgrades" op="add" val="1"/>
 	<remove name="EX_BATTERY_GENERATOR"/>
 	<hiddenAug>UPG_BATTERY_GENERATOR</hiddenAug>
+	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
+</event>
+<event name="INSTALL_REROUTE_START">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<remove name="EX_PILOT_REROUTE"/>
+	<hiddenAug>UPG_PILOT_REROUTE</hiddenAug>
 	<loadEvent>LIGHTSPEED_DROPPOINT</loadEvent>
 </event>
 <!--DIFFICULTY SELECT-->
@@ -955,7 +1030,7 @@ The challenge level is independent from the standard difficulty slider in the ha
 </event>
 
 <event name="START_BEACON_EXPLAIN_LOAD">
-	<loadEventList seeded="false" default="START_BEACON_EXPLAIN">
+	<loadEventList seeded="false" default="START_BEACON_BOARDING">
 		<event name="GIVE_POWERSURGE_2" req="STAGE_2"/>
 		<event name="GIVE_POWERSURGE_3" req="STAGE_3"/>
 		<event name="GIVE_EXTRALIFE" req="EXTRA_LIFE"/>
@@ -968,37 +1043,37 @@ The challenge level is independent from the standard difficulty slider in the ha
 </event>
 <event name="GIVE_POWERSURGE_2">
 	<triggeredEvent event="FLAGSHIP_STAGE2_TRACKER" seeded="false" loops="999999999" jumps="1"/>
-	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+	<loadEvent>START_BEACON_BOARDING</loadEvent>
 </event>
 <event name="GIVE_POWERSURGE_3">
 	<triggeredEvent event="FLAGSHIP_STAGE3_TRACKER" seeded="false" loops="999999999" jumps="1"/>
-	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+	<loadEvent>START_BEACON_BOARDING</loadEvent>
 </event>
 <event name="GIVE_EXTRALIFE">
 	<triggeredEvent event="EXTRA_LIFE_HEAL" playerHull="3" clearOnJump="false"/>
-	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+	<loadEvent>START_BEACON_BOARDING</loadEvent>
 </event>
 <event name="GIVE_MVDRIVE">
 	<triggeredEvent event="MV_DRIVE_EXPLODE" loops="999999999">
 	  <jumps amount="1" type="1"/>
 	</triggeredEvent>
-	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+	<loadEvent>START_BEACON_BOARDING</loadEvent>
 </event>
 <event name="GIVE_UNSTABLE">
 	<triggeredEvent event="UNSTABLE_CHECKER" loops="999999999" jumps="1"/>
-	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+	<loadEvent>START_BEACON_BOARDING</loadEvent>
 </event>
 <event name="GIVE_ATM">
 	<triggeredEvent name="ATM_CHECKER" event="ATM_MACHINE_WITHDRAW_CHECK" loops="999999999">
 	  <jumps amount="1" type="1"/>
 	</triggeredEvent>
-	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+	<loadEvent>START_BEACON_BOARDING</loadEvent>
 </event>
 <event name="GIVE_SPORES">
 	<triggeredEvent name="SPORE_CHECKER" event="SPORE_WITHDRAW_CHECK" loops="999999999">
 	  <jumps amount="1" type="1"/>
 	</triggeredEvent>
-	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+	<loadEvent>START_BEACON_BOARDING</loadEvent>
 </event>
 <event name="GIVE_RECALL">
 	<eventButton name="UI_RECALL_BUTTON">
@@ -1010,7 +1085,25 @@ The challenge level is independent from the standard difficulty slider in the ha
         <jumpClear>false</jumpClear>
         <noDanger>true</noDanger>
     </eventButton>
-	<loadEvent>START_BEACON_EXPLAIN</loadEvent>
+	<loadEvent>START_BEACON_BOARDING</loadEvent>
+</event>
+<event name="START_BEACON_BOARDING">
+	<loadEventList seeded="false" first="true">
+		<event name="START_BEACON_GNOME_TIP" req="GNOME_TIP"/>
+		<event name="START_BEACON_EXPLAIN"/>
+	</loadEventList>
+</event>
+<event name="START_BEACON_GNOME_TIP">
+	<text>Before you can board your ship you notice an ominous whispering. It grows louder and louder as you try to identify the source and you catch some strange glances, until at last you stumble across a mundane garden gnome.
+
+	All at once the whispers cease, leaving you alone with the gnome. Its presence is ominous despite its banal appearance, and you can't help but feel as if you're meant to bring it with you...
+
+	[CHAOS MODE UNLOCKED - To activate Chaos Mode, locate and select the gnome on the right of the hangar screen]</text>
+	<metaVariable name="chaos_mode_tip" op="set" val="0"/>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event load="START_BEACON_EXPLAIN"/>
+	</choice>
 </event>
 <event name="START_BEACON_EXPLAIN">
 	<text>Finally suited up and ready to go, you take a look at your beacon map. Looks like you still have a while until the fleet becomes an immediate threat, so you can spare some time to do something on the ship if you wish.</text>

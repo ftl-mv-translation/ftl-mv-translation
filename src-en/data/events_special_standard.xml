@@ -1844,6 +1844,20 @@
 			</choice>
 		</event>
 	</choice>
+	<choice req="BLUELIST_WEAPONS_MIND_CONTROL">
+		<text>(Mind Control Weapon) "Negotiate" an even lower price. [-7~ -> 5{]</text>
+		<event>
+			<text>The shopkeep is momentarily alarmed at the sight of your activated weapon, but a sense of calmness overtakes them as it seizes their will. You stock up on fuel then check out the store.</text>
+			<item_modify>
+				<item type="fuel" min="5" max="5"/>
+				<item type="scrap" min="-7" max="-7"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Shop.</text>
+				<event load="STORE_LOAD_GENERIC"/>
+			</choice>
+		</event>
+	</choice>
 	<choice req="mind" max_lvl="2" hidden="true">
 		<text>(Mind Control) "Negotiate" an even lower price. [-7~ -> 5{]</text>
 		<event>
@@ -1950,6 +1964,18 @@
 		<event/>
 	</choice>
 </event>
+<event name="STORE_LOAD_MERCHANTS_FOCUS">
+    <store>STORE_MERCHANTS_FOCUS</store>
+    <text>Before you shop, you still have some time to do something else aboard the ship.</text>
+    <choice>
+        <text>Do something onboard the ship.</text>
+        <event load="STORAGE_CHECK"/>
+    </choice>
+    <choice>
+        <text>Do nothing.</text>
+        <event/>
+    </choice>
+</event>
 <event name="STOREEVENT_MERCHANTS" unique="true">
 	<preventQuest/>
 	<beaconType id="map_icon_store_generic" global="false">
@@ -2024,7 +2050,7 @@
 		<text>(Repair Arm) Fix up their hull. [-15~]</text>
 		<event>
 			<text>The ship thanks you for your help, and offers to trade.</text>
-			<autoReward level="MED">standard</autoReward>
+			<autoReward level="MED">standard</autoReward> <!--move this further or change, no scrap loss otherwise-->
 			<item_modify>
 				<item type="scrap" min="-15" max="-15"/>
 			</item_modify>
@@ -2115,7 +2141,7 @@
 					</choice>
 				</event>
 			</choice>
-			<!---->
+			<!-- -->
 			<choice req="teleporter" lvl="0" max_lvl="0" blue="false">
 				<text>Install a Teleporter.</text>
 				<event>
@@ -2158,11 +2184,11 @@
 					</choice>
 				</event>
 			</choice>
-			<choice req="teleporter" lvl="3" blue="false" hidden="true">
+			<choice req="teleporter" lvl="3" hidden="true">
 				<text>You cannot upgrade the Teleporter, it is too advanced.</text>
 				<event load="OPTION_INVALID"/>
 			</choice>
-			<!---->
+			<!-- -->
 			<choice req="doors" lvl="0" max_lvl="0" blue="false">
 				<text>Install the Doors System.</text>
 				<event>
@@ -2692,6 +2718,245 @@
         <event/>
     </choice>
 </event>
+
+<event name="STOREEVENT_DETRITUS" unique="true">
+    <preventQuest/>
+    <beaconType id="map_icon_store_union" global="false">
+        <color r="215" g="255" b="200" a="1"/>
+    </beaconType>
+    <text>A massive Detritus Disposal station orbits the nearby planet. A recycling plant this size can efficiently handle all of the garbage from the surrounding systems. This particular station has a store which sells goods manufactured by Detritus, as well as junk that they've collected from their salvage.</text>
+    <choice hidden="true" req="rep_comb_union" lvl="-999" max_lvl="2" blue="false">
+        <text>Purchase goods from the Detritus store.</text>
+        <event load="STORE_LOAD_MERCHANTS_FOCUS"/>
+    </choice>
+    <choice hidden="true" req="rep_comb_union" lvl="3" blue="false">
+        <text>Detritus is unwilling to do business with you.</text>
+        <event load="OPTION_INVALID"/>
+    </choice>
+    <choice hidden="true" req="cloaking" lvl="2">
+        <text>(Upg. Cloak) Pilfer some salvage from a nearby trash freighter.</text>
+        <event>
+            <text>You pick a normal-looking approach path, then activate your stealth at the right moment to maneuver your ship inside of the trash freighter. You take whatever you can find that looks usable, then cloak again to escape undetected.</text>
+            <autoReward level="LOW">stuff</autoReward>
+            <choice hidden="true" req="rep_comb_union" lvl="-999" max_lvl="2" blue="false">
+                <text>Purchase goods from the Detritus store.</text>
+                <event>
+                    <text>The freighter raid was time consuming, but you still have enough time to do some shopping.</text>
+                    <store>STORE_MERCHANTS_FOCUS</store>
+                </event>
+            </choice>
+            <choice hidden="true" req="rep_comb_union" lvl="3" blue="false">
+                <text>Detritus is unwilling to do business with you.</text>
+                <event load="OPTION_INVALID"/>
+            </choice>
+            <choice>
+                <text>Continue...</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+    <choice hidden="true">
+        <text>Attempt to pilfer some salvage from a nearby trash freighter.</text>
+        <event load="DETRITUS_PILFER_LIST"/>
+    </choice>
+    <choice>
+        <text>Carry on.</text>
+        <event>
+            <text>You keep away from the planet.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+<event name="STOREEVENT_ARCHIVE_REC_CENTER" unique="true">
+	<preventQuest/>
+	<beaconType id="map_icon_store_union" global="false">
+    	<color r="215" g="255" b="200" a="1"/>
+	</beaconType>
+    <text>The store is located in a lush region of a nearby terraformed world. A billboard reads: "Archive Inc. offers the most authentic Antediluvian recreational experiences in the galaxy!" You might be able to try some of the planetary activities.</text>
+    <choice hidden="true" req="COUNT_ALL_CREW"  lvl="0" max_lvl="0" blue="false" max_group="0">
+        <text>You can't visit the spaceport if you have no crew.</text>
+        <event load="OPTION_INVALID"/>
+    </choice>
+	<choice hidden="true" req="rep_comb_union" lvl="-9999" max_lvl="2" blue="false" max_group="0">
+        <text>Check out the recreation center before going to the store.</text>
+        <event load="STORE_RECREATION_CENTER"/>
+    </choice>
+    <choice hidden="true" req="rep_comb_union" lvl="-9999" max_lvl="2" blue="false" max_group="1">
+        <text>Proceed to the store.</text>
+        <event load="STORE_LOAD_GENERIC"/>
+    </choice>
+    <choice hidden="true" req="rep_comb_union" lvl="3" blue="false" max_group="2">
+        <text>The spaceport won't clear you for landing - apparently they're aware of your reputation.</text>
+        <event load="OPTION_INVALID"/>
+    </choice>
+    <choice req="pilot" blue="false"  max_group="3">
+        <text>Carry on.</text>
+        <event>
+            <text>You keep away from the planet.</text>
+            <choice>
+                <text>Do something onboard the ship.</text>
+                <event load="STORAGE_CHECK"/>
+            </choice>
+            <choice>
+                <text>Do nothing.</text>
+                <event/>
+            </choice>
+        </event>
+    </choice>
+</event>
+
+
+<eventList name="STORE_RECREATION_CENTER">
+    <event>
+        <text>You and your crew explore the center. You come across a baseball diamond, and are stopped by a team of Zoltan. They claim that they need to face another team in order to experience the Human game of baseball.</text>
+        <store>STORE_STANDARD</store>
+        <choice hidden="true">
+            <text>Play with the Zoltans.</text>
+            <event>
+                <text>As you play against them, the Zoltan captain continually condescends you and the staff of the rec center. The Zoltan prattles on and on, saying that the game is typical human juvenility and that your tactics are limited and short sighted. After your landslide victory, their shortstop pledges to join your crew. "I have seen the light! By watching you win against a vastly superior foe, you have proven that the Power of Friendship can overcome any obstacle!"</text>
+                <crewMember amount="1" repair="1" class="zoltan">Idunn G'vadam</crewMember>
+            </event>
+        </choice>
+        <choice hidden="true">
+            <text>Just watch.</text>
+            <event>
+                <text>Your crew stays in the stands watching other tourists play. Your crew ask you to go get some popcorn, so you head to the concession stand. While you're there, however, you get caught up in a conversation with a middle aged man, who yaps your ear off about his 5-year old daughter the whole time. Once he realizes he made you miss the game, he offers to have his station give you some extra fuel as an apology.</text>
+                <autoReward level="LOW">fuel_only</autoReward>
+            </event>
+        </choice>
+    </event>
+    <event>
+        <text>You and your crew explore the center. You end up in an arcade, filled with fighting game cabinets. There's a few players who seem to be free for an open player.</text>
+        <store>STORE_STANDARD</store>
+        <choice hidden="true">
+            <text>Challenge the young human.</text>
+            <event>
+                <text>You challenge the human. You are immediately destroyed on your first match, and the human starts using weaker and weaker characters to defeat you. After wrecking you a dozen times, he looks over at you in curiosity, before realizing you're a Renegade. "Huh. Never expected to meet a multiversal traveler in the middle of an arcade. You... want some scrap? Yeah, of course you do. I'll make this much from donos after I talk about this on stream anyway."</text>
+                <autoReward level="LOW">scrap_only</autoReward>
+            </event>
+        </choice>
+        <choice hidden="true">
+            <text>Challenge the Vampweed.</text>
+            <event>
+                <text>"Archive has the best arcades! I'm addicted to these." She seems to be experienced at this. You come close, but you never quite manage to beat her. "Hey, let's play this next match for money!"</text>
+                <choice hidden="true">
+                    <text>Agree to the terms. [15~]</text>
+                    <event>
+                        <text>You play, but you still aren't able to beat her. However, she seems to have a lot of fun. "That was great! Uh, by the way. I'm actually kind of in a bit of debt. You mind if I tag along with you?"</text>
+                        <item_modify>
+                            <item type="scrap" min="-15" max="-15"/>
+                        </item_modify>
+                        <choice>
+                            <text>Sure.</text>
+                            <event>
+                                <crewMember amount="1" class="orchid_vampweed"/>
+                            </event>
+                        </choice>
+                        <choice>
+                            <text>Nah.</text>
+                            <event/>
+                        </choice>
+                    </event>
+                </choice>
+                <choice >
+                    <text>Just play for fun.</text>
+                    <event>
+                        <text>The two of you continue to play for fun. You even manage to beat her once or twice, but you suspect she might be trying to let your guard down.</text>
+                    </event>
+                </choice>
+            </event>
+        </choice>
+    </event>
+    <event>
+        <text>You and your crew explore the center. An Archive employee offers you and your crew vouchers for a ride on a roller coaster. You consider hopping on with your crew, but spot a Zoltan pacing back and forth near the ride entrance.</text>
+        <store>STORE_STANDARD</store>
+        <choice hidden="true">
+            <text>Ride with your crew.</text>
+            <event>
+                <text>Your crew spend some time zooming around the tracks, enjoying the sights, sounds and people. Ultimately, you don't end up doing much socializing, but your crew seemed to have enjoyed themselves.</text>
+            </event>
+        </choice>
+        <choice hidden="true">
+            <text>Offer your voucher to the Zoltan.</text>
+            <event>
+                <text>You offer your pass to the Zoltan, who mutters some excuses about trade regulations on gifts before capitulating and riding with your crew. After getting off, the Zoltan staggers over to you, flickering with exertion - "You Humans certainly don't show much concern over the dangers your own entertainment exposes you to. Perhaps that bravado is why you're still standing after all your mistakes." Still, before he stumbles off, he mumbles that he'll have a gratuity dropped off at your ship.</text>
+                <augment name="RANDOM"/>
+            </event>
+        </choice>
+    </event>
+</eventList>
+
+
+<eventList name="DETRITUS_PILFER_LIST">
+    <event>
+        <text>The ship you're raiding is automated, but its sensors detect you. It automatically sends a notification that you're engaging in piracy, which will trigger the planetary defense system that Detritus had set up.</text>
+        <choice req="PDS_DISABLE" hidden="true">
+            <text>(Signal Diluter) Drown out the signal long enough to finish your raid.</text>
+            <event>
+                <text>While your crime will be noticed in the long run, you may as well profit off of this raid in the short term.</text>
+                <autoReward level="LOW">stuff</autoReward>
+                <choice hidden="true" req="rep_comb_union" lvl="-999" max_lvl="2" blue="false">
+                    <text>Stop by the Detritus store.</text>
+                    <event>
+                        <text>You keep your Signal Diluter active as you send in a shuttle to do some shopping before you leave.</text>
+                        <store>STORE_MERCHANTS_FOCUS</store>
+                        <choice>
+                            <text>Continue...</text>
+                            <event load="MORALITY_UPDATE_UNION"/>
+                        </choice>
+                    </event>
+                </choice>
+                <choice>
+                    <text>Continue...</text>
+                    <event load="MORALITY_UPDATE_UNION"/>
+                </choice>
+            </event>
+        </choice>
+        <choice>
+            <text>Continue...</text>
+            <event>
+                <text>You won't be able to buy anything in this state. It looks like you'll have to focus your attention on leaving.</text>
+                <environment type="PDS" target="player"/>
+                <choice>
+                    <text>Continue...</text>
+                    <event load="MORALITY_UPDATE_UNION"/>
+                </choice>
+            </event>
+        </choice>
+    </event>
+    <event>
+        <text>It takes a few moments for the freighter you begin stealing from to respond, but eventually they catch wind of your raid. They broadcast a notification that you're engaging in piracy, which will trigger the planetary defense system that Detritus had set up.</text>
+        <autoReward level="LOW">stuff</autoReward>
+        <choice req="PDS_DISABLE" hidden="true">
+            <text>(Signal Diluter) Drown out the signal.</text>
+            <event>
+                <text>The freighter takes a moment to process what you are doing, and promptly sends its crew in a shuttle to the station directly. You'll still have enough time to get out of here before their shuttle can inform the station of your misdeeds.</text>
+                <choice>
+                    <text>Continue...</text>
+                    <event load="MORALITY_UPDATE_UNION"/>
+                </choice>
+            </event>
+        </choice>
+        <choice hidden="true">
+            <text>Continue...</text>
+            <event>
+                <text>You won't be able to buy anything in this state. It looks like you'll have to focus your attention on leaving.</text>
+                <environment type="PDS" target="player"/>
+                <choice>
+                    <text>Continue...</text>
+                    <event load="MORALITY_UPDATE_UNION"/>
+                </choice>
+            </event>
+        </choice>
+    </event>
+</eventList>
 
 <!--
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -3914,7 +4179,7 @@
 	</beaconType>
 	<text>A small, peaceful Orchid farm has been established nearby. It seems a bit strange to see plants growing plants, but you suppose it's no different to humans raising animals. Looks like they're selling off some of their old farming equipment, among other things.</text>
 	<choice>
-		<text>Buy a farmhand.</text>
+		<text>Hire a farmhand.</text>
 		<event>
 			<crewMember amount="1" repair="1" class="orchid"/>
 			<store>STORE_ORCHID</store>
@@ -5138,6 +5403,14 @@
 			<autoReward level="LOW">scrap_only</autoReward>
 		</event>
 	</choice>
+	<choice req="BLUELIST_WEAPONS_MIND_CONTROL" hidden="true">
+		<text>(Mind Control Weapon) Change the trader's mind.</text>
+		<event>
+			<text>The weapon overrides the Rockman's judgement. You are welcomed onboard and gifted with scrap for your time.</text>
+			<store>STORE_ROCK</store>
+			<autoReward level="LOW">scrap_only</autoReward>
+		</event>
+	</choice>
 </event>
 
 <ship name="SHIP_ROCK_STOREEVENT_MINELAUNCHER" auto_blueprint="MU_ROCK_STATION">
@@ -5419,10 +5692,36 @@
 							<store>STORE_ROCK</store>
 						</event>
 					</choice>
+					<choice hidden="true" req="LIST_CREW_SLUG">
+						<text>(Slug Crew) Your Slug seems to think something is funny.</text>
+						<event>
+							<text>Your Slug explains to you that the verse in question involves a dance and a timed release of flatulence, though they struggle to keep a serious composition throughout this explanation. They then charge straight to the missionary, move around in a circle, and secrete a large amount of slime on the spot. The missionary appears to be deeply offended by this. "What, what trickery is this? How dare you mock our Holy Words! I should've known that your kind would never appreciate our sacred endeavours!" The station arms its weapons to fight you off, though only after they clean up the mess your Slug left behind.</text>
+							<ship hostile="true"/>
+							<choice hidden="true">
+								<text>Continue...</text>
+								<event load="COMBAT_CHECK"/>
+							</choice>
+						</event>
+					</choice>
+					<choice hidden="true" req="BLUELIST_CREW_SNAIL">
+						<text>(Telepathic Shell) Have your Shell figure out the answer.</text>
+						<event>
+							<text>Though your Shell initially objects to the idea after discovering the answer, they eventually oblige. They proceed to roll up to the missionary, spin around in place and violently combust. You have no idea what they just did, but the missionary seems pleased about it. "It seems the Holy Words have spread to new untold places! The Elders would surely be pleased of this revelation! Take this, as a sign of our gratitude."</text>
+							<weapon name="GIFTLIST_CRYSTAL"/>
+							<store>STORE_ROCK</store>
+						</event>
+					</choice>
 					<choice hidden="true" req="mind">
 						<text>(Mind Control) "Recite" the "holy words".</text>
 						<event>
 							<text>Your mind tricks seem to do the job, and the missionary lets you in. Better hurry up though, for there's no guarantee your trickery won't be discovered.</text>
+							<store>STORE_ROCK</store>
+						</event>
+					</choice>
+					<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL">
+						<text>(Mind Control Weapon) "Recite" the "holy words".</text>
+						<event>
+							<text>Your weapon blindsides the Rockman, who is instantly fooled into thinking you have spoken the words rather than fired upon them. Better hurry up though, for there's no guarantee your trickery won't be discovered.</text>
 							<store>STORE_ROCK</store>
 						</event>
 					</choice>
@@ -5467,6 +5766,14 @@
 							</choice>
 						</event>
 					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="unique_tuco">
+				<text>(Tuco) Introduce them to the Dread Pirate himself.</text>
+				<event>
+					<text>As soon as Tuco strides out of your ship onto the station, the missionaries flee in terror. You hear what seems to be a ship taking off a few minutes later. The Rock clergymen still on the station offer you a gift as thanks for their newfound freedom, and offer to trade with you.</text>
+					<store>STORE_ROCK</store>
+					<autoReward level="LOW">item</autoReward>
 				</event>
 			</choice>
 			<choice hidden="true" req="unique_ariadne">
@@ -5602,7 +5909,7 @@
                     <choice req="COMBAT_HAZARD" hidden="true">
                         <text>(Reality Manipulator) Trigger an eruption.</text>
                         <event>
-                            <text>You use your Reality Manipulator on the planet. The device instantly transforms the entire planet into a burning hellscape, with volcanos flooding the entire planet with a downpour of lava. The Rockmen watch in amazement at the transformation of the planet.</text>
+                            <text>You use your Reality Manipulator on the planet. The device instantly transforms the entire planet into a burning hellscape, with volcanos flooding the entire surface with a downpour of lava. The Rockmen watch in amazement at the transformation.</text>
                             <choice hidden="true">
                                 <text>Continue...</text>
                             	<event load="LOSTSUN_VOLCANIC_ERUPTION_STORE"/>
@@ -5613,7 +5920,7 @@
                         <text>(PANIC BUTTON!) Do something epic.</text>
                         <event>
                             <text>You set your ship down on the surface of the planet and rig the button to send its signal after you've cleared the distance from your own ship. However, as your shuttle ascends and your landing site briefly becomes the system's second sun, you can't help but feel like you needed that ship for something...</text>
-                            <lose text="Looks like you're going to be a permanent resident of the Lost Suns' station... but at least they enjoyed your little display."/>
+                            <lose text="Looks like you're now a permanent resident of the Lost Suns' station... but at least they enjoyed your display."/>
                         </event>
                     </choice>
                     <choice>
@@ -6075,6 +6382,13 @@
 			<store>STORE_VAMPWEED</store>
 		</event>
 	</choice>
+	<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL">
+		<text>(Mind Control Weapon) 'Convince' the Vampweeds to sell to you.</text>
+		<event>
+			<text>With a quick strike from your weapon, you gain access to their store. You're going to have to make it fast, they'll likely have questions if your weapon wears off.</text>
+			<store>STORE_VAMPWEED</store>
+		</event>
+	</choice>
 	<choice hidden="true">
 		<text>Attempt to lie your way into the store.</text>
 		<event load="VAMPWEED_INSURRECTIONIST_SNEAK"/>
@@ -6160,6 +6474,13 @@
 			<store>STORE_REBEL</store>
 		</event>
 	</choice>
+	<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL">
+		<text>(Mind Control Weapon) Alter the announcer's opinions.</text>
+		<event>
+			<text>You locate the source of the announcement and fire your mind control weapon at the speaker, who rescinds his previous statement. Hopefully you will have enough time to shop before he can figure out what just happened.</text>
+			<store>STORE_REBEL</store>
+		</event>
+	</choice>
 	<choice hidden="true" req="mind" lvl="1" max_group="0">
 		<text>(Mind Control) Alter the announcer's opinions.</text>
 		<event>
@@ -6234,7 +6555,10 @@
 		<text>(Non-Sapient Crew) Pass off your alien crew as pets.</text>
 		<event>
 			<text>The store-owners consider for a bit, but seem to accept this, and allow you inside.</text>
-			<event load="STORE_LOAD_REBEL"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORE_LOAD_REBEL"/>
+			</choice>
 		</event>
 	</choice>
 	<choice hidden="true" max_group="2" req="pilot" lvl="1" blue="false">
@@ -6449,6 +6773,16 @@
 		<event>
 			<text>Fortunately, you're able to hack into the Auto-ship and reconfigure it to accept your Federation ID. You also leave a little present for the fleet, by setting the ship to explode when a Rebel ship communicates with it.</text>
 			<modifyPursuit amount="-2"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORE_LOAD_AUTO"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_WEAPONS_HACK">
+		<text>(Hacking Weapon) Confuse the Auto-ship to trade with you.</text>
+		<event>
+			<text>You fire your weapon at ship's processing unit. The ship stutters momentarily, before accepting your Federation ID as valid.</text>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="STORE_LOAD_AUTO"/>
@@ -7687,6 +8021,13 @@
 								<text>Are you ok?</text>
 								<event load="STOREEVENT_SLUG_HYPNO_FAIL"/>
 							</choice>
+							<choice hidden="true" req="BLUELIST_WEAPONS_MIND_AFFECT">
+								<text>(Mind Affecting Weapon) Explain to him that hypnosis doesn't work with a watch.</text>
+								<event>
+									<text>"Oh. I need a machine for thisss? Well that'ssss lame. I need ssscrap to afford that... You have ssscrap, right? I have thingsss! We can trade!"</text>
+									<store>STORE_SLUG</store>
+								</event>
+							</choice>
 							<choice hidden="true" req="mind">
 								<text>(Mind Control) Explain to him that hypnosis doesn't work with a watch.</text>
 								<event>
@@ -8374,6 +8715,17 @@
 			<text>Continue...</text>
 			<event load="STORE_LOAD_PIRATE"/>
 		</choice>
+		<choice hidden="true" req="BLUELIST_WEAPONS_HACK">
+			<text>(Hacking Weapon) Unlock the doors with your weapon.</text>
+			<event>
+				<text>Your hacking is able to scramble the locking mechanism, revealing the pirate inside. He surrenders almost immediately.</text>
+				<autoReward level="LOW">item</autoReward>
+				<choice hidden="true">
+					<text>Continue...</text>
+					<event load="STORE_LOAD_PIRATE"/>
+				</choice>
+			</event>
+		</choice>
 		<choice hidden="true" req="hacking">
 			<text>(Hacking) Open up the doors.</text>
 			<event>
@@ -9023,6 +9375,15 @@
 	</choice>
 </event>
 
+
+<event name="FINISH_BEACON_DEBT_FLEET">
+	<loadEventList seeded="false" first="true" generate="true" default="DEBT_COLLECTOR_NORMAL_FLEET">
+		<event name="DEBT_COLLECTOR_EASY_FLEET" req="loc_loan_25" lvl="1"/>
+		<event name="DEBT_COLLECTOR_NORMAL_FLEET" req="loc_loan_50" lvl="1"/>
+		<event name="DEBT_COLLECTOR_HARD_FLEET" req="loc_loan_100" lvl="1"/>
+	</loadEventList>
+</event>
+
 <event name="FINISH_BEACON_DEBT">
 	<loadEventList seeded="false" first="true" generate="true" default="DEBT_COLLECTOR_NORMAL">
 		<event name="DEBT_COLLECTOR_EASY" req="loc_loan_25" lvl="1"/>
@@ -9043,6 +9404,13 @@
 		<event name="FINISH_BEACON_DEBT_FIRST" req="loc_debt_collector" lvl="0" max_lvl="0"/>
 	</loadEventList>
 </event>
+<event name="DEBT_COLLECTOR_EASY_FLEET">
+	<ship load="SHIP_DEBT_COLLECTOR_EASY" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="FINISH_BEACON_DEBT_REUNION_FLEET" req="loc_debt_collector" lvl="1"/>
+		<event name="FINISH_BEACON_DEBT_FIRST_FLEET" req="loc_debt_collector" lvl="0" max_lvl="0"/>
+	</loadEventList>
+</event>
 <!--normal-->
 <ship name="SHIP_DEBT_COLLECTOR_NORMAL" auto_blueprint="MU_DEBT_COLLECTOR_NORMAL">
 	<escape timer="30" load="DEBT_COLLECTOR_ESCAPE" max="4" min="2"/>
@@ -9056,6 +9424,13 @@
 		<event name="FINISH_BEACON_DEBT_FIRST" req="loc_debt_collector" lvl="0" max_lvl="0"/>
 	</loadEventList>
 </event>
+<event name="DEBT_COLLECTOR_NORMAL_FLEET">
+	<ship load="SHIP_DEBT_COLLECTOR_NORMAL" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="FINISH_BEACON_DEBT_REUNION_FLEET" req="loc_debt_collector" lvl="1"/>
+		<event name="FINISH_BEACON_DEBT_FIRST_FLEET" req="loc_debt_collector" lvl="0" max_lvl="0"/>
+	</loadEventList>
+</event>
 <!--hard-->
 <ship name="SHIP_DEBT_COLLECTOR_HARD" auto_blueprint="MU_DEBT_COLLECTOR_HARD">
 	<escape timer="30" load="DEBT_COLLECTOR_ESCAPE" max="4" min="2"/>
@@ -9067,6 +9442,13 @@
 	<loadEventList seeded="false" first="true" generate="true">
 		<event name="FINISH_BEACON_DEBT_REUNION" req="loc_debt_collector" lvl="1"/>
 		<event name="FINISH_BEACON_DEBT_FIRST" req="loc_debt_collector" lvl="0" max_lvl="0"/>
+	</loadEventList>
+</event>
+<event name="DEBT_COLLECTOR_HARD_FLEET">
+	<ship load="SHIP_DEBT_COLLECTOR_HARD" hostile="false"/>
+	<loadEventList seeded="false" first="true" generate="true">
+		<event name="FINISH_BEACON_DEBT_REUNION_FLEET" req="loc_debt_collector" lvl="1"/>
+		<event name="FINISH_BEACON_DEBT_FIRST_FLEET" req="loc_debt_collector" lvl="0" max_lvl="0"/>
 	</loadEventList>
 </event>
 
@@ -9158,6 +9540,120 @@
 		<text>We aren't paying that!</text>
 		<event>
 			<text>"You Renegades and your complete lack of respect. I'm an honest business man, but you thieves keep tryin'a bankrupt me! So stingy! Ah well, you can't say you weren't warned, Renegade! The Worm's just gotta collect his dues... heheheh."</text>
+			<ship hostile="true"/>
+			<choice>
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FINISH_BEACON_DEBT_REUNION_FLEET">
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="all"/>
+    <text>You've arrived at the Long-Range beacon. Unfortunately, the Rebel fleet has caught up! And to make things worse, you've run into LaRoache once again! A beefy Leech vessel brandishing the Tony's logo approaches, and on screen appears a livid Ampere with a fedora, a cigar and a striped vest. "You's gotta be slower than my fat-ass don ya mook. I'll keep it short for you's slow renegade brain here this time: pay off your debt or sleep with the Aquarians!"</text>
+	<choice req="loc_loan_25" blue="false">
+		<text>Pay off your debt.</text>
+		<event>
+			<text>You jettison a pod full of scrap towards LaRoache's vessel, hastily scooping it up, he barely gets his ship grazed by an ASB blast before jumping away! The rebel fleet now has one less target to worry about.</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_25" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-40" max="-40"/>
+			</item_modify>
+			<recallBoarders force="true"/>
+			<instantEscape/>
+		</event>
+	</choice>
+	<choice req="loc_loan_50" blue="false">
+		<text>Pay off your debt.</text>
+		<event>
+			<text>You jettison a pod full of scrap towards LaRoache's vessel, hastily scooping it up, he barely gets his ship grazed by an ASB blast before jumping away! The rebel fleet now has one less target to worry about.</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_50" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-80" max="-80"/>
+			</item_modify>
+			<recallBoarders force="true"/>
+			<instantEscape/>
+		</event>
+	</choice>
+	<choice req="loc_loan_100" blue="false">
+		<text>Pay off your debt.</text>
+		<event>
+			<text>You jettison a pod full of scrap towards LaRoache's vessel, hastily scooping it up, he barely gets his ship grazed by an ASB blast before jumping away! The rebel fleet now has one less target to worry about.</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_100" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-160" max="-160"/>
+			</item_modify>
+			<recallBoarders force="true"/>
+			<instantEscape/>
+		</event>
+	</choice>
+	<choice>
+		<text>We aren't paying that!</text>
+		<event>
+			<text>LaRoache gets visibly more livid at you and charges at you with his weapons armed! "You mooks know what it takes to make an honest businessman to  do unreasonable business? Now you's gonna face the tunes for this!"</text>
+			<ship hostile="true"/>
+			<boarders min="2" max="2" class="ampere"/>
+			<choice>
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+</event>
+<event name="FINISH_BEACON_DEBT_FIRST_FLEET">
+	<customFleet right="false" firing="true" autoDarkening="false">CUSTOM_FLEET_REBEL</customFleet>
+	<fleet>rebel</fleet>
+	<environment type="PDS" target="all"/>
+    <text>You've arrived at the Long-Range Beacon. Unfortunately the Rebel fleet has caught up! And to make matters worse, a beefy Leech brandishing Tony's logo approaches, and on the screen appears a livid Ampere with a fedora, a cigar and a striped vest. "You's took your sweet time ya mooks. Even if these rebel punks tear us both down, I ain't letting you go through without that debt of you's is paid!"</text>
+	<variable name="loc_debt_collector" op="set" val="1"/>
+	<choice req="loc_loan_25" blue="false">
+		<text>Pay off your debt.</text>
+		<event>
+			<text>You jettison a pod full of scrap towards LaRoache's vessel, hastily scooping it up, he barely gets his ship grazed by an ASB blast before jumping away! The rebel fleet now has one less target to worry about.</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_25" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-35" max="-35"/>
+			</item_modify>
+			<recallBoarders force="true"/>
+			<instantEscape/>
+		</event>
+	</choice>
+	<choice req="loc_loan_50" blue="false">
+		<text>Pay off your debt.</text>
+		<event>
+			<text>You jettison a pod full of scrap towards LaRoache's vessel, hastily scooping it up, he barely gets his ship grazed by an ASB blast before jumping away! The rebel fleet now has one less target to worry about.</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_50" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-70" max="-70"/>
+			</item_modify>
+			<recallBoarders force="true"/>
+			<instantEscape/>
+		</event>
+	</choice>
+	<choice req="loc_loan_100" blue="false">
+		<text>Pay off your debt.</text>
+		<event>
+			<text>You jettison a pod full of scrap towards LaRoache's vessel, hastily scooping it up, he barely gets his ship grazed by an ASB blast before jumping away! The rebel fleet now has one less target to worry about.</text>
+			<variable name="loc_loan_any" op="set" val="0"/>
+			<variable name="loc_loan_100" op="set" val="0"/>
+			<item_modify>
+				<item type="scrap" min="-140" max="-140"/>
+			</item_modify>
+			<recallBoarders force="true"/>
+			<instantEscape/>
+		</event>
+	</choice>
+	<choice>
+		<text>We aren't paying that!</text>
+		<event>
+			<text>LaRoache gets even more pissed off at you and charges towaeds you with his weapons armed! "You disrespectful worm! You's gonna regret it, big time!"</text>
 			<ship hostile="true"/>
 			<choice>
 				<text>Continue...</text>
@@ -9526,7 +10022,7 @@ slug karen fighting for last item on shelf
 	</crew>
 </ship>
 <event name="TONY_HQ_ANGEL">
-	<text>You leave the main shopping area and fly towards the command tower where you find a strange Stealth ship laying down fire on the last of the station's security turrets. When they spot you, they warn you not to approach. "So Tony sent a renegade to save his ass? Cute. Look here and listen pal. Name's Cancer. They call me an Angel of Death, one of Mr. Vael's finest. Now, the last thing you wanna go doing is upsetting the boss, man. So just turn on around and skiddadle, understand?"</text>
+	<text>You leave the main shopping area and fly towards the command tower where you find a strange Stealth ship laying down fire on the last of the station's security turrets. When they spot you, they warn you not to approach. "So Tony sent a Renegade to save his ass? Cute. Look here and listen pal. Name's Cancer. They call me an Angel of Death, one of Mr. Vael's finest. Now, the last thing you wanna go doing is upsetting the boss, man. So just turn on around and skiddadle, understand?"</text>
 	<ship load="SHIP_ANGEL_TONY" hostile="false"/>
 	<choice hidden="true">
 		<text>Nah.</text>
@@ -9555,31 +10051,37 @@ slug karen fighting for last item on shelf
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
-					<text>Inside the vault is a sorry sight. A greasy couch sits in the center of mounds of wrappers and soda cans and faces a massive widescreen TV playing a rather raunchy episode from the infamously awful Leech soap opera 'Orfaces of Rilla'. A pathetically overweight creature lays before you, mindlessly absorbing the show and not paying you any mind.</text>
+					<text>Inside the vault is a grisly sight. Overturned tables and emptied deposit boxes all surround a massive white Leech that you can only assume used to be Tony Sr., hanging lifeless from the ceiling. The gravity of the scene before you is abruptly undercut, however, as you spot an identical Leech in the back of the vault, prying open an emergency exit.</text>
 					<choice hidden="true">
 						<text>Announce your presence.</text>
 						<event>
-							<text>The Leech jumps and quickly flicks off the screen. "W-what the hell? Where did you come from? How did you get past my security? What do you want?"</text>
+							<text>The Leech jumps with a start, slamming his own tail in the exit door. "ARGHHH! Oh, damn it! Who the hell are you, and how - or why - did you get past not only my own security, but the mercenaries outside?"</text>
 							<choice hidden="true">
 								<text>The mercenaries are dead. You're safe now.</text>
 								<event>
-									<text>"What? God damn it. Why do you think I wasn't doing anything? I was waiting for them to kill me! Do you know how hard it is to hang yourself when you weigh 600 pounds and you can barely move your tongue? Ugh."</text>
+									<text>"What? Did you think I was hanging my own body double for fun? You didn't save me, all you did was screw up a perfectly planned business transaction!"</text>
 									<choice hidden="true">
 										<text>I don't understand.</text>
 										<event>
-											<text>"Look, kid. I appreciate your 'noble act' or whatever, but you gotta understand something. My life is hell. Some 7 years ago some asshole Slugs screwed up my life and the only thing I've got to make up for it is showering myself in money. Vael seemed like an easy way out, and now I'm back to square zero. Or... hmmm. Look, maybe you can do me a favor. Just shoot me. Get it over with and spare me the trouble. Otherwise I'm going to have to explain to someone why I need them to throw me out an airlock."</text>
+											<text>"Well, I'd hope so, given that I didn't want Vael to either. The poor bastard was supposed to find 'my' dead body and walk away thinking he'd won, so I could pop out in a few days as Tony Jr., claim my father's business with a will I just wrote up, and leave the Syndicate empty-handed. But now Vael's just going to be angrier, and you've ruined my trick. You may as well just kill me now - there's no way you'll be as brutal as them."</text>
 											<choice hidden="true">
 												<text>We aren't shooting you.</text>
 												<event>
-													<text>"Oh god damn it. Why? Why won't you just shoot me? Can't you see what I've become? I can barely move. I have 7 different eating disorders. I watch soap operas to fill the time. Is there any creature more deserving of merciful euthanization than me?"</text>
+													<text>"Oh god damn it. Why? Even if Vael doesn't manage to kill me, I'm not going to be able to hold on to my business under this kind of pressure, and I'll never find another body double as good as that; what's the point of living if I have to be one of you poors again?"</text>
 													<choice hidden="true">
-														<text>You're also a billionaire. If you were happy once, surely you can be happy again.</text>
+														<text>You could try and make amends.</text>
 														<event>
-															<text>"I'm not sure I was even happy before. It's hard to remember the days before the... incident. But maybe... maybe you're right. I haven't left this station in 2 years. Could you take me with you? You're a Multiverse Renegade, right? Maybe some adventure would be a good chance to fix me..."</text>
-															<unlockCustomShip silent="false">PLAYER_SHIP_TONY</unlockCustomShip>
-															<variable name="ach_crew_tony" op="set" val="1"/>
-															<crewMember amount="1" all_skills="1" class="unique_tonysr">Tony Sr.</crewMember>
-															<store>STORE_TONY</store> 
+															<text>"For what? Look, I'm not apologizing for being the face of this company. People want cheap crap and shady loans, and Tony's provides. If someone takes issue with how I run my business, they're welcome to try and kill me over it."</text>
+															<choice hidden="true">
+																<text>They just did.</text>
+																<event>
+																	<text>"That... is a good point. I suppose no-one but you knows that the poor bastard over there was a body double - any chance you have room on your vessel for one more? I've already emptied out this vault, but you Renegades like ships, right? I'll have one of mine sent to your hangar, just get me out of here before Vael sends another Angel!</text>
+																	<unlockCustomShip silent="false">PLAYER_SHIP_TONY</unlockCustomShip>
+																	<variable name="ach_crew_tony" op="set" val="1"/>
+																	<crewMember amount="1" all_skills="1" class="unique_tonysr">Tony Sr.</crewMember>
+																	<store>STORE_TONY</store> 
+																</event>
+															</choice>
 														</event>
 													</choice>
 												</event>
@@ -9592,13 +10094,15 @@ slug karen fighting for last item on shelf
 												</event>
 											</choice>
 											<choice hidden="true" req="unique_symbiote">
-												<text>(Symbiote) "You aren't the only one who's been miserable those 7 years."</text>
+												<text>(Symbiote) "Glad to see someone else wants you dead."</text>
 												<event>
-													<text>"My god... Rig? Is that you? How are you here?" You have no idea what's going on, but Tony explains. "7 years ago, Tony's was nothing but a small chain local only to the Republic and quite small. I hoped to change that around by selling Zulfiqar goods. I met with Rig to discuss the terms, when out of nowhere a Slug ship arrived and mind controlled me into sticking myself up Rig's... uh... asshole. The surgeons had no idea how to handle the situation. For 3 years we lived like that, stuck together. I was forced to eat Rig's waste to survive. Eventually we found a professional capable of separating us, but it was too late to save either of us from the permanent trauma."</text>
+													<text>"My god... Rig? Is that you? How are you here?" You have no idea what's going on, but Tony explains. "7 years ago, Tony's was nothing but a small chain - local only to the Republic. I hoped to change that by expanding into genetic experimentation; what army could turn down Mantises with the durability of a Rock?. I met with representatives from Zulfiquar to discuss how we'd go about securing test subjects, then a Slug ship arrived and... demonstrated my ideas on them. The surgeons had no idea how to handle the situation. Tony's eventually went galactic when we started the loan program, but I never forgot about you, Rig."</text>
 													<choice hidden="true">
 														<text>Uh...</text>
 														<event>
-															<text>"That deal never did go through, by the way." Tony turns to Rig, who shrugs. When Rig explains his new situation to Tony, the Leech simply can't believe it. "You... you were mind controlled by the SAME Slugs? What!? There must be something deeper here... You know, I've spent a lot of time searching for the ones responsible, and I think I've found them. Maybe together we can finally track them down and get some sweet sweet revenge."</text>
+															<text>"You never forgot?" Rig turns to Tony, eyes glowing with fury. "If you didn't forget, then why are we still stuck like this?" 
+																"Oh, you know how it is, you put a project to the side for five minutes, then before you know it, a few years pass you by..." Tony trails off, clearly aware his lies aren't working. "Alright, alright. I got into contact with them a few months after the incident, trying to get their technology from them - but every single time I get close, they vanish. But I have their location now... any chance you'd want to get your revenge on them, rather than me?"
+																"Fine. But this isn't over - not until I can have my damn body to myself again."</text>
 															<unlockCustomShip silent="false">PLAYER_SHIP_TONY</unlockCustomShip>
 															<variable name="ach_crew_tony" op="set" val="1"/>
 															<crewMember amount="1" all_skills="1" class="unique_tonysr">Tony Sr.</crewMember>
@@ -9645,14 +10149,14 @@ slug karen fighting for last item on shelf
 	</quest>
 	<beaconType id="map_icon_quest" global="true">
 		<color r="69" g="168" b="235" a="1"/>
-		<unvisitedTooltip>Supposed location of the Slugs responsible for harassing Tony Sr. and Rig.</unvisitedTooltip>
+		<unvisitedTooltip>Supposed location of the Slugs responsible for harassing Tintan and Rig.</unvisitedTooltip>
 	</beaconType>
 	<text>The coordinates are surprisingly accurate, leading you right into the den of what appears to be some kind of hacker ship.</text>
 	<ship load="SHIP_SLUG_BUTT_BUDDIES" hostile="false"/> 
 	<choice hidden="true" req="SYMBIOTE_AND_TONY" lvl="1" max_group="0" blue="false">
 		<text>Approach with Tony and Rig.</text>
 		<event>
-			<text>You hail the Slugs and put Tony and Rig on the screen. Tony slams his tongue on the table, finally ready to get his vengeance after all of these years. "You rotten, despicable slime balls. After all this time I- WE'VE finally caught up with you! Now you're going to finally explain what the point of ALL of this is!"</text>
+			<text>You hail the Slugs and put Tony and Rig on the screen. Rig slams his fist on the table, finally ready to get vengeance after all of these years. "You rotten, despicable slime balls. After all this time I- WE'VE finally caught up with you! Now you're going to finally explain what the point of ALL of this is!"</text>
 			<choice hidden="true">
 				<text>Wait for a response.</text>
 				<event>
@@ -9696,12 +10200,12 @@ slug karen fighting for last item on shelf
 	</choice>
 </event>
 <event name="BUTT_BUDDIES_REVENGE">
-	<text>It seems during the fight the two main Slugs escaped on a lifepod, but you quickly scoop it up before they can get away. You bring them back on board to deliberate what to do with them. Rig and Tony both propose one simple punishment - treat them with their own medicine.</text>
+	<text>It seems during the fight the two main Slugs escaped on a lifepod, but you quickly scoop them up before they can get away, finding a small grey-and-purple machine stashed in a corner of their vessel as you do. You bring them back on board to deliberate what to do with them. Rig and Tony both propose one simple punishment - treat them with their own medicine.</text>
 	<achievement>ACH_EVENT_BUTTBUDDIES</achievement>
 	<choice hidden="true">
 		<text>Agree.</text>
 		<event>
-			<text>Rig grabs one of the Slugs by the tail as Tony holds the other in place, and together they force one Slug down the gullet of the other. One screams as the other chokes, and the two roll on the floor in agony until the pain becomes unbearable and you finally put them out of their misery. You can see Tony and Rig aren't quite as satisfied with this as they had hoped, but they're glad to finally have laid them to rest.</text>
+			<text>Rig drags the two Slugs out of the room by their tails as Tony grabs the mysterious device, and together they lock the two criminals in an airlock with their machine active. One screams as the other chokes, and the two roll on the floor in agony, flesh stretching and warping as the machine attempts to resolve their anatomies into a single creature, until a loud BANG rings through the air and the process stops, leaving a smoking device and a heap of dead Slug. You can see Tony and Rig aren't quite as satisfied with this as they had hoped, but they're glad to finally have laid them to rest.</text>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="BUTT_BUDDIES_REWARD"/>
@@ -10081,6 +10585,8 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 	<event load="STOREEVENT_FED_NOTFREE"/>
 	
 	<event load="STOREEVENT_UNION_WAR_ORPHANS"/>
+	<event load="STOREEVENT_DETRITUS"/>
+	<event load="STOREEVENT_ARCHIVE_REC_CENTER"/>
 
 	<event load="STOREEVENT_ENGI_THREAT"/>
 	<event load="STOREEVENT_ENGI_SMITH"/>
@@ -10267,7 +10773,7 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 		<color r="215" g="255" b="200" a="1"/>
 	</beaconType>
     <text>Despite the utter chaos going on in this sector, the Federation fleet has managed to secure this beacon against the Rebels. At the center of the fleet is a rather impressive supply depot, which is why they've devoted so many resources to this region of space.</text>
-    <customFleet right="true" firing="false" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+    <customFleet right="true" firing="false" autoDarkening="true">CUSTOM_FLEET_FED</customFleet>
     <choice>
         <text>Hail to trade.</text>
         <event>
@@ -10416,6 +10922,9 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 	<event load="STOREEVENT_DAMAGED"/>
 	<event load="STOREEVENT_WEATHER_STUCK"/>
 	
+	<event load="STOREEVENT_DETRITUS"/>
+	<event load="STOREEVENT_ARCHIVE_REC_CENTER"/>
+
 	<event load="STOREEVENT_FED_OUTPOSTDAMAGE"/>
 	
 	<event load="STOREEVENT_SEPARATIST_UNLOADING"/>
@@ -10495,14 +11004,14 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 					<choice hidden="false">
 						<text>Accept the bribe.</text>
 						<event>
-							<text>"Well, this is awfully embarassing. Please never mention this to anyone. I honestly dread being made fun of more than the fine."</text>
+							<text>"Well, this is awfully embarrassing. Please never mention this to anyone. I honestly dread being made fun of more than the fine."</text>
 							<autoReward level="HIGH">standard</autoReward>
 						</event>
 					</choice>
 					<choice hidden="true">
 						<text>Do you happen to have anything to trade instead?</text>
 						<event>
-							<text>"Oh... er, yeah. We are a market after-all, not an... 'NNNNNNNN'. But please, still don't tell anyone about this. I can't handle the embarassment."</text>
+							<text>"Oh... er, yeah. We are a market after-all, not an... 'NNNNNNNN'. But please, still don't tell anyone about this. I can't handle the embarrassment."</text>
 							<store>STORE_STANDARD</store>
 						</event>
 					</choice>
@@ -10541,6 +11050,8 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 	<event load="STOREEVENT_FED_NOTFREE"/>
 	
 	<event load="STOREEVENT_UNION_WAR_ORPHANS"/>
+	<event load="STOREEVENT_DETRITUS"/>
+	<event load="STOREEVENT_ARCHIVE_REC_CENTER"/>
 
 	<event load="STOREEVENT_ENGI_THREAT"/>
 	<event load="STOREEVENT_ENGI_SMITH"/>
@@ -10595,6 +11106,8 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 	<event load="STOREEVENT_FED_NOTFREE"/>
 	
 	<event load="STOREEVENT_UNION_WAR_ORPHANS"/>
+	<event load="STOREEVENT_DETRITUS"/>
+	<event load="STOREEVENT_ARCHIVE_REC_CENTER"/>
 
 	<event load="STOREEVENT_ENGI_THREAT"/>
 	<event load="STOREEVENT_ENGI_ENGINES"/>
@@ -12630,7 +13143,7 @@ NEBULA_STOREEVENT_SHELL_MEDICAL-->
 </event>
 <textList name="EMPTY_LOSTSUN">
 	<text>A few Lost Sun fortifications are scattered about, but none contact you. You take this time to rest.</text>
-	<text>You are greeted by nothing more than an unusual break in the usual busy wartime acitvities of this sector.</text>
+	<text>You are greeted by nothing more than an unusual break in the usual busy wartime activities of this sector.</text>
 	<text>A nearby Lost Sun station cloaks as soon as you jump in. You take the message and fly away until you're alone.</text>
 </textList>
 

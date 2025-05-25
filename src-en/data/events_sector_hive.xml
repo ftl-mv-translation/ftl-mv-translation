@@ -53,7 +53,7 @@
 </eventList>
 
 <event name="MANTIS_VAMPWEED_CURIOUS" unique="true">
-	<text>You receive a hail from a station at this beacon. "You Renegade? Having contact with the Vampweed Confederation? We curious about them!"</text>
+	<text>You receive a hail from a station at this beacon. "You Renegade? Having contact with Vampweed Confederation? We curious about them!"</text>
 	<choice hidden="true" req="unique_ivar">
 		<text>(Ivar) Ivar himself walks among us.</text>
 		<event>
@@ -377,6 +377,48 @@
 			</choice>
 		</event>
 	</choice>
+	<choice req="BLUELIST_WEAPONS_MIND_CONTROL" hidden="true">
+		<text>(Mind Control Weapon) "Convince" them to give you a slave for free.</text>
+		<event>
+			<text>The Mantis seems to think that you've already paid and asks which slave you want.</text>
+			<choice>
+				<text>Take an Engi slave.</text>
+				<event>
+					<text>You acquire the slave. The Mantis slaver still seems to be under the impression that they pulled one over on you.</text>
+					<crewMember amount="1" class="engi"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="MORALITY_UPDATE_GENERAL"/>
+					</choice>
+				</event>
+			</choice>
+			<choice>
+				<text>Take a Mantis slave.</text>
+				<event>
+					<text>You acquire the slave. The Mantis slaver still seems to be under the impression that they pulled one over on you.</text>
+					<crewMember amount="1" class="mantis"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="MORALITY_UPDATE_GENERAL"/>
+					</choice>
+				</event>
+			</choice>
+			<choice hidden="true">
+				<text>We aren't interested.</text>
+				<event>
+					<text>You turn away from the slaver, giving them a wide berth.</text>
+					<choice>
+						<text>Do something onboard the ship.</text>
+						<event load="STORAGE_CHECK"/>
+					</choice>
+					<choice>
+						<text>Do nothing.</text>
+						<event/>
+					</choice>
+				</event>
+			</choice>
+		</event>
+	</choice>
 	<choice hidden="true">
 		<text>We aren't interested.</text>
 		<event>
@@ -484,7 +526,7 @@
 			</event>
 		</choice>
 		<choice req="engines" lvl="4" hidden="true">
-			<text>(Adv. Engines) Dodge the debt and power up the engines.</text>
+			<text>(Upg. Engines) Dodge the debt and power up the engines.</text>
 			<event>
 				<text>You recall the scrap you prepared to send and are able to get out of the cruiser's firing range before they can react. However, a smaller ship breaks off from a patrol and moves in to engage.</text>
 				<ship load="SHIP_MANTIS_FIGHT" hostile="true"/>
@@ -523,10 +565,23 @@
 		<text>(Mantis Crew) Interrogate him.</text>
 		<event load="MANTIS_CAPTURE_SUZERAIN_TALK"/>
 	</choice>
-	<choice req="mind" hidden="true">
+	<choice req="BLUELIST_WEAPONS_MIND_CONTROL" hidden="true">
 		<text>(Mind Control) Interrogate him.</text>
 		<event>
 			<text>Your mind control device allows you to quickly get his story without resistance. It appears the boarding party was attempting to steal a weapon that the Engi ship was transporting. However their team was wiped out by drones.</text>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event>
+					<text>You find the weapon in a hidden storage hold and decide to patch the ship up enough to let the Mantis leave.</text>
+					<autoReward level="LOW">weapon</autoReward>
+				</event>
+			</choice>
+		</event>
+	</choice>
+	<choice req="BLUELIST_WEAPONS_MIND_CONTROL" hidden="true">
+		<text>(Mind Control Weapon) Interrogate him.</text>
+		<event>
+			<text>Your mind control weapon allows you to quickly get his story without resistance. It appears the boarding party was attempting to steal a weapon that the Engi ship was transporting. However their team was wiped out by drones.</text>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event>
@@ -743,7 +798,7 @@
 </event>
 
 <event name="MANTIS_SLUG_TAUNT" unique="true"> <!--NEW! Multiverse-->
-	<text>A Slug and Mantis ship appear to be squaring off at this beacon, but weapons have not yet been fired. Both ships simultaneously hail you. The Slug speaks first, "Federation, how fortuitousss that sssomeone elssse who I'm ssssure will apprecccciate the humor of thessse feeble pea-brained Mantisss and their pitiful attemptsss at dialect!" The Mantis cuts them off, "You stupid ones! Listen, how you drag out s's. True sign of inferiority." Both ships eagerly await your input on the situation.</text> 
+	<text>A Slug and Mantis ship appear to be squaring off at this beacon, but weapons have not yet been fired. Both ships simultaneously hail you. The Slug speaks first, "Federation, how fortuitousss that sssomeone elssse who I'm ssssure will appreciate the humor of thessse feeble pea-brained Mantisss and their pitiful attemptsss at dialect!" The Mantis cuts them off, "You stupid ones! Listen, how you drag out s's. True sign of inferiority." Both ships eagerly await your input on the situation.</text> 
 	<choice hidden="true">
 		<text>Agree that the Slugs are superior.</text>
 		<event>
@@ -784,7 +839,7 @@
 	<text>The Mantis lets out a cry of victory, and performs a strange ritual dance. They leave you with the remains of the Slug ship and fly away.</text>
 	<autoReward level="MED">standard</autoReward>
 </event>
-<event name="MANTIS_ALISON_CREW" unique="true">	<!-- EVENT COPY TO ALLOW OTHER OPTIONS	-->
+<event name="MANTIS_ALISON_CREW" unique="true">
 	<text>You arrive just in time to see an unusually well-armed Engi ship destroying a small pirate craft. A teleporter signal is detected...intruder on deck!</text>
 	<choice>
 		<text>Continue...</text>
@@ -812,6 +867,20 @@
 					</choice>
 				</event>
 			</choice>
+			<!--<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL">
+				<text>(Mind Control Weapon) Ensure the Mantis is passive before you make a decision.</text>
+				<event>
+					<text>Thanks to the Mantis's simple mind, it is quickly subdued by the effects of your weapon.</text>
+					<choice hidden="true">
+						<text>Side with the fugitive and fight the Engi ship.</text>
+						<event load="MANTIS_ALISON_CREW_HELP_SAFE"/>
+					</choice>
+					<choice hidden="true">
+						<text>Agree to offer up the Mantis in exchange for a bounty.</text>
+						<event load="MANTIS_ALISON_CREW_REJECT_SAFE"/>
+					</choice>
+				</event>
+			</choice>-->
 		</event>
 	</choice>
 </event>
@@ -1186,6 +1255,17 @@
 					</choice>
 				</event>
 			</choice>
+			<choice hidden="true" req="BLUELIST_WEAPONS_HACK">
+				<text>(Hacking Weapon) We have a hacking weapon.</text>
+				<event>
+					<text>"Strange, but this might work. Come, we show you to ship." They lead you to the Auto-ship, which is in the middle of tormenting a civilian Mantis ship. You prepare to fight.</text>
+					<ship load="SHIP_HIVE_AUTO_SITUATION" hostile="true"/>
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
 			<!--<choice hidden="true" req="cloaking">
 				<text>(Cloaking) We have cloaking.</text>
 				<event>
@@ -1361,11 +1441,19 @@
 			</choice>
 		</event>
 	</choice>
-	<choice hidden="true" req="teleporter">
+	<!--<choice hidden="true" req="ELITE_AND_TELEPORT" max_group="1">
+		<text>(Teleporter + Elite Crew) Send an advanced boarding team to sabotage the complex.</text>
+		<event>
+			<text>You remain in contact with your crew as they journey through the maze-like stainless steel hallways of the compound. Laying small handheld explosives wherever they can, your crew then hurry back undetected to the safety of your ship, where you remotely detonate the bombs. You can see the explosions shaking the building, and their defenses cave in. With no way to protect themselves from further attacks, they give in to your demands, and give over scrap and one of their Engi slaves. Upon interrogating the Engi, you learn that they have remarkably been able to pick up combat skills from watching the trainees, and you decide they will be useful amongst your crew.</text>
+			<autoReward level="HIGH">standard</autoReward>
+			<crewMember amount="1" class="engi" combat="2"/>
+		</event>
+	</choice>-->
+	<choice hidden="true" req="teleporter" max_group="1">
 		<text>(Teleporter) Send a boarding team to sabotage the complex.</text>
 		<event load="HIVE_SUZERAIN_COMPLEX_TELEPORTER"/>
 	</choice>
-	<choice hidden="true">
+	<choice hidden="true" req="pilot" blue="false" max_group="2">
 		<text>Leave the complex alone.</text>
 		<event>
 			<text>You have more important things to do than go raiding important Mantis structures.</text>
@@ -1492,6 +1580,10 @@
     <choice hidden="true" req="oxygen" lvl="3">
    	 	<text>(Adv. Oxygen) Quickly refill their oxygen.</text>
 		<event load="MANTIS_DERELICT_OXYGEN"/>
+    </choice>
+	<choice hidden="true" req="UNION_JACKETS">
+   	 	<text>(Lifejackets) Send in your crew.</text>
+   	 	<event load="MANTIS_DERELICT_JACKETS"/>
     </choice>
 	<choice hidden="true">
 		<text>Scrap the ship.</text>
@@ -1621,6 +1713,33 @@
 		</choice>
 	</event>
 </eventList>
+<eventList name="MANTIS_DERELICT_JACKETS">
+	<event load="MANTIS_DERELICT_NO2_SAFE"/>
+	<event load="MANTIS_DERELICT_NO2_SAFE"/>
+	<event>
+		<text>The moment your crewmember steps aboard, it becomes apparent that there's some kind of trap! They're able to make it back to your ship, but it looks like a fight is upon you.</text>
+		<status type="clear" target="enemy" system="oxygen" amount="100"/>
+		<boarders min="1" max="1" class="mantis"/>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+	<event>
+		<text>It was a trap! Your crewmember is killed upon boarding the ship, which still has oxygen by virtue of the Vampweed stationed onboard. The ship's life support turns back on, and it looks like a fight is inevitable!</text>
+		<removeCrew>
+			<clone>true</clone>
+			<text>Your crew stumbles out of the Clone Bay, annoyed for having been fooled by this trap.</text>
+		</removeCrew>
+		<status type="clear" target="enemy" system="oxygen" amount="100"/>
+		<ship hostile="true"/>
+		<choice hidden="true">
+			<text>Continue...</text>
+			<event load="COMBAT_CHECK"/>
+		</choice>
+	</event>
+</eventList>
 <event name="MANTIS_DERELICT_ORCHID_SAFE">
     <text>Your crew finds the struggling Engi slave on board. The natural production of oxygen manages to stabilize the Engi's condition long enough to get them back to your ship. "Renegade has: good timing. O2 sabotage: worked. Can offer: assistance."</text>
     <crewMember amount="1" class="engi"/>
@@ -1642,6 +1761,19 @@
     <choice hidden="true" req="LIST_CREW_MEDICAL">
    	 	<text>(Medical Crew) Save the Engi.</text>
    	 	<event load="MANTIS_DERELICT_ENGI_SAVE"/>
+    </choice>
+	<choice hidden="true" req="BLUELIST_BOMBS_HEAL">
+   	 	<text>(Healing Bomb) Save the Engi. [-1}]</text>
+   	 	<event>
+   		 	<text>You quickly aim a healing bomb at the Engi, which proves effective at stabilizing their condition.</text>
+			<item_modify>
+				<item type="missiles" min="-1" max="-1"/>
+			</item_modify>
+			<choice>
+				<text>Continue...</text>
+				<event load="MANTIS_DERELICT_ENGI_SAVE"/>
+			</choice>
+		</event>
     </choice>
 	<choice hidden="true" req="RECON_AND_TELEPORT">
 		<text>(Reconstructive Teleport) Save the Engi.</text>
@@ -2548,12 +2680,12 @@ The Suzerain on the other end makes an opposing gesture, broadening their stance
 	</choice>
 </event>
 <event name="HIVE_MERCENARY_HATCHERY_TIMER">
-	<text>You happen to notice, that while you've been fighting, the other Bishop ship has arrived. However, instead of coming to assist you, it has instead landed next to the Hatchery and begun to load its cargo with the eggs. It seems they have no intentions of sticking around, so if you want to confront them you'll have to kill this cruiser quickly!</text>
+	<text>You happen to notice that while you've been fighting, the other Bishop ship has arrived. However, instead of coming to assist you, it has landed next to the Hatchery and begun to load its cargo with the eggs. It seems they have no intentions of sticking around, so if you want to confront them you'll have to quickly remove this cruiser!</text>
 	<clearTriggeredEvent name="HATCHERY_TIMER_START"/>
 	<triggeredEvent event="HIVE_MERCENARY_HATCHERY_FAIL" time="60" thisFight="true" clearOnJump="true">
 		<triggeredEventBox load="DEFAULT_TIMER" pos="combat">
 			<warning time="15.0" flash="true"/>
-			<tooltip>If you can't kill the Suzerain Cruiser before the time runs out, the Bishop will escape with the eggs.</tooltip>
+			<tooltip>If you can't neutralize the Suzerain Cruiser before the time runs out, the Bishop will escape with the eggs.</tooltip>
 		</triggeredEventBox>
 		<timerSounds load="DEFAULT_TIMER_SOUNDS"/>
 	</triggeredEvent>
@@ -2640,7 +2772,7 @@ The Suzerain on the other end makes an opposing gesture, broadening their stance
 			<choice hidden="true">
 				<text>Have Lai talk it out with the guard.</text>
 				<event>
-					<text>"So you carry two traitors, yet you still wish to gain access to Hive? I would kill you on the spot, but the Queen has heard of dishonorable KazaaakplethKilik's arrival and wishes to see him..."</text>
+					<text>"So you carry two traitors, yet you still wish to gain access to Hive? I would kill you on the spot, but the Queen has heard of dishonorable Kazaaakplethkilik's arrival and wishes to see him..."</text>
 					<choice hidden="true">
 						<text>Continue into the palace.</text>
 						<event>
@@ -2660,7 +2792,7 @@ The Suzerain on the other end makes an opposing gesture, broadening their stance
 													<choice hidden="true">
 														<text>Oh...</text>
 														<event>
-															<text>With that conclusion made, Leik turns back to Kazaaak. "My apologies dear, but in your absence the Hive has not grown fond of you. But traveling in-arms with another traitor to the Episcopacy and a Federation Captain has not helped your image. I love you, but my role as queen means I must place the safety of the Hive first. It is clear where your line in the sand has been drawn, so this must mark the end of us. And I'm afraid there is another reason I have allowed you here: the capture of the fugitive you have brought with you, Laiiikarkapi. I apologize my dear, for it was my fault appointing you to this role. But such things cannot go unpunished. This is the last stop for all of you. I can at least promise you your funerals will be held with honor." Leikonpliiinakra stands up, and her guards draw their weapons. You hurry out of the palace just in time to witness a massive cruiser approaching to stop you! Seems it's time to fight your way out of here.</text>
+															<text>With that conclusion made, Leik turns back to Kazaaak. "My apologies dear, but in your absence the Hive has not grown fond of you. Traveling in-arms with another traitor to the Episcopacy and a Federation Captain has not helped your image. I love you, but my role as queen means I must place the safety of the Hive first. It is clear where your line in the sand has been drawn, so this must mark the end of us. And I'm afraid there is another reason I have allowed you here: the capture of the fugitive you have brought with you, Laiiikarkapi. I apologize my dear, for it was my fault appointing you to this role. But such things cannot go unpunished. This is the last stop for all of you. I can at least promise you your funerals will be held with honor." Leikonpliiinakra stands up, and her guards draw their weapons. You hurry out of the palace just in time to witness a massive cruiser approaching to stop you! Seems it's time to fight your way out of here.</text>
 															<ship load="SHIP_BISHOP_BOSS" hostile="true"/>
 															<choice hidden="true">
 																<text>Continue...</text>

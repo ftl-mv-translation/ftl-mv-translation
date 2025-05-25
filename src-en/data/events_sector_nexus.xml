@@ -261,6 +261,7 @@
 </event>
 <event name="SYLVAN_CREWKILL_NEXUSPORTAL">
 	<text>It seems as though this is the end of Sylvan, but suddenly a teleporter signal registers - you've been boarded, again? Sylvan reappears on your deck. "Sssstranger, it'ssss not sssso eassssy to get rid of me!"</text>
+	<achievement silent="false">ACH_SYLVAN_CREWKILL</achievement>
 	<boarders min="1" max="1" class="unique_sylvan"/>
 	<achievement silent="false">ACH_SYLVAN_CREWKILL</achievement>
 	<choice hidden="true">
@@ -273,7 +274,7 @@
 	</choice>
 </event> 
 <event name="SYLVAN_DESTRUCTION_NEXUSPORTAL">
-	<text>Sylvan collapses, bleeding profusely from a gash across his face. He manages to gasp out a few final words, "Ssstranger... I hope... thissss wasss worth it...", then falls over. The Traveling Merchant is no more.</text>
+	<text id="text_sylvan_dead"/>
 	<playMusic/>
 	<clearTriggeredEvent name="STOP_MUSIC"/>
 	<metaVariable name="juke_sylvan" op="set" val="1"/>
@@ -392,7 +393,6 @@
 			<text>As you begin to approach the rift, the space around you becomes progressively more warped, and soon not even your engines are able to control your ship as you're sucked at absurd speeds into the heart of the gateway...</text>
 			<secretSectorWarp>SECRET_SYLVAN</secretSectorWarp>
 			<secretSector/>
-			<variable name="loc_nexus_entered" op="set" val="1"/>
 		</event>
 	</choice>
 	<choice hidden="true">
@@ -1195,7 +1195,7 @@
 					  /
 					:)
 					
-					You feel yourself pulled from your feet and are dragged back to your ship by an invisible force, while from the darkness spring several large, black tentacles that wrap themselves around Prime's ship, squeezing the metal and twisting the ship into a contorted wreck of metal, and then finally tearing it asunder. Prime gets no more final words - his time is up.</text>
+					You feel yourself pulled from your feet and are dragged back to your ship by an invisible force, while from the darkness spring several large, black tentacles that wrap themselves around Prime's ship. They squeeze the metal and twist the ship into a contorted wreck, until finally tearing it asunder. Prime gets no more final words - his time is up.</text>
 					<achievement>ACH_HER_OVERTHROW</achievement>
 					<changeBackground>BACKGROUND_HER</changeBackground>
 					<backgroundObject name="HER">
@@ -1257,7 +1257,7 @@
 			  /
 			:)
 			
-			Your vision begins to go black as the entirety of space around you seems to shake. Maddening thoughts fill your mind, as you witness what feels like an eternity of destruction and madness fill your thoughts.</text>
+			Your vision begins to go black as the entirety of space around you seems to shake. You feel like you're going mad, as what feels like an eternity of destruction fills your mind.</text>
 			<playMusic>chaos</playMusic>
 			<achievement>ACH_GNOME_NEXUSFAIL</achievement>
 			<choice hidden="true">
@@ -1346,7 +1346,7 @@
 	<win ach="nexus" music="her_credits" creditsText="credit_victory_nexus_good_save" text="Your legacy will be remembered." creditsBackground="VICTORY_NEXUS"/>
 </event>
 <event name="NEXUS_ENDING_GOOD_KILL">
-	<text>You blink your eyes, and pull yourself off the floor of your ship. The nightmarish darkness has vanished, replaced instead by the charred and broken remains of Prime's ship. as well as a few other surviving Sylvans surveying the damage. You still detect faint life signatures from on board, and receive a hail.
+	<text>You blink your eyes, and pull yourself off the floor of your ship. The nightmarish darkness has vanished, replaced instead by the charred and broken remains of Prime's ship, as well as a few other surviving Sylvans surveying the damage. You still detect faint life signatures from on board, and receive a hail.
 	
 	"Ssstranger, I have... done all that I can do. I do not... know if thisss will keep Her at bay forever, but now you are sssafe. Without her power, my life will sssoon fade... With the Nexussss ablaze in your path to undo my rule... it isss unlikely my legacy will remain. Asss ssuch, for what little it meansss... I hereby abdicate my rule. Prime coughs and collapses. "Goodbye, ssstranger..."</text>
 	<changeBackground>BACK_EVENT_CENTER</changeBackground>
@@ -1898,7 +1898,7 @@
 				<event>
 					<text>"Perfect, welcome aboard Ssssylvan!" Sylvan activates the docking port, allowing you to enter the station.
 					
-					You follow several signs that lead you to a large conference room filled with folding chairs, where several dozen Sylvans are sat making idle chatter. Several minutes after you enter, a Sylvan at the front of the room clangs a liquor bottle againssst the pulpit. "Hey! Everyone, lisssten to me! Guysss! I'm talking! SSSHUT THE HELL UP AND LISSSTEN TO ME GOD DAMN IT!" The room falls quiet as everyone turns to look at the Slug, who is now drinking from the bottle. "Hello everyone, Normal Ssssylvan here! Today I'll be presssenting the weekly S.I.L.V.A.N. addresssss. Like I alwaysss do, sssince I founded thisss organization." Normal Sylvan coughs and looks at a note card in his hand. "Unfortunately, Sssylvan from the reality where Sssylvan doesssn't exissst could not make it today. However, it ssseemsss we have sssome newcommersss!"
+					You follow several signs that lead you to a large conference room filled with folding chairs, where several dozen Sylvans are sat making idle chatter. Several minutes after you enter, a Sylvan at the front of the room clangs a liquor bottle against the pulpit. "Hey! Everyone, lisssten to me! Guysss! I'm talking! SSSHUT THE HELL UP AND LISSSTEN TO ME GOD DAMN IT!" The room falls quiet as everyone turns to look at the Slug, who is now drinking from the bottle. "Hello everyone, Normal Ssssylvan here! Today I'll be presssenting the weekly S.I.L.V.A.N. addresssss. Like I alwaysss do, sssince I founded thisss organization." Normal Sylvan coughs and looks at a note card in his hand. "Unfortunately, Sssylvan from the reality where Sssylvan doesssn't exissst could not make it today. However, it ssseemsss we have sssome newcommersss!"
 					
 					It takes you a moment to realize Normal Sylvan is referring to you. "You, weird people in the back. Why don't you introduce yourssselvess and the uh... reality you come from. Make sssure you explain it nice and ssslow ssso everyone can underssstand it from their posssition in the plane of exissstence. Sssome people are alssso jussst ssstupid."</text>
 					<choice>
@@ -2123,24 +2123,12 @@
 						<text>(Tully) We have an important person with a hat.</text>
 						<event load="NEXUS_HAT_SECRET"/>
 					</choice>
-					<choice req="LIST_A55" hidden="true">
-						<text>(A55) We have an important person with a hat.</text>
-						<event load="NEXUS_HAT_SECRET"/>
-					</choice>
-					<choice req="unique_irwin" hidden="true">
-						<text>(Irwin) We have an important person with a hat.</text>
-						<event load="NEXUS_HAT_SECRET"/>
-					</choice>
-					<choice req="unique_tyrdeo" hidden="true">
-						<text>(Tyrdeo) We have an important person with a hat.</text>
+					<choice req="unique_kaz" hidden="true">
+						<text>(Kaz) We have an important person with a hat.</text>
 						<event load="NEXUS_HAT_SECRET"/>
 					</choice>
 					<choice req="LIST_CREW_FREDDY" hidden="true">
 						<text>(Freddy) We have an important person with a hat.</text>
-						<event load="NEXUS_HAT_SECRET"/>
-					</choice>
-					<choice req="unique_kaz" hidden="true">
-						<text>(Kaz) We have an important person with a hat.</text>
 						<event load="NEXUS_HAT_SECRET"/>
 					</choice>
 					<choice req="unique_ariadne" hidden="true">
@@ -2151,12 +2139,24 @@
 						<text>(Dianesh) We have an important person with a hat.</text>
 						<event load="NEXUS_HAT_SECRET"/>
 					</choice>
+					<choice req="unique_irwin" hidden="true">
+						<text>(Irwin) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
 					<choice req="unique_dessius" hidden="true">
 						<text>(Dessius) We have an important person with a hat.</text>
 						<event load="NEXUS_HAT_SECRET"/>
 					</choice>
 					<choice req="unique_ivar" hidden="true">
 						<text>(Ivar) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
+					<choice req="unique_tyrdeo" hidden="true">
+						<text>(Tyrdeo) We have an important person with a hat.</text>
+						<event load="NEXUS_HAT_SECRET"/>
+					</choice>
+					<choice req="LIST_A55" hidden="true">
+						<text>(A55) We have an important person with a hat.</text>
 						<event load="NEXUS_HAT_SECRET"/>
 					</choice>
 					<!--just repeats of above-->
@@ -2340,7 +2340,7 @@
 					<choice>
 						<text>Buy 1000 M-Bucks.</text>
 						<event>
-							<text>"Thank~~~ for the purcha~~~e, ~~~tranger! Unfortunately, you're ~~~till 14000 M-Buck~~~ ~~~hort. I'm afraid I have to go now ~~~tranger, but enjoy your new M-Bucks."</text>
+							<text>"Thank~~~ for the purcha~~~e, ~~~tranger! Unfortunately, you're ~~~till 14000 M-Buck~~~ ~~~hort. I'm afraid I have to go now ~~~tranger, but enjoy your new M-Buck~~~."</text>
 							<!--<hiddenAug>GIFT_MBUCKS</hiddenAug> change it -->
 							<item_modify>
 								<item type="scrap" min="-100" max="-100"/>
@@ -2364,7 +2364,7 @@
 	</choice>
 </event>
 <event name="SYLVAN_CASHGRAB_DEFEAT">
-	<text>"Gah! ~~~tranger, how could you?! Who will exploit the poor? Who will bribe the government~~~? Aaaaah! Bury me with my money, ~~~tranger! My la~~~t reque~~~t! Oh, and al~~~o burn thi~~~ folder of incriminating eviden~~~e!"</text>
+	<text>"Gah! ~~~tranger, how could you?! Who will exploit the poor? Who will bribe the government~~~? Aaaaah! Bury me with my money, ~~~tranger! My la~~~t reque~~~t! Oh, and al~~~o burn thi~~~ folder of incriminating evidence!"</text>
 	<weapon name="SHOTGUN_GOLD_3"/>
 	<item_modify>
 		<item type="fuel" min="10" max="10"/>
@@ -2651,7 +2651,7 @@
 										<text>We'll take you to Sylvan Prime with us. Maybe he'll have a solution.</text>
 										<event>
 											<text>"Sssstranger, that'ssss perfect! If there'ssss anyone who knowsss how to fix thissss, it'll be him! Just be careful, my beanssss are very delicioussss ssstranger! Everyone wantssss a tassste!""</text>
-											<crewMember amount="1" class="beans">Sylrick</crewMember>
+											<crewMember amount="1" class="beans">Sylvrick</crewMember>
 										</event>
 									</choice>
 									<choice hidden="true">
@@ -2758,7 +2758,7 @@
 			<choice hidden="true">
 				<text>You aren't really Sylvan.</text>
 				<event>
-					<text>"What!? What are you saying? How could you being so mean?" When the other Sylvans start to chime in, Free Mantis 'Sylvan' begins to cry and raises his weapons!"</text>
+					<text>"What!? What are you saying? How could you being so mean?" When the other Sylvans start to chime in, Free Mantis 'Sylvan' begins to cry and raises his weapons!</text>
 					<ship load="SHIP_SYLVAN_FREEMANTIS" hostile="true"/>
 					<choice hidden="true">
 						<text>Continue...</text>
@@ -3331,6 +3331,7 @@
 	<metaVariable name="prof_dylan_met" op="set" val="0"/>
 	<autoReward level="HIGH">item</autoReward>
 	<damage amount="-999"/>
+	<revisitEvent seeded="true">DYLAN_WEIRD</revisitEvent>
 	<!--<choice hidden="true">
 		<text>Continue...</text>
 		<event>

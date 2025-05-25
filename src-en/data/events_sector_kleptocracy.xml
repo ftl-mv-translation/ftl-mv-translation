@@ -1836,8 +1836,8 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 
 <eventList name="NEBULA_NEUTRAL_SLUG_UNIQUE">
 	<event load="NEBULA_SLUG_IMPORTANT_PRISONER"/>
-	<event load="NEBULA_SLUG_GRAVE"/>
-	<event load="NEBULA_SLUG_MINDSLAVES"/>
+	<event load="NEBULA_LIGHT_SLUG_GRAVE"/>
+	<event load="NEBULA_LIGHT_SLUG_MINDSLAVES"/>
 	
 	<event load="NEBULA_SLUG_CHOOSE_DEATH_MV"/>
 	<event load="NEBULA_SLUG_HULLFIX_MV"/>
@@ -1877,10 +1877,10 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 	</choice>
 </event>
 
-<event name="NEBULA_SLUG_GRAVE" unique="true">
+<event name="NEBULA_LIGHT_SLUG_GRAVE" unique="true">
 	<text>Several sombre Slug ships are departing from a barren planet. It doesn't look particularly habitable, but the computer informs you the planet is used as burial place for prior Slug Kings and other members of the Slug Royal Family.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_UNPOPULATED_TERRA"/>
-	<status type="limit" target="player" system="sensors" amount="1"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_UNPOPULATED_TERRA"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice hidden="true">
 		<text>Attempt to rob the tombs.</text>
 		<event>
@@ -1959,10 +1959,10 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 	</event>
 </eventList>
 
-<event name="NEBULA_SLUG_MINDSLAVES" unique="true">
+<event name="NEBULA_LIGHT_SLUG_MINDSLAVES" unique="true">
 	<text>A Cealaformer Station is orbiting a nearby planet, though it doesn't attempt to contact you. Nebulous clouds have begun to fill the beacon, but not enough to tamper with your sensors completely.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_POPULATED"/>
-	<status type="limit" target="player" system="sensors" amount="1"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_POPULATED"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
 	<ship load="SHIP_SLUG_MINDLSAVES" hostile="false"/>
 	<choice hidden="true">	
 		<text>Land on the planet and see if they have a market.</text>
@@ -2034,12 +2034,24 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 				<text>Luckily the system is able to restore your crew to normal, and you escape quickly.</text>
 			</event>
 		</choice>
+		<choice req="BLUELIST_WEAPONS_MIND_AFFECT" hidden="true">
+			<text>(Mind Affecting Weapon) Counteract the effects.</text>
+			<event>
+				<text>Luckily the weapon is able to disrupt the control over your crew, and you escape quickly.</text>
+			</event>
+		</choice>
 		<choice req="hacking" hidden="true">
 			<text>(Hacking) Reverse the effects.</text>
 			<event>
 				<text>Luckily the system is able to restore your crew to normal, and you escape quickly.</text>
 			</event>
 		</choice>
+		<!--<choice req="BLUELIST_WEAPONS_HACK" hidden="true">
+			<text>(Hacking Weapon) Reverse the effects.</text>
+			<event>
+				<text>Luckily your weapon is able to disrupt the signal, and you escape quickly.</text>
+			</event>
+		</choice>-->
 		<choice req="LIST_CREW_SLUG" hidden="true">
 			<text>(Slug Crew) Have your Slug speak to them telepathically.</text>
 			<event>
@@ -2112,6 +2124,16 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 		<event>
 			<text>Your drone easily handles the situation. In no time at all, it is able to make the necessary repairs, and you head off with some extra scrap in your hold.</text>
 			<autoReward level="HIGH">scrap_only</autoReward>
+		</event>
+	</choice>
+	<choice hidden="true" req="BLUELIST_BOMB_REPAIR">
+		<text>(Repair Burst) Launch a repair bomb into their Life Support. [-1}]</text>
+		<event>
+			<text>A single repair bomb is all it takes to fully repair their Life Support. The Slugs pay you nicely for the repairs.</text>
+			<autoReward level="HIGH">scrap_only</autoReward>
+			<item_modify>    
+				<item type="missiles" min="-1" max="-1"/>
+			</item_modify>
 		</event>
 	</choice>
 </event>
@@ -2496,7 +2518,7 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event>
-			<text>Suddenly the first ship bursts into flames, and an urgent call arrives from the remaining Slugs. "We sssugest you distract the pirate vesssel while we retrieve the valuables. Fifty fifty sssplit."</text>
+			<text>Suddenly the first ship bursts into flames, and an urgent call arrives from the remaining Slugs. "We sssuggessst you distract the pirate vesssel while we retrieve the valuables. Fifty fifty sssplit."</text>
 			<choice hidden="true">
 				<text>Engage the pirate.</text>
 				<event>
@@ -2591,7 +2613,7 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 
 <event name="NEBULA_SLUG_PIRATE" unique="true">
 	<text>You're surprised to find a ship without Slug markings stranded all the way out here, and move in to provide assistance. When you see the pirate insignia on the hull you quickly reconsider.</text>
-	<ship load="SHIP_PIRATE_ALL" hostile="false"/>
+	<ship load="SHIP_PIRATE_ALL_NOSLUG" hostile="false"/>
 	<environment type="nebula"/>
 	<choice>
 		<text>Attack!</text>
@@ -2859,11 +2881,11 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 	</choice>
 </event>
 
-<event name="NEBULA_DISTRESS_SLOCKNOG_START" unique="true">
+<event name="NEBULA_LIGHT_DISTRESS_SLOCKNOG_START" unique="true">
 	<distressBeacon/>
 	<preventQuest/>
     <text>The distress beacon here appears to be broadcasting through a clearing in the nebula. Following it, you come across a rogue planet drifting through the abyss. Scans indicate that something has crashed on the surface.</text>
-    <img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_WATER"/>
+    <img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_WATER"/>
     <status type="loss" target="player" system="sensors" amount="1"/>
     <choice req="loc_found_slocknog" lvl="0" hidden="true" max_group="0" blue="false">
         <text>Investigate.</text>
@@ -3058,11 +3080,11 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 	</choice>
 </event>
 
-<event name="NEBULA_SLUG_PLEASURE_1" unique="true">
+<event name="NEBULA_LIGHT_SLUG_PLEASURE_1" unique="true">
 	<preventQuest/>
 	<text>The nebula at this beacon has cleared partially, revealing a massive Slug pleasure barge! These ships are populated to the brim with Slugs looking to have an... enjoyable experience. Despite its size, the ship doesn't seem to wield any weapons at all.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="PLANET_PLEASURE"/>
-	<status type="divide" target="player" system="sensors" amount="2"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="PLANET_PLEASURE"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
 	<choice hidden="true">
 		<text>Should be easy enough, raid the barge.</text>
 		<event>
@@ -3091,67 +3113,67 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 </event>
 <event name="SLUG_PLEASURE_1_WIN">
 	<noQuestText/>
-	<text>Scans show the barge won't remain at this beacon for much longer, as its engines are already charging and its attempting to flee. You won't have time to fight it here before it escapes.</text>
+	<text>Scans show the barge won't remain at this beacon for much longer, as its engines are already charging and it's attempting to flee. You won't have time to fight it here before it escapes.</text>
 	<choice hidden="true">
 		<text>There's nothing else we can do. Let it jump.</text>
 		<event>
 			<noQuestText/>
 			<text>You might not be able to fight it here, but maybe you'll have the luck to run into it again in this sector or the next.</text>
-			<quest event="SLUG_PLEASURE_2_NOQUEST"/>
+			<quest event="SLUG_LIGHT_PLEASURE_2_NOQUEST"/>
 		</event>
 	</choice>
 	<choice hidden="true" req="sensors" lvl="3">
 		<text>(Adv. Sensors) Track their jump signatures.</text>
 		<event>
 			<text>You might not be able to fight it here, but you're able to lock onto the ship's jump signatures. You'll be able to follow it with ease now.</text>
-			<quest event="SLUG_PLEASURE_2"/>
+			<quest event="SLUG_LIGHT_PLEASURE_2"/>
 		</event>
 	</choice>
 	<choice hidden="true" req="LIST_CREW_SLUG">
 		<text>(Slug Crew) Track their jump signatures.</text>
 		<event>
 			<text>You might not be able to fight it here, but your Slug is able to lock onto the ship's jump signatures. You'll be able to follow it with ease now.</text>
-			<quest event="SLUG_PLEASURE_2"/>
+			<quest event="SLUG_LIGHT_PLEASURE_2"/>
 		</event>
 	</choice>
 	<choice hidden="true" req="BLUELIST_CREW_SNAIL">
 		<text>(Telepathic Shell) Track their jump signatures.</text>
 		<event>
 			<text>You might not be able to fight it here, but your Shell is able to lock onto the ship's jump signatures. You'll be able to follow it with ease now.</text>
-			<quest event="SLUG_PLEASURE_2"/>
+			<quest event="SLUG_LIGHT_PLEASURE_2"/>
 		</event>
 	</choice>
 	<choice hidden="true" req="ADV_SCANNERS">
 		<text>(Long-Ranged Scanners) Track their jump signatures.</text>
 		<event>
 			<text>You might not be able to fight it here, but you're able to lock onto the ship's jump signatures. You'll be able to follow it with ease now.</text>
-			<quest event="SLUG_PLEASURE_2"/>
+			<quest event="SLUG_LIGHT_PLEASURE_2"/>
 		</event>
 	</choice>
 </event>
-<event name="SLUG_PLEASURE_2_NOQUEST">
+<event name="SLUG_LIGHT_PLEASURE_2_NOQUEST">
 	<preventQuest/>
 	<beaconType id="map_icon_none" global="false"> <!--has no beacon-->
 		<color r="255" g="255" b="255" a="0"/>
 	</beaconType>
 	<text>It must be your lucky day, it seems you've stumbled across the Pleasure Barge once again!</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="NONE"/>
-	<status type="divide" target="player" system="sensors" amount="2"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="NONE"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
 	<ship load="SHIP_PLEASURE_BARGE" hostile="false"/>
 	<choice hidden="true">
 		<text>Continue...</text>
-		<event load="SLUG_PLEASURE_2"/>
+		<event load="SLUG_LIGHT_PLEASURE_2"/>
 	</choice>
 </event>
-<event name="SLUG_PLEASURE_2">
+<event name="SLUG_LIGHT_PLEASURE_2">
 	<beaconType id="map_icon_quest" global="true">
 		<color r="69" g="168" b="235" a="1"/>
 		<unvisitedTooltip>Presumed location of the Pleasure Barge.</unvisitedTooltip>
 	</beaconType>
 	<preventQuest/>
 	<text>This time you've tracked down the Barge again, and it has no escort. It is completely unprotected save for its teleporter system.</text>
-	<img back="BACK_EVENT_LIGHTNEBULA" planet="NONE"/>
-	<status type="divide" target="player" system="sensors" amount="2"/>
+	<img back="BACK_EVENT_STARS_SPARSE" planet="NONE"/>
+	<status type="loss" target="player" system="sensors" amount="1"/>
 	<ship load="SHIP_PLEASURE_BARGE" hostile="false"/>
 	<choice hidden="true">
 		<text>Attack, and finish them off!</text>
@@ -3256,7 +3278,7 @@ The Shell seemingly wasn't interested in hearing the rest of their threat and op
 		</choice>
 	</surrender>
 	<destroyed>
-		<text>The Pleasure Barge explodes, scattering debris and the corpses of dozens of civilian Slug. You salvage the debris, of which there is quite a decent portion of.</text>
+		<text>The Pleasure Barge explodes, scattering debris and the corpses of dozens of civilian Slugs. You salvage the debris, of which there is quite a decent portion of.</text>
 		<autoReward level="HIGH">scrap_only</autoReward>
 		<choice hidden="true">
 			<text>Continue...</text>

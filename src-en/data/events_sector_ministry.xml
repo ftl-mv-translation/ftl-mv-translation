@@ -83,7 +83,7 @@
 	<choice req="LIST_CREW_HUMAN" hidden="true">
 		<text>(Human Crew) Apologise for being solely responsible for inventing fascism.</text>
 		<event>
-			<text>The Zoltan nods. "Humanity is a species of nothing but pestulent ideas, fermented with political turmoil and selfishness. You have forever ruined this galaxy with partisan concepts like 'democracy' and 'feminism'. It disgusts me. We were once a pure race, until we came into contact with yours. It is known that humans are a warlike race who can only be controlled by manipulating their even greater greed. Take this, and never return." It's clear this guy is delusional, but you don't mind free scrap.</text>
+			<text>The Zoltan nods. "Humanity is a species of nothing but pestilent ideas, fermented with political turmoil and selfishness. You have forever ruined this galaxy with partisan concepts like 'democracy' and 'feminism'. It disgusts me. We were once a pure race, until we came into contact with yours. It is known that humans are a warlike race who can only be controlled by manipulating their even greater greed. Take this, and never return." It's clear this guy is delusional, but you don't mind free scrap.</text>
 			<autoReward level="HIGH">scrap_only</autoReward>
 		</event>
 	</choice>
@@ -154,7 +154,7 @@
 		</event>
 	</choice>
 	<choice req="LIST_CREW_ZOLTAN_CAPITAL">
-		<text>(Ministry Crew) Present his official documentation and pay the entry fee.</text>
+		<text>(Ministry Crew) Present official documentation and pay the entry fee.</text>
 		<event>
 			<text>They scan ID that declares your crewmember an official citizen, collect their fee, and let you pass.</text>
 			<item_modify>
@@ -436,6 +436,13 @@
 			<autoReward level="MED">fuel_only</autoReward>
 		</event>
 	</choice>		
+	<choice hidden="true" req="BLUELIST_WEAPONS_MIND_CONTROL">
+		<text>(Mind Control Weapon) Make the guards believe they have already checked your crew today.</text>
+		<event>
+			<text>The captain of the guard appears on the vid screen "Back so soon friend! Well, no need to waste your time further. Here, take these spare fuel canisters and get on with your mission." Your ship is cleared to pass.</text>
+			<autoReward level="MED">fuel_only</autoReward>
+		</event>
+	</choice>		
 </event>
 <eventList name="ZOLTAN_CREW_SCAN_LIST_MV">
 	<event>
@@ -572,6 +579,17 @@
 			</choice>
 		</event>
 	</choice>
+	<choice hidden="true" req="zoltan_peacekeeper">
+		<text>(Peacekeeper Crew) Demand the Zoltans back down.</text>
+		<event>
+			<text>Your Peacekeeper cites Ministry law C-T-55 from the Ministry codex, saying that they have no right to attack civilian ships without sufficient reason or permission from a higher authority. As no Zoltan, dead or alive, is said to have full knowledge of the entire codex, the other ship has no grounds to deny the existance of said law. They back down and jump away.</text>
+			<instantEscape/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="SAVE_CIVILIAN_LIST"/>
+			</choice>
+		</event>
+	</choice>
 	<choice hidden="true">
 		<text>Ignore them.</text>
 		<event>
@@ -600,6 +618,13 @@
 				<text>Continue...</text>
 				<event load="COMBAT_CHECK"/>
 			</choice>
+		</event>
+	</choice>
+	<choice req="unique_mafan">
+		<text>(Mafan) Debate the fine with the Auto.</text>
+		<event>
+			<text>"Protocol-S36-T doesn't apply here, this ship has an MV drive! You'd use an S36-T-MV form to calculate the ship's new weight limits, then add a deduction factor for the personal carrying allotment of each crew member. Then factor in the fee waivers for our sub-category as a science vessel due to my presence..." You're reasonably certain Mafan could go on all day, but a circuit blows somewhere in the Zoltan ship while it tries to follow Mafan's logic, causing the ship to explode violently!</text> 
+			<enemyDamage amount="50" system="random" effect="eff"/>
 		</event>
 	</choice>
 	<choice>
@@ -1444,6 +1469,16 @@ The Peacekeeper falters for a moment. "I- don't try and get involved in things t
 			</choice>
 		</event>
 	</choice>
+	<!--<choice hidden="true" req="BLUELIST_WEAPONS_HACK">
+		<text>(Hacking Weapon) Disable the Auto-ship activation sequence.</text>
+		<event>
+			<text>It appears you are successful! The Auto-ship remains offline.</text>
+			<choice>
+				<text>Inspect the core.</text>
+				<event load="QUEST_ZOLTAN_LANIUS_CORE_OBTAIN"/>
+			</choice>
+		</event>
+	</choice>-->
 	<choice hidden="true" req="cloaking">
 		<text>(Cloaking) Cloak the ship while extracting the core.</text>
 		<event>
@@ -1880,7 +1915,7 @@ The Peacekeeper falters for a moment. "I- don't try and get involved in things t
 		</event>
 	</choice>
 	<choice req="medbay" lvl="2" hidden="true">
-		<text>(Adv. Medbay) Get them into the medbay!</text>
+		<text>(Upg. Medbay) Get them into the medbay!</text>
 		<event>
 			<text>Using your upgraded medical bay, you are able to heal the survivor's wounds and they recover quickly. Grateful to be saved, they offer to join your crew and help however they can.</text>
 			<crewMember amount="1" class="zoltan_monk"/>
@@ -1893,6 +1928,30 @@ The Peacekeeper falters for a moment. "I- don't try and get involved in things t
 			<crewMember amount="1" class="zoltan_monk"/>
 		</event>
 	</choice>
+	<choice req="LIST_CREW_MEDICAL" hidden="true">
+		<text>(Medical Crew) Have your crew treat them.</text>
+		<event>
+			<text>You have your crewmember treat the survivor, and after a tense few moments they successfully nurse them back to good health. Grateful to be saved, they offer to join your crew and help however they can.</text>
+			<crewMember amount="1" class="zoltan_monk"/>
+		</event>
+	</choice>
+	<choice req="BLUELIST_DRONES_MEDICAL" hidden="true">
+		<text>(Medical Drone) Have your drone treat them.</text>
+		<event>
+			<text>You have your drone treat the survivor, and it quickly helps them recover. Grateful to be saved, they offer to join your crew and help however they can.</text>
+			<crewMember amount="1" class="zoltan_monk"/>
+		</event>
+	</choice>
+	<choice req="BLUELIST_BOMBS_HEAL" hidden="true">
+		<text>(Healing Bomb) Use your Heal Bomb on them. [-1}]</text>
+		<event>
+			<text>Your bomb proves effective at healing the survivor's wounds, and they recover quickly. Grateful to be saved, they offer to join your crew and help however they can.</text>
+			<crewMember amount="1" class="zoltan_monk"/>
+			<item_modify>    
+				<item type="missiles" min="-1" max="-1"/>
+			</item_modify>
+		</event>
+	</choice>
 </event>
 <event name="SECRET_WORD_ABADOTH_MV">
 	<beaconType id="map_icon_quest" global="true">
@@ -1900,6 +1959,7 @@ The Peacekeeper falters for a moment. "I- don't try and get involved in things t
 		<unvisitedTooltip>Mysterious coordinates provided by a deceased crewman.</unvisitedTooltip>
 	</beaconType>
 	<text>You have arrived at the coordinates given to you by the dead crewman you attempted to save. There doesn't seem to be anything here - no planets, no vessels, and no clue as to what he meant by sending you here.</text>
+	<img planet="NONE"/>
 	<choice req="LIST_CREW_SLUG" hidden="true">
 		<text>(Slug Crew) Ask your Slug crewmember to scan for life forms.</text>
 		<event load="SECRET_WORD_ABADOTH_CONCLUSION_MV"/>
@@ -1916,6 +1976,20 @@ The Peacekeeper falters for a moment. "I- don't try and get involved in things t
 			<choice>
 				<text>Continue...</text>
 				<event load="SECRET_WORD_ABADOTH_CONCLUSION_MV"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave this mystery behind.</text>
+		<event>
+			<text>You have no clue what this was all about, but you decide to not waste any further time to it.</text>
+			<choice>
+				<text>Do something onboard the ship.</text>
+				<event load="STORAGE_CHECK"/>
+			</choice>
+			<choice>
+				<text>Do nothing.</text>
+				<event/>
 			</choice>
 		</event>
 	</choice>
@@ -1938,7 +2012,11 @@ The Peacekeeper falters for a moment. "I- don't try and get involved in things t
 		<text>(Engi Crew) Say ABADOTH.</text>
 		<event>
 			<text>Your Engi crewman easily recalls the phrase the deadman used from its memory banks. There is a moment of silence, and the ship's captain solemnly thanks you for the information. He wishes you well on your journey, and he offers several upgrades to assist you in exchange for your service to the Zoltan race.</text>
-			<autoReward level="MED">standard</autoReward> 
+			<autoReward level="MED">standard</autoReward>
+			<choice>
+				<text>Continue...</text>
+				<event load="MORALITY_REMOVE_ZOLTAN"/>
+			</choice>
 		</event>
 	</choice>
 	<choice req="LIST_CREW_COGNITIVE" hidden="true">
@@ -1963,7 +2041,11 @@ The Peacekeeper falters for a moment. "I- don't try and get involved in things t
 		<text>Say ABADOTH.</text>
 		<event>
 			<text>There is a moment of silence, and the ship's captain solemnly thanks you for the information. He wishes you well on your journey, and he offers several upgrades to assist you in exchange for your service to the Zoltan race.</text>
-			<autoReward level="MED">standard</autoReward> 
+			<autoReward level="MED">standard</autoReward>
+			<choice>
+				<text>Continue...</text>
+				<event load="MORALITY_REMOVE_ZOLTAN"/>
+			</choice>
 		</event>
 	</choice>
 	<choice hidden="true">

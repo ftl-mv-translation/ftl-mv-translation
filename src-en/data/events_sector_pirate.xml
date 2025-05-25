@@ -224,7 +224,7 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 	<event load="BLACKMARKET_VENGEFUL_ENGI"/>
 	<event load="BLACKMARKET_SICK_MARKET"/>
 	
-	<!--<event load="SMUGGLER_WONDERDRONE"/>-->
+	<event load="SMUGGLER_WONDERDRONE"/>
 	<event load="SMUGGLER_PLAYER_WEPS"/>
 	
 	<!--<event load="FILLER_TRADER_CIV"/>-->
@@ -569,8 +569,8 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 		<text>Contact them to see if they want to trade.</text>
 		<event>
 			<text>The station's leader appears on your vid-screen, coughing. "W-what? Oh, sorry. No trading for now, we're all sick. This damn place draws in thousands of ships from all over the galaxy, god knows what kinds of diseases it brings. We're probably dying of some exotic Mantis flu or something, if that even exists."</text>
-			<choice hidden="true">
-				<text>Offer what supplies you can muster. [-10~, -2|]</text>
+			<choice>
+				<text>Offer what supplies you can muster.</text>
 				<event>
 					<text>"This won't help much, but it's much appreciated. Glad to know there's some kind souls out there still. I can't offer much in return, but we can use our automated repair drones to fix up some hull for you."</text>
 					<damage amount="-8"/>
@@ -612,6 +612,20 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 							<damage amount="-15"/>
 						</event>
 					</choice>
+				</event>
+			</choice>
+			<choice hidden="true" req="LIST_CREW_MEDICAL">
+				<text>(Medical Crew) Have your crew diagnose their condition.</text>
+				<event>
+					<text>Your crewmember runs a few basic tests on the station's workers, and asks them a few questions. They then conclude that the station is in fact suffering from an exotic Mantis flu. Unfortunately they don't really have much advice for them beyond self isolating when possible, but the station's crew seem relieved enough at this information to offer a reward.</text>
+					<autoReward level="MED">standard</autoReward>
+				</event>
+			</choice>
+			<choice hidden="true" req="BLUELIST_DRONES_MEDICAL">
+				<text>(Medical Drone) Have your drone diagnose their condition.</text>
+				<event>
+					<text>You send your drone onto the station and have it run scans on the crew there, before washing it thoroughly on its return. The scans suggest that the station is in fact suffering from an exotic Mantis flu. You don't really have any advice for them beyond self isolating when possible, but the station's crew seem relieved enough at this information to offer a reward.</text>
+					<autoReward level="MED">standard</autoReward>
 				</event>
 			</choice>
 			<choice>
@@ -658,12 +672,12 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 </event>
 
 <event name="SMUGGLER_WONDERDRONE" unique="true">
-	<text>"Greetings! You look like a guy who benefit greatly from never seen before drone tech! That's right, we bring to you the brand new WONDERDRONE (tm). As you can see, this special drone comes equipped with 4 different weapons! Just give 'er a good smack when there's nothin' else to do and it'll change what weapon it fires. This is a steal of a deal kid, you'd have to be an idiot not to take it."</text>
+	<text>"Greetings! You look like a guy who'd benefit greatly from never seen before drone tech! That's right, we bring to you the brand new WONDERDRONE (tm). As you can see, this special drone comes equipped with 4 different weapons! Your foe will never manage to predict what they'll be hit with. This is a steal of a deal kid, you'd have to be an idiot not to take it."</text>
 	<ship load="SHIP_SMUGGLER_WONDERDRONE" hostile="false"/>
 	<choice>
 		<text>Buy the WonderDrone.</text>
 		<event>
-			<drone name="LIST_DRONES_RANDOM"/>
+			<drone name="COMBAT_RANDOM"/>
 			<item_modify>
 				<item type="scrap" min="-65" max="-50"/>
 			</item_modify>
@@ -705,7 +719,7 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 		<choice>
 			<text>Buy the WonderDrone.</text>
 			<event>
-				<drone name="COMBAT_RANDOM_LASER"/>
+				<drone name="COMBAT_RANDOM"/>
 				<item_modify>
 					<item type="scrap" min="-55" max="-40"/>
 				</item_modify>
@@ -736,7 +750,7 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 	</event>
 </eventList>
 
-<event name="SMUGGLER_PLAYER_WEPS" unique="true"> <!--make consistent with reputation-->
+<event name="SMUGGLER_PLAYER_WEPS" unique="true"> <!--make consistent with reputation / overhaul with a true store?-->
 	<text>A Black Market station is selling unique weapons and drones here which consume less power than normal.</text>
 	<ship load="SHIP_SMUGGLER_MARKET" hostile="false"/>
 	<choice>
@@ -768,10 +782,10 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 </event>
 <eventList name="SMUGGLER_PLAYER_WEPS_LIST">
 	<event>
-	<!--	Torch		-->
-		<weapon name="BEAM_FIRE_PLAYER"/>
+	<!--	Charge Energy	-->
+		<weapon name="ENERGY_CHARGEGUN_PLAYER"/>
 		<item_modify>
-			<item type="scrap" min="-55" max="-40"/>
+			<item type="scrap" min="-65" max="-50"/>
 		</item_modify>
 	</event>
 	<event>
@@ -792,7 +806,7 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 	<!-- 	Hydra	-->
 		<weapon name="MISSILES_BURST_2_PLAYER"/>
 		<item_modify>
-			<item type="scrap" min="-55" max="-40"/>
+			<item type="scrap" min="-60" max="-45"/>
 		</item_modify>
 	</event>
 </eventList>
@@ -1701,9 +1715,9 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 </eventList>
 
 <event name="SLAVER_LANIUS_SLAVE" unique="true">
-	<text>You enter a beacon located in a very desolate system, used only as an intermediate waypoint to span the gap between more important systems for FTL travel. There is little here other than a lone civilian station above the beacon. Quite a while after arriving at the beacon, you are hailed by a black ship sporting black and red paint docked at the station.</text>
+	<text>You enter a beacon located in a very desolate system, used only as an intermediate waypoint to span the gap between more important systems for FTL travel. There is little here other than a lone civilian station above the beacon. Shortly after arriving at the beacon, you are hailed by a ship sporting black and red paint docked at the station.</text>
 	<choice>
-		<text>Continue.</text>
+		<text>Continue...</text>
 		<event>
 			<text>The ship's captain coughs, then speaks, "We have obtained a miraculous metal man, capable of not only living without oxygen, but actively making the air unbreathable. However, our ship's Life Support system can't sustain its incredible qualities for more than a short span of time, so we're stuck here at this station in this miserable system. Agree to buy our metal man and we'll give you the deal of a lifetime."</text>
 			<ship load="SHIP_SLAVER_ALL" hostile="false"/> 
@@ -1754,6 +1768,18 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 					</choice>
 				</event>
 			</choice>
+			<choice req="BLUELIST_WEAPONS_MIND_CONTROL" hidden="true">
+				<text>(Mind Control Weapon) Convince them to donate the Lanius.</text>
+				<event>
+					<text>Your mind control weapon is able to easily convince the slaver captain that she should give you the Lanius for free so that they may depart for a more profitable beacon. The Lanius is quickly ejected towards your ship in a small shuttle before the effects of the mind control wear off. Realizing that you just fired a weapon at them, the slaver separates from the station and powers up its weapons.</text>
+					<crewMember amount="1" class="lanius">Laythe</crewMember>
+					<ship hostile="true"/> 
+					<choice hidden="true">
+						<text>Continue...</text>
+						<event load="COMBAT_CHECK"/>
+					</choice>
+				</event>
+			</choice>
 		</event>
 	</choice>
 </event>
@@ -1776,6 +1802,14 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 	<choice hidden="true" req="DRONE_CONTROL_BOARDING">
 		<text>(Boarding Drone) Send the boarding drone. [-1|]</text>
 		<event load="SLAVER_DRIFTER_DRONE"/>
+	</choice>
+	<choice hidden="true" req="sensors" lvl="2">
+		<text>(Upg. Sensors) Scan the interior of the ship.</text>
+		<event load="SLAVER_DRIFTER_SCAN"/>
+	</choice>
+	<choice hidden="true" req="LIFE_SCANNER">
+		<text>(Lifeform Scanner) Scan the interior of the ship.</text>
+		<event load="SLAVER_DRIFTER_SCAN"/>
 	</choice>
 	<choice hidden="true">
 		<text>Leave the ship to drift.</text>
@@ -1813,7 +1847,7 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 		</choice>
 	</event>
 	<event>
-		<text>To your surprise, your hail is answered almost immediately. Instead of comprehensible speech however, the response is garbled and mixed with static. Next thing you know, the ship's weapons come online and attacks you!</text>
+		<text>To your surprise, your hail is answered almost immediately. Instead of comprehensible speech however, the response is garbled and mixed with static. Next thing you know, the ship's weapons come online and attack you!</text>
 		<ship hostile="true"/> 
 		<choice hidden="true">
 			<text>Continue...</text>
@@ -1851,6 +1885,24 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 	</choice>
 	<choice hidden="true">
 		<text>Don't risk it.</text>
+		<event/>
+	</choice>
+</event>
+<event name="SLAVER_DRIFTER_SCAN">
+	<text>You try to detect any lifeforms inside the ship. The results are... strange, with several gaseous lifeforms inside. They don't look friendly either.</text>
+	<choice hidden="true">
+		<text>Attack the ship.</text>
+		<event>
+			<text>You opt to attack the ship to try and salvage it safely afterwards. The current gaseous occupants, spotting your intentions, prepare to defend themselves.</text>
+			<ship hostile="true"/> 
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="COMBAT_CHECK"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Leave them well alone.</text>
 		<event/>
 	</choice>
 </event>
@@ -2617,28 +2669,28 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 			<choice hidden="true">
 				<text>1</text>
 				<event>
-					<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+					<text id="vault_code_wrong"/>
 					<damage amount="3"/>
 				</event>
 			</choice>
 			<choice hidden="true">
 				<text>2</text>
 				<event>
-					<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+					<text id="vault_code_wrong"/>
 					<damage amount="3"/>
 				</event>
 			</choice>
 			<choice hidden="true">
 				<text>5</text>
 				<event>
-					<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+					<text id="vault_code_wrong"/>
 					<damage amount="3"/>
 				</event>
 			</choice>
 			<choice hidden="true">
 				<text>6</text>
 				<event>
-					<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+					<text id="vault_code_wrong"/>
 					<damage amount="3"/>
 				</event>
 			</choice>
@@ -2649,28 +2701,28 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 					<choice hidden="true">
 						<text>A</text>
 						<event>
-							<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+							<text id="vault_code_wrong"/>
 							<damage amount="5"/>
 						</event>
 					</choice>
 					<choice hidden="true">
 						<text>B</text>
 						<event>
-							<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+							<text id="vault_code_wrong"/>
 							<damage amount="5"/>
 						</event>
 					</choice>
 					<choice hidden="true">
 						<text>C</text>
 						<event>
-							<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+							<text id="vault_code_wrong"/>
 							<damage amount="5"/>
 						</event>
 					</choice>
 					<choice hidden="true">
 						<text>D</text>
 						<event>
-							<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+							<text id="vault_code_wrong"/>
 							<damage amount="5"/>
 						</event>
 					</choice>
@@ -2681,14 +2733,14 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 							<choice hidden="true">
 								<text>Red</text>
 								<event>
-									<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+									<text id="vault_code_wrong"/>
 									<damage amount="7"/>
 								</event>
 							</choice>
 							<choice hidden="true">
 								<text>Yellow</text>
 								<event>
-									<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+									<text id="vault_code_wrong"/>
 									<damage amount="7"/>
 								</event>
 							</choice>
@@ -2703,28 +2755,28 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 							<choice hidden="true">
 								<text>Green</text>
 								<event>
-									<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+									<text id="vault_code_wrong"/>
 									<damage amount="7"/>
 								</event>
 							</choice>
 							<choice hidden="true">
 								<text>Orange</text>
 								<event>
-									<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+									<text id="vault_code_wrong"/>
 									<damage amount="7"/>
 								</event>
 							</choice>
 							<choice hidden="true">
 								<text>Purple</text>
 								<event>
-									<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+									<text id="vault_code_wrong"/>
 									<damage amount="7"/>
 								</event>
 							</choice>
 							<choice hidden="true">
 								<text>White</text>
 								<event>
-									<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+									<text id="vault_code_wrong"/>
 									<damage amount="7"/>
 								</event>
 							</choice>
@@ -2733,21 +2785,21 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 					<choice hidden="true">
 						<text>F</text>
 						<event>
-							<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+							<text id="vault_code_wrong"/>
 							<damage amount="5"/>
 						</event>
 					</choice>
 					<choice hidden="true">
 						<text>G</text>
 						<event>
-							<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+							<text id="vault_code_wrong"/>
 							<damage amount="5"/>
 						</event>
 					</choice>
 					<choice hidden="true">
 						<text>H</text>
 						<event>
-							<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+							<text id="vault_code_wrong"/>
 							<damage amount="5"/>
 						</event>
 					</choice>
@@ -2756,21 +2808,21 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 			<choice hidden="true">
 				<text>9</text>
 				<event>
-					<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+					<text id="vault_code_wrong"/>
 					<damage amount="3"/>
 				</event>
 			</choice>
 			<choice hidden="true">
 				<text>11</text>
 				<event>
-					<text>The alarms buzz and an extra layer of security slams shut on the vault door. You quickly flee but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+					<text id="vault_code_wrong"/>
 					<damage amount="3"/>
 				</event>
 			</choice>
 			<choice>
 				<text>Blow a hole in the door.</text>
 				<event>
-					<text>You vaguely remember the smuggler saying something about the door being blast proof, but go ahead anyways. The explosion barely puts a dent in the door, and sets off the alarms. You try to escape but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defences before you can escape.</text>
+					<text>You vaguely remember the smuggler saying something about the door being blast proof, but go ahead anyways. The explosion barely puts a dent in the door, and sets off the alarms. You try to escape but the Zoltan reinforcements arrive just in time to fire a barrage of missiles straight through your defenses before you can escape.</text>
 					<damage amount="10"/>
 					<item_modify>
 						<item type="missiles" min="-3" max="-3"/>
@@ -2955,7 +3007,7 @@ NOTE TO FUTURE ME; DON'T DELETE THESE IDIOT OTHER EVENTS USE THEM-->
 <event name="BLACKMARKET_FED_ANGERY" unique="true">
 	<text>A large squadron of Federation ships is present at this beacon, firing on the pirates, while a swarm of smaller ships are arresting some of the shoppers. You're accidentally swept up into the chaos when they mistake you for a pirate and engage.</text>
 	<ship load="SHIP_FED_FIGHT" hostile="true"/> 
-	<customFleet right="true" firing="true" autoDarkening="false">CUSTOM_FLEET_FED</customFleet>
+	<customFleet right="true" firing="true" autoDarkening="true">CUSTOM_FLEET_FED</customFleet>
 	<choice hidden="true">
 		<text>Continue...</text>
 		<event load="COMBAT_CHECK"/>
