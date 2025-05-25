@@ -12,7 +12,7 @@ local cursorTimer = 0
 
 local time_increment = mods.multiverse.time_increment
 local function set_gatling_event_text(choiceBox)
-    choiceBox.mainText = string.format(gatlingNameEventText, cursorVisible and gatlingName.."_" or gatlingName)
+    choiceBox.mainText = string.format(gatlingNameEventText or "", cursorVisible and gatlingName.."_" or gatlingName)
 end
 local function save_gatling_name()
     for i = 1, string.len(gatlingName) do
@@ -35,8 +35,8 @@ local function load_gatling_name()
 end
 local function set_gatling_name(title, shortTitle)
     local gatlingDesc = Hyperspace.Blueprints:GetWeaponBlueprint("GATLING").desc
-    gatlingDesc.title.data = title or "\""..gatlingName.."\""
-    gatlingDesc.shortTitle.data = shortTitle or ""..gatlingName..""
+    gatlingDesc.title.data = title or ("\""..gatlingName.."\"")
+    gatlingDesc.shortTitle.data = shortTitle or (""..gatlingName.."")
 end
 
 --[[
