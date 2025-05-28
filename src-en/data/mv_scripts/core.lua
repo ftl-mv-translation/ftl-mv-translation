@@ -419,14 +419,15 @@ end
 local get_distance = mods.multiverse.get_distance
 
 -- Sprites for custom damage messages
-mods.multiverse.damage_messages = {}
-local damage_messages = mods.multiverse.damage_messages
+mods.multiverse.damageMessages = {}
+local damageMessages = mods.multiverse.damageMessages
 do
     local function setup_damage_message(path)
         local messageTex = Hyperspace.Resources:GetImageId(path)
         return Hyperspace.Resources:CreateImagePrimitive(messageTex, -messageTex.width/2, -messageTex.height/2, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
     end
-    damage_messages.NEGATED = setup_damage_message("numbers/text_negate.png")
+    damageMessages.ONE = setup_damage_message("numbers/Text_1_L.png")
+    damageMessages.NEGATED = setup_damage_message("numbers/text_negate.png")
 end
 
 -- Custom callback events for loading a save and starting a new game
@@ -712,12 +713,6 @@ SYSTEM PREVIEW
 mods.multiverse.systemIcons = {}
 local systemIcons = mods.multiverse.systemIcons
 
--- List of ships to show preview for temporal system on
-mods.multiverse.temporalPreviewShips = {}
-local temporalPreviewShips = mods.multiverse.temporalPreviewShips
-
-temporalPreviewShips["PLAYER_SHIP_SYLVAN_TRANSPORT_3"] = true
-
 do
     -- Collect system icons
     function mods.multiverse.register_system_icon(name)
@@ -835,7 +830,7 @@ do
             local roomSystems = {}
 
             for key in vter(sysInfo:keys()) do
-                if key ~= 11 and (key ~= 20 or temporalPreviewShips[shipManager.myBlueprint.blueprintName]) then
+                if key ~= 11 then
                     if roomSystems[sysInfo[key].location[0]] then
                         table.insert(roomSystems[sysInfo[key].location[0]], key)
                     else

@@ -14,6 +14,8 @@ local userdata_table = mods.multiverse.userdata_table
 local sign = mods.multiverse.sign
 local environmentDataStar = mods.multiverse.environmentDataStar
 local register_environment_star = mods.multiverse.register_environment_star
+local create_damage_message = mods.multiverse.create_damage_message
+local damageMessages = mods.multiverse.damageMessages
 
 -- Apply temporary time dilation
 local function temp_dilation(room, intensity, seconds)
@@ -76,17 +78,22 @@ local function do_gravity_impact(ship)
 
         -- Start fires, open breaches and deal damage
         for i = 1, math.random(3, 4) do
-            local damage = Hyperspace.Damage()
-            if math.random(2) == 1 then -- Flip coin for fire/breach
-                damage.breachChance = 10
-            else
-                damage.fireChance = 10
-            end
-            if math.random(2) == 1 then damage.iDamage = 1 end  -- Flip coin for damage
+            -- Pick a random room
+            local room = shipGraph.rooms[math.random(0, shipGraph.rooms:size() - 1)].iRoomId
 
-            -- Apply damage to random room
-            local room = shipGraph.rooms[math.random(0, shipGraph.rooms:size() - 1)]
-            ship:DamageArea(ship:GetRoomCenter(room.iRoomId), damage, true)
+            if math.random(2) == 1 then -- Flip coin for fire/breach
+                ship:StartFire(room)
+            else
+                ship.ship:BreachRandomHull(room)
+            end
+
+            if math.random(2) == 1 then  -- Flip coin for damage
+                ship:DamageHull(1, false)
+                local sys = ship:GetSystemInRoom(room)
+                if sys then sys:AddDamage(1) end
+                local roomCenter = shipGraph:GetRoomCenter(room)
+                create_damage_message(ship.iShipId, damageMessages.ONE, roomCenter.x, roomCenter.y)
+            end
         end
     end
 end

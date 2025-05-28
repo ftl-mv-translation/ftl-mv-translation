@@ -23,7 +23,10 @@ local speedModifier = 35
 local cooldownConstant = {20, 10}
 local spawnCooldown = 0
 
---timer to track how long the player can't pause for
+-- How close the player cursor needs to be to click on Her cursors
+local clickDistance = 30
+
+-- Timer to track how long the player can't pause for
 local unpausedTimerConstant = 5
 local unpausedTimer = 0
 
@@ -313,7 +316,7 @@ script.on_internal_event(Defines.InternalEvents.ON_MOUSE_L_BUTTON_DOWN, function
     if #cursors > 0 and not (commandGui.bPaused or commandGui.event_pause or commandGui.menu_pause) then
         local cursorsRemove = {}
         for _, cursorTable in ipairs(cursors) do
-            if not cursorTable.spawning and not cursorTable.dying and get_distance(cursorTable, Hyperspace.Mouse.position) <= 17 then
+            if not cursorTable.spawning and not cursorTable.dying and get_distance(cursorTable, Hyperspace.Mouse.position) <= clickDistance then
                 cursorTable.dying = true
                 Hyperspace.Sounds:PlaySoundMix(herCursorSpawnPath .. tostring(math.random(1, herCursorSpawnNumber)), -1, false)
             end

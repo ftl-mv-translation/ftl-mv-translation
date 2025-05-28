@@ -480,7 +480,7 @@ end
 
 script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(ship)
     -- Don't run if disabled or for enemy ship
-    if Hyperspace.metaVariables.prof_instant_clone_heal < 1 or ship.iShipId == 1 then
+    if Hyperspace.metaVariables.prof_instant_clone_heal < 1 or ship.iShipId == 1 or not Hyperspace.ships.player then
         return
     end
 

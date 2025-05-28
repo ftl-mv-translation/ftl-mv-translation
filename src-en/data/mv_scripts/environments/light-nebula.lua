@@ -68,7 +68,7 @@ gen_hub_clouds()
 script.on_internal_event(Defines.InternalEvents.PRE_CREATE_CHOICEBOX, function(event)
     local isLightNebula = string_starts(event.eventName, eventString)
     local newLocation = Hyperspace.App.world.starMap.currentLoc.event.eventName == event.eventName
-    if isLightNebula and (newLocation or Hyperspace.playerVariables[playerVar] == 0) then
+    if isLightNebula and not Hyperspace.App.world.space.bNebula and (newLocation or Hyperspace.playerVariables[playerVar] == 0) then
         Hyperspace.playerVariables[playerVar] = 1
         gen_hub_clouds()
         initialPosX = (math.random()*131072) % 131 - 65

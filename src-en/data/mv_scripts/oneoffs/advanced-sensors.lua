@@ -15,21 +15,21 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(ship)
         -- Manually charge weapons
         if cloakCharge then
             for weapon in vter(ship.weaponSystem.weapons) do
-                if weapon.powered and weapon.cooldown.first < weapon.cooldown.second and not weapon.table["mods.multiverse.manualDecharge"] then
-                    local currentCharge = weapon.cooldown.first + sensors:GetEffectivePower()*0.25*time_increment()
-                    if currentCharge >= weapon.cooldown.second then
-                        if weapon.chargeLevel < weapon.weaponVisual.iChargeLevels then
-                            weapon.chargeLevel = weapon.chargeLevel + 1
-                            if weapon.chargeLevel == weapon.weaponVisual.iChargeLevels then
-                                weapon.cooldown.first = weapon.cooldown.second
-                            else
-                                weapon.cooldown.first = 0
-                            end
-                        else
-                            weapon:ForceCoolup()
-                        end
+                if weapon.powered and weapon.subCooldown.second <= weapon.subCooldown.first and not weapon.table["mods.multiverse.manualDecharge"] then
+                    local oldFirst = weapon.cooldown.first
+                    local oldSecond = weapon.cooldown.second
+
+                    weapon.cooldown.first = weapon.cooldown.first + sensors:GetEffectivePower()*0.25*time_increment()
+                    weapon.cooldown.first = math.min(weapon.cooldown.first, weapon.cooldown.second)
+                    
+                    if weapon.cooldown.second == weapon.cooldown.first and oldFirst < oldSecond and weapon.chargeLevel < weapon.blueprint.chargeLevels then
+                        weapon.chargeLevel = weapon.chargeLevel + 1
+                        weapon.weaponVisual.boostLevel = 0
+                        weapon.weaponVisual.boostAnim:SetCurrentFrame(0)
+                        if weapon.chargeLevel < weapon.blueprint.chargeLevels then weapon.cooldown.first = 0 end
                     else
-                        weapon.cooldown.first = currentCharge
+                        weapon.subCooldown.first = weapon.subCooldown.first + time_increment()
+                        weapon.subCooldown.first = math.min(weapon.subCooldown.first, weapon.subCooldown.second)
                     end
                 end
             end

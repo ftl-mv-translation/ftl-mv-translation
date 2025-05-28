@@ -1,6 +1,6 @@
 local userdata_table = mods.multiverse.userdata_table
 local create_damage_message = mods.multiverse.create_damage_message
-local damage_messages = mods.multiverse.damage_messages
+local damageMessages = mods.multiverse.damageMessages
 local function bp_list_search(listName, element)
     if not (listName and element) then return nil end
     local list = Hyperspace.Blueprints:GetBlueprintList(listName)
@@ -52,7 +52,7 @@ local function handle_reduction_armor(ship, projectile, location, damage, immedi
                         if math.random() < ship:GetAugmentationValue(augName) then
                             damage.iDamage = 0
                             if immediateDmgMsg == true then
-                                create_damage_message(ship.iShipId, damage_messages.NEGATED, location.x, location.y)
+                                create_damage_message(ship.iShipId, damageMessages.NEGATED, location.x, location.y)
                             else
                                 userdata_table(projectile, "mods.mv.reductionArmor").showMsg = true
                             end
@@ -69,7 +69,7 @@ end
 script.on_internal_event(Defines.InternalEvents.DAMAGE_AREA, handle_reduction_armor)
 script.on_internal_event(Defines.InternalEvents.DAMAGE_AREA_HIT, function(ship, projectile, location)
     if projectile and userdata_table(projectile, "mods.mv.reductionArmor").showMsg then
-        create_damage_message(ship.iShipId, damage_messages.NEGATED, location.x, location.y)
+        create_damage_message(ship.iShipId, damageMessages.NEGATED, location.x, location.y)
     end
 end)
 script.on_internal_event(Defines.InternalEvents.DAMAGE_BEAM, function(ship, projectile, location, damage, realNewTile, beamHitType)
