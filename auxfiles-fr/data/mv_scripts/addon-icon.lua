@@ -4,7 +4,7 @@ mods.multiverse.icons = mods.multiverse.icons or {}
 mods.multiverse.iconsUninstalled = mods.multiverse.iconsUninstalled or {}
 
 local scrollShift = 0 -- tracking the scroll position
-local iconPerRow = 5 -- how many icons in one row
+local iconPerRow = 11 -- how many icons in one row
 local baseOffset = {
     x = 115,
     y = 7
