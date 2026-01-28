@@ -30,7 +30,7 @@ do
                 iconHoverText = Hyperspace.TextString(addonNode:first_node("hover-text"):value(), true)
             end
         else
-            iconHoverText = Hyperspace.TextString("No hover text found.\nClick to see more info.", true)
+            iconHoverText = Hyperspace.TextString("Aucune infobulle trouvée.\nCliquez pour plus d'informations.", true)
         end
 
         local iconData = {
